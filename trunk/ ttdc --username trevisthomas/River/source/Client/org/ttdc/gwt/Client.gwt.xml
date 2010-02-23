@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module rename-to='client'>
+  <!-- Inherit the core Web Toolkit stuff.                        -->
+  <inherits name='com.google.gwt.user.User'/>
+
+  <!-- Inherit the default GWT style sheet.  You can change       -->
+  <!-- the theme of your GWT application by uncommenting          -->
+  <!-- any one of the following lines.                            -->
+  <inherits name='com.google.gwt.user.theme.standard.Standard'/>
+  <!-- <inherits name='com.google.gwt.user.theme.chrome.Chrome'/> -->
+  <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
+
+  <!-- Other module inherits                                      -->
+
+  
+  <!-- Specify the paths for translatable code                    -->
+  <source path='client'/>
+
+
+  <!-- Other module inherits                                      -->
+  <inherits name="com.google.gwt.inject.Inject"/>
+  <inherits name="com.google.gwt.json.JSON" /> 
+  <inherits name="com.gwtext.GwtExt" /> 
+    
+  
+
+  <!-- Specify the app entry point class.                         -->
+  <!--<entry-point class='org.ttdc.gwt.client.MobileMain'/>-->
+  <entry-point class='org.ttdc.gwt.client.FrontPage'/>
+  
+  <!--
+  This doesnt seem to work so i moved them to the jsp file
+  <stylesheet src="js/ext/resources/css/ext-all.css" />
+  <script src="js/ext/adapter/ext/ext-base.js" />
+  <script src="js/ext/ext-all.js" />
+  -->
+    
+   <!--  Client source paths--> 
+  <source path="client" defaultexcludes="yes" casesensitive="true" excludes="**/*Test.java, **/Mock*.java"/>
+  <source path="shared" defaultexcludes="yes" casesensitive="true" /> 
+    
+  <!-- Trevis you have to do this to have access needed to do RPC's in unit tests.  -->
+  <servlet class="org.ttdc.gwt.server.RpcServlet" path="/rpc"/>
+  
+  <!--
+  	This is a work around to surpress some warnings caused by GWT2.0
+  	http://groups.google.com/group/google-web-toolkit/browse_thread/thread/2fe71cc4091692c3 
+  	Remeber that you removed the old 1.7 DTD when you added these because the file was showing as having
+  	an error in eclipse.
+  	-->
+  
+	<extend-configuration-property name="rpc.blacklist" value="com.google.gwt.user.client.ui.ChangeListenerCollection"/>
+	<extend-configuration-property name="rpc.blacklist" value="com.google.gwt.user.client.ui.ClickListenerCollection"/>
+	<extend-configuration-property name="rpc.blacklist" value="com.google.gwt.user.client.ui.FocusListenerCollection"/>
+	<extend-configuration-property name="rpc.blacklist" value="com.google.gwt.user.client.ui.FormHandlerCollection"/>
+	<extend-configuration-property name="rpc.blacklist" value="com.google.gwt.user.client.ui.KeyboardListenerCollection"/>
+	<extend-configuration-property name="rpc.blacklist" value="com.google.gwt.user.client.ui.LoadListenerCollection"/>
+	<extend-configuration-property name="rpc.blacklist" value="com.google.gwt.user.client.ui.MouseListenerCollection"/>
+	<extend-configuration-property name="rpc.blacklist" value="com.google.gwt.user.client.ui.MouseWheelListenerCollection"/>
+	<extend-configuration-property name="rpc.blacklist" value="com.google.gwt.user.client.ui.PopupListenerCollection"/>
+	<extend-configuration-property name="rpc.blacklist" value="com.google.gwt.user.client.ui.ScrollListenerCollection"/>
+	<extend-configuration-property name="rpc.blacklist" value="com.google.gwt.user.client.ui.TabListenerCollection"/>
+	<extend-configuration-property name="rpc.blacklist" value="com.google.gwt.user.client.ui.TableListenerCollection"/>
+	<extend-configuration-property name="rpc.blacklist" value="com.google.gwt.user.client.ui.TreeListenerCollection"/>
+</module>

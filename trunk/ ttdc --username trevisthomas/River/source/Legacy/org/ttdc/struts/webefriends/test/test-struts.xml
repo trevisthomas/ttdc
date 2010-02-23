@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+
+<struts>
+	<!-- <package name="test" namespace="/test" extends="struts-default"> -->
+	<package name="test" namespace="/test" extends="ttdc-secure">
+		<action name="demo" class="org.ttdc.struts.webefriends.test.Test">
+			<!-- <interceptor-ref name="secure" /> 
+			
+			<interceptor-ref name="secureStack"/>
+			<interceptor-ref name="workflow">
+                <param name="excludeMethods">input,back,cancel,browse</param>
+            </interceptor-ref>
+            -->
+			<result name="success">/test/test.jsp</result>
+		</action>
+
+		<action name="showUpload">
+			<result>/WEB-INF/jsp/test/upload.jsp</result>
+		</action>
+
+		<action name="doUpload" class="org.ttdc.struts.webefriends.test.ImageUploadTest">
+			<result name="input">/WEB-INF/jsp/test/upload.jsp</result>
+			<result>/WEB-INF/jsp/test/upload-success.jsp</result>
+		</action>
+	</package>
+</struts>
