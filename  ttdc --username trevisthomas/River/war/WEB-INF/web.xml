@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app
+    PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+    "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app>
+  <!-- For hosting image blobs -->
+  <servlet>
+  	<servlet-name>Images</servlet-name>
+  	<servlet-class>org.ttdc.servlets.ImageServer</servlet-class>
+  </servlet>
+  
+  <servlet>
+  	<servlet-name>ImageUpload</servlet-name>
+  	<servlet-class>org.ttdc.servlets.ImageUploadServlet</servlet-class>
+  </servlet>
+  
+  <servlet>
+    <servlet-name>rpcServlet</servlet-name>
+    <servlet-class>org.ttdc.gwt.server.RpcServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>Images</servlet-name>
+  	<url-pattern>/images/*</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>ImageUpload</servlet-name>
+  	<url-pattern>/imageupload</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>rpcServlet</servlet-name>
+    <url-pattern>/client/rpc</url-pattern>
+  </servlet-mapping>
+  
+  <!-- Default page to serve -->
+  <welcome-file-list>
+    <welcome-file>launch.jsp</welcome-file>
+  </welcome-file-list>
+  
+</web-app>
