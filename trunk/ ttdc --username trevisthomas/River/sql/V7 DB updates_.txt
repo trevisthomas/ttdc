@@ -1,0 +1,33 @@
+Moron. Index title, tag_guid and guid on association
+
+add these to post:
+
+THREAD_GUID
+LATEST_ENTRY_GUID
+EDIT_DATE
+
+
+run calculate avg rating
+run materalized path
+
+run two v7 scripts
+
+-- New as of Oct 26
+Add 
+
+MASS to Tag (index this field) (be sure to remove the null after creating)
+REPLY_COUNT to Post (default to 0, index this field too) (besure to remove allow null after creating)
+
+
+V7_MIGRATION_AddCountsToPosts.sql
+
+-- the following must be run in this order! Put the mass on the tags first. The second proc modifys title tags only. 
+-- if not run in the proper order the reply based mass for title tags will be over written 
+V7_MIGRATION_AddMassToTag.sql
+V7_MIGRATION_AddTitleReplyCountToTag.sql
+
+
+rebuild full text indexes!
+
+
+//Trevis: check prod v6 to see if title bit is already on association
