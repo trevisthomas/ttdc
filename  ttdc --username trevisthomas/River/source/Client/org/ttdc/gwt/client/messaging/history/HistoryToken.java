@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.ttdc.gwt.shared.calender.Day;
 import org.ttdc.gwt.shared.util.EqualsUtil;
 import org.ttdc.gwt.shared.util.HashCodeUtil;
 
@@ -135,7 +134,7 @@ public class HistoryToken implements IsSerializable{
 		String val = getParameter(name);
 		if(val == null) return new ArrayList<String>();
 		String values [] = val.split(",");
-		List<String> list = Arrays.asList(values);
+		List<String> list = new ArrayList<String>(Arrays.asList(values));
 		return list;
 	}
 	
