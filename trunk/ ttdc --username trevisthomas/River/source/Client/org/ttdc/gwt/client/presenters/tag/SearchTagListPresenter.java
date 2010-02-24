@@ -11,7 +11,6 @@ import org.ttdc.gwt.client.beans.GTag;
 import org.ttdc.gwt.client.messaging.EventBus;
 import org.ttdc.gwt.client.messaging.history.HistoryConstants;
 import org.ttdc.gwt.client.messaging.history.HistoryToken;
-import org.ttdc.gwt.client.presenters.post.SearchTagResultsPresenter;
 import org.ttdc.gwt.client.presenters.post.TagRemovePresenter;
 import org.ttdc.gwt.client.presenters.shared.BasePresenter;
 
@@ -74,25 +73,6 @@ public class SearchTagListPresenter extends BasePresenter<TagListPresenterView>{
 		view.showPresenters(getTagIdList(), new ArrayList<BasePresenter<?>>(tagRemovePresenterMap.values()));
 	}
 	
-	
-	/*
-	 * TREVIS!!!  THESE METHODS FIRE HISTORY EVENTS WHICH IS BAD. THEY SHOULD DO NOTIFICATION 
-	 * MESSAGES SO THAT HISTORY CAN TRACK THEM
-	 * 
-	 * TODO:
-	 * TODO:
-	 * TODO:
-	 * TODO:
-	 * TODO:
-	 * TODO:
-	 * 
-	 */
-	
-	/**
-	 * 
-	 * 
-	 *
-	 */
 	private static class RemoveTagInBrowseModeClickHandler implements ClickHandler{
 		private final List<String> tagIdList;
 		private final String tagIdToRemove;
@@ -108,11 +88,7 @@ public class SearchTagListPresenter extends BasePresenter<TagListPresenterView>{
 				if(!tagId.equals(tagIdToRemove))
 					token.addParameter(HistoryConstants.SEARCH_TAG_ID_KEY, tagId);
 			}
-			
-			
-			//EventBus.getInstance().fireEvent(historyEvent);
 			EventBus.getInstance().fireHistory(token);
-			
 		}
 	}
 	
@@ -135,11 +111,7 @@ public class SearchTagListPresenter extends BasePresenter<TagListPresenterView>{
 				token.addParameter(HistoryConstants.SEARCH_TAG_ID_KEY, tagId);
 			}
 			token.addParameter(HistoryConstants.SEARCH_TAG_ID_KEY, tagSuggestion.getTag().getTagId());
-			
-			//HistoryEvent historyEvent = new HistoryEvent(token);
-			//EventBus.getInstance().fireEvent(historyEvent);
-			//Might want to refactor the following to just fire a history token
-			//EventBus.getInstance().fireEvent(new HistoryNotification(token.toString()));
+	
 			EventBus.getInstance().fireHistory(token);
 		}
 	}
