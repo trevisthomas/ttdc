@@ -132,12 +132,17 @@ public class TagSugestionOracle extends SuggestOracle implements SuggestionListe
 
         public void onSuccess(TagSuggestionCommandResult result) {
         	SuggestOracle.Response resp = result.getResponse();
-        	for(Suggestion suggestion : resp.getSuggestions()){
-        		TagSuggestion tagSuggestion = (TagSuggestion) suggestion;
-        		tagSuggestion.addSuggestionListener(tagSuggestionOracle);
+        		if(resp.getSuggestions() != null){
+		        	for(Suggestion suggestion : resp.getSuggestions()){
+		        		TagSuggestion tagSuggestion = (TagSuggestion) suggestion;
+		        		tagSuggestion.addSuggestionListener(tagSuggestionOracle);
+		        	}
+		        	oracleCallback.onSuggestionsReady(oracleRequest,result.getResponse());
+        		}
+        		else{
+        			//Suggestions came back null... server probably couldn't parse the request
+        		}
         	}
-			oracleCallback.onSuggestionsReady(oracleRequest,result.getResponse());
-		}
         
         public void onFailure(Throwable error) {
         	oracleCallback.onSuggestionsReady(oracleRequest, new SuggestOracle.Response());
