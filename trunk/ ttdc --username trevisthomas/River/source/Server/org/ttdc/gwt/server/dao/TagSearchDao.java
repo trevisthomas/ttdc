@@ -151,7 +151,8 @@ final public class TagSearchDao {
 	private org.apache.lucene.search.Query createLuceneQuery() {
 		String preparedPhrase = LuceneUtils.prepPhraseForLucene2(getPhrase(),getDateRange());
 		org.apache.lucene.search.Query luceneQuery;
-		QueryParser parser = new MultiFieldQueryParser( new String[]{"topic","creator"}, new EnglishAnalyzer());
+		//QueryParser parser = new MultiFieldQueryParser( new String[]{"topic","creator"}, new EnglishAnalyzer());
+		QueryParser parser = new MultiFieldQueryParser( new String[]{"topic"}, new EnglishAnalyzer());
 		try {
 			luceneQuery = parser.parse(preparedPhrase);
 		} catch (ParseException e) {

@@ -159,4 +159,66 @@ public class TagSuggestionCommandExecutorTest{
 		
 	}
 	
+	
+	@Test
+	public void testPostSearchUnionError1(){
+		SuggestOracle.Request request = new SuggestOracle.Request(); 
+		
+		request.setQuery("trevis");
+		
+		TagSuggestionCommand cmd = new TagSuggestionCommand(TagSuggestionCommandMode.SEARCH, request);
+		cmd.addTagIdUnion("3FE5F7A3-F91D-41E3-9225-E2538D59E5C3");		
+		cmd.setLoadDefault(true);
+		
+		TagSuggestionCommandExecutor cmdexec = (TagSuggestionCommandExecutor)CommandExecutorFactory.createExecutor("50E7F601-71FD-40BD-9517-9699DDA611D6",cmd);
+		
+		TagSuggestionCommandResult result = (TagSuggestionCommandResult)cmdexec.executeCommand();
+		
+		List<TagSuggestion> tags  = (List<TagSuggestion>)result.getResponse().getSuggestions();
+		
+		assertTrue("Found nothing and expected stuff. ", tags.size() > 0);
+		
+		boolean createOption = false;
+		for(TagSuggestion suggestion : tags){
+			GTag t = suggestion.getTag();
+			assertTrue(StringUtils.isNotEmpty(t.getTagId()));
+			
+			assertEqualsOneOfExpected(cmdexec.getTagTypeFilterListForMode(TagSuggestionCommandMode.SEARCH), t.getType());
+			log.info(t.getTagId()+" "+t.getValue());
+			
+		}
+		
+	}
+	
+	@Test
+	public void testPostSearchTitleError1(){
+		SuggestOracle.Request request = new SuggestOracle.Request(); 
+		
+		request.setQuery("t");
+		
+		TagSuggestionCommand cmd = new TagSuggestionCommand(TagSuggestionCommandMode.POST_CREATE, request);
+		//cmd.addTagIdUnion("3FE5F7A3-F91D-41E3-9225-E2538D59E5C3");		
+		cmd.setLoadDefault(true);
+		
+		TagSuggestionCommandExecutor cmdexec = (TagSuggestionCommandExecutor)CommandExecutorFactory.createExecutor("50E7F601-71FD-40BD-9517-9699DDA611D6",cmd);
+		
+		TagSuggestionCommandResult result = (TagSuggestionCommandResult)cmdexec.executeCommand();
+		
+		List<TagSuggestion> tags  = (List<TagSuggestion>)result.getResponse().getSuggestions();
+		
+		assertTrue("Found nothing and expected stuff. ", tags.size() > 0);
+		
+		boolean createOption = false;
+		for(TagSuggestion suggestion : tags){
+			GTag t = suggestion.getTag();
+			assertTrue(StringUtils.isNotEmpty(t.getTagId()));
+			
+			assertEqualsOneOfExpected(cmdexec.getTagTypeFilterListForMode(TagSuggestionCommandMode.SEARCH), t.getType());
+			log.info(t.getTagId()+" "+t.getValue());
+			
+		}
+		
+	}
+	
+	
 }

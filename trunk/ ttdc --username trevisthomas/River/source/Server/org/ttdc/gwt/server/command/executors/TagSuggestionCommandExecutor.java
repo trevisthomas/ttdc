@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.ttdc.gwt.client.autocomplete.TagSuggestion;
 import org.ttdc.gwt.client.beans.GTag;
 import org.ttdc.gwt.client.services.CommandResult;
@@ -21,6 +22,7 @@ import com.google.gwt.user.client.ui.SuggestOracle;
 import static org.ttdc.persistence.Persistence.*;
 
 public class TagSuggestionCommandExecutor extends CommandExecutor<TagSuggestionCommandResult>{
+	private final static Logger log = Logger.getLogger(TagSuggestionCommandExecutor.class);
 	
 	//TODO: Trevis, you need to figure out a way to limit by topics that are titles!
 	private final List<String> tagTypeFiltersPostCreate = 
@@ -36,16 +38,18 @@ public class TagSuggestionCommandExecutor extends CommandExecutor<TagSuggestionC
 	protected CommandResult execute() {
 		TagSuggestionCommand command = (TagSuggestionCommand) getCommand();
 		SuggestOracle.Request request;
-		SuggestOracle.Response response;
+		SuggestOracle.Response response = new SuggestOracle.Response();
+		
+		
 		try {
 			request = command.getRequest();
-
+			
 			// req has request properties that you can use to perform a db
 			// search
 			// or some other query. Then populate the suggestions up to
 			// req.getLimit() and
 			// return in a SuggestOracle.Response object.
-			response = new SuggestOracle.Response();
+			
 
 			TagSearchDao dao = new TagSearchDao();
 			dao.setPageSize(request.getLimit());
@@ -87,7 +91,9 @@ public class TagSuggestionCommandExecutor extends CommandExecutor<TagSuggestionC
 			response.setSuggestions(suggestions);
 
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			//throw new RuntimeException(e);
+			//Sometimes garbage causes hibernates lucene query parser to throw weird exceptions so i just return the empty list
+			log.error(e);
 		}
 
 		return new TagSuggestionCommandResult(response);
@@ -127,6 +133,10 @@ public class TagSuggestionCommandExecutor extends CommandExecutor<TagSuggestionC
 			int endQueryMatch = query.length() + startQueryMatch;
 			
 			GTag gTag = convertTagToGTag(tag);
+			
+			if(startQueryMatch < 0){
+				return new TagSuggestion(gTag, gTag.getValue());
+			}
 			
 			return new TagSuggestion(gTag, highlightQueryString(gTag.getValue(), startQueryMatch, endQueryMatch));
 		}
