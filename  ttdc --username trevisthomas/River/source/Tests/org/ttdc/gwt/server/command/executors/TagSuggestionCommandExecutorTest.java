@@ -231,7 +231,7 @@ public class TagSuggestionCommandExecutorTest{
 		
 		SuggestOracle.Request request = new SuggestOracle.Request(); 
 		
-		request.setQuery("t");
+		request.setQuery("morsels");
 		
 		TagSuggestionCommand cmd = new TagSuggestionCommand(TagSuggestionCommandMode.TOPIC_POSTS, request);
 		//cmd.addTagIdUnion("3FE5F7A3-F91D-41E3-9225-E2538D59E5C3");		
@@ -249,8 +249,13 @@ public class TagSuggestionCommandExecutorTest{
 		for(TagSuggestion suggestion : suggestions){
 			//GTag t = suggestion.getTag();
 			//assertTrue(suggestion.getTag() == null);
+			
 			GPost post = suggestion.getPost();
+			
+			
 			assertNotNull("Post came back null!",post);
+			
+			log.info(post.getTitle());
 			assertTrue("Post id was blank",StringUtils.isNotEmpty(post.getPostId()));
 			assertTrue("The display string was blank...?",StringUtils.isNotBlank(suggestion.getDisplayString()));
 			assertTrue("The replacement string was blank...?",StringUtils.isNotBlank(suggestion.getReplacementString()));

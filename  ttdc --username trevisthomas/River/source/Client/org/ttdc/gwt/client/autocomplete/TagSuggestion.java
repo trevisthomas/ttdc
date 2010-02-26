@@ -31,19 +31,23 @@ public class TagSuggestion implements IsSerializable, Suggestion  {
         return s;
     }
 
+    @Override
     public String getReplacementString() {
     	//Trevis, this method is called when a user chooes this tag.  Come up 
     	//with a cute way to make a call back or something so that you can capture this object
     	//when the user chooses it. That'll allow me to have the tagid when they select a tag.
     	
     	notifyListeners();
+    	return getReplacementStringValue();	
+    }
+    
+    public String getReplacementStringValue(){
     	if(tag != null)
     		return tag.getValue();
     	else if(post != null)
     		return post.getTitle();
     	else
     		throw new RuntimeException("Suggestion has no associated bean.");
-    		
     }
     
     public void addSuggestionListener(SuggestionListener listener){
