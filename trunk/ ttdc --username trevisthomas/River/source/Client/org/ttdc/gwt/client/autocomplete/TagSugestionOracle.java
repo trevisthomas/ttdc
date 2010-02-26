@@ -72,7 +72,14 @@ public class TagSugestionOracle extends SuggestOracle implements SuggestionListe
     
     public void onSuggestion(TagSuggestion tagSuggestion) {
     	currentTagSuggestion = tagSuggestion;
-		//Window.alert(tagSuggestion.getDisplayString());
+		Window.alert(tagSuggestion.getDisplayString());
+	}
+    
+    public SuggestBox createSuggestBoxForTopics() {
+    	SuggestBox suggestBox;
+    	setCommandMode(TagSuggestionCommandMode.TOPIC_POSTS);
+    	suggestBox = new SuggestBox(this);
+    	return suggestBox;
 	}
     
     public SuggestBox createSuggestBoxForSearch(List<String> currentTagIdList){
@@ -92,14 +99,14 @@ public class TagSugestionOracle extends SuggestOracle implements SuggestionListe
     
     public SuggestBox createSuggestBoxForPostView(List<String> currentTagIdList){
     	SuggestBox suggestBox;
-    	setCommandMode(TagSuggestionCommandMode.POST_VIEW);
+    	setCommandMode(TagSuggestionCommandMode.VIEW);
     	suggestBox = new SuggestBox(this);
     	excludeTagIdList.addAll(currentTagIdList);
     	return suggestBox;
     }
     public SuggestBox createSuggestBoxPostTitle(){
     	SuggestBox suggestBox;
-    	setCommandMode(TagSuggestionCommandMode.POST_CREATE);
+    	setCommandMode(TagSuggestionCommandMode.CREATE);
     	suggestBox = new SuggestBox(this);
     	
     	return suggestBox;
@@ -169,5 +176,7 @@ public class TagSugestionOracle extends SuggestOracle implements SuggestionListe
 			injector.getService().execute(command, callback);
 		}
 	}
+
+	
 
 }

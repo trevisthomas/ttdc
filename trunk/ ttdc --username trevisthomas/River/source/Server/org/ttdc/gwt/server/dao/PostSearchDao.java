@@ -20,7 +20,7 @@ import org.hibernate.search.FullTextSession;
 
 import org.ttdc.gwt.shared.commands.types.PostSearchType;
 import org.ttdc.gwt.shared.commands.types.SortDirection;
-import org.ttdc.gwt.shared.commands.types.SortOrder;
+import org.ttdc.gwt.shared.commands.types.SearchSortBy;
 import org.ttdc.gwt.shared.util.PaginatedList;
 import org.ttdc.persistence.objects.Post;
 import org.ttdc.persistence.util.BridgeForPostType;
@@ -36,7 +36,7 @@ public final class PostSearchDao extends PaginatedDaoBase{
 	private String rootId;
 	private String threadId;
 	private StopWatch stopwatch = new StopWatch();
-	private SortOrder sortOrder = SortOrder.BY_DATE; 
+	private SearchSortBy sortOrder = SearchSortBy.BY_DATE; 
 	private SortDirection sortDirection = SortDirection.DESC;
 	private PostSearchType postSearchType;
 	private boolean searchByTitle = false;
@@ -255,11 +255,11 @@ public final class PostSearchDao extends PaginatedDaoBase{
 
 	}
 
-	public SortOrder getSortOrder() {
+	public SearchSortBy getSortOrder() {
 		return sortOrder;
 	}
 
-	public void setSortOrder(SortOrder sortOrder) {
+	public void setSortBy(SearchSortBy sortOrder) {
 		this.sortOrder = sortOrder;
 	}
 

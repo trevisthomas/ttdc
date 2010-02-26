@@ -98,8 +98,12 @@ public class FrontPage implements EntryPoint, HistoryEventListener{
 		box = oracle.createSuggestBoxForSearch(Arrays.asList("3FE5F7A3-F91D-41E3-9225-E2538D59E5C3"));
 		hPanel.add(new Label("Union Corporate Goodness"));
 		hPanel.add(box);
-		
-		
+
+		oracle = injector.getTagSugestionOracle();
+		box = oracle.createSuggestBoxForTopics();
+		hPanel.add(new Label("Topics (root threads)"));
+		hPanel.add(box);
+
 		RootPanel.get("content").add(hPanel);
 		
 		//

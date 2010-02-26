@@ -16,7 +16,7 @@ import org.ttdc.gwt.server.command.executors.BrowsePopularTagsCommandExecutor;
 import org.ttdc.gwt.shared.commands.BrowsePopularTagsCommand;
 import org.ttdc.gwt.shared.commands.SearchTagsCommand;
 import org.ttdc.gwt.shared.commands.results.SearchTagsCommandResult;
-import org.ttdc.gwt.shared.commands.types.SortOrder;
+import org.ttdc.gwt.shared.commands.types.SearchSortBy;
 import org.ttdc.gwt.shared.util.PaginatedList;
 import org.ttdc.persistence.objects.AssociationPostTag;
 import org.ttdc.persistence.objects.Post;
@@ -67,7 +67,7 @@ private final static Logger log = Logger.getLogger(SearchPostsCommandTest.class)
 	public void browseForMostPopularTagsAlphabeticalOrder(){
 		BrowsePopularTagsCommand cmd = new BrowsePopularTagsCommand();
 		//cmd.setMaxTags(100);
-		cmd.setSortOrder(SortOrder.ALPHABETICAL);
+		cmd.setSortOrder(SearchSortBy.ALPHABETICAL);
 		CommandExecutor cmdexec = CommandExecutorFactory.createExecutor(personIdTrevis,cmd);
 		
 		assertTrue("Factory returned the wrong implementation", cmdexec instanceof BrowsePopularTagsCommandExecutor);
