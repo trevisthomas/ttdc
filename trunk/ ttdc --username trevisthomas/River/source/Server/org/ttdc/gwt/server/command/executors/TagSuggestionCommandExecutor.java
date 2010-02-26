@@ -12,7 +12,6 @@ import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.beans.GTag;
 import org.ttdc.gwt.client.services.CommandResult;
 import org.ttdc.gwt.server.command.CommandExecutor;
-import org.ttdc.gwt.server.command.executors.utils.PaginatedResultConverters;
 import org.ttdc.gwt.server.dao.PersonDao;
 import org.ttdc.gwt.server.dao.PostSearchDao;
 import org.ttdc.gwt.server.dao.TagSearchDao;
@@ -48,9 +47,7 @@ public class TagSuggestionCommandExecutor extends CommandExecutor<TagSuggestionC
 	@Override
 	protected CommandResult execute() {
 		TagSuggestionCommand command = (TagSuggestionCommand) getCommand();
-		SuggestOracle.Request request;
 		SuggestOracle.Response response = new SuggestOracle.Response();
-		
 		
 		try {
 			switch(command.getMode()){
@@ -61,7 +58,6 @@ public class TagSuggestionCommandExecutor extends CommandExecutor<TagSuggestionC
 					tagBased(command, response);	
 				break;
 			}
-			
 
 		} catch (Exception e) {
 			//throw new RuntimeException(e);
@@ -89,22 +85,18 @@ public class TagSuggestionCommandExecutor extends CommandExecutor<TagSuggestionC
 		dao.setPhrase(request.getQuery());
 		dao.setSortBy(SearchSortBy.POPULARITY);
 		dao.setSortDirection(SortDirection.DESC);
-		//TODO: you might want to make a faster version of the converter designed for this unique purpose
-		
-		
-//		PaginatedList<GPost> gResults = PaginatedResultConverters.convertSearchResults(dao.search());
-//		List<TagSuggestion> suggestions = new ArrayList<TagSuggestion>();
-//		for(GPost post : gResults.getList() ){
-//			suggestions.add(new TagSuggestion(post, post.getTitle()));
-//		}
 		
 		PaginatedList<Post> results = dao.search();
 		List<TagSuggestion> suggestions = new ArrayList<TagSuggestion>();
 		for(Post post : results.getList() ){
 			GPost gp = new GPost();
-			gp.setTitle(post.getPostId());
+			gp.setTitle(post.getTitle());
 			gp.setPostId(post.getPostId());
-			suggestions.add(new TagSuggestion(gp, gp.getPostId()));
+			String highlightedValue = highlightRequestedValue(request.getQuery(), post.getTitle());
+			if(post.getMass() > 1)
+				suggestions.add(new TagSuggestion(gp, highlightedValue + " (" + post.getMass()+")"));
+			else
+				suggestions.add(new TagSuggestion(gp, highlightedValue));
 		}
 		
 		if(StringUtils.isNotEmpty(request.getQuery()))
@@ -116,13 +108,6 @@ public class TagSuggestionCommandExecutor extends CommandExecutor<TagSuggestionC
 	private void tagBased(TagSuggestionCommand command,	SuggestOracle.Response response) {
 		SuggestOracle.Request request;
 		request = command.getRequest();
-		
-		// req has request properties that you can use to perform a db
-		// search
-		// or some other query. Then populate the suggestions up to
-		// req.getLimit() and
-		// return in a SuggestOracle.Response object.
-		
 
 		TagSearchDao dao = new TagSearchDao();
 		dao.setPageSize(request.getLimit());
@@ -186,30 +171,25 @@ public class TagSuggestionCommandExecutor extends CommandExecutor<TagSuggestionC
 		gTag.setValue(query);
 		gTag.setType(Tag.TYPE_TOPIC);
 		gTag.setTagId(" ");
-		return new TagSuggestion(gTag, query+" <strong>(Create New)</strong>");
+		return new TagSuggestion(gTag, query+" <b>(Create New)</b>");
 	}
 	
 	private TagSuggestion createSugestionForNewPost(String query){
 		GPost post = new GPost();
 		post.setTitle(query);
 		post.setPostId(" ");
-		return new TagSuggestion(post, query+" <strong>(Create New)</strong>");
+		return new TagSuggestion(post, query+" <b>(Create New)</b>");
 	}
 	
 	private TagSuggestion createDynamicSugestion(String query, Tag tag){
-		if(query != null){
-			String lowerCaseValue = tag.getValue().toLowerCase();
-			String lowerCaseQuery = query.toLowerCase();
-			int startQueryMatch = lowerCaseValue.indexOf(lowerCaseQuery);
-			int endQueryMatch = query.length() + startQueryMatch;
-			
+		if(StringUtils.isNotBlank(query)){
 			GTag gTag = convertTagToGTag(tag);
+			String requestedValue = query;
+			String actualValue = gTag.getValue();
 			
-			if(startQueryMatch < 0){
-				return new TagSuggestion(gTag, gTag.getValue());
-			}
+			String highlightedValue = highlightRequestedValue(requestedValue, actualValue);
 			
-			return new TagSuggestion(gTag, highlightQueryString(gTag.getValue(), startQueryMatch, endQueryMatch));
+			return new TagSuggestion(gTag, highlightedValue);
 		}
 		else{
 			GTag gTag = convertTagToGTag(tag);
@@ -217,10 +197,21 @@ public class TagSuggestionCommandExecutor extends CommandExecutor<TagSuggestionC
 		}
 	}
 
-	/*
-	 * TODO: consider using the tag GenericBeanConverter method for this?
-	 * 
-	 */
+	private String highlightRequestedValue(String requestedValue, String actualValue) {
+		if(StringUtils.isBlank(requestedValue))
+			return actualValue;
+		String lowerCaseValue = actualValue.toLowerCase();
+		String lowerCaseQuery = requestedValue.toLowerCase();
+		int startQueryMatch = lowerCaseValue.indexOf(lowerCaseQuery);
+		int endQueryMatch = requestedValue.length() + startQueryMatch;
+		if(startQueryMatch < 0){
+			return actualValue;
+		}
+		String highlightedValue = highlightQueryString(actualValue, startQueryMatch, endQueryMatch);
+		return highlightedValue;
+	}
+
+	
 	private GTag convertTagToGTag(Tag tag) {
 		GTag gTag = new GTag(); 
 		gTag.setTagId(tag.getTagId());
@@ -230,15 +221,7 @@ public class TagSuggestionCommandExecutor extends CommandExecutor<TagSuggestionC
 	}
 
 	private String highlightQueryString(String value, int startQueryMatch, int endQueryMatch) {
-		return value.substring(0, startQueryMatch) + "<strong>" + value.substring(startQueryMatch, endQueryMatch) +"</strong>" + value.substring(endQueryMatch);
+		return value.substring(0, startQueryMatch) + "<b>" + value.substring(startQueryMatch, endQueryMatch) +"</b>" + value.substring(endQueryMatch);
 	}
-	
-	/*
-	private boolean isValidSugestionMatch(String value, int startPosition){
-		if(startPosition == 0) return true;
-		if(startPosition > 0 && value.charAt(startPosition - 1) == ' ') return true;
-		return false;
-	}
-	*/
 
 }

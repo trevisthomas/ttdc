@@ -23,6 +23,7 @@ import javax.persistence.Transient;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.search.annotations.ClassBridge;
 import org.hibernate.search.annotations.ClassBridges;
@@ -544,19 +545,29 @@ public class Post implements Comparable<Post>, HasGuid {
 //		this.title = title;
 //	}
 	
-	
-	@Transient 
+	private String title;
+	@Formula(" (SELECT t.value FROM ASSOCIATION_POST_TAG ass INNER JOIN TAG t ON ass.tag_guid=t.guid  WHERE ass.post_guid=GUID AND ass.title=1) ")
 	public String getTitle(){
-		String title = "";
-		List<AssociationPostTag> tagasses = getTagAssociations();
-		for(AssociationPostTag a : tagasses){
-			if(a.isTitle()){
-				title = a.getTag().getValue();
-				break;
-			}
-		}
 		return title;
 	}
+	
+	public void setTitle(String title){
+		this.title = title;
+	}
+	
+	
+//	@Transient 
+//	public String getTitle(){
+//		String title = "";
+//		List<AssociationPostTag> tagasses = getTagAssociations();
+//		for(AssociationPostTag a : tagasses){
+//			if(a.isTitle()){
+//				title = a.getTag().getValue();
+//				break;
+//			}
+//		}
+//		return title;
+//	}
 	
 	/*
 	 * 

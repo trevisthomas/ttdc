@@ -12,7 +12,6 @@ import org.ttdc.gwt.shared.commands.results.TagSuggestionCommandResult;
 import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.SuggestOracle;
 import com.google.inject.Inject;
@@ -72,20 +71,19 @@ public class TagSugestionOracle extends SuggestOracle implements SuggestionListe
     
     public void onSuggestion(TagSuggestion tagSuggestion) {
     	currentTagSuggestion = tagSuggestion;
-		Window.alert(tagSuggestion.getDisplayString());
+		//Window.alert(tagSuggestion.getDisplayString());
 	}
     
     public SuggestBox createSuggestBoxForTopics() {
-    	SuggestBox suggestBox;
     	setCommandMode(TagSuggestionCommandMode.TOPIC_POSTS);
-    	suggestBox = new SuggestBox(this);
+    	suggestBox = new MySuggestBox(this);
     	return suggestBox;
 	}
+    SuggestBox suggestBox;
     
     public SuggestBox createSuggestBoxForSearch(List<String> currentTagIdList){
-    	final SuggestBox suggestBox;
     	setCommandMode(TagSuggestionCommandMode.SEARCH);
-    	suggestBox = new SuggestBox(this);
+    	suggestBox = new MySuggestBox(this);
     	unionTagIdList.addAll(currentTagIdList);
     	
     	suggestBox.getTextBox().addFocusHandler(new FocusHandler(){
@@ -98,17 +96,15 @@ public class TagSugestionOracle extends SuggestOracle implements SuggestionListe
     }
     
     public SuggestBox createSuggestBoxForPostView(List<String> currentTagIdList){
-    	SuggestBox suggestBox;
     	setCommandMode(TagSuggestionCommandMode.VIEW);
-    	suggestBox = new SuggestBox(this);
+    	suggestBox = new MySuggestBox(this);
     	excludeTagIdList.addAll(currentTagIdList);
     	return suggestBox;
     }
+    
     public SuggestBox createSuggestBoxPostTitle(){
-    	SuggestBox suggestBox;
     	setCommandMode(TagSuggestionCommandMode.CREATE);
-    	suggestBox = new SuggestBox(this);
-    	
+    	suggestBox = new MySuggestBox(this);
     	return suggestBox;
     }
 	public TagSuggestionCommandMode getCommandMode() {
@@ -119,6 +115,13 @@ public class TagSugestionOracle extends SuggestOracle implements SuggestionListe
 	}
 	public TagSuggestion getCurrentTagSuggestion() {
 		return currentTagSuggestion;
+	}
+	
+	private class MySuggestBox extends SuggestBox{
+		public MySuggestBox(SuggestOracle suggestOracle) {
+			super(suggestOracle);
+			setAutoSelectEnabled(true);
+		}
 	}
 	
 	/**
@@ -140,8 +143,13 @@ public class TagSugestionOracle extends SuggestOracle implements SuggestionListe
         public void onSuccess(TagSuggestionCommandResult result) {
         	SuggestOracle.Response resp = result.getResponse();
         		if(resp.getSuggestions() != null){
-		        	for(Suggestion suggestion : resp.getSuggestions()){
-		        		TagSuggestion tagSuggestion = (TagSuggestion) suggestion;
+        			tagSuggestionOracle.currentTagSuggestion = null;
+        			for(Suggestion suggestion : resp.getSuggestions()){
+        				TagSuggestion tagSuggestion = (TagSuggestion) suggestion;
+        				if(tagSuggestionOracle.currentTagSuggestion == null){
+        					//tagSuggestionOracle.suggestBox.getTextBox().setText(tagSuggestion.getReplacementStringValue());
+        					tagSuggestionOracle.onSuggestion(tagSuggestion);
+        				}
 		        		tagSuggestion.addSuggestionListener(tagSuggestionOracle);
 		        	}
 		        	oracleCallback.onSuggestionsReady(oracleRequest,result.getResponse());
