@@ -6,11 +6,14 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.ttdc.gwt.client.autocomplete.TagSuggestion;
+import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.beans.GTag;
 import org.ttdc.gwt.server.command.CommandExecutorFactory;
+import org.ttdc.gwt.server.dao.InitConstants;
 import org.ttdc.gwt.shared.commands.TagSuggestionCommand;
 import org.ttdc.gwt.shared.commands.TagSuggestionCommandMode;
 import org.ttdc.gwt.shared.commands.results.TagSuggestionCommandResult;
+import org.ttdc.persistence.objects.Person;
 
 import static org.junit.Assert.assertFalse;
 import static org.ttdc.gwt.server.dao.Helpers.*;
@@ -30,13 +33,13 @@ public class TagSuggestionCommandExecutorTest{
 	 * 
 	 */
 	@Test
-	public void testInPostView(){
+	public void testInViewMode(){
 		SuggestOracle.Request request = new SuggestOracle.Request(); 
 		
 		request.setQuery("mors");
 		
 		//MODE_POST_CREATE, MODE_SEARCH
-		TagSuggestionCommand cmd = new TagSuggestionCommand(TagSuggestionCommandMode.POST_VIEW, request);
+		TagSuggestionCommand cmd = new TagSuggestionCommand(TagSuggestionCommandMode.VIEW, request);
 		cmd.addTagIdExclude(tagCorporateGoodness);
 		
 		TagSuggestionCommandExecutor cmdexec = (TagSuggestionCommandExecutor)CommandExecutorFactory.createExecutor("50E7F601-71FD-40BD-9517-9699DDA611D6",cmd);
@@ -51,7 +54,7 @@ public class TagSuggestionCommandExecutorTest{
 			GTag t = suggestion.getTag();
 			assertTrue(StringUtils.isNotEmpty(t.getTagId()));
 			
-			assertEqualsOneOfExpected(cmdexec.getTagTypeFilterListForMode(TagSuggestionCommandMode.POST_VIEW), t.getType());
+			assertEqualsOneOfExpected(cmdexec.getTagTypeFilterListForMode(TagSuggestionCommandMode.VIEW), t.getType());
 			assertContains(t.getValue(),request.getQuery());
 			log.info(t.getTagId()+" "+t.getValue());
 			assertFalse(" Tag : "+t.getValue()+" should have been excluded!", t.getTagId().equals(tagCorporateGoodness));
@@ -65,13 +68,13 @@ public class TagSuggestionCommandExecutorTest{
 	 *   
 	 */
 	@Test
-	public void testPostCreate(){
+	public void testInCreateMode(){
 		SuggestOracle.Request request = new SuggestOracle.Request(); 
 		
 		request.setQuery("mors");
 		
 		//MODE_POST_CREATE, MODE_SEARCH
-		TagSuggestionCommand cmd = new TagSuggestionCommand(TagSuggestionCommandMode.POST_VIEW, request);
+		TagSuggestionCommand cmd = new TagSuggestionCommand(TagSuggestionCommandMode.VIEW, request);
 		
 		TagSuggestionCommandExecutor cmdexec = (TagSuggestionCommandExecutor)CommandExecutorFactory.createExecutor("50E7F601-71FD-40BD-9517-9699DDA611D6",cmd);
 		
@@ -86,7 +89,7 @@ public class TagSuggestionCommandExecutorTest{
 			GTag t = suggestion.getTag();
 			assertTrue(StringUtils.isNotEmpty(t.getTagId()));
 			
-			assertEqualsOneOfExpected(cmdexec.getTagTypeFilterListForMode(TagSuggestionCommandMode.POST_CREATE), t.getType());
+			assertEqualsOneOfExpected(cmdexec.getTagTypeFilterListForMode(TagSuggestionCommandMode.CREATE), t.getType());
 			assertContains(t.getValue(),request.getQuery());
 			log.info(t.getTagId()+" "+t.getValue());
 			if(suggestion.getDisplayString().equals(request.getQuery() + " <strong>(Create New)</strong>")){
@@ -97,7 +100,7 @@ public class TagSuggestionCommandExecutorTest{
 	}
 	
 	@Test
-	public void testPostSearch(){
+	public void testTagSearch(){
 		SuggestOracle.Request request = new SuggestOracle.Request(); 
 		
 		request.setQuery("mors");
@@ -130,7 +133,7 @@ public class TagSuggestionCommandExecutorTest{
 		assertFalse("An option to create should not come up in search",createOption);
 	}
 	@Test
-	public void testPostSearchDefault(){
+	public void testTagSearchDefault(){
 		SuggestOracle.Request request = new SuggestOracle.Request(); 
 		
 		request.setQuery("");
@@ -161,7 +164,7 @@ public class TagSuggestionCommandExecutorTest{
 	
 	
 	@Test
-	public void testPostSearchUnionError1(){
+	public void testTagSearchUnionError1(){
 		SuggestOracle.Request request = new SuggestOracle.Request(); 
 		
 		request.setQuery("trevis");
@@ -191,12 +194,13 @@ public class TagSuggestionCommandExecutorTest{
 	}
 	
 	@Test
-	public void testPostSearchTitleError1(){
+	public void testTagSearchTitleError1(){
+		
 		SuggestOracle.Request request = new SuggestOracle.Request(); 
 		
 		request.setQuery("t");
 		
-		TagSuggestionCommand cmd = new TagSuggestionCommand(TagSuggestionCommandMode.POST_CREATE, request);
+		TagSuggestionCommand cmd = new TagSuggestionCommand(TagSuggestionCommandMode.CREATE, request);
 		//cmd.addTagIdUnion("3FE5F7A3-F91D-41E3-9225-E2538D59E5C3");		
 		cmd.setLoadDefault(true);
 		
@@ -220,5 +224,40 @@ public class TagSuggestionCommandExecutorTest{
 		
 	}
 	
+	@Test
+	public void testPostSearch(){
+		
+		Person anon = InitConstants.ANONYMOUS;//Just priming the machnine
+		
+		SuggestOracle.Request request = new SuggestOracle.Request(); 
+		
+		request.setQuery("t");
+		
+		TagSuggestionCommand cmd = new TagSuggestionCommand(TagSuggestionCommandMode.TOPIC_POSTS, request);
+		//cmd.addTagIdUnion("3FE5F7A3-F91D-41E3-9225-E2538D59E5C3");		
+		cmd.setLoadDefault(true);
+		
+		TagSuggestionCommandExecutor cmdexec = (TagSuggestionCommandExecutor)CommandExecutorFactory.createExecutor("50E7F601-71FD-40BD-9517-9699DDA611D6",cmd);
+		
+		TagSuggestionCommandResult result = (TagSuggestionCommandResult)cmdexec.executeCommand();
+		
+		List<TagSuggestion> suggestions  = (List<TagSuggestion>)result.getResponse().getSuggestions();
+		
+		assertTrue("Found nothing and expected stuff. ", suggestions.size() > 0);
+		
+		boolean createOption = false;
+		for(TagSuggestion suggestion : suggestions){
+			//GTag t = suggestion.getTag();
+			//assertTrue(suggestion.getTag() == null);
+			GPost post = suggestion.getPost();
+			assertNotNull("Post came back null!",post);
+			assertTrue("Post id was blank",StringUtils.isNotEmpty(post.getPostId()));
+			assertTrue("The display string was blank...?",StringUtils.isNotBlank(suggestion.getDisplayString()));
+			assertTrue("The replacement string was blank...?",StringUtils.isNotBlank(suggestion.getReplacementString()));
+			//assertEquals(suggestion.getDisplayString().indexOf(post.getTitle()));
+			
+		}
+		
+	}
 	
 }

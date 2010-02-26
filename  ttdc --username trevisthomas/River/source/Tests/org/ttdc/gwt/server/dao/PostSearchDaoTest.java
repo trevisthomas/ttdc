@@ -18,7 +18,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.ttdc.gwt.shared.commands.types.PostSearchType;
-import org.ttdc.gwt.shared.commands.types.SortOrder;
+import org.ttdc.gwt.shared.commands.types.SearchSortBy;
 import org.ttdc.gwt.shared.util.PaginatedList;
 import org.ttdc.persistence.objects.AssociationPostTag;
 import org.ttdc.persistence.objects.Post;
@@ -190,7 +190,7 @@ public class PostSearchDaoTest {
 			dao.setCurrentPage(currentPage);
 			dao.addTagId(tagGeneralStuff);
 			dao.addTagId(tagTrevis);
-			dao.setSortOrder(SortOrder.POPULARITY);
+			dao.setSortBy(SearchSortBy.POPULARITY);
 			
 			PaginatedList<Post> results = dao.search();
 			

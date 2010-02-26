@@ -8,7 +8,7 @@ import org.ttdc.gwt.client.services.Command;
 import org.ttdc.gwt.shared.commands.results.SearchPostsCommandResult;
 import org.ttdc.gwt.shared.commands.types.PostSearchType;
 import org.ttdc.gwt.shared.commands.types.SortDirection;
-import org.ttdc.gwt.shared.commands.types.SortOrder;
+import org.ttdc.gwt.shared.commands.types.SearchSortBy;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
@@ -27,7 +27,7 @@ public class SearchPostsCommand extends Command<SearchPostsCommandResult> implem
 	private String rootId;
 	private String threadId;
 	
-	private SortOrder sortOrder = null;
+	private SearchSortBy sortOrder = null;
 	private SortDirection sortDirection = null;
 	
 	private int pageNumber = 1;
@@ -175,11 +175,11 @@ public class SearchPostsCommand extends Command<SearchPostsCommandResult> implem
 		this.endDate = toDate;
 	}
 
-	public SortOrder getSortOrder() {
+	public SearchSortBy getSortOrder() {
 		return sortOrder;
 	}
 
-	public void setSortOrder(SortOrder sortOrder) {
+	public void setSortOrder(SearchSortBy sortOrder) {
 		this.sortOrder = sortOrder;
 	}
 

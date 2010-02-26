@@ -10,7 +10,7 @@ import org.ttdc.gwt.client.presenters.shared.HyperlinkPresenter;
 import org.ttdc.gwt.shared.commands.BrowsePopularTagsCommand;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
 import org.ttdc.gwt.shared.commands.results.SearchTagsCommandResult;
-import org.ttdc.gwt.shared.commands.types.SortOrder;
+import org.ttdc.gwt.shared.commands.types.SearchSortBy;
 
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.inject.Inject;
@@ -23,7 +23,7 @@ public class TagCloudPresenter extends BasePresenter<TagCloudPresenter.View>{
 	
 	public void loadMostPopularTags() {
 		BrowsePopularTagsCommand command = new BrowsePopularTagsCommand();
-		command.setSortOrder(SortOrder.ALPHABETICAL);
+		command.setSortOrder(SearchSortBy.ALPHABETICAL);
 		command.setMaxTags(100);
 		CommandResultCallback<SearchTagsCommandResult> callback = new CommandResultCallback<SearchTagsCommandResult>(){
 			public void onSuccess(SearchTagsCommandResult result) {

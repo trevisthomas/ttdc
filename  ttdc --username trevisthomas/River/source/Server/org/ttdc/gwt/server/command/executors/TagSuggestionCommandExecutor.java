@@ -8,17 +8,28 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.ttdc.gwt.client.autocomplete.TagSuggestion;
+import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.beans.GTag;
 import org.ttdc.gwt.client.services.CommandResult;
 import org.ttdc.gwt.server.command.CommandExecutor;
+import org.ttdc.gwt.server.command.executors.utils.PaginatedResultConverters;
+import org.ttdc.gwt.server.dao.PersonDao;
+import org.ttdc.gwt.server.dao.PostSearchDao;
 import org.ttdc.gwt.server.dao.TagSearchDao;
 import org.ttdc.gwt.shared.commands.TagSuggestionCommand;
 import org.ttdc.gwt.shared.commands.TagSuggestionCommandMode;
 import org.ttdc.gwt.shared.commands.results.TagSuggestionCommandResult;
+import org.ttdc.gwt.shared.commands.types.PostSearchType;
+import org.ttdc.gwt.shared.commands.types.SortDirection;
+import org.ttdc.gwt.shared.commands.types.SearchSortBy;
 import org.ttdc.gwt.shared.util.PaginatedList;
+import org.ttdc.persistence.objects.Person;
+import org.ttdc.persistence.objects.Post;
 import org.ttdc.persistence.objects.Tag;
 
 import com.google.gwt.user.client.ui.SuggestOracle;
+import com.google.gwt.user.client.ui.SuggestOracle.Response;
+
 import static org.ttdc.persistence.Persistence.*;
 
 public class TagSuggestionCommandExecutor extends CommandExecutor<TagSuggestionCommandResult>{
@@ -42,53 +53,15 @@ public class TagSuggestionCommandExecutor extends CommandExecutor<TagSuggestionC
 		
 		
 		try {
-			request = command.getRequest();
-			
-			// req has request properties that you can use to perform a db
-			// search
-			// or some other query. Then populate the suggestions up to
-			// req.getLimit() and
-			// return in a SuggestOracle.Response object.
-			
-
-			TagSearchDao dao = new TagSearchDao();
-			dao.setPageSize(request.getLimit());
-			dao.setPhrase(request.getQuery());
-
-			for (String tagId : command.getExcludeTagIdList()) {
-				dao.addTagIdExclude(tagId);
-			}
-			for (String tagId : command.getUnionTagIdList()) {
-				dao.addTagId(tagId);
-			}
-			for (String type : getTagTypeFilterListForMode(command.getMode())) {
-				dao.addFilterForTagType(type);
-			}
-
-			if (TagSuggestionCommandMode.POST_CREATE.equals(command.getMode())) {
-				dao.setTitlesOnly(true);
-			} else {
-				dao.setTitlesOnly(false);
-			}
-
-			List<TagSuggestion> suggestions = new ArrayList<TagSuggestion>();
-			
-			if(!StringUtils.isEmpty(request.getQuery()) || command.isLoadDefault()){
-				beginSession();
-	
-				PaginatedList<Tag> results = dao.search();
-				
-				for (Tag tag : results.getList()) {
-					suggestions.add(createDynamicSugestion(request.getQuery(), tag));
-				}
-				
-				if (!TagSuggestionCommandMode.SEARCH.equals(command.getMode())) {
-					suggestions.add(createSugestionForNewTag(request.getQuery()));
-				}
-				commit();
+			switch(command.getMode()){
+				case TOPIC_POSTS:
+					postBased(command, response);
+				break;
+				default:
+					tagBased(command, response);	
+				break;
 			}
 			
-			response.setSuggestions(suggestions);
 
 		} catch (Exception e) {
 			//throw new RuntimeException(e);
@@ -98,13 +71,104 @@ public class TagSuggestionCommandExecutor extends CommandExecutor<TagSuggestionC
 
 		return new TagSuggestionCommandResult(response);
 	}
+
+	private void postBased(TagSuggestionCommand command, Response response) {
+		SuggestOracle.Request request;
+		request = command.getRequest();
+		beginSession();
+		
+		PostSearchDao dao = new PostSearchDao();
+		Person person = PersonDao.loadPerson(getPerson().getPersonId());
+		List<String> notTagIds = person.getFilteredTagIds();
+		
+		dao.setSearchByTitle(true);
+		dao.setPostSearchType(PostSearchType.TOPICS);
+		dao.setNotTagIdList(notTagIds);
+		dao.setCurrentPage(1);
+		dao.setPageSize(request.getLimit());
+		dao.setPhrase(request.getQuery());
+		dao.setSortBy(SearchSortBy.POPULARITY);
+		dao.setSortDirection(SortDirection.DESC);
+		//TODO: you might want to make a faster version of the converter designed for this unique purpose
+		
+		
+//		PaginatedList<GPost> gResults = PaginatedResultConverters.convertSearchResults(dao.search());
+//		List<TagSuggestion> suggestions = new ArrayList<TagSuggestion>();
+//		for(GPost post : gResults.getList() ){
+//			suggestions.add(new TagSuggestion(post, post.getTitle()));
+//		}
+		
+		PaginatedList<Post> results = dao.search();
+		List<TagSuggestion> suggestions = new ArrayList<TagSuggestion>();
+		for(Post post : results.getList() ){
+			GPost gp = new GPost();
+			gp.setTitle(post.getPostId());
+			gp.setPostId(post.getPostId());
+			suggestions.add(new TagSuggestion(gp, gp.getPostId()));
+		}
+		
+		if(StringUtils.isNotEmpty(request.getQuery()))
+			suggestions.add(createSugestionForNewPost(request.getQuery()));
+		response.setSuggestions(suggestions);
+		commit();
+	}
+
+	private void tagBased(TagSuggestionCommand command,	SuggestOracle.Response response) {
+		SuggestOracle.Request request;
+		request = command.getRequest();
+		
+		// req has request properties that you can use to perform a db
+		// search
+		// or some other query. Then populate the suggestions up to
+		// req.getLimit() and
+		// return in a SuggestOracle.Response object.
+		
+
+		TagSearchDao dao = new TagSearchDao();
+		dao.setPageSize(request.getLimit());
+		dao.setPhrase(request.getQuery());
+
+		for (String tagId : command.getExcludeTagIdList()) {
+			dao.addTagIdExclude(tagId);
+		}
+		for (String tagId : command.getUnionTagIdList()) {
+			dao.addTagId(tagId);
+		}
+		for (String type : getTagTypeFilterListForMode(command.getMode())) {
+			dao.addFilterForTagType(type);
+		}
+
+		if (TagSuggestionCommandMode.CREATE.equals(command.getMode())) {
+			dao.setTitlesOnly(true);
+		} else {
+			dao.setTitlesOnly(false);
+		}
+
+		List<TagSuggestion> suggestions = new ArrayList<TagSuggestion>();
+		
+		if(!StringUtils.isEmpty(request.getQuery()) || command.isLoadDefault()){
+			beginSession();
+
+			PaginatedList<Tag> results = dao.search();
+			
+			for (Tag tag : results.getList()) {
+				suggestions.add(createDynamicSugestion(request.getQuery(), tag));
+			}
+			
+			if (!TagSuggestionCommandMode.SEARCH.equals(command.getMode())) {
+				suggestions.add(createSugestionForNewTag(request.getQuery()));
+			}
+			commit();
+		}
+		response.setSuggestions(suggestions);
+	}
 	
 	List<String> getTagTypeFilterListForMode(TagSuggestionCommandMode mode){
 		List<String> filter;
-		if(TagSuggestionCommandMode.POST_VIEW.equals(mode)){
+		if(TagSuggestionCommandMode.VIEW.equals(mode)){
 			filter = tagTypeFiltersPostView;		
 		}
-		else if(TagSuggestionCommandMode.POST_CREATE.equals(mode)){
+		else if(TagSuggestionCommandMode.CREATE.equals(mode)){
 			filter = tagTypeFiltersPostCreate;
 		}
 		else if(TagSuggestionCommandMode.SEARCH.equals(mode)){
@@ -123,6 +187,13 @@ public class TagSuggestionCommandExecutor extends CommandExecutor<TagSuggestionC
 		gTag.setType(Tag.TYPE_TOPIC);
 		gTag.setTagId(" ");
 		return new TagSuggestion(gTag, query+" <strong>(Create New)</strong>");
+	}
+	
+	private TagSuggestion createSugestionForNewPost(String query){
+		GPost post = new GPost();
+		post.setTitle(query);
+		post.setPostId(" ");
+		return new TagSuggestion(post, query+" <strong>(Create New)</strong>");
 	}
 	
 	private TagSuggestion createDynamicSugestion(String query, Tag tag){

@@ -3,6 +3,7 @@ package org.ttdc.gwt.client.autocomplete;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.beans.GTag;
 
 
@@ -13,7 +14,9 @@ public class TagSuggestion implements IsSerializable, Suggestion  {
 	private List<SuggestionListener> listeners = new ArrayList<SuggestionListener>();
     private String s;
     private GTag tag;
-    // Required for IsSerializable to work
+    private GPost post;
+    
+	// Required for IsSerializable to work
     public TagSuggestion() {
     }
     
@@ -34,7 +37,13 @@ public class TagSuggestion implements IsSerializable, Suggestion  {
     	//when the user chooses it. That'll allow me to have the tagid when they select a tag.
     	
     	notifyListeners();
-    	return tag.getValue();
+    	if(tag != null)
+    		return tag.getValue();
+    	else if(post != null)
+    		return post.getTitle();
+    	else
+    		throw new RuntimeException("Suggestion has no associated bean.");
+    		
     }
     
     public void addSuggestionListener(SuggestionListener listener){
@@ -55,6 +64,19 @@ public class TagSuggestion implements IsSerializable, Suggestion  {
 	public TagSuggestion(GTag tag, String displayValue) {
 		this.tag = tag;
 		this.s = displayValue;
+	}
+	
+	public TagSuggestion(GPost post, String displayValue) {
+		this.post = post;
+		this.s = displayValue;
+	}
+	
+	public GPost getPost() {
+		return post;
+	}
+
+	public void setPost(GPost post) {
+		this.post = post;
 	}
 
 }
