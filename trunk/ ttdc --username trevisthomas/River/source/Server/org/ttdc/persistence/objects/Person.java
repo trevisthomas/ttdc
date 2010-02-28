@@ -194,7 +194,7 @@ public class Person implements SecureUser, HasGuid{
 	
 	@OneToMany(mappedBy="owner")
 	@Fetch(value=FetchMode.SUBSELECT)
-    @OrderBy("date")
+    //@OrderBy("UserObject.date")//This has problems in MySQL for some reason.
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     public List<UserObject> getObjects() {
 		return objects;

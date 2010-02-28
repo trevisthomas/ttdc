@@ -1,4 +1,4 @@
-package org.ttdc.persistence;
+package org.ttdc.persistence.msql.experimental;
 
 import java.util.Map;
 
@@ -8,56 +8,17 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
-import org.ttdc.persistence.objects.AssociationPostTag;
-import org.ttdc.persistence.objects.AssociationPostTagLite;
-import org.ttdc.persistence.objects.DaySummaryEntity;
-import org.ttdc.persistence.objects.Entry;
-import org.ttdc.persistence.objects.Image;
-import org.ttdc.persistence.objects.ImageFull;
-import org.ttdc.persistence.objects.Inbox;
-import org.ttdc.persistence.objects.InboxCache;
-import org.ttdc.persistence.objects.Person;
-import org.ttdc.persistence.objects.Post;
-import org.ttdc.persistence.objects.PostLite;
-import org.ttdc.persistence.objects.Privilege;
-import org.ttdc.persistence.objects.Shacktag;
-import org.ttdc.persistence.objects.SimplePostEntity;
-import org.ttdc.persistence.objects.Style;
-import org.ttdc.persistence.objects.Tag;
-import org.ttdc.persistence.objects.TagLite;
-import org.ttdc.persistence.objects.ThreadSummaryEntity;
-import org.ttdc.persistence.objects.UserObject;
-import org.ttdc.persistence.objects.UserObjectTemplate;
 
-public final class Persistence {
-	private static final Logger log = Logger.getLogger(Persistence.class);
+
+public final class Persistence2 {
+	private static final Logger log = Logger.getLogger(Persistence2.class);
 	private static final SessionFactory sessionFactory;
 	
 	static {
         try {
             sessionFactory = new AnnotationConfiguration()
-            	//.configure()
             	.configure("hibernate.cfg.mysql.xml")
-            	.addAnnotatedClass(Person.class)
-            	.addAnnotatedClass(Tag.class)
-            	.addAnnotatedClass(Image.class)
-            	.addAnnotatedClass(Style.class)
-            	.addAnnotatedClass(UserObject.class)
-            	.addAnnotatedClass(Post.class)
-            	.addAnnotatedClass(AssociationPostTag.class)
-            	.addAnnotatedClass(Privilege.class)
-            	.addAnnotatedClass(UserObjectTemplate.class)
-            	.addAnnotatedClass(TagLite.class)
-            	.addAnnotatedClass(PostLite.class)
-            	.addAnnotatedClass(AssociationPostTagLite.class)
-            	.addAnnotatedClass(ImageFull.class)
-            	.addAnnotatedClass(Entry.class)
-            	.addAnnotatedClass(Inbox.class)
-            	.addAnnotatedClass(InboxCache.class)
-            	.addAnnotatedClass(Shacktag.class)
-            	.addAnnotatedClass(SimplePostEntity.class)
-            	.addAnnotatedClass(ThreadSummaryEntity.class)
-            	.addAnnotatedClass(DaySummaryEntity.class)
+            	.addAnnotatedClass(ImageExperiment.class)
             	.buildSessionFactory();
             
         } catch (Throwable ex) {
@@ -156,15 +117,15 @@ public final class Persistence {
 	 * @param obj
 	 */
 	public static void save(Object obj){
-		Session session = Persistence.beginSession();
+		Session session = Persistence2.beginSession();
 		session.save(obj);
-		Persistence.commit();
+		Persistence2.commit();
 	}
 	
 	public static void update(Object obj){
-		Session session = Persistence.beginSession();
+		Session session = Persistence2.beginSession();
 		session.update(obj);
-		Persistence.commit();
+		Persistence2.commit();
 	}
 
 }
