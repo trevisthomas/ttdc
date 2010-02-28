@@ -1,4 +1,4 @@
-package org.ttdc.persistence;
+package org.ttdc.persistence.msql.experimental;
 
 import java.util.Map;
 
@@ -29,14 +29,14 @@ import org.ttdc.persistence.objects.ThreadSummaryEntity;
 import org.ttdc.persistence.objects.UserObject;
 import org.ttdc.persistence.objects.UserObjectTemplate;
 
-public final class Persistence {
-	private static final Logger log = Logger.getLogger(Persistence.class);
+
+public final class PersistenceMySql {
+	private static final Logger log = Logger.getLogger(PersistenceMySql.class);
 	private static final SessionFactory sessionFactory;
 	
 	static {
         try {
             sessionFactory = new AnnotationConfiguration()
-            	//.configure()
             	.configure("hibernate.cfg.mysql.xml")
             	.addAnnotatedClass(Person.class)
             	.addAnnotatedClass(Tag.class)
@@ -156,15 +156,15 @@ public final class Persistence {
 	 * @param obj
 	 */
 	public static void save(Object obj){
-		Session session = Persistence.beginSession();
+		Session session = PersistenceMySql.beginSession();
 		session.save(obj);
-		Persistence.commit();
+		PersistenceMySql.commit();
 	}
 	
 	public static void update(Object obj){
-		Session session = Persistence.beginSession();
+		Session session = PersistenceMySql.beginSession();
 		session.update(obj);
-		Persistence.commit();
+		PersistenceMySql.commit();
 	}
 
 }

@@ -4,6 +4,7 @@ import static org.ttdc.persistence.Persistence.session;
 
 import java.util.Date;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.ttdc.persistence.Persistence;
@@ -15,6 +16,7 @@ import org.ttdc.persistence.objects.UserObject;
 import org.ttdc.persistence.objects.UserObjectTemplate;
 
 public class InitConstants {
+	private final static Logger log = Logger.getLogger(PostSearchDaoTest.class);
 	public static final int MIN_TITLE_LENGTH = 3;
 	public final static String NWS_TAG_ID;
 	public final static String PRIVATE_TAG_ID;
@@ -68,6 +70,7 @@ public class InitConstants {
 		}
 		catch(Exception e){
 			Persistence.rollback();
+			log.error(e);
 			throw new ExceptionInInitializerError("InitConstants failed to initialize an anonymous person. ");
 		}
 	}

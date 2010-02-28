@@ -634,8 +634,7 @@ import org.ttdc.util.ShackTagger;
 	
 	@NamedNativeQuery(
 		name="CalendarDao.fetchHourly", query="" +
-				"select Year(p.date) as yr, Month(p.date) as mo, Day(p.date) as dd, DATEPART(hour,p.date) as hr, "+
-				"p.date, p.guid as postId, p.root_guid as rootId, titleTag.value as title, c.login, c.guid as creator_guid, '' as summary "+
+				"select p.date, p.guid as postId, p.root_guid as rootId, titleTag.value as title, c.login, c.guid as creator_guid, '' as summary "+
 				"from post p "+
 				"inner join association_post_tag as titleAss on titleAss.post_guid = p.guid AND titleAss.title='1' "+ 
 				"inner join association_post_tag creatorAss on creatorAss.post_guid=p.guid "+
@@ -648,8 +647,8 @@ import org.ttdc.util.ShackTagger;
 	),
 	@NamedNativeQuery(
 		name="CalendarDao.fetchHourlyWithSummary", query="" +
-				"select Year(p.date) as yr, Month(p.date) as mo, Day(p.date) as dd, DATEPART(hour,p.date) as hr, "+
-				"p.date, p.guid as postId, p.root_guid as rootId, titleTag.value as title, c.login, c.guid as creator_guid, SUBSTRING(e.body, 1, 150) as summary "+
+				"select p.date, p.guid as postId, p.root_guid as rootId, titleTag.value as title, c.login, " +
+				"c.guid as creator_guid, e.summary as summary "+
 				"from post p "+
 				"inner join association_post_tag as titleAss on titleAss.post_guid = p.guid AND titleAss.title='1' "+
 				"inner join association_post_tag creatorAss on creatorAss.post_guid=p.guid "+
@@ -662,8 +661,8 @@ import org.ttdc.util.ShackTagger;
 	),
 	@NamedNativeQuery(
 		name="CalendarDao.fetchMonth", query=""+
-			"select Year(p.date) as yr, Month(p.date) as mo, Day(p.date) as dd, count(p.guid) ct "+
-			", titleTag.value as title, p.root_guid as rootId, CONVERT(char(36),p.root_guid)+CONVERT(char(4),Year(p.date))+CONVERT(char(2),Month(p.date))+CONVERT(char(2),Day(p.date)) as uniqueId "+
+			"select count(p.guid) ct, p.date"+
+			", titleTag.value as title, p.root_guid as rootId, uuid() as uniqueId "+
 			"from post p "+
 			"inner join association_post_tag as titleAss on titleAss.post_guid = p.guid AND titleAss.title='1' "+ 
 			"inner join tag as titleTag on titleTag.guid = titleAss.tag_guid "+
@@ -675,8 +674,8 @@ import org.ttdc.util.ShackTagger;
 	),
 	
 	@NamedNativeQuery(name="CalendarDao.fetchYear", query=
-		"select Year(p.date) as yr, Month(p.date) as mo, Day(p.date) as dd, count(p.guid) ct "+
-		", CONVERT(char(4),Year(p.date))+CONVERT(char(2),Month(p.date))+CONVERT(char(2),Day(p.date)) as uniqueId "+
+		"select count(p.guid) ct, p.date "+
+		", uuid() as uniqueId "+
 		"from post p "+
 		"where Year(p.date) = :year "+
 		"group by Year(p.date), Month(p.date), Day(p.date) "+
@@ -689,8 +688,7 @@ import org.ttdc.util.ShackTagger;
 	 *  
 	 */
 	@NamedNativeQuery(name="CalendarDao.fetchSimpleMonth", query=
-		"select Year(p.date) as yr, Month(p.date) as mo, Day(p.date) as dd, count(p.guid) ct "+
-		", CONVERT(char(4),Year(p.date))+CONVERT(char(2),Month(p.date))+CONVERT(char(2),Day(p.date)) as uniqueId "+
+		"select count(p.guid) ct, p.date, uuid() as uniqueId "+
 		"from post p "+
 		"where Year(p.date) = :year AND Month(p.date) = :month "+
 		"group by Year(p.date), Month(p.date), Day(p.date) "+
@@ -704,10 +702,10 @@ import org.ttdc.util.ShackTagger;
 @SqlResultSetMappings({
 	@SqlResultSetMapping(name="simplePostMapping", entities=
 		@EntityResult(entityClass=org.ttdc.persistence.objects.SimplePostEntity.class, fields = {
-	        @FieldResult(name="year", column="yr"),
-	        @FieldResult(name="month", column="mo"),
-	        @FieldResult(name="day", column="dd"),
-	        @FieldResult(name="hour", column="hr"),
+//	        @FieldResult(name="year", column="yr"),
+//	        @FieldResult(name="month", column="mo"),
+//	        @FieldResult(name="day", column="dd"),
+//	        @FieldResult(name="hour", column="hr"),
 	        @FieldResult(name="date", column="date"),
 	        @FieldResult(name="creatorLogin", column="login"),
 	        @FieldResult(name="creatorId", column="creator_guid"),
@@ -719,20 +717,22 @@ import org.ttdc.util.ShackTagger;
     })),
     @SqlResultSetMapping(name="threadSummaryMapping", entities=
     	@EntityResult(entityClass=org.ttdc.persistence.objects.ThreadSummaryEntity.class, fields = {
-            @FieldResult(name="year", column="yr"),
-            @FieldResult(name="month", column="mo"),
-            @FieldResult(name="day", column="dd"),
+//            @FieldResult(name="year", column="yr"),
+//            @FieldResult(name="month", column="mo"),
+//            @FieldResult(name="day", column="dd"),
             @FieldResult(name="count", column="ct"),
             @FieldResult(name="rootId", column="rootId"),
             @FieldResult(name="title", column="title"),
+            @FieldResult(name="date", column="date"),
             @FieldResult(name="uniqueId", column="uniqueId")
         })),    
 
     @SqlResultSetMapping(name="daySummaryMapping", entities=
     	@EntityResult(entityClass=org.ttdc.persistence.objects.DaySummaryEntity.class, fields = {
-            @FieldResult(name="year", column="yr"),
-            @FieldResult(name="month", column="mo"),
-            @FieldResult(name="day", column="dd"),
+//            @FieldResult(name="year", column="yr"),
+//            @FieldResult(name="month", column="mo"),
+//            @FieldResult(name="day", column="dd"),
+    		@FieldResult(name="date", column="date"),
             @FieldResult(name="count", column="ct"),
             @FieldResult(name="uniqueId", column="uniqueId")
         }))      
