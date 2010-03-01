@@ -26,11 +26,9 @@ import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Store;
-import org.ttdc.biz.network.services.helpers.PostFormatter;
-import org.ttdc.gwt.server.dao.MovieDao;
-import org.ttdc.util.ShackTagger;
 
-
+//uuid() //MySql
+//newid() //MSSql
 
 @Entity
 @Table(name="ENTRY")
@@ -632,6 +630,8 @@ import org.ttdc.util.ShackTagger;
 //				resultSetMapping="simplePostMapping"
 //	),
 	
+	
+	
 	@NamedNativeQuery(
 		name="CalendarDao.fetchHourly", query="" +
 				"select p.date, p.guid as postId, p.root_guid as rootId, titleTag.value as title, c.login, c.guid as creator_guid, '' as summary "+
@@ -659,28 +659,28 @@ import org.ttdc.util.ShackTagger;
 				"where p.date between :startDate and :endDate AND creatorTag.type='CREATOR' order by p.date",
 				resultSetMapping="simplePostMapping"
 	),
-	@NamedNativeQuery(
-		name="CalendarDao.fetchMonth", query=""+
-			"select count(p.guid) ct, p.date"+
-			", titleTag.value as title, p.root_guid as rootId, uuid() as uniqueId "+
-			"from post p "+
-			"inner join association_post_tag as titleAss on titleAss.post_guid = p.guid AND titleAss.title='1' "+ 
-			"inner join tag as titleTag on titleTag.guid = titleAss.tag_guid "+
-			"inner join entry as e on e.guid = p.latest_entry_guid "+
-			"where Year(p.date) = :year AND Month(p.date) = :month  "+
-			"group by Year(p.date), Month(p.date), Day(p.date), titleTag.value, p.root_guid "+
-			"order by Year(p.date), Month(p.date), Day(p.date) ",
-			resultSetMapping="threadSummaryMapping"
-	),
+//	@NamedNativeQuery(
+//		name="CalendarDao.fetchMonth", query=""+
+//			"select count(p.guid) ct, p.date"+
+//			", titleTag.value as title, p.root_guid as rootId, newid() as uniqueId "+
+//			"from post p "+
+//			"inner join association_post_tag as titleAss on titleAss.post_guid = p.guid AND titleAss.title='1' "+ 
+//			"inner join tag as titleTag on titleTag.guid = titleAss.tag_guid "+
+//			"inner join entry as e on e.guid = p.latest_entry_guid "+
+//			"where Year(p.date) = :year AND Month(p.date) = :month  "+
+//			"group by Year(p.date), Month(p.date), Day(p.date), titleTag.value, p.root_guid "+
+//			"order by Year(p.date), Month(p.date), Day(p.date) ",
+//			resultSetMapping="threadSummaryMapping"
+//	),
 	
 	@NamedNativeQuery(name="CalendarDao.fetchYear", query=
-		"select count(p.guid) ct, p.date "+
-		", uuid() as uniqueId "+
+		"select count(p.guid) ct, Year(p.date) as yr, Month(p.date) as mo, Day(p.date) as dd, newid() as uniqueId "+
 		"from post p "+
 		"where Year(p.date) = :year "+
 		"group by Year(p.date), Month(p.date), Day(p.date) "+
 		"order by Year(p.date), Month(p.date), Day(p.date)",
 		resultSetMapping="daySummaryMapping"),
+	
 		
 	/*
 	 * This simpleMonth version was added late in the game as a way
@@ -688,7 +688,7 @@ import org.ttdc.util.ShackTagger;
 	 *  
 	 */
 	@NamedNativeQuery(name="CalendarDao.fetchSimpleMonth", query=
-		"select count(p.guid) ct, p.date, uuid() as uniqueId "+
+		"select count(p.guid) ct, Year(p.date) as yr, Month(p.date) as mo, Day(p.date) as dd, newid() as uniqueId "+
 		"from post p "+
 		"where Year(p.date) = :year AND Month(p.date) = :month "+
 		"group by Year(p.date), Month(p.date), Day(p.date) "+
@@ -729,16 +729,14 @@ import org.ttdc.util.ShackTagger;
 
     @SqlResultSetMapping(name="daySummaryMapping", entities=
     	@EntityResult(entityClass=org.ttdc.persistence.objects.DaySummaryEntity.class, fields = {
-//            @FieldResult(name="year", column="yr"),
-//            @FieldResult(name="month", column="mo"),
-//            @FieldResult(name="day", column="dd"),
+            @FieldResult(name="year", column="yr"),
+            @FieldResult(name="month", column="mo"),
+            @FieldResult(name="day", column="dd"),
     		@FieldResult(name="date", column="date"),
             @FieldResult(name="count", column="ct"),
             @FieldResult(name="uniqueId", column="uniqueId")
         }))      
 })
-
-
 
 public class Entry implements HasGuid{
 	private String entryId;
@@ -775,32 +773,11 @@ public class Entry implements HasGuid{
 	}
 	public void setPost(Post post) {
 		this.post = post;
-		//post.setEntry(this);
 	}
 	@Field(index=Index.TOKENIZED, store=Store.NO)
 	public String getBody() {
 		return body;
 	}
-	
-//	@Transient
-//	public String getBodyFormatted(){
-//		return PostFormatter.getInstance().format(body);
-//	}
-//	@Transient
-//	public String getBodySummaryFormatted(){
-//		return PostFormatter.getInstance().formatSummary(body);
-//	}
-//	@Transient
-//	public String getBodyFormatted(String embedPrefix){
-//		if(embedPrefix == null)
-//			return PostFormatter.getInstance().format(body);
-//		else{
-//			//This is such a lame hack but... i needed a way to change the embeded video/image javascript
-//			//to handle flat and hierarchy on the same page.
-//			return ShackTagger.getInstance().replace(PostFormatter.getInstance().format(body), "tggle", "tggle"+embedPrefix);
-//		}
-//		
-//	}
 	
 	public String getSummary() {
 		return summary;

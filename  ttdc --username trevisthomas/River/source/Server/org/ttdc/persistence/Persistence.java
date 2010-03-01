@@ -36,8 +36,8 @@ public final class Persistence {
 	static {
         try {
             sessionFactory = new AnnotationConfiguration()
-            	//.configure()
-            	.configure("hibernate.cfg.mysql.xml")
+            	.configure()
+            	//.configure("hibernate.cfg.mysql.xml")
             	.addAnnotatedClass(Person.class)
             	.addAnnotatedClass(Tag.class)
             	.addAnnotatedClass(Image.class)

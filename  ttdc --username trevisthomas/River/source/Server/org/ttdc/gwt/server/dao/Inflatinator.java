@@ -343,7 +343,8 @@ public final class Inflatinator {
 	private GEntry generateLazyEntry(Entry e){
 		GEntry gEntry = findOrCreateGEntry(e.getEntryId());
 		gEntry.setBody(e.getBody());
-		gEntry.setBodyFormatted(e.getBody());
+		//gEntry.setBodyFormatted(e.getBody());
+		gEntry.setSummary(e.getSummary());
 		gEntry.setDate(e.getDate());
 		gEntry.setEntryId(e.getEntryId());
 		

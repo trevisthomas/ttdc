@@ -7,6 +7,8 @@ public class GEntry extends GBase{
 	private String entryId;
 	private String body;
 	private String bodyFormatted;
+	private String summary;
+	
 	private GPost post; 
 	private Date date = new Date();
 	
@@ -34,12 +36,19 @@ public class GEntry extends GBase{
 	public void setDate(Date date) {
 		this.date = date;
 	}
+	@Deprecated
 	public String getBodyFormatted() {
 		return bodyFormatted;
 	}
+	@Deprecated
 	public void setBodyFormatted(String bodyFormatted) {
 		this.bodyFormatted = bodyFormatted;
 	}
-	
+	public String getSummary() {
+		return summary;
+	}
+	public void setSummary(String summary) {
+		this.summary = summary;
+	}
 	
 }

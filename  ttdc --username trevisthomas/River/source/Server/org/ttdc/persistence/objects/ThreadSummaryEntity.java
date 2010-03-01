@@ -61,8 +61,6 @@ public class ThreadSummaryEntity {
 		this.rootId = rootId;
 	}
 	
-	
-	
 	public Date getDate() {
 		return date;
 	}
