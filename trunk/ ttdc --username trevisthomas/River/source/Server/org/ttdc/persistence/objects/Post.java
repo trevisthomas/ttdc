@@ -507,46 +507,11 @@ public class Post implements Comparable<Post>, HasGuid {
 		return null;
 	}
 	
-//	@ManyToOne ( cascade = {CascadeType.ALL})
-//	@JoinColumn(name="TITLE_TAG_GUID")
-//	public Tag getTitleTag() {
-//		return titleTag;
-//	}
-//	
-//	public void setTitleTag(Tag titleTag) {
-//		this.titleTag = titleTag;
-//	}
 	
-	/*
-	 * CHANGING THE BEHAVIOR OF TITLE!!   I'm adding title to the post table to make searching work better.
-	 * Not sure what i'm going to do about the title tags. 
-	 * 
-	 * ... ok changing it again.
-	 * 
-	 * 
-	 */
-//	@Fields({
-//		@Field(index=Index.TOKENIZED, name="title" ),
-//		@Field(index=Index.UN_TOKENIZED, name="title_sort")
-//	})
-//	@Transient
-//	public String getTitle(){
-//		Tag tag = getTitleTag();
-//		if(tag != null){
-//			return tag.getValue();
-//		}
-//		else{
-//			return "";//or null?
-//		}
-//		//return title;
-//	}
-//	
-//	public void setTitle(String title){
-//		this.title = title;
-//	}
-	
+//	private String title = "poor title";
+//	@Transient  //This guy kills the performance on mySQL
 	private String title;
-	@Formula(" (SELECT t.value FROM ASSOCIATION_POST_TAG ass INNER JOIN TAG t ON ass.tag_guid=t.guid  WHERE ass.post_guid=GUID AND ass.title=1) ")
+	@Formula(" (SELECT t.value FROM ASSOCIATION_POST_TAG ass JOIN TAG t ON ass.tag_guid=t.guid  WHERE ass.post_guid=GUID AND ass.title=1) ")
 	public String getTitle(){
 		return title;
 	}

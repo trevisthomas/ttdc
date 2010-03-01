@@ -18,7 +18,7 @@
     <property name="hibernate.cache.use_query_cache">true</property>
     
     
-    <property name="hibernate.default_batch_fetch_size">200</property>
+    <property name="hibernate.default_batch_fetch_size">40</property>
     
      
     <!-- The following two lines turn on the ability to browse the cache 

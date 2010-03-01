@@ -48,8 +48,8 @@ public class CalendarDaoTest {
 		
 		assertEquals("Test hour didnt have the expected number of posts",7,week.getDays().get(0).getHour(19).getPosts().size());
 		commit();
-		
 	}
+	
 	@Test
 	public void testWeekWithEmptyDay(){
 		CalendarDao dao = new CalendarDao();
@@ -66,6 +66,13 @@ public class CalendarDaoTest {
 		
 	}
 	
+	/*
+	 *  Remember! You had a bug in the time conversion because timezones werent being properly calculated
+	 *  when you were playing with daylight savings.  The month calendar was broken because of it and 
+	 *  this test didnt see the problem.   You just didnt have any data on the rendered calendar. 3/2006 
+	 *  did show the problem. The date range class now has a better converter that should compensate for that.
+	 * 
+	 */
 	@Test
 	public void testMonth(){
 		CalendarDao dao = new CalendarDao();
@@ -88,6 +95,7 @@ public class CalendarDaoTest {
 		//assertEquals("Month should be November missing", 11, week.getDays().get(0).getMonth());
 		//assertEquals("Sunday is wrong", 29,week.getDays().get(0).getDay());
 	}
+	
 	
 	
 	@Test

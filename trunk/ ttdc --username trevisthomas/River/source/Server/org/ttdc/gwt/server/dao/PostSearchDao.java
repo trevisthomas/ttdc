@@ -74,9 +74,7 @@ public final class PostSearchDao extends PaginatedDaoBase{
 		FullTextQuery ftquery = null;
 		
 		if(tagIds.size() > 0 || notTagIds.size() > 0){
-			ftquery = ftsess.createFullTextQuery(luceneQuery, Post.class)
-			.setFirstResult(calculatePageStartIndex())
-			.setMaxResults(getPageSize());
+			ftquery = createFullTextQuery(luceneQuery, ftsess);
 		
 			ftquery.enableFullTextFilter("postWithTagFilter")	
 				.setParameter("tagIds", tagIds)
@@ -107,9 +105,7 @@ public final class PostSearchDao extends PaginatedDaoBase{
 			list = ftquery.list();
 		}
 		else{
-			ftquery = ftsess.createFullTextQuery(luceneQuery, Post.class)
-			.setFirstResult(calculatePageStartIndex())
-			.setMaxResults(getPageSize());
+			ftquery = createFullTextQuery(luceneQuery, ftsess);
 			
 			addTopicOrConversationFilter(ftquery);
 			addTypeFilter(ftquery);
@@ -130,6 +126,24 @@ public final class PostSearchDao extends PaginatedDaoBase{
 		log.debug("Results: "+results.toString());
 		
 		return results;
+	}
+
+
+	/*
+	 * Uses the lucene query to make a FullTextQuery object for the session
+	 * 
+	 */
+	private FullTextQuery createFullTextQuery(org.apache.lucene.search.Query luceneQuery, FullTextSession ftsess) {
+		FullTextQuery ftquery;
+		if(getPageSize() > 0){
+			ftquery = ftsess.createFullTextQuery(luceneQuery, Post.class)
+			.setFirstResult(calculatePageStartIndex())
+			.setMaxResults(getPageSize());
+		}
+		else{
+			ftquery = ftsess.createFullTextQuery(luceneQuery, Post.class);
+		}
+		return ftquery;
 	}
 
 	private void addDateFilter(FullTextQuery ftquery) {

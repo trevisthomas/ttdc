@@ -3,12 +3,17 @@ package org.ttdc.gwt.server.dao;
 import static org.ttdc.persistence.Persistence.session;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 
 import org.apache.log4j.Logger;
+import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.server.util.CalendarBuilder;
 import org.ttdc.gwt.shared.calender.CalendarThreadSummary;
 import org.ttdc.gwt.shared.calender.CalendarPost;
@@ -18,7 +23,9 @@ import org.ttdc.gwt.shared.calender.Hour;
 import org.ttdc.gwt.shared.calender.Month;
 import org.ttdc.gwt.shared.calender.Week;
 import org.ttdc.gwt.shared.calender.Year;
+import org.ttdc.gwt.shared.util.PaginatedList;
 import org.ttdc.persistence.objects.DaySummaryEntity;
+import org.ttdc.persistence.objects.Post;
 import org.ttdc.persistence.objects.SimplePostEntity;
 import org.ttdc.persistence.objects.ThreadSummaryEntity;
 
@@ -103,33 +110,136 @@ public class CalendarDao {
     	return data;
 	}
 	
+	
+	/* 
+	 * 	The version below uses the date range query from search, it was an attempt to make
+	 * mySQL faster, and it is a little but not nearly as fast as ms. Also, this is slower than
+	 * the other version in ms.
+	 * 
+	 */
+//	private Queue<Day> buildDayDataForWeek(int yearNumber,int weekOfYear){
+//		Date startDate = DaoUtils.getDateBeginningOfWeek(yearNumber, weekOfYear);
+//    	Date endDate = DaoUtils.getDateEndOfWeek(yearNumber, weekOfYear);
+//    	
+//    	log.debug("Start: "+startDate);
+//    	log.debug("End: "+endDate);
+//		
+//		DateRange dateRange = new DateRange(startDate, endDate);
+//		
+//		PostSearchDao searchDao = new PostSearchDao();
+//		searchDao.setPageSize(-1);
+//		searchDao.setDateRange(dateRange);
+//		PaginatedList<Post> result = searchDao.search();
+//		
+//		Queue<Day> data = new LinkedList<Day>();
+//		
+//		Inflatinator inflatinator = new Inflatinator(result.getList());
+//		
+//		Day d = null;
+//		Hour h = null;
+//    	for(GPost post : inflatinator.extractPosts()){
+//			Day currDay = new Day(post.getDate());
+//			
+//			if(d == null || !currDay.equals(d)){
+//				d = currDay;
+//	        	d.initHourly();
+//	        	data.add(d);
+//	        	h = d.getHour(0);
+//    		}
+//    		if(h.getHourOfDay() != getHourOfDayFromDate(post.getDate()))
+//    			h = d.getHour(getHourOfDayFromDate(post.getDate()));
+//    		
+//    		CalendarPost calendarPost = buildCalendarPostFromRegularPostEntity(post);
+//    		
+//    		h.add(calendarPost);
+//    	}
+//		return data;
+//	}
+	
+	private int getHourOfDayFromDate(Date date){
+		Calendar cal = new GregorianCalendar();
+		cal.setTime(date);
+		return cal.get(GregorianCalendar.HOUR_OF_DAY);
+	}
+	
+//	private Queue<Day> buildDayDataForMonth_(int yearNumber,int monthOfYear){
+//		@SuppressWarnings("unchecked")
+//    	List<ThreadSummaryEntity> list = session().getNamedQuery("CalendarDao.fetchMonth")
+//			.setInteger("year", yearNumber)
+//			.setInteger("month", monthOfYear).list();
+//		
+//		Queue<Day> data = new LinkedList<Day>();
+//		CalendarThreadSummary summary = null; 
+//		Day d = null;
+//		for(ThreadSummaryEntity ts : list){
+//			if(!compare(ts,d)){
+//				d = new Day();
+//				d.setDay(ts.getDay());
+//	        	d.setYear(ts.getYear());
+//	        	d.setMonth(ts.getMonth());
+//	        	d.initSummary();
+//	        	data.add(d);
+//			}
+//			summary = new CalendarThreadSummary();
+//			summary.setCount(ts.getCount());
+//			summary.setDay(ts.getDay());
+//			summary.setMonth(ts.getMonth());
+//			summary.setRootId(ts.getRootId());
+//			summary.setTitle(ts.getTitle());
+//			summary.setYear(ts.getYear());
+//			//log.debug(summary);
+//			d.addThread(summary);
+//		}
+//		return data;
+//	}
+	
+	
+	Map<String,CalendarThreadSummary> summaryMap = new HashMap<String,CalendarThreadSummary>();
 	private Queue<Day> buildDayDataForMonth(int yearNumber,int monthOfYear){
-		@SuppressWarnings("unchecked")
-    	List<ThreadSummaryEntity> list = session().getNamedQuery("CalendarDao.fetchMonth")
-			.setInteger("year", yearNumber)
-			.setInteger("month", monthOfYear).list();
+		Calendar start = new GregorianCalendar();
+		Calendar end = new GregorianCalendar();
+		start.set(yearNumber, monthOfYear-1, 1,0,0,0);   
+		end.set(yearNumber, monthOfYear-1, 1,0,0,0);
+		end.add(GregorianCalendar.MONTH, 1);
+		end.add(GregorianCalendar.DAY_OF_MONTH, -1);
+		
+		log.debug("start: "+start.getTime());
+		log.debug("end: "+end.getTime());
+		
+		DateRange dateRange = new DateRange(start.getTime(), end.getTime());
+		
+		PostSearchDao searchDao = new PostSearchDao();
+		searchDao.setPageSize(-1);
+		searchDao.setDateRange(dateRange);
+		PaginatedList<Post> result = searchDao.search();
 		
 		Queue<Day> data = new LinkedList<Day>();
 		CalendarThreadSummary summary = null; 
 		Day d = null;
-		for(ThreadSummaryEntity ts : list){
-			if(!compare(ts,d)){
-				d = new Day();
-				d.setDay(ts.getDay());
-	        	d.setYear(ts.getYear());
-	        	d.setMonth(ts.getMonth());
+		for(Post post : result.getList()){
+			Day currDay = new Day(post.getDate());
+			if(d == null || !currDay.equals(d)){
+				summaryMap.clear(); //Start reset summary map for the day.
+				d = currDay;
 	        	d.initSummary();
 	        	data.add(d);
 			}
-			summary = new CalendarThreadSummary();
-			summary.setCount(ts.getCount());
-			summary.setDay(ts.getDay());
-			summary.setMonth(ts.getMonth());
-			summary.setRootId(ts.getRootId());
-			summary.setTitle(ts.getTitle());
-			summary.setYear(ts.getYear());
+			if(!summaryMap.containsKey(post.getRoot().getPostId())){
+				summary = new CalendarThreadSummary();
+				summaryMap.put(post.getRoot().getPostId(), summary);
+				d.addThread(summary);
+			}
+			else{
+				summary = summaryMap.get(post.getRoot().getPostId());
+			}
+			summary.setCount(summary.getCount()+1);
+			summary.setDay(d.getDay());
+			summary.setMonth(d.getMonth()+1);
+			summary.setYear(d.getYear());
+			summary.setRootId(post.getRoot().getPostId());
+			summary.setTitle(post.getTitle());
 			//log.debug(summary);
-			d.addThread(summary);
+			
 		}
 		return data;
 	}
@@ -210,6 +320,24 @@ public class CalendarDao {
 		calendarPost.setSummary(sp.getSummary());
 		calendarPost.setTitle(sp.getTitle());
 		calendarPost.setYear(sp.getYear());
+		return calendarPost;
+	}
+	
+	private CalendarPost buildCalendarPostFromRegularPostEntity(GPost p) {
+		Calendar cal = new GregorianCalendar();
+		cal.setTime(p.getDate());
+		
+		CalendarPost calendarPost = new CalendarPost();
+		calendarPost.setCreatorId(p.getCreator().getPersonId());
+		calendarPost.setCreatorLogin(p.getCreator().getLogin());
+		calendarPost.setDate(p.getDate());
+		calendarPost.setHour(cal.get(Calendar.HOUR_OF_DAY));
+		calendarPost.setMonth(cal.get(Calendar.MONTH)+1);
+		calendarPost.setPostId(p.getPostId());
+		calendarPost.setRootId(p.getRoot().getPostId());
+		calendarPost.setSummary(p.getEntry());
+		calendarPost.setTitle(p.getTitle());
+		calendarPost.setYear(cal.get(Calendar.YEAR));
 		return calendarPost;
 	}
 	
