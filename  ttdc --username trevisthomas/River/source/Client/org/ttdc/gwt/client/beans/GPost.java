@@ -74,7 +74,8 @@ public class GPost extends GBase{
 		this.entries = entries;
 	}
 	public String getEntry(){
-		return latestEntry.getBodyFormatted();
+		if(latestEntry == null) throw new RuntimeException("Latest entry is null.");
+		return latestEntry.getBody();
 	}
 	public List<GAssociationPostTag> getTagAssociations() {
 		return tagAssociations;

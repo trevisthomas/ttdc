@@ -119,7 +119,6 @@ public class FastPostBeanConverter {
 	public static GEntry convertEntry(Entry e) {
 		GEntry gEntry = new GEntry();
 		gEntry.setBody(e.getBody());
-		gEntry.setBodyFormatted(e.getBody());
 		gEntry.setDate(e.getDate());
 		gEntry.setEntryId(e.getEntryId());
 		return gEntry;

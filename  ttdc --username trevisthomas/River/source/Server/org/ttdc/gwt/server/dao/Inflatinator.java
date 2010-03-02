@@ -316,6 +316,8 @@ public final class Inflatinator {
 		GPost gPost = findOrCreateGPost(p.getPostId());
 		//gPost.setEntries(convertEntries(p.getEntries()));
 		if(gPost.getTitle() == null){
+			//gPost.setLatestEntry(generateLazyEntry(p.getEntry()));
+			generateLazyEntry(p.getEntry());
 			gPost.setDate(p.getDate());
 			gPost.setPostId(p.getPostId());
 			gPost.setTitle(p.getTitle());

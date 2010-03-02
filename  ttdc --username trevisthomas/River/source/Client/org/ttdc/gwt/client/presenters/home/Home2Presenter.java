@@ -19,6 +19,8 @@ public class Home2Presenter extends BasePagePresenter<Home2Presenter.View>{
 		HasWidgets conversationPanel();
 		HasWidgets modulePanel();
 		HasWidgets searhcPanel();
+		HasWidgets loginPanel();
+		HasWidgets commentPanel();
 		
 		void displayTab(TabType tabs);
 	} 
@@ -34,9 +36,7 @@ public class Home2Presenter extends BasePagePresenter<Home2Presenter.View>{
 		
 		view.modulePanel().add(calendarPresenter.getWidget());
 		view.modulePanel().add(injector.getTrafficPresenter().getWidget());
-//		SearchBoxPresenter searchBoxPresenter = injector.getSearchBoxPresenter();
-//		searchBoxPresenter.init();
-//		view.searhcPanel().add(searchBoxPresenter.getWidget());
+		view.loginPanel().add(injector.getUserIdentityPresenter().getWidget());
 		
 	}
 
@@ -46,8 +46,13 @@ public class Home2Presenter extends BasePagePresenter<Home2Presenter.View>{
 		searchBoxPresenter.init();
 		view.searhcPanel().clear();
 		view.searhcPanel().add(searchBoxPresenter.getWidget());
+		view.commentPanel().clear();
+		view.commentPanel().add(injector.getNewCommentPresenter().getWidget());
 		view.show();
+		
 		initializeTabs(token);
+		
+		
 	}
 
 //	private void initializeTabs(HistoryToken token) {

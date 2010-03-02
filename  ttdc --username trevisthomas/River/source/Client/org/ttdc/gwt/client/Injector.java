@@ -22,6 +22,7 @@ import org.ttdc.gwt.client.presenters.calendar.MonthPresenter;
 import org.ttdc.gwt.client.presenters.calendar.ScaleSelectorPresenter;
 import org.ttdc.gwt.client.presenters.calendar.WeekPresenter;
 import org.ttdc.gwt.client.presenters.calendar.YearPresenter;
+import org.ttdc.gwt.client.presenters.comments.NewCommentPresenter;
 import org.ttdc.gwt.client.presenters.dashboard.EditProfilePresenter;
 import org.ttdc.gwt.client.presenters.dashboard.RemovableWebLinkPresenter;
 import org.ttdc.gwt.client.presenters.dashboard.ResetPasswordPresenter;
@@ -333,5 +334,8 @@ public interface Injector extends Ginjector {
 
 	public SearchBoxDatePresenter.View getSearchBoxDateView();
 	public SearchBoxDatePresenter getSearchBoxDatePresenter();
+
+	public NewCommentPresenter.View getNewCommentView();
+	public NewCommentPresenter getNewCommentPresenter();
 }
 

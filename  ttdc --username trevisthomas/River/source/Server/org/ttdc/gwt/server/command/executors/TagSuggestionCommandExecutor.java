@@ -171,14 +171,14 @@ public class TagSuggestionCommandExecutor extends CommandExecutor<TagSuggestionC
 		gTag.setValue(query);
 		gTag.setType(Tag.TYPE_TOPIC);
 		gTag.setTagId(" ");
-		return new TagSuggestion(gTag, query+" <b>(Create New)</b>");
+		return new TagSuggestion(gTag, "<b>"+query+" (Create New)</b>");
 	}
 	
 	private TagSuggestion createSugestionForNewPost(String query){
 		GPost post = new GPost();
 		post.setTitle(query);
 		post.setPostId(" ");
-		return new TagSuggestion(post, query+" <b>(Create New)</b>");
+		return new TagSuggestion(post, "<b>"+query+" (Create New)</b>");
 	}
 	
 	private TagSuggestion createDynamicSugestion(String query, Tag tag){
@@ -221,7 +221,7 @@ public class TagSuggestionCommandExecutor extends CommandExecutor<TagSuggestionC
 	}
 
 	private String highlightQueryString(String value, int startQueryMatch, int endQueryMatch) {
-		return value.substring(0, startQueryMatch) + "<b>" + value.substring(startQueryMatch, endQueryMatch) +"</b>" + value.substring(endQueryMatch);
+		return  "<b>" + value.substring(0, startQueryMatch)+"</b>" + value.substring(startQueryMatch, endQueryMatch) +"<b>" + value.substring(endQueryMatch)+"</b>";
 	}
 
 }

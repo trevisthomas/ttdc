@@ -27,6 +27,7 @@ import org.ttdc.gwt.client.presenters.calendar.MonthPresenter;
 import org.ttdc.gwt.client.presenters.calendar.ScaleSelectorPresenter;
 import org.ttdc.gwt.client.presenters.calendar.WeekPresenter;
 import org.ttdc.gwt.client.presenters.calendar.YearPresenter;
+import org.ttdc.gwt.client.presenters.comments.NewCommentPresenter;
 import org.ttdc.gwt.client.presenters.dashboard.EditProfilePresenter;
 import org.ttdc.gwt.client.presenters.dashboard.RemovableWebLinkPresenter;
 import org.ttdc.gwt.client.presenters.dashboard.ResetPasswordPresenter;
@@ -1253,6 +1254,17 @@ public class MockInjector implements Injector{
 
 	@Override
 	public org.ttdc.gwt.client.presenters.search.SearchBoxDatePresenter.View getSearchBoxDateView() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public NewCommentPresenter getNewCommentPresenter() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public org.ttdc.gwt.client.presenters.comments.NewCommentPresenter.View getNewCommentView() {
 		// TODO Auto-generated method stub
 		return null;
 	}

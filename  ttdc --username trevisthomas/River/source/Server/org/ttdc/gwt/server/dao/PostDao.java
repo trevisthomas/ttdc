@@ -18,6 +18,7 @@ final public class PostDao {
 	private String title;
 	private Image image;
 	private Post parent;
+	private String embedMarker;
 	
 	public PostDao(){}
 
@@ -42,7 +43,14 @@ final public class PostDao {
 
 	private Entry buildEntry(Post post) {
 		Entry entry = new Entry();
-		entry.setBody(body);
+		if(StringUtils.isNotBlank(embedMarker)){
+			String fixedBody = body.replaceAll(embedMarker, post.getPostId());
+			entry.setBody(fixedBody);
+		}
+		else{
+			entry.setBody(body);
+		}
+		
 		entry.setPost(post);
 		session().save(entry);
 		session().flush();
@@ -67,6 +75,7 @@ final public class PostDao {
 			
 			if(post.getRoot().equals(parent)){
 				post.setThread(post);//Conversation starter
+				post.setThreadReplyDate(post.getDate());
 			}
 			else{
 				post.setThread(parent.getThread());//regurlar reply
@@ -290,6 +299,14 @@ final public class PostDao {
 
 	public void setParent(Post parent) {
 		this.parent = parent;
+	}
+
+	public String getEmbedMarker() {
+		return embedMarker;
+	}
+
+	public void setEmbedMarker(String embedMarker) {
+		this.embedMarker = embedMarker;
 	}
 
 	

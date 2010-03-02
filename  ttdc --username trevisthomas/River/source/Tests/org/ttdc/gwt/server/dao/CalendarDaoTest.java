@@ -38,7 +38,7 @@ public class CalendarDaoTest {
 	@Test
 	public void testWeek(){
 		CalendarDao dao = new CalendarDao();
-		int y = 2009;
+		int y = 2005;
 		dao.setYearNumber(y);
 		dao.setWeekOfYear(26); 
 		

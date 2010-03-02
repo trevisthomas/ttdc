@@ -133,6 +133,7 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 		dao.setParent(parent);
 		dao.setBody(cmd.getBody());
 		dao.setTitle(cmd.getTitle());
+		dao.setEmbedMarker(cmd.getEmbedMarker());
 		Post post = dao.create();
 		
 		Tag creatorTag = loadOrCreateCreatorTag(creator);
