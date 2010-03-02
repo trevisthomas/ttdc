@@ -94,67 +94,68 @@ public class CalendarDao {
 		return data;
 	}
 	
-	private Queue<Day> buildDayDataForWeek(int yearNumber,int weekOfYear){
-		Date startDate = DaoUtils.getDateBeginningOfWeek(yearNumber, weekOfYear);
-    	Date endDate = DaoUtils.getDateEndOfWeek(yearNumber, weekOfYear);
-    	
-    	log.debug(startDate);
-    	log.debug(endDate);
-    	
-    	@SuppressWarnings("unchecked")
-    	List<SimplePostEntity> list = session().getNamedQuery("CalendarDao.fetchHourly")
-			.setTimestamp("startDate",startDate)
-			.setTimestamp("endDate", endDate).list();
-    	
-    	Queue<Day> data = convertSimplePostEntityListToDayQueue(list);
-    	return data;
-	}
-	
-	
-	/* 
-	 * 	The version below uses the date range query from search, it was an attempt to make
-	 * mySQL faster, and it is a little but not nearly as fast as ms. Also, this is slower than
-	 * the other version in ms.
-	 * 
-	 */
 //	private Queue<Day> buildDayDataForWeek(int yearNumber,int weekOfYear){
 //		Date startDate = DaoUtils.getDateBeginningOfWeek(yearNumber, weekOfYear);
 //    	Date endDate = DaoUtils.getDateEndOfWeek(yearNumber, weekOfYear);
 //    	
-//    	log.debug("Start: "+startDate);
-//    	log.debug("End: "+endDate);
-//		
-//		DateRange dateRange = new DateRange(startDate, endDate);
-//		
-//		PostSearchDao searchDao = new PostSearchDao();
-//		searchDao.setPageSize(-1);
-//		searchDao.setDateRange(dateRange);
-//		PaginatedList<Post> result = searchDao.search();
-//		
-//		Queue<Day> data = new LinkedList<Day>();
-//		
-//		Inflatinator inflatinator = new Inflatinator(result.getList());
-//		
-//		Day d = null;
-//		Hour h = null;
-//    	for(GPost post : inflatinator.extractPosts()){
-//			Day currDay = new Day(post.getDate());
-//			
-//			if(d == null || !currDay.equals(d)){
-//				d = currDay;
-//	        	d.initHourly();
-//	        	data.add(d);
-//	        	h = d.getHour(0);
-//    		}
-//    		if(h.getHourOfDay() != getHourOfDayFromDate(post.getDate()))
-//    			h = d.getHour(getHourOfDayFromDate(post.getDate()));
-//    		
-//    		CalendarPost calendarPost = buildCalendarPostFromRegularPostEntity(post);
-//    		
-//    		h.add(calendarPost);
-//    	}
-//		return data;
+//    	log.debug(startDate);
+//    	log.debug(endDate);
+//    	
+//    	@SuppressWarnings("unchecked")
+//    	List<SimplePostEntity> list = session().getNamedQuery("CalendarDao.fetchHourly")
+//			.setTimestamp("startDate",startDate)
+//			.setTimestamp("endDate", endDate).list();
+//    	
+//    	Queue<Day> data = convertSimplePostEntityListToDayQueue(list);
+//    	return data;
 //	}
+	
+	
+	/* 
+	 * 	The version below uses the date range query from search, it was an attempt to make
+	 * mySQL faster, still not great.
+	 * 
+	 */
+	private Queue<Day> buildDayDataForWeek(int yearNumber,int weekOfYear){
+		Date startDate = DaoUtils.getDateBeginningOfWeek(yearNumber, weekOfYear);
+    	Date endDate = DaoUtils.getDateEndOfWeek(yearNumber, weekOfYear);
+    	
+    	log.debug("Start: "+startDate);
+    	log.debug("End: "+endDate);
+		
+		DateRange dateRange = new DateRange(startDate, endDate);
+		
+		PostSearchDao searchDao = new PostSearchDao();
+		searchDao.setPageSize(-1);
+		searchDao.setDateRange(dateRange);
+		PaginatedList<Post> result = searchDao.search();
+		
+		Queue<Day> data = new LinkedList<Day>();
+		
+		//Inflatinator inflatinator = new Inflatinator(result.getList());
+		InflatinatorLite inflatinator = new InflatinatorLite(result.getList());
+		
+		Day d = null;
+		Hour h = null;
+    	for(GPost post : inflatinator.extractPosts()){
+	    //for(Post post : result.getList()){
+			Day currDay = new Day(post.getDate());
+			
+			if(d == null || !currDay.equals(d)){
+				d = currDay;
+	        	d.initHourly();
+	        	data.add(d);
+	        	h = d.getHour(0);
+    		}
+    		if(h.getHourOfDay() != getHourOfDayFromDate(post.getDate()))
+    			h = d.getHour(getHourOfDayFromDate(post.getDate()));
+    		
+    		CalendarPost calendarPost = buildCalendarPostFromRegularPostEntity(post);
+    		
+    		h.add(calendarPost);
+    	}
+		return data;
+	}
 	
 	private int getHourOfDayFromDate(Date date){
 		Calendar cal = new GregorianCalendar();
@@ -335,8 +336,26 @@ public class CalendarDao {
 		calendarPost.setMonth(cal.get(Calendar.MONTH)+1);
 		calendarPost.setPostId(p.getPostId());
 		calendarPost.setRootId(p.getRoot().getPostId());
-		calendarPost.setSummary(p.getEntry());
+		//calendarPost.setSummary(p.getEntry());
 		calendarPost.setTitle(p.getTitle());
+		calendarPost.setYear(cal.get(Calendar.YEAR));
+		return calendarPost;
+	}
+	
+	private CalendarPost buildCalendarPostFromRegularPostEntity(Post p) {
+		Calendar cal = new GregorianCalendar();
+		cal.setTime(p.getDate());
+		
+		CalendarPost calendarPost = new CalendarPost();
+		calendarPost.setCreatorId("123dontclickid");
+		calendarPost.setCreatorLogin("Todo: login");
+		calendarPost.setDate(p.getDate());
+		calendarPost.setHour(cal.get(Calendar.HOUR_OF_DAY));
+		calendarPost.setMonth(cal.get(Calendar.MONTH)+1);
+		calendarPost.setPostId(p.getPostId());
+		calendarPost.setRootId(p.getRoot().getPostId());
+		calendarPost.setSummary("TODO, add summary");
+		calendarPost.setTitle("Sigh, todo add title");
 		calendarPost.setYear(cal.get(Calendar.YEAR));
 		return calendarPost;
 	}

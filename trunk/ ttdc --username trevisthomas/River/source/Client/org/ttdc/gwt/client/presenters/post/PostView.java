@@ -3,6 +3,7 @@ package org.ttdc.gwt.client.presenters.post;
 import org.ttdc.gwt.client.presenters.post.PostPresenter.Mode;
 
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -26,6 +27,7 @@ public class PostView implements PostPresenter.View {
 	private final Label fetchMore = new Label();
 	private final SimplePanel datePanel = new SimplePanel();
 	
+	private String postId;
 	private Mode mode = Mode.FLAT;
 	public PostView() {
 	}
@@ -44,6 +46,8 @@ public class PostView implements PostPresenter.View {
 			postHeader.add(title);
 			postPanel.add(new HTMLPanel(entry.getText()));
 			
+			mainPanel.add(new HTML("<center><span id=\""+postId+"\"></span></center>"));
+			
 			if(Mode.NESTED_SUMMARY.equals(mode)){
 				mainPanel.addStyleName("tt-post-container-nested-mode");
 			}
@@ -53,10 +57,14 @@ public class PostView implements PostPresenter.View {
 			
 			mainPanel.add(childPosts);
 		}
-		
 		return mainPanel;
+		
 	}
 
+	@Override
+	public void init(String postId) {
+		this.postId = postId;
+	}
 	public HasWidgets getChildWidgetBucket() {
 		return childPosts;
 	}

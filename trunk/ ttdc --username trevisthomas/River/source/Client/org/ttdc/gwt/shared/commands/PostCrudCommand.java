@@ -2,7 +2,6 @@ package org.ttdc.gwt.shared.commands;
 
 import org.ttdc.gwt.client.services.Command;
 import org.ttdc.gwt.shared.commands.results.PostCommandResult;
-import org.ttdc.gwt.shared.commands.types.ActionType;
 import org.ttdc.gwt.shared.commands.types.PostActionType;
 
 public class PostCrudCommand extends Command<PostCommandResult>{
@@ -21,6 +20,7 @@ public class PostCrudCommand extends Command<PostCommandResult>{
 	private String year;
 	private boolean movie = false;
 	private String titleTagId;
+	private String embedMarker;
 			
 	
 	public PostCrudCommand() {}
@@ -125,4 +125,11 @@ public class PostCrudCommand extends Command<PostCommandResult>{
 	public void setTitleTagId(String titleTagId) {
 		this.titleTagId = titleTagId;
 	}
+	public String getEmbedMarker() {
+		return embedMarker;
+	}
+	public void setEmbedMarker(String embedMarker) {
+		this.embedMarker = embedMarker;
+	}
+	
 }

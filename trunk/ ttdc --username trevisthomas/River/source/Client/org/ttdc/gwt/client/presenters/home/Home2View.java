@@ -6,6 +6,7 @@ import org.ttdc.gwt.client.messaging.history.HistoryToken;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -27,13 +28,17 @@ public class Home2View implements Home2Presenter.View{
 	private final SimplePanel flatPanel = new SimplePanel();
 	private final SimplePanel threadPanel = new SimplePanel();
 	private final SimplePanel searchPanel = new SimplePanel();
+	private final SimplePanel loginPanel = new SimplePanel();
+	private final DisclosurePanel commentPanel = new DisclosurePanel("Add Comment");
 	private HistoryToken token = new HistoryToken();
 	
 	private boolean fireHistoryEvent = true;
 	
 	public Home2View() {
+		main.add(loginPanel);
 		main.add(messagePannel);
 		main.add(searchPanel);
+		main.add(commentPanel);
 		main.add(bodyTable);
 		bodyTable.setWidget(0, 0, modulePanel);
 		bodyTable.setWidget(0, 1, centerTabPanel);
@@ -164,6 +169,14 @@ public class Home2View implements Home2Presenter.View{
 		return searchPanel;
 	}
 
-
+	@Override
+	public HasWidgets loginPanel() {
+		return loginPanel;
+	}
+	
+	@Override
+	public HasWidgets commentPanel() {
+		return commentPanel;
+	}
 	
 }

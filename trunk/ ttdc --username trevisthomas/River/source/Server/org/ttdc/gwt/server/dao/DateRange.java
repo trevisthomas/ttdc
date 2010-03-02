@@ -8,21 +8,6 @@ import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
 public class DateRange {
-
-	/*
-	 * This is a bizare hack to try and get around a weird boundary condition
-	 * error that i see with hibernate.  For some reason when i get close to the end
-	 * of the data and the search has only a date range, it juts flips out and grabs lots of data.?
-	 * 
-	 * you might want to just take this out and set to 'now' anyway because this is bizare
-	 */
-//	public Date getMaxDate() {
-//		Date date = (Date)session().createQuery("select p.date from Post p order by p.date DESC").setMaxResults(1).uniqueResult();
-//		Calendar cal = GregorianCalendar.getInstance();
-//		cal.setTime(date);
-//		cal.add(Calendar.DAY_OF_MONTH, -1);
-//		return cal.getTime();
-//	}
 	public Date getMaxDate() {
 		return new Date();
 	}

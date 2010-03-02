@@ -130,6 +130,10 @@ public class PostCrudCommandExecutorTest {
 //			int originalThreadMass = thread.getMass();
 			Post post = cmdexec.create(cmd);
 			
+			
+			assertNotNull("Thread reply date on a new conversation should be set to the conversation start date!!",post.getThreadReplyDate());
+			assertEquals("Thread reply date on a new conversation should be equal to the post create date.",post.getDate(), post.getThreadReplyDate());
+			
 			assertNotNull("Reply Post has no parent",post.getParent());
 			assertEquals("Post parent is oh so wrong",rootPostId,post.getParent().getPostId());
 			assertEquals("Post does not have the same root as it's parent. This is wrong.",post.getParent().getRoot().getPostId(), post.getRoot().getPostId());
@@ -222,6 +226,51 @@ public class PostCrudCommandExecutorTest {
 			rollback();
 		}
 	}
+	
+	@Test
+	public void testCreateWithEmbededContent(){
+		try{
+			final PostCrudCommand cmd = UniqueCrudPostCommandObjectMother.createNewTopic();
+			cmd.setAction(PostActionType.CREATE);
+			String title = cmd.getTitle();
+			String embedTarget = "EmbedTarget_PLACEHOLDER";
+			String body = "<a target=\"_blank\" href=\"http://www.youtube.com/watch?v=SDbQ5xvsrIU\">test</a><a href=\"javascript:tggle_video('"+embedTarget+"','http://www.youtube.com/v/SDbQ5xvsrIU&amp;hl=en_US&amp;fs=1&amp;');\">[view]</a>";
+			cmd.setBody(body);
+			cmd.setEmbedMarker(embedTarget);
+			PostCrudCommandExecutor cmdexec = (PostCrudCommandExecutor)CommandExecutorFactory.createExecutor(Helpers.personIdTrevis,cmd);
+			//cmdexec.execute();
+			
+			beginSession();
+			Post post = cmdexec.create(cmd);
+			
+			assertTrue("Testing for embeded marker replacement content failed.",post.getEntry().getBody().indexOf("tggle_video('"+post.getPostId()+"'") > -1);
+			
+			assertTrue("Root post has a parent! WTF!",post.getParent() == null);
+			assertTrue("Thread_guid must be null for root posts",post.getThread() == null);
+			assertTrue("Root post is not root!!!",post.isRootPost());
+			
+			assertEquals("Path should be blank for roots","",post.getPath()); 
+			
+			assertNotNull("Creator is null on the post object",post.getCreator());
+			assertEquals(Helpers.personIdTrevis,post.getCreator().getPersonId());
+			
+			AssociationPostTag ass = post.loadTitleTagAssociation();
+			assertNotNull("Post didnt get a title tag!",ass);
+			Tag titleTag = ass.getTag();
+			assertEquals(title,titleTag.getValue());
+			assertEquals(title,titleTag.getSortValue());
+			
+			Helpers.assertPostDateTagsCorrect(post);
+		}
+		catch(Exception e){
+			rollback();
+			fail(e.getMessage());
+		}	
+		finally{
+			rollback();
+		}
+	}
+	
 	
 	@Test
 	public void testTitleRequiredNotNullForRootTopic(){
