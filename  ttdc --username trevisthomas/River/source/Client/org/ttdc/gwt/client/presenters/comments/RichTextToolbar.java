@@ -254,8 +254,8 @@ public class RichTextToolbar extends Composite {
 				String embedSource = "http://www.youtube.com/v/SDbQ5xvsrIU&hl=en_US&fs=1&";
 				String directSource = "http://www.youtube.com/watch?v=SDbQ5xvsrIU";
 				
-//				String text = crazyGetSelectedText(styleText);
-				String text = getSelectedText();
+				String text = crazyGetSelectedText(styleText);
+				//String text = getSelectedText();
 				
 				String s = "<a target=\"_blank\" href=\""+directSource+"\">"+text+"</a><a href=\"javascript:tggle_video('"+embedTarget+"','"+embedSource+"');\">[view]</a>";
 				styleText.getFormatter().insertHTML(s);

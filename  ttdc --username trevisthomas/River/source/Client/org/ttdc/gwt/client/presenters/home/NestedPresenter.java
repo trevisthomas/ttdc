@@ -21,8 +21,8 @@ public class NestedPresenter extends BasePresenter<NestedPresenter.View>{
 		HasWidgets postFooterPanel();
 	}
 	
-	PostCollectionPresenter postCollection;
-	
+	private PostCollectionPresenter postCollection;
+	private static PaginatedListCommandResult<GPost> resultCache;
 	@Inject
 	public NestedPresenter(Injector injector){
 		super(injector,injector.getNestedView());
@@ -31,21 +31,32 @@ public class NestedPresenter extends BasePresenter<NestedPresenter.View>{
 	public void init(){
 		view.postPanel().add(injector.getWaitPresenter().getWidget());
 		postCollection = injector.getPostCollectionPresenter();
-		LatestPostsCommand cmd = new LatestPostsCommand();
-		cmd.setAction(PostListType.LATEST_NESTED);
-		CommandResultCallback<PaginatedListCommandResult<GPost>> callback = buildCallback();
-		getService().execute(cmd, callback);
+		
+		if(resultCache == null){
+			LatestPostsCommand cmd = new LatestPostsCommand();
+			cmd.setAction(PostListType.LATEST_NESTED);
+			CommandResultCallback<PaginatedListCommandResult<GPost>> callback = buildCallback();
+			getService().execute(cmd, callback);
+		}
+		else{
+			addResults(resultCache);
+		}
 	}
 
 	private CommandResultCallback<PaginatedListCommandResult<GPost>> buildCallback() {
 		CommandResultCallback<PaginatedListCommandResult<GPost>> callback = new CommandResultCallback<PaginatedListCommandResult<GPost>>(){
 			public void onSuccess(PaginatedListCommandResult<GPost> result) {
-				PaginatedList<GPost> results = result.getResults();
-				postCollection.setPostList(results.getList(), Mode.NESTED_SUMMARY);
-				view.postPanel().clear();
-				view.postPanel().add(postCollection.getWidget());
+				resultCache = result;
+				addResults(result);
 			}
 		};
 		return callback;
+	}
+	
+	private void addResults(PaginatedListCommandResult<GPost> result) {
+		PaginatedList<GPost> results = result.getResults();
+		postCollection.setPostList(results.getList(), Mode.NESTED_SUMMARY);
+		view.postPanel().clear();
+		view.postPanel().add(postCollection.getWidget());
 	}
 }

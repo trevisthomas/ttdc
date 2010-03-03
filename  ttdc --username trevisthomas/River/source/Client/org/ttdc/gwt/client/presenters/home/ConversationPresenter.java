@@ -20,7 +20,8 @@ public class ConversationPresenter extends BasePresenter<ConversationPresenter.V
 		HasWidgets postFooterPanel();
 	}
 	
-	PostCollectionPresenter postCollection;
+	private PostCollectionPresenter postCollection;
+	private static PaginatedListCommandResult<GPost> resultCache;
 	
 	@Inject
 	public ConversationPresenter(Injector injector){
@@ -30,21 +31,31 @@ public class ConversationPresenter extends BasePresenter<ConversationPresenter.V
 	public void init(){
 		view.postPanel().add(injector.getWaitPresenter().getWidget());
 		postCollection = injector.getPostCollectionPresenter();
-		LatestPostsCommand cmd = new LatestPostsCommand();
-		cmd.setAction(PostListType.LATEST_CONVERSATIONS);
-		CommandResultCallback<PaginatedListCommandResult<GPost>> callback = buildCallback();
-		getService().execute(cmd, callback);
+		if(resultCache == null){
+			LatestPostsCommand cmd = new LatestPostsCommand();
+			cmd.setAction(PostListType.LATEST_CONVERSATIONS);
+			CommandResultCallback<PaginatedListCommandResult<GPost>> callback = buildCallback();
+			getService().execute(cmd, callback);
+		}
+		else{
+			showResult(resultCache);
+		}
 	}
 
 	private CommandResultCallback<PaginatedListCommandResult<GPost>> buildCallback() {
 		CommandResultCallback<PaginatedListCommandResult<GPost>> callback = new CommandResultCallback<PaginatedListCommandResult<GPost>>(){
 			public void onSuccess(PaginatedListCommandResult<GPost> result) {
-				PaginatedList<GPost> results = result.getResults();
-				postCollection.setPostList(results.getList());
-				view.postPanel().clear();
-				view.postPanel().add(postCollection.getWidget());
+				resultCache = result;
+				showResult(result);
 			}
 		};
 		return callback;
+	}
+	
+	private void showResult(PaginatedListCommandResult<GPost> result) {
+		PaginatedList<GPost> results = result.getResults();
+		postCollection.setPostList(results.getList());
+		view.postPanel().clear();
+		view.postPanel().add(postCollection.getWidget());
 	}
 }

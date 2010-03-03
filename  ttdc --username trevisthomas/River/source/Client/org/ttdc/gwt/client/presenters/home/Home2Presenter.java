@@ -107,6 +107,9 @@ public class Home2Presenter extends BasePagePresenter<Home2Presenter.View>{
 	}
 
 	private void buildNestedTab() {
+//		view.nestedPanel().clear();
+//		view.nestedPanel().clear();
+//		view.nestedPanel().clear();
 		if(PresenterHelpers.isWidgetEmpty(view.nestedPanel())){
 			NestedPresenter presenter = injector.getNestedPresenter();
 			presenter.init();
