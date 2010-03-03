@@ -171,7 +171,7 @@ public class InjectorModule extends AbstractGinModule {
 		bind(TopicNestedPresenter.class).in(Singleton.class);
 		bind(PublicUserProfilePresenter.class).in(Singleton.class);
 		bind(HomePresenter.class).in(Singleton.class);
-		bind(Home2Presenter.class).in(Singleton.class);
+		//bind(Home2Presenter.class).in(Singleton.class);
 		bind(CalendarPresenter.class).in(Singleton.class);
 		
 		//bind .to .in
