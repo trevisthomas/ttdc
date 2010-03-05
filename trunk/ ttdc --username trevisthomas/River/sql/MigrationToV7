@@ -1,0 +1,97 @@
+Moron. Index title, tag_guid and guid on association
+
+add these to post:
+
+THREAD_GUID
+LATEST_ENTRY_GUID
+EDIT_DATE
+CREATOR_GUID
+THREAD_REPLY_DATE
+
+
+run calculate avg rating
+run materalized path
+
+run two v7 scripts
+V7_MIGRATION_AddLatestEntryToPost.sql
+V7_MIGRATION_AddThreadIdToPost.sql
+
+-- New as of Oct 26
+Add
+
+MASS to Tag (index this field) (be sure to remove the null after creating)
+REPLY_COUNT to Post (default to 0, index this field too) (besure to remove allow null after creating)
+MASS to Post (remember to index and eventually disalow null)
+
+V7_MIGRATION_AddCountsToPosts.sql
+
+-- the following must be run in this order! Put the mass on the tags first. The second proc modifys title tags only.
+-- if not run in the proper order the reply based mass for title tags will be over written
+V7_MIGRATION_AddMassToTag.sql - As of 2/8/2010 this query was run again, after adding title association tags to all posts(V7_MIGRATION_AddTitleTagAssociationsToAllPosts.sql) this has to be done after that( you can do it twice, or try changing the order. If you dont do it then the tag cloud will not be accurate)
+V7_MIGRATION_AddTitleReplyCountToTag.sql - As of 11/11/2009 this change is not going to be used
+
+V7_MIGRATION_AddMassToPostRoots.sql
+
+V7_MIGRATION_AddCreatorGuidToPost.sql (remove null on creator_guid afterward)
+
+Run Java app "GenerateWeekOfYearTags" to generate WEEK_OF_YEAR tags for posts.
+
+
+--Dec 13th added for thread view.
+V7_MIGRATION_AddMassToPostThreadStarters.sql
+V7_MIGRATION_AddThreadReplyDateToPost.sql
+
+
+
+rebuild full text indexes!
+
+--JAN 16
+Add DEFAULT_STYLE 'bit' flag to Style table. Default to '0'
+
+-- Feb 8
+Adding title tags for ALL posts. It seems that the fancy searching and filtering from lucene will allow me to search for titles without touching the tags
+which frees me up to make the title title tags work the way they were initially intended to (on all posts) so this proc puts them into place:
+V7_MIGRATION_AddTitleTagAssociationsToAllPosts.sql
+
+
+- FEB 11 (this change was all about adding the sortable tag titles to the title tags, also i put the title tag in the post)
+created SORT_VALUE on Tag (varchar(255))
+created TITLE_TAG_GUID on Post (uniqueid)
+proc: V7_MIGRATION_AddThreadTitleTAGToPost.sql
+Run migration.SortValueOnTag java program
+
+
+- Feb 14
+V7_MIGRATION_RemoveDuplicateAssociations.sql
+
+--Feb 21
+add Column to Entry  SUMMARY as text
+Run java code to create summaries, same code injects trev tag styling in prep for rich text editing
+EntrySummaryAndTagRemoveForV7.java
+
+
+
+*****
+
+** Investigate what post.THREAD_REPLY_DATE was for?  Ok, i think that this is used for the real front page queries
+
+For the love of all things holy make it so that style names can be more than 10 characters!
+
+///*
+///*
+///*
+//Create new fields on post
+META_MASK	binary(8)
+TAG_GUID_TITLE	uniqueidentifier
+PERSON_GUID_CREATOR	uniqueidentifier
+TAG_GUID_AVG_RATING	uniqueidentifier
+URL	varchar(500)
+PUBLISH_YEAR	smallint
+
+
+Renormalizing the whole DB.
+V7_RENORMALIZATION_UpdateNewPostColumns.sql
+V7_RENORMALIZATION_MetaBitmask.sql
+V7_RENORMALIZATION_CleanupForAfterTheOtherTwo.sql - removes old associations and tags.
+Remove the title bit from association.
+Remove nullable from title and person tags
