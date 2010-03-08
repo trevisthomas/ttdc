@@ -34,55 +34,50 @@ public class GenerateWeekOfYearTags {
 	}
 	
 	public void go(){
-		beginSession();
-		try{
-			start();
-			beginSession();
-			Person creator = PersonDao.loadPerson(personId);
-			
-			List<Post> posts = session().createCriteria(Post.class).list();
-			
-			for(Post post : posts){
-				Date d = post.getDate();
-				
-				Calendar cal = GregorianCalendar.getInstance();
-				cal.setTime(d);
-				
-				int moy = cal.get(Calendar.WEEK_OF_YEAR);
-				Tag t = tagmap.get(moy);
-				
-				if(t == null ){
-					TagDao tagDao = new TagDao();
-					tagDao.setCreator(creator);
-					tagDao.setDescription("");
-					tagDao.setType(Tag.TYPE_WEEK_OF_YEAR);
-					tagDao.setValue(""+moy);
-					 t = tagDao.createOrLoad();
-					 tagmap.put(moy, t);
-				}
-				
-//				AssociationPostTagDao assDao = new AssociationPostTagDao();
-//				assDao.setCreator(creator);
-//				assDao.setPost(post);
-//				assDao.setTag(t);
-//				assDao.create();
-				
-				AssociationPostTag ass = new AssociationPostTag();
-				ass.setCreator(creator);
-				ass.setTag(t);
-				ass.setPost(post);
-				session().save(ass);
-				
-			}
-			commit();
-		}
-		catch (Exception e) {
-			log.error(e);
-			rollback();
-		}
-		finally{
-			end();
-		}
+		throw new RuntimeException("I dont use week of year tags anymore");
+//		beginSession();
+//		try{
+//			start();
+//			beginSession();
+//			Person creator = PersonDao.loadPerson(personId);
+//			
+//			List<Post> posts = session().createCriteria(Post.class).list();
+//			
+//			for(Post post : posts){
+//				Date d = post.getDate();
+//				
+//				Calendar cal = GregorianCalendar.getInstance();
+//				cal.setTime(d);
+//				
+//				int moy = cal.get(Calendar.WEEK_OF_YEAR);
+//				Tag t = tagmap.get(moy);
+//				
+//				if(t == null ){
+//					TagDao tagDao = new TagDao();
+//					tagDao.setCreator(creator);
+//					tagDao.setDescription("");
+//					tagDao.setType(Tag.TYPE_WEEK_OF_YEAR);
+//					tagDao.setValue(""+moy);
+//					 t = tagDao.createOrLoad();
+//					 tagmap.put(moy, t);
+//				}
+//				
+//				AssociationPostTag ass = new AssociationPostTag();
+//				ass.setCreator(creator);
+//				ass.setTag(t);
+//				ass.setPost(post);
+//				session().save(ass);
+//				
+//			}
+//			commit();
+//		}
+//		catch (Exception e) {
+//			log.error(e);
+//			rollback();
+//		}
+//		finally{
+//			end();
+//		}
 		
 	}
 	

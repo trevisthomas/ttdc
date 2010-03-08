@@ -323,53 +323,53 @@ public class SearchResultsBundle {
 	 */
 	public void loadOtherTags(List<TagLite> litetags){
 		for(TagLite tl : litetags){
-			if(Tag.TYPE_CREATOR.equals(tl.getType())){
-				this.getSuggestionsPeople().add(tl);
-			}
-			else if(Tag.TYPE_DATE_MONTH.equals(tl.getType())){
-				this.getSuggestionsMonths().add(tl);
-			}
-			else if(Tag.TYPE_DATE_YEAR.equals(tl.getType())){
-				this.getSuggestionsYears().add(tl);
-			}
-			else if(Tag.TYPE_DATE_DAY.equals(tl.getType())){
-				this.getSuggestionsDays().add(tl);
-			}
-			else if(Tag.TYPE_TOPIC.equals(tl.getType())){
-				this.getTags().add(tl);
-			}
-			else if(Tag.TYPE_REVIEW.equals(tl.getType())){
-				this.setReviewCount(tl.getCount());
-				this.setTagReview(tl);
-			}
-			else if (Tag.TYPE_MOVIE.equals(tl.getType())){
-				this.setMovieCount(tl.getCount());
-				this.setTagMovie(tl);
-			}
-			else if(Tag.TYPE_DISPLAY.equals(tl.getType())){
-				if(Tag.VALUE_INF.equals(tl.getValue())){
-					this.setInfCount(tl.getCount());
-					this.setTagInf(tl);
-				}
-				else if (Tag.VALUE_NWS.equals(tl.getValue())){
-					this.setNwsCount(tl.getCount());
-					this.setTagNws(tl);
-				}
-				else if (Tag.VALUE_LINK.equals(tl.getValue())){
-					this.setLinkCount(tl.getCount());
-					this.setTagLink(tl);
-				}
-				else if(Tag.VALUE_PRIVATE.equals(tl.getValue())){
-					this.setPrivateCount(tl.getCount());
-					this.setTagPrivate(tl);
-				}
-				else{
-					//Hm.
-				}
-			}
-			else{
-				//weird
-			}
+//			if(Tag.TYPE_CREATOR.equals(tl.getType())){
+//				this.getSuggestionsPeople().add(tl);
+//			}
+//			else if(Tag.TYPE_DATE_MONTH.equals(tl.getType())){
+//				this.getSuggestionsMonths().add(tl);
+//			}
+//			else if(Tag.TYPE_DATE_YEAR.equals(tl.getType())){
+//				this.getSuggestionsYears().add(tl);
+//			}
+//			else if(Tag.TYPE_DATE_DAY.equals(tl.getType())){
+//				this.getSuggestionsDays().add(tl);
+//			}
+//			else if(Tag.TYPE_TOPIC.equals(tl.getType())){
+//				this.getTags().add(tl);
+//			}
+//			else if(Tag.TYPE_REVIEW.equals(tl.getType())){
+//				this.setReviewCount(tl.getCount());
+//				this.setTagReview(tl);
+//			}
+//			else if (Tag.TYPE_MOVIE.equals(tl.getType())){
+//				this.setMovieCount(tl.getCount());
+//				this.setTagMovie(tl);
+//			}
+//			else if(Tag.TYPE_DISPLAY.equals(tl.getType())){
+//				if(Tag.VALUE_INF.equals(tl.getValue())){
+//					this.setInfCount(tl.getCount());
+//					this.setTagInf(tl);
+//				}
+//				else if (Tag.VALUE_NWS.equals(tl.getValue())){
+//					this.setNwsCount(tl.getCount());
+//					this.setTagNws(tl);
+//				}
+//				else if (Tag.VALUE_LINK.equals(tl.getValue())){
+//					this.setLinkCount(tl.getCount());
+//					this.setTagLink(tl);
+//				}
+//				else if(Tag.VALUE_PRIVATE.equals(tl.getValue())){
+//					this.setPrivateCount(tl.getCount());
+//					this.setTagPrivate(tl);
+//				}
+//				else{
+//					//Hm.
+//				}
+//			}
+//			else{
+//				//weird
+//			}
 		}
 		
 		TagLite.calculatePercentile(getSuggestionsPeople());

@@ -124,6 +124,8 @@ public class PersonDao extends PaginatedDaoBase{
 		if(activeOnly){
 			if(sortBy == null)
 				throw new RuntimeException("Sort column is required for active list");
+			else if(sortDirection == null)
+				sortDirection = SortDirection.DESC;
 			String queryName;
 			switch(sortBy){
 				case BY_EMAIL:

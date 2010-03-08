@@ -11,52 +11,52 @@ import org.ttdc.gwt.shared.util.PaginatedList;
 import org.ttdc.persistence.objects.Post;
 
 public class DaoUtils {
-	public static <T> PaginatedList<T> createResults(PaginatedDaoBase dao, List<T> list, int count) {
+	public static <T> PaginatedList<T> createResults(PaginatedDaoBase dao, List<T> list, long count) {
 		PaginatedList<T> results = new PaginatedList<T>();
-		results.setTotalResults(count);
+		results.setTotalResults((int)count);
 		results.setList(list);
 		results.setCurrentPage(dao.getCurrentPage());
 		results.setPageSize(dao.getPageSize());
 		return results;
 	}
 	
-	@SuppressWarnings("unchecked") 
-	public static PaginatedList<Post> executeLoadFromPostIdNoFilter(PaginatedDaoBase pageInfo, String query, String postId){
-		List<Post> list;
-		PaginatedList<Post> results = null;
-		if(pageInfo.getPageSize() > 0){
-			int count = session().getNamedQuery(query)
-				.setString("postId", postId).list().size();
-			
-			list = session().getNamedQuery(query)
-				.setString("postId", postId)
-				.setFirstResult(pageInfo.calculatePageStartIndex())
-				.setMaxResults(pageInfo.getPageSize()).list();
-			
-			results = DaoUtils.createResults(pageInfo, list, count);
-		}
-		else{
-			list = session().getNamedQuery(query)
-				.setString("postId", postId).list();
-			
-			results = DaoUtils.createResults(pageInfo, list, list.size());
-		}
-		return results;
-	}
+//	@SuppressWarnings("unchecked") 
+//	public static PaginatedList<Post> executeLoadFromPostIdNoFilter(PaginatedDaoBase pageInfo, String query, String postId){
+//		List<Post> list;
+//		PaginatedList<Post> results = null;
+//		if(pageInfo.getPageSize() > 0){
+//			int count = session().getNamedQuery(query)
+//				.setString("postId", postId).list().size();
+//			
+//			list = session().getNamedQuery(query)
+//				.setString("postId", postId)
+//				.setFirstResult(pageInfo.calculatePageStartIndex())
+//				.setMaxResults(pageInfo.getPageSize()).list();
+//			
+//			results = DaoUtils.createResults(pageInfo, list, count);
+//		}
+//		else{
+//			list = session().getNamedQuery(query)
+//				.setString("postId", postId).list();
+//			
+//			results = DaoUtils.createResults(pageInfo, list, list.size());
+//		}
+//		return results;
+//	}
 
 	@SuppressWarnings("unchecked") 
-	public static PaginatedList<Post> executeLoadFromPostId(PaginatedDaoBase pageInfo, String query, String postId, List<String> filteredTagIdList){
-		if(filteredTagIdList.size() == 0) throw new RuntimeException("You dont have a filter setup. ");
+	public static PaginatedList<Post> executeLoadFromPostId(PaginatedDaoBase pageInfo, String query, String countQuery, String postId, long filterMask){
 		PaginatedList<Post> results;
 		if(pageInfo.getPageSize() > 0){
 			List<Post> list;
-			int count = session().getNamedQuery(query)
-				.setParameterList("tagIds", filteredTagIdList)
-				.setString("postId", postId).list().size();
+			long count = (Long)session().getNamedQuery(countQuery)
+				.setParameter("filterMask", filterMask)
+				.setString("postId", postId)
+				.uniqueResult();
 			
 			
 			list = session().getNamedQuery(query)
-				.setParameterList("tagIds", filteredTagIdList)
+				.setParameter("filterMask", filterMask)
 				.setString("postId", postId)
 				.setFirstResult(pageInfo.calculatePageStartIndex())
 				.setMaxResults(pageInfo.getPageSize()).list();
@@ -65,7 +65,7 @@ public class DaoUtils {
 		}
 		else{
 			List<Post> list = session().getNamedQuery(query)
-				.setParameterList("tagIds", filteredTagIdList)
+				.setParameter("filterMask", filterMask)
 				.setString("postId", postId).list();
 			results = DaoUtils.createResults(pageInfo, list, list.size());
 		}
@@ -76,12 +76,11 @@ public class DaoUtils {
 	/**
 	 * Perform SearchResults query with no filtering, with one guid arguement
 	 */
-	public static <T> PaginatedList<T> executeQuery(PaginatedDaoBase pageInfo, String query, String guid) {
+	public static <T> PaginatedList<T> executeQuery(PaginatedDaoBase pageInfo, String query, String countQuery, String guid) {
 		PaginatedList<T> results = new PaginatedList<T>();
 		
-		int count = session().getNamedQuery(query)
-			.setParameter("guid", guid)
-			.list().size();
+		long count = (Long)session().getNamedQuery(countQuery)
+			.setParameter("guid", guid).uniqueResult();
 			
 		@SuppressWarnings("unchecked")
 		List<T> list = session().getNamedQuery(query)
@@ -94,8 +93,27 @@ public class DaoUtils {
 		return results;
 	}
 	
+	public static <T> PaginatedList<T> executeQuery(PaginatedDaoBase pageInfo,String query, String countQuery) {
+		PaginatedList<T> results = new PaginatedList<T>();
+		
+//		int count = session().getNamedQuery(countQuery)
+//			.list().size();
+		long count = (Long)session().getNamedQuery(countQuery).uniqueResult();
+			
+		@SuppressWarnings("unchecked")
+		List<T> list = session().getNamedQuery(query)
+			.setFirstResult(pageInfo.calculatePageStartIndex())
+			.setMaxResults(pageInfo.getPageSize()).list();
+		
+		results = DaoUtils.createResults(pageInfo, list, (int)count);
+		
+		return results;
+	}
+	
 	/**
 	 * Perform SearchResults query with no filtering and no arguments
+	 * 
+	 * TODO, fix this.  Use a faster count. This is bad. Replace it with the above query!
 	 */
 	public static <T> PaginatedList<T> executeQuery(PaginatedDaoBase pageInfo,String query) {
 		PaginatedList<T> results = new PaginatedList<T>();
@@ -131,8 +149,7 @@ public class DaoUtils {
 	}
 
 	/**
-	 * Loads a list of posts using a specified query and a specified list of postIds, with tags
-	 * to be filered
+	 * Loads a list of posts using a specified query and a specified list of postIds, with bitmask filter
 	 * 
 	 * Used by ThreadDao and LatestPostsDao
 	 * 
@@ -142,10 +159,9 @@ public class DaoUtils {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked") 
-	public static List<Post> executeLoadFromPostIds(String query, List<String> postIds, List<String> filteredTagIdList){
-		if(filteredTagIdList.size() == 0) throw new RuntimeException("You dont have a filter setup. ");
+	public static List<Post> executeLoadFromPostIds(String query, List<String> postIds, long filterMask){
 		List<Post> list = session().getNamedQuery(query)
-			.setParameterList("tagIds", filteredTagIdList)
+			.setParameter("filterMask", filterMask)
 			.setParameterList("postIds", postIds).list();
 		return list;
 	}

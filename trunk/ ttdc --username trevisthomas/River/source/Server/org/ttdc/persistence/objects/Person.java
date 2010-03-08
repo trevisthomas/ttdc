@@ -28,6 +28,7 @@ import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.ttdc.biz.network.services.UserService;
 import org.ttdc.biz.network.services.helpers.PostFormatter;
+import org.ttdc.persistence.util.PostFlag;
 import org.ttdc.struts.network.common.SecureUser;
 
 @Entity
@@ -223,6 +224,18 @@ public class Person implements SecureUser, HasGuid{
 		return hasObject(UserObject.TYPE_ENABLE_NWS);
 	}
 	
+	@Transient
+	public boolean isPrivateAccessAccount(){
+		if(isAdministrator()) return true;
+		else
+			return hasPrivilege(Privilege.PRIVATE);
+	}
+	@Transient
+	public boolean isVoter(){
+		if(isAdministrator()) return true;
+		else
+			return hasPrivilege(Privilege.VOTER);
+	}
 	
 	
 	
@@ -402,6 +415,7 @@ public class Person implements SecureUser, HasGuid{
 	public boolean isLocked(){
 		return STATUS_LOCKED.equals(getStatus());
 	}
+	
 
 	/**
 	 * Utility function to search for a specific privileges value. 
@@ -493,13 +507,7 @@ public class Person implements SecureUser, HasGuid{
 	 */
 	@Transient
 	public List<String> getFilteredTagIds(){
-		List<String> filteredTagIds = new ArrayList<String>();
-		
-		if(!isNwsEnabled())
-			filteredTagIds.add(UserService.getInstance().getNwsTagId());
-		if(!getHasPrivateAccess())
-			filteredTagIds.add(UserService.getInstance().getPrivateTagId());
-		return filteredTagIds;
+		throw new RuntimeException("Users cant filter on tags yet. Please implement");
 	}
 	
 	/**
@@ -515,7 +523,7 @@ public class Person implements SecureUser, HasGuid{
 		}
 		if(!isNwsEnabled())
 			filteredTagIds.add(UserService.getInstance().getNwsTagId());
-		if(!getHasPrivateAccess())
+		if(!isPrivateAccessAccount())
 			filteredTagIds.add(UserService.getInstance().getPrivateTagId());
 		return filteredTagIds;
 	}
@@ -586,18 +594,7 @@ public class Person implements SecureUser, HasGuid{
 		else
 			return hasPrivilege(Privilege.POST);
 	} 
-	@Transient
-	public boolean getHasPrivateAccess(){
-		if(isAdministrator()) return true;
-		else
-			return hasPrivilege(Privilege.PRIVATE);
-	}
-	@Transient
-	public boolean getHasVotingPrivilege(){
-		if(isAdministrator()) return true;
-		else
-			return hasPrivilege(Privilege.VOTER);
-	}
+	
 	
 	public final static int VALUE_DEFAULT_NUM_COMMENTS_FRONTPAGE = 20;
 	public final static int VALUE_DEFAULT_NUM_COMMENTS_PERTHREAD = 50;
@@ -628,9 +625,5 @@ public class Person implements SecureUser, HasGuid{
 		}
 		Hibernate.initialize(privileges);
 	}
-
-	
-
-	
 	
 }

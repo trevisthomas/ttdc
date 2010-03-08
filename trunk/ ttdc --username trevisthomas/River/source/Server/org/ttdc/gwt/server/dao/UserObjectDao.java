@@ -116,7 +116,11 @@ public class UserObjectDao {
 		try{
 			if(enabled){
 				if(!person.isNwsEnabled()){
-					updateUserSetting(person, UserObject.TYPE_ENABLE_NWS, InitConstants.NWS_TAG_ID);
+					//NWS is nolonger a tag. The value used to be the guid but i dont think that it
+					//was ever used as an id.  isNwsEnabled on person just checks to see if a tag
+					//of this type exists. A better solution would probably be to let Person have a bit
+					//field.
+					updateUserSetting(person, UserObject.TYPE_ENABLE_NWS, UserObject.TYPE_ENABLE_NWS);
 				}
 			}
 			else{

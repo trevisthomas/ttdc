@@ -1,29 +1,28 @@
 package org.ttdc.gwt.server.dao;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.ttdc.persistence.Persistence.beginSession;
+import static org.ttdc.persistence.Persistence.commit;
+import static org.ttdc.persistence.Persistence.rollback;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import junit.framework.Assert;
 
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.ttdc.gwt.client.beans.GPost;
-import org.ttdc.gwt.client.constants.TagConstants;
-
-import org.ttdc.gwt.shared.commands.types.SortDirection;
+import org.ttdc.gwt.server.beanconverters.FastPostBeanConverter;
 import org.ttdc.gwt.shared.commands.types.SortBy;
+import org.ttdc.gwt.shared.commands.types.SortDirection;
 import org.ttdc.gwt.shared.util.PaginatedList;
 import org.ttdc.persistence.objects.AssociationPostTag;
-import org.ttdc.persistence.objects.Person;
 import org.ttdc.persistence.objects.Post;
-
-import static org.ttdc.gwt.server.dao.Helpers.*;
-import static org.ttdc.persistence.Persistence.beginSession;
-import static org.ttdc.persistence.Persistence.commit;
-import static org.ttdc.persistence.Persistence.rollback;
-
-import static org.junit.Assert.*;
 
 public class MovieDaoTest {
 	private final static Logger log = Logger.getLogger(MovieDaoTest.class);
@@ -43,20 +42,18 @@ public class MovieDaoTest {
 		log.info("post count: "+Post.iCount);
 	}
 	private void dumpTitleWithAverageRating(PaginatedList<Post> results) {
-		Inflatinator inf = new Inflatinator(results.getList());
-		for(GPost p : inf.extractPosts()){
-			log.debug(p.loadTagAssociation(TagConstants.TYPE_RELEASE_YEAR).getTag().getValue() 
-				+" "+	p.getTitle() 
-				+" "+p.loadTagAssociation(TagConstants.TYPE_AVERAGE_RATING).getTag().getValue()
-				);
+		List<GPost> posts = FastPostBeanConverter.convertPosts(results.getList());
+		for(GPost p : posts){
+			log.debug(p.getPublishYear() + " " +p.getTitle() + p.getAvgRatingTag());
 		}
 	}
 	
 	private void dumpTitleWithRatingBy(PaginatedList<Post> results, String personId) {
-		Inflatinator inf = new Inflatinator(results.getList());
-		for(GPost p : inf.extractPosts()){
-			log.debug(p.loadTagAssociation(TagConstants.TYPE_RELEASE_YEAR).getTag().getValue() 
-					+" "+p.getTitle() +" "+p.loadTagAssociationByPerson(TagConstants.TYPE_RATING,personId).getTag().getValue());
+		//Inflatinator inf = new Inflatinator(results.getList());
+		List<GPost> posts = FastPostBeanConverter.convertPosts(results.getList());
+		for(GPost p : posts){
+			log.debug(p.getPublishYear() 
+					+" "+p.getTitle() +" "+p.getRatingByPerson(personId).getTag().getValue());
 		}
 	}
 	
@@ -146,6 +143,10 @@ public class MovieDaoTest {
 			
 			assertTrue(results.getList().size() > 0);
 			dumpTitleWithRatingBy(results,Helpers.personIdTrevis);
+			for(Post p : results.getList()){
+				Assert.assertEquals("Wrong creator",Helpers.personIdTrevis,p.getCreator().getPersonId());
+				
+			}
 			
 			commit();
 		}

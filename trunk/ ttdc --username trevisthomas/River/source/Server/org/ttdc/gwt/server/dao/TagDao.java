@@ -9,7 +9,6 @@ import org.apache.log4j.Logger;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.ttdc.gwt.shared.util.StringUtil;
-import org.ttdc.persistence.objects.Person;
 import org.ttdc.persistence.objects.Tag;
 import org.ttdc.util.StringTools;
 
@@ -19,7 +18,6 @@ public class TagDao {
 	private String type;
 	private String value;
 	private String description;
-	private Person creator;
 	private Date date;
 	
 	private String orderBy = "mass";
@@ -49,29 +47,6 @@ public class TagDao {
 		return tag;
 	}
 	
-	/**
-	 * Specialized loader which doesnt check value at all.  (We need to remove the value from creator tags)
-	 * @return
-	 */
-	
-//	@SuppressWarnings("unchecked")
-//	private Tag loadCreatorTag(){
-//		List<Tag> list = session().createCriteria(Tag.class)
-//		.add(Restrictions.eq("creator.personId", creator.getPersonId()))
-//		.add(Restrictions.eq("type", Tag.TYPE_CREATOR))
-//		.list();
-//		
-//		Tag tag;
-//		if(list.size() == 0){
-//			tag = null;
-//		}
-//		else{
-//			tag = (Tag)list.get(0);
-//		}
-//		
-//		return tag;
-//	}
-	
 	@SuppressWarnings("unchecked")
 	public List<Tag> loadList(){
 		Order order = null;
@@ -91,7 +66,6 @@ public class TagDao {
 	}
 	
 	public static Tag loadCreatorTag(String personId){
-		//tag.getCreatorTag
 		return (Tag)session().createCriteria(Tag.class)
 		.add(Restrictions.eq("creator.personId", personId))
 		.add(Restrictions.eq("type", "CREATOR")).uniqueResult();
@@ -101,10 +75,8 @@ public class TagDao {
 		try{
 			log.debug("Trying to create or load the requested tag");
 			Tag tag;
-			if(Tag.TYPE_CREATOR.equals(getType()))
-				tag = loadCreatorTag(creator.getPersonId());
-			else
-				tag = load();
+			tag = load();
+			
 			if(tag == null){
 				log.debug("Tag not found creating.");
 				tag = create();
@@ -124,7 +96,6 @@ public class TagDao {
 	public Tag create(){
 		Tag tag = new Tag();
 		validateForCreation();
-		tag.setCreator(creator);
 		tag.setType(type);
 		tag.setValue(value);
 		tag.setSortValue(StringTools.formatTitleForSort(value));
@@ -136,7 +107,7 @@ public class TagDao {
 	}
 
 	private void validateForCreation() {
-		if(creator == null || StringUtil.empty(type) || StringUtil.empty(value) || StringUtil.empty(value))
+		if(StringUtil.empty(type) || StringUtil.empty(value) || StringUtil.empty(value))
 			throw new RuntimeException("Invalid parameters for creation.");
 	}
 
@@ -162,14 +133,6 @@ public class TagDao {
 
 	public void setDescription(String description) {
 		this.description = description.trim();
-	}
-
-	public Person getCreator() {
-		return creator;
-	}
-
-	public void setCreator(Person creator) {
-		this.creator = creator;
 	}
 
 	public String getOrderBy() {

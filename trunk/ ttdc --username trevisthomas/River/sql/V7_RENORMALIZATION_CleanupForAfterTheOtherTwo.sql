@@ -26,3 +26,4 @@ delete from tag where type in ('RATABLE',
 --'RATING'
 --'TOPIC'
 --'AVERAGE_RATING'
+

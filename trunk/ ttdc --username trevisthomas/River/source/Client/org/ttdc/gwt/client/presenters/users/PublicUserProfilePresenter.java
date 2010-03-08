@@ -158,7 +158,7 @@ public class PublicUserProfilePresenter extends BasePagePresenter<PublicUserProf
 		SearchPostsCommand cmd = new SearchPostsCommand();
 		//cmd.setConversationsOnly(true);
 		cmd.setPostSearchType(PostSearchType.CONVERSATIONS);
-		cmd.addTagId(person.getCreatorTagId());
+		cmd.setPersonId(person.getPersonId());
 		cmd.setPageSize(10);
 		if(PresenterHelpers.isWidgetEmpty(view.latestConversationsPanel()))
 			injector.getService().execute(cmd, buildPostListCallback(view.latestConversationsPanel(),person.getLogin()+ " hasn't started any conversations."));
@@ -166,7 +166,7 @@ public class PublicUserProfilePresenter extends BasePagePresenter<PublicUserProf
 
 	public void buildLatestPostsTab() {
 		SearchPostsCommand cmd = new SearchPostsCommand();
-		cmd.addTagId(person.getCreatorTagId());
+		cmd.setPersonId(person.getPersonId());
 		cmd.setNonReviewsOnly(true);
 		cmd.setPageSize(10);	
 		if(PresenterHelpers.isWidgetEmpty(view.latestPostsPanel()))
@@ -176,7 +176,7 @@ public class PublicUserProfilePresenter extends BasePagePresenter<PublicUserProf
 
 	public void buildLatestReviewsTab() {
 		SearchPostsCommand cmd = new SearchPostsCommand();
-		cmd.addTagId(person.getCreatorTagId());
+		cmd.setPersonId(person.getPersonId());
 		cmd.setReviewsOnly(true);
 		cmd.setPageSize(10);	
 		if(PresenterHelpers.isWidgetEmpty(view.latestReviewsPanel()))

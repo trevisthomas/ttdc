@@ -203,32 +203,32 @@ public class Helpers {
 	}
 	
 	
-	public static void assertPostDateTagsCorrect(Post post) {
-		//Tag check
-		Calendar cal = GregorianCalendar.getInstance();
-		cal.setTime(post.getDate());
-		
-		String tagName = Tag.TYPE_DATE_DAY;
-		String expected = ""+cal.get(GregorianCalendar.DAY_OF_MONTH);
-		assertPostTagged(post, tagName, expected);
-		
-		tagName = Tag.TYPE_DATE_MONTH;
-		expected = CalendarBuilder.getMonthName(cal.get(GregorianCalendar.MONTH)+1);
-		assertPostTagged(post, tagName, expected);
-		
-		tagName = Tag.TYPE_DATE_YEAR;
-		expected = ""+cal.get(GregorianCalendar.YEAR);
-		assertPostTagged(post, tagName, expected);
-		
-		tagName = Tag.TYPE_WEEK_OF_YEAR;
-		expected = ""+cal.get(GregorianCalendar.WEEK_OF_YEAR);
-		assertPostTagged(post, tagName, expected);
-	}
-	
-	
-	public static void assertPostTagged(Post post, String tagName, String expectedValue) {
-		AssociationPostTag association = post.loadTagAssociation(tagName);
-		assertNotNull(tagName + " does not exist",association);
-		assertEquals(expectedValue,association.getTag().getValue());
-	}
+//	public static void assertPostDateTagsCorrect(Post post) {
+//		//Tag check
+//		Calendar cal = GregorianCalendar.getInstance();
+//		cal.setTime(post.getDate());
+//		
+//		String tagName = Tag.TYPE_DATE_DAY;
+//		String expected = ""+cal.get(GregorianCalendar.DAY_OF_MONTH);
+//		assertPostTagged(post, tagName, expected);
+//		
+//		tagName = Tag.TYPE_DATE_MONTH;
+//		expected = CalendarBuilder.getMonthName(cal.get(GregorianCalendar.MONTH)+1);
+//		assertPostTagged(post, tagName, expected);
+//		
+//		tagName = Tag.TYPE_DATE_YEAR;
+//		expected = ""+cal.get(GregorianCalendar.YEAR);
+//		assertPostTagged(post, tagName, expected);
+//		
+//		tagName = Tag.TYPE_WEEK_OF_YEAR;
+//		expected = ""+cal.get(GregorianCalendar.WEEK_OF_YEAR);
+//		assertPostTagged(post, tagName, expected);
+//	}
+//	
+//	
+//	public static void assertPostTagged(Post post, String tagName, String expectedValue) {
+//		AssociationPostTag association = post.loadTagAssociation(tagName);
+//		assertNotNull(tagName + " does not exist",association);
+//		assertEquals(expectedValue,association.getTag().getValue());
+//	}
 }

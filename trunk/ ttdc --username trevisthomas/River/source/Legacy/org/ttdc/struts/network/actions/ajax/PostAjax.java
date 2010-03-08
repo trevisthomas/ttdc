@@ -78,7 +78,7 @@ public class PostAjax extends ActionSupport implements SecurityAware {
 					transientPost.setImageUrl(post.getImage().getName());
 				
 				if(post.isMovie()){
-					transientPost.setYear(post.getReleaseYear());
+//					transientPost.setYear(post.getReleaseYear());
 					return "edit-movie";
 				}
 				else{
@@ -95,8 +95,8 @@ public class PostAjax extends ActionSupport implements SecurityAware {
 				}
 				
 				post = CommentService.getInstance().createPost(person, guid, body);
-				post.setExpanded(true);
-				post.setHidden(false);
+//				post.setExpanded(true);
+//				post.setHidden(false);
 				//post.setNewPost(true);
 				//return "updated";//Or reply
 				posts = new ArrayList<Post>();
@@ -159,7 +159,7 @@ public class PostAjax extends ActionSupport implements SecurityAware {
 			}
 			else if(action.equals("expand")){
 				post = CommentService.getInstance().readPost(guid,person);
-				post.setExpanded(true);
+//				post.setExpanded(true);
 				posts = new ArrayList<Post>();
 				posts.add(post);
 				return "single";
@@ -167,7 +167,7 @@ public class PostAjax extends ActionSupport implements SecurityAware {
 			else if(action.equals("contract")){
 				//post = CommentService.getInstance().readPost(guid,frontPage,person);
 				post = CommentService.getInstance().readPost(guid,person);
-				post.setExpanded(false);
+//				post.setExpanded(false);
 				posts = new ArrayList<Post>();
 				posts.add(post);
 				return "single";

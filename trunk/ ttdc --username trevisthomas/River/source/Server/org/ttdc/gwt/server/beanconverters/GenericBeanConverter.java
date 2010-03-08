@@ -115,9 +115,9 @@ public class GenericBeanConverter {
 	
 	public static GTag convertTag(Tag t){
 		GTag rpcTag = new GTag();
-		rpcTag.setCreator(convertPerson(t.getCreator()));
+//		rpcTag.setCreator(convertPerson(t.getCreator()));
 		rpcTag.setDate(t.getDate());
-		rpcTag.setDescription(t.getDescription());
+//		rpcTag.setDescription(t.getDescription());
 		rpcTag.setTagId(t.getTagId());
 		rpcTag.setType(t.getType());
 		rpcTag.setValue(t.getValue());

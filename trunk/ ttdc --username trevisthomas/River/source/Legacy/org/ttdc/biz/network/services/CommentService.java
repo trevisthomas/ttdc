@@ -197,24 +197,24 @@ public final class CommentService {
 				p.setImage(image);
 			session.update(p);
 			
-			AssociationPostTag ass = p.loadTitleTagAssociation();
-			if(updateTag(ass,tp.getTitle())){
-				ass = p.loadTagAssociation(Tag.TYPE_SORT_TITLE);
-				updateTag(ass,StringTools.formatTitleForSort(tp.getTitle()));
-			}
-			ass = p.loadTagAssociation(Tag.TYPE_URL);
-			updateTag(ass,tp.getUrl());
-			
-			ass = p.loadTagAssociation(Tag.TYPE_RELEASE_YEAR);
-			updateTag(ass,tp.getYear().toString());
-			
-			//Trevis, should probably validate updates
-			Persistence.commit();
-			
-			session = Persistence.beginSession();
-			p = (Post)session.load(Post.class,postId);
-			p.initialize();
-			p.setHidden(false);
+//			AssociationPostTag ass = p.loadTitleTagAssociation();
+//			if(updateTag(ass,tp.getTitle())){
+//				ass = p.loadTagAssociation(Tag.TYPE_SORT_TITLE);
+//				updateTag(ass,StringTools.formatTitleForSort(tp.getTitle()));
+//			}
+//			ass = p.loadTagAssociation(Tag.TYPE_URL);
+//			updateTag(ass,tp.getUrl());
+//			
+//			ass = p.loadTagAssociation(Tag.TYPE_RELEASE_YEAR);
+//			updateTag(ass,tp.getYear().toString());
+//			
+//			//Trevis, should probably validate updates
+//			Persistence.commit();
+//			
+//			session = Persistence.beginSession();
+//			p = (Post)session.load(Post.class,postId);
+//			p.initialize();
+//			p.setHidden(false);
 			
 			Persistence.commit();
 			
@@ -321,20 +321,20 @@ public final class CommentService {
 				//findOrCreateTag(p, tp.getTitle(), Tag.TYPE_TOPIC, creator, now);
 				findOrCreateTag(p, tp.getTitle(), Tag.TYPE_TOPIC, creator, now, true);
 			}
-			findOrCreateTag(p,creator.getLogin(), Tag.TYPE_CREATOR, creator, now);
-			
-			if(type.equals("movie")){
-				findOrCreateTag(p, StringTools.formatTitleForSort(tp.getTitle()), Tag.TYPE_SORT_TITLE, creator, now);
-				findOrCreateTag(p, Tag.TYPE_MOVIE, Tag.TYPE_MOVIE, creator, now);
-				findOrCreateTag(p, Tag.TYPE_RATABLE, Tag.TYPE_RATABLE, creator, now);
-				if(tp.getUrl().length() > 0)
-					findOrCreateTag(p, tp.getUrl(), Tag.TYPE_URL, creator, now);
-				else
-					throw new ServiceException("Url is required for movies.");
-				
-				findOrCreateTag(p, ""+tp.getYear(), Tag.TYPE_RELEASE_YEAR, creator, now);
-			}
-			
+//			findOrCreateTag(p,creator.getLogin(), Tag.TYPE_CREATOR, creator, now);
+//			
+//			if(type.equals("movie")){
+//				findOrCreateTag(p, StringTools.formatTitleForSort(tp.getTitle()), Tag.TYPE_SORT_TITLE, creator, now);
+//				findOrCreateTag(p, Tag.TYPE_MOVIE, Tag.TYPE_MOVIE, creator, now);
+//				findOrCreateTag(p, Tag.TYPE_RATABLE, Tag.TYPE_RATABLE, creator, now);
+//				if(tp.getUrl().length() > 0)
+//					findOrCreateTag(p, tp.getUrl(), Tag.TYPE_URL, creator, now);
+//				else
+//					throw new ServiceException("Url is required for movies.");
+//				
+//				findOrCreateTag(p, ""+tp.getYear(), Tag.TYPE_RELEASE_YEAR, creator, now);
+//			}
+//			
 			Persistence.commit();
 			
 			setLatestPostId(postId);
@@ -368,11 +368,11 @@ public final class CommentService {
 		else if(list.size() == 1)
 			return list.get(0);
 		else{
-			for(Post p : list){
-				if(!p.hasTagAssociation(Tag.TYPE_MOVIE)){
-					return p;
-				}
-			}
+//			for(Post p : list){
+//				if(!p.hasTagAssociation(Tag.TYPE_MOVIE)){
+//					return p;
+//				}
+//			}
 		} 
 		return null;
 			
@@ -429,12 +429,12 @@ public final class CommentService {
 			if(post == null){
 				throw new ServiceException("Post not found");
 			}
-			String tagValue = person.getPersonId();
-			Query query = session.getNamedQuery("tag.getByValueAndType");
-			Tag t = (Tag)query.setString("value", tagValue).setString("type",Tag.TYPE_EARMARK).uniqueResult();
-			
-			if(!post.containsTag(t))
-				findOrCreateTag(post, tagValue, Tag.TYPE_EARMARK, person, new Date());
+//			String tagValue = person.getPersonId();
+//			Query query = session.getNamedQuery("tag.getByValueAndType");
+//			Tag t = (Tag)query.setString("value", tagValue).setString("type",Tag.TYPE_EARMARK).uniqueResult();
+//			
+//			if(!post.containsTag(t))
+//				findOrCreateTag(post, tagValue, Tag.TYPE_EARMARK, person, new Date());
 			
 			return post;
 		}
@@ -459,8 +459,8 @@ public final class CommentService {
 			Tag tag = null;
 			Session session = Persistence.beginSession();
 			
-			Query query = session.getNamedQuery("tag.getByValueAndType");
-			tag = (Tag)query.setString("value", person.getPersonId()).setString("type",Tag.TYPE_EARMARK).uniqueResult();
+//			Query query = session.getNamedQuery("tag.getByValueAndType");
+//			tag = (Tag)query.setString("value", person.getPersonId()).setString("type",Tag.TYPE_EARMARK).uniqueResult();
 			return tag;
 		}
 		catch(Throwable t){
@@ -488,11 +488,11 @@ public final class CommentService {
 				throw new ServiceException("Post not found");
 			}
 
-			List<AssociationPostTag> asses = post.loadTagAssociations(Tag.TYPE_DISPLAY);
+//			List<AssociationPostTag> asses = post.loadTagAssociations(Tag.TYPE_DISPLAY);
 			List<String> guids = new ArrayList<String>();
-			for(AssociationPostTag ass : asses){
-				guids.add(ass.getGuid());
-			}
+//			for(AssociationPostTag ass : asses){
+//				guids.add(ass.getGuid());
+//			}
 			
 			if(guids.size() > 0){
 				Query query = session.getNamedQuery("ass.deleteByIds").setParameterList("guids", guids);
@@ -500,25 +500,25 @@ public final class CommentService {
 				post = (Post)session.load(Post.class,postId); 
 			}
 			
-			if(Tag.VALUE_INF.equals(tagValue)){
-				findOrCreateTag(post, Tag.VALUE_INF, Tag.TYPE_DISPLAY, creator, new Date());
-			}
-			else if(Tag.VALUE_NWS.equals(tagValue)){
-				findOrCreateTag(post, Tag.VALUE_NWS, Tag.TYPE_DISPLAY, creator, new Date());
-			}
-			else if(Tag.VALUE_PRIVATE.equals(tagValue)){
-				findOrCreateTag(post, Tag.VALUE_PRIVATE, Tag.TYPE_DISPLAY, creator, new Date());
-				//recursiveTag(post.getPosts(), t, creator); // All children of a private post should also be private
-			}
-			else if(Tag.VALUE_DELETED.equals(tagValue)){
-				findOrCreateTag(post, Tag.VALUE_DELETED, Tag.TYPE_DISPLAY, creator, new Date());
-			}
-			else if(Tag.VALUE_LOCKED.equals(tagValue)){
-				findOrCreateTag(post, Tag.VALUE_LOCKED, Tag.TYPE_DISPLAY, creator, new Date());
-			}
-			else{
-				//All have been cleared
-			}
+//			if(Tag.VALUE_INF.equals(tagValue)){
+//				findOrCreateTag(post, Tag.VALUE_INF, Tag.TYPE_DISPLAY, creator, new Date());
+//			}
+//			else if(Tag.VALUE_NWS.equals(tagValue)){
+//				findOrCreateTag(post, Tag.VALUE_NWS, Tag.TYPE_DISPLAY, creator, new Date());
+//			}
+//			else if(Tag.VALUE_PRIVATE.equals(tagValue)){
+//				findOrCreateTag(post, Tag.VALUE_PRIVATE, Tag.TYPE_DISPLAY, creator, new Date());
+//				//recursiveTag(post.getPosts(), t, creator); // All children of a private post should also be private
+//			}
+//			else if(Tag.VALUE_DELETED.equals(tagValue)){
+//				findOrCreateTag(post, Tag.VALUE_DELETED, Tag.TYPE_DISPLAY, creator, new Date());
+//			}
+//			else if(Tag.VALUE_LOCKED.equals(tagValue)){
+//				findOrCreateTag(post, Tag.VALUE_LOCKED, Tag.TYPE_DISPLAY, creator, new Date());
+//			}
+//			else{
+//				//All have been cleared
+//			}
 			
 			return post;
 		}
@@ -625,16 +625,16 @@ public final class CommentService {
 			
 			postId = p.getPostId();
 			
-			tagCalenderInfo(p, creator);
-			findOrCreateTag(p,creator.getLogin(), Tag.TYPE_CREATOR, creator, now);
-			
-			if(parent.isPrivate()){
-				//If the parent is private, replies should also be private
-				findOrCreateTag(p, Tag.VALUE_PRIVATE, Tag.TYPE_DISPLAY, creator, now);
-			}
-			
-			if(parent.isReviewable())
-				findOrCreateTag(p, Tag.TYPE_REVIEW,Tag.TYPE_REVIEW, creator, now);
+//			tagCalenderInfo(p, creator);
+//			findOrCreateTag(p,creator.getLogin(), Tag.TYPE_CREATOR, creator, now);
+//			
+//			if(parent.isPrivate()){
+//				//If the parent is private, replies should also be private
+//				findOrCreateTag(p, Tag.VALUE_PRIVATE, Tag.TYPE_DISPLAY, creator, now);
+//			}
+//			
+//			if(parent.isReviewable())
+//				findOrCreateTag(p, Tag.TYPE_REVIEW,Tag.TYPE_REVIEW, creator, now);
 			
 			//p.getRoot().initialize(); //Trevis: you do this because some views want to show the root thread title!
 			
@@ -644,13 +644,13 @@ public final class CommentService {
 			session = Persistence.beginSession();
 			query = session.getNamedQuery("post.getByPostId").setString("postId", p.getPostId());
 			p = (Post)query.uniqueResult();
-			p.initialize();
+//			p.initialize();
 //			if(p.getRoot().isMovie())
 //				PostHelper.initializePosts(p.getRoot().getReviews()); //Init reviews always
 			
 			query = session.getNamedQuery("post.getByPostId").setString("postId", p.getParent().getPostId());
 			parent = (Post)query.uniqueResult();
-			parent.initialize();
+//			parent.initialize();
 			
 			
 
@@ -683,7 +683,7 @@ public final class CommentService {
 		Tag t = (Tag)query.setString("value", value).setString("type",type).uniqueResult();
 		if(t == null){
 			t = new Tag();
-			t.setCreator(creator);
+//			t.setCreator(creator);
 			t.setDate(date);
 			t.setType(type);
 			t.setValue(value);
@@ -718,11 +718,11 @@ public final class CommentService {
 	 * @param creator
 	 */
 	private void tagCalenderInfo(Post post, Person creator){
-		Calendar cal = GregorianCalendar.getInstance();
-		cal.setTime(post.getDate());
-		findOrCreateTag(post, ""+cal.get(GregorianCalendar.DAY_OF_MONTH), Tag.TYPE_DATE_DAY, creator , post.getDate());
-		findOrCreateTag(post, HTMLCalendar.getMonthName(cal.get(GregorianCalendar.MONTH)+1), Tag.TYPE_DATE_MONTH, creator , post.getDate());
-		findOrCreateTag(post, ""+cal.get(GregorianCalendar.YEAR), Tag.TYPE_DATE_YEAR, creator , post.getDate());
+//		Calendar cal = GregorianCalendar.getInstance();
+//		cal.setTime(post.getDate());
+//		findOrCreateTag(post, ""+cal.get(GregorianCalendar.DAY_OF_MONTH), Tag.TYPE_DATE_DAY, creator , post.getDate());
+//		findOrCreateTag(post, HTMLCalendar.getMonthName(cal.get(GregorianCalendar.MONTH)+1), Tag.TYPE_DATE_MONTH, creator , post.getDate());
+//		findOrCreateTag(post, ""+cal.get(GregorianCalendar.YEAR), Tag.TYPE_DATE_YEAR, creator , post.getDate());
 	}
 	
 	/**
@@ -813,8 +813,8 @@ public final class CommentService {
 			if(person != null && !person.isAnonymous())
 				InboxService.getInstance().flagUnreadPosts(person,post);
 			*/		
-			post.initialize();
-			post.setHidden(false);
+//			post.initialize();
+//			post.setHidden(false);
 			if(person != null && !person.isAnonymous())
 				InboxService.getInstance().flagUnreadPost(person,post);
 			Persistence.commit();
@@ -931,9 +931,9 @@ public final class CommentService {
 				}
 				*/
 				
-				if(decorateLatest && p.equals(post.getRoot()) && pc.getCount() > POST_THRESHOLD){
-					p.setPostCounter(pc); //Dont set this for a full thread view
-				}
+//				if(decorateLatest && p.equals(post.getRoot()) && pc.getCount() > POST_THRESHOLD){
+//					p.setPostCounter(pc); //Dont set this for a full thread view
+//				}
 			}
 			
 			
@@ -963,9 +963,9 @@ public final class CommentService {
 			if(!person.isAnonymous())
 				InboxService.getInstance().flagUnreadPosts(person,temp);
 			*/
-			if(branch.isRootPost()){
-				branch.setExpanded(true);//Always expand root posts
-			}
+//			if(branch.isRootPost()){
+//				branch.setExpanded(true);//Always expand root posts
+//			}
 			Persistence.commit();
 			Post condensed = condense(branch);
 			
@@ -995,10 +995,10 @@ public final class CommentService {
 		assignDefaultRelativeAges(posts);
 	}
 	private void assignDefaultRelativeAges(List<Post> posts){
-		for(Post p : posts){
-			p.setRelativeAge(Post.RELATIVE_AGE_DEFAULT);
-			assignDefaultRelativeAges(p.getPosts());
-		}		
+//		for(Post p : posts){
+//			p.setRelativeAge(Post.RELATIVE_AGE_DEFAULT);
+//			assignDefaultRelativeAges(p.getPosts());
+//		}		
 	}
 	
 	private List<String> readPostIdsFromHierarchy(Post post){
@@ -1035,7 +1035,7 @@ public final class CommentService {
 	private void bloatedChildrenHelper(List<Post> posts, List<String> postIds){
 		for(Post p : posts){
 			postIds.add(p.getPostId());
-			Collections.sort(p.getPosts(),new Post.DateComparator());
+//			Collections.sort(p.getPosts(),new Post.DateComparator());
 			bloatedChildrenHelper(p.getPosts(),postIds);
 		}
 	}
@@ -1048,8 +1048,8 @@ public final class CommentService {
 	 */
 	private void setNewPostFlag(List<Post> posts, Date date){
 		for(Post p : posts){
-			if(p.getDate().getTime() >= date.getTime())
-				p.setNewPost(true);
+//			if(p.getDate().getTime() >= date.getTime())
+//				p.setNewPost(true);
 			setNewPostFlag(p.getPosts(), date);
 		}
 	}
@@ -1100,10 +1100,10 @@ public final class CommentService {
 	private List<Post> condense(List<Post> posts){
 		List<Post> condensed = new ArrayList<Post>();
 		for(Post p : posts){
-			if(!p.isHidden()){
-				condensed.add(p);
-				p.setPosts(condense(p.getPosts()));
-			}
+//			if(!p.isHidden()){
+//				condensed.add(p);
+//				p.setPosts(condense(p.getPosts()));
+//			}
 		}
 		return condensed;
 	}
@@ -1257,8 +1257,8 @@ public final class CommentService {
 			List<Post> bloatedRoots = new ArrayList<Post>();
 			for(Post p : allRootPosts){
 				if(bloatedRootIds.contains(p.getPostId())){
-					bloatedRoots.add(p);
-					p.setPostCounter(totalsMap.get(p.getPostId()));
+//					bloatedRoots.add(p);
+//					p.setPostCounter(totalsMap.get(p.getPostId()));
 				}
 			}
 			
@@ -1276,7 +1276,7 @@ public final class CommentService {
 			list = chooseRoots(list);
 			
 			expandRoots(list);
-			Collections.sort(list,new Post.ByReferenceComparator(latest));
+//			Collections.sort(list,new Post.ByReferenceComparator(latest));
 			/*
 			assignDefaultRelativeAges(list);
 			MedianCommentAgeUtil.assignPostRelativeAges(latest);
@@ -1438,25 +1438,25 @@ public final class CommentService {
 	private void expandLatestInHierarchy(List<Post> posts, List<Post> latest){
 		//All root level posts are expanded.
 		for(Post p : posts){
-			if(p.getParent() == null || latest.contains(p) ){
-				p.setExpanded(true);
-			}
+//			if(p.getParent() == null || latest.contains(p) ){
+//				p.setExpanded(true);
+//			}
 			expandLatestInHierarchy(p.getPosts(),latest);
 		}
 	}
 	
 	private void expandRoots(List<Post> posts){
 		for(Post p : posts){
-			if(p.getParent() == null){
-				p.setExpanded(true);
-			}
+//			if(p.getParent() == null){
+//				p.setExpanded(true);
+//			}
 		}
 	}
 	private void expandPost(List<Post> posts, String postId){
 		for(Post p : posts){
-			if(p.getPostId().equals(postId)){
-				p.setExpanded(true);
-			}
+//			if(p.getPostId().equals(postId)){
+//				p.setExpanded(true);
+//			}
 		}
 	}
 	

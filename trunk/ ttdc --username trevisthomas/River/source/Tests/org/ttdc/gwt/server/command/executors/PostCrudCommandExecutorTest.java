@@ -82,10 +82,8 @@ public class PostCrudCommandExecutorTest {
 			assertNotNull("Creator is null on the post object",post.getCreator());
 			assertEquals(Helpers.personIdTrevis,post.getCreator().getPersonId());
 			
-			AssociationPostTag ass = post.loadTitleTagAssociation();
-			assertNotNull("Post didnt get a title tag!",ass);
-			Tag titleTag = ass.getTag();
-			assertEquals("Six Flags",titleTag.getValue());
+			
+			assertEquals("Six Flags",post.getTitle());
 			
 			assertEquals("Parent reply count didn't increment. ",originalParentReplyCount+1,post.getParent().getReplyCount());
 			assertEquals("Mass on the root post didn't increment. ",originalRootMass+1,post.getRoot().getMass());
@@ -93,7 +91,7 @@ public class PostCrudCommandExecutorTest {
 
 			assertEquals("Thread Reply Date isnt set properly", post.getDate(), post.getThread().getThreadReplyDate());
 			
-			Helpers.assertPostDateTagsCorrect(post);
+//			Helpers.assertPostDateTagsCorrect(post);
 						
 			
 			//commit();
@@ -146,16 +144,15 @@ public class PostCrudCommandExecutorTest {
 			assertNotNull("Creator is null on the post object",post.getCreator());
 			assertEquals(Helpers.personIdTrevis,post.getCreator().getPersonId());
 			
-			AssociationPostTag ass = post.loadTitleTagAssociation();
-			assertNotNull("Post didnt get a title tag!",ass);
-			Tag titleTag = ass.getTag();
+			
+			Tag titleTag = post.getTitleTag();
 			assertEquals("Fallout 3",titleTag.getValue());
 			
 			assertEquals("Parent reply count didn't increment. ",originalParentReplyCount+1,post.getParent().getReplyCount());
 			assertEquals("Mass on the root post didn't increment. ",originalRootMass+1,post.getRoot().getMass());
 			assertTrue("Parent should be root, but it;s not",post.getParent().isRootPost());
 			
-			Helpers.assertPostDateTagsCorrect(post);
+//			Helpers.assertPostDateTagsCorrect(post);
 		}
 		catch(Exception e){
 			fail(e.getMessage());
@@ -210,17 +207,16 @@ public class PostCrudCommandExecutorTest {
 			assertNotNull("Creator is null on the post object",post.getCreator());
 			assertEquals(Helpers.personIdTrevis,post.getCreator().getPersonId());
 			
-			AssociationPostTag ass = post.loadTitleTagAssociation();
-			assertNotNull("Post didnt get a title tag!",ass);
-			Tag titleTag = ass.getTag();
+			Tag titleTag = post.getTitleTag();
 			assertEquals(title,titleTag.getValue());
 			assertEquals(title,titleTag.getSortValue());
 			
-			Helpers.assertPostDateTagsCorrect(post);
+//			Helpers.assertPostDateTagsCorrect(post);
 		}
 		catch(Exception e){
 			rollback();
 			fail(e.getMessage());
+			e.printStackTrace();
 		}	
 		finally{
 			rollback();
@@ -254,13 +250,13 @@ public class PostCrudCommandExecutorTest {
 			assertNotNull("Creator is null on the post object",post.getCreator());
 			assertEquals(Helpers.personIdTrevis,post.getCreator().getPersonId());
 			
-			AssociationPostTag ass = post.loadTitleTagAssociation();
-			assertNotNull("Post didnt get a title tag!",ass);
-			Tag titleTag = ass.getTag();
+//			AssociationPostTag ass = post.loadTitleTagAssociation();
+//			assertNotNull("Post didnt get a title tag!",ass);
+			Tag titleTag = post.getTitleTag();
 			assertEquals(title,titleTag.getValue());
 			assertEquals(title,titleTag.getSortValue());
 			
-			Helpers.assertPostDateTagsCorrect(post);
+//			Helpers.assertPostDateTagsCorrect(post);
 		}
 		catch(Exception e){
 			rollback();
@@ -402,6 +398,7 @@ public class PostCrudCommandExecutorTest {
 			
 		}
 		catch(Exception e){
+			e.printStackTrace();
 			fail(e.getMessage());
 		}	
 		finally{
@@ -534,10 +531,11 @@ public class PostCrudCommandExecutorTest {
 		Post postToBeMoved = PostDao.loadPost(postIdToBeMoved);
 		Post newRootPost = PostDao.loadPost(newRootPostId);
 		
-		Tag titleTag = postToBeMoved.loadTitleTagAssociation().getTag();
-		String titleTagId = titleTag.getTagId();
-		int originalOldTitleTagMass = titleTag.getMass();
-		int originalNewTitleTagMass = newRootPost.loadTitleTagAssociation().getTag().getMass();
+		//Tags dont have mass based on post replies anymore.  
+//		Tag titleTag = postToBeMoved.getTitleTag();
+//		String titleTagId = titleTag.getTagId();
+//		int originalOldTitleTagMass = titleTag.getMass();
+//		int originalNewTitleTagMass = newRootPost.getTitleTag().getMass();
 		
 		
 		Post conversationPost = postToBeMoved.getThread();
@@ -562,7 +560,7 @@ public class PostCrudCommandExecutorTest {
 		try{
 			beginSession();
 			Post post = cmdexec.reparent(cmd);
-			Tag newTitleTag = post.loadTitleTagAssociation().getTag();
+			Tag newTitleTag = post.getTitleTag();
 			String newTitle = post.getTitle();
 			assertEquals("Old root mass didnt reduce by the expected amount",oldRootMass - 3,PostDao.loadPost(oldRootPostId).getMass());
 			assertEquals("New root mass didnt grow by the expected amount",newRootPostMass + 3,PostDao.loadPost(newRootPostId).getMass());
@@ -584,8 +582,8 @@ public class PostCrudCommandExecutorTest {
 				assertEquals("Title is wrong", newTitle, p.getTitle()); 
 			}
 			
-			assertEquals("Old title mass didnt decrease!",originalOldTitleTagMass-3, TagDao.loadTag(titleTagId).getMass());
-			assertEquals("New title mass didnt increase!",originalNewTitleTagMass+3, newTitleTag.getMass());
+//			assertEquals("Old title mass didnt decrease!",originalOldTitleTagMass-3, TagDao.loadTag(titleTagId).getMass());
+//			assertEquals("New title mass didnt increase!",originalNewTitleTagMass+3, newTitleTag.getMass());
 			
 		}
 		catch(Exception e){

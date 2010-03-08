@@ -2,6 +2,8 @@ package org.ttdc.gwt.server.command;
 
 import static org.junit.Assert.*;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.junit.Test;
@@ -43,8 +45,16 @@ public class CalendarCommandTest {
 		assertEquals("Not the month i expected",5,d.getMonth());
 		assertTrue("Content content on 5/2/2008",d.isContent());
 		
-		List<String> tagIds = result.getCalendarTagIdList();
-		Helpers.assertEqualsOneOfExpected(tagIds, "C3A03265-D406-4701-84F2-9782E60B7CC1"); //2008
+//		List<String> tagIds = result.getCalendarTagIdList();
+//		Helpers.assertEqualsOneOfExpected(tagIds, "C3A03265-D406-4701-84F2-9782E60B7CC1"); //2008
+		
+		Calendar cal = new GregorianCalendar();
+		cal.set(y, 0, 1, 0, 0, 0);
+		assertEquals("Year start date is wrong",cal.getTime().toString(),result.getStartDate().toString());
+		cal = new GregorianCalendar();
+		cal.set(y+1, 0, 1, 0, 0, 0);		
+		assertEquals("Year end date is wrong",cal.getTime().toString(),result.getEndDate().toString());
+		
 		assertEquals(2009, result.getNextYear());
 		assertEquals(2007, result.getPrevYear());
 		
@@ -77,9 +87,16 @@ public class CalendarCommandTest {
 		assertEquals("Wrong day at index",25,d.getDay());
 		assertEquals("Jan 25 2008 doesnt have the expected number of active threads",18,d.getThreads().size());
 		
-		List<String> tagIds = result.getCalendarTagIdList();
-		Helpers.assertEqualsOneOfExpected(tagIds, "C3A03265-D406-4701-84F2-9782E60B7CC1"); //2008
-		Helpers.assertEqualsOneOfExpected(tagIds, "FDE20875-75E1-4D12-AF2B-BB17A83DB319"); //Month Jan
+//		List<String> tagIds = result.getCalendarTagIdList();
+//		Helpers.assertEqualsOneOfExpected(tagIds, "C3A03265-D406-4701-84F2-9782E60B7CC1"); //2008
+//		Helpers.assertEqualsOneOfExpected(tagIds, "FDE20875-75E1-4D12-AF2B-BB17A83DB319"); //Month Jan
+		
+		Calendar cal = new GregorianCalendar();
+		cal.set(y, mo-1, 1, 0, 0, 0);
+		assertEquals("Month start date is wrong",cal.getTime().toString(),result.getStartDate().toString());
+		cal = new GregorianCalendar();
+		cal.set(y, mo, 1, 0, 0, 0);
+		assertEquals("Month end date is wrong",cal.getTime().toString(),result.getEndDate().toString());
 		
 		assertEquals(2008, result.getNextYear());
 		assertEquals(2007, result.getPrevYear());
@@ -109,8 +126,15 @@ public class CalendarCommandTest {
 		assertEquals("Test hour didnt have the expected number of posts",7,week.getDays().get(0).getHour(19).getPosts().size());
 		
 		List<String> tagIds = result.getCalendarTagIdList();
-		Helpers.assertEqualsOneOfExpected(tagIds, "F4EA1844-EFBB-4903-8806-0AB1BF8B9E3D"); //2009
-		Helpers.assertEqualsOneOfExpected(tagIds, "A9D6F999-AB8E-4EFE-84B1-F74CD4A75A7D"); //Week 26
+//		Helpers.assertEqualsOneOfExpected(tagIds, "F4EA1844-EFBB-4903-8806-0AB1BF8B9E3D"); //2009
+//		Helpers.assertEqualsOneOfExpected(tagIds, "A9D6F999-AB8E-4EFE-84B1-F74CD4A75A7D"); //Week 26
+		
+		Calendar cal = new GregorianCalendar();
+		cal.set(y, 6-1, 21, 0, 0, 0);
+		assertEquals("Week start date is wrong",cal.getTime().toString(),result.getStartDate().toString());
+		cal = new GregorianCalendar();
+		cal.set(y, 6-1, 28, 0, 0, 0);
+		assertEquals("Week end date is wrong",cal.getTime().toString(),result.getEndDate().toString());
 		
 		assertEquals(2009, result.getNextYear());
 		assertEquals(2009, result.getPrevYear());
@@ -153,10 +177,17 @@ public class CalendarCommandTest {
 		
 		//2 posts at 1 am new years day 2008
 		assertEquals(2,day.getHour(1).getPosts().size());
-		List<String> tagIds = result.getCalendarTagIdList();
-		Helpers.assertEqualsOneOfExpected(tagIds, "C3A03265-D406-4701-84F2-9782E60B7CC1"); //2008
-		Helpers.assertEqualsOneOfExpected(tagIds, "FDE20875-75E1-4D12-AF2B-BB17A83DB319"); //Month Jan
-		Helpers.assertEqualsOneOfExpected(tagIds, "0DC3E731-470D-4F13-AF8B-4C9768C24ED6"); //Day 1
+//		List<String> tagIds = result.getCalendarTagIdList();
+//		Helpers.assertEqualsOneOfExpected(tagIds, "C3A03265-D406-4701-84F2-9782E60B7CC1"); //2008
+//		Helpers.assertEqualsOneOfExpected(tagIds, "FDE20875-75E1-4D12-AF2B-BB17A83DB319"); //Month Jan
+//		Helpers.assertEqualsOneOfExpected(tagIds, "0DC3E731-470D-4F13-AF8B-4C9768C24ED6"); //Day 1
+		
+		Calendar cal = new GregorianCalendar();
+		cal.set(y, mo-1, d, 0, 0, 0);
+		assertEquals("Day start date is wrong",cal.getTime().toString(),result.getStartDate().toString());
+		cal = new GregorianCalendar();
+		cal.set(y, mo-1, d+1, 0, 0, 0);
+		assertEquals("Day end date is wrong",cal.getTime().toString(),result.getEndDate().toString());
 		
 		assertEquals(2008, result.getNextYear());
 		assertEquals(2007, result.getPrevYear());

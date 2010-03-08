@@ -34,32 +34,17 @@ final public class TagSearchDao {
 	private String phrase;
 	private final List<String> unionTagIdList = new ArrayList<String>();
 	private final List<String> tagTypeFilters = new ArrayList<String>();
-	private final List<String> defaultTagTypeFilters = Collections.unmodifiableList(Arrays.asList(Tag.TYPE_TOPIC, Tag.TYPE_CREATOR, Tag.TYPE_DATE_MONTH, Tag.TYPE_DATE_YEAR));
+	private final List<String> defaultTagTypeFilters = Collections.unmodifiableList(Arrays.asList(Tag.TYPE_TOPIC));
 	private final List<String> excludeTagIdList = new ArrayList<String>();
 	private final StopWatch stopwatch = new StopWatch();
 	private boolean titlesOnly = false;
 	private boolean tagsOnly = false; // Ignores Title only tag associations.
 	private DateRange dateRange = null;
 	
-	private final List<String> allTagTypeFilters = Collections.unmodifiableList(Arrays.asList(Tag.TYPE_URL,
-			Tag.TYPE_EARMARK,
-			Tag.TYPE_RATABLE,
-			Tag.TYPE_LEGACY_THREAD,
-			Tag.TYPE_RELEASE_YEAR,
-			Tag.TYPE_MOVIE,
-			Tag.TYPE_REVIEW,
-			Tag.TYPE_SORT_TITLE,
-			Tag.TYPE_VISIBILITY,
-			Tag.TYPE_STATUS,
-			Tag.TYPE_DATE_DAY,
+	private final List<String> allTagTypeFilters = Collections.unmodifiableList(Arrays.asList(
 			Tag.TYPE_AVERAGE_RATING,
 			Tag.TYPE_RATING,
-			Tag.TYPE_DISPLAY,
-			Tag.TYPE_TOPIC, 
-			Tag.TYPE_CREATOR, 
-			Tag.TYPE_DATE_MONTH, 
-			Tag.TYPE_DATE_YEAR,
-			Tag.TYPE_WEEK_OF_YEAR));
+			Tag.TYPE_TOPIC));
 	
 
 	public PaginatedList<Tag> search(){

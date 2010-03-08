@@ -8,7 +8,6 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.ttdc.persistence.objects.Person;
 import org.ttdc.persistence.objects.Tag;
 
 import static org.ttdc.gwt.server.dao.Helpers.*;
@@ -23,22 +22,6 @@ public class TagDaoTest {
 			String tagId = "1FDCB845-0327-493A-AE41-5539334256E4";
 			Tag tag = TagDao.loadTag(tagId);
 			assertEquals("Wrong tag",tag.getValue(),"TTDC Version 6 Beta!");
-			commit();
-		}
-		catch(Exception e){
-			rollback();
-			fail(e.getMessage());
-		}
-	}
-	
-	@Test
-	public void loadCreatorTagTest(){
-		try{
-			beginSession();
-			
-			Tag tag = TagDao.loadCreatorTag(Helpers.personIdLinten);
-			
-			assertEquals("Wrong tag",tag.getTagId(),Helpers.tagLinten);
 			commit();
 		}
 		catch(Exception e){
@@ -119,12 +102,10 @@ public class TagDaoTest {
 			String type=Tag.TYPE_TOPIC;
 			String value=" TTDC Version 6 Beta! New ";
 			String personId = "50E7F601-71FD-40BD-9517-9699DDA611D6";
-			Person creator = PersonDao.loadPerson(personId);
 			
 			TagDao dao = new TagDao();
 			dao.setValue(value);
 			dao.setType(type);
-			dao.setCreator(creator);
 			
 			log.debug("Creating");
 			Tag tag = dao.create();
@@ -132,7 +113,7 @@ public class TagDaoTest {
 			
 			assertTagHasValueAndType(type, value.trim(), tag);
 			assertTrue("Tag has no id", StringUtils.isNotEmpty(tag.getTagId()));
-			assertNotNull("Tag has no creator", tag.getCreator());
+			
 			rollback();
 		}
 		catch(Exception e){
@@ -147,13 +128,9 @@ public class TagDaoTest {
 		try{
 			beginSession();
 			
-			String personId = "50E7F601-71FD-40BD-9517-9699DDA611D6";
-			Person creator = PersonDao.loadPerson(personId);
-			
 			TagDao dao = new TagDao();
 			dao.setValue(" TTDC Version 6 Beta! ");
 			dao.setType(Tag.TYPE_TOPIC);
-			dao.setCreator(creator);
 			
 			Tag tag = dao.createOrLoad();
 			assertEquals("Tag ID does not match expected tag ID",tag.getTagId(),"1FDCB845-0327-493A-AE41-5539334256E4");
@@ -171,21 +148,17 @@ public class TagDaoTest {
 		try{
 			beginSession();
 			
-			String personId = "50E7F601-71FD-40BD-9517-9699DDA611D6";
-			Person creator = PersonDao.loadPerson(personId);
 			String value = " TTDC Version 6 Beta! One that doesnt exist ";
 			String type = Tag.TYPE_TOPIC;
 			
 			TagDao dao = new TagDao();
 			dao.setValue(value);
 			dao.setType(type);
-			dao.setCreator(creator);
 			
 			Tag tag = dao.createOrLoad();
 			
 			assertTagHasValueAndType(type, value.trim(), tag);
 			assertTrue("Tag has no id", StringUtils.isNotEmpty(tag.getTagId()));
-			assertNotNull("Tag has no creator", tag.getCreator());
 			
 			rollback();
 		}
@@ -202,12 +175,12 @@ public class TagDaoTest {
 			beginSession();
 			
 			TagDao dao = new TagDao();
-			dao.setType(Tag.TYPE_CREATOR);
+			dao.setType(Tag.TYPE_RATING);
 			List<Tag> list = dao.loadList();
 			
 			for(Tag t : list){
 				log.info(t.getValue());
-				assertEquals(t.getType(), Tag.TYPE_CREATOR);
+				assertEquals(t.getType(), Tag.TYPE_RATING);
 			}
 			
 			commit();

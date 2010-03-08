@@ -23,6 +23,7 @@ public class SearchPostsCommand extends Command<SearchPostsCommandResult> implem
 	private boolean nonReviewsOnly = false;
 	private Date startDate;
 	private Date endDate;
+	private String personId;
 
 	private String rootId;
 	private String threadId;
@@ -197,6 +198,14 @@ public class SearchPostsCommand extends Command<SearchPostsCommandResult> implem
 
 	public void setPostSearchType(PostSearchType postSearchType) {
 		this.postSearchType = postSearchType;
+	}
+
+	public String getPersonId() {
+		return personId;
+	}
+
+	public void setPersonId(String personId) {
+		this.personId = personId;
 	}
 
 	

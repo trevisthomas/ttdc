@@ -1,5 +1,6 @@
 package org.ttdc.gwt.shared.commands.results;
 
+import java.util.Date;
 import java.util.List;
 
 import org.ttdc.gwt.client.services.CommandResult;
@@ -16,7 +17,7 @@ public class CalendarCommandResult implements CommandResult{
 	private Day day;
 	private List<String> calendarTagIdList;
 	
-	CalendarCommand.Scope scope;
+	private CalendarCommand.Scope scope;
 	
 	private int nextYear;
 	private int prevYear;
@@ -31,6 +32,9 @@ public class CalendarCommandResult implements CommandResult{
 	private int relevantMonthOfYear;
 	private int relevantWeekOfYear;
 	private int relevantDayOfMonth;
+	
+	private Date startDate;
+	private Date endDate;
 	
 	public Year getYear() {
 		return year;
@@ -140,4 +144,17 @@ public class CalendarCommandResult implements CommandResult{
 	public void setScope(CalendarCommand.Scope scope) {
 		this.scope = scope;
 	}
+	public Date getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+	public Date getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+	
 }

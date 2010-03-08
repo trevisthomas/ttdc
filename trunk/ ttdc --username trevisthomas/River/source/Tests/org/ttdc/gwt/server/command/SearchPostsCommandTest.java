@@ -1,4 +1,5 @@
 package org.ttdc.gwt.server.command;
+import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
@@ -14,17 +15,26 @@ import org.junit.Test;
 import org.ttdc.gwt.client.beans.GAssociationPostTag;
 import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.services.CommandResult;
+import org.ttdc.gwt.server.beanconverters.FastPostBeanConverter;
 import org.ttdc.gwt.server.command.CommandExecutor;
 import org.ttdc.gwt.server.command.CommandExecutorFactory;
 import org.ttdc.gwt.server.command.executors.SearchPostsCommandExecutor;
 import org.ttdc.gwt.server.dao.Helpers;
+import org.ttdc.gwt.server.dao.LatestPostsDao;
+import org.ttdc.gwt.server.dao.PersonDao;
+import org.ttdc.gwt.server.dao.PostSearchDao;
 
 import static org.ttdc.gwt.server.dao.Helpers.*;
+import static org.ttdc.persistence.Persistence.beginSession;
+import static org.ttdc.persistence.Persistence.commit;
+import static org.ttdc.persistence.Persistence.rollback;
 
 import org.ttdc.gwt.shared.commands.SearchPostsCommand;
 import org.ttdc.gwt.shared.commands.results.SearchPostsCommandResult;
+import org.ttdc.gwt.shared.commands.types.PostSearchType;
 import org.ttdc.gwt.shared.commands.types.SortType;
 import org.ttdc.gwt.shared.util.PaginatedList;
+import org.ttdc.persistence.Persistence;
 import org.ttdc.persistence.objects.AssociationPostTag;
 import org.ttdc.persistence.objects.Post;
 
@@ -79,33 +89,34 @@ public class SearchPostsCommandTest{
 		assertTrue("Found nothing, expected something",results.getTotalResults() > 0);
 		
 		for(GPost p : results.getList()){
-			assertTrue("Non root post was found!",p.isRootPost());
+//			assertTrue("Non root post was found!",p.isRootPost());
 			log.debug(p.getTitle());
+			assertTrue("Title \""+p.getTitle()+"\" didnt contain the search arg",p.getTitle().toLowerCase().contains(cmd.getPhrase()));
 		}
 	}
 	
-	@Test
-	public void serachForPostsWithNullTagList(){
-		SearchPostsCommand cmd = new SearchPostsCommand("morsels");
-		cmd.setTitleSearch(true);
-		cmd.setTagIdList(null);
-		
-		CommandExecutor cmdexec = CommandExecutorFactory.createExecutor(Helpers.personIdTrevis,cmd);
-		
-		assertTrue("Factory returned the wrong implementation", cmdexec instanceof SearchPostsCommandExecutor);
-		CommandResult result = cmdexec.executeCommand();
-		
-		assertNotNull("Command execution produced a null result", result);
-		
-		PaginatedList<GPost> results = ((SearchPostsCommandResult)result).getResults();
-		
-		assertTrue("Found nothing, expected something",results.getTotalResults() > 0);
-		
-		for(GPost p : results.getList()){
-			assertTrue("Non root post was found!",p.isRootPost());
-			log.debug(p.getTitle());
-		}
-	}
+//	@Test
+//	public void serachForPostsWithNullTagList(){
+//		SearchPostsCommand cmd = new SearchPostsCommand("morsels");
+//		cmd.setTitleSearch(true);
+//		cmd.setTagIdList(null);
+//		
+//		CommandExecutor cmdexec = CommandExecutorFactory.createExecutor(Helpers.personIdTrevis,cmd);
+//		
+//		assertTrue("Factory returned the wrong implementation", cmdexec instanceof SearchPostsCommandExecutor);
+//		CommandResult result = cmdexec.executeCommand();
+//		
+//		assertNotNull("Command execution produced a null result", result);
+//		
+//		PaginatedList<GPost> results = ((SearchPostsCommandResult)result).getResults();
+//		
+//		assertTrue("Found nothing, expected something",results.getTotalResults() > 0);
+//		
+//		for(GPost p : results.getList()){
+//			assertTrue("Non root post was found!",p.isRootPost());
+//			log.debug(p.getTitle());
+//		}
+//	}
 	
 	@Test
 	public void testPagination(){
@@ -132,11 +143,7 @@ public class SearchPostsCommandTest{
 		List<String> unionTags = new ArrayList<String>();
 		unionTags.add(tagGeneralStuff);
 		
-		List<String> excludeTags =  new ArrayList<String>();
-		excludeTags.add(tagTrevis);
-		
 		cmd.setTagIdList(unionTags);
-		cmd.setNotTagIdList(excludeTags);
 		
 		//cmd.setSortOrder(SortType.BY_DATE);
 		
@@ -149,7 +156,6 @@ public class SearchPostsCommandTest{
 		assertTrue("Found nothing, expected something",results.getTotalResults() > 0);
 		
 		assertTagged(results.getList(),tagGeneralStuff);
-		assertNotTagged(results.getList(),tagTrevis);
 		
 	}
 	
@@ -160,11 +166,11 @@ public class SearchPostsCommandTest{
 		List<String> unionTags = new ArrayList<String>();
 		unionTags.add(tagGeneralStuff);
 		
-		List<String> excludeTags =  new ArrayList<String>();
-		excludeTags.add(tagTrevis);
+//		List<String> excludeTags =  new ArrayList<String>();
+//		excludeTags.add(tagTrevis);
 		
 		cmd.setTagIdList(unionTags);
-		cmd.setNotTagIdList(excludeTags);
+//		cmd.setNotTagIdList(excludeTags);
 		//cmd.setSortOrder(SortType.BY_DATE); //Ignored for full text search
 		cmd.setPhrase("crap");
 		
@@ -177,7 +183,7 @@ public class SearchPostsCommandTest{
 		assertTrue("Found nothing, expected something",results.getTotalResults() > 0);
 		
 		assertTagged(results.getList(),tagGeneralStuff);
-		assertNotTagged(results.getList(),tagTrevis);
+//		assertNotTagged(results.getList(),tagTrevis);
 		assertEquals("Tagged 'General Stuff'",results.getPhrase());
 	}
 	
@@ -226,6 +232,40 @@ public class SearchPostsCommandTest{
 		assertRootId(Helpers.rootIdVersion6Live, results);
 		assertThreadId(cmd.getThreadId(), results);
 //		assertNotTagged(results.getList(),tagTrevis);
+	}
+	
+	@Test
+	public void browseConversationsByUser(){
+		try{
+			beginSession();
+			
+			PostSearchDao dao = new PostSearchDao();
+			
+			int currentPage = 1;
+			dao.setCurrentPage(currentPage);
+			String creatorId = personIdTrevis;
+			
+			dao.setPostSearchType(PostSearchType.CONVERSATIONS);
+			dao.setCreator(PersonDao.loadPerson(creatorId));
+			
+			PaginatedList<Post> results = dao.search();
+			
+			Helpers.printResults(results,log);
+			
+			assertTrue("Didnt find anything",results.getList().size() > 0);
+						
+			for(Post post : results.getList()){
+				assertTrue("Found a post that isnt a conversation starter",post.isThreadPost());
+			}
+			for(Post post : results.getList()){
+				assertEquals("Some other creator created this post. ",post.getCreator().getPersonId(),creatorId);
+			}
+			commit();
+		}
+		catch(Exception e){
+			rollback();
+			fail(e.getMessage());
+		}
 	}
 	
 	//The following are similar to the ones in helper but these use GPost inseatd

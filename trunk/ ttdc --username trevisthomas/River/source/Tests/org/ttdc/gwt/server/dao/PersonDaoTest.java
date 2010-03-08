@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 import org.ttdc.biz.network.services.UserService;
+import org.ttdc.gwt.shared.commands.types.SortBy;
 import org.ttdc.gwt.shared.util.PaginatedList;
 import org.ttdc.persistence.objects.Person;
 import org.ttdc.persistence.objects.Privilege;
@@ -44,6 +45,7 @@ public class PersonDaoTest {
 		beginSession();
 		PersonDao dao = new PersonDao();
 		dao.setActiveOnly(true);
+		dao.setSortBy(SortBy.BY_LOGIN);
 		PaginatedList<Person> results = dao.load();
 		assertTrue(results.getList().size() == 20); //Meaningless test
 		commit();

@@ -144,10 +144,10 @@ public final class WidgetService {
 			
 			query = session.getNamedQuery("post.getByPostIds").setParameterList("postIds", rootIds);
 			
-			for(Post p : posts){
-				p.initialize();	
-				p.setPostCounter(counters.get(p.getRoot().getPostId()));
-			}
+//			for(Post p : posts){
+//				p.initialize();	
+//				p.setPostCounter(counters.get(p.getRoot().getPostId()));
+//			}
 			
 			Persistence.commit();
 			return posts;
@@ -174,11 +174,11 @@ public final class WidgetService {
 			query = session.getNamedQuery("post.getByPostIds").setParameterList("postIds", rootIds);
 			
 			@SuppressWarnings("unchecked") List<Post> posts = query.list();
-			for(Post p : posts){
-				p.setPostCounter(counters.get(p.getPostId()));
-			}
-			
-			Collections.sort(posts,new Post.DateComparatorDesc());
+//			for(Post p : posts){
+//				p.setPostCounter(counters.get(p.getPostId()));
+//			}
+//			
+//			Collections.sort(posts,new Post.DateComparatorDesc());
 			
 			PostHelper.initializePosts(posts);
 			
@@ -209,11 +209,11 @@ public final class WidgetService {
 			query = session.getNamedQuery("post.getByPostIds").setParameterList("postIds", rootIds);
 			
 			@SuppressWarnings("unchecked") List<Post> posts = query.list();
-			for(Post p : posts){
-				p.setPostCounter(counters.get(p.getPostId()));
-			}
+//			for(Post p : posts){
+//				p.setPostCounter(counters.get(p.getPostId()));
+//			}
 			
-			Collections.sort(posts,new Post.PostCounterComparator());
+//			Collections.sort(posts,new Post.PostCounterComparator());
 			
 			PostHelper.initializePosts(posts);
 			

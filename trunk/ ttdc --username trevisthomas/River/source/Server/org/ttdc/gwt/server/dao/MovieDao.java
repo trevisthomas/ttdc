@@ -38,18 +38,18 @@ public class MovieDao extends PaginatedDaoBase{
 		if(StringUtil.notEmpty(personId)){
 			switch(sortDirection){
 				case DESC:
-					return executeQuery(this,"MovieDao.moviesSortedByTitleForPersonDesc",personId);
+					return executeQuery(this,"MovieDao.moviesSortedByTitleForPersonDesc","MovieDao.moviesRatedByPersonCount",personId);
 				case ASC:
-					return executeQuery(this,"MovieDao.moviesSortedByTitleForPerson",personId);
+					return executeQuery(this,"MovieDao.moviesSortedByTitleForPerson","MovieDao.moviesRatedByPersonCount",personId);
 				default: throw new RuntimeException("Un posible!");
 			}
 		}
 		else{
 			switch(sortDirection){
 				case DESC:
-					return executeQuery(this,"MovieDao.moviesSortedByTitleDesc");
+					return executeQuery(this,"MovieDao.moviesSortedByTitleDesc","MovieDao.moviesCount");
 				case ASC:
-					return executeQuery(this,"MovieDao.moviesSortedByTitle");
+					return executeQuery(this,"MovieDao.moviesSortedByTitle","MovieDao.moviesCount");
 				default: throw new RuntimeException("Un posible!");
 			}
 		}
@@ -59,18 +59,18 @@ public class MovieDao extends PaginatedDaoBase{
 		if(StringUtil.notEmpty(personId)){
 			switch(sortDirection){//Switched on purpose
 				case DESC:
-					return executeQuery(this,"MovieDao.moviesSortedByYearForPerson",personId);
+					return executeQuery(this,"MovieDao.moviesSortedByYearForPerson","MovieDao.moviesRatedByPersonCount",personId);
 				case ASC:
-					return executeQuery(this,"MovieDao.moviesSortedByYearForPersonDesc",personId);
+					return executeQuery(this,"MovieDao.moviesSortedByYearForPersonDesc","MovieDao.moviesRatedByPersonCount",personId);
 				default: throw new RuntimeException("Un posible!");
 			}
 		}
 		else{
 			switch(sortDirection){//Switched on purpose
 				case DESC:
-					return executeQuery(this,"MovieDao.moviesSortedByYear");
+					return executeQuery(this,"MovieDao.moviesSortedByYear","MovieDao.moviesCount");
 				case ASC:
-					return executeQuery(this,"MovieDao.moviesSortedByYearDesc");
+					return executeQuery(this,"MovieDao.moviesSortedByYearDesc","MovieDao.moviesCount");
 					
 				default: throw new RuntimeException("Un posible!");
 			}
@@ -81,18 +81,18 @@ public class MovieDao extends PaginatedDaoBase{
 		if(StringUtil.notEmpty(personId)){
 			switch(sortDirection){
 				case DESC:
-					return executeQuery(this,"MovieDao.moviesSortedByRatingForPerson",personId);
+					return executeQuery(this,"MovieDao.moviesSortedByRatingForPerson","MovieDao.moviesRatedByPersonCount", personId);
 				case ASC:
-					return executeQuery(this,"MovieDao.moviesSortedByRatingForPersonDesc",personId);
+					return executeQuery(this,"MovieDao.moviesSortedByRatingForPersonDesc","MovieDao.moviesRatedByPersonCount",personId);
 				default: throw new RuntimeException("Un posible!");
 			}
 		}
 		else{
 			switch(sortDirection){//Switched on purpose
 				case DESC:
-					return executeQuery(this,"MovieDao.moviesSortedByAverageRating");
+					return executeQuery(this,"MovieDao.moviesSortedByAverageRating","MovieDao.moviesCount");
 				case ASC:
-					return executeQuery(this,"MovieDao.moviesSortedByAverageRatingDesc");
+					return executeQuery(this,"MovieDao.moviesSortedByAverageRatingDesc","MovieDao.moviesCount");
 					
 				default: throw new RuntimeException("Un posible!");
 			}

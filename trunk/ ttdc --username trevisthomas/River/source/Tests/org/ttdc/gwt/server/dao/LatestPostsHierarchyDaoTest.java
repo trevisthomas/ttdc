@@ -16,6 +16,7 @@ import org.ttdc.persistence.objects.Post;
 
 import static org.ttdc.persistence.Persistence.*;
 
+@Deprecated
 public class LatestPostsHierarchyDaoTest {
 	private final static Logger log = Logger.getLogger(LatestPostsFlatDaoTest.class);
 	private StopWatch stopwatch = new StopWatch();

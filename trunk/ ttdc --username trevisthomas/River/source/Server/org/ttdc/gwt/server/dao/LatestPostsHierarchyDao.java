@@ -69,7 +69,7 @@ public class LatestPostsHierarchyDao {
 		.list();
 		
 		
-		Collections.sort(list, new Post.ThreadPathComparator(threadIds));
+		//Collections.sort(list, new Post.ThreadPathComparator(threadIds));
 		/*
 		Collections.sort(list, new Post.ByPostIdReferenceComparator(threadIds));
 		Collections.sort(list, new Post.PathComparator());

@@ -5,25 +5,24 @@ import java.util.List;
 import org.hibernate.search.bridge.StringBridge;
 import org.ttdc.persistence.objects.AssociationPostTag;
 import org.ttdc.persistence.objects.Post;
+import org.ttdc.persistence.objects.Tag;
 
-/**
- * 
- * To create a bridge on a tag type just subclass this and implement the abstract method
- *
- */
-public abstract class BridgeBaseForTagOnPost implements StringBridge{
+public class BridgeForTagOnPost implements StringBridge {
 	public String objectToString(Object object) {
 		Post post = (Post) object;
 		List<AssociationPostTag> asses = post.getTagAssociations();
 		StringBuilder sb = new StringBuilder();
-		for(AssociationPostTag ass : asses){
-			if(isIndexedTagType(ass.getTag().getType())){
+		for (AssociationPostTag ass : asses) {
+			if (isIndexedTagType(ass.getTag().getType())) {
 				sb.append(ass.getTag().getValue());
 				sb.append(" ");
 			}
 		}
 		return sb.toString();
 	}
-	
-	abstract boolean isIndexedTagType(String tagType);
+
+	boolean isIndexedTagType(String tagType) {
+		return tagType.equals(Tag.TYPE_TOPIC) || tagType.equals(Tag.TYPE_RATING);
+	}
+
 }

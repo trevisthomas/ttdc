@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.ttdc.gwt.client.constants.TagConstants;
+import org.ttdc.persistence.objects.Tag;
 
 
 public class GPost extends GBase{
@@ -20,12 +21,17 @@ public class GPost extends GBase{
 	private List<GEntry> entries = new ArrayList<GEntry>();
 	private GEntry latestEntry;
 	private String path;
-	private String title;
 	private int replyCount;
 	private int mass;
 	private boolean rootPost;
 	private boolean threadPost;
 	private boolean suggestSummary;
+	private GPerson creator;
+	private long metaMask;
+	private GTag titleTag;
+	private GTag avgRatingTag;
+	private String url;
+	private Integer publishYear;
 		
 	@Override
 	public String toString() {
@@ -143,18 +149,12 @@ public class GPost extends GBase{
 	}
 	
 	
-	public GPerson getCreator(){
-		GAssociationPostTag ass = loadTagAssociation(TagConstants.TYPE_CREATOR);
-		if(ass != null){
-			return ass.getTag().getCreator();
-		}
-		return null;
-	}
+	
 	
 	/**
 	 * Gets the first tag of this type
 	 */
-	public GAssociationPostTag loadTagAssociation(String type){
+	private GAssociationPostTag loadTagAssociation(String type){
 		GAssociationPostTag ass = null;
 		if(type == null) return null;
 		List<GAssociationPostTag> tagasses = getTagAssociations();
@@ -170,7 +170,7 @@ public class GPost extends GBase{
 	/**
 	 * Get the association type by a specific person
 	 */
-	public GAssociationPostTag loadTagAssociationByPerson(String type, String personId){
+	private GAssociationPostTag loadTagAssociationByPerson(String type, String personId){
 		GAssociationPostTag ass = null;
 		if(type == null) return null;
 		List<GAssociationPostTag> tagasses = getTagAssociations();
@@ -182,24 +182,24 @@ public class GPost extends GBase{
 		}
 		return ass;
 	}
-	
-	public List<GAssociationPostTag> readTagAssociations(String type){
-		List<GAssociationPostTag> foundAsses = new ArrayList<GAssociationPostTag>();
-		List<GAssociationPostTag> tagasses = getTagAssociations();
-		for(GAssociationPostTag a : tagasses){
-			if(type.equals(a.getTag().getType())){
-				foundAsses.add(a);
-			}
-		}
-		return foundAsses;
+	public GAssociationPostTag getRatingByPerson(String personId){
+		return loadTagAssociationByPerson(TagConstants.TYPE_RATING, personId);
 	}
+	
+	
+//	public List<GAssociationPostTag> readTagAssociations(String type){
+//		List<GAssociationPostTag> foundAsses = new ArrayList<GAssociationPostTag>();
+//		List<GAssociationPostTag> tagasses = getTagAssociations();
+//		for(GAssociationPostTag a : tagasses){
+//			if(type.equals(a.getTag().getType())){
+//				foundAsses.add(a);
+//			}
+//		}
+//		return foundAsses;
+//	}
 
 	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
+		return getTitleTag().getValue();
 	}
 
 	public int getReplyCount() {
@@ -240,19 +240,53 @@ public class GPost extends GBase{
 	public void setSuggestSummary(boolean b) {
 		suggestSummary = b;
 	}
-	
-	/*
-	public String getTitle(){
-		List<GAssociationPostTag> tagasses = getTagAssociations();
-		for(GAssociationPostTag a : tagasses){
-			if(TagConstants.TYPE_TOPIC.equals(a.getTag().getType())){
-				if(a.isTitle())
-					return a.getTag().getValue();
-			}
-		}
-		return "";
+
+	public GPerson getCreator() {
+		return creator;
 	}
-	 */
-	
+
+	public void setCreator(GPerson creator) {
+		this.creator = creator;
+	}
+
+	public long getMetaMask() {
+		return metaMask;
+	}
+
+	public void setMetaMask(long metaMask) {
+		this.metaMask = metaMask;
+	}
+
+	public GTag getTitleTag() {
+		return titleTag;
+	}
+
+	public void setTitleTag(GTag titleTag) {
+		this.titleTag = titleTag;
+	}
+
+	public GTag getAvgRatingTag() {
+		return avgRatingTag;
+	}
+
+	public void setAvgRatingTag(GTag avgRatingTag) {
+		this.avgRatingTag = avgRatingTag;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public Integer getPublishYear() {
+		return publishYear;
+	}
+
+	public void setPublishYear(Integer publishYear) {
+		this.publishYear = publishYear;
+	}
 	
 }

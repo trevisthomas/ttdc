@@ -8,10 +8,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.ttdc.gwt.client.beans.GPost;
+import org.ttdc.gwt.server.beanconverters.FastPostBeanConverter;
 import org.ttdc.gwt.shared.util.PaginatedList;
 import org.ttdc.persistence.Persistence;
 import org.ttdc.persistence.objects.AssociationPostTag;
 import org.ttdc.persistence.objects.Post;
+import org.ttdc.persistence.util.PostFlag;
 
 import static junit.framework.Assert.*;
 
@@ -62,11 +64,11 @@ public class LatestPostsDaoTest {
 	
 	@Test
 	public void nestedFiltered(){
-		String privateTagId = InitConstants.PRIVATE_TAG_ID;
 		Persistence.beginSession();
 		startTimer();
 		LatestPostsDao dao = new LatestPostsDao();
-		dao.addFilterTagId(privateTagId);
+		
+		dao.addFlagFilter(PostFlag.PRIVATE);
 		PaginatedList<Post> results = dao.loadNested();
 		
 		Inflatinator inf = new Inflatinator(results.getList());
@@ -83,15 +85,15 @@ public class LatestPostsDaoTest {
 	
 	@Test
 	public void flatFiltered(){
-		String privateTagId = InitConstants.PRIVATE_TAG_ID;
 		Persistence.beginSession();
 		startTimer();
 		LatestPostsDao dao = new LatestPostsDao();
-		dao.addFilterTagId(privateTagId);
+		dao.addFlagFilter(PostFlag.DELETED);
 		PaginatedList<Post> results = dao.loadFlat();
 		
-		Inflatinator inf = new Inflatinator(results.getList());
-		List<GPost> gPosts = inf.extractPosts();
+		//Inflatinator inf = new Inflatinator(results.getList());
+		//List<GPost> gPosts = inf.extractPosts();
+		List<GPost> gPosts = FastPostBeanConverter.convertPosts(results.getList());
 		
 		Persistence.commit();
 		
@@ -109,8 +111,7 @@ public class LatestPostsDaoTest {
 		LatestPostsDao dao = new LatestPostsDao();
 		PaginatedList<Post> results = dao.loadFlat();
 		
-		Inflatinator inf = new Inflatinator(results.getList());
-		List<GPost> gPosts = inf.extractPosts();
+		List<GPost> gPosts = FastPostBeanConverter.convertPosts(results.getList());
 		
 		Persistence.commit();
 		
@@ -128,8 +129,7 @@ public class LatestPostsDaoTest {
 		LatestPostsDao dao = new LatestPostsDao();
 		PaginatedList<Post> results = dao.loadThreads();
 		
-		Inflatinator inf = new Inflatinator(results.getList());
-		List<GPost> gPosts = inf.extractPosts();
+		List<GPost> gPosts = FastPostBeanConverter.convertPosts(results.getList());
 		
 		Persistence.commit();
 		
@@ -142,15 +142,13 @@ public class LatestPostsDaoTest {
 	
 	@Test
 	public void threadsFiltered(){
-		String privateTagId = InitConstants.PRIVATE_TAG_ID;
 		Persistence.beginSession();
 		startTimer();
 		LatestPostsDao dao = new LatestPostsDao();
-		dao.addFilterTagId(privateTagId);
+		dao.addFlagFilter(PostFlag.DELETED);
 		PaginatedList<Post> results = dao.loadThreads();
 		
-		Inflatinator inf = new Inflatinator(results.getList());
-		List<GPost> gPosts = inf.extractPosts();
+		List<GPost> gPosts = FastPostBeanConverter.convertPosts(results.getList());
 		
 		Persistence.commit();
 		
@@ -169,8 +167,7 @@ public class LatestPostsDaoTest {
 		LatestPostsDao dao = new LatestPostsDao();
 		PaginatedList<Post> results = dao.loadConversations();
 		
-		Inflatinator inf = new Inflatinator(results.getList());
-		List<GPost> gPosts = inf.extractPosts();
+		List<GPost> gPosts = FastPostBeanConverter.convertPosts(results.getList());
 		
 		Persistence.commit();
 		
@@ -184,15 +181,14 @@ public class LatestPostsDaoTest {
 	
 	@Test
 	public void conversationsFiltered(){
-		String privateTagId = InitConstants.PRIVATE_TAG_ID;
 		Persistence.beginSession();
 		startTimer();
 		LatestPostsDao dao = new LatestPostsDao();
-		dao.addFilterTagId(privateTagId);
+		dao.addFlagFilter(PostFlag.DELETED);
+		dao.addFlagFilter(PostFlag.PRIVATE);
 		PaginatedList<Post> results = dao.loadConversations();
 		
-		Inflatinator inf = new Inflatinator(results.getList());
-		List<GPost> gPosts = inf.extractPosts();
+		List<GPost> gPosts = FastPostBeanConverter.convertPosts(results.getList());
 		
 		Persistence.commit();
 		

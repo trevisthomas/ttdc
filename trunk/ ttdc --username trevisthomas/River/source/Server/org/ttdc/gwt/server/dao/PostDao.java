@@ -10,15 +10,20 @@ import org.hibernate.criterion.Restrictions;
 import org.ttdc.persistence.Persistence;
 import org.ttdc.persistence.objects.Entry;
 import org.ttdc.persistence.objects.Image;
+import org.ttdc.persistence.objects.Person;
 import org.ttdc.persistence.objects.Post;
+import org.ttdc.persistence.objects.Tag;
 
 
 final public class PostDao {
 	private String body;
-	private String title;
 	private Image image;
 	private Post parent;
 	private String embedMarker;
+	private Person creator;
+	private Tag titleTag;
+	private String url;
+	private Integer publishYear;
 	
 	public PostDao(){}
 
@@ -59,6 +64,12 @@ final public class PostDao {
 
 	private Post buildPost() {
 		Post post = new Post();
+		
+		post.setCreator(creator);
+		post.setTitleTag(titleTag);
+		post.setPublishYear(publishYear);
+		post.setUrl(url);
+		
 		if(parent != null){
 			if(parent.isLegacyThreadHolder())
 				throw new RuntimeException("You can't reply to a legacy thread holder.");
@@ -70,6 +81,7 @@ final public class PostDao {
 			
 			post.setParent(parent);
 			post.setRoot(parent.getRoot());
+			
 			String path = generatePath(parent);
 			post.setPath(path);
 			
@@ -145,6 +157,9 @@ final public class PostDao {
 			
 			source.setParent(newParent);
 			source.setRoot(newRoot);
+			Tag titleTag = newRoot.getTitleTag();
+			source.setTitleTag(titleTag);
+			
 			newParent.setReplyCount(newParent.getReplyCount()+1);
 			increaseMass(newRoot);
 			
@@ -159,13 +174,30 @@ final public class PostDao {
 			session().save(newRoot);
 			session().save(source);
 			
+			//After setting the thread... fix the new guys offspring
+			applyThreadTitleToNewFamilyMember(source, titleTag);
+			
 			session().flush();
+			
 		}
 		else{
 			throw new RuntimeException("Re parenting to the seame root is not here yet. TODO :-D");
 		}
 			
 		return source;	
+	}
+
+	private static void applyThreadTitleToNewFamilyMember(Post post,
+			Tag titleTag) {
+		@SuppressWarnings("unchecked")
+		List<Post> posts = Persistence.session().createQuery("SELECT p FROM Post p WHERE p.thread.postId = :threadId ORDER BY path")
+			.setString("threadId", post.getThread().getPostId())
+			.list();
+		
+		for(Post p : posts){
+			p.setTitleTag(titleTag);
+			session().save(p);
+		}
 	}
 
 	private static void relocateSomeChildrenOfAThread(String originalSourcePath, Post source, Post oldRoot, Post newRoot,Post oldThread) {
@@ -279,13 +311,22 @@ final public class PostDao {
 		this.body = body;
 	}
 
-	public String getTitle() {
-		return title;
+	public Person getCreator() {
+		return creator;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
+	public void setCreator(Person creator) {
+		this.creator = creator;
 	}
+
+	public Tag getTitle() {
+		return titleTag;
+	}
+
+	public void setTitle(Tag title) {
+		this.titleTag = title;
+	}
+
 	public Image getImage() {
 		return image;
 	}
@@ -309,5 +350,21 @@ final public class PostDao {
 		this.embedMarker = embedMarker;
 	}
 
-	
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public Integer getPublishYear() {
+		return publishYear;
+	}
+
+	public void setPublishYear(Integer publishYear) {
+		this.publishYear = publishYear;
+	}
+
+		
 }

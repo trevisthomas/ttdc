@@ -12,6 +12,7 @@ import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.beans.GTag;
 import org.ttdc.gwt.client.services.CommandResult;
 import org.ttdc.gwt.server.command.CommandExecutor;
+import org.ttdc.gwt.server.command.executors.utils.ExecutorHelpers;
 import org.ttdc.gwt.server.dao.PersonDao;
 import org.ttdc.gwt.server.dao.PostSearchDao;
 import org.ttdc.gwt.server.dao.TagSearchDao;
@@ -42,7 +43,7 @@ public class TagSuggestionCommandExecutor extends CommandExecutor<TagSuggestionC
 		Collections.unmodifiableList(Arrays.asList(Tag.TYPE_TOPIC));
 	
 	private final List<String> tagTypeFiltersSearch = 
-		Collections.unmodifiableList(Arrays.asList(Tag.TYPE_TOPIC, Tag.TYPE_DATE_MONTH, Tag.TYPE_RELEASE_YEAR, Tag.TYPE_DATE_YEAR, Tag.TYPE_CREATOR));
+		Collections.unmodifiableList(Arrays.asList(Tag.TYPE_TOPIC));
 	
 	@Override
 	protected CommandResult execute() {
@@ -75,22 +76,21 @@ public class TagSuggestionCommandExecutor extends CommandExecutor<TagSuggestionC
 		
 		PostSearchDao dao = new PostSearchDao();
 		Person person = PersonDao.loadPerson(getPerson().getPersonId());
-		List<String> notTagIds = person.getFilteredTagIds();
 		
 		dao.setSearchByTitle(true);
 		dao.setPostSearchType(PostSearchType.TOPICS);
-		dao.setNotTagIdList(notTagIds);
 		dao.setCurrentPage(1);
 		dao.setPageSize(request.getLimit());
 		dao.setPhrase(request.getQuery());
 		dao.setSortBy(SearchSortBy.POPULARITY);
 		dao.setSortDirection(SortDirection.DESC);
+		dao.setFilterFlags(ExecutorHelpers.createFlagFilterListForPerson(getPerson()));
 		
 		PaginatedList<Post> results = dao.search();
 		List<TagSuggestion> suggestions = new ArrayList<TagSuggestion>();
 		for(Post post : results.getList() ){
 			GPost gp = new GPost();
-			gp.setTitle(post.getTitle());
+			addFakeTitleTag(post.getTitle(), gp);
 			gp.setPostId(post.getPostId());
 			String highlightedValue = highlightRequestedValue(request.getQuery(), post.getTitle());
 			if(post.getMass() > 1)
@@ -103,6 +103,12 @@ public class TagSuggestionCommandExecutor extends CommandExecutor<TagSuggestionC
 			suggestions.add(createSugestionForNewPost(request.getQuery()));
 		response.setSuggestions(suggestions);
 		commit();
+	}
+
+	private void addFakeTitleTag(String title, GPost gp) {
+		GTag gt = new GTag();
+		gt.setValue(title);
+		gp.setTitleTag(gt);
 	}
 
 	private void tagBased(TagSuggestionCommand command,	SuggestOracle.Response response) {
@@ -176,7 +182,7 @@ public class TagSuggestionCommandExecutor extends CommandExecutor<TagSuggestionC
 	
 	private TagSuggestion createSugestionForNewPost(String query){
 		GPost post = new GPost();
-		post.setTitle(query);
+		addFakeTitleTag(query, post);
 		post.setPostId(" ");
 		return new TagSuggestion(post, "<b>"+query+" (Create New)</b>");
 	}

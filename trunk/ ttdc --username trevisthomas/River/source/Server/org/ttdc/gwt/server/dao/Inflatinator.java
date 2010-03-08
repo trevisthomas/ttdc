@@ -36,6 +36,8 @@ import org.ttdc.persistence.objects.Tag;
  * think that it is complete.
  *
  */
+@Deprecated  //TODO move the nested functionality out of here and dump this class.
+
 public final class Inflatinator {
 	private final static Logger log = Logger.getLogger(Inflatinator.class);
 	
@@ -140,13 +142,12 @@ public final class Inflatinator {
 				unNestedList.addAll(p.getPosts());
 		}
 		
-		List<String> postIds = extractIds(unNestedList);
-
-		List<Object[]> objList = loadBundleForPosts(postIds);
+//		List<String> postIds = extractIds(unNestedList);
+//		List<Object[]> objList = loadBundleForPosts(postIds);
+//		List<HasGuid> elementList = detangleHibernateObjectArrayList(objList);
+//		List<GPost> posts = convertElementsToGElements(elementList,Mode.FLAT);
 		
-		List<HasGuid> elementList = detangleHibernateObjectArrayList(objList);
-				
-		List<GPost> posts = convertElementsToGElements(elementList,Mode.FLAT);
+		List<GPost> posts = FastPostBeanConverter.convertPosts(unNestedList);
 
 		
 		List<GPost> resultGPostList = transformFlatListToNestedThreads(posts);
@@ -187,26 +188,26 @@ public final class Inflatinator {
 	}
 	
 	public List<GPost> extractPosts(){
-		if(list.size() == 0){
-			log.debug("extractPosts() exited because list was empty.");
-			return new ArrayList<GPost>();
-		}
+		throw new RuntimeException("Disabled... use FastPostBeanConverter instaed");
 		
-		stopwatch.start();
-		log.debug("extractPosts() started.");
-		
-		List<String> postIds = extractIds(list);
-		
-		List<Object[]> objList = loadBundleForPosts(postIds);
-		
-		List<HasGuid> elementList = detangleHibernateObjectArrayList(objList);
-				
-		List<GPost> posts = convertElementsToGElements(elementList,Mode.FLAT);
-		
-		Collections.sort(posts,new GPostByPostIdReferenceComparator(postIds));
-		
-		log.debug("extractPosts() completed. Elapsed time: " +stopwatch);
-		return posts;
+//		if(list.size() == 0){
+//			log.debug("extractPosts() exited because list was empty.");
+//			return new ArrayList<GPost>();
+//		}
+//		
+//		stopwatch.start();
+//		log.debug("extractPosts() started.");
+//		
+//		List<String> postIds = extractIds(list);
+//		List<Object[]> objList = loadBundleForPosts(postIds);
+//		List<HasGuid> elementList = detangleHibernateObjectArrayList(objList);
+//		List<GPost> posts = convertElementsToGElements(elementList,Mode.FLAT);
+//		
+//		
+//		Collections.sort(posts,new GPostByPostIdReferenceComparator(postIds));
+//		
+//		log.debug("extractPosts() completed. Elapsed time: " +stopwatch);
+//		return posts;
 	}
 	
 	private static List<String> extractIds(List<Post> posts){
@@ -315,12 +316,20 @@ public final class Inflatinator {
 	private GPost createLazyPost(Post p){
 		GPost gPost = findOrCreateGPost(p.getPostId());
 		//gPost.setEntries(convertEntries(p.getEntries()));
-		if(gPost.getTitle() == null){
+		if(gPost.getTitleTag() == null){
 			//gPost.setLatestEntry(generateLazyEntry(p.getEntry()));
 			generateLazyEntry(p.getEntry());
 			gPost.setDate(p.getDate());
 			gPost.setPostId(p.getPostId());
-			gPost.setTitle(p.getTitle());
+			//gPost.setTitle(p.getTitle());
+			gPost.setTitleTag(findOrCreateGTag(p.getTitleTag().getTagId()));
+			gPost.setCreator(findOrCreateGPerson(p.getCreator().getPersonId()));
+			if(p.getAvgRatingTag() != null)
+				gPost.setAvgRatingTag(findOrCreateGTag(p.getAvgRatingTag().getTagId()));
+			gPost.setPublishYear(p.getPublishYear());
+			gPost.setMetaMask(p.getMetaMask());
+			gPost.setUrl(p.getUrl());
+			
 			gPost.setReplyCount(p.getReplyCount());
 			gPost.setMass(p.getMass());
 			gPost.setRootPost(p.isRootPost());
@@ -373,9 +382,9 @@ public final class Inflatinator {
 	
 	private GTag generateLazyTag(Tag t){
 		GTag gTag = findOrCreateGTag(t.getTagId());
-		gTag.setCreator(findOrCreateGPerson(t.getCreator().getPersonId()));
+//		gTag.setCreator(findOrCreateGPerson(t.getCreator().getPersonId()));
 		gTag.setDate(t.getDate());
-		gTag.setDescription(t.getDescription());
+//		gTag.setDescription(t.getDescription());
 		gTag.setTagId(t.getTagId());
 		gTag.setType(t.getType());
 		gTag.setValue(t.getValue());

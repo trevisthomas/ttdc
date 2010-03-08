@@ -103,7 +103,7 @@ public class CommandExecutorFactory {
 		CommandExecutorFactory.registerExecutorForCommand(AccountCommand.class, AccountCommandExecutor.class);
 		CommandExecutorFactory.registerExecutorForCommand(UserObjectCrudCommand.class, UserObjectCrudCommandExecutor.class);
 		CommandExecutorFactory.registerExecutorForCommand(LatestPostsCommand.class, LatestPostCommandExecutor.class);
-		CommandExecutorFactory.registerExecutorForCommand(TagCommand.class, TagCommandExecutor.class);
+		//CommandExecutorFactory.registerExecutorForCommand(TagCommand.class, TagCommandExecutor.class);
 		
 	}
 	

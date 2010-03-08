@@ -61,13 +61,13 @@ public class SearchTagsCommandExecutor extends CommandExecutor<SearchTagsCommand
 			Tag t = TagDao.loadTag(tagId); //TODO: this is potentially ineffecient.  Maybe make TagDao handle the list lookup natively?
 			GTag gTag = GenericBeanConverter.convertTag(t);
 			tags.add(gTag);
-			if(gTag.getType().equals(Tag.TYPE_WEEK_OF_YEAR)){
-				weekOfYearTag = gTag;
-				weekOfYear = Integer.parseInt(t.getValue());
-			}
-			else if(gTag.getType().equals(Tag.TYPE_DATE_YEAR)){
-				year = Integer.parseInt(t.getValue());
-			}
+//			if(gTag.getType().equals(Tag.TYPE_WEEK_OF_YEAR)){
+//				weekOfYearTag = gTag;
+//				weekOfYear = Integer.parseInt(t.getValue());
+//			}
+//			else if(gTag.getType().equals(Tag.TYPE_DATE_YEAR)){
+//				year = Integer.parseInt(t.getValue());
+//			}
 		}
 		
 		//Week of year is a strange tag.  It must be within the context of a year to be meaningful

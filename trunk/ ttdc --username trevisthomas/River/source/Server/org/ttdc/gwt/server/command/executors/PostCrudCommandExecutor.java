@@ -79,22 +79,23 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 		Post newParent = PostDao.loadPost(cmd.getParentId());
 		Post post = PostDao.reParent(newParent, target);
 		
-		if(!newParent.getRoot().equals(oldParent.getRoot())){
-			//Fix title tag
-			AssociationPostTag ass = post.loadTitleTagAssociation();
-			AssociationPostTagDao.reTag(ass.getGuid(), newParent.loadTitleTagAssociation().getTag());
-			
-			//Fix the titles of children
-			@SuppressWarnings("unchecked")
-			List<Post> posts = Persistence.session().createQuery("SELECT p FROM Post p WHERE p.thread.postId = :threadId ORDER BY path")
-				.setString("threadId", post.getThread().getPostId())
-				.list();
-			
-			for(Post p : posts){
-				ass = p.loadTitleTagAssociation();
-				AssociationPostTagDao.reTag(ass.getGuid(), newParent.loadTitleTagAssociation().getTag());
-			}
-		}
+//		if(!newParent.getRoot().equals(oldParent.getRoot())){
+//			//Fix title tag
+//			AssociationPostTag ass = post.loadTitleTagAssociation();
+//			AssociationPostTagDao.reTag(ass.getGuid(), newParent.loadTitleTagAssociation().getTag());
+//			
+//			
+//			//Fix the titles of children
+//			@SuppressWarnings("unchecked")
+//			List<Post> posts = Persistence.session().createQuery("SELECT p FROM Post p WHERE p.thread.postId = :threadId ORDER BY path")
+//				.setString("threadId", post.getThread().getPostId())
+//				.list();
+//			
+//			for(Post p : posts){
+//				ass = p.loadTitleTagAssociation();
+//				AssociationPostTagDao.reTag(ass.getGuid(), newParent.loadTitleTagAssociation().getTag());
+//			}
+//		}
 		
 		return post;
 	}
@@ -132,98 +133,81 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 		PostDao dao = new PostDao();
 		dao.setParent(parent);
 		dao.setBody(cmd.getBody());
-		dao.setTitle(cmd.getTitle());
+		dao.setCreator(creator);
+		Tag titleTag = loadOrCreateTitleTag(cmd);
+		dao.setTitle(titleTag);
+		
 		dao.setEmbedMarker(cmd.getEmbedMarker());
 		Post post = dao.create();
-		
-		Tag creatorTag = loadOrCreateCreatorTag(creator);
-		createTagAssociationForPost(creator, post, creatorTag);
-		
-		Tag titleTag = loadOrCreateTitleTag(cmd, creator);
-		createTitleTagAssociationForPost(creator, post, titleTag);
-		
-		tagCalenderInfo(post,creator);
 		
 		return post;
 	}
 
 	/* Apply calender info */
-	private void tagCalenderInfo(Post post, Person creator){
-		Calendar cal = GregorianCalendar.getInstance();
-		cal.setTime(post.getDate());
-		Date date = post.getDate();
-		
-		String value = ""+cal.get(GregorianCalendar.DAY_OF_MONTH);
-		String type = Tag.TYPE_DATE_DAY;
-		Tag tag = findOrCreateTag(creator, value, type, date);
-		createTagAssociationForPost(creator, post, tag);
-		
-		value = CalendarBuilder.getMonthName(cal.get(GregorianCalendar.MONTH)+1);
-		type = Tag.TYPE_DATE_MONTH;
-		tag = findOrCreateTag(creator, value, type, date);
-		createTagAssociationForPost(creator, post, tag);
-		
-		value = ""+cal.get(GregorianCalendar.YEAR);
-		type = Tag.TYPE_DATE_YEAR;
-		tag = findOrCreateTag(creator, value, type, date);
-		createTagAssociationForPost(creator, post, tag);
-		
-		value = ""+cal.get(GregorianCalendar.WEEK_OF_YEAR);
-		type = Tag.TYPE_WEEK_OF_YEAR;
-		tag = findOrCreateTag(creator, value, type, date);
-		createTagAssociationForPost(creator, post, tag);
-		
-	}
+//	private void tagCalenderInfo(Post post, Person creator){
+//		Calendar cal = GregorianCalendar.getInstance();
+//		cal.setTime(post.getDate());
+//		Date date = post.getDate();
+//		
+//		String value = ""+cal.get(GregorianCalendar.DAY_OF_MONTH);
+//		String type = Tag.TYPE_DATE_DAY;
+//		Tag tag = findOrCreateTag(creator, value, type, date);
+//		createTagAssociationForPost(creator, post, tag);
+//		
+//		value = CalendarBuilder.getMonthName(cal.get(GregorianCalendar.MONTH)+1);
+//		type = Tag.TYPE_DATE_MONTH;
+//		tag = findOrCreateTag(creator, value, type, date);
+//		createTagAssociationForPost(creator, post, tag);
+//		
+//		value = ""+cal.get(GregorianCalendar.YEAR);
+//		type = Tag.TYPE_DATE_YEAR;
+//		tag = findOrCreateTag(creator, value, type, date);
+//		createTagAssociationForPost(creator, post, tag);
+//		
+//		value = ""+cal.get(GregorianCalendar.WEEK_OF_YEAR);
+//		type = Tag.TYPE_WEEK_OF_YEAR;
+//		tag = findOrCreateTag(creator, value, type, date);
+//		createTagAssociationForPost(creator, post, tag);
+//		
+//	}
 
 
-	private Tag findOrCreateTag(Person creator, String value, String type, Date date) {
-		TagDao dao;
-		dao = new TagDao();
-		dao.setValue(value);
-		dao.setType(type);
-		dao.setCreator(creator);
-		dao.setDate(date);
-		Tag tag = dao.createOrLoad();
-		return tag;
-	}
+//	private Tag findOrCreateTag(String value, String type, Date date) {
+//		TagDao dao;
+//		dao = new TagDao();
+//		dao.setValue(value);
+//		dao.setType(type);
+//		dao.setDate(date);
+//		Tag tag = dao.createOrLoad();
+//		return tag;
+//	}
 
-	private Tag loadOrCreateCreatorTag(Person creator) {
-		TagDao tagDao = new TagDao();
-		tagDao.setCreator(creator);
-		tagDao.setType(Tag.TYPE_CREATOR);
-		Tag creatorTag = tagDao.createOrLoad();
-		return creatorTag;
-	}
-
-	private void createTitleTagAssociationForPost(Person creator, Post post, Tag tag) {
-		createTagAssociationImplementation(creator, post, tag, true);
-	}
-	private void createTagAssociationForPost(Person creator, Post post, Tag tag) {
-		createTagAssociationImplementation(creator, post, tag, false);
-	}
-	private void createTagAssociationImplementation(Person creator, Post post, Tag tag, boolean isTitle) {
-		AssociationPostTagDao assDao = new AssociationPostTagDao();
-		assDao.setPost(post);
-		assDao.setTag(tag);
-		assDao.setCreator(creator);
-		assDao.setTitle(isTitle);
-		assDao.create();
-		
-		Persistence.session().flush();
-		Persistence.session().refresh(post);
-	}
+//	private void createTitleTagAssociationForPost(Person creator, Post post, Tag tag) {
+//		createTagAssociationImplementation(creator, post, tag, true);
+//	}
+//	
+//	private void createTagAssociationForPost(Person creator, Post post, Tag tag) {
+//		createTagAssociationImplementation(creator, post, tag, false);
+//	}
+	
+//	private void createTagAssociationImplementation(Person creator, Post post, Tag tag, boolean isTitle) {
+//		AssociationPostTagDao assDao = new AssociationPostTagDao();
+//		assDao.setPost(post);
+//		assDao.setTag(tag);
+//		assDao.setCreator(creator);
+//		assDao.setTitle(isTitle);
+//		assDao.create();
+//		
+//		Persistence.session().flush();
+//		Persistence.session().refresh(post);
+//	}
 
 
-	private Tag loadOrCreateTitleTag(PostCrudCommand cmd, Person creator) {
+	private Tag loadOrCreateTitleTag(PostCrudCommand cmd) {
 		Tag tag;
 		if(StringUtils.isNotBlank(cmd.getParentId())){
 			Post parent = PostDao.loadPost(cmd.getParentId());
-			AssociationPostTag ass = parent.loadTitleTagAssociation();
-			//This should never be null... if it is, then this parent post is corrupt
-			if(ass == null){
-				throw new RuntimeException("Parent post doesnt have a title tag, post: "+parent.getPostId()+" is corrupt!");
-			}
-			tag = ass.getTag();
+			tag = parent.getTitleTag();
 		}
 		else{
 			if(StringUtils.isBlank(cmd.getTitle()))
@@ -234,11 +218,9 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 				TagDao dao = new TagDao();
 				dao.setType(Tag.TYPE_TOPIC);
 				dao.setValue(cmd.getTitle());
-				dao.setCreator(creator);
 				tag = dao.createOrLoad();
 			}
 		}
-		
 		return tag;
 	}
 	

@@ -7,7 +7,7 @@ import java.util.Map;
 
 import org.ttdc.persistence.objects.Post;
 
-
+@Deprecated
 public class MedianCommentAgeUtil {
 	
 	
@@ -20,10 +20,11 @@ public class MedianCommentAgeUtil {
 	}
 	
 	private static void setDefaultRelativeAge(List<Post> list){
-		for(Post p : list){
-			p.setRelativeAge(Post.RELATIVE_AGE_DEFAULT);
-			setDefaultRelativeAge(p.getPosts());
-		}
+		throw new RuntimeException("Trevis thought that this method was no longer in use!!");
+//		for(Post p : list){
+//			p.setRelativeAge(Post.RELATIVE_AGE_DEFAULT);
+//			setDefaultRelativeAge(p.getPosts());
+//		}
 	}
 	/**
 	 * Uses the median calculator to distribute posts into lists of relative age and then assign a string to denote it.
@@ -77,7 +78,7 @@ public class MedianCommentAgeUtil {
 	
 	/**
 	 * This bizare method looks like it's just shuffling the deck chairs which it kind of is i guess 
-	 * but it has a purpose. This method takes a hierarchial list of all posts and a flat list of latest
+	 * but it has a purpose. This method takes a hierarchical list of all posts and a flat list of latest
 	 * posts.  The latest post list is from a different hibernate session, so i want to 
 	 * pull the in session ones form the Posts list. The way to avoid this would be to remove the
 	 * commit call in the middle of the readFrontPagePosts method, but if i do that i'd have to
@@ -107,11 +108,12 @@ public class MedianCommentAgeUtil {
 	*/
 	
 	private void assignRelativeAge(Map<String,Post> map, List<Post> list, String value){
-		for(Post p : list){
-			Post inSessionPost = map.get(p.getPostId());
-			if(inSessionPost != null)
-				inSessionPost.setRelativeAge(value);//Remember, they're not all here on a branch read.
-		}
+		throw new RuntimeException("Trevis thought that this method was no longer in use!!");
+//		for(Post p : list){
+//			Post inSessionPost = map.get(p.getPostId());
+//			if(inSessionPost != null)
+//				inSessionPost.setRelativeAge(value);//Remember, they're not all here on a branch read.
+//		}
 	}
 	
 	private static class PostSourceValueReader implements Median.SourceValueReader<Post>{

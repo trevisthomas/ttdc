@@ -41,32 +41,32 @@ import org.ttdc.util.struts.WebHelper;
  */
 public final class UserService {
 	private final static  Logger log = Logger.getLogger(UserService.class);
-	private final String nwsTagId;
-	private final String privateTagId;
+	private String nwsTagId;
+	private String privateTagId;
 	
-	private final DateFormat defaultDateTimeFormat = new SimpleDateFormat();
+	private  DateFormat defaultDateTimeFormat = new SimpleDateFormat();
 	
 	private UserService(){
-		try{
-			Session session = Persistence.beginSession();
-			Query query = session.getNamedQuery("tag.getByValueAndType").setString("value", Tag.VALUE_NWS).setString("type", Tag.TYPE_DISPLAY);
-			Tag tag = (Tag)query.uniqueResult();
-			this.nwsTagId = tag.getTagId();
-			
-			query = session.getNamedQuery("tag.getByValueAndType").setString("value", Tag.VALUE_PRIVATE).setString("type", Tag.TYPE_DISPLAY);
-			tag = (Tag)query.uniqueResult();
-			privateTagId = tag.getTagId();
-			
-			log.info("UserService singleton instance created.");
-		}
-		catch(Throwable t){
-			log.error(t);
-			throw new ExceptionInInitializerError(t);
-		}
+//		try{
+//			Session session = Persistence.beginSession();
+//			Query query = session.getNamedQuery("tag.getByValueAndType").setString("value", Tag.VALUE_NWS).setString("type", Tag.TYPE_DISPLAY);
+//			Tag tag = (Tag)query.uniqueResult();
+//			this.nwsTagId = tag.getTagId();
+//			
+//			query = session.getNamedQuery("tag.getByValueAndType").setString("value", Tag.VALUE_PRIVATE).setString("type", Tag.TYPE_DISPLAY);
+//			tag = (Tag)query.uniqueResult();
+//			privateTagId = tag.getTagId();
+//			
+//			log.info("UserService singleton instance created.");
+//		}
+//		catch(Throwable t){
+//			log.error(t);
+//			throw new ExceptionInInitializerError(t);
+//		}
 		
 	}
 	
-	private final static Person anonymous;
+	private static Person anonymous;
 	static{
 		try{
 			anonymous = new Person();

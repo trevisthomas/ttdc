@@ -35,19 +35,23 @@ import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Resolution;
 import org.ttdc.persistence.util.BridgeForBodyOnPost;
-import org.ttdc.persistence.util.BridgeForCreatorTagOnPost;
-import org.ttdc.persistence.util.BridgeForGenericTagOnPost;
+import org.ttdc.persistence.util.BridgeForCreatorOnPost;
+import org.ttdc.persistence.util.BridgeForPostFlag;
+import org.ttdc.persistence.util.BridgeForTagOnPost;
 import org.ttdc.persistence.util.BridgeForPostType;
 import org.ttdc.persistence.util.BridgeForRootIdOnPost;
 import org.ttdc.persistence.util.BridgeForSortTitleOnPost;
 import org.ttdc.persistence.util.BridgeForTagIdsOnPost;
 import org.ttdc.persistence.util.BridgeForThreadIdOnPost;
 import org.ttdc.persistence.util.BridgeForTitleOnPost;
+import org.ttdc.persistence.util.FilterFactoryCreator;
+import org.ttdc.persistence.util.FilterFactoryForPostFlags;
 import org.ttdc.persistence.util.FilterFactoryForPostDateRange;
-import org.ttdc.persistence.util.FilterFactoryForPostType;
+import org.ttdc.persistence.util.FilterFactoryForType;
 import org.ttdc.persistence.util.FilterFactoryForRootId;
 import org.ttdc.persistence.util.FilterFactoryForThreadId;
 import org.ttdc.persistence.util.FilterFactoryForTokenizedTagIds;
+import org.ttdc.persistence.util.PostFlag;
 import org.ttdc.util.CalculateAverageRating;
 
 @Indexed
@@ -89,17 +93,22 @@ import org.ttdc.util.CalculateAverageRating;
 	@ClassBridge(name="rootId", impl=BridgeForRootIdOnPost.class, index=Index.UN_TOKENIZED),
 	@ClassBridge(name="threadId", impl=BridgeForThreadIdOnPost.class, index=Index.UN_TOKENIZED),
 	@ClassBridge(name="type", impl=BridgeForPostType.class, index=Index.UN_TOKENIZED),
+	@ClassBridge(name="flag", impl=BridgeForPostFlag.class, index=Index.TOKENIZED),
 	@ClassBridge(name="title_sort", impl=BridgeForSortTitleOnPost.class, index=Index.UN_TOKENIZED),
 	@ClassBridge(name="title", impl=BridgeForTitleOnPost.class, index=Index.TOKENIZED),
-	@ClassBridge(name="tag", impl=BridgeForGenericTagOnPost.class, index=Index.TOKENIZED),
-	@ClassBridge(name="creator", impl=BridgeForCreatorTagOnPost.class, index=Index.TOKENIZED),
+	@ClassBridge(name="tag", impl=BridgeForTagOnPost.class, index=Index.TOKENIZED),
+	@ClassBridge(name="creator", impl=BridgeForCreatorOnPost.class, index=Index.TOKENIZED),
 })
 @FullTextFilterDefs({
 	@FullTextFilterDef( name="postWithTagFilter", impl=FilterFactoryForTokenizedTagIds.class ),
 	@FullTextFilterDef( name="postWithRootIdFilter", impl=FilterFactoryForRootId.class ),
 	@FullTextFilterDef( name="postWithThreadIdFilter", impl=FilterFactoryForThreadId.class ),
-	@FullTextFilterDef( name="postWithTypeFilter", impl=FilterFactoryForPostType.class ),
-	@FullTextFilterDef( name="postDateRangeFilter", impl=FilterFactoryForPostDateRange.class )
+	@FullTextFilterDef( name="postWithTypeFilter", impl=FilterFactoryForType.class ),
+	@FullTextFilterDef( name="postDateRangeFilter", impl=FilterFactoryForPostDateRange.class ),
+	@FullTextFilterDef( name="postFlagFilter", impl=FilterFactoryForPostFlags.class ),
+	@FullTextFilterDef( name="postCreatorFilter", impl=FilterFactoryCreator.class )
+	
+	
 })
 
 
@@ -121,9 +130,13 @@ public class Post implements Comparable<Post>, HasGuid {
 	private Entry LatestEntry;
 	private int replyCount;
 	private int mass;
-	private Person creator; //Added for v7 for some search queries. the creator tag still exists for tag browsing!
-	//private String title; //Added very late in v7 development to allow for lucine searching on post titles.
 	
+	private Person creator; 
+	private long metaMask;
+	private Tag titleTag;
+	private Tag avgRatingTag;
+	private String url;
+	private Integer publishYear;
 	
 	public static int iCount = 0; 
 	public Post(){
@@ -141,132 +154,141 @@ public class Post implements Comparable<Post>, HasGuid {
 	public static String RELATIVE_AGE_DEFAULT = "RELATIVE_AGE_DEFAULT";
 	
 	
-
+//	public final static long BITMASK_DELETED = 1L;
+//	public final static long BITMASK_INF = 2L;
+//	public final static long BITMASK_LEGACY = 4L;
+//	public final static long BITMASK_LINK = 8L;
+//	public final static long BITMASK_MOVIE = 16L;
+//	public final static long BITMASK_NWS = 32L;
+//	public final static long BITMASK_PRIVATE = 64L;
+//	public final static long BITMASK_RATABLE = 128L;
+//	public final static long BITMASK_REVIEW = 256L;
+//	public final static long BITMASK_LOCKED = 512L;  //There are none of these in the v7 at the moment this has been added.
 	
-	public static class ByReferenceComparator implements Comparator<Post>{
-		private List<Post> rootlist;
-		/**
-		 * 
-		 * @param reference This is a list of root posts that are sorted in the order 
-		 * that you want their roots to be listed in.  (this is for sorting the hierarchies on the
-		 * main page)
-		 */
-		public ByReferenceComparator(List<Post> reference){
-			rootlist = new ArrayList<Post>();
-			for(Post p : reference){
-				if(!rootlist.contains(p))
-					rootlist.add(p.getRoot());
-			}
-		}
-		public int compare(Post o1, Post o2) {
-			Integer r1 = rootlist.indexOf(o1.getRoot());
-			Integer r2 = rootlist.indexOf(o2.getRoot());
-			return r1.compareTo(r2);
-		}
-	}
-	
-	public static class ByLiteReferenceComparator implements Comparator<Post>{
-		private List<String> sortedList;
-		/**
-		 * 
-		 * @param reference This is a list of root posts that are sorted in the order 
-		 * that you want their roots to be listed in.  (this is for sorting the hierarchies on the
-		 * main page)
-		 */
-		public ByLiteReferenceComparator(List<PostLite> reference){
-			sortedList = new ArrayList<String>();
-			for(PostLite p : reference){
-				sortedList.add(p.getPostId());
-			}
-		}
-		public int compare(Post o1, Post o2) {
-			Integer r1 = sortedList.indexOf(o1.getPostId());
-			Integer r2 = sortedList.indexOf(o2.getPostId());
-			return r1.compareTo(r2);
-		}
-	}
-	
-	public static class ByPostIdReferenceComparator implements Comparator<Post>{
-		private List<String> sortedList;
-		/**
-		 * 
-		 * @param reference This is a list of root posts that are sorted in the order 
-		 * that you want their roots to be listed in.  (this is for sorting the hierarchies on the
-		 * main page)
-		 */
-		public ByPostIdReferenceComparator(List<String> reference){
-			sortedList = new ArrayList<String>();
-			this.sortedList.addAll(reference);
-		}
-		public int compare(Post o1, Post o2) {
-			Integer r1 = sortedList.indexOf(o1.getPostId());
-			Integer r2 = sortedList.indexOf(o2.getPostId());
-			return r1.compareTo(r2);
-		}
-	}
-	
-	public static class ThreadPathComparator implements Comparator<Post>{
-		private final List<String> sortedList;
-		/**
-		 * 
-		 * @param reference This is a list of root posts that are sorted in the order 
-		 * that you want their roots to be listed in.  (this is for sorting the hierarchies on the
-		 * main page)
-		 */
-		public ThreadPathComparator(List<String> reference){
-			this.sortedList = Collections.unmodifiableList(reference);
-		}
-		
-		public int compare(Post o1, Post o2) {
-			Integer r1 = sortedList.indexOf(o1.getThread().getPostId());
-			Integer r2 = sortedList.indexOf(o2.getThread().getPostId());
-			
-			if(r1 == -1 || r2 == -1)
-				throw new RuntimeException("ThreadPathComparator failed to sort values by reference due to a missing sort field in the reference list.");
-			
-			int diff = r1.compareTo(r2);
-			if (diff == 0)
-				diff = o1.getPath().compareTo(o2.getPath());
-			return diff;
-		}
-		
-		/*
-		public int compare(Post p1, Post p2) {
-			//return (p1.getThread().getPostId()+p1.getPath()).compareTo(p2.getThread().getPostId() + p2.getPath());
-		}
-		*/
-	}
-	
-
-	
-	public static class DateComparator implements Comparator<Post>{
-		public int compare(Post p1, Post p2) {
-			return p1.getDate().compareTo(p2.getDate());
-		}
-		
-	}
-	
-	public static class PathComparator implements Comparator<Post>{
-		public int compare(Post p1, Post p2) {
-			return p1.getPath().compareTo(p2.getPath());
-		}
-		
-	}
-	public static class DateComparatorDesc implements Comparator<Post>{
-		public int compare(Post p1, Post p2) {
-			return p2.getDate().compareTo(p1.getDate());
-		}
-		
-	}
-	public static class PostCounterComparator implements Comparator<Post>{
-		public int compare(Post p1, Post p2) {
-			Long c1 = p2.getPostCounter().getCount();
-			Long c2 = p1.getPostCounter().getCount();
-			return c1.compareTo(c2);
-			
-		}
-		
-	}
+//	public static class ByReferenceComparator implements Comparator<Post>{
+//		private List<Post> rootlist;
+//		/**
+//		 * 
+//		 * @param reference This is a list of root posts that are sorted in the order 
+//		 * that you want their roots to be listed in.  (this is for sorting the hierarchies on the
+//		 * main page)
+//		 */
+//		public ByReferenceComparator(List<Post> reference){
+//			rootlist = new ArrayList<Post>();
+//			for(Post p : reference){
+//				if(!rootlist.contains(p))
+//					rootlist.add(p.getRoot());
+//			}
+//		}
+//		public int compare(Post o1, Post o2) {
+//			Integer r1 = rootlist.indexOf(o1.getRoot());
+//			Integer r2 = rootlist.indexOf(o2.getRoot());
+//			return r1.compareTo(r2);
+//		}
+//	}
+//	
+//	public static class ByLiteReferenceComparator implements Comparator<Post>{
+//		private List<String> sortedList;
+//		/**
+//		 * 
+//		 * @param reference This is a list of root posts that are sorted in the order 
+//		 * that you want their roots to be listed in.  (this is for sorting the hierarchies on the
+//		 * main page)
+//		 */
+//		public ByLiteReferenceComparator(List<PostLite> reference){
+//			sortedList = new ArrayList<String>();
+//			for(PostLite p : reference){
+//				sortedList.add(p.getPostId());
+//			}
+//		}
+//		public int compare(Post o1, Post o2) {
+//			Integer r1 = sortedList.indexOf(o1.getPostId());
+//			Integer r2 = sortedList.indexOf(o2.getPostId());
+//			return r1.compareTo(r2);
+//		}
+//	}
+//	
+//	public static class ByPostIdReferenceComparator implements Comparator<Post>{
+//		private List<String> sortedList;
+//		/**
+//		 * 
+//		 * @param reference This is a list of root posts that are sorted in the order 
+//		 * that you want their roots to be listed in.  (this is for sorting the hierarchies on the
+//		 * main page)
+//		 */
+//		public ByPostIdReferenceComparator(List<String> reference){
+//			sortedList = new ArrayList<String>();
+//			this.sortedList.addAll(reference);
+//		}
+//		public int compare(Post o1, Post o2) {
+//			Integer r1 = sortedList.indexOf(o1.getPostId());
+//			Integer r2 = sortedList.indexOf(o2.getPostId());
+//			return r1.compareTo(r2);
+//		}
+//	}
+//	
+//	public static class ThreadPathComparator implements Comparator<Post>{
+//		private final List<String> sortedList;
+//		/**
+//		 * 
+//		 * @param reference This is a list of root posts that are sorted in the order 
+//		 * that you want their roots to be listed in.  (this is for sorting the hierarchies on the
+//		 * main page)
+//		 */
+//		public ThreadPathComparator(List<String> reference){
+//			this.sortedList = Collections.unmodifiableList(reference);
+//		}
+//		
+//		public int compare(Post o1, Post o2) {
+//			Integer r1 = sortedList.indexOf(o1.getThread().getPostId());
+//			Integer r2 = sortedList.indexOf(o2.getThread().getPostId());
+//			
+//			if(r1 == -1 || r2 == -1)
+//				throw new RuntimeException("ThreadPathComparator failed to sort values by reference due to a missing sort field in the reference list.");
+//			
+//			int diff = r1.compareTo(r2);
+//			if (diff == 0)
+//				diff = o1.getPath().compareTo(o2.getPath());
+//			return diff;
+//		}
+//		
+//		/*
+//		public int compare(Post p1, Post p2) {
+//			//return (p1.getThread().getPostId()+p1.getPath()).compareTo(p2.getThread().getPostId() + p2.getPath());
+//		}
+//		*/
+//	}
+//	
+//
+//	
+//	public static class DateComparator implements Comparator<Post>{
+//		public int compare(Post p1, Post p2) {
+//			return p1.getDate().compareTo(p2.getDate());
+//		}
+//		
+//	}
+//	
+//	public static class PathComparator implements Comparator<Post>{
+//		public int compare(Post p1, Post p2) {
+//			return p1.getPath().compareTo(p2.getPath());
+//		}
+//		
+//	}
+//	public static class DateComparatorDesc implements Comparator<Post>{
+//		public int compare(Post p1, Post p2) {
+//			return p2.getDate().compareTo(p1.getDate());
+//		}
+//		
+//	}
+//	public static class PostCounterComparator implements Comparator<Post>{
+//		public int compare(Post p1, Post p2) {
+//			Long c1 = p2.getPostCounter().getCount();
+//			Long c2 = p1.getPostCounter().getCount();
+//			return c1.compareTo(c2);
+//			
+//		}
+//		
+//	}
 	
 	
 	/**
@@ -287,14 +309,14 @@ public class Post implements Comparable<Post>, HasGuid {
 	/**
 	 * Counts the posts beneath this branch
 	 */
-	public int count(){
-		int count;
-		count = posts.size();
-		for(Post p : posts){
-			count += p.count();
-		}
-		return count;
-	}
+//	public int count(){
+//		int count;
+//		count = posts.size();
+//		for(Post p : posts){
+//			count += p.count();
+//		}
+//		return count;
+//	}
 	
 	/**
 	 * I overroad equals initially because i wanted to do 'List.contains' when recursively setting the expanded status. 
@@ -488,37 +510,29 @@ public class Post implements Comparable<Post>, HasGuid {
 		this.threadReplyDate = threadReplyDate;
 	}
 
-//	@ManyToOne ( cascade = {CascadeType.ALL})
-//	@JoinColumn(name="CREATOR_GUID")
+//	
+	
+//	@Transient
 //	public Person getCreator() {
-//		return creator;
+//		AssociationPostTag creatorAss = loadTagAssociation(Tag.TYPE_CREATOR);
+//		if(creatorAss != null){
+//			return creatorAss.getTag().getCreator();
+//		}
+//		return null;
 //	}
-//
-//	public void setCreator(Person creator) {
-//		this.creator = creator;
-//	}
-	
-	@Transient
-	public Person getCreator() {
-		AssociationPostTag creatorAss = loadTagAssociation(Tag.TYPE_CREATOR);
-		if(creatorAss != null){
-			return creatorAss.getTag().getCreator();
-		}
-		return null;
-	}
-	
+//	
 	
 //	private String title = "poor title";
 //	@Transient  //This guy kills the performance on mySQL
-	private String title;
-	@Formula(" (SELECT t.value FROM ASSOCIATION_POST_TAG ass JOIN TAG t ON ass.tag_guid=t.guid  WHERE ass.post_guid=GUID AND ass.title=1) ")
-	public String getTitle(){
-		return title;
-	}
-	
-	public void setTitle(String title){
-		this.title = title;
-	}
+//	private String title;
+//	@Formula(" (SELECT t.value FROM ASSOCIATION_POST_TAG ass JOIN TAG t ON ass.tag_guid=t.guid  WHERE ass.post_guid=GUID AND ass.title=1) ")
+//	public String getTitle(){
+//		return title;
+//	}
+//	
+//	public void setTitle(String title){
+//		this.title = title;
+//	}
 	
 	
 //	@Transient 
@@ -566,69 +580,69 @@ public class Post implements Comparable<Post>, HasGuid {
 	 */
 	
 	
-	private boolean expanded = true;
-	@Transient
-	public boolean isExpanded() {
-		return expanded || isNewPost();
-	}
+//	private boolean expanded = true;
+//	@Transient
+//	public boolean isExpanded() {
+//		return expanded || isNewPost();
+//	}
+//
+//	public void setExpanded(boolean expanded) {
+//		this.expanded = expanded;
+//	}
+//
+//	/**
+//	 * Expands this post and all of the ones benath it.
+//	 */
+//	public void expandAll(){
+//		this.expanded = true;
+//		for(Post p : posts){
+//			p.expandAll();
+//		}
+//	}
+//	public void contractAll(){
+//		this.expanded = false;
+//		for(Post p : posts){
+//			p.contractAll();
+//		}
+//	}
+//	private boolean hidden = true;
+//	@Transient
+//	public boolean isHidden() {
+//		return hidden;
+//	}
+//
+//	public void setHidden(boolean hidden) {
+//		this.hidden = hidden;
+//		if(!hidden){ //If a child is set visible then the ancestors must also be visable for stuff to work.  Made this change for thread view.
+//			if(getParent() != null && getParent().isHidden())
+//				getParent().setPlaceholder(true);  //Trevis... this may not do anything anymore.  I saw it being called from search.  But not the main page.
+//		}
+//	}
+//	
+//	
+//	
+//	
+//	private boolean placeholder = false;
+//	@Transient
+//	public boolean isPlaceholder() {
+//		return placeholder;
+//	}
 
-	public void setExpanded(boolean expanded) {
-		this.expanded = expanded;
-	}
-
-	/**
-	 * Expands this post and all of the ones benath it.
-	 */
-	public void expandAll(){
-		this.expanded = true;
-		for(Post p : posts){
-			p.expandAll();
-		}
-	}
-	public void contractAll(){
-		this.expanded = false;
-		for(Post p : posts){
-			p.contractAll();
-		}
-	}
-	private boolean hidden = true;
-	@Transient
-	public boolean isHidden() {
-		return hidden;
-	}
-
-	public void setHidden(boolean hidden) {
-		this.hidden = hidden;
-		if(!hidden){ //If a child is set visible then the ancestors must also be visable for stuff to work.  Made this change for thread view.
-			if(getParent() != null && getParent().isHidden())
-				getParent().setPlaceholder(true);  //Trevis... this may not do anything anymore.  I saw it being called from search.  But not the main page.
-		}
-	}
+//	public void setPlaceholder(boolean placeholder) {
+//		this.placeholder = placeholder;
+//		if(getParent() != null && getParent().isHidden()){
+//			getParent().setPlaceholder(true);
+//		}
+//	}
 	
 	
 	
-	
-	private boolean placeholder = false;
-	@Transient
-	public boolean isPlaceholder() {
-		return placeholder;
-	}
-
-	public void setPlaceholder(boolean placeholder) {
-		this.placeholder = placeholder;
-		if(getParent() != null && getParent().isHidden()){
-			getParent().setPlaceholder(true);
-		}
-	}
-	
-	
-	
-	@Transient
-	public boolean getHasUrl(){
-		if(hasTagAssociation(Tag.TYPE_URL))
-			return true;
-		return false;
-	}
+//	@Transient
+//	public boolean getHasUrl(){
+//		if(hasTagAssociation(Tag.TYPE_URL))
+//			return true;
+//		return false;
+//	}
 	
 	/* 
 	@Transient
@@ -647,57 +661,41 @@ public class Post implements Comparable<Post>, HasGuid {
 	}
 	*/
 	
-	@Transient
-	public String getUrl(){
-		if(hasTagAssociation(Tag.TYPE_URL)){	
-			AssociationPostTag ass = loadTagAssociation(Tag.TYPE_URL);
-			return ass.getTag().getValue();
-		}
-		return "";
-	}
-	
-	@Transient
-	public String getReleaseYear(){
-		if(hasTagAssociation(Tag.TYPE_RELEASE_YEAR)){
-			AssociationPostTag ass = loadTagAssociation(Tag.TYPE_RELEASE_YEAR);
-			return ass.getTag().getValue();
-		}
-		return "";
-	}
+
 	
 	@Transient
 	public boolean getHasChildren(){
 		return posts.size() > 0;
 	}
-	@Transient
-	public String getAverageRating(){
-		List<Tag> ratings = loadTags(Tag.TYPE_RATING);
-		try {
-			return CalculateAverageRating.determineAverageRating(ratings);
-		} catch (Exception e) {
-			return Tag.VALUE_RATING_0;
-		}
-	}
-	@Transient
-	public String getMedianRating(){
-		String value;
-		List<Tag> ratings = loadTags(Tag.TYPE_RATING);
-		try {
-			value = CalculateAverageRating.determineMedianRating(ratings);
-		} catch (Exception e) {
-			value = Tag.VALUE_RATING_0;
-		}
-		
-		return value.replace('.','_');//For the css style images. Sucks 
-	}
-	@Transient
-	public String getDisplayTag(){
-		AssociationPostTag ass = loadTagAssociation(Tag.TYPE_DISPLAY);
-		if(ass != null)
-			return ass.getTag().getValue();
-		else 
-			return "";
-	}
+//	@Transient
+//	public String getAverageRating(){
+//		List<Tag> ratings = loadTags(Tag.TYPE_RATING);
+//		try {
+//			return CalculateAverageRating.determineAverageRating(ratings);
+//		} catch (Exception e) {
+//			return Tag.VALUE_RATING_0;
+//		}
+//	}
+//	@Transient
+//	public String getMedianRating(){
+//		String value;
+//		List<Tag> ratings = loadTags(Tag.TYPE_RATING);
+//		try {
+//			value = CalculateAverageRating.determineMedianRating(ratings);
+//		} catch (Exception e) {
+//			value = Tag.VALUE_RATING_0;
+//		}
+//		
+//		return value.replace('.','_');//For the css style images. Sucks 
+//	}
+//	@Transient
+//	public String getDisplayTag(){
+//		AssociationPostTag ass = loadTagAssociation(Tag.TYPE_DISPLAY);
+//		if(ass != null)
+//			return ass.getTag().getValue();
+//		else 
+//			return "";
+//	}
 	
 	/**
 	 * Returns a string of information about how the rating was determined
@@ -823,23 +821,23 @@ public class Post implements Comparable<Post>, HasGuid {
 //		return PostFormatter.getInstance().format(title);
 //	}
 	
-	@Transient
-	public boolean getHasTitle(){
-		return loadTitleTagAssociation() != null;
-		//return !(StringUtils.isEmpty(title)||title.equals("BLANK"));
-	}
-	
-	@Transient
-	public AssociationPostTag loadTitleTagAssociation(){
-		AssociationPostTag ass = null;
-		List<AssociationPostTag> tagasses = getTagAssociations();
-		for(AssociationPostTag a : tagasses){
-			if(a.isTitle()){
-				return a;
-			}
-		}
-		return ass;
-	}
+//	@Transient
+//	public boolean getHasTitle(){
+//		return loadTitleTagAssociation() != null;
+//		//return !(StringUtils.isEmpty(title)||title.equals("BLANK"));
+//	}
+//	
+//	@Transient
+//	public AssociationPostTag loadTitleTagAssociation(){
+//		AssociationPostTag ass = null;
+//		List<AssociationPostTag> tagasses = getTagAssociations();
+//		for(AssociationPostTag a : tagasses){
+//			if(a.isTitle()){
+//				return a;
+//			}
+//		}
+//		return ass;
+//	}
 	
 	/**
 	 * Test if this tag is already associated with this post
@@ -861,6 +859,23 @@ public class Post implements Comparable<Post>, HasGuid {
 		return containsTag(t);
 	}
 	
+//	@Transient
+//	public String getUrl(){
+//		if(hasTagAssociation(Tag.TYPE_URL)){	
+//			AssociationPostTag ass = loadTagAssociation(Tag.TYPE_URL);
+//			return ass.getTag().getValue();
+//		}
+//		return "";
+//	}
+//	
+//	@Transient
+//	public String getReleaseYear(){
+//		if(hasTagAssociation(Tag.TYPE_RELEASE_YEAR)){
+//			AssociationPostTag ass = loadTagAssociation(Tag.TYPE_RELEASE_YEAR);
+//			return ass.getTag().getValue();
+//		}
+//		return "";
+//	}
 	
 	//	@Transient
 //	public Person getCreator(){
@@ -870,30 +885,128 @@ public class Post implements Comparable<Post>, HasGuid {
 //		}
 //		return null;
 //	}
-	@Transient
-	public List<AssociationPostTag> getTopics(){
-		return loadTagAssociations(Tag.TYPE_TOPIC);
-	}
-	@Transient
-	public boolean isMovie(){
-		return hasTagAssociation(Tag.TYPE_MOVIE);
-	}
-	@Transient
-	public boolean isRatable(){
-		return hasTagAssociation(Tag.TYPE_RATABLE);
-	}
+	
 	@Transient
 	public boolean isReviewable(){
 		return isMovie(); //Just in case i want to review other types of things down the road?
 	}
-	@Transient
-	public boolean isReview(){
-		return hasTagAssociation(Tag.TYPE_REVIEW);
-	}
+	
 	@Transient
 	public List<AssociationPostTag> getRatings(){
 		return loadTagAssociations(Tag.TYPE_RATING);
 	}
+	
+	@Transient
+	public List<AssociationPostTag> getTopics(){
+		return loadTagAssociations(Tag.TYPE_TOPIC);
+	}
+	
+	@Transient
+	public boolean isMovie(){
+		return hasBit(PostFlag.MOVIE.getBitmask());
+	}
+	@Transient
+	public boolean isRatable(){
+		return hasBit(PostFlag.RATABLE.getBitmask());
+	}
+	
+	@Transient
+	public boolean isReview(){
+		return hasBit(PostFlag.REVIEW.getBitmask());
+	}
+	
+	@Transient
+	public boolean isLegacyThreadHolder(){
+		return hasBit(PostFlag.LEGACY.getBitmask());
+	}
+	
+	@Transient
+	public boolean isLinkContained(){
+		return hasBit(PostFlag.LINK.getBitmask());
+	}
+	
+	@Transient
+	public boolean isNWS(){
+		return hasBit(PostFlag.NWS.getBitmask());
+	}
+	@Transient
+	public boolean isINF(){
+		return hasBit(PostFlag.INF.getBitmask());
+	}
+	
+	@Transient
+	public boolean isPrivate(){
+		return hasBit(PostFlag.PRIVATE.getBitmask());
+	}
+	@Transient
+	public boolean isDeleted(){
+		return hasBit(PostFlag.DELETED.getBitmask());
+	}
+	
+	@Transient
+	public boolean isLocked(){
+		return hasBit(PostFlag.LOCKED.getBitmask());
+	}
+	
+	@Transient
+	private boolean hasBit(long bitmask){
+		long mask = getMetaMask();
+		return (mask & bitmask) == bitmask;
+	}
+	
+	@Transient
+	public void setMovie(){
+		applyBitMask(PostFlag.MOVIE.getBitmask());
+	}
+	@Transient
+	public void setRatable(){
+		applyBitMask(PostFlag.RATABLE.getBitmask());
+	}
+	
+	@Transient
+	public void setReview(){
+		applyBitMask(PostFlag.REVIEW.getBitmask());
+	}
+	
+	@Transient
+	public void setLegacyThreadHolder(){
+		applyBitMask(PostFlag.LEGACY.getBitmask());
+	}
+	
+	@Transient
+	public void setLinkContained(){
+		applyBitMask(PostFlag.LINK.getBitmask());
+	}
+	
+	@Transient
+	public void setNWS(){
+		applyBitMask(PostFlag.NWS.getBitmask());
+	}
+	@Transient
+	public void setINF(){
+		applyBitMask(PostFlag.INF.getBitmask());
+	}
+	
+	@Transient
+	public void setPrivate(){
+		applyBitMask(PostFlag.PRIVATE.getBitmask());
+	}
+	@Transient
+	public void setDeleted(){
+		applyBitMask(PostFlag.DELETED.getBitmask());
+	}
+	
+	@Transient
+	public void setLocked(){
+		applyBitMask(PostFlag.LOCKED.getBitmask());
+	}
+	
+	@Transient
+	private void applyBitMask(long bitmask){
+		long mask = getMetaMask();
+		setMetaMask(mask | bitmask);
+	}
+	
 	/*
 	public List<String> getRatings(){
 		List<String> list = new ArrayList<String>();
@@ -905,54 +1018,6 @@ public class Post implements Comparable<Post>, HasGuid {
 		return list;
 	}
 	*/
-	@Transient
-	public boolean isNWS(){
-		List<AssociationPostTag> list = loadTagAssociations(Tag.TYPE_DISPLAY);
-		for(AssociationPostTag ass : list){
-			if(ass.getTag().getValue().equals(Tag.VALUE_NWS))
-				return true;
-		}
-		return false;
-	}
-	@Transient
-	public boolean isINF(){
-		List<AssociationPostTag> list = loadTagAssociations(Tag.TYPE_DISPLAY);
-		for(AssociationPostTag ass : list){
-			if(ass.getTag().getValue().equals(Tag.VALUE_INF))
-				return true;
-		}
-		return false;
-	}
-	
-	@Transient
-	public boolean isPrivate(){
-		List<AssociationPostTag> list = loadTagAssociations(Tag.TYPE_DISPLAY);
-		for(AssociationPostTag ass : list){
-			if(ass.getTag().getValue().equals(Tag.VALUE_PRIVATE))
-				return true;
-		}
-		return false;
-	}
-	@Transient
-	public boolean isDeleted(){
-		List<AssociationPostTag> list = getRoot().loadTagAssociations(Tag.TYPE_DISPLAY);
-		list.addAll(loadTagAssociations(Tag.TYPE_DISPLAY));
-		for(AssociationPostTag ass : list){
-			if(ass.getTag().getValue().equals(Tag.VALUE_DELETED))
-				return true;
-		}
-		return false;
-	}
-	
-	@Transient
-	public boolean isLocked(){
-		List<AssociationPostTag> list = getRoot().loadTagAssociations(Tag.TYPE_DISPLAY);
-		for(AssociationPostTag ass : list){
-			if(ass.getTag().getValue().equals(Tag.VALUE_LOCKED))
-				return true;
-		}
-		return false;
-	}
 	
 	
 	/**
@@ -961,18 +1026,18 @@ public class Post implements Comparable<Post>, HasGuid {
 	 * @param type
 	 * @return
 	 */
-	public AssociationPostTag loadTagAssociation(String type){
-		AssociationPostTag ass = null;
-		if(type == null) return null;
-		List<AssociationPostTag> tagasses = getTagAssociations();
-		for(AssociationPostTag a : tagasses){
-			if(type.equals(a.getTag().getType())){
-				ass = a;
-				break;
-			}
-		}
-		return ass;
-	}
+//	public AssociationPostTag loadTagAssociation(String type){
+//		AssociationPostTag ass = null;
+//		if(type == null) return null;
+//		List<AssociationPostTag> tagasses = getTagAssociations();
+//		for(AssociationPostTag a : tagasses){
+//			if(type.equals(a.getTag().getType())){
+//				ass = a;
+//				break;
+//			}
+//		}
+//		return ass;
+//	}
 	
 	/**
 	 * Returns a list of AssociationPostTag objects matching a specific type
@@ -980,7 +1045,7 @@ public class Post implements Comparable<Post>, HasGuid {
 	 * @param type
 	 * @return Returns an empty list if the type is either null or not found.
 	 */
-	public List<AssociationPostTag> loadTagAssociations(String type){
+	private List<AssociationPostTag> loadTagAssociations(String type){
 		List<AssociationPostTag> list = new ArrayList<AssociationPostTag>();
 		if(type == null) return list;
 		List<AssociationPostTag> tagasses = getTagAssociations();
@@ -1035,34 +1100,35 @@ public class Post implements Comparable<Post>, HasGuid {
 	 * @param type
 	 * @return
 	 */
-	public List<Tag> loadTags(String type){
-		List<Tag> list = new ArrayList<Tag>();
-		if(type == null) return list;
-		List<AssociationPostTag> tagasses = getTagAssociations();
-		for(AssociationPostTag a : tagasses){
-			if(type.equals(a.getTag().getType())){
-				list.add(a.getTag());
-			}
-		}
-		return list;
-	}
+//	public List<Tag> loadTags(String type){
+//		List<Tag> list = new ArrayList<Tag>();
+//		if(type == null) return list;
+//		List<AssociationPostTag> tagasses = getTagAssociations();
+//		for(AssociationPostTag a : tagasses){
+//			if(type.equals(a.getTag().getType())){
+//				list.add(a.getTag());
+//			}
+//		}
+//		return list;
+//	}
 	
 	/**
 	 * Determines if a post has a specific tag type.
 	 * @param type
 	 * @return
 	 */
-	public boolean hasTagAssociation(String type) {
-		if(type == null) return false;
-		List<AssociationPostTag> tagasses = getTagAssociations();
-		boolean retval = false;
-		for(AssociationPostTag ass : tagasses){
-			if(type.equals(ass.getTag().getType())){
-				return true;
-			}
-		}
-		return retval;
-	}
+//	public boolean hasTagAssociation(String type) {
+//		if(type == null) return false;
+//		List<AssociationPostTag> tagasses = getTagAssociations();
+//		boolean retval = false;
+//		for(AssociationPostTag ass : tagasses){
+//			if(type.equals(ass.getTag().getType())){
+//				return true;
+//			}
+//		}
+//		return retval;
+//	}
+	
 	/**
 	 * Has tag by this person!
 	 * 
@@ -1070,25 +1136,58 @@ public class Post implements Comparable<Post>, HasGuid {
 	 * @param person
 	 * @return
 	 */
-	public boolean hasTagAssociation(String type, Person person) {
+//	public boolean hasTagAssociation(String type, Person person) {
+//		if(type == null) return false;
+//		List<AssociationPostTag> tagasses = getTagAssociations();
+//		boolean retval = false;
+//		for(AssociationPostTag ass : tagasses){
+//			if(type.equals(ass.getTag().getType()) && ass.getCreator().equals(person)){
+//				return true;
+//			}
+//		}
+//		return retval;
+//	}
+	
+	public boolean hasRatingByPerson(String personId){
+		String type = Tag.TYPE_RATING;
+		
 		if(type == null) return false;
 		List<AssociationPostTag> tagasses = getTagAssociations();
 		boolean retval = false;
 		for(AssociationPostTag ass : tagasses){
-			if(type.equals(ass.getTag().getType()) && ass.getCreator().equals(person)){
+			if(type.equals(ass.getTag().getType()) && ass.getCreator().getPersonId().equals(personId)){
 				return true;
 			}
 		}
 		return retval;
 	}
 	
+	public AssociationPostTag getRatingByPerson(String personId){
+		String type = Tag.TYPE_RATING;
+		
+		if(type == null) return null;
+		List<AssociationPostTag> tagasses = getTagAssociations();
+		for(AssociationPostTag ass : tagasses){
+			if(type.equals(ass.getTag().getType()) && ass.getCreator().getPersonId().equals(personId)){
+				return ass;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Just return the first entry.  Multiple entries mean that a post has been edited
+	 * ... fixed.  Latest is now linked directly to post
+	 * 
+	 * @return
+	 */
+	@Transient
+	public Entry getEntry(){
+		return getLatestEntry();
+	}
+	
 	@Transient
 	public String getSummary(){
-		/*
-		String b = getEntry().getBody();
-		int length = 100;
-		return b.substring(0, length<=b.length()? length : b.length());
-		*/
 		return getEntry().getSummary();
 	}
 
@@ -1097,25 +1196,25 @@ public class Post implements Comparable<Post>, HasGuid {
 	 * i set a populated postCounter object here which contains the total count
 	 * of posts in this root and is a warning about this massive thread.
 	 */
-	private PostCounter postCounter;
-	@Transient
-	public PostCounter getPostCounter() {
-		return postCounter;
-	}
+//	private PostCounter postCounter;
+//	@Transient
+//	public PostCounter getPostCounter() {
+//		return postCounter;
+//	}
+//
+//	public void setPostCounter(PostCounter postCounter) {
+//		this.postCounter = postCounter;
+//	}
 
-	public void setPostCounter(PostCounter postCounter) {
-		this.postCounter = postCounter;
-	}
-
-	private boolean newPost = false;
-	@Transient	
-	public boolean isNewPost() {
-		return newPost;
-	}
-
-	public void setNewPost(boolean newPost) {
-		this.newPost = newPost;
-	}
+//	private boolean newPost = false;
+//	@Transient	
+//	public boolean isNewPost() {
+//		return newPost;
+//	}
+//
+//	public void setNewPost(boolean newPost) {
+//		this.newPost = newPost;
+//	}
 	
 	@Transient
 	public boolean isRootPost() {
@@ -1138,15 +1237,15 @@ public class Post implements Comparable<Post>, HasGuid {
 		//Nothing to do.
 	}
 	
-	private String relativeAge = "";
-	@Transient
-	public String getRelativeAge() {
-		return relativeAge;
-	}
-
-	public void setRelativeAge(String relativeAge) {
-		this.relativeAge = relativeAge;
-	}
+//	private String relativeAge = "";
+//	@Transient
+//	public String getRelativeAge() {
+//		return relativeAge;
+//	}
+//
+//	public void setRelativeAge(String relativeAge) {
+//		this.relativeAge = relativeAge;
+//	}
 
 	
 	
@@ -1181,26 +1280,17 @@ public class Post implements Comparable<Post>, HasGuid {
 	}
 	*/
 
-	/**
-	 * Just return the first entry.  Multiple entries mean that a post has been edited
-	 * ... fixed.  Latest is now linked directly to post
-	 * 
-	 * @return
-	 */
-	@Transient
-	public Entry getEntry(){
-		return getLatestEntry();
-	}
+	
 	
 	/**
 	 * Tests if the post has been edited
 	 * 
 	 *  @return returns true if the post has been edited. false otherwise.
 	 */
-	@Transient
-	public boolean isModified(){
-		return getEntries().size() > 1;
-	}
+//	@Transient
+//	public boolean isModified(){
+//		return getEntries().size() > 1;
+//	}
 	
 	/**
 	 *  Gets the date that the post was edited. Returns the last modified date if the post 
@@ -1209,15 +1299,15 @@ public class Post implements Comparable<Post>, HasGuid {
 	 *  @return modified date. 
 	 *  
 	 */
-	@Transient
-	public Date getModifiedDate(){
-		List<Entry> list = new ArrayList<Entry>(getEntries());
-		return list.get(0).getDate();
-	}
-	@Transient
-	public long getRawModifiedDate(){
-		return getModifiedDate().getTime();
-	}
+//	@Transient
+//	public Date getModifiedDate(){
+//		List<Entry> list = new ArrayList<Entry>(getEntries());
+//		return list.get(0).getDate();
+//	}
+//	@Transient
+//	public long getRawModifiedDate(){
+//		return getModifiedDate().getTime();
+//	}
 	
 	/*
 	 * I manage this mapping in a custom way because i want to manage when Entries are loaded.
@@ -1236,63 +1326,63 @@ public class Post implements Comparable<Post>, HasGuid {
 	*/
 	
 
-	boolean unread = false;
-	@Transient
-	public boolean isUnread() {
-		return unread;
-	}
-
-	public void setUnread(boolean unread) {
-		this.unread = unread;
-		if(unread){
-			getRoot().setThreadRead(false);
-		}
-	}
+//	boolean unread = false;
+//	@Transient
+//	public boolean isUnread() {
+//		return unread;
+//	}
+//
+//	public void setUnread(boolean unread) {
+//		this.unread = unread;
+//		if(unread){
+//			getRoot().setThreadRead(false);
+//		}
+//	}
+//	
 	
-	
-	boolean threadRead = true;
-	@Transient
-	/**
-	 * Is the thread read.  
-	 * 
-	 * @return returns false if any unread comments are in this thread hierarchy, true otherwise.
-	 * @throws throws illegal state exception if the method is called
-	 * 
-	 * When a reply in a thread is unread,  
-	 */
-	public boolean isThreadRead() {
-		if(isRootPost())
-			return threadRead;
-		else
-			throw new UnsupportedOperationException("This method should only be called on root posts");
-	}
+//	boolean threadRead = true;
+//	@Transient
+//	/**
+//	 * Is the thread read.  
+//	 * 
+//	 * @return returns false if any unread comments are in this thread hierarchy, true otherwise.
+//	 * @throws throws illegal state exception if the method is called
+//	 * 
+//	 * When a reply in a thread is unread,  
+//	 */
+//	public boolean isThreadRead() {
+//		if(isRootPost())
+//			return threadRead;
+//		else
+//			throw new UnsupportedOperationException("This method should only be called on root posts");
+//	}
 
-	public void setThreadRead(boolean threadRead) {
-		this.threadRead = threadRead;
-	}
+//	public void setThreadRead(boolean threadRead) {
+//		this.threadRead = threadRead;
+//	}
 	
-	public void initialize(){
-		Hibernate.initialize(getPosts());
-		Hibernate.initialize(getImage());
-		Hibernate.initialize(getEntries());
-		Hibernate.initialize(getTagAssociations());
-		if(getParent()!=null)
-			Hibernate.initialize(getParent().getTagAssociations());//For showing the in reply to stuff
-		Hibernate.initialize(getRoot().getTagAssociations());//So that i can show which thread a comment is in
-		for(Post p : posts){
-			p.initialize();
-		}
-	}
+//	public void initialize(){
+//		Hibernate.initialize(getPosts());
+//		Hibernate.initialize(getImage());
+//		Hibernate.initialize(getEntries());
+//		Hibernate.initialize(getTagAssociations());
+//		if(getParent()!=null)
+//			Hibernate.initialize(getParent().getTagAssociations());//For showing the in reply to stuff
+//		Hibernate.initialize(getRoot().getTagAssociations());//So that i can show which thread a comment is in
+//		for(Post p : posts){
+//			p.initialize();
+//		}
+//	}
 
-	//This is for filtering NWS and Private posts from view.  Users can also select threads which are filtered.
-	private boolean filtered = false;
-	@Transient
-	public boolean isFiltered() {
-		return filtered;
-	}
-	public void setFiltered(boolean filtered) {
-		this.filtered = filtered;
-	}
+//	//This is for filtering NWS and Private posts from view.  Users can also select threads which are filtered.
+//	private boolean filtered = false;
+//	@Transient
+//	public boolean isFiltered() {
+//		return filtered;
+//	}
+//	public void setFiltered(boolean filtered) {
+//		this.filtered = filtered;
+//	}
 	
 	/**
 	 * Earmark is piggybacking on this functionality which was originally created for movies. 
@@ -1300,21 +1390,29 @@ public class Post implements Comparable<Post>, HasGuid {
 	 * @param person
 	 * @return
 	 */
-	private boolean earmarked = false;
-	@Transient 
-	public boolean isEarmarked() {
-		return earmarked;
-	}
-
-	public void setEarmarked(boolean earmarked) {
-		this.earmarked = earmarked;
+//	private boolean earmarked = false;
+//	@Transient 
+//	public boolean isEarmarked() {
+//		return earmarked;
+//	}
+//
+//	public void setEarmarked(boolean earmarked) {
+//		this.earmarked = earmarked;
+//	}
+	
+	@Transient
+	public String getAverageRating(){
+		return getAvgRatingTag().getValueRating();
 	}
 	
 	@Transient
-	public boolean isLegacyThreadHolder(){
-		return hasTagAssociation(Tag.TYPE_LEGACY_THREAD);
-	}
-	
+	public String getTitle(){
+		return getTitleTag().getValue();
+	}	
+	@Transient
+	public String getSortTitle(){
+		return getTitleTag().getSortValue();
+	}	
 	@ManyToOne ( cascade = {CascadeType.ALL})
 	@JoinColumn(name="THREAD_GUID")
     public Post getThread() {
@@ -1334,7 +1432,8 @@ public class Post implements Comparable<Post>, HasGuid {
 	}
 
 	
-	@ManyToOne ( cascade = {CascadeType.ALL}, fetch=FetchType.LAZY)
+	//@ManyToOne ( cascade = {CascadeType.ALL}, fetch=FetchType.LAZY)
+	@ManyToOne ( cascade = {CascadeType.ALL})
 	@JoinColumn(name="LATEST_ENTRY_GUID")
 	public Entry getLatestEntry() {
 		return LatestEntry;
@@ -1360,9 +1459,70 @@ public class Post implements Comparable<Post>, HasGuid {
 		this.mass = mass;
 	}
 
-	
-	
+	@Column(name="META_MASK")
+	public Long getMetaMask() {
+		return metaMask;
+	}
+	public void setMetaMask(Long metaMask) {
+		this.metaMask = metaMask;
+	}
 
+	@ManyToOne ( cascade = {CascadeType.ALL})
+	@JoinColumn(name="TAG_GUID_TITLE")
+	public Tag getTitleTag() {
+		return titleTag;
+	}
+
+	public void setTitleTag(Tag titleTag) {
+		this.titleTag = titleTag;
+	}
+
+	@ManyToOne ( cascade = {CascadeType.ALL})
+	@JoinColumn(name="TAG_GUID_AVG_RATING")
+	public Tag getAvgRatingTag() {
+		return avgRatingTag;
+	}
+	public void setAvgRatingTag(Tag avgRatingTag) {
+		this.avgRatingTag = avgRatingTag;
+	}
+
+	@Column(name="PUBLISH_YEAR")
+	public Integer getPublishYear() {
+		return publishYear;
+	}
+
+	public void setPublishYear(Integer publishYear) {
+		this.publishYear = publishYear;
+	}
+
+	
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	@ManyToOne ( cascade = {CascadeType.ALL})
+	@JoinColumn(name="PERSON_GUID_CREATOR")
+	public Person getCreator() {
+		return creator;
+	}
+
+	public void setCreator(Person creator) {
+		this.creator = creator;
+	}
+	
+//	META_MASK	binary(8)	Unchecked
+//	TAG_GUID_TITLE	uniqueidentifier	Unchecked
+//	PERSON_GUID_CREATOR	uniqueidentifier	Unchecked
+//	TAG_GUID_AVG_RATING	uniqueidentifier	Checked
+//	URL	varchar(500)	Checked
+//	PUBLISH_YEAR	smallint	Checked
+	
+	
+	
 	
 
 

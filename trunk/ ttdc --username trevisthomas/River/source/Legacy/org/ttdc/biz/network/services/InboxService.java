@@ -93,40 +93,40 @@ public final class InboxService {
 			Date postReadDate = null;
 			Date date = null;
 			
-			if(!p.isHidden()){
-				if(inbox.containsKey(SITE_KEY)){
-					siteReadDate = inbox.get(SITE_KEY).getDate();
-				}
-				if(inbox.containsKey(p.getRoot().getPostId())){
-					postReadDate = inbox.get(p.getRoot().getPostId()).getDate();
-				}
-				
-				if(siteReadDate != null && postReadDate != null){
-					//Choose which is more recent
-					date = siteReadDate.compareTo(postReadDate) > 0 ? siteReadDate : postReadDate;
-				}
-				else{
-					//else choose which is not null.  If both are null, date is null
-					date = siteReadDate != null ? siteReadDate : postReadDate; 
-				}
-				
-				if(date != null){
-					if(date.compareTo(p.getDate()) > 0){
-						//p.setUnread(false);
-					}
-					else{
-						p.setUnread(true);
-					}	
-				}
-				else{
-					p.setUnread(true);
-				}
-				recurseUnread(p.getPosts(),inbox);
-				
-			}
-			else{
-				//p.setUnread(false);//Hm, this shouldnt be necessary
-			}
+//			if(!p.isHidden()){
+//				if(inbox.containsKey(SITE_KEY)){
+//					siteReadDate = inbox.get(SITE_KEY).getDate();
+//				}
+//				if(inbox.containsKey(p.getRoot().getPostId())){
+//					postReadDate = inbox.get(p.getRoot().getPostId()).getDate();
+//				}
+//				
+//				if(siteReadDate != null && postReadDate != null){
+//					//Choose which is more recent
+//					date = siteReadDate.compareTo(postReadDate) > 0 ? siteReadDate : postReadDate;
+//				}
+//				else{
+//					//else choose which is not null.  If both are null, date is null
+//					date = siteReadDate != null ? siteReadDate : postReadDate; 
+//				}
+//				
+//				if(date != null){
+//					if(date.compareTo(p.getDate()) > 0){
+//						//p.setUnread(false);
+//					}
+//					else{
+//						p.setUnread(true);
+//					}	
+//				}
+//				else{
+//					p.setUnread(true);
+//				}
+//				recurseUnread(p.getPosts(),inbox);
+//				
+//			}
+//			else{
+//				//p.setUnread(false);//Hm, this shouldnt be necessary
+//			}
 		}
 	}
 	
@@ -145,49 +145,49 @@ public final class InboxService {
 	 */
 	public void flagUnreadPost(Person person, Post p){
 		try{
-			if(person == null || person.isAnonymous()) return;
-			
-			//Piggybacking on existing method to set Earmark.
-			p.setEarmarked(p.hasTagAssociation(Tag.TYPE_EARMARK, person));
-			
-			Map<String,InboxCache> inbox = cache.get(person.getPersonId());
-			
-			Date siteReadDate = null;
-			Date postReadDate = null;
-			Date date = null;
-			
-			if(inbox == null){
-				p.setUnread(true);
-				return;
-			}
-			
-			if(inbox.containsKey(SITE_KEY)){
-				siteReadDate = inbox.get(SITE_KEY).getDate();
-			}
-			if(inbox.containsKey(p.getRoot().getPostId())){
-				postReadDate = inbox.get(p.getRoot().getPostId()).getDate();
-			}
-			
-			if(siteReadDate != null && postReadDate != null){
-				//Choose which is more recent
-				date = siteReadDate.compareTo(postReadDate) > 0 ? siteReadDate : postReadDate;
-			}
-			else{
-				//else choose which is not null.  If both are null, date is null
-				date = siteReadDate != null ? siteReadDate : postReadDate; 
-			}
-			
-			if(date != null){
-				if(date.compareTo(p.getDate()) > 0){
-					//p.setUnread(false);
-				}
-				else{
-					p.setUnread(true);
-				}	
-			}
-			else{
-				p.setUnread(true);
-			}
+//			if(person == null || person.isAnonymous()) return;
+//			
+//			//Piggybacking on existing method to set Earmark.
+//			p.setEarmarked(p.hasTagAssociation(Tag.TYPE_EARMARK, person));
+//			
+//			Map<String,InboxCache> inbox = cache.get(person.getPersonId());
+//			
+//			Date siteReadDate = null;
+//			Date postReadDate = null;
+//			Date date = null;
+//			
+//			if(inbox == null){
+//				p.setUnread(true);
+//				return;
+//			}
+//			
+//			if(inbox.containsKey(SITE_KEY)){
+//				siteReadDate = inbox.get(SITE_KEY).getDate();
+//			}
+//			if(inbox.containsKey(p.getRoot().getPostId())){
+//				postReadDate = inbox.get(p.getRoot().getPostId()).getDate();
+//			}
+//			
+//			if(siteReadDate != null && postReadDate != null){
+//				//Choose which is more recent
+//				date = siteReadDate.compareTo(postReadDate) > 0 ? siteReadDate : postReadDate;
+//			}
+//			else{
+//				//else choose which is not null.  If both are null, date is null
+//				date = siteReadDate != null ? siteReadDate : postReadDate; 
+//			}
+//			
+//			if(date != null){
+//				if(date.compareTo(p.getDate()) > 0){
+//					//p.setUnread(false);
+//				}
+//				else{
+//					p.setUnread(true);
+//				}	
+//			}
+//			else{
+//				p.setUnread(true);
+//			}
 		}
 		catch(Exception e){
 			log.error(e.getMessage());

@@ -65,30 +65,6 @@ public class AssociationPostTagDaoTest {
 	}
 	
 	@Test
-	public void createAssociationDuplicateTitleTest(){
-		try{
-			beginSession();
-			AssociationPostTagDao dao = new AssociationPostTagDao();
-			
-			Post post = PostDao.loadPost(postId);
-			Tag tag = TagDao.loadTag(tagId);
-			Person creator = PersonDao.loadPerson(personId);
-			
-			dao.setTag(tag);
-			dao.setPost(post);
-			dao.setCreator(creator);
-			dao.setTitle(true);
-			
-			AssociationPostTag ass = dao.create();
-			fail("Association allowed a second title to be created, this is invalid.");
-			rollback();
-		}
-		catch(Exception e){
-			rollback();
-		}
-	}
-	
-	@Test
 	public void createAssociationMissingCreatorTest(){
 		try{
 			beginSession();
