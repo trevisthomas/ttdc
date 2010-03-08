@@ -1,6 +1,8 @@
 package org.ttdc.gwt.server.command.executors;
 
-import static org.ttdc.persistence.Persistence.*;
+import static org.ttdc.persistence.Persistence.beginSession;
+import static org.ttdc.persistence.Persistence.commit;
+import static org.ttdc.persistence.Persistence.rollback;
 
 import java.util.Collections;
 
@@ -8,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.services.CommandResult;
 import org.ttdc.gwt.server.command.CommandExecutor;
+import org.ttdc.gwt.server.command.executors.utils.ExecutorHelpers;
 import org.ttdc.gwt.server.command.executors.utils.PaginatedResultConverters;
 import org.ttdc.gwt.server.dao.PostDao;
 import org.ttdc.gwt.server.dao.ThreadDao;
@@ -38,7 +41,7 @@ public class TopicCommandExecutor  extends CommandExecutor<TopicCommandResult>{
 			Post post = PostDao.loadPost(command.getPostId());
 			dao.setRootId(post.getRoot().getPostId());
 			dao.setCurrentPage(command.getPageNumber());
-			dao.setFilteredTagIdList(getPerson().getFilteredTagIds());
+			dao.setFilterFlags(ExecutorHelpers.createFlagFilterListForPerson(getPerson()));
 			
 			if(TopicCommandType.FLAT.equals(type)){
 				results = dao.loadFlat();
@@ -97,7 +100,7 @@ public class TopicCommandExecutor  extends CommandExecutor<TopicCommandResult>{
 		ThreadDao dao = new ThreadDao();
 		dao.setCurrentPage(command.getPageNumber());
 		dao.setRootId(post.getRoot().getPostId());
-		dao.setFilteredTagIdList(getPerson().getFilteredTagIds());
+		dao.setFilterFlags(ExecutorHelpers.createFlagFilterListForPerson(getPerson()));
 		
 		PaginatedList<Post> results;
 		if(command.isSortByDate())
@@ -112,7 +115,7 @@ public class TopicCommandExecutor  extends CommandExecutor<TopicCommandResult>{
 		ThreadDao dao = new ThreadDao();
 		dao.setCurrentPage(command.getPageNumber());
 		dao.setThreadId(post.getPostId());
-		dao.setFilteredTagIdList(getPerson().getFilteredTagIds());
+		dao.setFilterFlags(ExecutorHelpers.createFlagFilterListForPerson(getPerson()));
 		
 		PaginatedList<Post> results;
 		results = dao.loadThreadSummmary();

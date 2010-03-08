@@ -59,9 +59,10 @@ private final static Logger log = Logger.getLogger(SearchPostsCommandTest.class)
 		}
 	}
 	
+	
 	@Test
 	public void searchForTagsPageNumber(){
-		SearchTagsCommand cmd = new SearchTagsCommand("the", 2);
+		SearchTagsCommand cmd = new SearchTagsCommand("funny", 1);  //I dont have multiple pages worth of tags anymore...
 		CommandExecutor cmdexec = CommandExecutorFactory.createExecutor("50E7F601-71FD-40BD-9517-9699DDA611D6",cmd);
 		
 		assertTrue("Factory returned the wrong implementation", cmdexec instanceof SearchTagsCommandExecutor);
@@ -72,7 +73,7 @@ private final static Logger log = Logger.getLogger(SearchPostsCommandTest.class)
 		PaginatedList<GTag> results = ((SearchTagsCommandResult)result).getResults();
 		
 		assertTrue("Found nothing, expected something",results.getTotalResults() > 0);
-		assertTrue("Asked for page two but got something else",results.getCurrentPage() == 2);
+		assertTrue("Asked for page two but got something else",results.getCurrentPage() == 1);
 	}
 	
 	@Test
@@ -82,8 +83,8 @@ private final static Logger log = Logger.getLogger(SearchPostsCommandTest.class)
 		//in the client.
 		
 		List<String> tagIds = new ArrayList<String>();
-		tagIds.add(Helpers.tagCorporateGoodness);
-		tagIds.add(Helpers.tagKimD);
+		String tagGodsVsGenerals="9FA858DC-0248-49F0-ABC8-A4BD2863161C";
+		tagIds.add(tagGodsVsGenerals);
 		
 		SearchTagsCommand cmd = new SearchTagsCommand(tagIds);
 		
@@ -98,7 +99,7 @@ private final static Logger log = Logger.getLogger(SearchPostsCommandTest.class)
 		
 		assertTrue("Found nothing, expected something",results.getTotalResults() > 0);
 		
-		assertEquals(Helpers.tagCorporateGoodness, results.getList().get(0).getTagId());
+		assertEquals(tagGodsVsGenerals, results.getList().get(0).getTagId());
 	}
 
 	//Trevis you noticed that searching with a blank phrase just returns every tag in the system. FYI

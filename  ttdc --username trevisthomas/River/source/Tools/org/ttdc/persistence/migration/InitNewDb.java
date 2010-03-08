@@ -21,6 +21,7 @@ import org.ttdc.util.Cryptographer;
  * @author Trevis
  *
  */
+
 public class InitNewDb {
 	private static Logger log = Logger.getLogger(CommentService.class);
 	public static void main(String[] args) {
@@ -33,8 +34,8 @@ public class InitNewDb {
 			Query query = session.getNamedQuery("person.getByLogin").setString("login", "admin");
 			p = (Person)query.uniqueResult();
 			
-			makeDisplayTag(p,Tag.VALUE_NWS);
-			makeDisplayTag(p,Tag.VALUE_PRIVATE);
+//			makeDisplayTag(p,Tag.VALUE_NWS);
+//			makeDisplayTag(p,Tag.VALUE_PRIVATE);
 			//Others are created when used.
 			
 			/*
@@ -139,25 +140,6 @@ public class InitNewDb {
 		}
 	}
 	
-	private static void makeDisplayTag(Person creator, String value){
-		Tag t; 
-		t = new Tag();
-		t.setCreator(creator);
-		t.setDate(new Date());
-		t.setType(Tag.TYPE_DISPLAY);
-		t.setValue(value);
-		Persistence.session().save(t);
-	}
 	
-	
-	private static void makeRatingTag(String value, Person creator){
-		Tag t; 
-		t = new Tag();
-		t.setCreator(creator);
-		t.setDate(new Date());
-		t.setType(Tag.TYPE_RATING);
-		t.setValue(value);
-		Persistence.session().save(t);
-	}
 }
 

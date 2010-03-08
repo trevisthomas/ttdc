@@ -129,9 +129,9 @@ public class InflatinatorTest {
 			ThreadDao dao = new ThreadDao();
 			dao.setRootId(Helpers.rootIdVersion6Live);
 			
-			List<String> filteredTagIds = new ArrayList<String>();
-			filteredTagIds.add(tagTrevis);
-			dao.setFilteredTagIdList(filteredTagIds);
+//			List<String> filteredTagIds = new ArrayList<String>();
+//			filteredTagIds.add(tagTrevis);
+//			dao.setFilteredTagIdList(filteredTagIds);
 			
 			int threadCount = 10;
 			dao.setPageSize(threadCount);

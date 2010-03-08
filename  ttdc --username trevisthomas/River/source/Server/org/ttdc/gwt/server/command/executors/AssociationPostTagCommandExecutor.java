@@ -98,7 +98,6 @@ public class AssociationPostTagCommandExecutor extends CommandExecutor<Associati
 			TagDao tagDao = new TagDao();
 			tagDao.setValue(gTag.getValue());
 			tagDao.setType(gTag.getType());
-			tagDao.setCreator(getPerson());
 			tag = tagDao.createOrLoad();
 		}
 		return tag;

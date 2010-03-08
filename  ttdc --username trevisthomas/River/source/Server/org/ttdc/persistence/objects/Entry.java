@@ -26,6 +26,8 @@ import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Store;
+import org.ttdc.persistence.util.PostFlag;
+import org.ttdc.persistence.util.PostFlagBitmasks;
 
 //uuid() //MySql
 //newid() //MSSql
@@ -278,205 +280,137 @@ import org.hibernate.search.annotations.Store;
 			
      ////// END PostSearchDao
 			
-	@NamedQuery(name="LatestPostsFlatDao.Flat", query="" +
-			"SELECT post FROM Post post WHERE post.postId NOT IN (" +
-			"SELECT ass.post.postId FROM AssociationPostTag ass WHERE ass.tag.tagId IN (:tagIds))" +
-			"ORDER BY date DESC"),
-			
-	@NamedQuery(name="LatestPostsFlatDao.FlatNoFilters", query="SELECT post FROM Post post ORDER BY date DESC"),
-	
+//	@NamedQuery(name="LatestPostsFlatDao.Flat", query="" +
+//			"SELECT post FROM Post post WHERE post.postId NOT IN (" +
+//			"SELECT ass.post.postId FROM AssociationPostTag ass WHERE ass.tag.tagId IN (:tagIds))" +
+//			"ORDER BY date DESC"),
+//			
+//	@NamedQuery(name="LatestPostsFlatDao.FlatNoFilters", query="SELECT post FROM Post post ORDER BY date DESC"),
+//	
 	@NamedQuery(name="TopicDao.Starters", query="" +
-			"SELECT post FROM Post post WHERE post.postId NOT IN (" +
-			"SELECT ass.post.postId FROM AssociationPostTag ass WHERE ass.tag.tagId IN (:tagIds)) AND " +
-			"post.parent.postId=:rootId "+
-			"ORDER BY date DESC"),		
+			"SELECT post FROM Post post " +
+			"WHERE post.parent.postId=:rootId "+
+			"AND bitwise_and( post.metaMask, :filterMask ) = 0 "+
+			"ORDER BY date DESC"),
 	
-	@NamedQuery(name="TopicDao.StartersNoFilter", query="" +
-			"SELECT post FROM Post post WHERE post.parent.postId=:rootId "+
-			"ORDER BY date DESC"),	
+	@NamedQuery(name="TopicDao.StartersCount", query="" +
+			"SELECT count(post.postId) FROM Post post " +
+			"WHERE post.parent.postId=:rootId "+
+			"AND bitwise_and( post.metaMask, :filterMask ) = 0 "),
 			
 	@NamedQuery(name="TopicDao.Replies", query="" +
-			"SELECT post FROM Post post WHERE post.postId NOT IN (" +
-			"SELECT ass.post.postId FROM AssociationPostTag ass WHERE ass.tag.tagId IN (:tagIds)) AND " +
-			"post.thread.postId=:postId AND post.postId IS NOT :postId "+
+			"SELECT post FROM Post post " +
+			"WHERE post.thread.postId=:postId " +
+			"AND post.postId IS NOT :postId " +
+			"AND bitwise_and( post.metaMask, :filterMask ) = 0 "+
 			"ORDER BY date DESC"),		
 	
-	@NamedQuery(name="TopicDao.RepliesNoFilter", query="" +
-			"SELECT post FROM Post post WHERE post.thread.postId=:postId AND post.postId IS NOT :postId "+
-			"ORDER BY date DESC"),
-			
-	//TODO: trevis, i dont see why the and part of the inner query is necessary? WTF?		
 	@NamedQuery(name="TopicDao.Flat", query="" +
-			"SELECT post FROM Post post WHERE post.root.postId=:rootId AND post.parent.postId IS NOT NULL AND" +
-			" post.postId NOT IN (" +
-			"SELECT ass.post.postId FROM AssociationPostTag ass WHERE ass.tag.tagId IN (:tagIds)) AND " +
-			"post.root.postId=:rootId AND post.postId IS NOT :rootId "+
+			"SELECT post FROM Post post " +
+			"WHERE post.root.postId=:rootId " +
+			"AND post.parent.postId IS NOT NULL "+
+			"AND bitwise_and( post.metaMask, :filterMask ) = 0 "+
 			"ORDER BY date DESC"),		
 	
-	@NamedQuery(name="TopicDao.FlatNoFilter", query="" +
-			"SELECT post FROM Post post WHERE post.root.postId=:rootId AND post.parent.postId IS NOT NULL "+
-			"ORDER BY date DESC"),		
+	@NamedQuery(name="TopicDao.FlatCount", query="" +
+			"SELECT count(post.postId) FROM Post post " +
+			"WHERE post.root.postId=:rootId " +
+			"AND post.parent.postId IS NOT NULL "+
+			"AND bitwise_and( post.metaMask, :filterMask ) = 0 "),		
 			
 	@NamedQuery(name="TopicDao.Hierarchy", query="" +
-			"SELECT post FROM Post post WHERE post.root.postId=:rootId AND" +
-			" post.postId NOT IN (" +
-			"SELECT ass.post.postId FROM AssociationPostTag ass WHERE ass.tag.tagId IN (:tagIds)) " +
+			"SELECT post FROM Post post WHERE post.root.postId=:rootId " +
+			"AND bitwise_and( post.metaMask, :filterMask ) = 0 "+
 			"ORDER BY path"),		
 	
-	@NamedQuery(name="TopicDao.HierarchyNoFilter", query="" +
-			"SELECT post FROM Post post WHERE post.root.postId=:rootId "+
-			"ORDER BY path"),		
+	@NamedQuery(name="TopicDao.HierarchyCount", query="" +
+			"SELECT count(post.postId) FROM Post post WHERE post.root.postId=:rootId "+
+			"AND bitwise_and( post.metaMask, :filterMask ) = 0 "),		
 			
-	
+	//ThreadDao
 	@NamedQuery(name="ThreadDao.StartersByReplyDate", query="" +
-			"SELECT post FROM Post post WHERE post.root.postId=:postId AND " +
-			"post.thread.postId = post.postId AND post.postId NOT IN (" +
-			"SELECT ass.post.postId FROM AssociationPostTag ass WHERE ass.tag.tagId IN (:tagIds))"+
+			"SELECT post FROM Post post WHERE post.root.postId=:postId " +
+			"AND post.thread.postId = post.postId "+
+			"AND bitwise_and( post.metaMask, :filterMask ) = 0 "+
 			"ORDER BY threadReplyDate DESC"),			
 	
-	@NamedQuery(name="ThreadDao.StartersNoFilterByReplyDate", query="" +
-			"SELECT post FROM Post post WHERE post.root.postId=:postId AND " +
-			"post.thread.postId = post.postId "+
-			"ORDER BY threadReplyDate DESC"),
-			
 	@NamedQuery(name="ThreadDao.StartersByCreateDate", query="" +
-			"SELECT post FROM Post post WHERE post.root.postId=:postId AND " +
-			"post.thread.postId = post.postId AND post.postId NOT IN (" +
-			"SELECT ass.post.postId FROM AssociationPostTag ass WHERE ass.tag.tagId IN (:tagIds))"+
-			"ORDER BY threadReplyDate DESC"),			
-	
-	@NamedQuery(name="ThreadDao.StartersNoFilterByCreateDate", query="" +
-			"SELECT post FROM Post post WHERE post.root.postId=:postId AND " +
-			"post.thread.postId = post.postId "+
-			"ORDER BY threadReplyDate DESC"),			
+			"SELECT post FROM Post post WHERE post.root.postId=:postId " +
+			"AND post.thread.postId = post.postId " +
+			"AND bitwise_and( post.metaMask, :filterMask ) = 0 "+
+			"ORDER BY threadReplyDate DESC"),		
 			
-	//
+	@NamedQuery(name="ThreadDao.StartersCount", query="" +
+			"SELECT count(post.postId) FROM Post post WHERE post.root.postId=:postId " +
+			"AND post.thread.postId = post.postId " +
+			"AND bitwise_and( post.metaMask, :filterMask ) = 0 "),			
+			
 	@NamedQuery(name="ThreadDao.RepliesInThreads", query="" +
 			"SELECT post FROM Post post WHERE post.thread.postId IN(:postIds) " +
 			"AND postId <> post.thread.postId " +
-			"AND post.postId NOT IN (" +
-			"SELECT ass.post.postId FROM AssociationPostTag ass WHERE ass.tag.tagId IN (:tagIds)) "+
-			"ORDER BY path"),		
+			"AND bitwise_and( post.metaMask, :filterMask ) = 0 "+
+			"ORDER BY path"),	
 			
-	@NamedQuery(name="ThreadDao.RepliesInThreadsNoFilter", query="" +
-			"SELECT post FROM Post post WHERE post.thread.postId IN(:postIds) " +
-			"AND postId <> post.thread.postId " +
-			"ORDER BY path"),			
 
 	//Remember! TopicDao.Thread sorts the posts backwards to give you the bottom of the list. Remember to reverse the results
 	@NamedQuery(name="ThreadDao.Thread", query="" +
 			"SELECT post FROM Post post WHERE post.thread.postId=:postId " +
 			"AND postId <> post.thread.postId " +
-			"AND post.postId NOT IN (" +
-			"SELECT ass.post.postId FROM AssociationPostTag ass WHERE ass.tag.tagId IN (:tagIds)) "+
-			"ORDER BY path desc"),		
-	//Remember! TopicDao.Thread sorts the posts backwards to give you the bottom of the list. Remember to reverse the results
-	@NamedQuery(name="ThreadDao.ThreadNoFilter", query="" +
-			"SELECT post FROM Post post WHERE " +
-			"postId <> post.thread.postId AND " +
-			"post.thread.postId=:postId "+
-			"ORDER BY path desc"),			
+			"AND bitwise_and( post.metaMask, :filterMask ) = 0 "+
+			"ORDER BY path desc"),	
 			
-	@NamedQuery(name="LatestPostsDao.NestedNoFilter", query="" +
-		"SELECT post FROM Post post WHERE post.threadReplyDate IS NOT NULL " +
-		"ORDER BY post.threadReplyDate DESC"),		
-		
-	@NamedQuery(name="LatestPostsDao.NestedNoFilterCount", query="" +
-			"SELECT post.postId FROM Post post WHERE post.threadReplyDate IS NOT NULL " +
-			"ORDER BY post.threadReplyDate DESC"),		
-		
+	@NamedQuery(name="ThreadDao.ThreadCount", query="" +
+			"SELECT count(post.postId) FROM Post post WHERE post.thread.postId=:postId " +
+			"AND postId <> post.thread.postId " +
+			"AND bitwise_and( post.metaMask, :filterMask ) = 0 "),				
+			
+	// Latest Post		
 	@NamedQuery(name="LatestPostsDao.Nested", query="" +
 		"SELECT post FROM Post post WHERE post.threadReplyDate IS NOT NULL " +
-		"AND post.postId NOT IN (" +
-			"SELECT ass.post.postId FROM AssociationPostTag ass WHERE ass.tag.tagId IN (:tagIds)) "+
+		"AND bitwise_and( post.metaMask, :filterMask ) = 0 "+
 		"ORDER BY post.threadReplyDate DESC"),
 		
 	@NamedQuery(name="LatestPostsDao.NestedCount", query="" +
-			"SELECT post.postId FROM Post post WHERE post.threadReplyDate IS NOT NULL " +
-			"AND post.postId NOT IN (" +
-				"SELECT ass.post.postId FROM AssociationPostTag ass WHERE ass.tag.tagId IN (:tagIds)) "+
-			"ORDER BY post.threadReplyDate DESC"),	
+		"SELECT count(post.postId) FROM Post post WHERE post.threadReplyDate IS NOT NULL " +
+		"AND bitwise_and( post.metaMask, :filterMask ) = 0 "),	
 
-			
-//	@NamedQuery(name="LatestPostsDao.RepliesInThreads", query="" +
-//		"SELECT post FROM Post post WHERE post.thread.postId IN(:postIds) " +
-//		"AND postId <> post.thread.postId " +
-//		"AND post.postId NOT IN (" +
-//		"SELECT ass.post.postId FROM AssociationPostTag ass WHERE ass.tag.tagId IN (:tagIds)) "+
-//		"ORDER BY date DESC"),		
-//			
-//	@NamedQuery(name="LatestPostsDao.RepliesInThreadsNoFilter", query="" +
-//		"SELECT post FROM Post post WHERE post.thread.postId IN(:postIds) " +
-//		"AND postId <> post.thread.postId " +
-//		"ORDER BY date DESC"),
-			
-	//Front page hierarchy experiment
 	@NamedQuery(name="LatestPostsDao.RepliesInThreads", query="" +
-			"SELECT post FROM Post post WHERE post.thread.postId IN(:postIds) " +
-			"AND postId <> post.thread.postId " +
-			"AND post.postId NOT IN (" +
-			"SELECT ass.post.postId FROM AssociationPostTag ass WHERE ass.tag.tagId IN (:tagIds)) "+
-			"ORDER BY path"),		
-				
-	@NamedQuery(name="LatestPostsDao.RepliesInThreadsNoFilter", query="" +
 		"SELECT post FROM Post post WHERE post.thread.postId IN(:postIds) " +
 		"AND postId <> post.thread.postId " +
+		"AND bitwise_and( post.metaMask, :filterMask ) = 0 "+
 		"ORDER BY path"),		
 
 	@NamedQuery(name="LatestPostsDao.Flat", query="" +
-			"SELECT post FROM Post post " +
-			"WHERE post.postId NOT IN (" +
-				"SELECT ass.post.postId FROM AssociationPostTag ass WHERE ass.tag.tagId IN (:tagIds)) "+
-			"ORDER BY post.date DESC"),
+		"SELECT post FROM Post post " +
+		"WHERE bitwise_and( post.metaMask, :filterMask ) = 0  "+
+		"ORDER BY post.date DESC"),
 		
 	@NamedQuery(name="LatestPostsDao.FlatCount", query="" +
-			"SELECT post.postId FROM Post post " +
-			"WHERE post.postId NOT IN (" +
-				"SELECT ass.post.postId FROM AssociationPostTag ass WHERE ass.tag.tagId IN (:tagIds)) "+
-			"ORDER BY post.date DESC"),	
+		"SELECT count(post.postId) FROM Post post " +
+		"WHERE bitwise_and( post.metaMask, :filterMask ) = 0 "),	
 			
-	@NamedQuery(name="LatestPostsDao.FlatNoFilter", query="" +
-			"SELECT post FROM Post post ORDER BY post.date DESC"),
-		
-	@NamedQuery(name="LatestPostsDao.FlatNoFilterCount", query="" +
-			"SELECT post.postId FROM Post post ORDER BY post.date DESC"),		
-
 	@NamedQuery(name="LatestPostsDao.Threads", query="" +
-			"SELECT post FROM Post post " +
-			"WHERE post.parent.postId IS NULL AND post.postId NOT IN (" +
-				"SELECT ass.post.postId FROM AssociationPostTag ass WHERE ass.tag.tagId IN (:tagIds)) "+
-			"ORDER BY post.date DESC"),
+		"SELECT post FROM Post post " +
+		"WHERE post.parent.postId IS NULL " +
+		"AND bitwise_and( post.metaMask, :filterMask ) = 0 "+
+		"ORDER BY post.date DESC"),
 		
 	@NamedQuery(name="LatestPostsDao.ThreadsCount", query="" +
-			"SELECT post.postId FROM Post post " +
-			"WHERE post.parent.postId IS NULL AND post.postId NOT IN (" +
-				"SELECT ass.post.postId FROM AssociationPostTag ass WHERE ass.tag.tagId IN (:tagIds)) "+
-			"ORDER BY post.date DESC"),	
-			
-	@NamedQuery(name="LatestPostsDao.ThreadsNoFilter", query="" +
-			"SELECT post FROM Post post WHERE post.parent.postId IS NULL ORDER BY post.date DESC"),
-		
-	@NamedQuery(name="LatestPostsDao.ThreadsNoFilterCount", query="" +
-			"SELECT post.postId FROM Post post WHERE post.parent.postId IS NULL ORDER BY post.date DESC"),				
-			
+		"SELECT count(post.postId) FROM Post post " +
+		"WHERE post.parent.postId IS NULL " +
+		"AND bitwise_and( post.metaMask, :filterMask ) = 0 "),	
 			
 	@NamedQuery(name="LatestPostsDao.Conversations", query="" +
-			"SELECT post FROM Post post " +
-			"WHERE post.thread.postId = post.postId AND post.postId NOT IN (" +
-				"SELECT ass.post.postId FROM AssociationPostTag ass WHERE ass.tag.tagId IN (:tagIds)) "+
-			"ORDER BY post.date DESC"),
+		"SELECT post FROM Post post " +
+		"WHERE post.thread.postId = post.postId " +
+		"AND bitwise_and( post.metaMask, :filterMask ) = 0 "+
+		"ORDER BY post.date DESC"),
 		
 	@NamedQuery(name="LatestPostsDao.ConversationsCount", query="" +
-			"SELECT post.postId FROM Post post " +
-			"WHERE post.thread.postId = post.postId AND post.postId NOT IN (" +
-				"SELECT ass.post.postId FROM AssociationPostTag ass WHERE ass.tag.tagId IN (:tagIds)) "+
-			"ORDER BY post.date DESC"),	
+		"SELECT count(post.postId) FROM Post post " +
+		"WHERE post.thread.postId = post.postId " +
+		"AND bitwise_and( post.metaMask, :filterMask ) = 0 "),
 			
-	@NamedQuery(name="LatestPostsDao.ConversationsNoFilter", query="" +
-			"SELECT post FROM Post post WHERE post.thread.postId = post.postId ORDER BY post.date DESC"),
-		
-	@NamedQuery(name="LatestPostsDao.ConversationsNoFilterCount", query="" +
-			"SELECT post.postId FROM Post post WHERE post.thread.postId = post.postId ORDER BY post.date DESC"),				
 	
 		
 		
@@ -513,90 +447,87 @@ import org.hibernate.search.annotations.Store;
 	
 
 	@NamedQuery(name="MovieDao.peopleWithMovieRatings", query="SELECT distinct ass.creator.personId, count(ass.creator.personId) " +
-			"FROM Post p, AssociationPostTag ass INNER JOIN ass.tag, " +
-			"AssociationPostTag ass2 INNER JOIN ass2.tag " +
-			"WHERE ass.tag.type='RATING' AND ass2.tag.type='MOVIE' " +
-			"AND p.postId = ass.post.postId AND p.postId=ass2.post.postId GROUP BY ass.creator.personId"),
+			"FROM Post p, AssociationPostTag ass INNER JOIN ass.tag "+
+			"WHERE ass.tag.type='RATING' " +
+			"AND bitwise_and( ass.post.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE + 
+			"AND p.postId = ass.post.postId " +
+			"GROUP BY ass.creator.personId"),
 			
-	@NamedQuery(name="MovieDao.moviesSortedByTitle", query="SELECT p FROM Post p, " +
-			"AssociationPostTag ass2 INNER JOIN ass2.tag, AssociationPostTag ass3 INNER JOIN ass3.tag " +
-			"WHERE ass2.tag.type='MOVIE' AND ass3.tag.type='SORT_TITLE' " +
-			"AND p.postId=ass2.post.postId AND p.postId = ass3.post.postId " +
-			"ORDER BY ass3.tag.value"),
+	@NamedQuery(name="MovieDao.moviesSortedByTitle", query="SELECT p FROM Post p " +
+			"WHERE " +
+			"bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE +
+			"ORDER BY p.titleTag.sortValue"),
 			
-	@NamedQuery(name="MovieDao.moviesSortedByTitleDesc", query="SELECT p FROM Post p, " +
-			"AssociationPostTag ass2 INNER JOIN ass2.tag, AssociationPostTag ass3 INNER JOIN ass3.tag " +
-			"WHERE ass2.tag.type='MOVIE' AND ass3.tag.type='SORT_TITLE' " +
-			"AND p.postId=ass2.post.postId AND p.postId = ass3.post.postId " +
-			"ORDER BY ass3.tag.value DESC"),		
+	@NamedQuery(name="MovieDao.moviesSortedByTitleDesc", query="SELECT p FROM Post p " +
+			"WHERE " +
+			"bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE +
+			"ORDER BY p.titleTag.sortValue DESC"),
 			
+	@NamedQuery(name="MovieDao.moviesCount", query="SELECT count(p.postId) FROM Post p " +
+			"WHERE " +
+			"bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE),		
 
-	@NamedQuery(name="MovieDao.moviesSortedByTitleForPerson", query="SELECT p FROM Post p, AssociationPostTag ass INNER JOIN ass.tag, " +
-			"AssociationPostTag ass2 INNER JOIN ass2.tag, AssociationPostTag ass3 INNER JOIN ass3.tag " +
-			"WHERE ass.tag.type='RATING' AND ass2.tag.type='MOVIE' AND ass3.tag.type='SORT_TITLE' " +
-			"AND p.postId = ass.post.postId AND p.postId=ass2.post.postId AND p.postId = ass3.post.postId " +
-			"AND ass.creator.personId = :guid " +
-			"ORDER BY ass3.tag.value"),
+	@NamedQuery(name="MovieDao.moviesSortedByTitleForPerson", query="SELECT ass.post " +
+			"FROM AssociationPostTag ass INNER JOIN ass.post "+
+			"WHERE ass.tag.type='RATING' AND ass.creator.personId = :guid " +
+			"AND bitwise_and( ass.post.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE + 
+			"ORDER BY ass.post.titleTag.sortValue"),
 			
-	@NamedQuery(name="MovieDao.moviesSortedByTitleForPersonDesc", query="SELECT p FROM Post p, AssociationPostTag ass INNER JOIN ass.tag, " +
-			"AssociationPostTag ass2 INNER JOIN ass2.tag, AssociationPostTag ass3 INNER JOIN ass3.tag " +
-			"WHERE ass.tag.type='RATING' AND ass2.tag.type='MOVIE' AND ass3.tag.type='SORT_TITLE' " +
-			"AND p.postId = ass.post.postId AND p.postId=ass2.post.postId AND p.postId = ass3.post.postId " +
-			"AND ass.creator.personId = :guid " +
-			"ORDER BY ass3.tag.value DESC"),		
+	@NamedQuery(name="MovieDao.moviesSortedByTitleForPersonDesc", query="SELECT ass.post " +
+			"FROM AssociationPostTag ass INNER JOIN ass.post "+
+			"WHERE ass.tag.type='RATING' AND ass.creator.personId = :guid " +
+			"AND bitwise_and( ass.post.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE + 
+			"ORDER BY ass.post.titleTag.sortValue DESC"),				
 			
-	@NamedQuery(name="MovieDao.moviesSortedByAverageRating", query="SELECT p FROM Post p, AssociationPostTag ass INNER JOIN ass.tag, " +
-			"AssociationPostTag ass2 INNER JOIN ass2.tag, AssociationPostTag ass3 INNER JOIN ass3.tag " +
-			"WHERE ass.tag.type='AVERAGE_RATING' AND ass2.tag.type='MOVIE' AND ass3.tag.type='SORT_TITLE' " +
-			"AND p.postId = ass.post.postId AND p.postId=ass2.post.postId AND p.postId = ass3.post.postId " +
-			"ORDER BY ass.tag.value, ass3.tag.value"),
+	@NamedQuery(name="MovieDao.moviesSortedByAverageRating", query="SELECT p FROM Post p " +
+			"WHERE " +
+			"bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE +
+			"ORDER BY p.avgRatingTag.sortValue, p.titleTag.sortValue"),
 			
-	@NamedQuery(name="MovieDao.moviesSortedByAverageRatingDesc", query="SELECT p FROM Post p, AssociationPostTag ass INNER JOIN ass.tag, " +
-			"AssociationPostTag ass2 INNER JOIN ass2.tag, AssociationPostTag ass3 INNER JOIN ass3.tag " +
-			"WHERE ass.tag.type='AVERAGE_RATING' AND ass2.tag.type='MOVIE' AND ass3.tag.type='SORT_TITLE' " +
-			"AND p.postId = ass.post.postId AND p.postId=ass2.post.postId AND p.postId = ass3.post.postId " +
-			"ORDER BY ass.tag.value desc, ass3.tag.value"),		
-			
+	@NamedQuery(name="MovieDao.moviesSortedByAverageRatingDesc", query="SELECT p FROM Post p " +
+			"WHERE " +
+			"bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE +
+			"ORDER BY p.avgRatingTag.sortValue DESC, p.titleTag.sortValue"),		
 
-	@NamedQuery(name="MovieDao.moviesSortedByRatingForPerson", query="SELECT p FROM Post p, AssociationPostTag ass INNER JOIN ass.tag, " +
-			"AssociationPostTag ass2 INNER JOIN ass2.tag, AssociationPostTag ass3 INNER JOIN ass3.tag " +
-			"WHERE ass.tag.type='RATING' AND ass2.tag.type='MOVIE' AND ass3.tag.type='SORT_TITLE' " +
-			"AND p.postId = ass.post.postId AND p.postId=ass2.post.postId AND p.postId = ass3.post.postId " +
-			"AND ass.creator.personId = :guid " +
-			"ORDER BY ass.tag.value, ass3.tag.value"),
 			
-	@NamedQuery(name="MovieDao.moviesSortedByRatingForPersonDesc", query="SELECT p FROM Post p, AssociationPostTag ass INNER JOIN ass.tag, " +
-			"AssociationPostTag ass2 INNER JOIN ass2.tag, AssociationPostTag ass3 INNER JOIN ass3.tag " +
-			"WHERE ass.tag.type='RATING' AND ass2.tag.type='MOVIE' AND ass3.tag.type='SORT_TITLE' " +
-			"AND p.postId = ass.post.postId AND p.postId=ass2.post.postId AND p.postId = ass3.post.postId " +
-			"AND ass.creator.personId = :guid " +
-			"ORDER BY ass.tag.value desc, ass3.tag.value"),
+	@NamedQuery(name="MovieDao.moviesSortedByRatingForPerson", query="SELECT ass.post " +
+			"FROM AssociationPostTag ass INNER JOIN ass.post "+
+			"WHERE ass.tag.type='RATING' AND ass.creator.personId = :guid " +
+			"AND bitwise_and( ass.post.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE + 
+			"ORDER BY ass.tag.value, ass.post.titleTag.sortValue"),		
 			
-	@NamedQuery(name="MovieDao.moviesSortedByYear", query="SELECT p FROM Post p, AssociationPostTag ass INNER JOIN ass.tag, " +
-			"AssociationPostTag ass2 INNER JOIN ass2.tag, AssociationPostTag ass3 INNER JOIN ass3.tag " +
-			"WHERE ass.tag.type='RELEASE_YEAR' AND ass2.tag.type='MOVIE' AND ass3.tag.type='SORT_TITLE' " +
-			"AND p.postId = ass.post.postId AND p.postId=ass2.post.postId AND p.postId = ass3.post.postId " +
-			"ORDER BY ass.tag.value, ass3.tag.value"),
+	@NamedQuery(name="MovieDao.moviesSortedByRatingForPersonDesc", query="SELECT ass.post " +
+			"FROM AssociationPostTag ass INNER JOIN ass.post "+
+			"WHERE ass.tag.type='RATING' AND ass.creator.personId = :guid " +
+			"AND bitwise_and( ass.post.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE + 
+			"ORDER BY ass.tag.value DESC, ass.post.titleTag.sortValue"),		
+
+	@NamedQuery(name="MovieDao.moviesRatedByPersonCount", query="SELECT count(ass.guid) " +
+			"FROM AssociationPostTag ass INNER JOIN ass.post "+
+			"WHERE ass.tag.type='RATING' AND ass.creator.personId = :guid " +
+			"AND bitwise_and( ass.post.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE ),
+					
+	@NamedQuery(name="MovieDao.moviesSortedByYear", query="SELECT p FROM Post p " +
+			"WHERE " +
+			"bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE +
+			"ORDER BY p.publishYear, p.titleTag.sortValue"),
 			
-	@NamedQuery(name="MovieDao.moviesSortedByYearDesc", query="SELECT p FROM Post p, AssociationPostTag ass INNER JOIN ass.tag, " +
-			"AssociationPostTag ass2 INNER JOIN ass2.tag, AssociationPostTag ass3 INNER JOIN ass3.tag " +
-			"WHERE ass.tag.type='RELEASE_YEAR' AND ass2.tag.type='MOVIE' AND ass3.tag.type='SORT_TITLE' " +
-			"AND p.postId = ass.post.postId AND p.postId=ass2.post.postId AND p.postId = ass3.post.postId " +
-			"ORDER BY ass.tag.value desc, ass3.tag.value"),		
+	@NamedQuery(name="MovieDao.moviesSortedByYearDesc", query="SELECT p FROM Post p " +
+			"WHERE " +
+			"bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE +
+			"ORDER BY p.publishYear DESC, p.titleTag.sortValue"),		
 			
-	@NamedQuery(name="MovieDao.moviesSortedByYearForPerson", query="SELECT p FROM Post p, AssociationPostTag ass INNER JOIN ass.tag, " +
-			"AssociationPostTag ass2 INNER JOIN ass2.tag, AssociationPostTag ass3 INNER JOIN ass3.tag, AssociationPostTag ass4 INNER JOIN ass4.tag " +
-			"WHERE ass.tag.type='RELEASE_YEAR' AND ass2.tag.type='RATING' AND ass3.tag.type='SORT_TITLE' AND ass4.tag.type='MOVIE' " +
-			"AND p.postId = ass.post.postId AND p.postId=ass2.post.postId AND p.postId = ass3.post.postId AND p.postId = ass4.post.postId " +
-			"AND ass2.creator.personId = :guid " +
-			"ORDER BY ass.tag.value, ass3.tag.value"),
+	@NamedQuery(name="MovieDao.moviesSortedByYearForPerson", query="SELECT ass.post " +
+			"FROM AssociationPostTag ass INNER JOIN ass.post "+
+			"WHERE ass.tag.type='RATING' AND ass.creator.personId = :guid " +
+			"AND bitwise_and( ass.post.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE + 
+			"ORDER BY ass.post.publishYear, ass.post.titleTag.sortValue"),
 			
-	@NamedQuery(name="MovieDao.moviesSortedByYearForPersonDesc", query="SELECT p FROM Post p, AssociationPostTag ass INNER JOIN ass.tag, " +
-			"AssociationPostTag ass2 INNER JOIN ass2.tag, AssociationPostTag ass3 INNER JOIN ass3.tag, AssociationPostTag ass4 INNER JOIN ass4.tag " +
-			"WHERE ass.tag.type='RELEASE_YEAR' AND ass2.tag.type='RATING' AND ass3.tag.type='SORT_TITLE' AND ass4.tag.type='MOVIE'" +
-			"AND p.postId = ass.post.postId AND p.postId=ass2.post.postId AND p.postId = ass3.post.postId AND p.postId = ass4.post.postId " +
-			"AND ass2.creator.personId = :guid " +
-			"ORDER BY ass.tag.value desc, ass3.tag.value"),
+	@NamedQuery(name="MovieDao.moviesSortedByYearForPersonDesc", query="SELECT ass.post " +
+			"FROM AssociationPostTag ass INNER JOIN ass.post "+
+			"WHERE ass.tag.type='RATING' AND ass.creator.personId = :guid " +
+			"AND bitwise_and( ass.post.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE + 
+			"ORDER BY ass.post.publishYear DESC, ass.post.titleTag.sortValue"),
 			
 	@NamedQuery(name="PersonDao.loadPersonList", query="SELECT person FROM Person person WHERE person.personId IN (:personIds) ORDER BY person.login")
 					
@@ -634,47 +565,47 @@ import org.hibernate.search.annotations.Store;
 	
 	@NamedNativeQuery(
 		name="CalendarDao.fetchHourly", query="" +
-				"select p.date, p.guid as postId, p.root_guid as rootId, titleTag.value as title, c.login, c.guid as creator_guid, '' as summary "+
-				"from post p "+
-				"inner join association_post_tag as titleAss on titleAss.post_guid = p.guid AND titleAss.title='1' "+ 
-				"inner join association_post_tag creatorAss on creatorAss.post_guid=p.guid "+
-				"inner join tag creatorTag on creatorTag.guid=creatorAss.tag_guid "+ 
-				"inner join tag as titleTag on titleTag.guid = titleAss.tag_guid "+
-				"inner join entry as e on e.guid = p.latest_entry_guid "+
-				"inner join person as c on c.guid = creatorTag.creator_guid "+
-				"where p.date between :startDate and :endDate AND creatorTag.type='CREATOR' order by p.date",
-				resultSetMapping="simplePostMapping"
+			"select p.date, p.guid as postId, p.root_guid as rootId, titleTag.value as title, c.login, " +
+			"c.guid as creator_guid, '' as summary "+
+			"from post p "+
+			"inner join tag as titleTag on titleTag.guid = tag_guid_title "+
+			"inner join person as c on c.guid = p.person_guid_creator "+
+			"where p.date between :startDate and :endDate " +
+			"AND p.meta_mask & :filterMask  = 0 " +
+			"order by p.date ",
+			resultSetMapping="simplePostMapping"
 	),
 	@NamedNativeQuery(
 		name="CalendarDao.fetchHourlyWithSummary", query="" +
-				"select p.date, p.guid as postId, p.root_guid as rootId, titleTag.value as title, c.login, " +
-				"c.guid as creator_guid, e.summary as summary "+
-				"from post p "+
-				"inner join association_post_tag as titleAss on titleAss.post_guid = p.guid AND titleAss.title='1' "+
-				"inner join association_post_tag creatorAss on creatorAss.post_guid=p.guid "+
-				"inner join tag creatorTag on creatorTag.guid=creatorAss.tag_guid "+ 
-				"inner join tag as titleTag on titleTag.guid = titleAss.tag_guid "+
-				"inner join entry as e on e.guid = p.latest_entry_guid "+
-				"inner join person as c on c.guid = creatorTag.creator_guid "+
-				"where p.date between :startDate and :endDate AND creatorTag.type='CREATOR' order by p.date",
-				resultSetMapping="simplePostMapping"
+			"select p.date, p.guid as postId, p.root_guid as rootId, titleTag.value as title, c.login, " +
+			"c.guid as creator_guid, e.summary as summary "+
+			"from post p "+
+			"inner join tag as titleTag on titleTag.guid = tag_guid_title "+
+			"inner join entry as e on e.guid = p.latest_entry_guid "+
+			"inner join person as c on c.guid = p.person_guid_creator "+
+			"where p.date between :startDate and :endDate " +
+			"AND p.meta_mask & :filterMask = 0 " +
+			"order by p.date ",
+			resultSetMapping="simplePostMapping"
 	),
-//	@NamedNativeQuery(
-//		name="CalendarDao.fetchMonth", query=""+
-//			"select count(p.guid) ct, p.date"+
-//			", titleTag.value as title, p.root_guid as rootId, newid() as uniqueId "+
-//			"from post p "+
-//			"inner join association_post_tag as titleAss on titleAss.post_guid = p.guid AND titleAss.title='1' "+ 
-//			"inner join tag as titleTag on titleTag.guid = titleAss.tag_guid "+
-//			"inner join entry as e on e.guid = p.latest_entry_guid "+
-//			"where Year(p.date) = :year AND Month(p.date) = :month  "+
-//			"group by Year(p.date), Month(p.date), Day(p.date), titleTag.value, p.root_guid "+
-//			"order by Year(p.date), Month(p.date), Day(p.date) ",
-//			resultSetMapping="threadSummaryMapping"
-//	),
+	
+	//Trevis, once every thing is working try to use the day/month + thread guid as the daily unique id for cross db compatibilityness
+	@NamedNativeQuery(
+		name="CalendarDao.fetchMonth", query=""+
+			"select count(p.guid) ct, Year(p.date) as yr, Month(p.date) as mo, Day(p.date) as dd, "+
+			"titleTag.value as title, p.root_guid as rootId, newid() as uniqueId "+ //newid() as uniqueId
+			"from post p "+
+			"inner join tag as titleTag on titleTag.guid = tag_guid_title "+
+			"inner join entry as e on e.guid = p.latest_entry_guid "+
+			"where Year(p.date) = :year AND Month(p.date) = :month  "+
+			"AND p.meta_mask & :filterMask = 0 " +
+			"group by Year(p.date), Month(p.date), Day(p.date), titleTag.value, p.root_guid "+
+			"order by Year(p.date), Month(p.date), Day(p.date) ",
+			resultSetMapping="threadSummaryMapping"
+	),
 	
 	@NamedNativeQuery(name="CalendarDao.fetchYear", query=
-		"select count(p.guid) ct, Year(p.date) as yr, Month(p.date) as mo, Day(p.date) as dd, newid() as uniqueId "+
+		"select count(p.guid) ct, Year(p.date) as yr, Month(p.date) as mo, Day(p.date) as dd, newid() as uniqueId "+ //newid() as uniqueId 
 		"from post p "+
 		"where Year(p.date) = :year "+
 		"group by Year(p.date), Month(p.date), Day(p.date) "+
@@ -688,7 +619,7 @@ import org.hibernate.search.annotations.Store;
 	 *  
 	 */
 	@NamedNativeQuery(name="CalendarDao.fetchSimpleMonth", query=
-		"select count(p.guid) ct, Year(p.date) as yr, Month(p.date) as mo, Day(p.date) as dd, newid() as uniqueId "+
+		"select count(p.guid) ct, Year(p.date) as yr, Month(p.date) as mo, Day(p.date) as dd, newid() as uniqueId "+ //newid() as uniqueId
 		"from post p "+
 		"where Year(p.date) = :year AND Month(p.date) = :month "+
 		"group by Year(p.date), Month(p.date), Day(p.date) "+
@@ -717,13 +648,13 @@ import org.hibernate.search.annotations.Store;
     })),
     @SqlResultSetMapping(name="threadSummaryMapping", entities=
     	@EntityResult(entityClass=org.ttdc.persistence.objects.ThreadSummaryEntity.class, fields = {
-//            @FieldResult(name="year", column="yr"),
-//            @FieldResult(name="month", column="mo"),
-//            @FieldResult(name="day", column="dd"),
+            @FieldResult(name="year", column="yr"),
+            @FieldResult(name="month", column="mo"),
+            @FieldResult(name="day", column="dd"),
             @FieldResult(name="count", column="ct"),
             @FieldResult(name="rootId", column="rootId"),
             @FieldResult(name="title", column="title"),
-            @FieldResult(name="date", column="date"),
+            //@FieldResult(name="date", column="date"),
             @FieldResult(name="uniqueId", column="uniqueId")
         })),    
 

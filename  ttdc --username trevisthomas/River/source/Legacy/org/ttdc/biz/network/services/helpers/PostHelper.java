@@ -57,7 +57,7 @@ public class PostHelper {
 		Session session = Persistence.session();
 		Query query = session.getNamedQuery("post.getByPostIds").setParameterList("postIds", postIds);
 		list = query.list();
-		Collections.sort(list,new Post.ByPostIdReferenceComparator(postIds));
+//		Collections.sort(list,new Post.ByPostIdReferenceComparator(postIds));
 		return list;
 	}
 	
@@ -72,15 +72,15 @@ public class PostHelper {
 		Session session = Persistence.session();
 		for(String id : postIds){
 			Post p = (Post)session.load(Post.class,id); 
-			p.initialize();
-			posts.add(p);
-			p.setExpanded(true);
-			p.setRelativeAge("");
-			p.setHidden(false);
+//			p.initialize();
+//			posts.add(p);
+//			p.setExpanded(true);
+//			p.setRelativeAge("");
+//			p.setHidden(false);
 			for(String t : filteredTagIds){
-				if(p.containsTag(t))
-					//p.setFiltered(true);
-					p.setHidden(true);
+//				if(p.containsTag(t))
+//					//p.setFiltered(true);
+//					p.setHidden(true);
 			}
 		}
 		return posts;
@@ -317,9 +317,9 @@ public class PostHelper {
 	public static Map<String,PostCounter> loadPostCounters(List<Post> threads){
 		Map<String,PostCounter> totalsMap = PostHelper.loadPostCounters(PostHelper.extractIds(threads));
 		for(Post p : threads){
-			if(totalsMap.containsKey(p.getPostId())){
-				p.setPostCounter(totalsMap.get(p.getPostId()));
-			}
+//			if(totalsMap.containsKey(p.getPostId())){
+//				p.setPostCounter(totalsMap.get(p.getPostId()));
+//			}
 		}
 		return totalsMap;
 	}	

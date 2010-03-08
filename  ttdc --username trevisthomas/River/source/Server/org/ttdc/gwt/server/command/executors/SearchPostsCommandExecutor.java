@@ -3,20 +3,21 @@ package org.ttdc.gwt.server.command.executors;
 import static org.ttdc.persistence.Persistence.beginSession;
 import static org.ttdc.persistence.Persistence.commit;
 
-import java.util.List;
+import java.util.Set;
 
 import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.services.CommandResult;
 import org.ttdc.gwt.server.command.CommandExecutor;
+import org.ttdc.gwt.server.command.executors.utils.ExecutorHelpers;
 import org.ttdc.gwt.server.command.executors.utils.PaginatedResultConverters;
 import org.ttdc.gwt.server.dao.DateRange;
-import org.ttdc.gwt.server.dao.InitConstants;
 import org.ttdc.gwt.server.dao.PostSearchDao;
 import org.ttdc.gwt.server.dao.TagDao;
 import org.ttdc.gwt.shared.commands.SearchPostsCommand;
 import org.ttdc.gwt.shared.commands.results.SearchPostsCommandResult;
 import org.ttdc.gwt.shared.util.PaginatedList;
 import org.ttdc.persistence.objects.Tag;
+import org.ttdc.persistence.util.PostFlag;
 
 public class SearchPostsCommandExecutor extends CommandExecutor<SearchPostsCommandResult>{
 	@Override
@@ -34,12 +35,10 @@ public class SearchPostsCommandExecutor extends CommandExecutor<SearchPostsComma
 			dao.setDateRange(new DateRange(command.getStartDate(),command.getEndDate()));
 			dao.setSearchByTitle(command.isTitleSearch());
 			dao.setPostSearchType(command.getPostSearchType());
-			List<String> notTagIds = command.getNotTagIdList();
 			
-			//TODO: Trevis... test that the tag filters are really working!
-			notTagIds.addAll(getPerson().getFilteredTagIds());
-			
-			dao.setNotTagIdList(notTagIds);
+			Set<PostFlag> filterList = ExecutorHelpers.createFlagFilterListForPerson(getPerson());
+			dao.setCreator(dao.getCreator());
+			dao.setNotTagIdList(command.getNotTagIdList());
 			dao.setTagIdList(command.getTagIdList());
 			dao.setRootId(command.getRootId());
 			dao.setThreadId(command.getThreadId());
@@ -48,26 +47,22 @@ public class SearchPostsCommandExecutor extends CommandExecutor<SearchPostsComma
 				dao.setPageSize(command.getPageSize());
 			//Trevis, eventually you'll want to use the user chosen default when not over ridden by the specific command
 			
-			
 			if(command.isNonReviewsOnly()){
-				dao.addNotTagId(InitConstants.REVIEW_ID);
+				filterList.add(PostFlag.REVIEW);
 			} 
 			else if(command.isReviewsOnly()){
-				dao.addTagId(InitConstants.REVIEW_ID);
+				filterList.add(PostFlag.REVIEW);
+				dao.setInvertFilterFuction(true);
 			}
 				
-			
 			dao.setCurrentPage(command.getPageNumber());
+			dao.setFilterFlags(filterList);
 			PaginatedList<GPost> gResults = PaginatedResultConverters.convertSearchResults(dao.search());
 			
 			if(command.getTagIdList().size() > 0){
 				translateTagIdListToSearchPhrase(command, gResults);
 			}
 			
-//			dao.setSearchByTitle(!command.isTitleSearch());
-//			PaginatedList<GPost> gSecondaryResults = PaginatedResultConverters.convertSearchResults(dao.search());
-			
-//			return new SearchPostsCommandResult(gResults,gSecondaryResults);
 			return new SearchPostsCommandResult(gResults);
 		} catch (Throwable t) {
 			throw new RuntimeException(t);

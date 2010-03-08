@@ -18,11 +18,13 @@ import org.ttdc.persistence.objects.UserObjectTemplate;
 public class InitConstants {
 	private final static Logger log = Logger.getLogger(PostSearchDaoTest.class);
 	public static final int MIN_TITLE_LENGTH = 3;
-	public final static String NWS_TAG_ID;
-	public final static String PRIVATE_TAG_ID;
+//	public final static String NWS_TAG_ID;
+//	public final static String PRIVATE_TAG_ID;
+//	public final static String REVIEW_ID;
+	
 	public final static Person ANONYMOUS;
 	public final static String ANON_PERSON_ID = "ANON_PERSON_ID";
-	public final static String REVIEW_ID;
+	
 	public static Style DEFAULT_STYLE;
 	//Bad mojo here trevis.  You have a mutable public attribute. Consider a fix
 	public static void refresh(){
@@ -102,17 +104,17 @@ public class InitConstants {
 			DEFAULT_POSTER = dao.load();
 			
 			
-			Query query = session().getNamedQuery("tag.getByValueAndType").setString("value", Tag.VALUE_NWS).setString("type", Tag.TYPE_DISPLAY);
-			Tag tag = (Tag)query.uniqueResult();
-			NWS_TAG_ID = tag.getTagId();
-		
-			query = session().getNamedQuery("tag.getByValueAndType").setString("value", Tag.VALUE_PRIVATE).setString("type", Tag.TYPE_DISPLAY);
-			tag = (Tag)query.uniqueResult();
-			PRIVATE_TAG_ID = tag.getTagId();
-			
-			query = session().getNamedQuery("tag.getByValueAndType").setString("value", Tag.TYPE_REVIEW).setString("type", Tag.TYPE_REVIEW);
-			tag = (Tag)query.uniqueResult();
-			REVIEW_ID = tag.getTagId();
+//			Query query = session().getNamedQuery("tag.getByValueAndType").setString("value", Tag.VALUE_NWS).setString("type", Tag.TYPE_DISPLAY);
+//			Tag tag = (Tag)query.uniqueResult();
+//			NWS_TAG_ID = tag.getTagId();
+//		
+//			query = session().getNamedQuery("tag.getByValueAndType").setString("value", Tag.VALUE_PRIVATE).setString("type", Tag.TYPE_DISPLAY);
+//			tag = (Tag)query.uniqueResult();
+//			PRIVATE_TAG_ID = tag.getTagId();
+//			
+//			query = session().getNamedQuery("tag.getByValueAndType").setString("value", Tag.TYPE_REVIEW).setString("type", Tag.TYPE_REVIEW);
+//			tag = (Tag)query.uniqueResult();
+//			REVIEW_ID = tag.getTagId();
 			
 			Persistence.commit();
 		}

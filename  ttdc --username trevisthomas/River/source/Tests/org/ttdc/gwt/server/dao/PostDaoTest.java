@@ -15,6 +15,7 @@ import org.junit.Test;
 import org.ttdc.gwt.shared.commands.PostCrudCommand;
 import org.ttdc.persistence.objects.Entry;
 import org.ttdc.persistence.objects.Post;
+import org.ttdc.persistence.objects.Tag;
 import org.ttdc.test.utils.UniqueCrudPostCommandObjectMother;
 
 
@@ -76,12 +77,23 @@ public class PostDaoTest {
 			int replyCount = parent.getReplyCount();
 			int initialMass = parent.getRoot().getMass();
 			
-			
 			PostDao dao = new PostDao();
 			dao.setParent(parent);
 			dao.setBody(cmd.getBody());
+			
+//			TagDao tagDao = new TagDao();
+//			tagDao.setType(Tag.TYPE_TOPIC);
+//			tagDao.setValue("test");
+//			Tag titleTag = tagDao.createOrLoad();
+			
+			Tag titleTag = parent.getTitleTag();
+			dao.setTitle(titleTag);
+			
 			//dao.setCreator(PersonDao.loadPerson(Helpers.personIdLinten));
+			dao.setCreator(PersonDao.loadPerson(Helpers.personIdLinten));
 			Post post = dao.create();
+			
+			assertTrue("Post as a different title than it's parent! ",post.getParent().getTitleTag() == post.getTitleTag());
 			assertNotNull("Reply Post has no parent",post.getParent());
 			assertEquals("Post parent is oh so wrong",parentId,post.getParent().getPostId());
 			assertEquals("Post does not have the same root as it's parent. This is wrong.",post.getParent().getRoot().getPostId(), post.getRoot().getPostId());

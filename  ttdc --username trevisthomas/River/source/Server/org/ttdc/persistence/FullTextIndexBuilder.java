@@ -21,7 +21,7 @@ public class FullTextIndexBuilder {
 		log.info("Building Full Text Index for 'Tag' table");
 		FullTextSession fullTextSession = Persistence.fullTextSession();
 		@SuppressWarnings("unchecked")
-		List<Tag> entries = fullTextSession.createQuery("SELECT t FROM Tag t order by t.date").list();
+		List<Tag> entries = fullTextSession.createQuery("SELECT t FROM Tag t order by t.date").list(); //.setMaxResults(10)
 		for (Tag entry : entries) {
 		    fullTextSession.index(entry);
 		}
@@ -41,7 +41,7 @@ public class FullTextIndexBuilder {
 	public static void main(String[] args) { 
 		FullTextIndexBuilder builder = new FullTextIndexBuilder();
 		builder.start();
-		builder.buildTagIndex();
+		//builder.buildTagIndex();
 		builder.buildPostIndex();
 		builder.end();
 		System.exit(0);

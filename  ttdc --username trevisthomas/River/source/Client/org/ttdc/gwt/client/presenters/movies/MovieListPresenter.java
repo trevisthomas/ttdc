@@ -182,7 +182,7 @@ public class MovieListPresenter extends BasePagePresenter<MovieListPresenter.Vie
 					HyperlinkPresenter urlLinkPresenter = createPostUrlPresenter(post);
 					HyperlinkPresenter titlePresenter = injector.getHyperlinkPresenter();
 					titlePresenter.setPost(post);
-					String year = getGetReleaseYear(post);
+					String year = ""+post.getPublishYear();
 					view.addMovie(year, titlePresenter.getWidget(), urlLinkPresenter.getWidget(), ratingPresenter.getWidget());
 				}
 				
@@ -195,20 +195,10 @@ public class MovieListPresenter extends BasePagePresenter<MovieListPresenter.Vie
 	}
 	
 	
-	private String getGetReleaseYear(GPost post) {
-		GAssociationPostTag ass;
-		String year;
-		ass = post.loadTagAssociation(TagConstants.TYPE_RELEASE_YEAR);
-		year = ass.getTag().getValue();
-		return year;
-	}
-
 	private HyperlinkPresenter createPostUrlPresenter(GPost post) {
-		GAssociationPostTag ass;
 		HyperlinkPresenter urlLinkPresenter = injector.getHyperlinkPresenter();
-		ass = post.loadTagAssociation(TagConstants.TYPE_URL);
-		if(ass != null){
-			urlLinkPresenter.setUrl(ass.getTag().getValue());
+		if(StringUtil.notEmpty(post.getUrl())){
+			urlLinkPresenter.setUrl(post.getUrl());
 			urlLinkPresenter.setText("[IMDB]");
 		}
 		return urlLinkPresenter;

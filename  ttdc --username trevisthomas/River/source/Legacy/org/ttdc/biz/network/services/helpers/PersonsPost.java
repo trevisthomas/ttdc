@@ -24,8 +24,8 @@ public class PersonsPost {
 	}
 	
 	public boolean getHasRating(){
-		if(post.hasTagAssociation(Tag.TYPE_RATING,person))
-			return true;
+//		if(post.hasTagAssociation(Tag.TYPE_RATING,person))
+//			return true;
 		return false;
 	}
 	

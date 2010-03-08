@@ -296,8 +296,7 @@ public class CalendarPresenter extends BasePagePresenter<CalendarPresenter.View>
 	
 	private void showSearchWithResults(CalendarCommandResult result) {
 		SearchBoxPresenter searchPresenter = injector.getSearchBoxPresenter();
-		searchPresenter.setTagIdList(result.getCalendarTagIdList());
-		searchPresenter.init();
+		searchPresenter.init(result.getStartDate(), result.getEndDate());
 		view.searchTarget().add(searchPresenter.getWidget());
 	}
 }

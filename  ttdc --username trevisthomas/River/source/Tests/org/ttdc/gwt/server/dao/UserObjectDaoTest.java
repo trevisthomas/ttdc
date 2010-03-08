@@ -75,11 +75,7 @@ public class UserObjectDaoTest {
 	@Test
 	public void testEnableNws(){
 		try{
-			String nwsTagId = InitConstants.NWS_TAG_ID;
-			
 			beginSession();
-			
-			
 			Person person = PersonDao.loadPerson(Helpers.personIdCSam);
 			boolean nws = person.isNwsEnabled();
 			UserObjectDao.enableNws(person, !nws);
@@ -140,12 +136,4 @@ public class UserObjectDaoTest {
 		}
 	}
 	
-	@Test
-	public void testLoadFilteredTagObjects(){
-		beginSession();
-		List<Tag> tags =  UserObjectDao.loadFilteredTags(Helpers.personIdCSam);
-		Person person = PersonDao.loadPerson(Helpers.personIdCSam);
-		assertEquals(person.getFilteredTagIds().size(), tags.size());
-		commit();
-	}
 }

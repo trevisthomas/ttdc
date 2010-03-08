@@ -3,11 +3,15 @@ package org.ttdc.persistence;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.dialect.function.SQLFunctionTemplate;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
+import org.ttdc.gwt.server.dao.InitConstants;
 import org.ttdc.persistence.objects.AssociationPostTag;
 import org.ttdc.persistence.objects.AssociationPostTagLite;
 import org.ttdc.persistence.objects.DaySummaryEntity;
@@ -32,39 +36,50 @@ import org.ttdc.persistence.objects.UserObjectTemplate;
 public final class Persistence {
 	private static final Logger log = Logger.getLogger(Persistence.class);
 	private static final SessionFactory sessionFactory;
-	
 	static {
         try {
-            sessionFactory = new AnnotationConfiguration()
-            	.configure()
-            	//.configure("hibernate.cfg.mysql.xml")
-            	.addAnnotatedClass(Person.class)
-            	.addAnnotatedClass(Tag.class)
-            	.addAnnotatedClass(Image.class)
-            	.addAnnotatedClass(Style.class)
-            	.addAnnotatedClass(UserObject.class)
-            	.addAnnotatedClass(Post.class)
-            	.addAnnotatedClass(AssociationPostTag.class)
-            	.addAnnotatedClass(Privilege.class)
-            	.addAnnotatedClass(UserObjectTemplate.class)
-            	.addAnnotatedClass(TagLite.class)
-            	.addAnnotatedClass(PostLite.class)
-            	.addAnnotatedClass(AssociationPostTagLite.class)
-            	.addAnnotatedClass(ImageFull.class)
-            	.addAnnotatedClass(Entry.class)
-            	.addAnnotatedClass(Inbox.class)
-            	.addAnnotatedClass(InboxCache.class)
-            	.addAnnotatedClass(Shacktag.class)
-            	.addAnnotatedClass(SimplePostEntity.class)
-            	.addAnnotatedClass(ThreadSummaryEntity.class)
-            	.addAnnotatedClass(DaySummaryEntity.class)
-            	.buildSessionFactory();
+            Configuration configuration = new AnnotationConfiguration()
+        	.configure()
+        	//.configure("hibernate.cfg.mysql.xml")
+        	.addAnnotatedClass(Person.class)
+        	.addAnnotatedClass(Tag.class)
+        	.addAnnotatedClass(Image.class)
+        	.addAnnotatedClass(Style.class)
+        	.addAnnotatedClass(UserObject.class)
+        	.addAnnotatedClass(Post.class)
+        	.addAnnotatedClass(AssociationPostTag.class)
+        	.addAnnotatedClass(Privilege.class)
+        	.addAnnotatedClass(UserObjectTemplate.class)
+        	.addAnnotatedClass(TagLite.class)
+        	.addAnnotatedClass(PostLite.class)
+        	.addAnnotatedClass(AssociationPostTagLite.class)
+        	.addAnnotatedClass(ImageFull.class)
+        	.addAnnotatedClass(Entry.class)
+        	.addAnnotatedClass(Inbox.class)
+        	.addAnnotatedClass(InboxCache.class)
+        	.addAnnotatedClass(Shacktag.class)
+        	.addAnnotatedClass(SimplePostEntity.class)
+        	.addAnnotatedClass(ThreadSummaryEntity.class)
+        	.addAnnotatedClass(DaySummaryEntity.class);
             
+            //Warning: Hibernate choked when i had the function name mixed case.
+            configuration.addSqlFunction("bitwise_or", new SQLFunctionTemplate(Hibernate.BIG_INTEGER, " ?1 | ?2 "));
+            configuration.addSqlFunction("bitwise_and", new SQLFunctionTemplate(Hibernate.BIG_INTEGER, " ?1 & ?2 "));
+            
+            
+            sessionFactory = configuration.buildSessionFactory();
+
         } catch (Throwable ex) {
         	log.error(ex);
             throw new ExceptionInInitializerError(ex);
         }
+        
+        //Forcing the constants to initialize before anything else.
+		InitConstants.refresh();
+		//InitConstants.ANONYMOUS.getLogin();
+    	
 	}
+	
 	
 	public static SessionFactory getSessionFactory(){
 		return sessionFactory;
@@ -75,6 +90,9 @@ public final class Persistence {
 	 * @return
 	 */
 	public static Session beginSession(){
+//		if(sessionFactory.getCurrentSession().isOpen() && sessionFactory.getCurrentSession().getTransaction().isActive()){
+//			throw new RuntimeException("You my friend are double dipping in the session");
+//		}
 		Session session = sessionFactory.getCurrentSession();
 		session.beginTransaction();
 		return session;

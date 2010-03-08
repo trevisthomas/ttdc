@@ -4,6 +4,7 @@ import org.ttdc.gwt.client.services.Command;
 import org.ttdc.gwt.shared.commands.results.TagCommandResult;
 import org.ttdc.gwt.shared.commands.types.TagActionType;
 
+@Deprecated
 public class TagCommand extends Command<TagCommandResult>{
 	private TagActionType action;
 

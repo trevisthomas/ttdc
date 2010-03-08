@@ -41,7 +41,6 @@ public class CalculateAverageRating {
 				
 				
 				TagDao tagDao = new TagDao();
-				tagDao.setCreator(creator);
 				tagDao.setDescription("");
 				tagDao.setType(Tag.TYPE_AVERAGE_RATING);
 				tagDao.setValue(avg);

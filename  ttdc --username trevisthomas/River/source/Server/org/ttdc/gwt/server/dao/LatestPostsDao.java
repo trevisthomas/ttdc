@@ -8,21 +8,15 @@ import java.util.List;
 import org.ttdc.gwt.shared.util.PaginatedList;
 import org.ttdc.persistence.objects.Post;
 
-public class LatestPostsDao extends PaginatedDaoBase{
+public class LatestPostsDao extends FilteredPostPaginatedDaoBase{
 	
 	private static final int DEFAULT_REPLY_MAX_RESULTS = 5;
 	private int replyMaxResults = DEFAULT_REPLY_MAX_RESULTS;
 	
-	private List<String> filteredTagIdList = new ArrayList<String>();
-	
 	public PaginatedList<Post> loadConversations(){
 		PaginatedList<Post> results = new PaginatedList<Post>();
-		if(filteredTagIdList.size() > 0){
-			results = executeLoadQuery("LatestPostsDao.Conversations");
-		}
-		else{
-			results = executeLoadQueryNoFilter("LatestPostsDao.ConversationsNoFilter");
-		}
+		results = executeLoadQuery("LatestPostsDao.Conversations");
+		
 		List<Post> posts = loadAllPostsForThreads(results.getList());
 		for(Post p : results.getList()){
 			loadRepliesFromPostList(p, posts);
@@ -32,42 +26,20 @@ public class LatestPostsDao extends PaginatedDaoBase{
 	
 	public PaginatedList<Post> loadFlat(){
 		PaginatedList<Post> results = new PaginatedList<Post>();
-		if(filteredTagIdList.size() > 0){
-			results = executeLoadQuery("LatestPostsDao.Flat");
-		}
-		else{
-			results = executeLoadQueryNoFilter("LatestPostsDao.FlatNoFilter");
-		}
-//		List<Post> posts = loadAllPostsForThreads(results.getList());
-//		for(Post p : results.getList()){
-//			loadRepliesFromPostList(p, posts);
-//		}
+		results = executeLoadQuery("LatestPostsDao.Flat");
 		return results;
 	}
 	
 	public PaginatedList<Post> loadThreads(){
 		PaginatedList<Post> results = new PaginatedList<Post>();
-		if(filteredTagIdList.size() > 0){
-			results = executeLoadQuery("LatestPostsDao.Threads");
-		}
-		else{
-			results = executeLoadQueryNoFilter("LatestPostsDao.ThreadsNoFilter");
-		}
-//		List<Post> posts = loadAllPostsForThreads(results.getList());
-//		for(Post p : results.getList()){
-//			loadRepliesFromPostList(p, posts);
-//		}
+		results = executeLoadQuery("LatestPostsDao.Threads");
 		return results;
 	}
 	
 	public PaginatedList<Post> loadNested() {
 		PaginatedList<Post> results = new PaginatedList<Post>();
-		if(filteredTagIdList.size() > 0){
-			results = executeLoadQuery("LatestPostsDao.Nested");
-		}
-		else{
-			results = executeLoadQueryNoFilter("LatestPostsDao.NestedNoFilter");
-		}
+		results = executeLoadQuery("LatestPostsDao.Nested");
+		
 		List<Post> posts = loadAllPostsForThreads(results.getList());
 		for(Post p : results.getList()){
 			loadRepliesFromPostList(p, posts);
@@ -95,50 +67,26 @@ public class LatestPostsDao extends PaginatedDaoBase{
 			postIds.add(post.getPostId());
 		}
 		List<Post> posts;
-		if(filteredTagIdList.size() > 0){
-			posts = DaoUtils.executeLoadFromPostIds("LatestPostsDao.RepliesInThreads", postIds, filteredTagIdList);
+		if(threadStarters.size() == 0){
+			System.err.println("Smelly badness");
 		}
-		else{
-			posts = DaoUtils.executeLoadFromPostIdsNoFilter("LatestPostsDao.RepliesInThreadsNoFilter", postIds);
-		}
+		posts = DaoUtils.executeLoadFromPostIds("LatestPostsDao.RepliesInThreads", postIds, buildFilterMask(getFilterFlags()));
+		
 		return posts;
 	}
 	
-	@SuppressWarnings("unchecked") 
-	private PaginatedList<Post> executeLoadQueryNoFilter(String query) {
-		List<Post> list;
-		PaginatedList<Post> results = null;
-		if(getPageSize() > 0){
-			int count = session().getNamedQuery(query+"Count")
-				.list().size();
-			
-			list = session().getNamedQuery(query)
-				.setFirstResult(calculatePageStartIndex())
-				.setMaxResults(getPageSize()).list();
-			
-			results = DaoUtils.createResults(this, list, count);
-		}
-		else{
-			list = session().getNamedQuery(query).list();
-			
-			results = DaoUtils.createResults(this, list, list.size());
-		}
-		return results;
-	}
-
 	@SuppressWarnings("unchecked")
 	private PaginatedList<Post> executeLoadQuery(String query) {
-		if(filteredTagIdList.size() == 0) throw new RuntimeException("You dont have a filter setup. ");
 		PaginatedList<Post> results;
 		if(getPageSize() > 0){
 			List<Post> list;
-			int count = session().getNamedQuery(query+"Count")
-				.setParameterList("tagIds", filteredTagIdList)
-				.list().size();
+			long count = (Long)session().getNamedQuery(query+"Count")
+				.setParameter("filterMask", buildFilterMask(getFilterFlags()))
+				.uniqueResult();
 			
 			
 			list = session().getNamedQuery(query)
-				.setParameterList("tagIds", filteredTagIdList)
+				.setParameter("filterMask", buildFilterMask(getFilterFlags()))
 				.setFirstResult(calculatePageStartIndex())
 				.setMaxResults(getPageSize()).list();
 			
@@ -146,7 +94,7 @@ public class LatestPostsDao extends PaginatedDaoBase{
 		}
 		else{
 			List<Post> list = session().getNamedQuery(query)
-				.setParameterList("tagIds", filteredTagIdList)
+				.setParameter("filterMask", buildFilterMask(getFilterFlags()))
 				.list();
 			results = DaoUtils.createResults(this, list, list.size());
 		}
@@ -154,17 +102,7 @@ public class LatestPostsDao extends PaginatedDaoBase{
 		return results;
 	}
 	
-	public List<String> getFilteredTagIdList() {
-		return filteredTagIdList;
-	}
-
-	public void setFilteredTagIdList(List<String> filteredTagIdList) {
-		this.filteredTagIdList = filteredTagIdList;
-	}
 	
-	public void addFilterTagId(String filterTagId){
-		this.filteredTagIdList.add(filterTagId);
-	}
 	
 	public int getReplyMaxResults() {
 		return replyMaxResults;

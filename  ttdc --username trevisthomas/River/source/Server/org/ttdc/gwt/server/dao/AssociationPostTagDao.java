@@ -15,7 +15,6 @@ final public class AssociationPostTagDao {
 	private Post post;
 	private Tag tag;
 	private Person creator;
-	private boolean title = false;
 	
 	public static AssociationPostTag load(String associationId){
 		AssociationPostTag ass;
@@ -31,10 +30,7 @@ final public class AssociationPostTagDao {
 		ass.setCreator(creator);
 		ass.setTag(tag);
 		ass.setPost(post);
-		ass.setTitle(title);
-		if(title && hasTitleAssociation(post)){
-			throw new RuntimeException("Post already has a title. Only one title allowed per post.");
-		}
+
 		increaseMass(tag);
 		session().save(ass);
 		session().flush();
@@ -142,13 +138,4 @@ final public class AssociationPostTagDao {
 	public void setCreator(Person creator) {
 		this.creator = creator;
 	}
-
-	public boolean isTitle() {
-		return title;
-	}
-
-	public void setTitle(boolean title) {
-		this.title = title;
-	}
-	
 }

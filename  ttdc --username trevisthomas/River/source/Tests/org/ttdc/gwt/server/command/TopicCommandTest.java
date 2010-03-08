@@ -64,6 +64,11 @@ private final static Logger log = Logger.getLogger(SearchPostsCommandTest.class)
 		TopicCommandResult result = (TopicCommandResult)cmdexec.executeCommand();
 		List<GPost> posts = result.getResults().getList();
 		
+		for(GPost gp : posts){
+			assertNotNull(gp.getCreator());
+			assertNotNull(gp.getTitleTag());
+			assertNotNull(gp.getEntry()); //Well, i dont know that movies have entries so... beware
+		}
 		assertEquals(425, result.getResults().getTotalResults());
 	}
 	
@@ -165,7 +170,11 @@ private final static Logger log = Logger.getLogger(SearchPostsCommandTest.class)
 		List<GPost> posts = result.getResults().getList();
 		
 		assertEquals("B3D57670-4162-4B99-9C0D-5E3DE54EB990", posts.get(0).getPostId());
-		assertEquals(10, result.getResults().getTotalResults());
+		//assertEquals(10, result.getResults().getTotalResults()); //Trevis, this was what this test did before the refactor.. no clue how that worked.
+		
+		assertEquals(3, posts.get(0).getPosts().size()); // total branch post count (remember in this mode they are flat beneath the converaation)
+		assertEquals(20, result.getResults().getList().size()); //conversations on page
+		assertEquals(98, result.getResults().getTotalResults()); //Conversation starters in thread
 	}
 	
 	@Test

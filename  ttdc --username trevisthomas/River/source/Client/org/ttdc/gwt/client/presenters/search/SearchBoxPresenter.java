@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.ttdc.gwt.client.Injector;
+import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.beans.GTag;
 import org.ttdc.gwt.client.constants.TagConstants;
@@ -21,12 +22,17 @@ import org.ttdc.gwt.client.presenters.util.DateRangeLite;
 import org.ttdc.gwt.client.services.BatchCommandTool;
 import org.ttdc.gwt.shared.calender.Day;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
+import org.ttdc.gwt.shared.commands.PersonListCommand;
 import org.ttdc.gwt.shared.commands.PostCrudCommand;
 import org.ttdc.gwt.shared.commands.SearchTagsCommand;
 import org.ttdc.gwt.shared.commands.TagCommand;
+import org.ttdc.gwt.shared.commands.results.PersonListCommandResult;
 import org.ttdc.gwt.shared.commands.results.PostCommandResult;
 import org.ttdc.gwt.shared.commands.results.SearchTagsCommandResult;
 import org.ttdc.gwt.shared.commands.results.TagCommandResult;
+import org.ttdc.gwt.shared.commands.types.PersonListType;
+import org.ttdc.gwt.shared.commands.types.SortBy;
+import org.ttdc.gwt.shared.commands.types.SortDirection;
 import org.ttdc.gwt.shared.commands.types.TagActionType;
 import org.ttdc.gwt.shared.util.StringUtil;
 
@@ -92,10 +98,15 @@ public class SearchBoxPresenter extends BasePresenter<SearchBoxPresenter.View> /
 		});
 	}
 	
+	public void init(Date startDate, Date endDate) {
+		HistoryToken token = new HistoryToken();
+		token.setParameter(HistoryConstants.SEARCH_START_DATE, startDate.getTime());
+		token.setParameter(HistoryConstants.SEARCH_END_DATE, endDate.getTime());
+	}
+	
 	public void init(HistoryToken token){
 		BatchCommandTool batcher = new BatchCommandTool();
 		
-	
 		dateRange = new DateRangeLite(token);
 		
 		startCalendarPresenter = injector.getInteractiveCalendarPresenter();
@@ -108,9 +119,12 @@ public class SearchBoxPresenter extends BasePresenter<SearchBoxPresenter.View> /
 		view.calendarPanel().add(startCalendarPresenter.getWidget());
 		view.calendarPanel().add(endCalendarPresenter.getWidget());
 		
+		PersonListCommand personListCmd = new PersonListCommand(PersonListType.ACTIVE);
+		personListCmd.setSortOrder(SortBy.BY_HITS);
+		personListCmd.setSortDirection(SortDirection.DESC);
 		
-		TagCommand personListCmd = new TagCommand(TagActionType.LOAD_CREATORS);
-		CommandResultCallback<TagCommandResult> personListCallback = buildPersonListCallback();
+		//TagCommand personListCmd = new TagCommand(TagActionType.LOAD_CREATORS);
+		CommandResultCallback<PersonListCommandResult> personListCallback = buildPersonListCallback();
 		
 		batcher.add(personListCmd, personListCallback);
 		threadTitle = "";
@@ -201,12 +215,12 @@ public class SearchBoxPresenter extends BasePresenter<SearchBoxPresenter.View> /
 		return rootPostCallback;
 	}
 	
-	private CommandResultCallback<TagCommandResult> buildPersonListCallback() {
-		CommandResultCallback<TagCommandResult> replyListCallback = new CommandResultCallback<TagCommandResult>(){
+	private CommandResultCallback<PersonListCommandResult> buildPersonListCallback() {
+		CommandResultCallback<PersonListCommandResult> replyListCallback = new CommandResultCallback<PersonListCommandResult>(){
 			@Override
-			public void onSuccess(TagCommandResult result) {
-				for(GTag tag : result.getTagList()){
-					view.addPerson(tag.getTagId(),tag.getCreator().getLogin());
+			public void onSuccess(PersonListCommandResult result) {
+				for(GPerson person : result.getResults().getList()){
+					view.addPerson(person.getPersonId(), person.getLogin());
 				}
 			}
 		};
@@ -343,4 +357,6 @@ public class SearchBoxPresenter extends BasePresenter<SearchBoxPresenter.View> /
 		if(tagList != null)
 			this.tagList = tagList;
 	}
+
+	
 }

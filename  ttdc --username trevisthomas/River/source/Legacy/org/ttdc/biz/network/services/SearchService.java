@@ -210,10 +210,10 @@ public final class SearchService {
 					for(String postId : postIds){
 						Post p = new Post();
 						p.setPostId(postId);
-						p.setPostCounter(totalsMap.get(p.getPostId()));
-						pagePosts.add(p);
+//						p.setPostCounter(totalsMap.get(p.getPostId()));
+//						pagePosts.add(p);
 					}
-					Collections.sort(pagePosts,new Post.PostCounterComparator());
+//					Collections.sort(pagePosts,new Post.PostCounterComparator());
 					Paginator<Post> paginator = new Paginator<Post>(pagePosts,new PostDecorator(person),person.getNumCommentsThreadPage());
 					posts = paginator.getPage(1);
 				}
@@ -458,23 +458,23 @@ public final class SearchService {
 		Tag t = null;
 		List<Tag> tags;
 		
-		tags = query.setString("value", HTMLCalendar.MonthNames[month-1]).setString("type", Tag.TYPE_DATE_MONTH).list();
-		if(tags.size() == 1){
-			t = tags.get(0);
-			spiderTag.add(t.getTagId());
-		}
-		
-		tags = query.setString("value", ""+day).setString("type", Tag.TYPE_DATE_DAY).list();
-		if(tags.size() == 1){
-			t = tags.get(0);
-			spiderTag.add(t.getTagId());
-		}
-		
-		tags = query.setString("value", ""+year).setString("type", Tag.TYPE_DATE_YEAR).list();
-		if(tags.size() == 1){
-			t = tags.get(0);
-			spiderTag.add(t.getTagId());
-		}
+//		tags = query.setString("value", HTMLCalendar.MonthNames[month-1]).setString("type", Tag.TYPE_DATE_MONTH).list();
+//		if(tags.size() == 1){
+//			t = tags.get(0);
+//			spiderTag.add(t.getTagId());
+//		}
+//		
+//		tags = query.setString("value", ""+day).setString("type", Tag.TYPE_DATE_DAY).list();
+//		if(tags.size() == 1){
+//			t = tags.get(0);
+//			spiderTag.add(t.getTagId());
+//		}
+//		
+//		tags = query.setString("value", ""+year).setString("type", Tag.TYPE_DATE_YEAR).list();
+//		if(tags.size() == 1){
+//			t = tags.get(0);
+//			spiderTag.add(t.getTagId());
+//		}
 		
 		return spider(person, "",spiderTag);
 	}
@@ -520,20 +520,20 @@ public final class SearchService {
 			
 			List<TagLite> allTags = query.list();
 			TagLite.calculatePercentile(allTags);
-			for(TagLite tl : allTags){
-				if(Tag.TYPE_CREATOR.equals(tl.getType())){
-					results.getSuggestionsPeople().add(tl);
-				}
-				else if(Tag.TYPE_DATE_MONTH.equals(tl.getType())){
-					results.getSuggestionsMonths().add(tl);
-				}
-				else if(Tag.TYPE_DATE_YEAR.equals(tl.getType())){
-					results.getSuggestionsYears().add(tl);
-				}
-				else{
-					//Weird
-				}
-			}
+//			for(TagLite tl : allTags){
+//				if(Tag.TYPE_CREATOR.equals(tl.getType())){
+//					results.getSuggestionsPeople().add(tl);
+//				}
+//				else if(Tag.TYPE_DATE_MONTH.equals(tl.getType())){
+//					results.getSuggestionsMonths().add(tl);
+//				}
+//				else if(Tag.TYPE_DATE_YEAR.equals(tl.getType())){
+//					results.getSuggestionsYears().add(tl);
+//				}
+//				else{
+//					//Weird
+//				}
+//			}
 			Collections.sort(results.getSuggestionsMonths(), new TagLite.MonthComparator());
 			
 			List<String> replyIds = new ArrayList<String>(); 
@@ -589,12 +589,12 @@ public final class SearchService {
 			}
 			
 			
-			if(postIds.size() > 0){
-				PostHelper.loadPosts(postIds, person.getFilteredTagIds());
-			}
+//			if(postIds.size() > 0){
+//				PostHelper.loadPosts(postIds, person.getFilteredTagIds());
+//			}
 			for(Post p : posts){
 				if(threadIds.contains(p.getPostId())){
-					p.setPostCounter(totalsMap.get(p.getPostId()));
+//					p.setPostCounter(totalsMap.get(p.getPostId()));
 					results.getThreads().add(p);
 				}
 				else{
@@ -602,9 +602,9 @@ public final class SearchService {
 				}
 			}
 			
-			Collections.sort(results.getThreads(),new Post.ByLiteReferenceComparator(liteThreads));
-			Collections.sort(results.getPosts(),new Post.DateComparatorDesc());
-			
+//			Collections.sort(results.getThreads(),new Post.ByLiteReferenceComparator(liteThreads));
+//			Collections.sort(results.getPosts(),new Post.DateComparatorDesc());
+//			
 			Persistence.commit();
 			return results;
 		}
@@ -747,7 +747,7 @@ public final class SearchService {
 			}
 			for(Post p : posts){
 				if(threadIds.contains(p.getPostId())){
-					p.setPostCounter(totalsMap.get(p.getPostId()));
+//					p.setPostCounter(totalsMap.get(p.getPostId()));
 					results.getThreads().add(p);
 				}
 				else{
@@ -755,8 +755,8 @@ public final class SearchService {
 				}
 			}
 			
-			Collections.sort(results.getThreads(),new Post.ByLiteReferenceComparator(liteThreads));
-			Collections.sort(results.getPosts(),new Post.DateComparatorDesc());
+//			Collections.sort(results.getThreads(),new Post.ByLiteReferenceComparator(liteThreads));
+//			Collections.sort(results.getPosts(),new Post.DateComparatorDesc());
 			
 			Persistence.commit();
 			return results;
@@ -896,9 +896,9 @@ public final class SearchService {
 	private List<Post> getPostsWithTitleTag(List<Post> posts, Tag t){
 		List<Post> found = new ArrayList<Post>();
 		for(Post p : posts){
-			AssociationPostTag ass = p.loadTitleTagAssociation();
-			if(ass!=null && ass.getTag().equals(t))
-				found.add(p);
+//			AssociationPostTag ass = p.loadTitleTagAssociation();
+//			if(ass!=null && ass.getTag().equals(t))
+//				found.add(p);
 		}
 		return found;
 	}
@@ -1187,9 +1187,9 @@ public final class SearchService {
 	
 	private List<Post> loadPostCounters(List<Post> posts){
 		Map<String,PostCounter> totalsMap = PostHelper.loadPostCounters(PostHelper.extractIds(posts));
-		for(Post p : posts){
-			p.setPostCounter(totalsMap.get(p.getPostId()));
-		}
+//		for(Post p : posts){
+//			p.setPostCounter(totalsMap.get(p.getPostId()));
+//		}
 		return posts;
 	}
 	
@@ -1277,11 +1277,11 @@ public final class SearchService {
 			Tag dayTag = null;
 			if(day != null){
 				query = session.getNamedQuery("tag.getByValueAndType");
-				Tag t = (Tag)query.setString("value", ""+day).setString("type",Tag.TYPE_DATE_DAY).uniqueResult();
-				if(t != null){
-					dayTag = t;
-					spiderTag.add(t.getTagId());
-				}
+//				Tag t = (Tag)query.setString("value", ""+day).setString("type",Tag.TYPE_DATE_DAY).uniqueResult();
+//				if(t != null){
+//					dayTag = t;
+//					spiderTag.add(t.getTagId());
+//				}
 			}
 			
 			
@@ -1376,12 +1376,12 @@ public final class SearchService {
 			int m= -1;
 			int y= -1;
 			
-			for(Tag t : tags){
-				if(Tag.TYPE_DATE_YEAR.equals(t.getType()))
-					y = Integer.parseInt(t.getValue());
-				else if(Tag.TYPE_DATE_MONTH.equals(t.getType()))
-					m = TagLite.getMonths().indexOf(t.getValue())+1;
-			}
+//			for(Tag t : tags){
+//				if(Tag.TYPE_DATE_YEAR.equals(t.getType()))
+//					y = Integer.parseInt(t.getValue());
+//				else if(Tag.TYPE_DATE_MONTH.equals(t.getType()))
+//					m = TagLite.getMonths().indexOf(t.getValue())+1;
+//			}
 				
 			if(y > -1 && m > -1){
 				List<TagLite> dayTags = results.getSuggestionsDays();

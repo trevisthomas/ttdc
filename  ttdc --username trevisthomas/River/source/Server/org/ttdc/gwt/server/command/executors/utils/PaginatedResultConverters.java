@@ -27,8 +27,9 @@ public final class PaginatedResultConverters {
 	
 	public final static PaginatedList<GPost> convertSearchResults(PaginatedList<Post> results){
 		PaginatedList<GPost> gResults = copyMetaData(results);
-		Inflatinator inf = new Inflatinator(results.getList());
-		gResults.setList(inf.extractPosts());
+//		Inflatinator inf = new Inflatinator(results.getList());
+//		gResults.setList(inf.extractPosts());
+		gResults.setList(FastPostBeanConverter.convertPosts(results.getList()));
 		return gResults;
 	}
 

@@ -39,10 +39,10 @@ public class PostDecorator implements Paginator.Decorator<Post>{
 		 */
 		for(Post p : results ){
 			Post opp = sublist.get(sublist.indexOf(p));
-			p.setPostCounter(opp.getPostCounter());
+//			p.setPostCounter(opp.getPostCounter());
 		}
 		
-		Collections.sort(results,new Post.ByReferenceComparator(sublist));
+//		Collections.sort(results,new Post.ByReferenceComparator(sublist));
 		
 		return results;
 		

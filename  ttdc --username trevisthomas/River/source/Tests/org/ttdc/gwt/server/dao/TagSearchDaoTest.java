@@ -51,15 +51,15 @@ public class TagSearchDaoTest {
 			beginSession();
 			TagSearchDao dao = new TagSearchDao();
 			
-			String t3 = "A9AA3CE7-DA48-40F4-BDA9-1FFFD9868DEA";//Morsels of Corporate Goodness
+			String t3 = "50DA2CF8-7AF6-4B78-AAA9-3427F41A4BF4";//Funny
 			String t1 = "293C8189-44B9-41BD-BC75-F3DFD7CF670B";//Tag val:General stuff
-			String t2 = "3325CE14-A37E-4236-875C-F1D97F006682"; // Tag val:Trevis
+			//String t2 = "3325CE14-A37E-4236-875C-F1D97F006682"; // Tag val:Trevis
 			
 			 
 			int currentPage = 1;
 			dao.setCurrentPage(currentPage);
 			dao.addTagId(t1);
-			dao.addTagId(t2);
+			dao.addTagId(t3);
 			PaginatedList<Tag> result = dao.search();
 			
 			assertTrue("Didnt find anything and i expected to", result.getList().size()>0);
@@ -114,19 +114,16 @@ public class TagSearchDaoTest {
 			beginSession();
 			TagSearchDao dao = new TagSearchDao();
 			
-			String t3 = "3FE5F7A3-F91D-41E3-9225-E2538D59E5C3";//Morsels of Corporate Goodness
 			String t1 = "293C8189-44B9-41BD-BC75-F3DFD7CF670B";//Tag val:General stuff
-			String t2 = "3325CE14-A37E-4236-875C-F1D97F006682"; // Tag val:Trevis
-			
 			
 			String type=Tag.TYPE_TOPIC;
 			
 			int currentPage = 1;
 			dao.setCurrentPage(currentPage);
 			dao.addTagId(t1);
-			//dao.addTagId(t2);
+
 			dao.addFilterForTagType(type);
-			String phrase = "Morsels";
+			String phrase = "Funny";
 			dao.setPhrase(phrase);
 			
 			PaginatedList<Tag> result = dao.search();
@@ -154,7 +151,7 @@ public class TagSearchDaoTest {
 			beginSession();
 			TagSearchDao dao = new TagSearchDao();
 			
-			String t3 = "3FE5F7A3-F91D-41E3-9225-E2538D59E5C3";//Morsels of Corporate Goodness
+			String t3 = "50DA2CF8-7AF6-4B78-AAA9-3427F41A4BF4";//Funny
 			String t1 = "293C8189-44B9-41BD-BC75-F3DFD7CF670B";//Tag val:General stuff
 			String t2 = "3325CE14-A37E-4236-875C-F1D97F006682"; // Tag val:Trevis
 			
@@ -165,7 +162,7 @@ public class TagSearchDaoTest {
 			dao.setCurrentPage(currentPage);
 			//dao.addTagIdUnion(t1);
 			dao.addTagIdExclude(t3);
-			//dao.addTagId(t2);
+			dao.addTagId(t1);
 			dao.addFilterForTagType(type);
 			String phrase = "Morsels";
 			dao.setPhrase(phrase);

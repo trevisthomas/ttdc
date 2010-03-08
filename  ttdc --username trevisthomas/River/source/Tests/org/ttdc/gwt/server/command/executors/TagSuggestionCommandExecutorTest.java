@@ -92,9 +92,9 @@ public class TagSuggestionCommandExecutorTest{
 			assertEqualsOneOfExpected(cmdexec.getTagTypeFilterListForMode(TagSuggestionCommandMode.CREATE), t.getType());
 			assertContains(t.getValue(),request.getQuery());
 			log.info(t.getTagId()+" "+t.getValue());
-			if(suggestion.getDisplayString().equals(request.getQuery() + " <strong>(Create New)</strong>")){
+			if(suggestion.getDisplayString().contains("(Create New)"))
 				createOption = true;
-			}
+			
 		}
 		assertTrue("No option to create the tag as added. It should be for this type of search",createOption);
 	}
@@ -103,7 +103,7 @@ public class TagSuggestionCommandExecutorTest{
 	public void testTagSearch(){
 		SuggestOracle.Request request = new SuggestOracle.Request(); 
 		
-		request.setQuery("mors");
+		request.setQuery("general");
 		
 		//MODE_POST_CREATE, MODE_SEARCH
 		TagSuggestionCommand cmd = new TagSuggestionCommand(TagSuggestionCommandMode.SEARCH, request);
@@ -114,7 +114,7 @@ public class TagSuggestionCommandExecutorTest{
 		
 		List<TagSuggestion> tags  = (List<TagSuggestion>)result.getResponse().getSuggestions();
 		
-		assertTrue(tags.size() > 0);
+		assertTrue("Found nothing, expected something. ",tags.size() > 0);
 		
 		boolean createOption = false;
 		for(TagSuggestion suggestion : tags){
@@ -126,9 +126,8 @@ public class TagSuggestionCommandExecutorTest{
 			log.info(t.getTagId()+" "+t.getValue());
 			
 			//Just making sure that it's *not* here.
-			if(suggestion.getDisplayString().equals(request.getQuery() + " <strong>(Create New)</strong>")){
+			if(suggestion.getDisplayString().contains("(Create New)"))
 				createOption = true;
-			}
 		}
 		assertFalse("An option to create should not come up in search",createOption);
 	}
@@ -167,10 +166,10 @@ public class TagSuggestionCommandExecutorTest{
 	public void testTagSearchUnionError1(){
 		SuggestOracle.Request request = new SuggestOracle.Request(); 
 		
-		request.setQuery("trevis");
+		request.setQuery("stuff");
 		
 		TagSuggestionCommand cmd = new TagSuggestionCommand(TagSuggestionCommandMode.SEARCH, request);
-		cmd.addTagIdUnion("3FE5F7A3-F91D-41E3-9225-E2538D59E5C3");		
+		cmd.addTagIdUnion("293C8189-44B9-41BD-BC75-F3DFD7CF670B");		
 		cmd.setLoadDefault(true);
 		
 		TagSuggestionCommandExecutor cmdexec = (TagSuggestionCommandExecutor)CommandExecutorFactory.createExecutor("50E7F601-71FD-40BD-9517-9699DDA611D6",cmd);

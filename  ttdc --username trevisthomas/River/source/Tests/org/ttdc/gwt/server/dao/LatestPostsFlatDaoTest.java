@@ -20,7 +20,7 @@ import org.ttdc.gwt.server.beanconverters.GenericBeanConverter;
 import org.ttdc.persistence.objects.AssociationPostTag;
 import org.ttdc.persistence.objects.Post;
 
-
+@Deprecated
 public class LatestPostsFlatDaoTest {
 	private final static Logger log = Logger.getLogger(LatestPostsFlatDaoTest.class);
 	

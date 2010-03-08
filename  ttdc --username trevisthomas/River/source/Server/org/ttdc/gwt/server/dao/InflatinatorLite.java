@@ -26,6 +26,9 @@ import org.ttdc.persistence.objects.Tag;
  * in the calendar 
  * 
  */
+
+//TODO: DELETE
+@Deprecated
 public class InflatinatorLite {
 	private final static Logger log = Logger.getLogger(InflatinatorLite.class);
 	private final StopWatch stopwatch = new StopWatch();
@@ -128,7 +131,7 @@ public class InflatinatorLite {
 		if(gPost.getTitle() == null){
 			gPost.setDate(p.getDate());
 			gPost.setPostId(p.getPostId());
-			gPost.setTitle(p.getTitle());//TODO: At the moment this performs a @function to get this value.  If that changes, reconsider
+		//	gPost.setTitle(p.getTitle());//TODO: At the moment this performs a @function to get this value.  If that changes, reconsider
 			gPost.setReplyCount(p.getReplyCount());
 			gPost.setMass(p.getMass());
 			gPost.setRootPost(p.isRootPost());
@@ -166,9 +169,9 @@ public class InflatinatorLite {
 	
 	private GTag generateLazyTag(Tag t){
 		GTag gTag = findOrCreateGTag(t.getTagId());
-		gTag.setCreator(findOrCreateGPerson(t.getCreator().getPersonId()));
+//		gTag.setCreator(findOrCreateGPerson(t.getCreator().getPersonId()));
 		gTag.setDate(t.getDate());
-		gTag.setDescription(t.getDescription());
+//		gTag.setDescription(t.getDescription());
 		gTag.setTagId(t.getTagId());
 		gTag.setType(t.getType());
 		gTag.setValue(t.getValue());

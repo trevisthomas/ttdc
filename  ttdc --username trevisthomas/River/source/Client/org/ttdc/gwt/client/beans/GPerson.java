@@ -31,15 +31,15 @@ public class GPerson extends GBase{
 	
 	
 
-	private String creatorTagId; //The person's creator tag id.  Initially added for person profile
-	
-	public String getCreatorTagId() {
-		return creatorTagId;
-	}
-
-	public void setCreatorTagId(String creatorTagId) {
-		this.creatorTagId = creatorTagId;
-	}
+//	private String creatorTagId; //The person's creator tag id.  Initially added for person profile
+//	
+//	public String getCreatorTagId() {
+//		return creatorTagId;
+//	}
+//
+//	public void setCreatorTagId(String creatorTagId) {
+//		this.creatorTagId = creatorTagId;
+//	}
 
 	public String getValue() {
 		return value;

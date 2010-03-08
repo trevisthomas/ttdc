@@ -23,6 +23,7 @@ import org.apache.lucene.search.QueryWrapperFilter;
 import org.apache.lucene.search.TermQuery;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.search.annotations.ClassBridge;
 import org.hibernate.search.annotations.ClassBridges;
@@ -58,12 +59,12 @@ import org.ttdc.persistence.util.FilterFactoryTagIsTitle;
 @Entity
 @NamedQueries({
 	@NamedQuery(name="tag.getAll", query="FROM Tag"),
-	@NamedQuery(name="tag.getByTagId", query="select tag FROM Tag as tag INNER JOIN FETCH tag.creator LEFT JOIN tag.creator.style WHERE tag.tagId=:tagId"),
-	@NamedQuery(name="tag.getByValue", query="select tag FROM Tag as tag INNER JOIN FETCH tag.creator LEFT JOIN tag.creator.style WHERE tag.value=:value"),
-	@NamedQuery(name="tag.getByValueAndType", query="select tag FROM Tag as tag INNER JOIN FETCH tag.creator LEFT JOIN tag.creator.style WHERE tag.value=:value AND tag.type=:type"),
-	@NamedQuery(name="tag.getByValueLike", query="select tag FROM Tag as tag WHERE tag.value LIKE :value"),
-	@NamedQuery(name="tag.getByTagIds", query="select tag FROM Tag as tag INNER JOIN FETCH tag.creator LEFT JOIN tag.creator.style WHERE tag.tagId IN (:tagIds)"),
-	@NamedQuery(name="tag.getDateYears", query="select t from Tag t where t.type = 'DATE_YEAR' order by t.value"),
+//	@NamedQuery(name="tag.getByTagId", query="select tag FROM Tag as tag WHERE tag.tagId=:tagId"),
+//	@NamedQuery(name="tag.getByValue", query="select tag FROM Tag as tag INNER JOIN FETCH tag.creator LEFT JOIN tag.creator.style WHERE tag.value=:value"),
+//	@NamedQuery(name="tag.getByValueAndType", query="select tag FROM Tag as tag INNER JOIN FETCH tag.creator LEFT JOIN tag.creator.style WHERE tag.value=:value AND tag.type=:type"),
+//	@NamedQuery(name="tag.getByValueLike", query="select tag FROM Tag as tag WHERE tag.value LIKE :value"),
+	@NamedQuery(name="tag.getByTagIds", query="select tag FROM Tag as tag WHERE tag.tagId IN (:tagIds)"),
+//	@NamedQuery(name="tag.getDateYears", query="select t from Tag t where t.type = 'DATE_YEAR' order by t.value"),
 	//Never used
 	//@NamedQuery(name="tag.getCreatorTag", query="select t from Tag t where t.creator.personId = :personId AND t.type = 'CREATOR'")
 	
@@ -96,40 +97,34 @@ import org.ttdc.persistence.util.FilterFactoryTagIsTitle;
 @Indexed
 public class Tag implements HasGuid{
 	public final static String TYPE_TOPIC = "TOPIC";
-	public final static String TYPE_DISPLAY = "DISPLAY";
 	public final static String TYPE_RATING = "RATING";
 	public final static String TYPE_AVERAGE_RATING = "AVERAGE_RATING";
 	
-	//The CREATOR tag is an auto created tag used to associate the person . this is for tag browsing
-	public final static String TYPE_CREATOR = "CREATOR"; 
-	/* The DATE types are auto created tags used for awesome tag browsing functionality
-	 * 
-	 * Current thinking is that i will create the date tags as posts are added.  So when a post 
-	 * is added i look for a tag type DATE_YEAR (if not found create) and then i tag the new post with it.
-	 * I then do the same for MONTH and DAY.
-	 * 
-	 * Post has a Date field which is used for sorting, these tags are used for browsing
-	 *
-	 */
+//	public final static String TYPE_DISPLAY = "DISPLAY";
+//	public final static String TYPE_AVERAGE_RATING = "AVERAGE_RATING";
+//	public final static String TYPE_CREATOR = "CREATOR"; 
+//	public final static String TYPE_DATE_YEAR = "DATE_YEAR"; //Check and create when need since the set grows over time
+//	public final static String TYPE_DATE_MONTH = "DATE_MONTH"; //(Should probably pre-create all of these since the set is fixed)
+//	public final static String TYPE_DATE_DAY = "DATE_DAY"; //Precreate for same reason above
+//	public final static String TYPE_STATUS = "STATUS"; //Values: LOCKED 
+//	public final static String TYPE_VISIBILITY = "VISIBILITY"; //Values: TRUSTED, ADMIN
+//	public final static String TYPE_SORT_TITLE = "SORT_TITLE"; 
+//	public final static String TYPE_REVIEW = "REVIEW";
+//	public final static String TYPE_MOVIE = "MOVIE";
+//	public final static String TYPE_RELEASE_YEAR = "RELEASE_YEAR"; //Initially for movies. Because the year it came out is often different from the year i added it
+//	public final static String TYPE_LEGACY_THREAD = "LEGACY_THREAD";
+//	public final static String TYPE_RATABLE = "RATABLE";//This tag
+//	public final static String TYPE_EARMARK = "EARMARK";//Authenticated users can ear mark a post so that they can find it later. Value of this tag type should be the creator's guid 
+//	public final static String TYPE_URL = "URL"; //Initially for imdb links to movies but could be used for lots of things
+//	public final static String VALUE_NWS = "NWS";
+//	public final static String VALUE_INF = "INF";
+//	public final static String VALUE_PRIVATE = "PRIVATE";
+//	public final static String VALUE_LOCKED = "LOCKED";  //This is intended for root posts to lock a thread
+//	public final static String VALUE_DELETED = "DELETED"; //Once tagged as deleted the post wont show up for anyone (maybe admin will still see)
+//	public final static String VALUE_LINK = "LINK";//Tag for posts with links in them.
+//	public static final String TYPE_WEEK_OF_YEAR = "WEEK_OF_YEAR";
+
 	
-	public final static String TYPE_DATE_YEAR = "DATE_YEAR"; //Check and create when need since the set grows over time
-	public final static String TYPE_DATE_MONTH = "DATE_MONTH"; //(Should probably pre-create all of these since the set is fixed)
-	public final static String TYPE_DATE_DAY = "DATE_DAY"; //Precreate for same reason above
-	
-	public final static String TYPE_STATUS = "STATUS"; //Values: LOCKED 
-	public final static String TYPE_VISIBILITY = "VISIBILITY"; //Values: TRUSTED, ADMIN
-	
-	//public final static String TYPE_TITLE = "TITLE"; //Title is on all root posts. So if a post has a title it's a thread.
-	public final static String TYPE_SORT_TITLE = "SORT_TITLE"; 
-	public final static String TYPE_REVIEW = "REVIEW";
-	public final static String TYPE_MOVIE = "MOVIE";
-	public final static String TYPE_RELEASE_YEAR = "RELEASE_YEAR"; //Initially for movies. Because the year it came out is often different from the year i added it
-	public final static String TYPE_LEGACY_THREAD = "LEGACY_THREAD";
-		
-	public final static String TYPE_RATABLE = "RATABLE";//This tag
-	public final static String TYPE_EARMARK = "EARMARK";//Authenticated users can ear mark a post so that they can find it later. Value of this tag type should be the creator's guid 
-	
-	public final static String TYPE_URL = "URL"; //Initially for imdb links to movies but could be used for lots of things
 	public final static String VALUE_RATING_5 = "5.0";
 	public final static String VALUE_RATING_4_5 = "4.5";
 	public final static String VALUE_RATING_4 = "4.0";
@@ -143,23 +138,14 @@ public class Tag implements HasGuid{
 	public final static String VALUE_RATING_0 = "0.0"; //Not sure about this one
 	
 	
-	public final static String VALUE_NWS = "NWS";
-	public final static String VALUE_INF = "INF";
-	public final static String VALUE_PRIVATE = "PRIVATE";
-	public final static String VALUE_LOCKED = "LOCKED";  //This is intended for root posts to lock a thread
-	public final static String VALUE_DELETED = "DELETED"; //Once tagged as deleted the post wont show up for anyone (maybe admin will still see)
-	
-	
-	public final static String VALUE_LINK = "LINK";//Tag for posts with links in them.
-	public static final String TYPE_WEEK_OF_YEAR = "WEEK_OF_YEAR";
-	
+		
 	
 	private String tagId;
 	private String type; //THEME, DISPLAY, RATING? ...CREATOR
 	private String value; //RATING_5, Morstles of Political Goodness, Review etc
 	private Date date = new Date(); //could be informative for some, highly functional for others (like review)
-	private Person creator;
-	private String description; //I only added this field to capture the 'subject' from old ttdc forums, which are now tags
+//	private Person creator;
+//	private String description; //I only added this field to capture the 'subject' from old ttdc forums, which are now tags
 	//private int count; //Transient except in special cases (used by named native query for v7) 
 	private int mass;
 	private String sortValue;
@@ -203,7 +189,8 @@ public class Tag implements HasGuid{
 	}
 	@Override
 	public String toString() {
-		return tagId +":"+ type +":"+ value + " ["+ creator +"]";
+//		return tagId +":"+ type +":"+ value + " ["+ creator +"]";
+		return tagId +":"+ type +":"+ value ;
 	}
 	
 	@Id @GeneratedValue( generator="system-uuid" )
@@ -231,11 +218,11 @@ public class Tag implements HasGuid{
 	
 	@Field(index=Index.TOKENIZED, store=Store.NO, name="topic")
 	public String getValue() {
-		if(type == TYPE_CREATOR){ 
-			//Added so that the value returned from creator tags is always the current login.
-			//Should probably set real value to blank just to reinforce that it is ignored
-			return getCreator().getLogin();
-		}
+//		if(type == TYPE_CREATOR){ 
+//			//Added so that the value returned from creator tags is always the current login.
+//			//Should probably set real value to blank just to reinforce that it is ignored
+//			return getCreator().getLogin();
+//		}
 		return value;
 	}
 	public void setValue(String value) {
@@ -251,16 +238,17 @@ public class Tag implements HasGuid{
 		this.date = date;
 	}
 	
-	@ManyToOne ( cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch=FetchType.LAZY)
-	@JoinColumn(name="CREATOR_GUID")
-	public Person getCreator() {
-		return creator;
-	}
-	public void setCreator(Person creator) {
-		this.creator = creator;
-	}
+//	@ManyToOne ( cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch=FetchType.LAZY)
+//	@JoinColumn(name="CREATOR_GUID")
+//	public Person getCreator() {
+//		return creator;
+//	}
+//	public void setCreator(Person creator) {
+//		this.creator = creator;
+//	}
 	
 	@Field(index=Index.UN_TOKENIZED, name="mass_tag" )
+	@Formula(" (SELECT count(ass.guid) FROM ASSOCIATION_POST_TAG ass WHERE ass.tag_guid=GUID) ")
 	public int getMass() {
 		return mass;
 	}
@@ -277,14 +265,14 @@ public class Tag implements HasGuid{
 		this.sortValue = sortValue;
 	}
 
-	@Transient
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	} 
+//	@Transient
+//	public String getDescription() {
+//		return description;
+//	}
+//
+//	public void setDescription(String description) {
+//		this.description = description;
+//	} 
 	
 	/**
 	 * I now use the rating value as the css tag but css cant have '.' in the
@@ -303,15 +291,15 @@ public class Tag implements HasGuid{
 	 * 
 	 * @return
 	 */
-	@Transient
-	public String getDisplayValue(){
-		if(TYPE_EARMARK.equals(getType())){
-			return getCreator().getLogin()+"'s Earmark";
-		}
-		else{
-			return value;
-		}
-	}
+//	@Transient
+//	public String getDisplayValue(){
+//		if(TYPE_EARMARK.equals(getType())){
+//			return getCreator().getLogin()+"'s Earmark";
+//		}
+//		else{
+//			return value;
+//		}
+//	}
 	
 //	@Transient
 //	public int getCount() {

@@ -92,16 +92,16 @@ public class TagAjax extends ActionSupport implements SecurityAware {
 				CommentService.getInstance().tagPost(postId, phrase, person);
 				
 				String displayTag = "";
-				if(isNws())
-					displayTag = Tag.VALUE_NWS;
-				else if(isInf())
-					displayTag = Tag.VALUE_INF;
-				else if(isPrivate())
-					displayTag = Tag.VALUE_PRIVATE;
-				else if(isLocked())
-					displayTag = Tag.VALUE_LOCKED;
-				else if(isDeleted())
-					displayTag = Tag.VALUE_DELETED;
+//				if(isNws())
+//					displayTag = Tag.VALUE_NWS;
+//				else if(isInf())
+//					displayTag = Tag.VALUE_INF;
+//				else if(isPrivate())
+//					displayTag = Tag.VALUE_PRIVATE;
+//				else if(isLocked())
+//					displayTag = Tag.VALUE_LOCKED;
+//				else if(isDeleted())
+//					displayTag = Tag.VALUE_DELETED;
 				
 				CommentService.getInstance().tagPostForDisplay(postId, displayTag, person);
 				
@@ -145,12 +145,12 @@ public class TagAjax extends ActionSupport implements SecurityAware {
 			else if(action.equals("muteThread")){
 				String tagId;
 				Post post = CommentService.getInstance().readPost(postId);
-				AssociationPostTag ass = post.loadTitleTagAssociation();
-				if(ass != null){
-					tagId = ass.getTag().getTagId();
-					
-					UserService.getInstance().muteThread(person, tagId);
-				}
+//				AssociationPostTag ass = post.loadTitleTagAssociation();
+//				if(ass != null){
+//					tagId = ass.getTag().getTagId();
+//					
+//					UserService.getInstance().muteThread(person, tagId);
+//				}
 				post = CommentService.getInstance().readPost(postId);
 				posts = new ArrayList<Post>();
 				return "refresh";

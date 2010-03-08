@@ -1,25 +1,25 @@
 package org.ttdc.gwt.server.command.executors;
 
+import static org.ttdc.persistence.Persistence.beginSession;
+import static org.ttdc.persistence.Persistence.commit;
+import static org.ttdc.persistence.Persistence.rollback;
+
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.ttdc.gwt.client.presenters.calendar.CalendarHelpers;
 import org.ttdc.gwt.client.services.CommandResult;
 import org.ttdc.gwt.server.command.CommandExecutor;
 import org.ttdc.gwt.server.dao.CalendarDao;
-import org.ttdc.gwt.server.dao.TagDao;
 import org.ttdc.gwt.shared.calender.Day;
 import org.ttdc.gwt.shared.calender.Month;
 import org.ttdc.gwt.shared.calender.Week;
 import org.ttdc.gwt.shared.calender.Year;
 import org.ttdc.gwt.shared.commands.CalendarCommand;
 import org.ttdc.gwt.shared.commands.results.CalendarCommandResult;
-import org.ttdc.persistence.objects.Tag;
-
-import static org.ttdc.persistence.Persistence.*;
 
 public class CalendarCommandExecutor  extends CommandExecutor<CalendarCommandResult>{
 	private final static Logger log = Logger.getLogger(CalendarCommandExecutor.class);
@@ -36,7 +36,7 @@ public class CalendarCommandExecutor  extends CommandExecutor<CalendarCommandRes
 				dao.setYearNumber(cmd.getYear());
 				Year year = dao.buildYear();
 				result.setYear(year);
-				loadTagsForYear(cmd, tagIdList);
+				loadDateRangeForYear(result,cmd.getYear());
 				
 				Calendar cal = GregorianCalendar.getInstance();
 				cal.set(Calendar.YEAR,cmd.getYear()-1);
@@ -59,7 +59,7 @@ public class CalendarCommandExecutor  extends CommandExecutor<CalendarCommandRes
 				dao.setYearNumber(cmd.getYear());
 				Month month = dao.buildMonth();
 				result.setMonth(month);
-				loadTagsForMonth(cmd, tagIdList);
+				loadDateRangeForMonth(result,cmd.getYear(), cmd.getMonthOfYear());
 				
 				determinePrevNextMonth(result, cmd);
 				
@@ -76,7 +76,7 @@ public class CalendarCommandExecutor  extends CommandExecutor<CalendarCommandRes
 				dao.setYearNumber(cmd.getYear());
 				Month month = dao.buildSimpleMonth();
 				result.setMonth(month);
-				loadTagsForMonth(cmd, tagIdList);
+				loadDateRangeForMonth(result,cmd.getYear(), cmd.getMonthOfYear());
 				
 				determinePrevNextMonth(result, cmd);
 				
@@ -91,7 +91,7 @@ public class CalendarCommandExecutor  extends CommandExecutor<CalendarCommandRes
 				dao.setYearNumber(cmd.getYear());
 				Week week = dao.buildWeek();
 				result.setWeek(week);
-				loadTagsForWeek(cmd, tagIdList);
+				loadDateRangeForWeek(result,cmd.getYear(), cmd.getWeekOfYear());
 				
 				determinePrevNextWeek(result, cmd);
 				
@@ -107,7 +107,7 @@ public class CalendarCommandExecutor  extends CommandExecutor<CalendarCommandRes
 				dao.setYearNumber(cmd.getYear());
 				Day day = dao.buildDay();
 				result.setDay(day);
-				loadTagsForDay(cmd, tagIdList);
+				loadDateRangeForDay(result,cmd.getYear(), cmd.getMonthOfYear(), cmd.getDayOfMonth());
 				
 				determinePrevNextDay(result, cmd);
 				
@@ -129,6 +129,59 @@ public class CalendarCommandExecutor  extends CommandExecutor<CalendarCommandRes
 			rollback();
 		}
 		return result;
+	}
+
+	private void loadDateRangeForDay(CalendarCommandResult result, int year, int monthOfYear, int dayOfMonth) {
+		Calendar tmp = GregorianCalendar.getInstance();
+		tmp.set(year, monthOfYear - 1, dayOfMonth, 0, 0, 0);
+		Date startDate = tmp.getTime();
+		tmp.add(Calendar.DAY_OF_MONTH, 1);
+		Date endDate = tmp.getTime();
+		
+		result.setStartDate(startDate);
+		result.setEndDate(endDate);		
+	}
+
+	private void loadDateRangeForWeek(CalendarCommandResult result, int year, int weekOfYear) {
+		Calendar tmp = GregorianCalendar.getInstance();
+		tmp.set(Calendar.YEAR,year);
+		//tmp.set(Calendar.DAY_OF_WEEK, 0);
+		tmp.set(Calendar.WEEK_OF_YEAR, weekOfYear);
+		
+		tmp.set(Calendar.HOUR, -12);
+		tmp.set(Calendar.MINUTE, 0);
+		tmp.set(Calendar.SECOND, 0);
+		tmp.set(Calendar.MILLISECOND, 0);
+		
+		Date startDate = tmp.getTime();
+		tmp.add(Calendar.WEEK_OF_YEAR, 1);
+		
+		Date endDate = tmp.getTime();
+		
+		result.setStartDate(startDate);
+		result.setEndDate(endDate);
+	}
+
+	private void loadDateRangeForMonth(CalendarCommandResult result, int year, int monthOfYear) {
+		Calendar tmp = GregorianCalendar.getInstance();
+		tmp.set(year, monthOfYear - 1, 1, 0, 0, 0);
+		Date startDate = tmp.getTime();
+		tmp.add(Calendar.MONTH, 1);
+		Date endDate = tmp.getTime();
+		
+		result.setStartDate(startDate);
+		result.setEndDate(endDate);
+	}
+
+	private void loadDateRangeForYear(CalendarCommandResult result, int year) {
+		Calendar tmp = GregorianCalendar.getInstance();
+		tmp.set(year, 0, 1, 0, 0, 0);
+		Date startDate = tmp.getTime();
+		tmp.add(Calendar.YEAR, 1);
+		Date endDate = tmp.getTime();
+		
+		result.setStartDate(startDate);
+		result.setEndDate(endDate);
 	}
 
 	private void setRelevantDateValues(CalendarCommandResult result, Calendar cal, CalendarCommand.Scope scope) {
@@ -196,67 +249,67 @@ public class CalendarCommandExecutor  extends CommandExecutor<CalendarCommandRes
 		result.setNextWeekOfYear(cal.get(Calendar.WEEK_OF_YEAR));
 	}
 
-	private void loadTagsForYear(CalendarCommand cmd, List<String> tagIdList) {
-		try{
-			Tag tag = loadTagId(Tag.TYPE_DATE_YEAR, ""+cmd.getYear());	
-			tagIdList.add(tag.getTagId());
-		}
-		catch(RuntimeException e){
-			log.error(e);
-		}
-	}
-
-	private void loadTagsForMonth(CalendarCommand cmd, List<String> tagIdList) {
-		try{
-			Tag tag = loadTagId(Tag.TYPE_DATE_YEAR, ""+cmd.getYear());
-			tagIdList.add(tag.getTagId());
-			
-			tag = loadTagId(Tag.TYPE_DATE_MONTH, CalendarHelpers.getMonthName(cmd.getMonthOfYear()));
-			tagIdList.add(tag.getTagId());
-		}
-		catch(RuntimeException e){
-			log.error(e);
-		}
-	}
-
-	private void loadTagsForWeek(CalendarCommand cmd, List<String> tagIdList) {
-		try{
-			Tag tag = loadTagId(Tag.TYPE_DATE_YEAR, ""+cmd.getYear());
-			tagIdList.add(tag.getTagId());
-			
-			tag = loadTagId(Tag.TYPE_WEEK_OF_YEAR, ""+cmd.getWeekOfYear());
-			tagIdList.add(tag.getTagId());
-		}
-		catch(RuntimeException e){
-			log.error(e);
-		}
-	}
-
-	private void loadTagsForDay(CalendarCommand cmd, List<String> tagIdList) {
-		try{
-			Tag tag = loadTagId(Tag.TYPE_DATE_YEAR, ""+cmd.getYear());
-			tagIdList.add(tag.getTagId());
-			
-			tag = loadTagId(Tag.TYPE_DATE_DAY, ""+cmd.getDayOfMonth());
-			tagIdList.add(tag.getTagId());
-			
-			tag = loadTagId(Tag.TYPE_DATE_MONTH, CalendarHelpers.getMonthName(cmd.getMonthOfYear()));
-			tagIdList.add(tag.getTagId());
-		}
-		catch(RuntimeException e){
-			log.error(e);
-		}
-	}
-	
-	private Tag loadTagId(String type, String value) {
-		TagDao tagdao = new TagDao();
-		tagdao.setType(type);
-		tagdao.setValue(value);
-		Tag tag = tagdao.load();
-		if(tag == null)
-			throw new RuntimeException("Failed to load "+tagdao.getType()+" tag for "+tagdao.getValue());
-		
-		return tag;
-	}
+//	private void loadTagsForYear(CalendarCommand cmd, List<String> tagIdList) {
+//		try{
+//			Tag tag = loadTagId(Tag.TYPE_DATE_YEAR, ""+cmd.getYear());	
+//			tagIdList.add(tag.getTagId());
+//		}
+//		catch(RuntimeException e){
+//			log.error(e);
+//		}
+//	}
+//
+//	private void loadTagsForMonth(CalendarCommand cmd, List<String> tagIdList) {
+//		try{
+//			Tag tag = loadTagId(Tag.TYPE_DATE_YEAR, ""+cmd.getYear());
+//			tagIdList.add(tag.getTagId());
+//			
+//			tag = loadTagId(Tag.TYPE_DATE_MONTH, CalendarHelpers.getMonthName(cmd.getMonthOfYear()));
+//			tagIdList.add(tag.getTagId());
+//		}
+//		catch(RuntimeException e){
+//			log.error(e);
+//		}
+//	}
+//
+//	private void loadTagsForWeek(CalendarCommand cmd, List<String> tagIdList) {
+//		try{
+//			Tag tag = loadTagId(Tag.TYPE_DATE_YEAR, ""+cmd.getYear());
+//			tagIdList.add(tag.getTagId());
+//			
+//			tag = loadTagId(Tag.TYPE_WEEK_OF_YEAR, ""+cmd.getWeekOfYear());
+//			tagIdList.add(tag.getTagId());
+//		}
+//		catch(RuntimeException e){
+//			log.error(e);
+//		}
+//	}
+//
+//	private void loadTagsForDay(CalendarCommand cmd, List<String> tagIdList) {
+//		try{
+//			Tag tag = loadTagId(Tag.TYPE_DATE_YEAR, ""+cmd.getYear());
+//			tagIdList.add(tag.getTagId());
+//			
+//			tag = loadTagId(Tag.TYPE_DATE_DAY, ""+cmd.getDayOfMonth());
+//			tagIdList.add(tag.getTagId());
+//			
+//			tag = loadTagId(Tag.TYPE_DATE_MONTH, CalendarHelpers.getMonthName(cmd.getMonthOfYear()));
+//			tagIdList.add(tag.getTagId());
+//		}
+//		catch(RuntimeException e){
+//			log.error(e);
+//		}
+//	}
+//	
+//	private Tag loadTagId(String type, String value) {
+//		TagDao tagdao = new TagDao();
+//		tagdao.setType(type);
+//		tagdao.setValue(value);
+//		Tag tag = tagdao.load();
+//		if(tag == null)
+//			throw new RuntimeException("Failed to load "+tagdao.getType()+" tag for "+tagdao.getValue());
+//		
+//		return tag;
+//	}
 	
 }

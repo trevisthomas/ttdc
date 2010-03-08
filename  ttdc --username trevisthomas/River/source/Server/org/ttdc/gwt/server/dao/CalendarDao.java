@@ -29,7 +29,7 @@ import org.ttdc.persistence.objects.Post;
 import org.ttdc.persistence.objects.SimplePostEntity;
 import org.ttdc.persistence.objects.ThreadSummaryEntity;
 
-public class CalendarDao {
+public class CalendarDao extends FilteredPostPaginatedDaoBase{
 	private final static Logger log = Logger.getLogger(CalendarDao.class);
 	private int yearNumber;
 	private int weekOfYear;
@@ -86,6 +86,7 @@ public class CalendarDao {
 		
 		@SuppressWarnings("unchecked")
 		List<SimplePostEntity> list = session().getNamedQuery("CalendarDao.fetchHourlyWithSummary")
+			.setParameter("filterMask", buildFilterMask(getFilterFlags()))
 			.setTimestamp("startDate",startDate)
 			.setTimestamp("endDate", endDate).list();
 		
@@ -94,21 +95,22 @@ public class CalendarDao {
 		return data;
 	}
 	
-//	private Queue<Day> buildDayDataForWeek(int yearNumber,int weekOfYear){
-//		Date startDate = DaoUtils.getDateBeginningOfWeek(yearNumber, weekOfYear);
-//    	Date endDate = DaoUtils.getDateEndOfWeek(yearNumber, weekOfYear);
-//    	
-//    	log.debug(startDate);
-//    	log.debug(endDate);
-//    	
-//    	@SuppressWarnings("unchecked")
-//    	List<SimplePostEntity> list = session().getNamedQuery("CalendarDao.fetchHourly")
-//			.setTimestamp("startDate",startDate)
-//			.setTimestamp("endDate", endDate).list();
-//    	
-//    	Queue<Day> data = convertSimplePostEntityListToDayQueue(list);
-//    	return data;
-//	}
+	private Queue<Day> buildDayDataForWeek(int yearNumber,int weekOfYear){
+		Date startDate = DaoUtils.getDateBeginningOfWeek(yearNumber, weekOfYear);
+    	Date endDate = DaoUtils.getDateEndOfWeek(yearNumber, weekOfYear);
+    	
+    	log.debug(startDate);
+    	log.debug(endDate);
+    	
+    	@SuppressWarnings("unchecked")
+    	List<SimplePostEntity> list = session().getNamedQuery("CalendarDao.fetchHourly")
+    		.setParameter("filterMask", buildFilterMask(getFilterFlags()))
+			.setTimestamp("startDate",startDate)
+			.setTimestamp("endDate", endDate).list();
+    	
+    	Queue<Day> data = convertSimplePostEntityListToDayQueue(list);
+    	return data;
+	}
 	
 	
 	/* 
@@ -116,46 +118,46 @@ public class CalendarDao {
 	 * mySQL faster, still not great.
 	 * 
 	 */
-	private Queue<Day> buildDayDataForWeek(int yearNumber,int weekOfYear){
-		Date startDate = DaoUtils.getDateBeginningOfWeek(yearNumber, weekOfYear);
-    	Date endDate = DaoUtils.getDateEndOfWeek(yearNumber, weekOfYear);
-    	
-    	log.debug("Start: "+startDate);
-    	log.debug("End: "+endDate);
-		
-		DateRange dateRange = new DateRange(startDate, endDate);
-		
-		PostSearchDao searchDao = new PostSearchDao();
-		searchDao.setPageSize(-1);
-		searchDao.setDateRange(dateRange);
-		PaginatedList<Post> result = searchDao.search();
-		
-		Queue<Day> data = new LinkedList<Day>();
-		
-		//Inflatinator inflatinator = new Inflatinator(result.getList());
-		InflatinatorLite inflatinator = new InflatinatorLite(result.getList());
-		
-		Day d = null;
-		Hour h = null;
-    	for(GPost post : inflatinator.extractPosts()){
-	    //for(Post post : result.getList()){
-			Day currDay = new Day(post.getDate());
-			
-			if(d == null || !currDay.equals(d)){
-				d = currDay;
-	        	d.initHourly();
-	        	data.add(d);
-	        	h = d.getHour(0);
-    		}
-    		if(h.getHourOfDay() != getHourOfDayFromDate(post.getDate()))
-    			h = d.getHour(getHourOfDayFromDate(post.getDate()));
-    		
-    		CalendarPost calendarPost = buildCalendarPostFromRegularPostEntity(post);
-    		
-    		h.add(calendarPost);
-    	}
-		return data;
-	}
+//	private Queue<Day> buildDayDataForWeek(int yearNumber,int weekOfYear){
+//		Date startDate = DaoUtils.getDateBeginningOfWeek(yearNumber, weekOfYear);
+//    	Date endDate = DaoUtils.getDateEndOfWeek(yearNumber, weekOfYear);
+//    	
+//    	log.debug("Start: "+startDate);
+//    	log.debug("End: "+endDate);
+//		
+//		DateRange dateRange = new DateRange(startDate, endDate);
+//		
+//		PostSearchDao searchDao = new PostSearchDao();
+//		searchDao.setPageSize(-1);
+//		searchDao.setDateRange(dateRange);
+//		PaginatedList<Post> result = searchDao.search();
+//		
+//		Queue<Day> data = new LinkedList<Day>();
+//		
+//		Inflatinator inflatinator = new Inflatinator(result.getList());
+//		//InflatinatorLite inflatinator = new InflatinatorLite(result.getList());
+//		
+//		Day d = null;
+//		Hour h = null;
+//    	for(GPost post : inflatinator.extractPosts()){
+//	    //for(Post post : result.getList()){
+//			Day currDay = new Day(post.getDate());
+//			
+//			if(d == null || !currDay.equals(d)){
+//				d = currDay;
+//	        	d.initHourly();
+//	        	data.add(d);
+//	        	h = d.getHour(0);
+//    		}
+//    		if(h.getHourOfDay() != getHourOfDayFromDate(post.getDate()))
+//    			h = d.getHour(getHourOfDayFromDate(post.getDate()));
+//    		
+//    		CalendarPost calendarPost = buildCalendarPostFromRegularPostEntity(post);
+//    		
+//    		h.add(calendarPost);
+//    	}
+//		return data;
+//	}
 	
 	private int getHourOfDayFromDate(Date date){
 		Calendar cal = new GregorianCalendar();
@@ -163,87 +165,88 @@ public class CalendarDao {
 		return cal.get(GregorianCalendar.HOUR_OF_DAY);
 	}
 	
-//	private Queue<Day> buildDayDataForMonth_(int yearNumber,int monthOfYear){
-//		@SuppressWarnings("unchecked")
-//    	List<ThreadSummaryEntity> list = session().getNamedQuery("CalendarDao.fetchMonth")
-//			.setInteger("year", yearNumber)
-//			.setInteger("month", monthOfYear).list();
-//		
-//		Queue<Day> data = new LinkedList<Day>();
-//		CalendarThreadSummary summary = null; 
-//		Day d = null;
-//		for(ThreadSummaryEntity ts : list){
-//			if(!compare(ts,d)){
-//				d = new Day();
-//				d.setDay(ts.getDay());
-//	        	d.setYear(ts.getYear());
-//	        	d.setMonth(ts.getMonth());
-//	        	d.initSummary();
-//	        	data.add(d);
-//			}
-//			summary = new CalendarThreadSummary();
-//			summary.setCount(ts.getCount());
-//			summary.setDay(ts.getDay());
-//			summary.setMonth(ts.getMonth());
-//			summary.setRootId(ts.getRootId());
-//			summary.setTitle(ts.getTitle());
-//			summary.setYear(ts.getYear());
-//			//log.debug(summary);
-//			d.addThread(summary);
-//		}
-//		return data;
-//	}
-	
-	
-	Map<String,CalendarThreadSummary> summaryMap = new HashMap<String,CalendarThreadSummary>();
 	private Queue<Day> buildDayDataForMonth(int yearNumber,int monthOfYear){
-		Calendar start = new GregorianCalendar();
-		Calendar end = new GregorianCalendar();
-		start.set(yearNumber, monthOfYear-1, 1,0,0,0);   
-		end.set(yearNumber, monthOfYear-1, 1,0,0,0);
-		end.add(GregorianCalendar.MONTH, 1);
-		end.add(GregorianCalendar.DAY_OF_MONTH, -1);
-		
-		log.debug("start: "+start.getTime());
-		log.debug("end: "+end.getTime());
-		
-		DateRange dateRange = new DateRange(start.getTime(), end.getTime());
-		
-		PostSearchDao searchDao = new PostSearchDao();
-		searchDao.setPageSize(-1);
-		searchDao.setDateRange(dateRange);
-		PaginatedList<Post> result = searchDao.search();
+		@SuppressWarnings("unchecked")
+    	List<ThreadSummaryEntity> list = session().getNamedQuery("CalendarDao.fetchMonth")
+    		.setParameter("filterMask", buildFilterMask(getFilterFlags()))
+			.setInteger("year", yearNumber)
+			.setInteger("month", monthOfYear).list();
 		
 		Queue<Day> data = new LinkedList<Day>();
 		CalendarThreadSummary summary = null; 
 		Day d = null;
-		for(Post post : result.getList()){
-			Day currDay = new Day(post.getDate());
-			if(d == null || !currDay.equals(d)){
-				summaryMap.clear(); //Start reset summary map for the day.
-				d = currDay;
+		for(ThreadSummaryEntity ts : list){
+			if(!compare(ts,d)){
+				d = new Day();
+				d.setDay(ts.getDay());
+	        	d.setYear(ts.getYear());
+	        	d.setMonth(ts.getMonth());
 	        	d.initSummary();
 	        	data.add(d);
 			}
-			if(!summaryMap.containsKey(post.getRoot().getPostId())){
-				summary = new CalendarThreadSummary();
-				summaryMap.put(post.getRoot().getPostId(), summary);
-				d.addThread(summary);
-			}
-			else{
-				summary = summaryMap.get(post.getRoot().getPostId());
-			}
-			summary.setCount(summary.getCount()+1);
-			summary.setDay(d.getDay());
-			summary.setMonth(d.getMonth()+1);
-			summary.setYear(d.getYear());
-			summary.setRootId(post.getRoot().getPostId());
-			summary.setTitle(post.getTitle());
+			summary = new CalendarThreadSummary();
+			summary.setCount(ts.getCount());
+			summary.setDay(ts.getDay());
+			summary.setMonth(ts.getMonth());
+			summary.setRootId(ts.getRootId());
+			summary.setTitle(ts.getTitle());
+			summary.setYear(ts.getYear());
 			//log.debug(summary);
-			
+			d.addThread(summary);
 		}
 		return data;
 	}
+	
+	
+//	Map<String,CalendarThreadSummary> summaryMap = new HashMap<String,CalendarThreadSummary>();
+//	private Queue<Day> buildDayDataForMonth(int yearNumber,int monthOfYear){
+//		Calendar start = new GregorianCalendar();
+//		Calendar end = new GregorianCalendar();
+//		start.set(yearNumber, monthOfYear-1, 1,0,0,0);   
+//		end.set(yearNumber, monthOfYear-1, 1,0,0,0);
+//		end.add(GregorianCalendar.MONTH, 1);
+//		end.add(GregorianCalendar.DAY_OF_MONTH, -1);
+//		
+//		log.debug("start: "+start.getTime());
+//		log.debug("end: "+end.getTime());
+//		
+//		DateRange dateRange = new DateRange(start.getTime(), end.getTime());
+//		
+//		PostSearchDao searchDao = new PostSearchDao();
+//		searchDao.setPageSize(-1);
+//		searchDao.setDateRange(dateRange);
+//		PaginatedList<Post> result = searchDao.search();
+//		
+//		Queue<Day> data = new LinkedList<Day>();
+//		CalendarThreadSummary summary = null; 
+//		Day d = null;
+//		for(Post post : result.getList()){
+//			Day currDay = new Day(post.getDate());
+//			if(d == null || !currDay.equals(d)){
+//				summaryMap.clear(); //Start reset summary map for the day.
+//				d = currDay;
+//	        	d.initSummary();
+//	        	data.add(d);
+//			}
+//			if(!summaryMap.containsKey(post.getRoot().getPostId())){
+//				summary = new CalendarThreadSummary();
+//				summaryMap.put(post.getRoot().getPostId(), summary);
+//				d.addThread(summary);
+//			}
+//			else{
+//				summary = summaryMap.get(post.getRoot().getPostId());
+//			}
+//			summary.setCount(summary.getCount()+1);
+//			summary.setDay(d.getDay());
+//			summary.setMonth(d.getMonth()+1);
+//			summary.setYear(d.getYear());
+//			summary.setRootId(post.getRoot().getPostId());
+//			summary.setTitle(post.getTitle());
+//			//log.debug(summary);
+//			
+//		}
+//		return data;
+//	}
 	
 	private Queue<Day> buildDayDataForMonthSimple(int yearNumber, int monthOfYear){
 		Queue<Day> data = new LinkedList<Day>();

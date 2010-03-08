@@ -65,12 +65,11 @@ public class PresenterHelpers {
 	public static void initializeMovieRatingPresenter(MovieRatingPresenter ratingPresenter, GPost post, String personId) {
 		GAssociationPostTag ass;
 		if(StringUtil.notEmpty(personId)){
-			ass = post.loadTagAssociationByPerson(TagConstants.TYPE_RATING, personId);
+			ass = post.getRatingByPerson(personId);
 			ratingPresenter.setRating(ass.getTag().getValue());
 		}
 		else{
-			ass = post.loadTagAssociation(TagConstants.TYPE_AVERAGE_RATING);
-			ratingPresenter.setRating(ass.getTag().getValue());
+			ratingPresenter.setRating(post.getAvgRatingTag().getValue());
 		}
 	}
 	

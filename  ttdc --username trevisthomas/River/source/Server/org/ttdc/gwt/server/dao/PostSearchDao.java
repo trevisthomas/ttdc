@@ -2,10 +2,8 @@ package org.ttdc.gwt.server.dao;
 
 import static org.ttdc.persistence.Persistence.fullTextSession;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -22,13 +20,13 @@ import org.ttdc.gwt.shared.commands.types.PostSearchType;
 import org.ttdc.gwt.shared.commands.types.SortDirection;
 import org.ttdc.gwt.shared.commands.types.SearchSortBy;
 import org.ttdc.gwt.shared.util.PaginatedList;
+import org.ttdc.persistence.objects.Person;
 import org.ttdc.persistence.objects.Post;
 import org.ttdc.persistence.util.BridgeForPostType;
 import org.ttdc.persistence.util.EnglishAnalyzer;
 
-public final class PostSearchDao extends PaginatedDaoBase{
+public final class PostSearchDao extends FilteredPostPaginatedDaoBase{
 	private final static Logger log = Logger.getLogger(PostSearchDao.class);
-	
 	
 	private String phrase;
 	private List<String> tagIds = new ArrayList<String>();
@@ -41,6 +39,8 @@ public final class PostSearchDao extends PaginatedDaoBase{
 	private PostSearchType postSearchType;
 	private boolean searchByTitle = false;
 	private DateRange dateRange;
+	private boolean invertFilterFuction = false;
+	private Person creator = null;
 	
 	
 	public PaginatedList<Post> search(){
@@ -60,9 +60,6 @@ public final class PostSearchDao extends PaginatedDaoBase{
 		}
 	}
 	
-	
-
-
 	@SuppressWarnings("unchecked")
 	private PaginatedList<Post> searchForPhrase() {
 		PaginatedList<Post> results = new PaginatedList<Post>();
@@ -73,46 +70,101 @@ public final class PostSearchDao extends PaginatedDaoBase{
 		
 		FullTextQuery ftquery = null;
 		
+//		if(tagIds.size() > 0 || notTagIds.size() > 0){
+//			ftquery = createFullTextQuery(luceneQuery, ftsess);
+//		
+//			ftquery.enableFullTextFilter("postWithTagFilter")	
+//				.setParameter("tagIds", tagIds)
+//				.setParameter("notTagIds", notTagIds);
+//			
+//			addTopicOrConversationFilter(ftquery);
+//			
+//			boolean reverse = sortDirection != SortDirection.ASC; 
+//			SortField sortField = null;
+//			switch(sortOrder){
+//				case BY_DATE:
+//					sortField = new SortField("date",reverse);
+//					break;
+//				case POPULARITY:
+//					sortField = new SortField("mass",reverse);
+//					break;
+//				case ALPHABETICAL:
+//					sortField = new SortField("title_sort",reverse);
+//					break;
+//			}
+//			if(sortField != null){
+//				ftquery.setSort(new org.apache.lucene.search.Sort(sortField));
+//			}
+//			
+//			addTypeFilter(ftquery);
+//			addDateFilter(ftquery); // Probably shouldnt do this if it's already a part of the query (which it is when it's searching for blank)
+//			
+//			list = ftquery.list();
+//		}
+//		else{
+//			ftquery = createFullTextQuery(luceneQuery, ftsess);
+//			
+//			addTopicOrConversationFilter(ftquery);
+//			addTypeFilter(ftquery);
+//			addDateFilter(ftquery);
+//			
+//			list = ftquery.list();
+//		}
+//		
+		ftquery = createFullTextQuery(luceneQuery, ftsess);
 		if(tagIds.size() > 0 || notTagIds.size() > 0){
-			ftquery = createFullTextQuery(luceneQuery, ftsess);
-		
 			ftquery.enableFullTextFilter("postWithTagFilter")	
 				.setParameter("tagIds", tagIds)
 				.setParameter("notTagIds", notTagIds);
-			
-			addTopicOrConversationFilter(ftquery);
-			
-			boolean reverse = sortDirection != SortDirection.ASC; 
-			SortField sortField = null;
-			switch(sortOrder){
-				case BY_DATE:
-					sortField = new SortField("date",reverse);
-					break;
-				case POPULARITY:
-					sortField = new SortField("mass",reverse);
-					break;
-				case ALPHABETICAL:
-					sortField = new SortField("title_sort",reverse);
-					break;
-			}
-			if(sortField != null){
-				ftquery.setSort(new org.apache.lucene.search.Sort(sortField));
-			}
-			
-			addTypeFilter(ftquery);
-			addDateFilter(ftquery); // Probably shouldnt do this if it's already a part of the query (which it is when it's searching for blank)
-			
-			list = ftquery.list();
 		}
-		else{
-			ftquery = createFullTextQuery(luceneQuery, ftsess);
-			
-			addTopicOrConversationFilter(ftquery);
-			addTypeFilter(ftquery);
-			addDateFilter(ftquery);
-			
-			list = ftquery.list();
+		
+		addTopicOrConversationFilter(ftquery);
+		
+		/*
+		 * Normal filter operation excludes the content that matches the filter flag.  
+		 * If you invert the filter operation it shows only the flagged content. 
+		 * 
+		 * Ex.  Normal operation with a MOVIE filter, movies would be excluded. In inverted
+		 * 		everything but movies would be excluded.
+		 */
+		if(getFilterFlags().size() > 0){
+			if(isInvertFilterFuction()){
+				ftquery.enableFullTextFilter("postFlagFilter")
+					.setParameter("flags", getFilterFlags());
+			}
+			else{
+				ftquery.enableFullTextFilter("postFlagFilter")
+					.setParameter("notFlags", getFilterFlags());
+			}
 		}
+		
+		if(getCreator() != null){
+			ftquery.enableFullTextFilter("postCreatorFilter")
+				.setParameter("creator", getCreator());
+		}
+		
+		boolean reverse = sortDirection != SortDirection.ASC; 
+		SortField sortField = null;
+		switch(sortOrder){
+			case BY_DATE:
+				sortField = new SortField("date",reverse);
+				break;
+			case POPULARITY:
+				sortField = new SortField("mass",reverse);
+				break;
+			case ALPHABETICAL:
+				sortField = new SortField("title_sort",reverse);
+				break;
+		}
+		if(sortField != null){
+			ftquery.setSort(new org.apache.lucene.search.Sort(sortField));
+		}
+		
+		addTypeFilter(ftquery);
+		addDateFilter(ftquery); // Probably shouldnt do this if it's already a part of the query (which it is when it's searching for blank)
+		
+		list = ftquery.list();
+		
 		
 		results.setPhrase(getPhrase());
 		
@@ -316,4 +368,24 @@ public final class PostSearchDao extends PaginatedDaoBase{
 	public PostSearchType getPostSearchType() {
 		return postSearchType;
 	}
+
+	public boolean isInvertFilterFuction() {
+		return invertFilterFuction;
+	}
+
+	public void setInvertFilterFuction(boolean invertFilterFuction) {
+		this.invertFilterFuction = invertFilterFuction;
+	}
+
+	public Person getCreator() {
+		return creator;
+	}
+
+	public void setCreator(Person creator) {
+		this.creator = creator;
+	}
+
+	
+	
+	
 }

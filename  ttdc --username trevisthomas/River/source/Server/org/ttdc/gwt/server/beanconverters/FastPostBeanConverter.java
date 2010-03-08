@@ -99,9 +99,15 @@ public class FastPostBeanConverter {
 		gPost.setPostId(p.getPostId());
 		//gPost.setPosts(convertPosts(p.getPosts()));
 		gPost.setTagAssociations(convertAssociationsPostTag(p.getTagAssociations()));
-		gPost.setTitle(p.getTitle());
+		gPost.setTitleTag(convertTag(p.getTitleTag()));
+		gPost.setCreator(convertPerson(p.getCreator()));
+		gPost.setAvgRatingTag(convertTag(p.getAvgRatingTag()));
+		gPost.setPublishYear(p.getPublishYear());
+		gPost.setMetaMask(p.getMetaMask());
+		gPost.setUrl(p.getUrl());
 		gPost.setRootPost(p.isRootPost());
 		gPost.setThreadPost(p.isThreadPost());
+		gPost.setPath(p.getPath());
 		
 		if(!p.isRootPost())
 			gPost.setRoot(convertPost(p.getRoot()));
@@ -154,13 +160,13 @@ public class FastPostBeanConverter {
 			gPerson.setStyle(convertStyleLite(InitConstants.DEFAULT_STYLE));
 		
 		gPerson.setAnonymous(p.isAnonymous());
-		try{
-			Tag tag = TagDao.loadCreatorTag(p.getPersonId());
-			gPerson.setCreatorTagId(tag.getTagId());
-		}
-		catch (Exception e) {
-			Log.info("User has no creator tag. They must be brand new and not have any posts");
-		}
+//		try{
+//			Tag tag = TagDao.loadCreatorTag(p.getPersonId());
+//			gPerson.setCreatorTagId(tag.getTagId());
+//		}
+//		catch (Exception e) {
+//			Log.info("User has no creator tag. They must be brand new and not have any posts");
+//		}
 		
 		return gPerson;
 	}
@@ -188,11 +194,12 @@ public class FastPostBeanConverter {
 	}
 	
 	public static GTag convertTag(Tag t){
+		if(t == null) return null;  // Some tags are optional now
 		GTag rpcTag = new GTag();
 		//rpcTag.setCreator(convertPerson(t.getCreator()));
-		rpcTag.setCreator(convertPersonNakid(t.getCreator()));
+//		rpcTag.setCreator(convertPersonNakid(t.getCreator()));
 		rpcTag.setDate(t.getDate());
-		rpcTag.setDescription(t.getDescription());
+//		rpcTag.setDescription(t.getDescription());
 		rpcTag.setTagId(t.getTagId());
 		rpcTag.setType(t.getType());
 		rpcTag.setValue(t.getValue());
