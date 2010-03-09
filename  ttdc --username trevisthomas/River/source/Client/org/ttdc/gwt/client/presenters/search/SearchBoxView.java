@@ -180,12 +180,12 @@ public class SearchBoxView implements SearchBoxPresenter.View{
 	}
 	
 	@Override
-	public void setSelectedCreator(String personId) {
+	public void setSelectedCreatorId(String personId) {
 		activeUserList.setSelectedValue(personId);
 	}
 
 	@Override
-	public String getSelectedCreatorTagId(){
+	public String getSelectedCreatorId(){
 		return activeUserList.getSelectedValue();
 	}
 

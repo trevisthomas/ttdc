@@ -11,6 +11,7 @@ import org.ttdc.gwt.server.command.CommandExecutor;
 import org.ttdc.gwt.server.command.executors.utils.ExecutorHelpers;
 import org.ttdc.gwt.server.command.executors.utils.PaginatedResultConverters;
 import org.ttdc.gwt.server.dao.DateRange;
+import org.ttdc.gwt.server.dao.PersonDao;
 import org.ttdc.gwt.server.dao.PostSearchDao;
 import org.ttdc.gwt.server.dao.TagDao;
 import org.ttdc.gwt.shared.commands.SearchPostsCommand;
@@ -42,6 +43,8 @@ public class SearchPostsCommandExecutor extends CommandExecutor<SearchPostsComma
 			dao.setTagIdList(command.getTagIdList());
 			dao.setRootId(command.getRootId());
 			dao.setThreadId(command.getThreadId());
+			if(command.getPersonId() != null)
+				dao.setCreator(PersonDao.loadPerson(command.getPersonId()));
 			
 			if(command.getPageSize() > 0)
 				dao.setPageSize(command.getPageSize());
