@@ -1,7 +1,6 @@
 package org.ttdc.gwt.client.presenters.search;
 
-import static org.ttdc.gwt.client.messaging.history.HistoryConstants.SEARCH_PHRASE_KEY;
-import static org.ttdc.gwt.client.messaging.history.HistoryConstants.SEARCH_TAG_ID_KEY;
+import static org.ttdc.gwt.client.messaging.history.HistoryConstants.*;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,15 +24,12 @@ import org.ttdc.gwt.shared.commands.CommandResultCallback;
 import org.ttdc.gwt.shared.commands.PersonListCommand;
 import org.ttdc.gwt.shared.commands.PostCrudCommand;
 import org.ttdc.gwt.shared.commands.SearchTagsCommand;
-import org.ttdc.gwt.shared.commands.TagCommand;
 import org.ttdc.gwt.shared.commands.results.PersonListCommandResult;
 import org.ttdc.gwt.shared.commands.results.PostCommandResult;
 import org.ttdc.gwt.shared.commands.results.SearchTagsCommandResult;
-import org.ttdc.gwt.shared.commands.results.TagCommandResult;
 import org.ttdc.gwt.shared.commands.types.PersonListType;
 import org.ttdc.gwt.shared.commands.types.SortBy;
 import org.ttdc.gwt.shared.commands.types.SortDirection;
-import org.ttdc.gwt.shared.commands.types.TagActionType;
 import org.ttdc.gwt.shared.util.StringUtil;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -53,7 +49,7 @@ public class SearchBoxPresenter extends BasePresenter<SearchBoxPresenter.View> /
 		HasClickHandlers searchClickHandler();
 				
 		void addPerson(String personId, String login);
-		void setSelectedCreator(String personId);
+		void setSelectedCreatorId(String personId);
 		void setDefaultMessage(String message);
 		void setSearchPhrase(String phrase);
 		HasWidgets calendarPanel();
@@ -63,7 +59,7 @@ public class SearchBoxPresenter extends BasePresenter<SearchBoxPresenter.View> /
 		void setToDate(Day day);
 		String prsonIdFilter();
 		String getSearchPhrase();
-		String getSelectedCreatorTagId();
+		String getSelectedCreatorId();
 		HasText searchBox();
 	}
 
@@ -102,6 +98,7 @@ public class SearchBoxPresenter extends BasePresenter<SearchBoxPresenter.View> /
 		HistoryToken token = new HistoryToken();
 		token.setParameter(HistoryConstants.SEARCH_START_DATE, startDate.getTime());
 		token.setParameter(HistoryConstants.SEARCH_END_DATE, endDate.getTime());
+		init(token);
 	}
 	
 	public void init(HistoryToken token){
@@ -119,12 +116,15 @@ public class SearchBoxPresenter extends BasePresenter<SearchBoxPresenter.View> /
 		view.calendarPanel().add(startCalendarPresenter.getWidget());
 		view.calendarPanel().add(endCalendarPresenter.getWidget());
 		
+		String creatorId = token.getParameter(SEARCH_CREATOR_ID_KEY);
+		
+		
 		PersonListCommand personListCmd = new PersonListCommand(PersonListType.ACTIVE);
 		personListCmd.setSortOrder(SortBy.BY_HITS);
-		personListCmd.setSortDirection(SortDirection.DESC);
+		personListCmd.setSortDirection(SortDirection.ASC);
 		
 		//TagCommand personListCmd = new TagCommand(TagActionType.LOAD_CREATORS);
-		CommandResultCallback<PersonListCommandResult> personListCallback = buildPersonListCallback();
+		CommandResultCallback<PersonListCommandResult> personListCallback = buildPersonListCallback(creatorId);
 		
 		batcher.add(personListCmd, personListCallback);
 		threadTitle = "";
@@ -169,12 +169,7 @@ public class SearchBoxPresenter extends BasePresenter<SearchBoxPresenter.View> /
 				setDefaultMessage();
 				tagIdList = new ArrayList<String>();
 				for(GTag tag : list){
-					if(tag.getType().equals(TagConstants.TYPE_CREATOR)){
-						view.setSelectedCreator(tag.getTagId());
-					}
-					else{
-						tagIdList.add(tag.getTagId());
-					}
+					tagIdList.add(tag.getTagId());
 				}
 			}
 		};
@@ -215,13 +210,17 @@ public class SearchBoxPresenter extends BasePresenter<SearchBoxPresenter.View> /
 		return rootPostCallback;
 	}
 	
-	private CommandResultCallback<PersonListCommandResult> buildPersonListCallback() {
+	private CommandResultCallback<PersonListCommandResult> buildPersonListCallback(final String creatorId) {
 		CommandResultCallback<PersonListCommandResult> replyListCallback = new CommandResultCallback<PersonListCommandResult>(){
 			@Override
 			public void onSuccess(PersonListCommandResult result) {
 				for(GPerson person : result.getResults().getList()){
 					view.addPerson(person.getPersonId(), person.getLogin());
 				}
+				
+				if(creatorId != null)
+					view.setSelectedCreatorId(creatorId);
+				
 			}
 		};
 		return replyListCallback;
@@ -264,19 +263,21 @@ public class SearchBoxPresenter extends BasePresenter<SearchBoxPresenter.View> /
 		String phrase = view.getSearchPhrase();
 		HistoryToken token = new HistoryToken();
 		
-		String creatorId = view.getSelectedCreatorTagId();
+		String creatorId = view.getSelectedCreatorId();
 		
 		addSelectedDateRangeToToken(token);
 	
 		token.setParameter(HistoryConstants.VIEW, HistoryConstants.VIEW_SEARCH_RESULTS);
-		if(tagIdList.size() > 0 || StringUtil.notEmpty(creatorId)){
+		if(tagIdList.size() > 0){
 			for(String tagId : tagIdList){
 				token.addParameter(SEARCH_TAG_ID_KEY, tagId);
 			}
-			if(StringUtil.notEmpty(creatorId)){
-				token.addParameter(SEARCH_TAG_ID_KEY, creatorId);
-			}
 		}
+
+		if(StringUtil.notEmpty(creatorId)){
+			token.addParameter(SEARCH_CREATOR_ID_KEY, creatorId);
+		}
+		
 		if(StringUtil.notEmpty(rootId)){
 			token.addParameter(HistoryConstants.ROOT_ID_KEY, rootId);
 			token.addParameter(HistoryConstants.SEARCH_MODE_KEY, HistoryConstants.SEARCH_MODE_IN_ROOT);

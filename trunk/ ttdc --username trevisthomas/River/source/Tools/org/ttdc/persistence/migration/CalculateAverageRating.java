@@ -67,6 +67,13 @@ public class CalculateAverageRating {
 		
 	}
 	
+//	List<Tag> ratings = loadTags(Tag.TYPE_RATING);
+//	try {
+//		return CalculateAverageRating.determineAverageRating(ratings);
+//	} catch (Exception e) {
+//		return Tag.VALUE_RATING_0;
+//	}
+	
 	Date start;
 	Date end;
 

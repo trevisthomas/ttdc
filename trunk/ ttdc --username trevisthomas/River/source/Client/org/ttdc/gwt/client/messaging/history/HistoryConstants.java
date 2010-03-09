@@ -11,6 +11,7 @@ public interface HistoryConstants {
 	public static final String SEARCH_TAG_ID_KEY = "tagId";
 	public static final String SEARCH_MODE_IN_ROOT = "inTopic";
 	public static final String SEARCH_MODE_IN_THREAD = "inThread";
+	public static final String SEARCH_CREATOR_ID_KEY = "creatorId";
 	
 	public static final String PAGE_NUMBER_KEY = "pageNumber";
 	public static final String SECONDARY_PAGE_NUMBER_KEY = "secondaryPageNumber";

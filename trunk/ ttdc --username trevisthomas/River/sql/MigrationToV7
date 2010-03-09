@@ -94,4 +94,4 @@ V7_RENORMALIZATION_UpdateNewPostColumns.sql
 V7_RENORMALIZATION_MetaBitmask.sql
 V7_RENORMALIZATION_CleanupForAfterTheOtherTwo.sql - removes old associations and tags.
 Remove the title bit from association.
-Remove nullable from title and person tags
+Remove nullable from title and person tag columns

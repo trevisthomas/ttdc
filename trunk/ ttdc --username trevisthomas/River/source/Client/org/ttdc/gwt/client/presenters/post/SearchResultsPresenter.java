@@ -168,6 +168,8 @@ public class SearchResultsPresenter extends BasePresenter<SearchResultsPresenter
 		int pageNumber = Integer.parseInt(token.getParameter(PAGE_NUMBER_KEY,"1"));
 		String phrase = token.getParameter(SEARCH_PHRASE_KEY);
 		List<String> tagIds = token.getParameterList(SEARCH_TAG_ID_KEY);
+		String creatorId = token.getParameter(SEARCH_CREATOR_ID_KEY);
+		
 		
 		DateRangeLite dateRange = new DateRangeLite(token);
 		command.setStartDate(dateRange.getStartDate());
@@ -177,6 +179,7 @@ public class SearchResultsPresenter extends BasePresenter<SearchResultsPresenter
 		command.setTagIdList(tagIds);
 		command.setThreadId(threadId);
 		command.setRootId(rootId);
+		command.setPersonId(creatorId);
 		
 		return command;
 	}
