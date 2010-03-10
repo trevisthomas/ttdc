@@ -1,26 +1,24 @@
 package org.ttdc.persistence.migration;
 
+import static org.ttdc.persistence.Persistence.beginSession;
+import static org.ttdc.persistence.Persistence.commit;
+import static org.ttdc.persistence.Persistence.rollback;
+import static org.ttdc.persistence.Persistence.session;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
-import org.ttdc.gwt.server.dao.AssociationPostTagDao;
-import org.ttdc.gwt.server.dao.PersonDao;
 import org.ttdc.gwt.server.dao.TagDao;
 import org.ttdc.persistence.objects.AssociationPostTag;
-import org.ttdc.persistence.objects.Person;
 import org.ttdc.persistence.objects.Post;
 import org.ttdc.persistence.objects.Tag;
 
-import static org.ttdc.persistence.Persistence.*;
-
 public class CalculateAverageRating {
 	private final static Logger log = Logger.getLogger(TagDao.class);
-	private final String personId = "3D9871D7-4889-41D1-9E7C-69351C8D022E";//admin
-	private final String tagIdMovie = "E9ECF7AF-6406-4BDE-A396-145CE256ABD2";
-
+	
 	Session session;
 	public static void main(String[] args) {
 		CalculateAverageRating avgrate = new CalculateAverageRating();
@@ -31,31 +29,35 @@ public class CalculateAverageRating {
 		beginSession();
 		try{
 			start();
-			Person creator = PersonDao.loadPerson(personId);
+			List<Post> posts = session().createQuery("Select p FROM Post p WHERE bitwise_and(metaMask , 16) = 16").list();
 			
-			List<AssociationPostTag> asses = session().createCriteria(AssociationPostTag.class)
-				.add(Restrictions.eq("tag.tagId",tagIdMovie)).list();
-			
-			for(AssociationPostTag ass : asses){
-				String avg = ass.getPost().getAverageRating();
+			for(Post post : posts){
+				List<AssociationPostTag> ratingAsses = post.getRatingAssociations();
 				
+				List<Tag> ratings = new ArrayList<Tag>();
+				for(AssociationPostTag ass : ratingAsses){
+					ratings.add(ass.getTag());
+				}
+				String avgRating;
+				try {
+					avgRating = org.ttdc.util.CalculateAverageRating.determineAverageRating(ratings);
+				} catch (Exception e) {
+					avgRating = Tag.VALUE_RATING_0;
+				}
 				
 				TagDao tagDao = new TagDao();
 				tagDao.setDescription("");
 				tagDao.setType(Tag.TYPE_AVERAGE_RATING);
-				tagDao.setValue(avg);
+				tagDao.setValue(avgRating);
 				Tag t = tagDao.createOrLoad();
 				
-				AssociationPostTagDao assDao = new AssociationPostTagDao();
-				assDao.setCreator(creator);
-				assDao.setPost(ass.getPost());
-				assDao.setTag(t);
-				assDao.create();
+				post.setAvgRatingTag(t);
 				
 				session().flush();
 				
 			}
 			commit();
+
 		}
 		catch (Exception e) {
 			log.error(e);
@@ -66,13 +68,6 @@ public class CalculateAverageRating {
 		}
 		
 	}
-	
-//	List<Tag> ratings = loadTags(Tag.TYPE_RATING);
-//	try {
-//		return CalculateAverageRating.determineAverageRating(ratings);
-//	} catch (Exception e) {
-//		return Tag.VALUE_RATING_0;
-//	}
 	
 	Date start;
 	Date end;

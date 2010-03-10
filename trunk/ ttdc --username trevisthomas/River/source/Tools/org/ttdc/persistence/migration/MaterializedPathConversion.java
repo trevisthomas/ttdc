@@ -1,16 +1,21 @@
 package org.ttdc.persistence.migration;
 
 
+import java.util.Date;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.ttdc.biz.network.services.helpers.PostHelper;
+import org.ttdc.gwt.server.dao.TagDao;
 import org.ttdc.persistence.Persistence;
+import org.ttdc.persistence.objects.AssociationPostTag;
 import org.ttdc.persistence.objects.Post;
 
 public class MaterializedPathConversion {
+	private final static Logger log = Logger.getLogger(MaterializedPathConversion.class);
 	Session session;
 	public static void main(String[] args) {
 		MaterializedPathConversion converter = new MaterializedPathConversion();
@@ -19,7 +24,7 @@ public class MaterializedPathConversion {
 	
 	void go(){
 		try{
-			
+			start();
 			session = Persistence.beginSession();
 			@SuppressWarnings("unchecked") List<Post> threads = session.createCriteria(Post.class).add(Restrictions.isNull("parent")).list();
 			List<String> ids = PostHelper.extractIds(threads);
@@ -39,6 +44,9 @@ public class MaterializedPathConversion {
 		catch (Throwable t) {
 			Persistence.commit();
 			t.printStackTrace();
+		}
+		finally{
+			end();
 		}
 		
 	}
@@ -64,5 +72,18 @@ public class MaterializedPathConversion {
 			return p.getParent().getPath() + '.' + currStr;
 		else
 			return currStr;	
+	}
+	
+	Date start;
+	Date end;
+
+	public void start(){
+		start = new Date();
+	}
+	public void end(){
+		end = new Date();
+		log.info("Time taken: "+(end.getTime() - start.getTime())/1000.0);
+		log.info("ass count: "+AssociationPostTag.iCount);
+		log.info("post count: "+Post.iCount);
 	}
 }

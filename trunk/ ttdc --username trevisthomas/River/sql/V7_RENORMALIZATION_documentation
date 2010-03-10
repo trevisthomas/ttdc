@@ -3,13 +3,13 @@
 
 	Create columns (***For the love of all things holy make it so that style names can be more than 10 characters!)
 	Post
-	META_MASK	binary(8)
+	META_MASK	binary(8) (not null, default 0)
 	TAG_GUID_TITLE	uniqueidentifier
 	PERSON_GUID_CREATOR	uniqueidentifier
 	TAG_GUID_AVG_RATING	uniqueidentifier
 	URL	varchar(500)
 	PUBLISH_YEAR	smallint
-	THREAD_GUID unique
+	THREAD_GUID uniqueidentifier
 	LATEST_ENTRY_GUID unique
 	EDIT_DATE datetime
 	THREAD_REPLY_DATE datetime
@@ -25,15 +25,17 @@
 	Entry:
 	SUMMARY as text
 	
+	V7_RENORMALIZATION_MetaBitmask.sql - Took: Over an hour!
+	
 	Java Prgrams
-	CalculateAverageRating  -- Repair this functon to create the avg rating tags and attach directly to post.
+	CalculateAverageRating  (repaired)
 	MaterializedPathConversion
 	SortValueOnTag
 	EntrySummaryAndTagRemoveForV7.java 
 	
-	V7_MIGRATION_AddLatestEntryToPost.sql - merge
-	V7_MIGRATION_AddThreadIdToPost.sql - not mergable, works on a subset
 	V7_MIGRATION_AddCountsToPosts.sql - merge
+	
+	V7_MIGRATION_AddThreadIdToPost.sql - not mergable, works on a subset
 	V7_MIGRATION_AddMassToPostRoots.sql - probably not worth merging
 	V7_MIGRATION_AddMassToPostThreadStarters.sql - not mergable
 	V7_MIGRATION_AddThreadReplyDateToPost.sql - not mergable
@@ -41,5 +43,7 @@
 	
 	V7_RENORMALIZATION_UpdateNewPostColumns.sql - modify to add thread root title to all children (org assumes all posts are tagged-assed)
 	
-	V7_RENORMALIZATION_MetaBitmask.sql
 	V7_RENORMALIZATION_CleanupForAfterTheOtherTwo.sql - removes old associations and tags.
+	
+	
+	
