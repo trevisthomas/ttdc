@@ -43,3 +43,7 @@ select * from post where meta_mask&4=4
 select * from association_post_tag where tag_guid='B024D33D-D25C-4042-9930-1B6A7A2FEAD3'
 
 select t.guid from association_post_tag a inner join tag t on a.tag_guid=t.guid where t.value='MOVIE' --and a.post_guid=@postId
+
+select distinct value,guid from tag where type not in ('WEEK_OF_YEAR','RELEASE_YEAR','DATE_DAY','DATE_YEAR','DATE_MONTH','TOPIC','SORT_TITLE','URL','AVERAGE_RATING','EARMARK','CREATOR','RATING')
+
+select * from post where meta_mask&1<>1

@@ -11,8 +11,8 @@ declare
 @url varchar(500),
 @pubYear smallint,
 @entryId uniqueidentifier,
-@editDate datetime,
-@count int
+@editDate datetime
+
 
 
 --BEGIN TRAN UpdateTransaction
@@ -39,7 +39,7 @@ BEGIN
 	
 	update post set REPLY_COUNT=@count, LATEST_ENTRY_GUID=@entryId, EDIT_DATE=@editDate, TAG_GUID_TITLE=@titleId, PERSON_GUID_CREATOR=@creatorId, TAG_GUID_AVG_RATING=@avgRatingId, URL=@url, PUBLISH_YEAR=@pubYear where guid=@postId
 
-	fetch next from myCursor into @postId
+	fetch next from myCursor into @postId, @rootId
 END
 
 --ROLLBACK 
