@@ -15,12 +15,15 @@ public class Version7AggrogatedMigrator {
 			CalculateAverageRating avgrate = new CalculateAverageRating();
 			avgrate.go();
 			
+			Thread.sleep(4000);
 			MaterializedPathConversion converter = new MaterializedPathConversion();
 			converter.go();
 			
+			Thread.sleep(4000);
 			SortValueOnTag thing = new SortValueOnTag();
 			thing.doit();
 			
+			Thread.sleep(4000);
 			EntrySummaryAndTagRemoveForV7 entryThing = new EntrySummaryAndTagRemoveForV7();
 			entryThing.doit();
 		}
