@@ -51,5 +51,10 @@
 	
 	V7_RENORMALIZATION_CleanupForAfterTheOtherTwo.sql - removes old associations and tags.
 	
+	Rebuild indexs (Time taken: 1:18:07.175)
+	
+	--remember to set one style default (required for launch)
+	update style set default_style=1 where guid='A50C080A-8696-485C-B4F0-C1291962E0D8'
+	
 	
 	
