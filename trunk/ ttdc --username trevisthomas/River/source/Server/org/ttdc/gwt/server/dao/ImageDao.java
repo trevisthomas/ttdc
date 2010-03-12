@@ -1,14 +1,13 @@
 package org.ttdc.gwt.server.dao;
 
 import static org.ttdc.persistence.Persistence.session;
+
 import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Query;
-import org.hibernate.Session;
 import org.ttdc.gwt.shared.util.PaginatedList;
-import org.ttdc.persistence.Persistence;
 import org.ttdc.persistence.objects.Image;
-import org.ttdc.util.ServiceException;
 
 public class ImageDao extends PaginatedDaoBase{
 	private String name;

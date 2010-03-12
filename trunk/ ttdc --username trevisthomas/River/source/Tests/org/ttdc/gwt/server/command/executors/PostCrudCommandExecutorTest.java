@@ -18,7 +18,6 @@ import org.junit.Test;
 import org.ttdc.gwt.server.command.CommandExecutorFactory;
 import org.ttdc.gwt.server.dao.Helpers;
 import org.ttdc.gwt.server.dao.PostDao;
-import org.ttdc.gwt.server.dao.TagDao;
 
 import org.ttdc.gwt.shared.commands.PostCrudCommand;
 import org.ttdc.gwt.shared.commands.types.PostActionType;

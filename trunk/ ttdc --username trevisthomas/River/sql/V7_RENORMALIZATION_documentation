@@ -39,16 +39,13 @@
 	
 	V7_RENORMALIZATION_UpdateNewPostColumns.sql - took over 4 hours (359,000 rows in the log)
 		
-	
 	V7_MIGRATION_AddCountsToPosts.sql - (seconds) merge
 	V7_MIGRATION_AddThreadIdToPost.sql - 2min not mergable, works on a subset
 	V7_MIGRATION_AddMassToPostRoots.sql - probably not worth merging
 	V7_MIGRATION_AddMassToPostThreadStarters.sql 2min - not mergable
 	V7_MIGRATION_AddThreadReplyDateToPost.sql - not mergable
 	
-	
-
-	
+		
 	V7_RENORMALIZATION_CleanupForAfterTheOtherTwo.sql - removes old associations and tags.
 	
 	Rebuild indexs (Time taken: 1:18:07.175)
@@ -56,5 +53,9 @@
 	--remember to set one style default (required for launch)
 	update style set default_style=1 where guid='A50C080A-8696-485C-B4F0-C1291962E0D8'
 	
-	
+//////Mysql 
+uniqueidentifier -> varbinary(36)
+insure that database is utf8-general 
+*NOTE: if it doesnt copy all rows for all tables just delete the db and start over. It doesnt take too long (if you've cleaned hte asses out of the sql server)	
+*NOTE: Image gives you grief.  An error about the maximum key something being 7xx bytes.  Just delete the unique key constraint on the image path name.  Probably just want to handle this programitically	
 	

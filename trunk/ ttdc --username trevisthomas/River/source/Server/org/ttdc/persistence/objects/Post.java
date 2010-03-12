@@ -413,7 +413,7 @@ public class Post implements Comparable<Post>, HasGuid {
 	@OneToMany(mappedBy="post", cascade={CascadeType.ALL})
 	//@Fetch(value=FetchMode.JOIN)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @OrderBy(value="date asc")
+    //@OrderBy(value="post.date asc")
     public List<AssociationPostTag> getTagAssociations() {
 		return tagAssociations;
 	}
@@ -441,7 +441,8 @@ public class Post implements Comparable<Post>, HasGuid {
 	
 	@OneToMany(mappedBy="parent", cascade=CascadeType.ALL)
 	//@Fetch(value=FetchMode.SUBSELECT)
-    @OrderBy("date asc")
+    //@OrderBy("date asc") //I was getting an ambiguous field exception in date in mysql
+	@OrderBy("path asc")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     //@BatchSize(size=50)
     public List<Post> getPosts() {

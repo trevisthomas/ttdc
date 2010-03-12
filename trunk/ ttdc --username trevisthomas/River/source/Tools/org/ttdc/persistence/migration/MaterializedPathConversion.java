@@ -1,6 +1,7 @@
 package org.ttdc.persistence.migration;
 
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -8,7 +9,6 @@ import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-import org.ttdc.biz.network.services.helpers.PostHelper;
 import org.ttdc.gwt.server.dao.TagDao;
 import org.ttdc.persistence.Persistence;
 import org.ttdc.persistence.objects.AssociationPostTag;
@@ -22,12 +22,26 @@ public class MaterializedPathConversion {
 		converter.go();
 	}
 	
+	/**
+	 * walks through a flat list of post objcets and builds a list of the id's of those posts
+	 * 
+	 * @param posts
+	 * @return
+	 */
+	public static List<String> extractIds(List<Post> posts){
+		List<String> postIds = new ArrayList<String>();
+		for(Post pl : posts){
+			postIds.add(pl.getPostId());
+		}
+		return postIds;
+	}
+	
 	void go(){
 		try{
 			start();
 			session = Persistence.beginSession();
 			@SuppressWarnings("unchecked") List<Post> threads = session.createCriteria(Post.class).add(Restrictions.isNull("parent")).list();
-			List<String> ids = PostHelper.extractIds(threads);
+			List<String> ids = extractIds(threads);
 			
 			for(String id : ids){
 				

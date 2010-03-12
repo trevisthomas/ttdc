@@ -9,8 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
-import org.ttdc.biz.network.services.ImageService;
-import org.ttdc.persistence.PopulateCache;
 import org.ttdc.persistence.objects.Image;
 import org.ttdc.persistence.objects.ImageFull;
 import org.ttdc.util.UrlEncoder;

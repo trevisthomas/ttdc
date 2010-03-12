@@ -26,10 +26,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
-import org.ttdc.biz.network.services.UserService;
-import org.ttdc.biz.network.services.helpers.PostFormatter;
+import org.ttdc.gwt.server.util.PostFormatter;
 import org.ttdc.persistence.util.PostFlag;
-import org.ttdc.struts.network.common.SecureUser;
 
 @Entity
 @NamedQueries({
@@ -65,7 +63,7 @@ import org.ttdc.struts.network.common.SecureUser;
 
 
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Person implements SecureUser, HasGuid{
+public class Person implements HasGuid{
 	public final static String STATUS_ACTIVE = "ACTIVE";
 	public final static String STATUS_LOCKED = "LOCKED";
 	public final static String STATUS_INACTIVE = "INACTIVE";
@@ -521,10 +519,6 @@ public class Person implements SecureUser, HasGuid{
 			if(UserObject.TYPE_FILTER_TAG.equals(uo.getType()))
 				filteredTagIds.add(uo.getValue());
 		}
-		if(!isNwsEnabled())
-			filteredTagIds.add(UserService.getInstance().getNwsTagId());
-		if(!isPrivateAccessAccount())
-			filteredTagIds.add(UserService.getInstance().getPrivateTagId());
 		return filteredTagIds;
 	}
 	

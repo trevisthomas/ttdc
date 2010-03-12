@@ -1,4 +1,4 @@
-package org.ttdc.biz.network.services.helpers;
+package org.ttdc.gwt.server.util;
 
 import java.util.ArrayList;
 import java.util.List;

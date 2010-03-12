@@ -26,10 +26,12 @@ import org.ttdc.test.utils.ThreadUtils;
  * NOTE if these tests fail they will leave dirty data in the DB so you should be ready to clean
  * house!!!!
  * 
+ * 
+ * Mar 11, Tread lightly here because this is very very old
  * @author Trevis
  *
  */
-public class AssociationPostTagCommandTest extends CommandExecuteTestBase{
+public class AssociationPostTagCommandTest{
 	String serverEventConnId;
 	String secondServerEventConnectionId;
 	

@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.apache.commons.lang.time.StopWatch;
 import org.apache.log4j.Logger;
-import org.ttdc.biz.network.services.helpers.PostFormatter;
+import org.ttdc.gwt.server.util.PostFormatter;
 import org.ttdc.persistence.Persistence;
 import org.ttdc.persistence.objects.AssociationPostTag;
 import org.ttdc.persistence.objects.Entry;
