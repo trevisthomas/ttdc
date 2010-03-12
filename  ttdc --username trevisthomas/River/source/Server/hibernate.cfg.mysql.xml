@@ -4,14 +4,14 @@
 	<property name="show_sql">true</property>
 	<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
 	<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-	<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/webefriends_dbo</property>
+	<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/ttdc_v7_mar8_dbo</property>
 	<property name="hibernate.connection.username">webdev</property>
 	<property name="hibernate.connection.password">password</property>
 	
 	
 	 
 	<property name="hibernate.search.default.directory_provider" >org.hibernate.search.store.FSDirectoryProvider</property>
-    <property name="hibernate.search.default.indexBase">/LuceneDatabaseIndexes/WeBeFriends</property>
+    <property name="hibernate.search.default.indexBase">/LuceneDatabaseIndexes/ttdc_v7_mar8_dbo</property>
     
     <property name="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</property>
     <property name="hibernate.cache.use_second_level_cache">true</property>

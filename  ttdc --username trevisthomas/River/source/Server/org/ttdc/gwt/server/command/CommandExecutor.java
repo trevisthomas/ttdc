@@ -5,7 +5,6 @@ import org.ttdc.gwt.client.services.Command;
 import org.ttdc.gwt.client.services.CommandResult;
 import org.ttdc.gwt.server.dao.InitConstants;
 import org.ttdc.gwt.server.dao.PersonDao;
-import org.ttdc.gwt.server.nugets.AnonymousFactory;
 import org.ttdc.persistence.Persistence;
 import org.ttdc.persistence.objects.Person;
 

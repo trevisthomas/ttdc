@@ -22,13 +22,11 @@ import org.ttdc.persistence.objects.Inbox;
 import org.ttdc.persistence.objects.InboxCache;
 import org.ttdc.persistence.objects.Person;
 import org.ttdc.persistence.objects.Post;
-import org.ttdc.persistence.objects.PostLite;
 import org.ttdc.persistence.objects.Privilege;
 import org.ttdc.persistence.objects.Shacktag;
 import org.ttdc.persistence.objects.SimplePostEntity;
 import org.ttdc.persistence.objects.Style;
 import org.ttdc.persistence.objects.Tag;
-import org.ttdc.persistence.objects.TagLite;
 import org.ttdc.persistence.objects.ThreadSummaryEntity;
 import org.ttdc.persistence.objects.UserObject;
 import org.ttdc.persistence.objects.UserObjectTemplate;
@@ -39,8 +37,8 @@ public final class Persistence {
 	static {
         try {
             Configuration configuration = new AnnotationConfiguration()
-        	.configure()
-        	//.configure("hibernate.cfg.mysql.xml")
+        	//.configure()
+        	.configure("hibernate.cfg.mysql.xml")
         	.addAnnotatedClass(Person.class)
         	.addAnnotatedClass(Tag.class)
         	.addAnnotatedClass(Image.class)
@@ -50,8 +48,6 @@ public final class Persistence {
         	.addAnnotatedClass(AssociationPostTag.class)
         	.addAnnotatedClass(Privilege.class)
         	.addAnnotatedClass(UserObjectTemplate.class)
-        	.addAnnotatedClass(TagLite.class)
-        	.addAnnotatedClass(PostLite.class)
         	.addAnnotatedClass(AssociationPostTagLite.class)
         	.addAnnotatedClass(ImageFull.class)
         	.addAnnotatedClass(Entry.class)

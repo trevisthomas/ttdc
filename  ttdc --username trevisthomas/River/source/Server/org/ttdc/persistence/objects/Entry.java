@@ -38,260 +38,245 @@ import org.ttdc.persistence.util.PostFlagBitmasks;
 @NamedQueries({
 	@NamedQuery(name="entry.getAll", query="FROM Entry entry"),
 	@NamedQuery(name="entry.getByPostIds", query="FROM Entry entry WHERE entry.post.postId in (:postIds)"),
-	/*
-	@NamedQuery(name="TagSearchDao.BrowseTags", query="SELECT count(ass.tag.tagId) as count, ass.tag.tagId, ass.tag.type, ass.tag.value " +
-			"FROM AssociationPostTag ass INNER JOIN ass.tag " +
-			"WHERE ass.tag.type IN ('TOPIC','CREATOR','DATE_MONTH','DATE_YEAR') " +
-			"AND ass.tag.tagId NOT IN (:tagIds) " +
-			"AND ass.post.postId IN ( SELECT ass.post.postId FROM AssociationPostTag ass " +
-			 "WHERE ass.tag.tagId IN (:tagIds) GROUP BY ass.post.postId HAVING count(ass.post.postId) = :count)" +
-			"GROUP BY ass.tag.tagId, ass.tag.type, ass.tag.value"),
-	*/
-	@NamedQuery(name="TagSearchDao.BrowseTagsCustomTypes", query="SELECT count(ass.tag.tagId) as count, ass.tag.tagId, ass.tag.type, ass.tag.value " +
-			"FROM AssociationPostTag ass INNER JOIN ass.tag " +
-			"WHERE ass.tag.type IN (:tagTypes) " +
-			"AND ass.tag.tagId NOT IN (:unionTagIdList) " +
-			"AND ass.post.postId IN ( SELECT ass.post.postId FROM AssociationPostTag ass " +
-			 "WHERE ass.tag.tagId IN (:unionTagIdList) GROUP BY ass.post.postId HAVING count(ass.post.postId) = :count)" +
-			"GROUP BY ass.tag.tagId, ass.tag.type, ass.tag.value"),
-			
-	@NamedQuery(name="TagSearchDao.SearchTagsCustomTypesWithUnion", query="SELECT count(ass.tag.tagId) as count, ass.tag.tagId, ass.tag.type, ass.tag.value " +
-			"FROM AssociationPostTag ass INNER JOIN ass.tag " +
-			"WHERE ass.tag.type IN (:tagTypes) " +
-			"AND ass.tag.tagId NOT IN (:unionTagIdList) " +
-			"AND ass.tag.value LIKE (:phrase) " +
-			"AND ass.post.postId IN ( SELECT ass.post.postId FROM AssociationPostTag ass " +
-			 "WHERE ass.tag.tagId IN (:unionTagIdList) GROUP BY ass.post.postId HAVING count(ass.post.postId) = :count)" +
-			"GROUP BY ass.tag.tagId, ass.tag.type, ass.tag.value"),
-			
-	@NamedQuery(name="TagSearchDao.SearchTagsCustomTypesWithExcludes", query="SELECT count(tag.tagId) as count, tag.tagId, tag.type, tag.value " +
-			"FROM Tag tag " +
-			"WHERE tag.type IN (:tagTypes) " +
-			"AND tag.value LIKE (:phrase) " +
-			"AND tag.tagId NOT IN (:excludeTagIdList)" +
-			"GROUP BY tag.tagId, tag.type, tag.value"),
-			
-	@NamedQuery(name="TagSearchDao.SearchTagsTitlesOnly", query="SELECT count(ass.tag.tagId) as count, ass.tag.tagId, ass.tag.type, ass.tag.value " +
-			"FROM AssociationPostTag ass INNER JOIN ass.tag " +
-			"WHERE "+
-			"ass.title = '1' " +
-			"AND ass.tag.value LIKE (:phrase) " +
-			"GROUP BY ass.tag.tagId, ass.tag.type, ass.tag.value"),
-			
-	@NamedQuery(name="TagSearchDao.BrowseTagsCustomTypesMostPopular", query="SELECT tag.mass as count, tag.tagId, tag.type, tag.value " +
-			"FROM Tag tag " +
-			"WHERE tag.type IN (:tagTypes) order by mass desc"),
-			
-			
-			
-	@NamedQuery(name="TagSearchDao.SearchTagsCustomTypes", query="SELECT count(tag.tagId) as count, tag.tagId, tag.type, tag.value " +
-			"FROM Tag tag " +
-			"WHERE tag.type IN (:tagTypes) " +
-			"AND tag.value LIKE (:phrase) " +
-			"GROUP BY tag.tagId, tag.type, tag.value"),
-			
-	@NamedQuery(name="TagSearchDao.SearchTagsCustomTypesExcludeTitles", query="SELECT count(ass.tag.tagId) as count, ass.tag.tagId, ass.tag.type, ass.tag.value " +
-			"FROM AssociationPostTag ass INNER JOIN ass.tag " +
-			"WHERE ass.tag.value LIKE (:phrase) " +
-			"AND ass.tag.type IN (:tagTypes) " +
-			"AND ass.title <> '1' " + 
-			"GROUP BY ass.tag.tagId, ass.tag.type, ass.tag.value"),
-			
+	
+//	@NamedQuery(name="TagSearchDao.BrowseTagsCustomTypes", query="SELECT count(ass.tag.tagId) as count, ass.tag.tagId, ass.tag.type, ass.tag.value " +
+//			"FROM AssociationPostTag ass INNER JOIN ass.tag " +
+//			"WHERE ass.tag.type IN (:tagTypes) " +
+//			"AND ass.tag.tagId NOT IN (:unionTagIdList) " +
+//			"AND ass.post.postId IN ( SELECT ass.post.postId FROM AssociationPostTag ass " +
+//			 "WHERE ass.tag.tagId IN (:unionTagIdList) GROUP BY ass.post.postId HAVING count(ass.post.postId) = :count)" +
+//			"GROUP BY ass.tag.tagId, ass.tag.type, ass.tag.value"),
+//			
+//	@NamedQuery(name="TagSearchDao.SearchTagsCustomTypesWithUnion", query="SELECT count(ass.tag.tagId) as count, ass.tag.tagId, ass.tag.type, ass.tag.value " +
+//			"FROM AssociationPostTag ass INNER JOIN ass.tag " +
+//			"WHERE ass.tag.type IN (:tagTypes) " +
+//			"AND ass.tag.tagId NOT IN (:unionTagIdList) " +
+//			"AND ass.tag.value LIKE (:phrase) " +
+//			"AND ass.post.postId IN ( SELECT ass.post.postId FROM AssociationPostTag ass " +
+//			 "WHERE ass.tag.tagId IN (:unionTagIdList) GROUP BY ass.post.postId HAVING count(ass.post.postId) = :count)" +
+//			"GROUP BY ass.tag.tagId, ass.tag.type, ass.tag.value"),
+//			
+//	@NamedQuery(name="TagSearchDao.SearchTagsCustomTypesWithExcludes", query="SELECT count(tag.tagId) as count, tag.tagId, tag.type, tag.value " +
+//			"FROM Tag tag " +
+//			"WHERE tag.type IN (:tagTypes) " +
+//			"AND tag.value LIKE (:phrase) " +
+//			"AND tag.tagId NOT IN (:excludeTagIdList)" +
+//			"GROUP BY tag.tagId, tag.type, tag.value"),
+//			
+//	@NamedQuery(name="TagSearchDao.SearchTagsTitlesOnly", query="SELECT count(ass.tag.tagId) as count, ass.tag.tagId, ass.tag.type, ass.tag.value " +
+//			"FROM AssociationPostTag ass INNER JOIN ass.tag " +
+//			"WHERE "+
+//			"ass.title = '1' " +
+//			"AND ass.tag.value LIKE (:phrase) " +
+//			"GROUP BY ass.tag.tagId, ass.tag.type, ass.tag.value"),
+//			
+//	@NamedQuery(name="TagSearchDao.BrowseTagsCustomTypesMostPopular", query="SELECT tag.mass as count, tag.tagId, tag.type, tag.value " +
+//			"FROM Tag tag " +
+//			"WHERE tag.type IN (:tagTypes) order by mass desc"),
+//			
+//			
+//			
+//	@NamedQuery(name="TagSearchDao.SearchTagsCustomTypes", query="SELECT count(tag.tagId) as count, tag.tagId, tag.type, tag.value " +
+//			"FROM Tag tag " +
+//			"WHERE tag.type IN (:tagTypes) " +
+//			"AND tag.value LIKE (:phrase) " +
+//			"GROUP BY tag.tagId, tag.type, tag.value"),
+//			
+//	@NamedQuery(name="TagSearchDao.SearchTagsCustomTypesExcludeTitles", query="SELECT count(ass.tag.tagId) as count, ass.tag.tagId, ass.tag.type, ass.tag.value " +
+//			"FROM AssociationPostTag ass INNER JOIN ass.tag " +
+//			"WHERE ass.tag.value LIKE (:phrase) " +
+//			"AND ass.tag.type IN (:tagTypes) " +
+//			"AND ass.title <> '1' " + 
+//			"GROUP BY ass.tag.tagId, ass.tag.type, ass.tag.value"),
+//			
 			
 	//With dates
 			
-	@NamedQuery(name="TagSearchDao.BrowseTagsCustomTypesInDateRange", query="SELECT count(ass.tag.tagId) as count, ass.tag.tagId, ass.tag.type, ass.tag.value " +
-			"FROM AssociationPostTag ass INNER JOIN ass.tag " +
-			"WHERE ass.tag.type IN (:tagTypes) " +
-			"AND ass.tag.tagId NOT IN (:unionTagIdList) " +
-			"AND ass.post.postId IN ( SELECT ass.post.postId FROM AssociationPostTag ass " +
-			"WHERE ass.tag.tagId IN (:unionTagIdList) " +
-			"AND ass.date >= :startDate AND ass.date <= :endDate " +
-			"GROUP BY ass.post.postId HAVING count(ass.post.postId) = :count)" +
-			"GROUP BY ass.tag.tagId, ass.tag.type, ass.tag.value"),
-			
-	@NamedQuery(name="TagSearchDao.SearchTagsCustomTypesWithUnionInDateRange", query="SELECT count(ass.tag.tagId) as count, ass.tag.tagId, ass.tag.type, ass.tag.value " +
-			"FROM AssociationPostTag ass INNER JOIN ass.tag " +
-			"WHERE ass.tag.type IN (:tagTypes) " +
-			"AND ass.tag.tagId NOT IN (:unionTagIdList) " +
-			"AND ass.tag.value LIKE (:phrase) " +
-			"AND ass.date >= :startDate AND ass.date <= :endDate " +
-			"AND ass.post.postId " +
-			"IN ( SELECT ass.post.postId FROM AssociationPostTag ass " +
-			 "WHERE ass.tag.tagId IN (:unionTagIdList) GROUP BY ass.post.postId HAVING count(ass.post.postId) = :count)" +
-			"GROUP BY ass.tag.tagId, ass.tag.type, ass.tag.value"),
-			
-	@NamedQuery(name="TagSearchDao.SearchTagsCustomTypesWithExcludesInDateRange", query="SELECT count(tag.tagId) as count, tag.tagId, tag.type, tag.value " +
-			"FROM Tag tag " +
-			"WHERE tag.type IN (:tagTypes) " +
-			"AND tag.date >= :startDate AND tag.date <= :endDate " +
-			"AND tag.value LIKE (:phrase) " +
-			"AND tag.tagId NOT IN (:excludeTagIdList)" +
-			"GROUP BY tag.tagId, tag.type, tag.value"),
-			
-	@NamedQuery(name="TagSearchDao.SearchTagsTitlesOnlyInDateRange", query="SELECT count(ass.tag.tagId) as count, ass.tag.tagId, ass.tag.type, ass.tag.value " +
-			"FROM AssociationPostTag ass INNER JOIN ass.tag " +
-			"WHERE "+
-			"ass.title = '1' " +
-			"AND ass.date >= :startDate AND ass.date <= :endDate " +
-			"AND ass.tag.value LIKE (:phrase) " +
-			"GROUP BY ass.tag.tagId, ass.tag.type, ass.tag.value"),
-			
-	@NamedQuery(name="TagSearchDao.BrowseTagsCustomTypesMostPopularInDateRange", query="SELECT tag.mass as count, tag.tagId, tag.type, tag.value " +
-			"FROM Tag tag " +
-			"WHERE tag.type IN (:tagTypes) " +
-			"AND tag.date >= :startDate AND tag.date <= :endDate " +
-			"order by mass desc"),
-			
-			
-			
-	@NamedQuery(name="TagSearchDao.SearchTagsCustomTypesInDateRange", query="SELECT count(tag.tagId) as count, tag.tagId, tag.type, tag.value " +
-			"FROM Tag tag " +
-			"WHERE tag.type IN (:tagTypes) " +
-			"AND tag.value LIKE (:phrase) " +
-			"AND tag.date >= :startDate AND tag.date <= :endDate " +
-			"GROUP BY tag.tagId, tag.type, tag.value"),
-			
-	@NamedQuery(name="TagSearchDao.SearchTagsCustomTypesExcludeTitlesInDateRange", query="SELECT count(ass.tag.tagId) as count, ass.tag.tagId, ass.tag.type, ass.tag.value " +
-			"FROM AssociationPostTag ass INNER JOIN ass.tag " +
-			"WHERE ass.tag.value LIKE (:phrase) " +
-			"AND ass.date >= :startDate AND ass.date <= :endDate " +
-			"AND ass.tag.type IN (:tagTypes) " +
-			"AND ass.title <> '1' " + 
-			"GROUP BY ass.tag.tagId, ass.tag.type, ass.tag.value"),			
+//	@NamedQuery(name="TagSearchDao.BrowseTagsCustomTypesInDateRange", query="SELECT count(ass.tag.tagId) as count, ass.tag.tagId, ass.tag.type, ass.tag.value " +
+//			"FROM AssociationPostTag ass INNER JOIN ass.tag " +
+//			"WHERE ass.tag.type IN (:tagTypes) " +
+//			"AND ass.tag.tagId NOT IN (:unionTagIdList) " +
+//			"AND ass.post.postId IN ( SELECT ass.post.postId FROM AssociationPostTag ass " +
+//			"WHERE ass.tag.tagId IN (:unionTagIdList) " +
+//			"AND ass.date >= :startDate AND ass.date <= :endDate " +
+//			"GROUP BY ass.post.postId HAVING count(ass.post.postId) = :count)" +
+//			"GROUP BY ass.tag.tagId, ass.tag.type, ass.tag.value"),
+//			
+//	@NamedQuery(name="TagSearchDao.SearchTagsCustomTypesWithUnionInDateRange", query="SELECT count(ass.tag.tagId) as count, ass.tag.tagId, ass.tag.type, ass.tag.value " +
+//			"FROM AssociationPostTag ass INNER JOIN ass.tag " +
+//			"WHERE ass.tag.type IN (:tagTypes) " +
+//			"AND ass.tag.tagId NOT IN (:unionTagIdList) " +
+//			"AND ass.tag.value LIKE (:phrase) " +
+//			"AND ass.date >= :startDate AND ass.date <= :endDate " +
+//			"AND ass.post.postId " +
+//			"IN ( SELECT ass.post.postId FROM AssociationPostTag ass " +
+//			 "WHERE ass.tag.tagId IN (:unionTagIdList) GROUP BY ass.post.postId HAVING count(ass.post.postId) = :count)" +
+//			"GROUP BY ass.tag.tagId, ass.tag.type, ass.tag.value"),
+//			
+//	@NamedQuery(name="TagSearchDao.SearchTagsCustomTypesWithExcludesInDateRange", query="SELECT count(tag.tagId) as count, tag.tagId, tag.type, tag.value " +
+//			"FROM Tag tag " +
+//			"WHERE tag.type IN (:tagTypes) " +
+//			"AND tag.date >= :startDate AND tag.date <= :endDate " +
+//			"AND tag.value LIKE (:phrase) " +
+//			"AND tag.tagId NOT IN (:excludeTagIdList)" +
+//			"GROUP BY tag.tagId, tag.type, tag.value"),
+//			
+//	@NamedQuery(name="TagSearchDao.SearchTagsTitlesOnlyInDateRange", query="SELECT count(ass.tag.tagId) as count, ass.tag.tagId, ass.tag.type, ass.tag.value " +
+//			"FROM AssociationPostTag ass INNER JOIN ass.tag " +
+//			"WHERE "+
+//			"ass.title = '1' " +
+//			"AND ass.date >= :startDate AND ass.date <= :endDate " +
+//			"AND ass.tag.value LIKE (:phrase) " +
+//			"GROUP BY ass.tag.tagId, ass.tag.type, ass.tag.value"),
+//			
+//	@NamedQuery(name="TagSearchDao.BrowseTagsCustomTypesMostPopularInDateRange", query="SELECT tag.mass as count, tag.tagId, tag.type, tag.value " +
+//			"FROM Tag tag " +
+//			"WHERE tag.type IN (:tagTypes) " +
+//			"AND tag.date >= :startDate AND tag.date <= :endDate " +
+//			"order by mass desc"),
+//			
+//			
+//			
+//	@NamedQuery(name="TagSearchDao.SearchTagsCustomTypesInDateRange", query="SELECT count(tag.tagId) as count, tag.tagId, tag.type, tag.value " +
+//			"FROM Tag tag " +
+//			"WHERE tag.type IN (:tagTypes) " +
+//			"AND tag.value LIKE (:phrase) " +
+//			"AND tag.date >= :startDate AND tag.date <= :endDate " +
+//			"GROUP BY tag.tagId, tag.type, tag.value"),
+//			
+//	@NamedQuery(name="TagSearchDao.SearchTagsCustomTypesExcludeTitlesInDateRange", query="SELECT count(ass.tag.tagId) as count, ass.tag.tagId, ass.tag.type, ass.tag.value " +
+//			"FROM AssociationPostTag ass INNER JOIN ass.tag " +
+//			"WHERE ass.tag.value LIKE (:phrase) " +
+//			"AND ass.date >= :startDate AND ass.date <= :endDate " +
+//			"AND ass.tag.type IN (:tagTypes) " +
+//			"AND ass.title <> '1' " + 
+//			"GROUP BY ass.tag.tagId, ass.tag.type, ass.tag.value"),			
 			
 	//
 			
 	//START PostSearchDao
 	
-	@NamedQuery(name="PostSearchDao.SearchTagsTitlesOnly", query="SELECT ass.post " +
-			"FROM AssociationPostTag ass INNER JOIN ass.tag " +
-			"WHERE "+
-			"ass.title = '1' " +
-			"AND ass.tag.value LIKE (:phrase) " +
-			"ORDER BY ass.post.mass desc, ass.post.replyCount desc") ,					
-			
-			
-	@NamedQuery(name="PostSearchDao.BrowseTaggedPostsByDate", query="SELECT post FROM Post post WHERE post.postId IN (" +
-			"SELECT ass.post.postId FROM AssociationPostTag ass " +
-			"INNER JOIN ass.post " +
-			"WHERE ass.tag.tagId IN (:tagIds)" +
-			"GROUP BY ass.post.postId	" +
-			"HAVING count(ass.post.postId) = :count) " +
-			"ORDER BY date DESC"),
-			
-	@NamedQuery(name="PostSearchDao.BrowseTaggedPostsByPopularity", query="SELECT post FROM Post post WHERE post.postId IN (" +
-			"SELECT ass.post.postId FROM AssociationPostTag ass " +
-			"INNER JOIN ass.post " +
-			"WHERE ass.tag.tagId IN (:tagIds)" +
-			"GROUP BY ass.post.postId	" +
-			"HAVING count(ass.post.postId) = :count) " +
-			"ORDER BY mass desc, reply_count desc"),
-			
-
-	@NamedQuery(name="PostSearchDao.BrowseTaggedPostsCount", query="SELECT post.postId FROM Post post WHERE post.postId IN (" +
-			"SELECT ass.post.postId FROM AssociationPostTag ass " +
-			"INNER JOIN ass.post " +
-			"WHERE ass.tag.tagId IN (:tagIds)" +
-			"GROUP BY ass.post.postId	" +
-			"HAVING count(ass.post.postId) = :count) "),
-			
-	@NamedQuery(name="PostSearchDao.BrowseTaggedPostsByDateForConversations", query="SELECT post FROM Post post WHERE post.postId IN (" +
-			"SELECT ass.post.postId FROM AssociationPostTag ass " +
-			"INNER JOIN ass.post " +
-			"WHERE ass.post.postId = ass.post.thread.postId " +
-			"AND ass.tag.tagId IN (:tagIds)" +
-			"GROUP BY ass.post.postId	" +
-			"HAVING count(ass.post.postId) = :count) " +
-			"ORDER BY date DESC"),
-			
-	@NamedQuery(name="PostSearchDao.BrowseTaggedPostsByPopularityForConversations", query="SELECT post FROM Post post WHERE post.postId IN (" +
-			"SELECT ass.post.postId FROM AssociationPostTag ass " +
-			"INNER JOIN ass.post " +
-			"WHERE ass.post.postId = ass.post.thread.postId " +
-			"AND ass.tag.tagId IN (:tagIds)" +
-			"GROUP BY ass.post.postId	" +
-			"HAVING count(ass.post.postId) = :count) " +
-			"ORDER BY mass desc, reply_count desc"),
-			
-
-	@NamedQuery(name="PostSearchDao.BrowseTaggedPostsCountForConversations", query="SELECT post.postId FROM Post post WHERE post.postId IN (" +
-			"SELECT ass.post.postId FROM AssociationPostTag ass " +
-			"INNER JOIN ass.post " +
-			"WHERE ass.post.postId = ass.post.thread.postId " +
-			"AND ass.tag.tagId IN (:tagIds)" +
-			"GROUP BY ass.post.postId	" +
-			"HAVING count(ass.post.postId) = :count) "),			
-			
-	@NamedQuery(name="PostSearchDao.BrowseTaggedPostsByDateWithExclude", query="SELECT post FROM Post post WHERE post.postId IN (" +
-			"SELECT ass.post.postId FROM AssociationPostTag ass " +
-			"INNER JOIN ass.post " +
-			"WHERE ass.tag.tagId IN (:tagIds)" +
-			"GROUP BY ass.post.postId	" +
-			"HAVING count(ass.post.postId) = :count) " +
-			"AND post.postId NOT IN (SELECT ass.post.postId FROM AssociationPostTag ass WHERE ass.tag.tagId IN (:notTagIds)) "+
-			"ORDER BY date DESC"),
-			
-	@NamedQuery(name="PostSearchDao.BrowseTaggedPostsByPopularityWithExclude", query="SELECT post FROM Post post WHERE post.postId IN (" +
-			"SELECT ass.post.postId FROM AssociationPostTag ass " +
-			"INNER JOIN ass.post " +
-			"WHERE ass.tag.tagId IN (:tagIds)" +
-			"GROUP BY ass.post.postId	" +
-			"HAVING count(ass.post.postId) = :count) " +
-			"AND post.postId NOT IN (SELECT ass.post.postId FROM AssociationPostTag ass WHERE ass.tag.tagId IN (:notTagIds)) "+
-			"ORDER BY mass desc, reply_count desc"),
-	
-	@NamedQuery(name="PostSearchDao.BrowseTaggedPostsCountWithExclude", query="SELECT post.postId FROM Post post WHERE post.postId IN (" +
-			"SELECT ass.post.postId FROM AssociationPostTag ass " +
-			"INNER JOIN ass.post " +
-			"WHERE ass.tag.tagId IN (:tagIds)" +
-			"GROUP BY ass.post.postId	" +
-			"HAVING count(ass.post.postId) = :count) " +
-			"AND post.postId NOT IN (SELECT ass.post.postId FROM AssociationPostTag ass WHERE ass.tag.tagId IN (:notTagIds)) "),
-			
-	@NamedQuery(name="PostSearchDao.BrowseTaggedPostsByDateWithExcludeForConversations", query="SELECT post FROM Post post WHERE post.postId IN (" +
-			"SELECT ass.post.postId FROM AssociationPostTag ass " +
-			"INNER JOIN ass.post " +
-			"WHERE ass.post.postId = ass.post.thread.postId " +
-			"AND ass.tag.tagId IN (:tagIds)" +
-			"GROUP BY ass.post.postId	" +
-			"HAVING count(ass.post.postId) = :count) " +
-			"AND post.postId NOT IN (SELECT ass.post.postId FROM AssociationPostTag ass WHERE ass.tag.tagId IN (:notTagIds)) "+
-			"ORDER BY date DESC"),
-			
-	@NamedQuery(name="PostSearchDao.BrowseTaggedPostsByPopularityWithExcludeForConversations", query="SELECT post FROM Post post WHERE post.postId IN (" +
-			"SELECT ass.post.postId FROM AssociationPostTag ass " +
-			"INNER JOIN ass.post " +
-			"WHERE ass.post.postId = ass.post.thread.postId " +
-			"AND ass.tag.tagId IN (:tagIds)" +
-			"GROUP BY ass.post.postId	" +
-			"HAVING count(ass.post.postId) = :count) " +
-			"AND post.postId NOT IN (SELECT ass.post.postId FROM AssociationPostTag ass WHERE ass.tag.tagId IN (:notTagIds)) "+
-			"ORDER BY mass desc, reply_count desc"),
-	
-	@NamedQuery(name="PostSearchDao.BrowseTaggedPostsCountWithExcludeForConversations", query="SELECT post.postId FROM Post post WHERE post.postId IN (" +
-			"SELECT ass.post.postId FROM AssociationPostTag ass " +
-			"INNER JOIN ass.post " +
-			"WHERE ass.post.postId = ass.post.thread.postId " +
-			"AND ass.tag.tagId IN (:tagIds)" +
-			"GROUP BY ass.post.postId	" +
-			"HAVING count(ass.post.postId) = :count) " +
-			"AND post.postId NOT IN (SELECT ass.post.postId FROM AssociationPostTag ass WHERE ass.tag.tagId IN (:notTagIds)) "),		
+//	@NamedQuery(name="PostSearchDao.SearchTagsTitlesOnly", query="SELECT ass.post " +
+//			"FROM AssociationPostTag ass INNER JOIN ass.tag " +
+//			"WHERE "+
+//			"ass.title = '1' " +
+//			"AND ass.tag.value LIKE (:phrase) " +
+//			"ORDER BY ass.post.mass desc, ass.post.replyCount desc") ,					
+//			
+//			
+//	@NamedQuery(name="PostSearchDao.BrowseTaggedPostsByDate", query="SELECT post FROM Post post WHERE post.postId IN (" +
+//			"SELECT ass.post.postId FROM AssociationPostTag ass " +
+//			"INNER JOIN ass.post " +
+//			"WHERE ass.tag.tagId IN (:tagIds)" +
+//			"GROUP BY ass.post.postId	" +
+//			"HAVING count(ass.post.postId) = :count) " +
+//			"ORDER BY date DESC"),
+//			
+//	@NamedQuery(name="PostSearchDao.BrowseTaggedPostsByPopularity", query="SELECT post FROM Post post WHERE post.postId IN (" +
+//			"SELECT ass.post.postId FROM AssociationPostTag ass " +
+//			"INNER JOIN ass.post " +
+//			"WHERE ass.tag.tagId IN (:tagIds)" +
+//			"GROUP BY ass.post.postId	" +
+//			"HAVING count(ass.post.postId) = :count) " +
+//			"ORDER BY mass desc, reply_count desc"),
+//			
+//
+//	@NamedQuery(name="PostSearchDao.BrowseTaggedPostsCount", query="SELECT post.postId FROM Post post WHERE post.postId IN (" +
+//			"SELECT ass.post.postId FROM AssociationPostTag ass " +
+//			"INNER JOIN ass.post " +
+//			"WHERE ass.tag.tagId IN (:tagIds)" +
+//			"GROUP BY ass.post.postId	" +
+//			"HAVING count(ass.post.postId) = :count) "),
+//			
+//	@NamedQuery(name="PostSearchDao.BrowseTaggedPostsByDateForConversations", query="SELECT post FROM Post post WHERE post.postId IN (" +
+//			"SELECT ass.post.postId FROM AssociationPostTag ass " +
+//			"INNER JOIN ass.post " +
+//			"WHERE ass.post.postId = ass.post.thread.postId " +
+//			"AND ass.tag.tagId IN (:tagIds)" +
+//			"GROUP BY ass.post.postId	" +
+//			"HAVING count(ass.post.postId) = :count) " +
+//			"ORDER BY date DESC"),
+//			
+//	@NamedQuery(name="PostSearchDao.BrowseTaggedPostsByPopularityForConversations", query="SELECT post FROM Post post WHERE post.postId IN (" +
+//			"SELECT ass.post.postId FROM AssociationPostTag ass " +
+//			"INNER JOIN ass.post " +
+//			"WHERE ass.post.postId = ass.post.thread.postId " +
+//			"AND ass.tag.tagId IN (:tagIds)" +
+//			"GROUP BY ass.post.postId	" +
+//			"HAVING count(ass.post.postId) = :count) " +
+//			"ORDER BY mass desc, reply_count desc"),
+//			
+//
+//	@NamedQuery(name="PostSearchDao.BrowseTaggedPostsCountForConversations", query="SELECT post.postId FROM Post post WHERE post.postId IN (" +
+//			"SELECT ass.post.postId FROM AssociationPostTag ass " +
+//			"INNER JOIN ass.post " +
+//			"WHERE ass.post.postId = ass.post.thread.postId " +
+//			"AND ass.tag.tagId IN (:tagIds)" +
+//			"GROUP BY ass.post.postId	" +
+//			"HAVING count(ass.post.postId) = :count) "),			
+//			
+//	@NamedQuery(name="PostSearchDao.BrowseTaggedPostsByDateWithExclude", query="SELECT post FROM Post post WHERE post.postId IN (" +
+//			"SELECT ass.post.postId FROM AssociationPostTag ass " +
+//			"INNER JOIN ass.post " +
+//			"WHERE ass.tag.tagId IN (:tagIds)" +
+//			"GROUP BY ass.post.postId	" +
+//			"HAVING count(ass.post.postId) = :count) " +
+//			"AND post.postId NOT IN (SELECT ass.post.postId FROM AssociationPostTag ass WHERE ass.tag.tagId IN (:notTagIds)) "+
+//			"ORDER BY date DESC"),
+//			
+//	@NamedQuery(name="PostSearchDao.BrowseTaggedPostsByPopularityWithExclude", query="SELECT post FROM Post post WHERE post.postId IN (" +
+//			"SELECT ass.post.postId FROM AssociationPostTag ass " +
+//			"INNER JOIN ass.post " +
+//			"WHERE ass.tag.tagId IN (:tagIds)" +
+//			"GROUP BY ass.post.postId	" +
+//			"HAVING count(ass.post.postId) = :count) " +
+//			"AND post.postId NOT IN (SELECT ass.post.postId FROM AssociationPostTag ass WHERE ass.tag.tagId IN (:notTagIds)) "+
+//			"ORDER BY mass desc, reply_count desc"),
+//	
+//	@NamedQuery(name="PostSearchDao.BrowseTaggedPostsCountWithExclude", query="SELECT post.postId FROM Post post WHERE post.postId IN (" +
+//			"SELECT ass.post.postId FROM AssociationPostTag ass " +
+//			"INNER JOIN ass.post " +
+//			"WHERE ass.tag.tagId IN (:tagIds)" +
+//			"GROUP BY ass.post.postId	" +
+//			"HAVING count(ass.post.postId) = :count) " +
+//			"AND post.postId NOT IN (SELECT ass.post.postId FROM AssociationPostTag ass WHERE ass.tag.tagId IN (:notTagIds)) "),
+//			
+//	@NamedQuery(name="PostSearchDao.BrowseTaggedPostsByDateWithExcludeForConversations", query="SELECT post FROM Post post WHERE post.postId IN (" +
+//			"SELECT ass.post.postId FROM AssociationPostTag ass " +
+//			"INNER JOIN ass.post " +
+//			"WHERE ass.post.postId = ass.post.thread.postId " +
+//			"AND ass.tag.tagId IN (:tagIds)" +
+//			"GROUP BY ass.post.postId	" +
+//			"HAVING count(ass.post.postId) = :count) " +
+//			"AND post.postId NOT IN (SELECT ass.post.postId FROM AssociationPostTag ass WHERE ass.tag.tagId IN (:notTagIds)) "+
+//			"ORDER BY date DESC"),
+//			
+//	@NamedQuery(name="PostSearchDao.BrowseTaggedPostsByPopularityWithExcludeForConversations", query="SELECT post FROM Post post WHERE post.postId IN (" +
+//			"SELECT ass.post.postId FROM AssociationPostTag ass " +
+//			"INNER JOIN ass.post " +
+//			"WHERE ass.post.postId = ass.post.thread.postId " +
+//			"AND ass.tag.tagId IN (:tagIds)" +
+//			"GROUP BY ass.post.postId	" +
+//			"HAVING count(ass.post.postId) = :count) " +
+//			"AND post.postId NOT IN (SELECT ass.post.postId FROM AssociationPostTag ass WHERE ass.tag.tagId IN (:notTagIds)) "+
+//			"ORDER BY mass desc, reply_count desc"),
+//	
+//	@NamedQuery(name="PostSearchDao.BrowseTaggedPostsCountWithExcludeForConversations", query="SELECT post.postId FROM Post post WHERE post.postId IN (" +
+//			"SELECT ass.post.postId FROM AssociationPostTag ass " +
+//			"INNER JOIN ass.post " +
+//			"WHERE ass.post.postId = ass.post.thread.postId " +
+//			"AND ass.tag.tagId IN (:tagIds)" +
+//			"GROUP BY ass.post.postId	" +
+//			"HAVING count(ass.post.postId) = :count) " +
+//			"AND post.postId NOT IN (SELECT ass.post.postId FROM AssociationPostTag ass WHERE ass.tag.tagId IN (:notTagIds)) "),		
 			
      ////// END PostSearchDao
 			
-//	@NamedQuery(name="LatestPostsFlatDao.Flat", query="" +
-//			"SELECT post FROM Post post WHERE post.postId NOT IN (" +
-//			"SELECT ass.post.postId FROM AssociationPostTag ass WHERE ass.tag.tagId IN (:tagIds))" +
-//			"ORDER BY date DESC"),
-//			
-//	@NamedQuery(name="LatestPostsFlatDao.FlatNoFilters", query="SELECT post FROM Post post ORDER BY date DESC"),
-//	
 	@NamedQuery(name="TopicDao.Starters", query="" +
 			"SELECT post FROM Post post " +
 			"WHERE post.parent.postId=:rootId "+
 			"AND bitwise_and( post.metaMask, :filterMask ) = 0 "+
-			"ORDER BY date DESC"),
+			"ORDER BY post.date DESC"),
 	
 	@NamedQuery(name="TopicDao.StartersCount", query="" +
 			"SELECT count(post.postId) FROM Post post " +
@@ -303,14 +288,14 @@ import org.ttdc.persistence.util.PostFlagBitmasks;
 			"WHERE post.thread.postId=:postId " +
 			"AND post.postId IS NOT :postId " +
 			"AND bitwise_and( post.metaMask, :filterMask ) = 0 "+
-			"ORDER BY date DESC"),		
+			"ORDER BY post.date DESC"),		
 	
 	@NamedQuery(name="TopicDao.Flat", query="" +
 			"SELECT post FROM Post post " +
 			"WHERE post.root.postId=:rootId " +
 			"AND post.parent.postId IS NOT NULL "+
 			"AND bitwise_and( post.metaMask, :filterMask ) = 0 "+
-			"ORDER BY date DESC"),		
+			"ORDER BY post.date DESC"),		
 	
 	@NamedQuery(name="TopicDao.FlatCount", query="" +
 			"SELECT count(post.postId) FROM Post post " +
@@ -321,7 +306,7 @@ import org.ttdc.persistence.util.PostFlagBitmasks;
 	@NamedQuery(name="TopicDao.Hierarchy", query="" +
 			"SELECT post FROM Post post WHERE post.root.postId=:rootId " +
 			"AND bitwise_and( post.metaMask, :filterMask ) = 0 "+
-			"ORDER BY path"),		
+			"ORDER BY post.path"),		
 	
 	@NamedQuery(name="TopicDao.HierarchyCount", query="" +
 			"SELECT count(post.postId) FROM Post post WHERE post.root.postId=:rootId "+
@@ -332,13 +317,13 @@ import org.ttdc.persistence.util.PostFlagBitmasks;
 			"SELECT post FROM Post post WHERE post.root.postId=:postId " +
 			"AND post.thread.postId = post.postId "+
 			"AND bitwise_and( post.metaMask, :filterMask ) = 0 "+
-			"ORDER BY threadReplyDate DESC"),			
+			"ORDER BY post.threadReplyDate DESC"),			
 	
 	@NamedQuery(name="ThreadDao.StartersByCreateDate", query="" +
 			"SELECT post FROM Post post WHERE post.root.postId=:postId " +
 			"AND post.thread.postId = post.postId " +
 			"AND bitwise_and( post.metaMask, :filterMask ) = 0 "+
-			"ORDER BY threadReplyDate DESC"),		
+			"ORDER BY post.threadReplyDate DESC"),		
 			
 	@NamedQuery(name="ThreadDao.StartersCount", query="" +
 			"SELECT count(post.postId) FROM Post post WHERE post.root.postId=:postId " +
@@ -349,7 +334,7 @@ import org.ttdc.persistence.util.PostFlagBitmasks;
 			"SELECT post FROM Post post WHERE post.thread.postId IN(:postIds) " +
 			"AND postId <> post.thread.postId " +
 			"AND bitwise_and( post.metaMask, :filterMask ) = 0 "+
-			"ORDER BY path"),	
+			"ORDER BY post.path"),	
 			
 
 	//Remember! TopicDao.Thread sorts the posts backwards to give you the bottom of the list. Remember to reverse the results
@@ -357,7 +342,7 @@ import org.ttdc.persistence.util.PostFlagBitmasks;
 			"SELECT post FROM Post post WHERE post.thread.postId=:postId " +
 			"AND postId <> post.thread.postId " +
 			"AND bitwise_and( post.metaMask, :filterMask ) = 0 "+
-			"ORDER BY path desc"),	
+			"ORDER BY post.path desc"),	
 			
 	@NamedQuery(name="ThreadDao.ThreadCount", query="" +
 			"SELECT count(post.postId) FROM Post post WHERE post.thread.postId=:postId " +
@@ -378,7 +363,7 @@ import org.ttdc.persistence.util.PostFlagBitmasks;
 		"SELECT post FROM Post post WHERE post.thread.postId IN(:postIds) " +
 		"AND postId <> post.thread.postId " +
 		"AND bitwise_and( post.metaMask, :filterMask ) = 0 "+
-		"ORDER BY path"),		
+		"ORDER BY post.path"),		
 
 	@NamedQuery(name="LatestPostsDao.Flat", query="" +
 		"SELECT post FROM Post post " +
@@ -411,41 +396,8 @@ import org.ttdc.persistence.util.PostFlagBitmasks;
 		"WHERE post.thread.postId = post.postId " +
 		"AND bitwise_and( post.metaMask, :filterMask ) = 0 "),
 			
-	
-		
-		
-			/*
-	@NamedQuery(name="postId.moviesByTitle", query="SELECT ass.post.postId FROM AssociationPostTag ass INNER JOIN ass.tag " +
-			"WHERE ass.tag.type='SORT_TITLE' AND ass.post.postId IN (SELECT ass.post.postId FROM AssociationPostTag ass2 WHERE ass2.tag.type='MOVIE')" +
-			"ORDER BY ass.tag.value"),
-			
-	@NamedQuery(name="postId.moviesByTitleReverse", query="SELECT ass.post.postId FROM AssociationPostTag ass INNER JOIN ass.tag " +
-					"WHERE ass.tag.type='SORT_TITLE' AND ass.post.postId IN (SELECT ass.post.postId FROM AssociationPostTag ass2 WHERE ass2.tag.type='MOVIE')" +
-					"ORDER BY ass.tag.value DESC"),			
-			
-	@NamedQuery(name="postId.moviesByYear", query="SELECT p.postId, ass.tag.value,ass3.tag.value,ass2.tag.type FROM Post p, AssociationPostTag ass INNER JOIN ass.tag, AssociationPostTag ass2 INNER JOIN ass2.tag, AssociationPostTag ass3 INNER JOIN ass3.tag " +
-					"WHERE ass.tag.type='RELEASE_YEAR' AND ass2.tag.type='MOVIE' AND ass3.tag.type='SORT_TITLE' AND p.postId = ass.post.postId AND p.postId=ass2.post.postId AND p.postId = ass3.post.postId " +
-					"ORDER BY ass.tag.value DESC, ass3.tag.value"),
-			
-	@NamedQuery(name="postId.moviesByYearReverse", query="SELECT p.postId, ass.tag.value,ass3.tag.value,ass2.tag.type FROM Post p, AssociationPostTag ass INNER JOIN ass.tag, AssociationPostTag ass2 INNER JOIN ass2.tag, AssociationPostTag ass3 INNER JOIN ass3.tag " +
-					"WHERE ass.tag.type='RELEASE_YEAR' AND ass2.tag.type='MOVIE' AND ass3.tag.type='SORT_TITLE' AND p.postId = ass.post.postId AND p.postId=ass2.post.postId AND p.postId = ass3.post.postId " +
-					"ORDER BY ass.tag.value, ass3.tag.value"),		
-			
-	@NamedQuery(name="postId.moviesForUser", query="SELECT post.postId FROM Post post WHERE " +
-			"post.postId IN (SELECT ass.post.postId FROM AssociationPostTag ass WHERE ass.tag.type='MOVIE') AND " +
-			"post.postId IN (SELECT ass2.post.postId FROM AssociationPostTag ass2 WHERE ass2.tag.type='RATING' AND ass2.creator.personId=:personId)"),
-	
-	@NamedQuery(name="postId.moviesByRatingForPerson", query="SELECT p.postId FROM Post p, AssociationPostTag ass INNER JOIN ass.tag, AssociationPostTag ass2 INNER JOIN ass2.tag, AssociationPostTag ass3 INNER JOIN ass3.tag " +
-					"WHERE ass.creator.personId=:personId AND ass.tag.type='RATING' AND ass2.tag.type='MOVIE' AND ass3.tag.type='SORT_TITLE' AND p.postId = ass.post.postId AND p.postId=ass2.post.postId AND p.postId = ass3.post.postId " +
-					"ORDER BY ass.tag.value DESC, ass3.tag.value"),		
-					
-	@NamedQuery(name="postId.moviesByRatingForPersonReverse", query="SELECT p.postId FROM Post p, AssociationPostTag ass INNER JOIN ass.tag, AssociationPostTag ass2 INNER JOIN ass2.tag, AssociationPostTag ass3 INNER JOIN ass3.tag " +
-							"WHERE ass.creator.personId=:personId AND ass.tag.type='RATING' AND ass2.tag.type='MOVIE' AND ass3.tag.type='SORT_TITLE' AND p.postId = ass.post.postId AND p.postId=ass2.post.postId AND p.postId = ass3.post.postId " +
-							"ORDER BY ass.tag.value, ass3.tag.value")
-							*/					
 
-	
-
+	//Movies	 
 	@NamedQuery(name="MovieDao.peopleWithMovieRatings", query="SELECT distinct ass.creator.personId, count(ass.creator.personId) " +
 			"FROM Post p, AssociationPostTag ass INNER JOIN ass.tag "+
 			"WHERE ass.tag.type='RATING' " +
@@ -530,39 +482,24 @@ import org.ttdc.persistence.util.PostFlagBitmasks;
 			"ORDER BY ass.post.publishYear DESC, ass.post.titleTag.sortValue"),
 			
 	@NamedQuery(name="PersonDao.loadPersonList", query="SELECT person FROM Person person WHERE person.personId IN (:personIds) ORDER BY person.login")
-					
-			
 			
 })
 
 @NamedNativeQueries({
-//	@NamedNativeQuery(
-//		name="CalendarDao.fetchHourly", query="" +
-//				"select Year(p.date) as yr, Month(p.date) as mo, Day(p.date) as dd, DATEPART(hour,p.date) as hr, "+
-//				"p.date, p.guid as postId, p.root_guid as rootId, titleTag.value as title, c.login, p.creator_guid, '' as summary "+
-//				"from post p "+
-//				"inner join association_post_tag as titleAss on titleAss.post_guid = p.guid AND titleAss.title='1' "+ 
-//				"inner join tag as titleTag on titleTag.guid = titleAss.tag_guid "+
-//				"inner join entry as e on e.guid = p.latest_entry_guid "+
-//				"inner join person as c on c.guid = p.creator_guid "+
-//				"where p.date between :startDate and :endDate order by p.date",
-//				resultSetMapping="simplePostMapping"
-//	),
-//	@NamedNativeQuery(
-//		name="CalendarDao.fetchHourlyWithSummary", query="" +
-//				"select Year(p.date) as yr, Month(p.date) as mo, Day(p.date) as dd, DATEPART(hour,p.date) as hr, "+
-//				"p.date, p.guid as postId, p.root_guid as rootId, titleTag.value as title, c.login, p.creator_guid, SUBSTRING(e.body, 1, 150) as summary "+
-//				"from post p "+
-//				"inner join association_post_tag as titleAss on titleAss.post_guid = p.root_guid AND titleAss.title='1' "+ 
-//				"inner join tag as titleTag on titleTag.guid = titleAss.tag_guid "+
-//				"inner join entry as e on e.guid = p.latest_entry_guid "+
-//				"inner join person as c on c.guid = p.creator_guid "+
-//				"where p.date between :startDate and :endDate order by p.date",
-//				resultSetMapping="simplePostMapping"
-//	),
-	
-	
-	
+	//Trevis, once every thing is working try to use the day/month + thread guid as the daily unique id for cross db compatibilityness
+	@NamedNativeQuery(
+		name="CalendarDao.fetchMonth", query=""+
+			"select count(p.guid) ct, Year(p.date) as yr, Month(p.date) as mo, Day(p.date) as dd, "+
+			"titleTag.value as title, p.root_guid as rootId, uuid() as uniqueId "+ //newid() as uniqueId
+			"from post p "+
+			"inner join tag as titleTag on titleTag.guid = tag_guid_title "+
+			"inner join entry as e on e.guid = p.latest_entry_guid "+
+			"where Year(p.date) = :year AND Month(p.date) = :month  "+
+			"AND p.meta_mask & :filterMask = 0 " +
+			"group by Year(p.date), Month(p.date), Day(p.date), titleTag.value, p.root_guid "+
+			"order by Year(p.date), Month(p.date), Day(p.date) ",
+			resultSetMapping="threadSummaryMapping"
+	),
 	@NamedNativeQuery(
 		name="CalendarDao.fetchHourly", query="" +
 			"select p.date, p.guid as postId, p.root_guid as rootId, titleTag.value as title, c.login, " +
@@ -589,23 +526,8 @@ import org.ttdc.persistence.util.PostFlagBitmasks;
 			resultSetMapping="simplePostMapping"
 	),
 	
-	//Trevis, once every thing is working try to use the day/month + thread guid as the daily unique id for cross db compatibilityness
-	@NamedNativeQuery(
-		name="CalendarDao.fetchMonth", query=""+
-			"select count(p.guid) ct, Year(p.date) as yr, Month(p.date) as mo, Day(p.date) as dd, "+
-			"titleTag.value as title, p.root_guid as rootId, newid() as uniqueId "+ //newid() as uniqueId
-			"from post p "+
-			"inner join tag as titleTag on titleTag.guid = tag_guid_title "+
-			"inner join entry as e on e.guid = p.latest_entry_guid "+
-			"where Year(p.date) = :year AND Month(p.date) = :month  "+
-			"AND p.meta_mask & :filterMask = 0 " +
-			"group by Year(p.date), Month(p.date), Day(p.date), titleTag.value, p.root_guid "+
-			"order by Year(p.date), Month(p.date), Day(p.date) ",
-			resultSetMapping="threadSummaryMapping"
-	),
-	
 	@NamedNativeQuery(name="CalendarDao.fetchYear", query=
-		"select count(p.guid) ct, Year(p.date) as yr, Month(p.date) as mo, Day(p.date) as dd, newid() as uniqueId "+ //newid() as uniqueId 
+		"select count(p.guid) ct, Year(p.date) as yr, Month(p.date) as mo, Day(p.date) as dd, uuid() as uniqueId "+ //newid() as uniqueId 
 		"from post p "+
 		"where Year(p.date) = :year "+
 		"group by Year(p.date), Month(p.date), Day(p.date) "+
@@ -619,16 +541,14 @@ import org.ttdc.persistence.util.PostFlagBitmasks;
 	 *  
 	 */
 	@NamedNativeQuery(name="CalendarDao.fetchSimpleMonth", query=
-		"select count(p.guid) ct, Year(p.date) as yr, Month(p.date) as mo, Day(p.date) as dd, newid() as uniqueId "+ //newid() as uniqueId
+		"select count(p.guid) ct, Year(p.date) as yr, Month(p.date) as mo, Day(p.date) as dd, uuid() as uniqueId "+ //newid() as uniqueId
 		"from post p "+
 		"where Year(p.date) = :year AND Month(p.date) = :month "+
 		"group by Year(p.date), Month(p.date), Day(p.date) "+
 		"order by Year(p.date), Month(p.date), Day(p.date)",
 		resultSetMapping="daySummaryMapping")		
-		
 	
 })
-
 
 @SqlResultSetMappings({
 	@SqlResultSetMapping(name="simplePostMapping", entities=
