@@ -491,9 +491,9 @@ import org.ttdc.persistence.util.PostFlagBitmasks;
 		name="CalendarDao.fetchMonth", query=""+
 			"select count(p.guid) ct, Year(p.date) as yr, Month(p.date) as mo, Day(p.date) as dd, "+
 			"titleTag.value as title, p.root_guid as rootId, uuid() as uniqueId "+ //newid() as uniqueId
-			"from post p "+
-			"inner join tag as titleTag on titleTag.guid = tag_guid_title "+
-			"inner join entry as e on e.guid = p.latest_entry_guid "+
+			"from POST p "+
+			"inner join TAG as titleTag on titleTag.guid = tag_guid_title "+
+			"inner join ENTRY as e on e.guid = p.latest_entry_guid "+
 			"where Year(p.date) = :year AND Month(p.date) = :month  "+
 			"AND p.meta_mask & :filterMask = 0 " +
 			"group by Year(p.date), Month(p.date), Day(p.date), titleTag.value, p.root_guid "+
@@ -504,9 +504,9 @@ import org.ttdc.persistence.util.PostFlagBitmasks;
 		name="CalendarDao.fetchHourly", query="" +
 			"select p.date, p.guid as postId, p.root_guid as rootId, titleTag.value as title, c.login, " +
 			"c.guid as creator_guid, '' as summary "+
-			"from post p "+
-			"inner join tag as titleTag on titleTag.guid = tag_guid_title "+
-			"inner join person as c on c.guid = p.person_guid_creator "+
+			"from POST p "+
+			"inner join TAG as titleTag on titleTag.guid = tag_guid_title "+
+			"inner join PERSON as c on c.guid = p.person_guid_creator "+
 			"where p.date between :startDate and :endDate " +
 			"AND p.meta_mask & :filterMask  = 0 " +
 			"order by p.date ",
@@ -516,10 +516,10 @@ import org.ttdc.persistence.util.PostFlagBitmasks;
 		name="CalendarDao.fetchHourlyWithSummary", query="" +
 			"select p.date, p.guid as postId, p.root_guid as rootId, titleTag.value as title, c.login, " +
 			"c.guid as creator_guid, e.summary as summary "+
-			"from post p "+
-			"inner join tag as titleTag on titleTag.guid = tag_guid_title "+
-			"inner join entry as e on e.guid = p.latest_entry_guid "+
-			"inner join person as c on c.guid = p.person_guid_creator "+
+			"from POST p "+
+			"inner join TAG as titleTag on titleTag.guid = tag_guid_title "+
+			"inner join ENTRY as e on e.guid = p.latest_entry_guid "+
+			"inner join PERSON as c on c.guid = p.person_guid_creator "+
 			"where p.date between :startDate and :endDate " +
 			"AND p.meta_mask & :filterMask = 0 " +
 			"order by p.date ",
@@ -528,7 +528,7 @@ import org.ttdc.persistence.util.PostFlagBitmasks;
 	
 	@NamedNativeQuery(name="CalendarDao.fetchYear", query=
 		"select count(p.guid) ct, Year(p.date) as yr, Month(p.date) as mo, Day(p.date) as dd, uuid() as uniqueId "+ //newid() as uniqueId 
-		"from post p "+
+		"from POST p "+
 		"where Year(p.date) = :year "+
 		"group by Year(p.date), Month(p.date), Day(p.date) "+
 		"order by Year(p.date), Month(p.date), Day(p.date)",
@@ -542,7 +542,7 @@ import org.ttdc.persistence.util.PostFlagBitmasks;
 	 */
 	@NamedNativeQuery(name="CalendarDao.fetchSimpleMonth", query=
 		"select count(p.guid) ct, Year(p.date) as yr, Month(p.date) as mo, Day(p.date) as dd, uuid() as uniqueId "+ //newid() as uniqueId
-		"from post p "+
+		"from POST p "+
 		"where Year(p.date) = :year AND Month(p.date) = :month "+
 		"group by Year(p.date), Month(p.date), Day(p.date) "+
 		"order by Year(p.date), Month(p.date), Day(p.date)",
