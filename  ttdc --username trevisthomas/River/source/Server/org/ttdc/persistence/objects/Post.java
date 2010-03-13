@@ -18,6 +18,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.Hibernate;
@@ -54,6 +55,7 @@ import org.ttdc.persistence.util.FilterFactoryForTokenizedTagIds;
 import org.ttdc.persistence.util.PostFlag;
 import org.ttdc.util.CalculateAverageRating;
 
+@Table(name="POST")
 @Indexed
 @Entity
 @NamedQueries({

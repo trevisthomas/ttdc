@@ -18,6 +18,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.Hibernate;
@@ -27,8 +28,8 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.ttdc.gwt.server.util.PostFormatter;
-import org.ttdc.persistence.util.PostFlag;
 
+@Table(name="PERSON")
 @Entity
 @NamedQueries({
 	//experimenting with FROM clause queries

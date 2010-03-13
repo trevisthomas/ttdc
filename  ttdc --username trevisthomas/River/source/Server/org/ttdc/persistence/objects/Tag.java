@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.lucene.index.Term;
@@ -56,6 +57,7 @@ import org.ttdc.persistence.util.FilterFactoryTagIsTitle;
  * @author Trevis
  *
  */
+@Table(name="TAG")
 @Entity
 @NamedQueries({
 	@NamedQuery(name="tag.getAll", query="FROM Tag"),
