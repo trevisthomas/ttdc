@@ -89,6 +89,7 @@ public class LatestPostsDaoTest {
 		startTimer();
 		LatestPostsDao dao = new LatestPostsDao();
 		dao.addFlagFilter(PostFlag.DELETED);
+		
 		PaginatedList<Post> results = dao.loadFlat();
 		
 		//Inflatinator inf = new Inflatinator(results.getList());
@@ -98,6 +99,7 @@ public class LatestPostsDaoTest {
 		Persistence.commit();
 		
 		for(GPost post : gPosts){
+			assertTrue("Root threads shouldnt show up in flat. ",!post.isRootPost());
 			log.debug(post.getTitle() + post.getDate() + " [" + post.getPosts()+ "] " );
 		}
 		

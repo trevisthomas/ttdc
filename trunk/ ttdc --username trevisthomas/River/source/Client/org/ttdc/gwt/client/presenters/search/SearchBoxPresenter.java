@@ -107,10 +107,10 @@ public class SearchBoxPresenter extends BasePresenter<SearchBoxPresenter.View> /
 		dateRange = new DateRangeLite(token);
 		
 		startCalendarPresenter = injector.getInteractiveCalendarPresenter();
-		startCalendarPresenter.init(dateRange.getStartDate());
+		startCalendarPresenter.init(InteractiveCalendarPresenter.Mode.DATE_PICKER_MODE ,dateRange.getStartDate());
 
 		endCalendarPresenter = injector.getInteractiveCalendarPresenter();
-		endCalendarPresenter.init(dateRange.getEndDate());
+		endCalendarPresenter.init(InteractiveCalendarPresenter.Mode.DATE_PICKER_MODE, dateRange.getEndDate());
 		
 		view.calendarPanel().clear();
 		view.calendarPanel().add(startCalendarPresenter.getWidget());

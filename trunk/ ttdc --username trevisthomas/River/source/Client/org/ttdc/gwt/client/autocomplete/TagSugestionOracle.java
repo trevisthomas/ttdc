@@ -114,7 +114,10 @@ public class TagSugestionOracle extends SuggestOracle implements SuggestionListe
 		this.commandMode = commandMode;
 	}
 	public TagSuggestion getCurrentTagSuggestion() {
-		return currentTagSuggestion;
+		if(currentTagSuggestion == null || currentTagSuggestion.isCreateNew())
+			return null;
+		else
+			return currentTagSuggestion;
 	}
 	
 	private class MySuggestBox extends SuggestBox{

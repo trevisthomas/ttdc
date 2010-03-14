@@ -5,10 +5,12 @@ import java.util.List;
 
 import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.beans.GTag;
+import org.ttdc.gwt.shared.util.StringUtil;
 
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
+
 
 public class TagSuggestion implements IsSerializable, Suggestion  {
 	private List<SuggestionListener> listeners = new ArrayList<SuggestionListener>();
@@ -82,5 +84,14 @@ public class TagSuggestion implements IsSerializable, Suggestion  {
 	public void setPost(GPost post) {
 		this.post = post;
 	}
+	
+	public boolean isCreateNew(){
+		if(tag != null)
+    		return StringUtil.empty(tag.getTagId());
+		else if(post != null)
+    		return StringUtil.empty(post.getPostId());
+    	else
+    		return true;
+	} 
 
 }

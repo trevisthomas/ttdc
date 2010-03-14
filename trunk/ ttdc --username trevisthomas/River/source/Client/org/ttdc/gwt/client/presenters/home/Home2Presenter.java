@@ -32,7 +32,7 @@ public class Home2Presenter extends BasePagePresenter<Home2Presenter.View>{
 		super(injector, injector.getHome2View());
 		
 		InteractiveCalendarPresenter calendarPresenter = injector.getInteractiveCalendarPresenter();
-		calendarPresenter.init();
+		calendarPresenter.init(InteractiveCalendarPresenter.Mode.CALENDER_INTERFACE_MODE);
 		
 		view.modulePanel().add(calendarPresenter.getWidget());
 		view.modulePanel().add(injector.getTrafficPresenter().getWidget());

@@ -49,6 +49,7 @@ public class MonthView implements MonthPresenter.View{
 		setup();
 		//Init that only happens once
 		headerPanelGrid.setWidget(0, 1, headerPanel);
+		
 	}
 	
 	@Override
@@ -62,6 +63,16 @@ public class MonthView implements MonthPresenter.View{
 		
 		
 		setup();
+	}
+	
+	@Override
+	public void enableSelectableDayMode(boolean enable) {
+		if(enable){
+			controls.setVisible(true);
+		}
+		else{	
+			controls.setVisible(false);
+		}
 	}
 
 	private void setup() {
