@@ -49,7 +49,7 @@ public class PostPresenter extends BasePresenter<PostPresenter.View> implements 
 		HasWidgets creationDateTarget();
 		void init(String postId);
 		
-		/*
+				/*
 		HasText getPostTitle();
 		HasClickHandlers getEarmarkButton();
 		HasClickHandlers getLikeButton();
@@ -92,7 +92,7 @@ public class PostPresenter extends BasePresenter<PostPresenter.View> implements 
 		hyperlinkPresenter.setPost(post);
 		view.title().add(hyperlinkPresenter.getWidget());
 		
-		view.getPostEntry().setText(post.getEntry());
+		view.getPostEntry().setText(post.getParent()+"\n"+post.getEntry());
 		view.setMode(mode);
 		//TODO do the rest of what is needed to show the post
 		

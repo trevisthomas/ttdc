@@ -367,7 +367,8 @@ import org.ttdc.persistence.util.PostFlagBitmasks;
 
 	@NamedQuery(name="LatestPostsDao.Flat", query="" +
 		"SELECT post FROM Post post " +
-		"WHERE bitwise_and( post.metaMask, :filterMask ) = 0  "+
+		"WHERE bitwise_and( post.metaMask, :filterMask ) = 0  " +
+		"AND post.parent is not null "+
 		"ORDER BY post.date DESC"),
 		
 	@NamedQuery(name="LatestPostsDao.FlatCount", query="" +

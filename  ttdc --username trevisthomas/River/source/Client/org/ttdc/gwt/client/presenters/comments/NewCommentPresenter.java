@@ -1,18 +1,14 @@
 package org.ttdc.gwt.client.presenters.comments;
 
-import java.util.Arrays;
-
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.autocomplete.TagSugestionOracle;
 import org.ttdc.gwt.client.autocomplete.TagSuggestion;
 import org.ttdc.gwt.client.messaging.ConnectionId;
-import org.ttdc.gwt.client.presenters.home.NestedPresenter;
 import org.ttdc.gwt.client.presenters.shared.BasePresenter;
 import org.ttdc.gwt.client.presenters.shared.BaseView;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
 import org.ttdc.gwt.shared.commands.PostCrudCommand;
 import org.ttdc.gwt.shared.commands.results.PostCommandResult;
-import org.ttdc.gwt.shared.commands.results.SearchPostsCommandResult;
 import org.ttdc.gwt.shared.commands.types.PostActionType;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -22,8 +18,6 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasHTML;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.inject.Inject;
 

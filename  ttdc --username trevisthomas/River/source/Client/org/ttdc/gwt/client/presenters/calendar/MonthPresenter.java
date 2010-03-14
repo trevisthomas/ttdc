@@ -42,6 +42,7 @@ public class MonthPresenter extends BasePresenter<MonthPresenter.View> implement
 		void setSelectedDay(Day day);
 		void deselectDay();
 		Day getSelectedDay();
+		void enableSelectableDayMode(boolean enable);
 		
 		HasClickHandlers clearClickHandlers();
 		HasClickHandlers nowClickHandlers();
@@ -99,6 +100,8 @@ public class MonthPresenter extends BasePresenter<MonthPresenter.View> implement
 				view.setSelectedDay(now);				
 			}
 		});
+		
+		//view.enableSelectableDayMode(selectableDayMode);
 	}
 	
 	
@@ -233,6 +236,7 @@ public class MonthPresenter extends BasePresenter<MonthPresenter.View> implement
 
 	public void setSelectableDayMode(boolean selectableDayMode) {
 		this.selectableDayMode = selectableDayMode;
+		view.enableSelectableDayMode(selectableDayMode);
 	}
 	
 	public void setSelectedDay(Day selectedDay) {

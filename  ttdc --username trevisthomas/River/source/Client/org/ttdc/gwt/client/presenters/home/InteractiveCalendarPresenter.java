@@ -27,18 +27,22 @@ public class InteractiveCalendarPresenter extends BasePresenter<InteractiveCalen
 	}
 	private CalendarSelectorModulePresenter selectorPresenter;
 	private MonthPresenter monthPresenter;
+	private Mode mode;
 
 	@Inject
 	protected InteractiveCalendarPresenter(Injector injector) {
 		super(injector, injector.getInteractiveCalendarView());
 	}
 	
-	public void init() {
+	public enum Mode {CALENDER_INTERFACE_MODE,DATE_PICKER_MODE};
+	
+	public void init(Mode mode) {
 		Date date = new Date();
-		init(date);
+		init(mode, date);
 	}
 	
-	public void init(Date date) {
+	public void init(Mode mode, Date date) {
+		this.mode = mode;
 		boolean select = true;
 		if(date == null){
 			select = false;
@@ -86,7 +90,10 @@ public class InteractiveCalendarPresenter extends BasePresenter<InteractiveCalen
 		if(PresenterHelpers.isWidgetEmpty(view.calendarPanel())){
 			monthPresenter = injector.getMonthPresenter();
 			monthPresenter.init(year, monthOfYear);
-			monthPresenter.setSelectableDayMode(true);
+			if(mode.equals(Mode.DATE_PICKER_MODE))
+				monthPresenter.setSelectableDayMode(true);
+			else
+				monthPresenter.setSelectableDayMode(false);
 			view.calendarPanel().clear();
 			view.calendarPanel().add(monthPresenter.getWidget());
 		}
