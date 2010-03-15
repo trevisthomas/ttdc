@@ -46,6 +46,7 @@ public class PostView implements PostPresenter.View {
 			postHeader.add(title);
 			postPanel.add(new HTMLPanel(entry.getText()));
 			
+			//The target for embedded content
 			mainPanel.add(new HTML("<center><span id=\""+postId+"\"></span></center>"));
 			
 			if(Mode.NESTED_SUMMARY.equals(mode)){
