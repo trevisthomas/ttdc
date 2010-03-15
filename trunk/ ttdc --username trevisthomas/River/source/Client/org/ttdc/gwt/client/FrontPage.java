@@ -13,6 +13,7 @@ import org.ttdc.gwt.client.messaging.ServerEventMonitor;
 import org.ttdc.gwt.client.messaging.error.MessageEvent;
 import org.ttdc.gwt.client.messaging.error.MessageEventListener;
 import org.ttdc.gwt.client.messaging.error.MessageEventType;
+import org.ttdc.gwt.client.messaging.history.HistoryConstants;
 import org.ttdc.gwt.client.messaging.history.HistoryEvent;
 import org.ttdc.gwt.client.messaging.history.HistoryEventListener;
 import org.ttdc.gwt.client.presenters.HistoryEventPresenterManager;
@@ -31,7 +32,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SuggestBox;
 
 public class FrontPage implements EntryPoint, HistoryEventListener{
-	private final static String VIEW_HOME = "view=main";
+	//private final static String VIEW_HOME = "view=main";
 	//private final RpcServiceAsync service = GWT.create(RpcService.class);
 	
 	private final Injector injector = GWT.create(Injector.class);
@@ -64,7 +65,7 @@ public class FrontPage implements EntryPoint, HistoryEventListener{
 		EventBus.getInstance().addListener(this);
 		String historyToken = History.getToken();
         if (historyToken.length() == 0) {
-        	History.newItem(VIEW_HOME);
+        	History.newItem(HistoryConstants.VIEW_HOME);
                 
         } else {
         	History.newItem(historyToken);

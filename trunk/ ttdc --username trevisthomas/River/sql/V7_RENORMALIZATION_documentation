@@ -54,7 +54,7 @@
 	update style set default_style=1 where guid='A50C080A-8696-485C-B4F0-C1291962E0D8'
 	
 //////Mysql 
-uniqueidentifier -> varbinary(36)
+uniqueidentifier -> varbinary(36)   (or varchar64 seems to work?)
 insure that database is utf8-general 
 *NOTE: if it doesnt copy all rows for all tables just delete the db and start over. It doesnt take too long (if you've cleaned hte asses out of the sql server)	
 *NOTE: Image gives you grief.  An error about the maximum key something being 7xx bytes.  Just delete the unique key constraint on the image path name.  Probably just want to handle this programitically	
