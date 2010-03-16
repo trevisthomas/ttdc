@@ -65,7 +65,7 @@ public class FrontPage implements EntryPoint, HistoryEventListener{
 		EventBus.getInstance().addListener(this);
 		String historyToken = History.getToken();
         if (historyToken.length() == 0) {
-        	History.newItem(HistoryConstants.VIEW_HOME);
+        	History.newItem(HistoryConstants.VIEW+"="+HistoryConstants.VIEW_HOME);
                 
         } else {
         	History.newItem(historyToken);

@@ -49,7 +49,7 @@ public class Home2View implements Home2Presenter.View{
 		centerTabPanel.add(conversationPanel,"Conversations");
 		rightTabPanel.add(threadPanel,"Threads");
 		
-		token.addParameter(HistoryConstants.VIEW, HistoryConstants.VIEW_HOME2);
+		token.addParameter(HistoryConstants.VIEW, HistoryConstants.VIEW_HOME);
 		
 		centerTabPanel.addSelectionHandler(new SelectionHandler<Integer>() {
 			@Override
