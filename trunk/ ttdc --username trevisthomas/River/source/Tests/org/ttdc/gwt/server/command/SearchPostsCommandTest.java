@@ -192,9 +192,9 @@ public class SearchPostsCommandTest{
 		SearchPostsCommand cmd = new SearchPostsCommand();
 		
 		//I'm also testing the tag filtered version!
-		List<String> excludeTags =  new ArrayList<String>();
-		excludeTags.add(tagTrevis);
-		cmd.setNotTagIdList(excludeTags);
+//		List<String> excludeTags =  new ArrayList<String>();
+//		excludeTags.add(tagTrevis);
+//		cmd.setNotTagIdList(excludeTags);
 		
 		cmd.setPhrase("font");
 		cmd.setRootId(Helpers.rootIdVersion6Live);
@@ -266,6 +266,23 @@ public class SearchPostsCommandTest{
 			rollback();
 			fail(e.getMessage());
 		}
+	}
+	
+	@Test
+	public void searchForMovies(){
+		SearchPostsCommand cmd = new SearchPostsCommand();
+		cmd.setReviewsOnly(true);
+		cmd.setPersonId(personIdTrevis);
+		
+		CommandExecutor cmdexec = CommandExecutorFactory.createExecutor(personIdTrevis,cmd);
+		CommandResult result = cmdexec.executeCommand();
+		assertNotNull("Command execution produced a null result", result);
+		
+		PaginatedList<GPost> results = ((SearchPostsCommandResult)result).getResults();
+		
+		assertTrue("Found nothing, expected something",results.getTotalResults() > 0);
+		assertNotTagged(results.getList(),tagTrevis);
+		
 	}
 	
 	//The following are similar to the ones in helper but these use GPost inseatd
