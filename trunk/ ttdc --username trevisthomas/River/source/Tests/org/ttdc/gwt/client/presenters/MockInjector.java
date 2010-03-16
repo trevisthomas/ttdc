@@ -10,13 +10,13 @@ import org.ttdc.gwt.client.messaging.history.HistoryToken;
 import org.ttdc.gwt.client.presenters.admin.AdminToolsPresenter;
 import org.ttdc.gwt.client.presenters.admin.ImageManagementPresenter;
 import org.ttdc.gwt.client.presenters.admin.ImageRowPresenter;
+import org.ttdc.gwt.client.presenters.admin.PersonStatusGadgetPresenter;
 import org.ttdc.gwt.client.presenters.admin.StyleManagementPresenter;
 import org.ttdc.gwt.client.presenters.admin.StyleRowPresenter;
 import org.ttdc.gwt.client.presenters.admin.UserAdministrationPresenter;
 import org.ttdc.gwt.client.presenters.admin.UserObjectTemplateEditorPresenter;
 import org.ttdc.gwt.client.presenters.admin.UserObjectTemplateRowPresenter;
 import org.ttdc.gwt.client.presenters.admin.UserPrivilegeGadgetPresenter;
-import org.ttdc.gwt.client.presenters.admin.PersonStatusGadgetPresenter;
 import org.ttdc.gwt.client.presenters.calendar.CalendarPostPresenter;
 import org.ttdc.gwt.client.presenters.calendar.CalendarPresenter;
 import org.ttdc.gwt.client.presenters.calendar.DayOfMonthPresenter;
@@ -29,17 +29,16 @@ import org.ttdc.gwt.client.presenters.calendar.WeekPresenter;
 import org.ttdc.gwt.client.presenters.calendar.YearPresenter;
 import org.ttdc.gwt.client.presenters.comments.NewCommentPresenter;
 import org.ttdc.gwt.client.presenters.dashboard.EditProfilePresenter;
+import org.ttdc.gwt.client.presenters.dashboard.ProfilePresenter;
 import org.ttdc.gwt.client.presenters.dashboard.RemovableWebLinkPresenter;
 import org.ttdc.gwt.client.presenters.dashboard.ResetPasswordPresenter;
 import org.ttdc.gwt.client.presenters.dashboard.SettingsPresenter;
 import org.ttdc.gwt.client.presenters.dashboard.UserDashboardPresenter;
-import org.ttdc.gwt.client.presenters.dashboard.ProfilePresenter;
 import org.ttdc.gwt.client.presenters.demo.DemoPresenter;
 import org.ttdc.gwt.client.presenters.home.CalendarSelectorModulePresenter;
 import org.ttdc.gwt.client.presenters.home.ConversationPresenter;
 import org.ttdc.gwt.client.presenters.home.FlatPresenter;
 import org.ttdc.gwt.client.presenters.home.Home2Presenter;
-import org.ttdc.gwt.client.presenters.home.HomePresenter;
 import org.ttdc.gwt.client.presenters.home.InteractiveCalendarPresenter;
 import org.ttdc.gwt.client.presenters.home.NestedPresenter;
 import org.ttdc.gwt.client.presenters.home.ThreadPresenter;
@@ -1138,17 +1137,6 @@ public class MockInjector implements Injector{
 		return null;
 	}
 
-	@Override
-	public HomePresenter getHomePresenter() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public org.ttdc.gwt.client.presenters.home.HomePresenter.View getHomeView() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public NestedPresenter getNestedPresenter() {

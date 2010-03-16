@@ -2,16 +2,12 @@ package org.ttdc.gwt.client.presenters;
 
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GPerson;
-import org.ttdc.gwt.client.messaging.ConnectionId;
 import org.ttdc.gwt.client.messaging.EventBus;
 import org.ttdc.gwt.client.messaging.ServerEventMonitor;
 import org.ttdc.gwt.client.messaging.history.HistoryConstants;
 import org.ttdc.gwt.client.messaging.history.HistoryEvent;
 import org.ttdc.gwt.client.messaging.history.HistoryEventListener;
 import org.ttdc.gwt.client.messaging.history.HistoryToken;
-import org.ttdc.gwt.client.presenters.calendar.CalendarPresenter;
-import org.ttdc.gwt.client.presenters.post.SearchPresenter;
-import org.ttdc.gwt.client.presenters.post.SearchTagResultsPresenter;
 import org.ttdc.gwt.client.presenters.search.SearchBoxView;
 import org.ttdc.gwt.client.presenters.topic.TopicPresenter;
 import org.ttdc.gwt.client.presenters.users.UserToolsPresenter;
@@ -112,10 +108,8 @@ public class HistoryEventPresenterManager implements HistoryEventListener{
 			}
 		}
 		else if(HistoryConstants.VIEW_HOME.equals(view)){
-			injector.getHomePresenter().show(event.getSource());
-		}
-		else if(HistoryConstants.VIEW_HOME2.equals(view)){
 			injector.getHome2Presenter().show(event.getSource());
+			//injector.getHomePresenter().show(event.getSource());
 		}
 		else{
 			/*Just let it go neo*/
