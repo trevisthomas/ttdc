@@ -51,9 +51,11 @@ public class SearchPostsCommandExecutor extends CommandExecutor<SearchPostsComma
 			//Trevis, eventually you'll want to use the user chosen default when not over ridden by the specific command
 			
 			if(command.isNonReviewsOnly()){
+				filterList = ExecutorHelpers.createFlagFilterListForPerson(getPerson());
 				filterList.add(PostFlag.REVIEW);
 			} 
 			else if(command.isReviewsOnly()){
+				filterList.clear();//We're going to invert the filter so, better clear it out first. (NWS and INF maybe in there!!)
 				filterList.add(PostFlag.REVIEW);
 				dao.setInvertFilterFuction(true);
 			}
