@@ -19,8 +19,11 @@ package org.ttdc.gwt.client.presenters.comments;
 
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.google.gwt.core.client.JsArrayString;
+
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
@@ -31,6 +34,7 @@ import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HasHTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.ListBox;
@@ -40,7 +44,7 @@ import com.google.gwt.user.client.ui.ToggleButton;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.RichTextArea.Formatter;
 
-public class RichTextToolbar extends Composite {
+public class RichTextToolbar extends Composite{
 	private static final String HTTP_STATIC_ICONS_GIF = "http://blog.elitecoderz.net/wp-includes/js/tinymce/themes/advanced/img/icons.gif";
 
 	/** Private Variables **/
@@ -78,6 +82,7 @@ public class RichTextToolbar extends Composite {
 	private PushButton insertimage;
 	private PushButton removeformatting;
 	private PushButton youtube;
+	private PushButton embed;
 	private ToggleButton texthtml;
 	
 	private ListBox fontlist;
@@ -254,13 +259,21 @@ public class RichTextToolbar extends Composite {
 				String embedSource = "http://www.youtube.com/v/SDbQ5xvsrIU&hl=en_US&fs=1&";
 				String directSource = "http://www.youtube.com/watch?v=SDbQ5xvsrIU";
 				
-				String text = crazyGetSelectedText(styleText);
-				//String text = getSelectedText();
+				//String text = crazyGetSelectedText(styleText);
+				String text = getSelectedText();
 				
 				String s = "<a target=\"_blank\" href=\""+directSource+"\">"+text+"</a><a href=\"javascript:tggle_video('"+embedTarget+"','"+embedSource+"');\">[view]</a>";
 				styleText.getFormatter().insertHTML(s);
 				
 				//changeHtmlStyle("<a target=\"_blank\" href=\""+directSource+"\">","</a><a href=\"javascript:tggle_video('"+embedTarget+"','"+embedSource+"');\">[view]</a>");
+			}
+			else if(event.getSource().equals(embed)){
+				String selectedText = getSimpleSelection();
+				EmbedContentPopup popup = new EmbedContentPopup(RichTextToolbar.this, selectedText);
+				popup.setGlassEnabled(true);
+				popup.setAnimationEnabled(true);
+				popup.center();
+				popup.show();
 			}
 			
 			updateStatus();
@@ -383,6 +396,8 @@ public class RichTextToolbar extends Composite {
 		bottomPanel.add(colorlist = createColorList());
 		bottomPanel.add(new HTML("&nbsp;"));
 		bottomPanel.add(youtube = createPushButton(HTTP_STATIC_ICONS_GIF,5,80,25,20,"Youtube"));
+		bottomPanel.add(embed = createPushButton(HTTP_STATIC_ICONS_GIF,5,80,25,20,"Embed"));
+		
 	}
 
 	/** Method to create a Toggle button for the toolbar **/
@@ -443,20 +458,28 @@ public class RichTextToolbar extends Composite {
 	    return mylistBox;
 	}
 	
-	private String crazyGetSelectedText(RichTextArea rta) {
-		final String MARKER = "http://trevsmarker.com"; 
-		rta.getFormatter().createLink(MARKER);
-		String withMarker = rta.getHTML();
-		
-		int markerIndex = withMarker.indexOf(MARKER);
-		int beginIndex = withMarker.indexOf('>', markerIndex)+1;
-		int endIndex = withMarker.indexOf('<', beginIndex);
-		String selected = withMarker.substring(beginIndex, endIndex);
-		
-		rta.getFormatter().removeLink();
-		return selected;
+	public void performLinkEmbed(String selectedText, String directSource, String embedSource) {
+		embedSource = embedSource.replaceAll("\"", ""); //Hack because inserting the htmp performs some html encoding that complety messes up when there are qutation marks
+		String s = "<a target=\"_blank\" href=\""+directSource+"\">"+selectedText+"</a><a href=\"javascript:tggle_embed('"+embedTarget+"','"+embedSource+"');\">[view]</a>";
+		styleText.getFormatter().insertHTML(s);
 	}
 
+	public String getSimpleSelection(){
+		return getSimpleSelection(styleText.getElement()).get(0).toString();
+	}
+
+	public static native JsArrayString getSimpleSelection(Element elem) /*-{
+		var txt = "";
+		if (elem.contentWindow.getSelection != undefined) {
+			txt = elem.contentWindow.getSelection();
+		} else if (elem.contentWindow.document.getSelection != undefined) {
+			txt = elem.contentWindow.document.getSelection();
+		} else if (elem.contentWindow.document.selection  != undefined) {
+			txt = elem.contentWindow.document.selection.createRange().text;
+		}
+		return [""+txt];
+	}-*/;
+	
 }
 
 
