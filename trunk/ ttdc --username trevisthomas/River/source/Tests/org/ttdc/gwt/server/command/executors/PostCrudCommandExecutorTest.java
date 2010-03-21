@@ -186,6 +186,43 @@ public class PostCrudCommandExecutorTest {
 	}
 	
 	@Test
+	public void testCreateNewTopicAsAdmin(){
+		try{
+			final PostCrudCommand cmd = UniqueCrudPostCommandObjectMother.createNewTopic();
+			cmd.setAction(PostActionType.CREATE);
+			String title = cmd.getTitle();
+			PostCrudCommandExecutor cmdexec = (PostCrudCommandExecutor)CommandExecutorFactory.createExecutor(Helpers.personIdAdmin,cmd);
+			//cmdexec.execute();
+			
+			beginSession();
+			Post post = cmdexec.create(cmd);
+			
+			assertTrue("Root post has a parent! WTF!",post.getParent() == null);
+			assertTrue("Thread_guid must be null for root posts",post.getThread() == null);
+			assertTrue("Root post is not root!!!",post.isRootPost());
+			
+			assertEquals("Path should be blank for roots","",post.getPath()); 
+			
+			assertNotNull("Creator is null on the post object",post.getCreator());
+			assertEquals(Helpers.personIdAdmin,post.getCreator().getPersonId());
+			
+			Tag titleTag = post.getTitleTag();
+			assertEquals(title,titleTag.getValue());
+			assertEquals(title,titleTag.getSortValue());
+			
+//			Helpers.assertPostDateTagsCorrect(post);
+		}
+		catch(Exception e){
+			rollback();
+			fail(e.getMessage());
+			e.printStackTrace();
+		}	
+		finally{
+			rollback();
+		}
+	}
+	
+	@Test
 	public void testCreateNewTopic(){
 		try{
 			final PostCrudCommand cmd = UniqueCrudPostCommandObjectMother.createNewTopic();
@@ -266,6 +303,45 @@ public class PostCrudCommandExecutorTest {
 		}
 	}
 	
+	@Test
+	public void testCreatePostWithFlags(){
+		try{
+			final PostCrudCommand cmd = UniqueCrudPostCommandObjectMother.createNewTopic();
+			cmd.setAction(PostActionType.CREATE);
+			String title = cmd.getTitle();
+			cmd.setPrivate(true);
+			
+			PostCrudCommandExecutor cmdexec = (PostCrudCommandExecutor)CommandExecutorFactory.createExecutor(Helpers.personIdTrevis,cmd);
+			//cmdexec.execute();
+			
+			beginSession();
+			Post post = cmdexec.create(cmd);
+			
+			assertTrue("Root post has a parent! WTF!",post.getParent() == null);
+			assertTrue("Thread_guid must be null for root posts",post.getThread() == null);
+			assertTrue("Root post is not root!!!",post.isRootPost());
+			
+			assertEquals("Path should be blank for roots","",post.getPath()); 
+			
+			assertNotNull("Creator is null on the post object",post.getCreator());
+			assertEquals(Helpers.personIdTrevis,post.getCreator().getPersonId());
+			
+			Tag titleTag = post.getTitleTag();
+			assertTrue("Post should be flagged as private.",post.isPrivate());
+			assertEquals(title,titleTag.getValue());
+			assertEquals(title,titleTag.getSortValue());
+			
+//			Helpers.assertPostDateTagsCorrect(post);
+		}
+		catch(Exception e){
+			rollback();
+			fail(e.getMessage());
+			e.printStackTrace();
+		}	
+		finally{
+			rollback();
+		}
+	}
 	
 	@Test
 	public void testTitleRequiredNotNullForRootTopic(){

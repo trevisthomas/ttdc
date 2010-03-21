@@ -123,7 +123,7 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 	protected Post create(PostCrudCommand cmd) {
 		Person creator = PersonDao.loadPerson(getPerson().getPersonId());
 		
-		if(!creator.hasPrivilege(Privilege.POST) || creator.isAdministrator())
+		if(!creator.hasPrivilege(Privilege.POST) && !creator.isAdministrator())
 			throw new RuntimeException("You dont have privledges to create new content.");
 		
 		Post parent = null;
@@ -131,6 +131,21 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 			parent = PostDao.loadPost(cmd.getParentId());
 		
 		PostDao dao = new PostDao();
+		if(cmd.isDeleted())
+			dao.setDeleted();
+		if(cmd.isInf())
+			dao.setInf();
+		if(cmd.isMovie()){
+			dao.setMovie();
+			dao.setRatable();
+		}
+		if(cmd.isNws())
+			dao.setNws();
+		if(cmd.isPrivate())
+			dao.setPrivate();
+		if(cmd.isReview())
+			dao.setReview();
+		
 		dao.setParent(parent);
 		dao.setBody(cmd.getBody());
 		dao.setCreator(creator);

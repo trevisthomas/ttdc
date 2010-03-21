@@ -1,0 +1,74 @@
+.shackTag_b
+{
+	font-weight:bolder;
+}
+.shackTag_s
+{
+	font-size: 75%;
+	font-weight:lighter;
+}
+.shackTag_u
+{
+	text-decoration: underline;
+}
+.shackTag_i
+{
+	font-style:italic;
+}
+.shackTag_strike
+{
+	text-decoration:line-through;
+}
+
+.shackTag_blue
+{
+	color:blue;
+}
+.shackTag_red
+{
+	color:red;
+}
+.shackTag_green
+{
+	color:green;
+}
+.shackTag_orange
+{
+	color:orange;
+}
+.shackTag_white
+{
+	color:white;
+	
+}
+
+.shackTag_BIG
+{
+	font-family:Arial, Verdana;
+	line-height: 100%;
+	font-size: 18pt;
+	font-weight:700;
+}
+.shackTag_q
+{
+	border:solid;
+	border-width:1px;
+	border-left-width:0px;
+	border-right-width:0px;
+	padding: 4px;
+	margin:10px;
+	font-size:100%;
+	font-style:italic;
+}
+.shackTag_o
+{
+	font-family:verdana;
+	border:dashed;
+	border-width:1px;
+	border-left-width:0px;
+	border-right-width:0px;
+	padding: 4px;
+	margin:10px;
+	font-size:100%;
+	font-style:normal;
+}

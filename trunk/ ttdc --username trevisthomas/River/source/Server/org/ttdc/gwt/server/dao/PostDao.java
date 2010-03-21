@@ -13,6 +13,7 @@ import org.ttdc.persistence.objects.Image;
 import org.ttdc.persistence.objects.Person;
 import org.ttdc.persistence.objects.Post;
 import org.ttdc.persistence.objects.Tag;
+import org.ttdc.persistence.util.PostFlagBitmasks;
 
 
 final public class PostDao {
@@ -24,6 +25,7 @@ final public class PostDao {
 	private Tag titleTag;
 	private String url;
 	private Integer publishYear;
+	private long metaMask = 0;
 	
 	public PostDao(){}
 
@@ -69,6 +71,7 @@ final public class PostDao {
 		post.setTitleTag(titleTag);
 		post.setPublishYear(publishYear);
 		post.setUrl(url);
+		post.setMetaMask(metaMask);
 		
 		if(parent != null){
 			if(parent.isLegacyThreadHolder())
@@ -365,6 +368,41 @@ final public class PostDao {
 	public void setPublishYear(Integer publishYear) {
 		this.publishYear = publishYear;
 	}
-
+	
+	public void setDeleted(){
+		metaMask = metaMask | PostFlagBitmasks.BITMASK_DELETED;
+	}
+	
+	public void setInf(){
+		metaMask = metaMask | PostFlagBitmasks.BITMASK_INF;
+	}
+	
+	public void setLink(){
+		metaMask = metaMask | PostFlagBitmasks.BITMASK_LINK;
+	}
+	
+	public void setMovie(){
+		metaMask = metaMask | PostFlagBitmasks.BITMASK_MOVIE;
+	}
+	
+	public void setNws(){
+		metaMask = metaMask | PostFlagBitmasks.BITMASK_NWS;
+	}
+	
+	public void setPrivate(){
+		metaMask = metaMask | PostFlagBitmasks.BITMASK_PRIVATE;
+	}
+	
+	public void setRatable(){
+		metaMask = metaMask | PostFlagBitmasks.BITMASK_RATABLE;
+	}
+	
+	public void setReview(){
+		metaMask = metaMask | PostFlagBitmasks.BITMASK_REVIEW;
+	}
+	
+	public void setLocked(){
+		metaMask = metaMask | PostFlagBitmasks.BITMASK_LOCKED;
+	}
 		
 }
