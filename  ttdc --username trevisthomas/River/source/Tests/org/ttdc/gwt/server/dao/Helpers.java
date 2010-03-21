@@ -33,6 +33,7 @@ public class Helpers {
 	public final static String tagKimD = "72DC620F-34F2-4F77-A7DC-2E9E747BC0C8";
 	public final static String personIdLinten = "B99D6CCA-D1F4-4B58-9316-7AF07B8F341F";
 	
+	
 	public final static String tagLinten = "57512607-DB8F-4604-8187-12877F1A68C5"; 
 	
 	public final static String rootIdVersion6Live="BCAF5553-27BE-469A-90A5-57CEF155611D";
@@ -48,6 +49,7 @@ public class Helpers {
 		
 	public final static String personIdTrevis = "50E7F601-71FD-40BD-9517-9699DDA611D6";
 	public final static String personIdCSam = "32CF168E-2C06-4A80-924C-9C824C1770D7";
+	public final static String personIdAdmin = "3D9871D7-4889-41D1-9E7C-69351C8D022E";
 	
 	public static void assertTagged(List<Post> posts, String tagId){
 		for(Post post : posts){

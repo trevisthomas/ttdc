@@ -25,7 +25,9 @@ public class NewCommentView implements NewCommentPresenter.View{
 	private final PasswordTextBox passwordTextBox = new PasswordTextBox();
 	private final Button addCommentButton = new Button("Add");
 	private final RichTextArea textArea = new RichTextArea();
-	private final RichTextToolbar toolbar = new RichTextToolbar(textArea, embedTargetPlaceholder);
+	//private final RichTextToolbar toolbar = new RichTextToolbar(textArea, embedTargetPlaceholder);
+	private final CommentToolbar toolbar = new CommentToolbar(textArea, embedTargetPlaceholder);
+	
 	private final Button previewButton = new Button("Preview");
 	private final SimplePanel show = new SimplePanel();
 	

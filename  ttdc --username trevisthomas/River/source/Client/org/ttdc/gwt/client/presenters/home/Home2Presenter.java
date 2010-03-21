@@ -89,18 +89,18 @@ public class Home2Presenter extends BasePagePresenter<Home2Presenter.View>{
 		
 		if(HistoryConstants.HOME_FLAT_TAB.equals(tab)){
 			selected = TabType.FLAT; 
-			buildFlatTab();
+//			buildFlatTab();
 		}
 		else if(HistoryConstants.HOME_NESTED_TAB.equals(tab)){
 			selected = TabType.NESTED;
-			buildNestedTab();
+//			buildNestedTab();
 		}
 		else{ // if(HistoryConstants.HOME_NESTED_TAB.equals(tab)){
 			selected = TabType.CONVERSATION;
-			buildConversationTab();
+//			buildConversationTab();
 		}
 		
-		buildThreadTab();
+		//buildThreadTab();
 		
 		view.displayTab(selected);
 

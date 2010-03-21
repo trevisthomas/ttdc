@@ -18,8 +18,10 @@ package org.ttdc.gwt.client.presenters.comments;
  */
 
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.google.gwt.core.client.JsArrayString;
@@ -44,7 +46,7 @@ import com.google.gwt.user.client.ui.ToggleButton;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.RichTextArea.Formatter;
 
-public class RichTextToolbar extends Composite{
+public class RichTextToolbar extends Composite implements EmbedContentPopupSource{
 	private static final String HTTP_STATIC_ICONS_GIF = "http://blog.elitecoderz.net/wp-includes/js/tinymce/themes/advanced/img/icons.gif";
 
 	/** Private Variables **/
@@ -84,6 +86,8 @@ public class RichTextToolbar extends Composite{
 	private PushButton youtube;
 	private PushButton embed;
 	private ToggleButton texthtml;
+	
+	private List<RichStyleElement> colorStyleList = new ArrayList<RichStyleElement>();
 	
 	private ListBox fontlist;
 	private ListBox colorlist;
@@ -128,6 +132,11 @@ public class RichTextToolbar extends Composite{
 
 		//Now lets fill the new toolbar with life
 		buildTools();
+		
+//		colorStyleList.add(new RichStyleElement("Blue", "<span class=shackTag_blue>", "</style>"));
+//		colorStyleList.add(new RichStyleElement("Red", "<span class=shackTag_red>", "</style>"));
+//		colorStyleList.add(new RichStyleElement("Orange", "<span class=shackTag_orange>", "</style>"));
+//		colorStyleList.add(new RichStyleElement("Green", "<span class=shackTag_green>", "</style>"));
 	}
 
 	/** Click Handler of the Toolbar **/
@@ -268,7 +277,8 @@ public class RichTextToolbar extends Composite{
 				//changeHtmlStyle("<a target=\"_blank\" href=\""+directSource+"\">","</a><a href=\"javascript:tggle_video('"+embedTarget+"','"+embedSource+"');\">[view]</a>");
 			}
 			else if(event.getSource().equals(embed)){
-				String selectedText = getSimpleSelection();
+				//String selectedText = getSimpleSelection();
+				String selectedText = getSelectedText();
 				EmbedContentPopup popup = new EmbedContentPopup(RichTextToolbar.this, selectedText);
 				popup.setGlassEnabled(true);
 				popup.setAnimationEnabled(true);
@@ -285,19 +295,19 @@ public class RichTextToolbar extends Composite{
 
 		public void onChange(ChangeEvent event) {
 			System.out.println("fire");
-			if (event.getSource().equals(fontlist)) {
-				if (isHTMLMode()) {
-					changeHtmlStyle("<span style=\"font-family: "+fontlist.getValue(fontlist.getSelectedIndex())+";\">","</span>");
-				} else {
-					styleTextFormatter.setFontName(fontlist.getValue(fontlist.getSelectedIndex()));
-				}
-			} else if (event.getSource().equals(colorlist)) {
-				if (isHTMLMode()) {
-					changeHtmlStyle("<span style=\"color: "+colorlist.getValue(colorlist.getSelectedIndex())+";\">","</span>");
-				} else {
-					styleTextFormatter.setForeColor(colorlist.getValue(colorlist.getSelectedIndex()));
-				}
-			}
+//			if (event.getSource().equals(fontlist)) {
+//				if (isHTMLMode()) {
+//					changeHtmlStyle("<span style=\"font-family: "+fontlist.getValue(fontlist.getSelectedIndex())+";\">","</span>");
+//				} else {
+//					styleTextFormatter.setFontName(fontlist.getValue(fontlist.getSelectedIndex()));
+//				}
+//			} else if (event.getSource().equals(colorlist)) {
+//				if (isHTMLMode()) {
+//					changeHtmlStyle("<span style=\"color: "+colorlist.getValue(colorlist.getSelectedIndex())+";\">","</span>");
+//				} else {
+//					styleTextFormatter.setForeColor(colorlist.getValue(colorlist.getSelectedIndex()));
+//				}
+//			}
 		}
 	}
 	
@@ -307,22 +317,36 @@ public class RichTextToolbar extends Composite{
 		return selectedText;
 	}
 
+	
+	
+	
 	/** Native JavaScript that returns the selected text and position of the start **/
 	public static native JsArrayString getSelection(Element elem) /*-{
 		var txt = "";
 		var pos = 0;
-  		if (elem.contentWindow.getSelection) {
+		var range;
+    	var parentElement;
+    	var container;
+
+        if (elem.contentWindow.getSelection) {
         	txt = elem.contentWindow.getSelection();
         	pos = elem.contentWindow.getSelection().getRangeAt(0).startOffset;
         } else if (elem.contentWindow.document.getSelection) {
         	txt = elem.contentWindow.document.getSelection();
         	pos = elem.contentWindow.document.getSelection().getRangeAt(0).startOffset;
   		} else if (elem.contentWindow.document.selection) {
-        	txt = elem.contentWindow.document.selection.createRange().text;
-        	pos = elem.contentWindow.document.selection.getRangeAt(0).startOffset;
+  			range = elem.contentWindow.document.selection.createRange();
+        	txt = range.text;
+        	parentElement = range.parentElement();
+        	container = range.duplicate();
+        	container.moveToElementText(parentElement);
+        	container.setEndPoint('EndToEnd', range);
+        	pos = container.text.length - range.text.length;
         }
   		return [""+txt,""+pos];
 	}-*/;
+
+	
 
 	/** Method called to toggle the style in HTML-Mode **/
 	private void changeHtmlStyle(String startTag, String stopTag) {
@@ -458,28 +482,13 @@ public class RichTextToolbar extends Composite{
 	    return mylistBox;
 	}
 	
+	@Override
 	public void performLinkEmbed(String selectedText, String directSource, String embedSource) {
 		embedSource = embedSource.replaceAll("\"", ""); //Hack because inserting the htmp performs some html encoding that complety messes up when there are qutation marks
 		String s = "<a target=\"_blank\" href=\""+directSource+"\">"+selectedText+"</a><a href=\"javascript:tggle_embed('"+embedTarget+"','"+embedSource+"');\">[view]</a>";
 		styleText.getFormatter().insertHTML(s);
 	}
 
-	public String getSimpleSelection(){
-		return getSimpleSelection(styleText.getElement()).get(0).toString();
-	}
-
-	public static native JsArrayString getSimpleSelection(Element elem) /*-{
-		var txt = "";
-		if (elem.contentWindow.getSelection != undefined) {
-			txt = elem.contentWindow.getSelection();
-		} else if (elem.contentWindow.document.getSelection != undefined) {
-			txt = elem.contentWindow.document.getSelection();
-		} else if (elem.contentWindow.document.selection  != undefined) {
-			txt = elem.contentWindow.document.selection.createRange().text;
-		}
-		return [""+txt];
-	}-*/;
-	
 }
 
 

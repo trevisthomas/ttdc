@@ -21,7 +21,13 @@ public class PostCrudCommand extends Command<PostCommandResult>{
 	private boolean movie = false;
 	private String titleTagId;
 	private String embedMarker;
-			
+	 
+	private boolean deleted;
+	private boolean review;
+	private boolean inf;
+	private boolean nws;
+	private boolean privatePost;
+	
 	
 	public PostCrudCommand() {}
 	public PostCrudCommand(String postId) {
@@ -130,6 +136,36 @@ public class PostCrudCommand extends Command<PostCommandResult>{
 	}
 	public void setEmbedMarker(String embedMarker) {
 		this.embedMarker = embedMarker;
+	}
+	public boolean isDeleted() {
+		return deleted;
+	}
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+	public boolean isReview() {
+		return review;
+	}
+	public void setReview(boolean review) {
+		this.review = review;
+	}
+	public boolean isInf() {
+		return inf;
+	}
+	public void setInf(boolean inf) {
+		this.inf = inf;
+	}
+	public boolean isNws() {
+		return nws;
+	}
+	public void setNws(boolean nws) {
+		this.nws = nws;
+	}
+	public boolean isPrivate() {
+		return privatePost;
+	}
+	public void setPrivate(boolean privatePost) {
+		this.privatePost = privatePost;
 	}
 	
 }
