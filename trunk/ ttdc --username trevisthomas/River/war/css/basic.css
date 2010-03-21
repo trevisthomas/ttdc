@@ -1,3 +1,5 @@
+@import "common/icons/richtext2-light.css";
+
 html, body, div, h1, h2, h3, h4, h5, h6, ul, ol, dl, li, dt, dd, p, blockquote, pre, form, fieldset, table, th, td {vertical-align: top; margin: 0; padding: 0; }
 table {border-spacing: 0px; border-collapse: collapse;} /*Evil*/
 ul{list-style-type: none;}
@@ -97,4 +99,7 @@ ul{list-style-type: none;}
 .tt-calendar-small-month-dayHasContent{ font: bolder; background-color: #eee}
 .tt-calendar-month-daySelected{ border: solid yellow 1px; background-color: #fc5}
 
+
+.spoiler{ color : #f6f6f6; background-color : #f6f6f6;}
+.reveal{ color : #000; background-color : #f6f6f6;}
 

@@ -54,8 +54,8 @@ public class NewCommentView implements NewCommentPresenter.View{
 			@Override
 			public void onClick(ClickEvent event) {
 				show.clear();
-				show.add(new HTML(textArea.getHTML()));
-				//show.add(new HTML(toolbar.getHTML()));
+				//show.add(new HTML(textArea.getHTML()));
+				show.add(new HTML(toolbar.getHTML()));
 				
 			}
 		});
@@ -74,8 +74,8 @@ public class NewCommentView implements NewCommentPresenter.View{
 
 	@Override
 	public HasHTML getCommentBody() {
-		return textArea;
-		//return toolbar; // A wild hack
+		//return textArea;
+		return toolbar; // A wild hack
 	}
 
 	@Override

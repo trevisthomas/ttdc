@@ -1,7 +1,11 @@
 package org.ttdc.gwt.client.presenters.comments;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.ttdc.gwt.client.presenters.util.MyListBox;
 
 
 import com.google.gwt.core.client.JsArrayString;
@@ -15,8 +19,10 @@ import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HasHTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.RichTextArea;
@@ -25,8 +31,12 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.RichTextArea.Formatter;
 
-public class CommentToolbar extends Composite implements EmbedContentPopupSource, LinkDialogSource{
+public class CommentToolbar extends Composite implements EmbedContentPopupSource, LinkDialogSource, HasHTML{
 	private static final String HTTP_STATIC_ICONS_GIF = "http://blog.elitecoderz.net/wp-includes/js/tinymce/themes/advanced/img/icons.gif";
+	private final static String HTTP_STATIC_ICONS_2_GIF = "/images/";
+	private final static String TEMP_SPOILER_BACKGROUND_URL = "http://localhost:8888/images/admin_MotherOfGodsnapshot20090122112439_stn.jpg";
+	
+	public static final String TEMP_SPOILER_MARKUP = "style=\"background-image: url('http://localhost:8888/images/admin_MotherOfGodsnapshot20090122112439_stn.jpg');\"";
 	private RichTextArea styleText;
 	private Formatter styleTextFormatter;
 	private VerticalPanel outer = new VerticalPanel();
@@ -77,7 +87,17 @@ public class CommentToolbar extends Composite implements EmbedContentPopupSource
 	
 	
 	
-	
+	private static final Map<String, RichTextArea.FontSize> fontSizeList = new LinkedHashMap<String, RichTextArea.FontSize>();
+	static{
+		fontSizeList.put("Size",null);
+		fontSizeList.put("xx-small",RichTextArea.FontSize.XX_SMALL);
+		fontSizeList.put("x-small",RichTextArea.FontSize.X_SMALL);
+		fontSizeList.put("small",RichTextArea.FontSize.SMALL);
+		fontSizeList.put("medium",RichTextArea.FontSize.MEDIUM);
+		fontSizeList.put("large",RichTextArea.FontSize.LARGE);
+		fontSizeList.put("x-large",RichTextArea.FontSize.X_LARGE);
+		fontSizeList.put("xx-large",RichTextArea.FontSize.XX_LARGE);
+	}
 	
 	private List<RichStyleElement> colorStyleList = new ArrayList<RichStyleElement>();
 	
@@ -242,76 +262,114 @@ public class CommentToolbar extends Composite implements EmbedContentPopupSource
 	private void buildTools() {
 		//Init the TOP Panel forst
 		topPanel.add(new HTML("&nbsp;"));
-		topPanel.add(texthtml = createToggleButton(HTTP_STATIC_ICONS_GIF,0,260,20,20,"Show as HTML"));
+		topPanel.add(texthtml = createToggleButton(HTTP_STATIC_ICONS_GIF,20,520,20,20,"Show as HTML"));
 		topPanel.add(new HTML("&nbsp;"));
-		topPanel.add(embed = createPushButton(HTTP_STATIC_ICONS_GIF,5,80,25,20,"Embed"));
+		topPanel.add(embed = createPushButton(HTTP_STATIC_ICONS_GIF,0,840,20,20,"Embed"));
 		topPanel.add(new HTML("&nbsp;"));
 		
 		
-		topPanel.add(blue = createPushButton(10,10,styleBlue));
-		topPanel.add(red = createPushButton(10,10,styleRed));
-		topPanel.add(orange = createPushButton(10,10,styleOrange));
-		topPanel.add(green = createPushButton(10,10,styleGreen));
+		topPanel.add(blue = createPushButton("icon_blue",styleBlue));
+		topPanel.add(red = createPushButton("icon_red",styleRed));
+		topPanel.add(orange = createPushButton("icon_orange",styleOrange));
+		topPanel.add(green = createPushButton("icon_green",styleGreen));
+		
 		topPanel.add(new HTML("&nbsp;"));
-		topPanel.add(italic = createPushButton(10,10,styleItalic));
-		topPanel.add(bold = createPushButton(10,10,styleBold));
-		topPanel.add(big = createPushButton(10,10,styleBig));
-		topPanel.add(small = createPushButton(10,10,styleSmall));
-		topPanel.add(spoiler = createPushButton(10,10,styleSpoiler));
-		topPanel.add(strike = createPushButton(10,10,styleStrikethrough));
-		topPanel.add(underline = createPushButton(10,10,styleUnderline));
-		topPanel.add(createPushButton(10,10,styleCode,new ClickHandler() {
+		topPanel.add(italic = createPushButton(HTTP_STATIC_ICONS_GIF,0,60,20,20,styleItalic));
+		topPanel.add(bold = createPushButton(HTTP_STATIC_ICONS_GIF,0,0,20,20,styleBold));
+//		topPanel.add(big = createPushButton(10,10,styleBig));
+//		topPanel.add(small = createPushButton(10,10,styleSmall));
+		topPanel.add(spoiler = createPushButton(HTTP_STATIC_ICONS_GIF,0,320,20,20,styleSpoiler, new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				String html = "<span "+TEMP_SPOILER_MARKUP+" class=\"spoiler\" onmouseover=\"this.className='reveal';\" onmouseout=\"this.className='spoiler';\">"
+					+getSelectedText()+"</span>";
+				styleTextFormatter.insertHTML(html);
+			}
+		}));
+		topPanel.add(strike = createPushButton(HTTP_STATIC_ICONS_GIF,0,120,20,20,styleStrikethrough));
+		topPanel.add(underline = createPushButton(HTTP_STATIC_ICONS_GIF,0,140,20,20,styleUnderline));
+		topPanel.add(createPushButton(HTTP_STATIC_ICONS_GIF,20,100,20,20,styleCode,new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				styleTextFormatter.setFontName("monospace");
 				styleTextFormatter.setFontSize(RichTextArea.FontSize.SMALL);
 			}
 		}));
-		topPanel.add(quote = createPushButton(10,10,styleQuote));
-		topPanel.add(offsite = createPushButton(10,10,styleOffsiteQuote));
+		topPanel.add(quote = createPushButton(HTTP_STATIC_ICONS_GIF,0,220,20,20,styleQuote));
+		topPanel.add(offsite = createPushButton(HTTP_STATIC_ICONS_GIF,20,920,20,20,styleOffsiteQuote));
 		
 //		subPanel.add(subscript = createToggleButton(HTTP_STATIC_ICONS_GIF,0,600,20,20,"Subscript"));
 //		subPanel.add(superscript = createToggleButton(HTTP_STATIC_ICONS_GIF,0,620,20,20,"Superscript"));
 		subPanel.add(new HTML("&nbsp;"));
-		subPanel.add(alignleft = createPushButton(HTTP_STATIC_ICONS_GIF,0,460,10,10,"Align Left", new ClickHandler() {
+		subPanel.add(alignleft = createPushButton(HTTP_STATIC_ICONS_GIF,0,460,20,20,"Align Left", new ClickHandler() {
 				@Override public void onClick(ClickEvent event) {styleTextFormatter.setJustification(RichTextArea.Justification.LEFT);}
 			}));
-		subPanel.add(alignmiddle = createPushButton(HTTP_STATIC_ICONS_GIF,0,420,10,10,"Align Center",new ClickHandler() {
+		subPanel.add(alignmiddle = createPushButton(HTTP_STATIC_ICONS_GIF,0,420,20,20,"Align Center",new ClickHandler() {
 				@Override public void onClick(ClickEvent event) {styleTextFormatter.setJustification(RichTextArea.Justification.CENTER);}
 			}));
-		subPanel.add(alignright = createPushButton(HTTP_STATIC_ICONS_GIF,0,480,10,10,"Align Right",new ClickHandler() {
+		subPanel.add(alignright = createPushButton(HTTP_STATIC_ICONS_GIF,0,480,20,20,"Align Right",new ClickHandler() {
 				@Override public void onClick(ClickEvent event) {styleTextFormatter.setJustification(RichTextArea.Justification.RIGHT);}
 			}));
 		subPanel.add(new HTML("&nbsp;"));
-		subPanel.add(orderlist = createPushButton(HTTP_STATIC_ICONS_GIF,0,80,10,10,"Ordered List",new ClickHandler() {
+		subPanel.add(orderlist = createPushButton(HTTP_STATIC_ICONS_GIF,0,80,20,20,"Ordered List",new ClickHandler() {
 				@Override public void onClick(ClickEvent event) {styleTextFormatter.insertOrderedList();}
 			}));
-		subPanel.add(unorderlist = createPushButton(HTTP_STATIC_ICONS_GIF,0,10,10,10,"Unordered List",new ClickHandler() {
+		subPanel.add(unorderlist = createPushButton(HTTP_STATIC_ICONS_GIF,0,20,20,20,"Unordered List",new ClickHandler() {
 				@Override public void onClick(ClickEvent event) {styleTextFormatter.insertUnorderedList();}
 			}));
-		subPanel.add(indentright = createPushButton(HTTP_STATIC_ICONS_GIF,0,400,10,10,"Ident Right",new ClickHandler() {
+		subPanel.add(indentright = createPushButton(HTTP_STATIC_ICONS_GIF,0,400,20,20,"Ident Right",new ClickHandler() {
 				@Override public void onClick(ClickEvent event) {styleTextFormatter.rightIndent();}
 			}));
-		subPanel.add(indentleft = createPushButton(HTTP_STATIC_ICONS_GIF,0,540,10,10,"Ident Left",new ClickHandler() {
+		subPanel.add(indentleft = createPushButton(HTTP_STATIC_ICONS_GIF,0,540,20,20,"Ident Left",new ClickHandler() {
 				@Override public void onClick(ClickEvent event) { styleTextFormatter.leftIndent();}
 			}));
 		subPanel.add(new HTML("&nbsp;"));
-		subPanel.add(generatelink = createPushButton(HTTP_STATIC_ICONS_GIF,0,500,10,10,"Generate Link"));
+		subPanel.add(generatelink = createPushButton(HTTP_STATIC_ICONS_GIF,0,500,20,20,"Generate Link"));
 		
-		subPanel.add(breaklink = createPushButton(HTTP_STATIC_ICONS_GIF,0,640,10,10,"Break Link",new ClickHandler() {
+		subPanel.add(breaklink = createPushButton(HTTP_STATIC_ICONS_GIF,0,640,20,20,"Break Link",new ClickHandler() {
 				@Override public void onClick(ClickEvent event) {	styleTextFormatter.removeLink(); }
 			}));
 		subPanel.add(new HTML("&nbsp;"));
-		subPanel.add(insertline = createPushButton(HTTP_STATIC_ICONS_GIF,0,360,10,10,"Insert Horizontal Line",new ClickHandler() {
+		subPanel.add(insertline = createPushButton(HTTP_STATIC_ICONS_GIF,0,360,20,20,"Insert Horizontal Line",new ClickHandler() {
 				@Override public void onClick(ClickEvent event) { styleTextFormatter.insertHorizontalRule();}
 			}));
 		
-		subPanel.add(removeformatting = createPushButton(HTTP_STATIC_ICONS_GIF,20,460,10,10,"Remove Formatting",new ClickHandler() {
+		subPanel.add(createPushButton(HTTP_STATIC_ICONS_GIF,0,600,20,20,"Subscript",new ClickHandler() {
+			@Override public void onClick(ClickEvent event) { styleTextFormatter.insertHTML("<sub>"+getSelectedText()+"</sub>"); }
+		}));
+		
+		subPanel.add(createPushButton(HTTP_STATIC_ICONS_GIF,0,620,20,20,"Superscript",new ClickHandler() {
+			@Override public void onClick(ClickEvent event) { styleTextFormatter.insertHTML("<sup>"+getSelectedText()+"</sup>"); }
+		}));
+		
+		
+		subPanel.add(removeformatting = createPushButton(HTTP_STATIC_ICONS_GIF,0,160,20,20,"Remove Formatting",new ClickHandler() {
 				@Override public void onClick(ClickEvent event) { styleTextFormatter.removeFormat(); }
 			}));
 		subPanel.add(new HTML("&nbsp;"));
 		
+		subPanel.add(createFontListDropdown());
 		
+	}
+	
+	private Widget createFontListDropdown() {
+		MyListBox mylistBox = new MyListBox();
+	    mylistBox.addChangeHandler(new ChangeHandler() {
+			@Override
+			public void onChange(ChangeEvent event) {
+				MyListBox listbox = (MyListBox)event.getSource();
+				String selected = listbox.getSelectedValue();
+				if(fontSizeList.get(selected) != null){
+					styleTextFormatter.setFontSize(fontSizeList.get(selected));
+					listbox.setSelectedIndex(0);
+				}
+			}
+		});
+	    mylistBox.setVisibleItemCount(1);
+	    for(String key : fontSizeList.keySet()){
+	    	mylistBox.addItem(key);
+	    }
+	    return mylistBox;
 	}
 
 	/** Method to create a Toggle button for the toolbar **/
@@ -353,8 +411,9 @@ public class CommentToolbar extends Composite implements EmbedContentPopupSource
 		return tb;
 	}
 	
-	private PushButton createPushButton(Integer width, Integer height, final RichStyleElement style, ClickHandler handler) {
-		PushButton tb = new PushButton(style.getName().substring(0,3));
+	private PushButton createPushButton(String url, Integer top, Integer left,Integer width, Integer height, final RichStyleElement style, ClickHandler handler) {
+		Image icon = new Image(url, left, top, width, height);
+		PushButton tb = new PushButton(icon);
 		tb.setHeight(height+"px");
 		tb.setWidth(width+"px");
 		tb.addClickHandler(handler);
@@ -363,8 +422,10 @@ public class CommentToolbar extends Composite implements EmbedContentPopupSource
 	}
 	
 	
-	private PushButton createPushButton(Integer width, Integer height, final RichStyleElement style) {
-		PushButton tb = new PushButton(style.getName().substring(0,3));
+	private PushButton createPushButton(String url, Integer top, Integer left, Integer width, Integer height, final RichStyleElement style) {
+		//PushButton tb = new PushButton(style.getName().substring(0,3));
+		Image icon = new Image(url, left, top, width, height);
+		PushButton tb = new PushButton(icon);
 		tb.setHeight(height+"px");
 		tb.setWidth(width+"px");
 		tb.addClickHandler(new ClickHandler() {
@@ -376,6 +437,27 @@ public class CommentToolbar extends Composite implements EmbedContentPopupSource
 		tb.setTitle(style.getName());
 		return tb;
 	}
+	
+	private PushButton createPushButton(String styleName, final RichStyleElement style) {
+		//PushButton tb = new PushButton(style.getName().substring(0,3));
+		PushButton tb = new PushButton();
+//		tb.setHeight("20px");
+//		tb.setWidth("20px");
+		//tb.addStyleName("icon_toolbar_button");
+		tb.setStyleName("icon_toolbar_button");
+		tb.addStyleName(styleName);
+		tb.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				styleTextFormatter.insertHTML(style.wrap(getSelectedText()));
+			}
+		});
+		tb.setTitle(style.getName());
+		return tb;
+	}
+	
+	
+	
 	
 	@Override
 	public void performLinkEmbed(String selectedText, String directSource, String embedSource) {
@@ -420,6 +502,27 @@ public class CommentToolbar extends Composite implements EmbedContentPopupSource
 	private void insertHtmlAt(String newText, String selectedText, int startpos,  String startTag, String stopTag) {
 		String txbuffer = styleText.getHTML();
 		styleText.setHTML(txbuffer.substring(0, startpos)+startTag+newText+stopTag+txbuffer.substring(startpos+selectedText.length()));
+	}
+	
+	@Override
+	public String getHTML() {
+		return styleText.getHTML().replaceAll(TEMP_SPOILER_BACKGROUND_URL, "");
+	}
+
+	@Override
+	public void setHTML(String html) {
+		styleText.setHTML(html);
+	}
+
+	@Override
+	public String getText() {
+		return styleText.getText();
+	}
+
+	@Override
+	public void setText(String text) {
+		styleText.setText(text);
+		
 	}
 
 //	private class RichStyleElementPopup extends PopupPanel{
