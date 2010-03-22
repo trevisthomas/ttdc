@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.ttdc.gwt.client.constants.TagConstants;
-import org.ttdc.persistence.objects.Tag;
+import org.ttdc.gwt.shared.util.PostFlag;
 
 
 public class GPost extends GBase{
@@ -287,6 +287,58 @@ public class GPost extends GBase{
 
 	public void setPublishYear(Integer publishYear) {
 		this.publishYear = publishYear;
+	}
+	
+	public boolean isMovie(){
+		return hasBit(PostFlag.MOVIE.getBitmask());
+	}
+
+	public boolean isRatable(){
+		return hasBit(PostFlag.RATABLE.getBitmask());
+	}
+	
+	
+	public boolean isReview(){
+		return hasBit(PostFlag.REVIEW.getBitmask());
+	}
+	
+	
+	public boolean isLegacyThreadHolder(){
+		return hasBit(PostFlag.LEGACY.getBitmask());
+	}
+	
+	
+	public boolean isLinkContained(){
+		return hasBit(PostFlag.LINK.getBitmask());
+	}
+	
+	
+	public boolean isNWS(){
+		return hasBit(PostFlag.NWS.getBitmask());
+	}
+	
+	public boolean isINF(){
+		return hasBit(PostFlag.INF.getBitmask());
+	}
+	
+	
+	public boolean isPrivate(){
+		return hasBit(PostFlag.PRIVATE.getBitmask());
+	}
+	
+	public boolean isDeleted(){
+		return hasBit(PostFlag.DELETED.getBitmask());
+	}
+	
+	
+	public boolean isLocked(){
+		return hasBit(PostFlag.LOCKED.getBitmask());
+	}
+	
+	
+	private boolean hasBit(long bitmask){
+		long mask = getMetaMask();
+		return (mask & bitmask) == bitmask;
 	}
 	
 }

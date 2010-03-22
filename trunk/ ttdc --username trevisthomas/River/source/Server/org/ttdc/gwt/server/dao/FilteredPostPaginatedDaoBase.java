@@ -3,7 +3,7 @@ package org.ttdc.gwt.server.dao;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.ttdc.persistence.util.PostFlag;
+import org.ttdc.gwt.shared.util.PostFlag;
 
 public class FilteredPostPaginatedDaoBase extends PaginatedDaoBase{
 	private Set<PostFlag> filterFlags = new HashSet<PostFlag>();

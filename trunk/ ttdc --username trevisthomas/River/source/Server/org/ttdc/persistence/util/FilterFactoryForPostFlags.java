@@ -15,6 +15,7 @@ import org.hibernate.search.annotations.Factory;
 import org.hibernate.search.annotations.Key;
 import org.hibernate.search.filter.FilterKey;
 import org.hibernate.search.filter.StandardFilterKey;
+import org.ttdc.gwt.shared.util.PostFlag;
 
 public class FilterFactoryForPostFlags {
 	private Set<PostFlag> flags;

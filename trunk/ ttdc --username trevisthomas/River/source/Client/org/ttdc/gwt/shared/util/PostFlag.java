@@ -1,7 +1,7 @@
 /**
  * Flag values for post index.  Used to filter posts in search.
  */
-package org.ttdc.persistence.util;
+package org.ttdc.gwt.shared.util;
 
 public enum PostFlag{
 	

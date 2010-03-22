@@ -10,10 +10,10 @@ import org.junit.Test;
 import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.server.beanconverters.FastPostBeanConverter;
 import org.ttdc.gwt.shared.util.PaginatedList;
+import org.ttdc.gwt.shared.util.PostFlag;
 import org.ttdc.persistence.Persistence;
 import org.ttdc.persistence.objects.AssociationPostTag;
 import org.ttdc.persistence.objects.Post;
-import org.ttdc.persistence.util.PostFlag;
 
 import static junit.framework.Assert.*;
 

@@ -26,8 +26,8 @@ import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Store;
-import org.ttdc.persistence.util.PostFlag;
-import org.ttdc.persistence.util.PostFlagBitmasks;
+import org.ttdc.gwt.shared.util.PostFlag;
+import org.ttdc.gwt.shared.util.PostFlagBitmasks;
 
 //uuid() //MySql
 //newid() //MSSql

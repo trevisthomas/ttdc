@@ -14,6 +14,7 @@ import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.services.CommandResult;
 import org.ttdc.gwt.server.beanconverters.FastPostBeanConverter;
 import org.ttdc.gwt.server.command.CommandExecutor;
+import org.ttdc.gwt.server.dao.AccountDao;
 import org.ttdc.gwt.server.dao.AssociationPostTagDao;
 import org.ttdc.gwt.server.dao.InitConstants;
 import org.ttdc.gwt.server.dao.PersonDao;
@@ -22,6 +23,7 @@ import org.ttdc.gwt.server.dao.TagDao;
 import org.ttdc.gwt.server.util.CalendarBuilder;
 import org.ttdc.gwt.shared.commands.PostCrudCommand;
 import org.ttdc.gwt.shared.commands.results.PostCommandResult;
+import org.ttdc.gwt.shared.util.StringUtil;
 import org.ttdc.persistence.Persistence;
 import org.ttdc.persistence.objects.AssociationPostTag;
 import org.ttdc.persistence.objects.Person;
@@ -121,7 +123,14 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 	
 	
 	protected Post create(PostCrudCommand cmd) {
-		Person creator = PersonDao.loadPerson(getPerson().getPersonId());
+		Person creator;
+		
+		if(StringUtil.notEmpty(cmd.getLogin()) && StringUtil.notEmpty(cmd.getPassword())){
+			creator = AccountDao.login(cmd.getLogin(), cmd.getPassword());
+		}
+		else{
+			creator = PersonDao.loadPerson(getPerson().getPersonId());
+		}
 		
 		if(!creator.hasPrivilege(Privilege.POST) && !creator.isAdministrator())
 			throw new RuntimeException("You dont have privledges to create new content.");
@@ -143,8 +152,16 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 			dao.setNws();
 		if(cmd.isPrivate())
 			dao.setPrivate();
-		if(cmd.isReview())
+		if(cmd.isReview()){
+			if(parent == null)
+				throw new RuntimeException("Reviews must have parents");
+			else if(!parent.isReviewable())
+				throw new RuntimeException("Reviews only allowed on reviewable content");
 			dao.setReview();
+		}
+		if(cmd.isLocked())
+			dao.setLocked();
+		
 		
 		dao.setParent(parent);
 		dao.setBody(cmd.getBody());

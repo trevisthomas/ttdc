@@ -103,8 +103,8 @@ public class CommentToolbar extends Composite implements EmbedContentPopupSource
 	
 	private RichStyleElement styleItalic = new RichStyleElement("Italic","span","shackTag_i","font-style:italic;");
 	private RichStyleElement styleBold = new RichStyleElement("Bold","span","shackTag_b","font-weight:bolder;");
-	private RichStyleElement styleBig = new RichStyleElement("Huge","span","shackTag_BIG","font-family:Arial, Verdana;line-height: 100%;font-size: 18pt;font-weight:700;");
-	private RichStyleElement styleSmall = new RichStyleElement("Small","span","shackTag_s","font-size: 75%;	font-weight:lighter;");
+//	private RichStyleElement styleBig = new RichStyleElement("Huge","span","shackTag_BIG","font-family:Arial, Verdana;line-height: 100%;font-size: 18pt;font-weight:700;");
+//	private RichStyleElement styleSmall = new RichStyleElement("Small","span","shackTag_s","font-size: 75%;	font-weight:lighter;");
 	private RichStyleElement styleSpoiler = new RichStyleElement("Spoiler","span","shackTag_i","font-style:italic;");
 	private RichStyleElement styleStrikethrough = new RichStyleElement("Strike","span","shackTag_strike","text-decoration:line-through;");
 	private RichStyleElement styleUnderline = new RichStyleElement("Underline","span","shackTag_u","text-decoration: underline;");

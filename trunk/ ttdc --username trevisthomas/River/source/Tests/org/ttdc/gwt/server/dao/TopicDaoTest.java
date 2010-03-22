@@ -16,9 +16,9 @@ import org.ttdc.gwt.shared.commands.TopicCommand;
 import org.ttdc.gwt.shared.commands.TopicCommandType;
 import org.ttdc.gwt.shared.commands.results.TopicCommandResult;
 import org.ttdc.gwt.shared.util.PaginatedList;
+import org.ttdc.gwt.shared.util.PostFlag;
 import org.ttdc.persistence.objects.AssociationPostTag;
 import org.ttdc.persistence.objects.Post;
-import org.ttdc.persistence.util.PostFlag;
 
 import static junit.framework.Assert.*;
 import static org.ttdc.persistence.Persistence.*;

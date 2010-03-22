@@ -3,8 +3,8 @@ package org.ttdc.gwt.server.command.executors.utils;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.ttdc.gwt.shared.util.PostFlag;
 import org.ttdc.persistence.objects.Person;
-import org.ttdc.persistence.util.PostFlag;
 
 public class ExecutorHelpers {
 	public static Set<PostFlag> createFlagFilterListForPerson(Person person) {

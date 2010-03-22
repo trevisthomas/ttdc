@@ -7,13 +7,13 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.ttdc.gwt.shared.util.PostFlagBitmasks;
 import org.ttdc.persistence.Persistence;
 import org.ttdc.persistence.objects.Entry;
 import org.ttdc.persistence.objects.Image;
 import org.ttdc.persistence.objects.Person;
 import org.ttdc.persistence.objects.Post;
 import org.ttdc.persistence.objects.Tag;
-import org.ttdc.persistence.util.PostFlagBitmasks;
 
 
 final public class PostDao {
