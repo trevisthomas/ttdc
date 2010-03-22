@@ -1,4 +1,4 @@
-package org.ttdc.persistence.util;
+package org.ttdc.gwt.shared.util;
 
 public interface PostFlagBitmasks {
 	long BITMASK_DELETED = 1L;

@@ -2,6 +2,7 @@ package org.ttdc.persistence.util;
 
 import org.apache.log4j.Logger;
 import org.hibernate.search.bridge.StringBridge;
+import org.ttdc.gwt.shared.util.PostFlag;
 import org.ttdc.persistence.objects.Post;
 
 public class BridgeForPostFlag implements StringBridge{

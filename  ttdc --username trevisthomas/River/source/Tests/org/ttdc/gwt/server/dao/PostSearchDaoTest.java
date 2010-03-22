@@ -20,9 +20,9 @@ import org.junit.Test;
 import org.ttdc.gwt.shared.commands.types.PostSearchType;
 import org.ttdc.gwt.shared.commands.types.SearchSortBy;
 import org.ttdc.gwt.shared.util.PaginatedList;
+import org.ttdc.gwt.shared.util.PostFlag;
 import org.ttdc.persistence.objects.AssociationPostTag;
 import org.ttdc.persistence.objects.Post;
-import org.ttdc.persistence.util.PostFlag;
 
 import static org.ttdc.gwt.server.dao.Helpers.*;
 

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.ttdc.gwt.client.constants.PriviledgeConstants;
+import org.ttdc.gwt.client.constants.PrivilegeConstants;
 import org.ttdc.gwt.client.constants.UserObjectConstants;
 
 public class GPerson extends GBase{
@@ -169,7 +169,7 @@ public class GPerson extends GBase{
 	}
 	
 	public boolean isAdministrator(){
-		return hasPrivilege(PriviledgeConstants.ADMINISTRATOR);
+		return hasPrivilege(PrivilegeConstants.ADMINISTRATOR);
 	}
 	
 	/**

@@ -17,8 +17,8 @@ import org.ttdc.gwt.server.dao.TagDao;
 import org.ttdc.gwt.shared.commands.SearchPostsCommand;
 import org.ttdc.gwt.shared.commands.results.SearchPostsCommandResult;
 import org.ttdc.gwt.shared.util.PaginatedList;
+import org.ttdc.gwt.shared.util.PostFlag;
 import org.ttdc.persistence.objects.Tag;
-import org.ttdc.persistence.util.PostFlag;
 
 public class SearchPostsCommandExecutor extends CommandExecutor<SearchPostsCommandResult>{
 	@Override

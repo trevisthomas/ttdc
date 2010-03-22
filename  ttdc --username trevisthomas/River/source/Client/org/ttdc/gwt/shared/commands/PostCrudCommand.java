@@ -27,6 +27,7 @@ public class PostCrudCommand extends Command<PostCommandResult>{
 	private boolean inf;
 	private boolean nws;
 	private boolean privatePost;
+	private boolean locked;
 	
 	
 	public PostCrudCommand() {}
@@ -166,6 +167,13 @@ public class PostCrudCommand extends Command<PostCommandResult>{
 	}
 	public void setPrivate(boolean privatePost) {
 		this.privatePost = privatePost;
+	}
+	
+	public boolean isLocked() {
+		return locked;
+	}
+	public void setLocked(boolean locked) {
+		this.locked = locked;
 	}
 	
 }

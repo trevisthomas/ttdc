@@ -35,6 +35,7 @@ import org.hibernate.search.annotations.FullTextFilterDefs;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Resolution;
+import org.ttdc.gwt.shared.util.PostFlag;
 import org.ttdc.persistence.util.BridgeForBodyOnPost;
 import org.ttdc.persistence.util.BridgeForCreatorOnPost;
 import org.ttdc.persistence.util.BridgeForPostFlag;
@@ -52,7 +53,6 @@ import org.ttdc.persistence.util.FilterFactoryForType;
 import org.ttdc.persistence.util.FilterFactoryForRootId;
 import org.ttdc.persistence.util.FilterFactoryForThreadId;
 import org.ttdc.persistence.util.FilterFactoryForTokenizedTagIds;
-import org.ttdc.persistence.util.PostFlag;
 import org.ttdc.util.CalculateAverageRating;
 
 @Table(name="POST")

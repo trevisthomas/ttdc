@@ -163,6 +163,37 @@ public class PostCrudCommandExecutorTest {
 	}
 	
 	@Test
+	public void testReviewMustBeOnAReviewableParent(){
+		try{
+			/*
+			 * The idea is that a reply to a legacy post should push that post up the conversation starter level 
+			 * in the hierarchy.  
+			 */
+			final String parentId = "FFDF8F77-16D5-4E9E-97BE-3612CCD47F52"; //Some topic, not a movie
+			//final String parentId = "0F1937C5-0314-4CEC-8A6A-FAA22B2391BD"; //One of hte matrix movies
+			final PostCrudCommand cmd = UniqueCrudPostCommandObjectMother.createNewReply();
+			cmd.setAction(PostActionType.CREATE);
+			cmd.setParentId(parentId);
+			cmd.setReview(true);
+			PostCrudCommandExecutor cmdexec = (PostCrudCommandExecutor)CommandExecutorFactory.createExecutor(Helpers.personIdTrevis,cmd);
+			beginSession();
+			Post post = cmdexec.create(cmd);
+	
+			fail("Post was created as a review but the parent isnt reviwable!");
+			
+		}
+		catch(HibernateException e){
+			fail(e.toString());
+		}
+		catch(Exception e){
+			/*expected*/
+		}	
+		finally{
+			rollback();
+		}
+	}
+	
+	@Test
 	public void testOnlyPriviledgedUsersCanCreatePosts(){
 		try{
 			final PostCrudCommand cmd = UniqueCrudPostCommandObjectMother.createNewReply();
@@ -258,6 +289,8 @@ public class PostCrudCommandExecutorTest {
 			rollback();
 		}
 	}
+	
+	
 	
 	@Test
 	public void testCreateWithEmbededContent(){
@@ -539,6 +572,7 @@ public class PostCrudCommandExecutorTest {
 			rollback();
 		}
 	}
+	
 	
 	
 	@Test

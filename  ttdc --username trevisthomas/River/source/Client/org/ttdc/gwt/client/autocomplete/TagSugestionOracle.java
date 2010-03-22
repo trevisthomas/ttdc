@@ -72,6 +72,7 @@ public class TagSugestionOracle extends SuggestOracle implements SuggestionListe
     public void onSuggestion(TagSuggestion tagSuggestion) {
     	currentTagSuggestion = tagSuggestion;
 		//Window.alert(tagSuggestion.getDisplayString());
+    	
 	}
     
     public SuggestBox createSuggestBoxForTopics() {
@@ -187,7 +188,4 @@ public class TagSugestionOracle extends SuggestOracle implements SuggestionListe
 			injector.getService().execute(command, callback);
 		}
 	}
-
-	
-
 }
