@@ -1,5 +1,8 @@
 package org.ttdc.gwt.client.presenters.comments;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.autocomplete.SuggestionListener;
 import org.ttdc.gwt.client.autocomplete.SugestionOracle;
@@ -32,6 +35,7 @@ import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SuggestBox;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
 import com.google.inject.Inject;
 
@@ -70,6 +74,9 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 	
 	private SuggestBox tagSuggestionBox;
 	private SugestionOracle tagSuggestionOracle;
+	
+	private List<RemovableTagPresenter> tagPresenterList = new ArrayList<RemovableTagPresenter>();
+	
 	@Inject
 	public NewCommentPresenter(Injector injector){
 		super(injector, injector.getNewCommentView());
@@ -161,6 +168,8 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 	
 	private void createRemovableTag(GTag tag) {
 		RemovableTagPresenter tagPresenter = injector.getRemovableTagPresenter();
+		tagPresenterList.add(tagPresenter);
+		view.tagsPanel().add(tagPresenter.getWidget());
 		tagPresenter.init(tag, new RemoveTagClickHandler(tagPresenter));
 	}
 	
@@ -168,14 +177,16 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 		private RemovableTagPresenter presenter;
 		public RemoveTagClickHandler(RemovableTagPresenter presenter) {
 			this.presenter = presenter;
-			view.tagsPanel().add(presenter.getWidget());
 		}
 		@Override
 		public void onClick(ClickEvent event) {
 			//Remove
+			tagPresenterList.remove(presenter);
 			view.tagsPanel().remove(presenter.getWidget());
 		}
 	} 
+	
+	
 	
 	private CommandResultCallback<PostCommandResult> callbackParentPostSelected() {
 		CommandResultCallback<PostCommandResult> rootPostCallback = new CommandResultCallback<PostCommandResult>(){
@@ -202,14 +213,19 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 		cmd.setEmbedMarker(embedTargetPlaceholder);
 		
 		cmd.setPrivate(view.getPrivateCheckbox().getValue());
-		cmd.setPrivate(view.getDeletedCheckbox().getValue());
-		cmd.setPrivate(view.getNwsCheckbox().getValue());
-		cmd.setPrivate(view.getInfCheckbox().getValue());
-		cmd.setPrivate(view.getReviewCheckbox().getValue());
-		cmd.setPrivate(view.getLockedCheckbox().getValue());
+		cmd.setDeleted(view.getDeletedCheckbox().getValue());
+		cmd.setNws(view.getNwsCheckbox().getValue());
+		cmd.setInf(view.getInfCheckbox().getValue());
+		cmd.setReview(view.getReviewCheckbox().getValue());
+		cmd.setLocked(view.getLockedCheckbox().getValue());
 		
 //		cmd.setLogin(login)
 //		cmd.setPassword(password)
+		
+		for(RemovableTagPresenter tagPresenter : tagPresenterList){
+			GTag tag = tagPresenter.getTag();
+			cmd.addTag(tag);
+		}
 		
 		//Determine if the user is creating a new topic or a new conversation in a topic
 		
@@ -221,6 +237,13 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 			cmd.setTitle(parentSuggestionBox.getText());
 		}
 		
+		CommandResultCallback<PostCommandResult> callback = buildCreatePostCallback();
+		
+		getService().execute(cmd,callback);
+		
+	}
+
+	private CommandResultCallback<PostCommandResult> buildCreatePostCallback() {
 		CommandResultCallback<PostCommandResult> callback = new CommandResultCallback<PostCommandResult>(){
 			@Override
 			public void onSuccess(PostCommandResult result) {
@@ -232,9 +255,7 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 				super.onFailure(caught);
 			}
 		};
-		
-		getService().execute(cmd,callback);
-		
+		return callback;
 	}
 
 }

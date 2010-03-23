@@ -10,6 +10,7 @@ public class RemovableTagView implements RemovableTagPresenter.View{
 	private final HorizontalPanel main = new HorizontalPanel();
 	private final Label label = new Label();
 	
+	
 	public RemovableTagView() {
 		main.add(label);
 	}
