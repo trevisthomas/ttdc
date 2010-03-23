@@ -15,6 +15,7 @@ import org.hibernate.HibernateException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.ttdc.gwt.client.beans.GTag;
 import org.ttdc.gwt.server.command.CommandExecutorFactory;
 import org.ttdc.gwt.server.dao.Helpers;
 import org.ttdc.gwt.server.dao.PostDao;
@@ -363,6 +364,64 @@ public class PostCrudCommandExecutorTest {
 			assertTrue("Post should be flagged as private.",post.isPrivate());
 			assertEquals(title,titleTag.getValue());
 			assertEquals(title,titleTag.getSortValue());
+			
+//			Helpers.assertPostDateTagsCorrect(post);
+		}
+		catch(Exception e){
+			rollback();
+			fail(e.getMessage());
+			e.printStackTrace();
+		}	
+		finally{
+			rollback();
+		}
+	}
+	
+	@Test
+	public void testCreatePostWithTags(){
+		try{
+			final PostCrudCommand cmd = UniqueCrudPostCommandObjectMother.createNewTopic();
+			cmd.setAction(PostActionType.CREATE);
+			String t1 = "0667A7DB-DA69-486C-AFD7-7DA53A65EB7E"; //tori amos
+			//String t2 = "0708F658-D39F-4E18-B2BB-8A79B59F3907"; // fringe
+			
+			GTag tag1 = new GTag();
+			tag1.setTagId(t1);
+			GTag tag2 = new GTag();
+			//tag2.setTagId(t2);
+			tag2.setValue("A Value that doesnt exist.");
+			
+			cmd.addTag(tag1);
+			cmd.addTag(tag2);
+			String title = cmd.getTitle();
+			cmd.setPrivate(true);
+			
+			PostCrudCommandExecutor cmdexec = (PostCrudCommandExecutor)CommandExecutorFactory.createExecutor(Helpers.personIdTrevis,cmd);
+			//cmdexec.execute();
+			
+			beginSession();
+			Post post = cmdexec.create(cmd);
+			
+			assertTrue("Root post has a parent! WTF!",post.getParent() == null);
+			assertTrue("Thread_guid must be null for root posts",post.getThread() == null);
+			assertTrue("Root post is not root!!!",post.isRootPost());
+			
+			assertEquals("Path should be blank for roots","",post.getPath()); 
+			
+			assertNotNull("Creator is null on the post object",post.getCreator());
+			assertEquals(Helpers.personIdTrevis,post.getCreator().getPersonId());
+			
+			Tag titleTag = post.getTitleTag();
+			assertTrue("Post should be flagged as private.",post.isPrivate());
+			assertEquals(title,titleTag.getValue());
+			assertEquals(title,titleTag.getSortValue());
+			
+			assertTrue("Post has no tags, but it should.",post.getTagAssociations().size()>0);
+			
+			Helpers.associationListContainsTag(post.getTagAssociations(),t1);
+			//Helpers.associationListContainsTag(post.getTagAssociations(),t2);
+			Helpers.assertTagged(post,tag2.getValue());
+			
 			
 //			Helpers.assertPostDateTagsCorrect(post);
 		}

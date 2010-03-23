@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.ttdc.gwt.client.autocomplete.TagSuggestion;
+import org.ttdc.gwt.client.autocomplete.SuggestionObject;
 import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.beans.GTag;
 import org.ttdc.gwt.server.command.CommandExecutorFactory;
@@ -46,11 +46,11 @@ public class TagSuggestionCommandExecutorTest{
 		
 		TagSuggestionCommandResult result = (TagSuggestionCommandResult)cmdexec.executeCommand();
 		
-		List<TagSuggestion> tags  = (List<TagSuggestion>)result.getResponse().getSuggestions();
+		List<SuggestionObject> tags  = (List<SuggestionObject>)result.getResponse().getSuggestions();
 		
 		assertTrue(tags.size() > 0);
 		
-		for(TagSuggestion suggestion : tags){
+		for(SuggestionObject suggestion : tags){
 			GTag t = suggestion.getTag();
 			assertTrue(StringUtils.isNotEmpty(t.getTagId()));
 			
@@ -80,12 +80,12 @@ public class TagSuggestionCommandExecutorTest{
 		
 		TagSuggestionCommandResult result = (TagSuggestionCommandResult)cmdexec.executeCommand();
 		
-		List<TagSuggestion> tags  = (List<TagSuggestion>)result.getResponse().getSuggestions();
+		List<SuggestionObject> tags  = (List<SuggestionObject>)result.getResponse().getSuggestions();
 		
 		assertTrue(tags.size() > 0);
 		
 		boolean createOption = false;
-		for(TagSuggestion suggestion : tags){
+		for(SuggestionObject suggestion : tags){
 			GTag t = suggestion.getTag();
 			assertTrue(StringUtils.isNotEmpty(t.getTagId()));
 			
@@ -112,12 +112,12 @@ public class TagSuggestionCommandExecutorTest{
 		
 		TagSuggestionCommandResult result = (TagSuggestionCommandResult)cmdexec.executeCommand();
 		
-		List<TagSuggestion> tags  = (List<TagSuggestion>)result.getResponse().getSuggestions();
+		List<SuggestionObject> tags  = (List<SuggestionObject>)result.getResponse().getSuggestions();
 		
 		assertTrue("Found nothing, expected something. ",tags.size() > 0);
 		
 		boolean createOption = false;
-		for(TagSuggestion suggestion : tags){
+		for(SuggestionObject suggestion : tags){
 			GTag t = suggestion.getTag();
 			assertTrue(StringUtils.isNotEmpty(t.getTagId()));
 			
@@ -145,12 +145,12 @@ public class TagSuggestionCommandExecutorTest{
 		
 		TagSuggestionCommandResult result = (TagSuggestionCommandResult)cmdexec.executeCommand();
 		
-		List<TagSuggestion> tags  = (List<TagSuggestion>)result.getResponse().getSuggestions();
+		List<SuggestionObject> tags  = (List<SuggestionObject>)result.getResponse().getSuggestions();
 		
 		assertTrue("Found nothing and expected stuff. ", tags.size() > 0);
 		
 		boolean createOption = false;
-		for(TagSuggestion suggestion : tags){
+		for(SuggestionObject suggestion : tags){
 			GTag t = suggestion.getTag();
 			assertTrue(StringUtils.isNotEmpty(t.getTagId()));
 			
@@ -176,12 +176,12 @@ public class TagSuggestionCommandExecutorTest{
 		
 		TagSuggestionCommandResult result = (TagSuggestionCommandResult)cmdexec.executeCommand();
 		
-		List<TagSuggestion> tags  = (List<TagSuggestion>)result.getResponse().getSuggestions();
+		List<SuggestionObject> tags  = (List<SuggestionObject>)result.getResponse().getSuggestions();
 		
 		assertTrue("Found nothing and expected stuff. ", tags.size() > 0);
 		
 		boolean createOption = false;
-		for(TagSuggestion suggestion : tags){
+		for(SuggestionObject suggestion : tags){
 			GTag t = suggestion.getTag();
 			assertTrue(StringUtils.isNotEmpty(t.getTagId()));
 			
@@ -207,12 +207,12 @@ public class TagSuggestionCommandExecutorTest{
 		
 		TagSuggestionCommandResult result = (TagSuggestionCommandResult)cmdexec.executeCommand();
 		
-		List<TagSuggestion> tags  = (List<TagSuggestion>)result.getResponse().getSuggestions();
+		List<SuggestionObject> tags  = (List<SuggestionObject>)result.getResponse().getSuggestions();
 		
 		assertTrue("Found nothing and expected stuff. ", tags.size() > 0);
 		
 		boolean createOption = false;
-		for(TagSuggestion suggestion : tags){
+		for(SuggestionObject suggestion : tags){
 			GTag t = suggestion.getTag();
 			assertTrue(StringUtils.isNotEmpty(t.getTagId()));
 			
@@ -240,12 +240,12 @@ public class TagSuggestionCommandExecutorTest{
 		
 		TagSuggestionCommandResult result = (TagSuggestionCommandResult)cmdexec.executeCommand();
 		
-		List<TagSuggestion> suggestions  = (List<TagSuggestion>)result.getResponse().getSuggestions();
+		List<SuggestionObject> suggestions  = (List<SuggestionObject>)result.getResponse().getSuggestions();
 		
 		assertTrue("Found nothing and expected stuff. ", suggestions.size() > 0);
 		
 		boolean createOption = false;
-		for(TagSuggestion suggestion : suggestions){
+		for(SuggestionObject suggestion : suggestions){
 			//GTag t = suggestion.getTag();
 			//assertTrue(suggestion.getTag() == null);
 			

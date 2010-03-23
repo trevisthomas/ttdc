@@ -2,10 +2,11 @@ package org.ttdc.gwt.client.presenters.comments;
 
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.autocomplete.SuggestionListener;
-import org.ttdc.gwt.client.autocomplete.TagSugestionOracle;
-import org.ttdc.gwt.client.autocomplete.TagSuggestion;
+import org.ttdc.gwt.client.autocomplete.SugestionOracle;
+import org.ttdc.gwt.client.autocomplete.SuggestionObject;
 import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.beans.GPost;
+import org.ttdc.gwt.client.beans.GTag;
 import org.ttdc.gwt.client.constants.PrivilegeConstants;
 import org.ttdc.gwt.client.messaging.ConnectionId;
 import org.ttdc.gwt.client.messaging.EventBus;
@@ -29,6 +30,7 @@ import com.google.gwt.user.client.ui.HasHTML;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
 import com.google.inject.Inject;
@@ -57,10 +59,17 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 		void setForAdmin(boolean enabled);
 		void setForPrivate(boolean enabled);
 		
+		HasClickHandlers addTagClickHandler();
+		HasWidgets tagsPanel();
+		HasWidgets tagSelectorPanel();
+		
 	}
 	private String embedTargetPlaceholder = "EmbedTarget_PLACEHOLDER";
-	private SuggestBox suggestionBox;
-	private TagSugestionOracle oracle;
+	private SuggestBox parentSuggestionBox;
+	private SugestionOracle parentSuggestionOracle;
+	
+	private SuggestBox tagSuggestionBox;
+	private SugestionOracle tagSuggestionOracle;
 	@Inject
 	public NewCommentPresenter(Injector injector){
 		super(injector, injector.getNewCommentView());
@@ -98,9 +107,9 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 	}
 	
 	public void init(){
-		oracle = injector.getTagSugestionOracle();
-		suggestionBox = oracle.createSuggestBoxForTopics();
-		view.replyToPanel().add(suggestionBox);
+		parentSuggestionOracle = injector.getTagSugestionOracle();
+		parentSuggestionBox = parentSuggestionOracle.createSuggestBoxForTopics();
+		view.replyToPanel().add(parentSuggestionBox);
 		
 		view.getAddCommentClickHandlers().addClickHandler(
 			new ClickHandler() {
@@ -111,10 +120,10 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 			}
 		);
 
-		suggestionBox.addSelectionHandler(new SelectionHandler<Suggestion>() {
+		parentSuggestionBox.addSelectionHandler(new SelectionHandler<Suggestion>() {
 			@Override
 			public void onSelection(SelectionEvent<Suggestion> event) {
-				TagSuggestion suggestion = oracle.getCurrentTagSuggestion();
+				SuggestionObject suggestion = parentSuggestionOracle.getCurrentSuggestion();
 				if(suggestion != null){
 					GPost parent = suggestion.getPost();
 					if(parent != null){
@@ -128,7 +137,45 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 				}
 			}
 		});
+		
+		tagSuggestionOracle = injector.getTagSugestionOracle();
+		tagSuggestionBox = tagSuggestionOracle.createSuggestBoxForPostView();
+		view.tagSelectorPanel().add(tagSuggestionBox);
+		
+		view.addTagClickHandler().addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				SuggestionObject suggestion = tagSuggestionOracle.getCurrentSuggestion();
+				if(suggestion != null){
+					createRemovableTag(suggestion.getTag());
+				}
+				else{
+					GTag tag = new GTag();
+					tag.setValue(tagSuggestionBox.getValue());
+					createRemovableTag(tag);
+				}
+				tagSuggestionOracle.clear();
+			}
+		});
 	}
+	
+	private void createRemovableTag(GTag tag) {
+		RemovableTagPresenter tagPresenter = injector.getRemovableTagPresenter();
+		tagPresenter.init(tag, new RemoveTagClickHandler(tagPresenter));
+	}
+	
+	private class RemoveTagClickHandler implements ClickHandler{
+		private RemovableTagPresenter presenter;
+		public RemoveTagClickHandler(RemovableTagPresenter presenter) {
+			this.presenter = presenter;
+			view.tagsPanel().add(presenter.getWidget());
+		}
+		@Override
+		public void onClick(ClickEvent event) {
+			//Remove
+			view.tagsPanel().remove(presenter.getWidget());
+		}
+	} 
 	
 	private CommandResultCallback<PostCommandResult> callbackParentPostSelected() {
 		CommandResultCallback<PostCommandResult> rootPostCallback = new CommandResultCallback<PostCommandResult>(){
@@ -166,12 +213,12 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 		
 		//Determine if the user is creating a new topic or a new conversation in a topic
 		
-		if(oracle.getCurrentTagSuggestion() != null){
-			TagSuggestion suggestion = oracle.getCurrentTagSuggestion();
+		if(parentSuggestionOracle.getCurrentSuggestion() != null){
+			SuggestionObject suggestion = parentSuggestionOracle.getCurrentSuggestion();
 			cmd.setParentId(suggestion.getPost().getPostId());
 		}
 		else{
-			cmd.setTitle(suggestionBox.getText());
+			cmd.setTitle(parentSuggestionBox.getText());
 		}
 		
 		CommandResultCallback<PostCommandResult> callback = new CommandResultCallback<PostCommandResult>(){

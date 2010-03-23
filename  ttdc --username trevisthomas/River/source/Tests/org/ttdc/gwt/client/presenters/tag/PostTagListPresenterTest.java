@@ -18,7 +18,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatcher;
-import org.ttdc.gwt.client.autocomplete.TagSuggestion;
+import org.ttdc.gwt.client.autocomplete.SuggestionObject;
 import org.ttdc.gwt.client.beans.GAssociationPostTag;
 import org.ttdc.gwt.client.beans.GTag;
 import org.ttdc.gwt.client.beans.PostBeanMother;
@@ -252,7 +252,7 @@ public class PostTagListPresenterTest {
 		GTag testTag = new GTag();
 		testTag.setTagId("123abc");
 		
-		TagSuggestion tagSuggestion = mock(TagSuggestion.class);
+		SuggestionObject tagSuggestion = mock(SuggestionObject.class);
 		when(tagSuggestion.getTag()).thenReturn(testTag);
 		when(injector.getCommonTagListView().getTagSuggestion()).thenReturn(tagSuggestion);
 		
@@ -301,7 +301,7 @@ public class PostTagListPresenterTest {
 		GTag testTag = new GTag();
 		testTag.setTagId("123abc");
 		
-		TagSuggestion tagSuggestion = mock(TagSuggestion.class);
+		SuggestionObject tagSuggestion = mock(SuggestionObject.class);
 		when(tagSuggestion.getTag()).thenReturn(testTag);
 		when(injector.getCommonTagListView().getTagSuggestion()).thenReturn(tagSuggestion);
 		

@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.ttdc.gwt.client.beans.GPost;
+import org.ttdc.gwt.client.beans.GTag;
 import org.ttdc.gwt.client.services.CommandResult;
 import org.ttdc.gwt.server.beanconverters.FastPostBeanConverter;
 import org.ttdc.gwt.server.command.CommandExecutor;
@@ -172,9 +173,28 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 		dao.setEmbedMarker(cmd.getEmbedMarker());
 		Post post = dao.create();
 		
+		for (GTag gTag : cmd.getTags()){
+			Tag tag;
+			if(StringUtil.notEmpty(gTag.getTagId()))
+				tag = TagDao.loadTag(gTag.getTagId());
+			else
+				tag = findOrCreateTag(gTag.getValue(), Tag.TYPE_TOPIC);
+			createTagAssociation(creator,post,tag);
+		}
+		
 		return post;
 	}
 
+	private Tag findOrCreateTag(String value, String type) {
+		TagDao dao;
+		dao = new TagDao();
+		dao.setValue(value);
+		dao.setType(type);
+		dao.setDate(new Date());
+		Tag tag = dao.createOrLoad();
+		return tag;
+	}
+	
 	/* Apply calender info */
 //	private void tagCalenderInfo(Post post, Person creator){
 //		Calendar cal = GregorianCalendar.getInstance();
@@ -234,6 +254,16 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 //		Persistence.session().refresh(post);
 //	}
 
+	private void createTagAssociation(Person creator, Post post, Tag tag) {
+		AssociationPostTagDao assDao = new AssociationPostTagDao();
+		assDao.setPost(post);
+		assDao.setTag(tag);
+		assDao.setCreator(creator);
+		assDao.create();
+		
+		Persistence.session().flush();
+		Persistence.session().refresh(post);
+	}
 
 	private Tag loadOrCreateTitleTag(PostCrudCommand cmd) {
 		Tag tag;

@@ -6,6 +6,7 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHTML;
 import com.google.gwt.user.client.ui.HasText;
@@ -34,6 +35,10 @@ public class NewCommentView implements NewCommentPresenter.View{
 	private final CheckBox nwsCheckbox = new CheckBox("Not Work Safe");
 	private final CheckBox privateCheckbox = new CheckBox("Private");
 	private final CheckBox lockedCheckbox = new CheckBox("Locked");
+	private final Grid tagGrid = new Grid(1,3);
+	private final FlowPanel tagsPanel = new FlowPanel();
+	private final SimplePanel tagSelectorPanel = new SimplePanel();
+	private final Button addTagButton = new Button("Add");
 	
 	private final FlowPanel checkboxPanel = new FlowPanel();
 	
@@ -61,6 +66,11 @@ public class NewCommentView implements NewCommentPresenter.View{
 		//you're gonna need to send it up stream.
 		main.add(new HTML("<center><span id=\""+embedTargetPlaceholder+"\"></span></center>"));
 		
+		tagGrid.setWidget(0, 0, tagsPanel);
+		tagGrid.setWidget(0, 1, tagSelectorPanel);
+		tagGrid.setWidget(0, 2, addTagButton);
+		main.add(tagGrid);
+		
 		main.add(show);
 		previewButton.addClickHandler(new ClickHandler() {
 			@Override
@@ -71,6 +81,22 @@ public class NewCommentView implements NewCommentPresenter.View{
 				
 			}
 		});
+	}
+	
+	
+	@Override
+	public HasClickHandlers addTagClickHandler() {
+		return addTagButton;
+	}
+	
+	@Override
+	public HasWidgets tagSelectorPanel() {
+		return tagSelectorPanel;
+	}
+	
+	@Override
+	public HasWidgets tagsPanel() {
+		return tagsPanel;
 	}
 	
 	

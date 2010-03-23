@@ -16,32 +16,19 @@ import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.SuggestOracle;
 import com.google.inject.Inject;
 
-public class TagSugestionOracle extends SuggestOracle implements SuggestionListener {
+public class SugestionOracle extends SuggestOracle implements SuggestionListener {
 	private Injector injector;
-	private TagSuggestion currentTagSuggestion = null;
+	private SuggestionObject currentTagSuggestion = null;
 	private TagSuggestionCommandMode commandMode;
 	private List<String> excludeTagIdList = new ArrayList<String>();
 	private List<String> unionTagIdList = new ArrayList<String>();
 	private final static int SERVER_DELAY = 100;
 	private TagSuggestionCommandTimer tagCommandTimer;
+	private SuggestBox suggestBox;
 	
-	public List<String> getExcludeTagIdList() {
-		return excludeTagIdList;
-	}
-	public void setExcludeTagIdList(List<String> excludeTagIdList) {
-		this.excludeTagIdList = excludeTagIdList;
-	}
-	public List<String> getUnionTagIdList() {
-		return unionTagIdList;
-	}
-	public void setUnionTagIdList(List<String> unionTagIdList) {
-		this.unionTagIdList = unionTagIdList;
-	}
-	public boolean isDisplayStringHTML() {
-        return true;
-    }
+
 	@Inject
-	public TagSugestionOracle(Injector injector){
+	public SugestionOracle(Injector injector){
 		this.injector = injector;
 	}
 	
@@ -67,9 +54,12 @@ public class TagSugestionOracle extends SuggestOracle implements SuggestionListe
     	tagCommandTimer.schedule(SERVER_DELAY);
     }
     
+	public void clear(){
+		currentTagSuggestion = null;
+		suggestBox.setText("");
+	}
     
-    
-    public void onSuggestion(TagSuggestion tagSuggestion) {
+    public void onSuggestion(SuggestionObject tagSuggestion) {
     	currentTagSuggestion = tagSuggestion;
 		//Window.alert(tagSuggestion.getDisplayString());
     	
@@ -80,7 +70,7 @@ public class TagSugestionOracle extends SuggestOracle implements SuggestionListe
     	suggestBox = new MySuggestBox(this);
     	return suggestBox;
 	}
-    SuggestBox suggestBox;
+    
     
     public SuggestBox createSuggestBoxForSearch(List<String> currentTagIdList){
     	setCommandMode(TagSuggestionCommandMode.SEARCH);
@@ -96,6 +86,9 @@ public class TagSugestionOracle extends SuggestOracle implements SuggestionListe
     	return suggestBox;
     }
     
+    public SuggestBox createSuggestBoxForPostView(){
+    	return createSuggestBoxForPostView(new ArrayList<String>());
+    }
     public SuggestBox createSuggestBoxForPostView(List<String> currentTagIdList){
     	setCommandMode(TagSuggestionCommandMode.VIEW);
     	suggestBox = new MySuggestBox(this);
@@ -114,7 +107,7 @@ public class TagSugestionOracle extends SuggestOracle implements SuggestionListe
 	public void setCommandMode(TagSuggestionCommandMode commandMode) {
 		this.commandMode = commandMode;
 	}
-	public TagSuggestion getCurrentTagSuggestion() {
+	public SuggestionObject getCurrentSuggestion() {
 		if(currentTagSuggestion == null || currentTagSuggestion.isCreateNew())
 			return null;
 		else
@@ -136,9 +129,9 @@ public class TagSugestionOracle extends SuggestOracle implements SuggestionListe
 	private static class AutocompleteCallback extends CommandResultCallback<TagSuggestionCommandResult> {
         private SuggestOracle.Request oracleRequest;
         private SuggestOracle.Callback oracleCallback;
-        private TagSugestionOracle tagSuggestionOracle;
+        private SugestionOracle tagSuggestionOracle;
         
-        public AutocompleteCallback(TagSugestionOracle oracle, SuggestOracle.Request oracleRequest, SuggestOracle.Callback oracleCallback){
+        public AutocompleteCallback(SugestionOracle oracle, SuggestOracle.Request oracleRequest, SuggestOracle.Callback oracleCallback){
         	this.oracleRequest = oracleRequest;
         	this.oracleCallback = oracleCallback;
         	this.tagSuggestionOracle = oracle;
@@ -149,7 +142,7 @@ public class TagSugestionOracle extends SuggestOracle implements SuggestionListe
         		if(resp.getSuggestions() != null){
         			tagSuggestionOracle.currentTagSuggestion = null;
         			for(Suggestion suggestion : resp.getSuggestions()){
-        				TagSuggestion tagSuggestion = (TagSuggestion) suggestion;
+        				SuggestionObject tagSuggestion = (SuggestionObject) suggestion;
         				if(tagSuggestionOracle.currentTagSuggestion == null){
         					//tagSuggestionOracle.suggestBox.getTextBox().setText(tagSuggestion.getReplacementStringValue());
         					tagSuggestionOracle.onSuggestion(tagSuggestion);
@@ -188,4 +181,20 @@ public class TagSugestionOracle extends SuggestOracle implements SuggestionListe
 			injector.getService().execute(command, callback);
 		}
 	}
+    
+	public List<String> getExcludeTagIdList() {
+		return excludeTagIdList;
+	}
+	public void setExcludeTagIdList(List<String> excludeTagIdList) {
+		this.excludeTagIdList = excludeTagIdList;
+	}
+	public List<String> getUnionTagIdList() {
+		return unionTagIdList;
+	}
+	public void setUnionTagIdList(List<String> unionTagIdList) {
+		this.unionTagIdList = unionTagIdList;
+	}
+	public boolean isDisplayStringHTML() {
+        return true;
+    }
 }

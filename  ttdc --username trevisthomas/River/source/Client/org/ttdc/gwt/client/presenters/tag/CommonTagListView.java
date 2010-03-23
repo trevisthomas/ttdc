@@ -3,8 +3,8 @@ package org.ttdc.gwt.client.presenters.tag;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.ttdc.gwt.client.autocomplete.TagSugestionOracle;
-import org.ttdc.gwt.client.autocomplete.TagSuggestion;
+import org.ttdc.gwt.client.autocomplete.SugestionOracle;
+import org.ttdc.gwt.client.autocomplete.SuggestionObject;
 import org.ttdc.gwt.client.presenters.shared.BasePresenter;
 
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -19,7 +19,7 @@ import com.google.gwt.user.client.ui.Widget;
 public class CommonTagListView implements TagListPresenterView{
 	private final FlowPanel mainPanel = new FlowPanel();
 	private final Button addButton = new Button();
-	private TagSugestionOracle oracle;
+	private SugestionOracle oracle;
 	
 	//private Injector injector;
 	
@@ -35,8 +35,8 @@ public class CommonTagListView implements TagListPresenterView{
 		return addButton;
 	}
 
-	public TagSuggestion getTagSuggestion() {
-		return oracle.getCurrentTagSuggestion();
+	public SuggestionObject getTagSuggestion() {
+		return oracle.getCurrentSuggestion();
 	}
 
 	public void setExcludeTagIdList(List<String> excludeTagIdList) {
@@ -49,7 +49,7 @@ public class CommonTagListView implements TagListPresenterView{
 	}
 	
 	@Override
-	public void setTagSuggestionOracle(TagSugestionOracle oracle) {
+	public void setTagSuggestionOracle(SugestionOracle oracle) {
 		this.oracle = oracle;
 	}
 	

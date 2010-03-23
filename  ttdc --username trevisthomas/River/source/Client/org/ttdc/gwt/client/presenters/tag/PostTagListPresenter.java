@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.ttdc.gwt.client.Injector;
-import org.ttdc.gwt.client.autocomplete.TagSuggestion;
+import org.ttdc.gwt.client.autocomplete.SuggestionObject;
 import org.ttdc.gwt.client.beans.GAssociationPostTag;
 import org.ttdc.gwt.client.constants.TagConstants;
 import org.ttdc.gwt.client.messaging.ConnectionId;
@@ -195,7 +195,7 @@ public class PostTagListPresenter extends BasePresenter<TagListPresenterView> im
 	 */
 	private class AddTagToPostClickHandler implements ClickHandler{
 		public void onClick(ClickEvent event) {
-			TagSuggestion tagSuggestion = view.getTagSuggestion();
+			SuggestionObject tagSuggestion = view.getTagSuggestion();
 			final AssociationPostTagCommand addTagCommand = 
 				AssociationPostTagCommand.createTagCommand(tagSuggestion.getTag(),postId);
 			RpcServiceAsync service = injector.getService(); 

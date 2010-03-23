@@ -4,7 +4,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import org.ttdc.gwt.client.Injector;
-import org.ttdc.gwt.client.autocomplete.TagSugestionOracle;
+import org.ttdc.gwt.client.autocomplete.SugestionOracle;
 import org.ttdc.gwt.client.components.widgets.PostPanelWidget;
 import org.ttdc.gwt.client.messaging.history.HistoryToken;
 import org.ttdc.gwt.client.presenters.admin.AdminToolsPresenter;
@@ -28,6 +28,7 @@ import org.ttdc.gwt.client.presenters.calendar.ScaleSelectorPresenter;
 import org.ttdc.gwt.client.presenters.calendar.WeekPresenter;
 import org.ttdc.gwt.client.presenters.calendar.YearPresenter;
 import org.ttdc.gwt.client.presenters.comments.NewCommentPresenter;
+import org.ttdc.gwt.client.presenters.comments.RemovableTagPresenter;
 import org.ttdc.gwt.client.presenters.dashboard.EditProfilePresenter;
 import org.ttdc.gwt.client.presenters.dashboard.ProfilePresenter;
 import org.ttdc.gwt.client.presenters.dashboard.RemovableWebLinkPresenter;
@@ -168,7 +169,7 @@ public class MockInjector implements Injector{
 		return null;
 	}
 
-	public TagSugestionOracle getTagSugestionOracle() {
+	public SugestionOracle getTagSugestionOracle() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -1253,6 +1254,18 @@ public class MockInjector implements Injector{
 	}
 	@Override
 	public org.ttdc.gwt.client.presenters.comments.NewCommentPresenter.View getNewCommentView() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public RemovableTagPresenter getRemovableTagPresenter() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public org.ttdc.gwt.client.presenters.comments.RemovableTagPresenter.View getRemovableTagView() {
 		// TODO Auto-generated method stub
 		return null;
 	}

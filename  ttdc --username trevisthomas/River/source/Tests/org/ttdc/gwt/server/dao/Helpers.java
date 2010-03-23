@@ -115,6 +115,15 @@ public class Helpers {
 		return false;
 	}
 	
+	
+	public static void assertTagged(Post post, String value){
+		for(AssociationPostTag ass : post.getTagAssociations()){
+			if(ass.getTag().getValue().equals(value))
+				return;
+		}
+		fail("Post doesnt contain tag: "+value);
+	}
+	
 	public static void assertCreator(PaginatedList<Post> results, String login) {
 		for(Post post : results.getList()){
 			Assert.assertEquals( login, post.getCreator().getLogin());

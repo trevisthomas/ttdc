@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.ttdc.gwt.client.Injector;
-import org.ttdc.gwt.client.autocomplete.TagSuggestion;
+import org.ttdc.gwt.client.autocomplete.SuggestionObject;
 import org.ttdc.gwt.client.beans.GTag;
 import org.ttdc.gwt.client.messaging.EventBus;
 import org.ttdc.gwt.client.messaging.history.HistoryConstants;
@@ -103,7 +103,7 @@ public class SearchTagListPresenter extends BasePresenter<TagListPresenterView>{
  			this.tagIds = tagIds;
 		}
 		public void onClick(ClickEvent event) {
-			TagSuggestion tagSuggestion = view.getTagSuggestion();
+			SuggestionObject tagSuggestion = view.getTagSuggestion();
 			
 			HistoryToken token = new HistoryToken();
 			token.setParameter(HistoryConstants.VIEW, HistoryConstants.VIEW_SEARCH_TAG_RESULTS);
