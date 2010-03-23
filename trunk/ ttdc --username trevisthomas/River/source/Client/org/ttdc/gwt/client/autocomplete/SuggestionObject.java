@@ -12,14 +12,14 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
 
 
-public class TagSuggestion implements IsSerializable, Suggestion  {
+public class SuggestionObject implements IsSerializable, Suggestion  {
 	private List<SuggestionListener> listeners = new ArrayList<SuggestionListener>();
     private String s;
     private GTag tag;
     private GPost post;
     
 	// Required for IsSerializable to work
-    public TagSuggestion() {
+    public SuggestionObject() {
     }
     
     /*
@@ -67,12 +67,12 @@ public class TagSuggestion implements IsSerializable, Suggestion  {
 		return tag;
 	}
 
-	public TagSuggestion(GTag tag, String displayValue) {
+	public SuggestionObject(GTag tag, String displayValue) {
 		this.tag = tag;
 		this.s = displayValue;
 	}
 	
-	public TagSuggestion(GPost post, String displayValue) {
+	public SuggestionObject(GPost post, String displayValue) {
 		this.post = post;
 		this.s = displayValue;
 	}

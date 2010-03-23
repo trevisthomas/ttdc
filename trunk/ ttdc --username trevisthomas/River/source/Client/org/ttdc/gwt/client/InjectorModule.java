@@ -42,6 +42,8 @@ import org.ttdc.gwt.client.presenters.calendar.YearPresenter;
 import org.ttdc.gwt.client.presenters.calendar.YearView;
 import org.ttdc.gwt.client.presenters.comments.NewCommentPresenter;
 import org.ttdc.gwt.client.presenters.comments.NewCommentView;
+import org.ttdc.gwt.client.presenters.comments.RemovableTagPresenter;
+import org.ttdc.gwt.client.presenters.comments.RemovableTagView;
 import org.ttdc.gwt.client.presenters.dashboard.EditProfilePresenter;
 import org.ttdc.gwt.client.presenters.dashboard.EditProfileView;
 import org.ttdc.gwt.client.presenters.dashboard.ProfilePresenter;
@@ -254,7 +256,7 @@ public class InjectorModule extends AbstractGinModule {
 		bind(SearchBoxPresenter.View.class).to(SearchBoxView.class);
 		bind(SearchBoxDatePresenter.View.class).to(SearchBoxDateView.class);
 		bind(NewCommentPresenter.View.class).to(NewCommentView.class);
-	
+		bind(RemovableTagPresenter.View.class).to(RemovableTagView.class);
 		
 	}
 }

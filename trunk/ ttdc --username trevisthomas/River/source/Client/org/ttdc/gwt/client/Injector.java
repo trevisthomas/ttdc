@@ -1,6 +1,6 @@
 package org.ttdc.gwt.client;
 
-import org.ttdc.gwt.client.autocomplete.TagSugestionOracle;
+import org.ttdc.gwt.client.autocomplete.SugestionOracle;
 import org.ttdc.gwt.client.components.widgets.PostPanelWidget;
 import org.ttdc.gwt.client.presenters.admin.AdminToolsPresenter;
 import org.ttdc.gwt.client.presenters.admin.ImageManagementPresenter;
@@ -23,6 +23,8 @@ import org.ttdc.gwt.client.presenters.calendar.ScaleSelectorPresenter;
 import org.ttdc.gwt.client.presenters.calendar.WeekPresenter;
 import org.ttdc.gwt.client.presenters.calendar.YearPresenter;
 import org.ttdc.gwt.client.presenters.comments.NewCommentPresenter;
+import org.ttdc.gwt.client.presenters.comments.RemovableTagPresenter;
+import org.ttdc.gwt.client.presenters.comments.RemovableTagPresenter.View;
 import org.ttdc.gwt.client.presenters.dashboard.EditProfilePresenter;
 import org.ttdc.gwt.client.presenters.dashboard.ProfilePresenter;
 import org.ttdc.gwt.client.presenters.dashboard.RemovableWebLinkPresenter;
@@ -111,7 +113,7 @@ public interface Injector extends Ginjector {
 	public HyperlinkPresenter getHyperlinkPresenter();
 	public HyperlinkPresenter.View getHyperlinkView();
 	
-	public TagSugestionOracle getTagSugestionOracle();
+	public SugestionOracle getTagSugestionOracle();
 	
 	public TagRemovePresenter.View getTagRemoveView();
 	public TagRemovePresenter getTagRemovePresenter();
@@ -332,5 +334,8 @@ public interface Injector extends Ginjector {
 
 	public NewCommentPresenter.View getNewCommentView();
 	public NewCommentPresenter getNewCommentPresenter();
+
+	public RemovableTagPresenter.View getRemovableTagView();
+	public RemovableTagPresenter getRemovableTagPresenter();
 }
 

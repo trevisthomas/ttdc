@@ -10,7 +10,7 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.ttdc.gwt.client.autocomplete.TagSuggestion;
+import org.ttdc.gwt.client.autocomplete.SuggestionObject;
 import org.ttdc.gwt.client.beans.GTag;
 import org.ttdc.gwt.client.messaging.EventBus;
 import org.ttdc.gwt.client.messaging.history.HistoryConstants;
@@ -64,7 +64,7 @@ public class SearchTagListPresenterTest {
 		tagList.add(oldTag);
 		presenter.setTagIdList(tagList);
 		
-		TagSuggestion tagSuggestion = mock(TagSuggestion.class);
+		SuggestionObject tagSuggestion = mock(SuggestionObject.class);
 		when(tagSuggestion.getTag()).thenReturn(newTag);
 		when(injector.getCommonTagListView().getTagSuggestion()).thenReturn(tagSuggestion);
 		

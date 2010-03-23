@@ -1,5 +1,9 @@
 package org.ttdc.gwt.shared.commands;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.ttdc.gwt.client.beans.GTag;
 import org.ttdc.gwt.client.services.Command;
 import org.ttdc.gwt.shared.commands.results.PostCommandResult;
 import org.ttdc.gwt.shared.commands.types.PostActionType;
@@ -28,6 +32,8 @@ public class PostCrudCommand extends Command<PostCommandResult>{
 	private boolean nws;
 	private boolean privatePost;
 	private boolean locked;
+//	private List<String> tagIds = new ArrayList<String>();
+	private List<GTag> tags = new ArrayList<GTag>();
 	
 	
 	public PostCrudCommand() {}
@@ -175,5 +181,22 @@ public class PostCrudCommand extends Command<PostCommandResult>{
 	public void setLocked(boolean locked) {
 		this.locked = locked;
 	}
-	
+//	public List<String> getTagIds() {
+//		return tagIds;
+//	}
+//	public void setTagIds(List<String> tagIds) {
+//		this.tagIds = tagIds;
+//	}
+//	public void addTag(String tagId){
+//		this.tagIds.add(tagId);
+//	}
+	public void addTag(GTag tag){
+		tags.add(tag);
+	}
+	public List<GTag> getTags() {
+		return tags;
+	}
+	public void setTags(List<GTag> tags) {
+		this.tags = tags;
+	}
 }

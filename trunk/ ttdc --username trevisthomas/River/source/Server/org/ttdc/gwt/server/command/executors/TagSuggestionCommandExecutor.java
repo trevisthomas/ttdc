@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.ttdc.gwt.client.autocomplete.TagSuggestion;
+import org.ttdc.gwt.client.autocomplete.SuggestionObject;
 import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.beans.GTag;
 import org.ttdc.gwt.client.services.CommandResult;
@@ -87,16 +87,16 @@ public class TagSuggestionCommandExecutor extends CommandExecutor<TagSuggestionC
 		dao.setFilterFlags(ExecutorHelpers.createFlagFilterListForPerson(getPerson()));
 		
 		PaginatedList<Post> results = dao.search();
-		List<TagSuggestion> suggestions = new ArrayList<TagSuggestion>();
+		List<SuggestionObject> suggestions = new ArrayList<SuggestionObject>();
 		for(Post post : results.getList() ){
 			GPost gp = new GPost();
 			addFakeTitleTag(post.getTitle(), gp);
 			gp.setPostId(post.getPostId());
 			String highlightedValue = highlightRequestedValue(request.getQuery(), post.getTitle());
 			if(post.getMass() > 1)
-				suggestions.add(new TagSuggestion(gp, highlightedValue + " (" + post.getMass()+")"));
+				suggestions.add(new SuggestionObject(gp, highlightedValue + " (" + post.getMass()+")"));
 			else
-				suggestions.add(new TagSuggestion(gp, highlightedValue));
+				suggestions.add(new SuggestionObject(gp, highlightedValue));
 		}
 		
 		if(StringUtils.isNotEmpty(request.getQuery()))
@@ -135,7 +135,7 @@ public class TagSuggestionCommandExecutor extends CommandExecutor<TagSuggestionC
 			dao.setTitlesOnly(false);
 		}
 
-		List<TagSuggestion> suggestions = new ArrayList<TagSuggestion>();
+		List<SuggestionObject> suggestions = new ArrayList<SuggestionObject>();
 		
 		if(!StringUtils.isEmpty(request.getQuery()) || command.isLoadDefault()){
 			beginSession();
@@ -172,22 +172,22 @@ public class TagSuggestionCommandExecutor extends CommandExecutor<TagSuggestionC
 		
 	}
 
-	private TagSuggestion createSugestionForNewTag(String query){
+	private SuggestionObject createSugestionForNewTag(String query){
 		GTag gTag = new GTag();
 		gTag.setValue(query);
 		gTag.setType(Tag.TYPE_TOPIC);
 		gTag.setTagId(" ");
-		return new TagSuggestion(gTag, "<b>"+query+" (Create New)</b>");
+		return new SuggestionObject(gTag, "<b>"+query+" (Create New)</b>");
 	}
 	
-	private TagSuggestion createSugestionForNewPost(String query){
+	private SuggestionObject createSugestionForNewPost(String query){
 		GPost post = new GPost();
 		addFakeTitleTag(query, post);
 		post.setPostId(" ");
-		return new TagSuggestion(post, "<b>"+query+" (Create New)</b>");
+		return new SuggestionObject(post, "<b>"+query+" (Create New)</b>");
 	}
 	
-	private TagSuggestion createDynamicSugestion(String query, Tag tag){
+	private SuggestionObject createDynamicSugestion(String query, Tag tag){
 		if(StringUtils.isNotBlank(query)){
 			GTag gTag = convertTagToGTag(tag);
 			String requestedValue = query;
@@ -195,11 +195,11 @@ public class TagSuggestionCommandExecutor extends CommandExecutor<TagSuggestionC
 			
 			String highlightedValue = highlightRequestedValue(requestedValue, actualValue);
 			
-			return new TagSuggestion(gTag, highlightedValue);
+			return new SuggestionObject(gTag, highlightedValue);
 		}
 		else{
 			GTag gTag = convertTagToGTag(tag);
-			return new TagSuggestion(gTag, gTag.getValue());
+			return new SuggestionObject(gTag, gTag.getValue());
 		}
 	}
 

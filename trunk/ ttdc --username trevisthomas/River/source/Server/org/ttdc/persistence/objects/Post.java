@@ -475,7 +475,7 @@ public class Post implements Comparable<Post>, HasGuid {
 	@OneToMany(mappedBy="post", cascade={CascadeType.ALL}, fetch=FetchType.LAZY)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     //@Fetch(value=FetchMode.JOIN)
-    @OrderBy("date desc")
+    //@OrderBy("date desc") //MySQL?
 	public List<Entry> getEntries() {
 		return entries;
 	}
