@@ -9,7 +9,9 @@ import org.ttdc.gwt.shared.commands.LatestPostsCommand;
 
 import org.ttdc.gwt.shared.commands.results.PaginatedListCommandResult;
 import org.ttdc.gwt.shared.util.PaginatedList;
+import org.ttdc.gwt.shared.util.PostFlag;
 import org.ttdc.persistence.Persistence;
+import org.ttdc.persistence.objects.Person;
 import org.ttdc.persistence.objects.Post;
 
 public class LatestPostCommandExecutor extends CommandExecutor<PaginatedListCommandResult<GPost>>{
@@ -46,28 +48,42 @@ public class LatestPostCommandExecutor extends CommandExecutor<PaginatedListComm
 	}
 
 	private PaginatedListCommandResult<GPost> loadThreads() {
-		LatestPostsDao dao = new LatestPostsDao();
+		LatestPostsDao dao = getLatestPostDaoWithPersonalFilter();
 		PaginatedList<Post> results = dao.loadThreads();
 		PaginatedList<GPost> gResults = PaginatedResultConverters.convertSearchResults(results);
 		return new PaginatedListCommandResult<GPost>(gResults);
 	}
 
-	private PaginatedListCommandResult<GPost> loadNested() {
+	private LatestPostsDao getLatestPostDaoWithPersonalFilter() {
 		LatestPostsDao dao = new LatestPostsDao();
+		Person p = getPerson();
+		if(!p.isNwsEnabled()){
+			dao.addFlagFilter(PostFlag.NWS);
+		}
+		
+		if(!p.isPrivateAccessAccount()){
+			dao.addFlagFilter(PostFlag.PRIVATE);
+		}
+		
+		return dao;
+	}
+
+	private PaginatedListCommandResult<GPost> loadNested() {
+		LatestPostsDao dao = getLatestPostDaoWithPersonalFilter();
 		PaginatedList<Post> results = dao.loadNested();
 		PaginatedList<GPost> gResults = PaginatedResultConverters.convertSearchResultsNested(results);
 		return new PaginatedListCommandResult<GPost>(gResults);
 	}
 
 	private PaginatedListCommandResult<GPost> loadFlat() {
-		LatestPostsDao dao = new LatestPostsDao();
+		LatestPostsDao dao = getLatestPostDaoWithPersonalFilter();
 		PaginatedList<Post> results = dao.loadFlat();
 		PaginatedList<GPost> gResults = PaginatedResultConverters.convertSearchResults(results);
 		return new PaginatedListCommandResult<GPost>(gResults);
 	}
 
 	private PaginatedListCommandResult<GPost> loadConversations() {
-		LatestPostsDao dao = new LatestPostsDao();
+		LatestPostsDao dao = getLatestPostDaoWithPersonalFilter();
 		PaginatedList<Post> results = dao.loadConversations();
 		PaginatedList<GPost> gResults = PaginatedResultConverters.convertSearchResultsNested(results);
 		return new PaginatedListCommandResult<GPost>(gResults);

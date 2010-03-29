@@ -6,6 +6,7 @@ import org.ttdc.gwt.client.presenters.shared.BasePresenter;
 import org.ttdc.gwt.client.presenters.shared.BaseView;
 import org.ttdc.gwt.client.presenters.shared.DatePresenter;
 import org.ttdc.gwt.client.presenters.shared.HyperlinkPresenter;
+import org.ttdc.gwt.client.presenters.shared.ImagePresenter;
 import org.ttdc.gwt.client.services.RpcServiceAsync;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
 import org.ttdc.gwt.shared.commands.TopicCommand;
@@ -40,7 +41,7 @@ public class PostPresenter extends BasePresenter<PostPresenter.View> implements 
 		HasWidgets getChildWidgetBucket();
 		HasText getPostEntry();
 		//void setCreatorWidget(Widget widget)
-		HasWidgets creatorWidget();
+		HasWidgets creatorLogin();
 		HasWidgets title();
 		
 		HasText fetchMoreTitle();
@@ -48,6 +49,14 @@ public class PostPresenter extends BasePresenter<PostPresenter.View> implements 
 		
 		HasWidgets creationDateTarget();
 		void init(String postId);
+		
+		HasClickHandlers postOptionsClick(); //Shows popup
+		
+		HasClickHandlers replyButton();
+		HasClickHandlers likeButton();
+		
+		HasWidgets creatorAvatorPanel();
+		
 		
 				/*
 		HasText getPostTitle();
@@ -86,7 +95,7 @@ public class PostPresenter extends BasePresenter<PostPresenter.View> implements 
 		hyperlinkPresenter.setPerson(post.getCreator());
 		
 		//view.setCreatorWidget(hyperlinkPresenter.getWidget());
-		view.creatorWidget().add(hyperlinkPresenter.getWidget());
+		view.creatorLogin().add(hyperlinkPresenter.getWidget());
 		//view.getPostTitle().setText(post.getTitle());
 		hyperlinkPresenter = injector.getHyperlinkPresenter();
 		hyperlinkPresenter.setPost(post);
@@ -115,7 +124,19 @@ public class PostPresenter extends BasePresenter<PostPresenter.View> implements 
 				view.fetchMoreTarget().addClickHandler(buildFetchMoreResultsClickHandler(cmd));
 			}
 		}
-		//Do what is needed to display a post.
+
+		
+		//Avatar
+		ImagePresenter imagePresenter = injector.getImagePresenter();
+		if(post.isRootPost() || post.isThreadPost()){
+			imagePresenter.setImage(post.getCreator().getImage(), post.getCreator().getLogin(), 50, 50);
+		}
+		else{
+			imagePresenter.setImage(post.getCreator().getImage(), post.getCreator().getLogin(), 20, 20);
+		}
+		imagePresenter.useThumbnail(true);
+		view.creatorAvatorPanel().add(imagePresenter.getWidget());
+		
 	}
 
 	private ClickHandler buildFetchMoreResultsClickHandler(final TopicCommand cmd) {
