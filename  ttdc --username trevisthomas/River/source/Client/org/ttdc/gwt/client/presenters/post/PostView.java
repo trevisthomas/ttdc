@@ -1,14 +1,20 @@
 package org.ttdc.gwt.client.presenters.post;
 
+import org.apache.struts2.views.jsp.ui.AnchorTag;
 import org.ttdc.gwt.client.presenters.post.PostPresenter.Mode;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -26,6 +32,21 @@ public class PostView implements PostPresenter.View {
 	private final SimplePanel creatorWidget = new SimplePanel();
 	private final Label fetchMore = new Label();
 	private final SimplePanel datePanel = new SimplePanel();
+	//private final HorizontalPanel optionsButton = new SimplePanel();
+	//HasClickHandlers
+	private final HorizontalPanel optionsButtonPanel = new HorizontalPanel();
+	private final HorizontalPanel creatorInfoPanel = new HorizontalPanel();
+	private final Grid detailGrid = new Grid(1,2);
+	private final HorizontalPanel postAvatarAndBodyPanel = new HorizontalPanel();
+	private final SimplePanel avatarPanel = new SimplePanel();
+	private final VerticalPanel postBodyContainer = new VerticalPanel();
+	
+	private final Anchor postOptionsClick = new Anchor("> more options");
+	private final VerticalPanel optionsContainerPanel = new VerticalPanel();
+	private final Anchor replyClick = new Anchor("reply");
+	private final Anchor likeClick = new Anchor("like");
+	
+	private final PopupPanel optionsPopup = new PopupPanel();
 	
 	private String postId;
 	private Mode mode = Mode.FLAT;
@@ -36,15 +57,34 @@ public class PostView implements PostPresenter.View {
 	public Widget getWidget() {
 		if(!postPanel.isAttached()){
 			mainPanel.setStyleName("tt-post-container");
-			
+
 			mainPanel.add(postPanel);
+			postHeader.add(title);
+			postPanel.add(postHeader);
 			postPanel.setStyleName("tt-post");
 			postPanel.addStyleName("tt-border");
-			postPanel.add(creatorWidget);
-			postPanel.add(datePanel);
-			postPanel.add(postHeader);
-			postHeader.add(title);
-			postPanel.add(new HTMLPanel(entry.getText()));
+			
+			
+//			postPanel.add(detailGrid);
+						
+			creatorInfoPanel.add(creatorWidget);
+			creatorInfoPanel.add(datePanel);
+			//postPanel.add(datePanel);
+			
+			optionsButtonPanel.add(postOptionsClick);
+			
+			postPanel.add(postAvatarAndBodyPanel);
+			//postBodyContainer.add(postBodyContainer);
+			
+			
+			postAvatarAndBodyPanel.add(avatarPanel);
+			postAvatarAndBodyPanel.add(postBodyContainer);
+			
+			postBodyContainer.add(detailGrid);
+			postBodyContainer.add(new HTMLPanel(entry.getText()));
+			
+			detailGrid.setWidget(0, 0, creatorInfoPanel);
+			detailGrid.setWidget(0, 1, optionsButtonPanel);
 			
 			//The target for embedded content
 			mainPanel.add(new HTML("<center><span id=\""+postId+"\"></span></center>"));
@@ -57,9 +97,33 @@ public class PostView implements PostPresenter.View {
 			}
 			
 			mainPanel.add(childPosts);
+			
+			
+			initializeOptionsPopup();
 		}
 		return mainPanel;
 		
+	}
+
+	private void initializeOptionsPopup() {
+		//Setup the options popup panel
+		optionsPopup.setAutoHideEnabled(true);
+		optionsPopup.add(optionsContainerPanel);
+		optionsContainerPanel.add(likeClick);
+		optionsContainerPanel.add(replyClick);
+		
+		postOptionsClick.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				Widget source = (Widget) event.getSource();
+		        int left = source.getAbsoluteLeft() + 10;
+		        int top = source.getAbsoluteTop() + 10;
+		        optionsPopup.setPopupPosition(left, top);
+
+		        // Show the popup
+		        optionsPopup.show();
+			}
+		});
 	}
 
 	@Override
@@ -79,7 +143,7 @@ public class PostView implements PostPresenter.View {
 		return title;
 	}
 	@Override
-	public HasWidgets creatorWidget() {
+	public HasWidgets creatorLogin() {
 		return creatorWidget;
 	}
 
@@ -106,4 +170,23 @@ public class PostView implements PostPresenter.View {
 		return datePanel;
 	}
 
+	@Override
+	public HasClickHandlers postOptionsClick() {
+		return postOptionsClick;
+	}
+
+	@Override
+	public HasClickHandlers likeButton() {
+		return likeClick;
+	}
+
+	@Override
+	public HasClickHandlers replyButton() {
+		return replyClick;
+	}
+
+	@Override
+	public HasWidgets creatorAvatorPanel() {
+		return avatarPanel;
+	}
 }
