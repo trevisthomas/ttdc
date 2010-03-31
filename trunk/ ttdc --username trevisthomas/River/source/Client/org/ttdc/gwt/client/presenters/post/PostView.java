@@ -7,9 +7,12 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.DockPanel;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.HasAlignment;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -36,8 +39,10 @@ public class PostView implements PostPresenter.View {
 	//HasClickHandlers
 	private final HorizontalPanel optionsButtonPanel = new HorizontalPanel();
 	private final HorizontalPanel creatorInfoPanel = new HorizontalPanel();
-	private final Grid detailGrid = new Grid(1,2);
+	//private final Grid detailGrid = new Grid(1,2);
+	private final FlowPanel detailPanel = new FlowPanel(); 
 	private final HorizontalPanel postAvatarAndBodyPanel = new HorizontalPanel();
+	//private final FlowPanel postAvatarAndBodyPanel = new FlowPanel();
 	private final SimplePanel avatarPanel = new SimplePanel();
 	private final VerticalPanel postBodyContainer = new VerticalPanel();
 	
@@ -57,12 +62,14 @@ public class PostView implements PostPresenter.View {
 	public Widget getWidget() {
 		if(!postPanel.isAttached()){
 			mainPanel.setStyleName("tt-post-container");
-
+			mainPanel.addStyleName("tt-fill");
 			mainPanel.add(postPanel);
 			postHeader.add(title);
 			postPanel.add(postHeader);
 			postPanel.setStyleName("tt-post");
 			postPanel.addStyleName("tt-border");
+			postPanel.addStyleName("tt-fill");
+			
 			
 			
 //			postPanel.add(detailGrid);
@@ -72,19 +79,36 @@ public class PostView implements PostPresenter.View {
 			//postPanel.add(datePanel);
 			
 			optionsButtonPanel.add(postOptionsClick);
+//			optionsButtonPanel.setStyleName("tt-test");
+//			optionsButtonPanel.setWidth("100%");
+//			optionsButtonPanel.setHorizontalAlignment(HasAlignment.ALIGN_RIGHT);
 			
 			postPanel.add(postAvatarAndBodyPanel);
+			postAvatarAndBodyPanel.setStyleName("tt-fill");
 			//postBodyContainer.add(postBodyContainer);
 			
-			
+			//avatarPanel.setStyleName("tt-float-left");
+			//postBodyContainer.setStyleName("tt-float-left");
+			postBodyContainer.setStyleName("tt-fill");
 			postAvatarAndBodyPanel.add(avatarPanel);
 			postAvatarAndBodyPanel.add(postBodyContainer);
 			
-			postBodyContainer.add(detailGrid);
+			
+			postBodyContainer.add(detailPanel);
+			//detailPanel.setWidth("100%");
+			
 			postBodyContainer.add(new HTMLPanel(entry.getText()));
 			
-			detailGrid.setWidget(0, 0, creatorInfoPanel);
-			detailGrid.setWidget(0, 1, optionsButtonPanel);
+//			detailGrid.setWidget(0, 0, creatorInfoPanel);
+//			detailGrid.setWidget(0, 1, optionsButtonPanel);
+			
+			detailPanel.add(creatorInfoPanel);
+			creatorInfoPanel.setStyleName("tt-float-left");
+			detailPanel.add(optionsButtonPanel);
+			optionsButtonPanel.setStyleName("tt-float-right");
+			
+//			dock.add(new HTML(constants.cwDockPanelNorth1()), DockPanel.NORTH);
+
 			
 			//The target for embedded content
 			mainPanel.add(new HTML("<center><span id=\""+postId+"\"></span></center>"));
