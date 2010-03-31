@@ -20,6 +20,9 @@ ul{list-style-type: none;}
 
 .tt-fill{ width: 100%; }
 
+.tt-float-left{ float: left;}
+.tt-float-right{ float: right;}
+
 .tt-selected{background-color: #ddd;}
 
 /*The plan is to set these to have image backgrounds that change depending on the style folder*/
