@@ -108,6 +108,8 @@ public class FastPostBeanConverter {
 		gPost.setRootPost(p.isRootPost());
 		gPost.setThreadPost(p.isThreadPost());
 		gPost.setPath(p.getPath());
+		gPost.setMass(p.getMass());
+		gPost.setReplyCount(p.getReplyCount());
 		
 		if(!p.isRootPost())
 			gPost.setRoot(convertPost(p.getRoot()));
@@ -127,6 +129,7 @@ public class FastPostBeanConverter {
 		gEntry.setBody(e.getBody());
 		gEntry.setDate(e.getDate());
 		gEntry.setEntryId(e.getEntryId());
+		gEntry.setSummary(e.getSummary());
 		return gEntry;
 	}
 	

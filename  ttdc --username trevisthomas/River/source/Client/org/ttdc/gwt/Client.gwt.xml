@@ -22,7 +22,9 @@
   <!-- Other module inherits                                      -->
   <inherits name="com.google.gwt.inject.Inject"/>
   <inherits name="com.google.gwt.json.JSON" /> 
-  <inherits name="com.gwtext.GwtExt" /> 
+  <inherits name="com.gwtext.GwtExt" />
+  
+  <inherits name="com.google.gwt.uibinder.UiBinder"/> 
     
   
 

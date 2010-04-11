@@ -48,7 +48,7 @@ public class PostPresenter extends BasePresenter<PostPresenter.View> implements 
 		HasClickHandlers fetchMoreTarget();
 		
 		HasWidgets creationDateTarget();
-		void init(String postId);
+		void init(String postId, boolean isReply);
 		
 		HasClickHandlers postOptionsClick(); //Shows popup
 		
@@ -88,7 +88,7 @@ public class PostPresenter extends BasePresenter<PostPresenter.View> implements 
 		setPost(post, Mode.FLAT);
 	}
 	public void setPost(GPost post, Mode mode) {
-		view.init(post.getPostId());
+		view.init(post.getPostId(),!(post.isRootPost() || post.isThreadPost()));
 		this.post = post;
 		
 		HyperlinkPresenter hyperlinkPresenter = injector.getHyperlinkPresenter();

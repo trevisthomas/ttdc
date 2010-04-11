@@ -1,0 +1,11 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<!-- The above doctype is to allow for special html characters in this xml file -->
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+	<g:HTMLPanel>
+		<g:VerticalPanel>
+			<g:Anchor ui:field="replyElement">Reply</g:Anchor>
+			<g:Anchor ui:field="likeElement">Like</g:Anchor>
+		</g:VerticalPanel>
+	</g:HTMLPanel>
+</ui:UiBinder>

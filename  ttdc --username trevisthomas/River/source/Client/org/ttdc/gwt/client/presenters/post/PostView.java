@@ -1,21 +1,17 @@
 package org.ttdc.gwt.client.presenters.post;
 
-import org.apache.struts2.views.jsp.ui.AnchorTag;
 import org.ttdc.gwt.client.presenters.post.PostPresenter.Mode;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.HasAlignment;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -23,11 +19,13 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class PostView implements PostPresenter.View {
+	
+	private final VerticalPanel mainPanel = new VerticalPanel();
 	private final VerticalPanel postPanel = new VerticalPanel();
 	
 	
-	private final VerticalPanel mainPanel = new VerticalPanel();
-	private final HorizontalPanel postHeader = new HorizontalPanel();
+	//private final HorizontalPanel postHeader = new HorizontalPanel();
+	private final Grid postHeader = new Grid(1,2);
 	private final SimplePanel title = new SimplePanel();
 	
 	private final Label entry = new Label();
@@ -37,11 +35,11 @@ public class PostView implements PostPresenter.View {
 	private final SimplePanel datePanel = new SimplePanel();
 	//private final HorizontalPanel optionsButton = new SimplePanel();
 	//HasClickHandlers
-	private final HorizontalPanel optionsButtonPanel = new HorizontalPanel();
-	private final HorizontalPanel creatorInfoPanel = new HorizontalPanel();
+	private final FlowPanel optionsButtonPanel = new FlowPanel();
+	private final FlowPanel creatorInfoPanel = new FlowPanel();
 	//private final Grid detailGrid = new Grid(1,2);
-	private final FlowPanel detailPanel = new FlowPanel(); 
-	private final HorizontalPanel postAvatarAndBodyPanel = new HorizontalPanel();
+	private final Grid detailPanel = new Grid(1,2); 
+	private final FlowPanel postAvatarAndBodyPanel = new FlowPanel();
 	//private final FlowPanel postAvatarAndBodyPanel = new FlowPanel();
 	private final SimplePanel avatarPanel = new SimplePanel();
 	private final VerticalPanel postBodyContainer = new VerticalPanel();
@@ -55,60 +53,39 @@ public class PostView implements PostPresenter.View {
 	
 	private String postId;
 	private Mode mode = Mode.FLAT;
+	
+	private String postBodyContainerStyle = "tt-post-body-container";
 	public PostView() {
 	}
 	
 	@Override
 	public Widget getWidget() {
 		if(!postPanel.isAttached()){
-			mainPanel.setStyleName("tt-post-container");
-			mainPanel.addStyleName("tt-fill");
 			mainPanel.add(postPanel);
-			postHeader.add(title);
+			mainPanel.setStyleName("tt-post");
 			postPanel.add(postHeader);
-			postPanel.setStyleName("tt-post");
-			postPanel.addStyleName("tt-border");
-			postPanel.addStyleName("tt-fill");
-			
-			
-			
-//			postPanel.add(detailGrid);
-						
-			creatorInfoPanel.add(creatorWidget);
-			creatorInfoPanel.add(datePanel);
-			//postPanel.add(datePanel);
-			
-			optionsButtonPanel.add(postOptionsClick);
-//			optionsButtonPanel.setStyleName("tt-test");
-//			optionsButtonPanel.setWidth("100%");
-//			optionsButtonPanel.setHorizontalAlignment(HasAlignment.ALIGN_RIGHT);
+			postPanel.setStyleName("tt-fill");
+			//postPanel.addStyleName("tt-fill");
+			postHeader.setWidget(0, 0, title);
 			
 			postPanel.add(postAvatarAndBodyPanel);
-			postAvatarAndBodyPanel.setStyleName("tt-fill");
-			//postBodyContainer.add(postBodyContainer);
-			
-			//avatarPanel.setStyleName("tt-float-left");
-			//postBodyContainer.setStyleName("tt-float-left");
-			postBodyContainer.setStyleName("tt-fill");
 			postAvatarAndBodyPanel.add(avatarPanel);
+			avatarPanel.setStyleName("tt-float-left");
+			postBodyContainer.setStyleName("tt-float-left");
+			postBodyContainer.addStyleName(postBodyContainerStyle);
 			postAvatarAndBodyPanel.add(postBodyContainer);
 			
 			
 			postBodyContainer.add(detailPanel);
-			//detailPanel.setWidth("100%");
-			
+			creatorInfoPanel.add(creatorWidget);
+			creatorInfoPanel.add(datePanel);
+			optionsButtonPanel.add(postOptionsClick);
+			optionsButtonPanel.setStyleName("tt-text-right");
+			detailPanel.setStyleName("tt-fill");
+			detailPanel.setWidget(0, 0, creatorInfoPanel);
+			detailPanel.setWidget(0, 1, optionsButtonPanel);
 			postBodyContainer.add(new HTMLPanel(entry.getText()));
 			
-//			detailGrid.setWidget(0, 0, creatorInfoPanel);
-//			detailGrid.setWidget(0, 1, optionsButtonPanel);
-			
-			detailPanel.add(creatorInfoPanel);
-			creatorInfoPanel.setStyleName("tt-float-left");
-			detailPanel.add(optionsButtonPanel);
-			optionsButtonPanel.setStyleName("tt-float-right");
-			
-//			dock.add(new HTML(constants.cwDockPanelNorth1()), DockPanel.NORTH);
-
 			
 			//The target for embedded content
 			mainPanel.add(new HTML("<center><span id=\""+postId+"\"></span></center>"));
@@ -122,8 +99,8 @@ public class PostView implements PostPresenter.View {
 			
 			mainPanel.add(childPosts);
 			
-			
 			initializeOptionsPopup();
+		
 		}
 		return mainPanel;
 		
@@ -151,7 +128,13 @@ public class PostView implements PostPresenter.View {
 	}
 
 	@Override
-	public void init(String postId) {
+	public void init(String postId, boolean isReply) {
+		//This is an ugly hack that is in place because of a style issue
+		if(isReply)
+			postBodyContainerStyle = "tt-post-body-container-reply";
+		else
+			postBodyContainerStyle = "tt-post-body-container";
+			
 		this.postId = postId;
 	}
 	public HasWidgets getChildWidgetBucket() {

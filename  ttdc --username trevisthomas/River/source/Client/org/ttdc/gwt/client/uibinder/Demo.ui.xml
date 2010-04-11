@@ -1,0 +1,85 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<!-- The above doctype is to allow for special html characters in this xml file -->
+
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+    xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+
+	 <g:HTMLPanel>
+	<g:TabLayoutPanel ui:field="tabPanel" barUnit="PX"
+		barHeight="60" width="375px" height="150px">
+
+		<g:tab>
+			<g:header>
+				Tab 1
+            </g:header>
+			<g:HTML>
+				Hello tab 1
+				<br />
+				Good bye!
+			</g:HTML>
+		</g:tab>
+		<g:tab>
+			<g:header>
+				Tab 2
+            </g:header>
+			<g:VerticalPanel>
+				<g:HorizontalPanel>
+					<g:Label text="Login" />
+					<g:TextBox ui:field="loginBox" />
+					<g:Label ui:field="completionLabel1" />
+				</g:HorizontalPanel>
+				<g:HorizontalPanel>
+					<g:Label text="Password" />
+					<g:TextBox ui:field="passwordBox" />
+					<g:Label ui:field="completionLabel2" />
+				</g:HorizontalPanel>
+				<g:Button ui:field="buttonSubmit" text="Submit" />
+			</g:VerticalPanel>
+
+		</g:tab>
+
+
+	</g:TabLayoutPanel>
+
+	<span ui:field="boobs" />
+
+
+
+</g:HTMLPanel>
+	
+</ui:UiBinder>
+
+<!-- 
+
+  <g:HorizontalPanel>
+    <g:Label>Keep your ducks</g:Label>
+    <g:Label>in a row</g:Label>
+    <g:TextBox ui:field="loginBox" />
+    <g:Button ui:field="buttonSubmit" text="Submit" />
+  </g:HorizontalPanel>
+  
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+    xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+    
+    	
+        
+        <div align="center">
+        <ui:VerticalPanel>
+                <ui:HorizontalPanel>
+                        <ui:Label text="Login" />
+                        <ui:TextBox ui:field="loginBox" />
+                        <ui:Label ui:field="completionLabel1" />
+                </ui:HorizontalPanel>
+                <ui:HorizontalPanel>
+                        <ui:Label text="Password" />
+                        <ui:TextBox ui:field="passwordBox" />
+                        <ui:Label ui:field="completionLabel2" />
+                </ui:HorizontalPanel>
+                <g:Button ui:field="buttonSubmit" text="Submit" />    
+        </ui:VerticalPanel>
+        </div>
+        
+</ui:UiBinder> 
+-->
+

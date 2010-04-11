@@ -1,0 +1,45 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<!-- The above doctype is to allow for special html characters in this xml file -->
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+	<g:HTMLPanel>
+		<div class="tt-post">
+			<div>
+				<span class="tt-post-title tt-text-large">
+					<g:Hyperlink ui:field="titleElement" />
+				</span>
+					
+				<span class="tt-post-reply-count" ui:field="replyCountElement" />
+			</div>
+			<div style="clear:both;">
+				<table>
+					<tr>
+						<td>
+							<g:Widget ui:field="avatarElement" />
+						</td>
+						<td width="100%">
+							<div width="100%" class="tt-text-mini">
+								<span class="tt-float-left">
+									<g:Hyperlink ui:field="creatorLinkElement" />
+								</span>
+								<span class="tt-float-left">
+									<g:Widget ui:field="createDateElement" />
+								</span>
+								<span class="tt-float-right">
+									<g:Anchor ui:field="moreOptionsElement"/>
+								</span>
+							</div>
+							
+							<div width="100%" style="clear:both;" >
+								<span class="tt-post-body tt-text-normal" ui:field="bodyElement" />
+							</div>
+							
+						</td>
+					</tr>
+				</table>
+			</div>
+			<g:Anchor ui:field="fetchMoreElement"/>
+			<g:Widget ui:field="repliesElement" />
+		</div>
+	</g:HTMLPanel>
+</ui:UiBinder>

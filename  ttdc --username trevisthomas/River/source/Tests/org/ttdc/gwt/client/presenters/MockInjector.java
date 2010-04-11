@@ -91,6 +91,9 @@ import org.ttdc.gwt.client.presenters.users.UserListPresenter;
 import org.ttdc.gwt.client.presenters.users.UserRowPresenter;
 import org.ttdc.gwt.client.presenters.users.UserToolsPresenter;
 import org.ttdc.gwt.client.services.RpcServiceAsync;
+import org.ttdc.gwt.client.uibinder.post.MoreOptionsPopupPanel;
+import org.ttdc.gwt.client.uibinder.post.PostPanel;
+import org.ttdc.gwt.client.uibinder.post.PostSummaryPanel;
 
 import com.google.gwt.user.client.ui.HasWidgets;
 
@@ -1266,6 +1269,24 @@ public class MockInjector implements Injector{
 
 	@Override
 	public org.ttdc.gwt.client.presenters.comments.RemovableTagPresenter.View getRemovableTagView() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public PostPanel createPostPanel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public MoreOptionsPopupPanel createOptionsPanel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public PostSummaryPanel createPostSummaryPanel() {
 		// TODO Auto-generated method stub
 		return null;
 	}

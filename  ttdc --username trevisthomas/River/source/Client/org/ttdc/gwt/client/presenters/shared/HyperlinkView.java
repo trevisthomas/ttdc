@@ -35,7 +35,12 @@ public class HyperlinkView implements HyperlinkPresenter.View {
 	public HasClickHandlers getLinkHandlers() {
 		return link;
 	}
-
+	
+	@Override
+	public Hyperlink getHyperlink() {
+		return link;
+	}
+	
 	@Override
 	public Widget getWidget() {
 		if(styleType == StyleType.PAGINATOR){

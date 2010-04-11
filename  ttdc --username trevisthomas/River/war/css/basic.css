@@ -10,16 +10,19 @@ ul{list-style-type: none;}
 .tt-border{
 	border:1px black solid;
 }
-.tt-post-container{
-	
-}
+
+.tt-post{width: 500px;}
+.tt-text-mini{font-size:9px;}
+.tt-text-normal{font-size:12px;}
+.tt-text-large{font-size:16px; font-weight: 500;}
+
 .tt-post-container-nested-mode{	margin: 0 0 20px 0;}
-.tt-post{
-	width: 800px;
-}
+.tt-post-body-container{ width: 450;}
+.tt-post-body-container-reply{width: 470;}
 
 .tt-fill{ width: 100%; }
-
+.tt-text-left{text-align: left;}
+.tt-text-right{text-align: right;}
 .tt-float-left{ float: left;}
 .tt-float-right{ float: right;}
 
@@ -32,7 +35,7 @@ ul{list-style-type: none;}
 .tt-clickable-icon-down{background-color: yellow; width: 18px; height: 18px;}
 .tt-clickable-icon-up{background-color: green; width: 18px; height: 18px;}
 
-.tt-hyperLinkView{ float: left;}
+.tt-hyperLinkView{ display: inline;}
 
 .tt-disabled{color:#eee}
 .tt-search{font-size: 1.1em;}

@@ -22,7 +22,6 @@ public class DatePresenter extends BasePresenter<DatePresenter.View>{
 	@Inject
 	protected DatePresenter(Injector injector) {
 		super(injector, injector.getDateView());
-		// TODO Auto-generated constructor stub
 	}
 
 	public void init(Date date){
@@ -33,6 +32,5 @@ public class DatePresenter extends BasePresenter<DatePresenter.View>{
 		else
 			value = "Never Happened";
 		view.dateText().setText(value);
-		
 	}
 }

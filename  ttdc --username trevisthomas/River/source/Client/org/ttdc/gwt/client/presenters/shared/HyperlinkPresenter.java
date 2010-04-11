@@ -11,6 +11,7 @@ import org.ttdc.gwt.client.presenters.post.SearchTagResultsPresenter;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.HasText;
+import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.inject.Inject;
 
 public class HyperlinkPresenter extends BasePresenter<HyperlinkPresenter.View> {
@@ -43,6 +44,7 @@ public class HyperlinkPresenter extends BasePresenter<HyperlinkPresenter.View> {
 		public void setCloudRank(int cloudRank);
 		public void setStyleType(StyleType styleType);
 		public void setUrl(String url);
+		public Hyperlink getHyperlink();
 	}
 	
 	public void setPerson(GPerson person){
@@ -130,5 +132,12 @@ public class HyperlinkPresenter extends BasePresenter<HyperlinkPresenter.View> {
 		view.setStyleType(styleType);
 	}
 
+	public Hyperlink getHyperlink(){
+		return view.getHyperlink();
+	}
+	
+	public void init(){
+		view.getWidget();
+	}
 	
 }

@@ -11,6 +11,8 @@ import org.ttdc.gwt.client.messaging.post.PostEventListener;
 import org.ttdc.gwt.client.presenters.post.PostPresenter.Mode;
 import org.ttdc.gwt.client.presenters.shared.BasePresenter;
 import org.ttdc.gwt.client.presenters.shared.BaseView;
+import org.ttdc.gwt.client.uibinder.post.PostPanel;
+import org.ttdc.gwt.client.uibinder.post.PostSummaryPanel;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -74,16 +76,27 @@ public final class PostCollectionPresenter extends BasePresenter<PostCollectionP
 	public void addPostsToPostList(List<GPost> postList, Mode mode) {
 		for(GPost post : postList){
 			if(post.isSuggestSummary()){
-				PostSummaryPresenter postPresenter = injector.getPostSummaryPresenter();
-				postPresenter.setPost(post);
-				getView().getPostWidgets().add(postPresenter.getWidget());
-				postPresenters.add(postPresenter);
+//				PostSummaryPresenter postPresenter = injector.getPostSummaryPresenter();
+//				postPresenter.setPost(post);
+//				getView().getPostWidgets().add(postPresenter.getWidget());
+				
+				PostSummaryPanel postSummaryPanel = injector.createPostSummaryPanel();
+				postSummaryPanel.init(post);
+				getView().getPostWidgets().add(postSummaryPanel);
+				
+				postPresenters.add(postSummaryPanel);
 			}
 			else{
-				PostPresenter postPresenter = injector.getPostPresenter();
-				postPresenter.setPost(post,mode);
-				getView().getPostWidgets().add(postPresenter.getWidget());
-				postPresenters.add(postPresenter);
+//				PostPresenter postPresenter = injector.getPostPresenter();
+//				postPresenter.setPost(post,mode);
+//				getView().getPostWidgets().add(postPresenter.getWidget());
+//				postPresenters.add(postPresenter);
+				
+				PostPanel postPanel = injector.createPostPanel();
+				postPanel.setPost(post,mode);
+				getView().getPostWidgets().add(postPanel);
+				postPresenters.add(postPanel);
+				
 			}
 		}
 	}
@@ -91,14 +104,24 @@ public final class PostCollectionPresenter extends BasePresenter<PostCollectionP
 	public void insertPostsToPostList(List<GPost> postList, Mode mode) {
 		for(GPost post : postList){
 			if(post.isSuggestSummary()){
-				PostSummaryPresenter postPresenter = injector.getPostSummaryPresenter();
-				postPresenter.setPost(post);
-				postPresenters.add(0,postPresenter);
+//				PostSummaryPresenter postPresenter = injector.getPostSummaryPresenter();
+//				postPresenter.setPost(post);
+//				postPresenters.add(0,postPresenter);
+				
+				PostSummaryPanel postSummaryPanel = injector.createPostSummaryPanel();
+				postSummaryPanel.init(post);
+				getView().getPostWidgets().add(postSummaryPanel);
+				
+				postPresenters.add(0,postSummaryPanel);
 			}
 			else{
-				PostPresenter postPresenter = injector.getPostPresenter();
-				postPresenter.setPost(post,mode);
-				postPresenters.add(0,postPresenter);
+//				PostPresenter postPresenter = injector.getPostPresenter();
+//				postPresenter.setPost(post,mode);
+//				postPresenters.add(0,postPresenter);
+				PostPanel postPanel = injector.createPostPanel();
+				postPanel.setPost(post,mode);
+				//getView().getPostWidgets().add(postUiB);
+				postPresenters.add(0,postPanel);
 			}
 		}
 		getView().getPostWidgets().clear();

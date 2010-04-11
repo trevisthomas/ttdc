@@ -85,6 +85,9 @@ import org.ttdc.gwt.client.presenters.users.UserListPresenter;
 import org.ttdc.gwt.client.presenters.users.UserRowPresenter;
 import org.ttdc.gwt.client.presenters.users.UserToolsPresenter;
 import org.ttdc.gwt.client.services.RpcServiceAsync;
+import org.ttdc.gwt.client.uibinder.post.MoreOptionsPopupPanel;
+import org.ttdc.gwt.client.uibinder.post.PostPanel;
+import org.ttdc.gwt.client.uibinder.post.PostSummaryPanel;
 
 import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;
@@ -337,5 +340,10 @@ public interface Injector extends Ginjector {
 
 	public RemovableTagPresenter.View getRemovableTagView();
 	public RemovableTagPresenter getRemovableTagPresenter();
+	
+	//
+	public PostPanel createPostPanel();
+	public MoreOptionsPopupPanel createOptionsPanel();
+	public PostSummaryPanel createPostSummaryPanel();
 }
 
