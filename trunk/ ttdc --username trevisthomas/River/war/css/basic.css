@@ -11,14 +11,14 @@ ul{list-style-type: none;}
 	border:1px black solid;
 }
 
-.tt-post{width: 500px;}
+.tt-post{width: 500px; margin-bottom: 10px;}
 .tt-text-mini{font-size:9px;}
 .tt-text-normal{font-size:12px;}
 .tt-text-large{font-size:16px; font-weight: 500;}
 
-.tt-post-container-nested-mode{	margin: 0 0 20px 0;}
-.tt-post-body-container{ width: 450;}
-.tt-post-body-container-reply{width: 470;}
+.tt-post-container{ border-width:1px 0; border-color: black; border-style: solid; }
+.tt-post-fetch-more{ width:100%; text-align: center; }
+
 
 .tt-fill{ width: 100%; }
 .tt-text-left{text-align: left;}

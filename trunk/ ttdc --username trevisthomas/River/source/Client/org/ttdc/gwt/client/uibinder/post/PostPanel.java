@@ -22,6 +22,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -102,8 +103,7 @@ public class PostPanel extends Composite implements PostPresenterCommon{
 			moreOptionsElement.setText("> More Options");
 			moreOptionsElement.setStyleName("tt-cursor-pointer");
 			initializeOptionsPopup(post);
-			
-			
+						
 			if(post.getPosts().size() != 0){
 				//postCollectionPresenter = injector.getPostCollectionPresenter();
 				postCollectionPresenter.setPostList(post.getPosts());

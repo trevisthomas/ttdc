@@ -18,6 +18,8 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
 public final class PostCollectionPresenter extends BasePresenter<PostCollectionPresenter.View> implements PostEventListener{
@@ -83,7 +85,6 @@ public final class PostCollectionPresenter extends BasePresenter<PostCollectionP
 				PostSummaryPanel postSummaryPanel = injector.createPostSummaryPanel();
 				postSummaryPanel.init(post);
 				getView().getPostWidgets().add(postSummaryPanel);
-				
 				postPresenters.add(postSummaryPanel);
 			}
 			else{
@@ -111,7 +112,6 @@ public final class PostCollectionPresenter extends BasePresenter<PostCollectionP
 				PostSummaryPanel postSummaryPanel = injector.createPostSummaryPanel();
 				postSummaryPanel.init(post);
 				getView().getPostWidgets().add(postSummaryPanel);
-				
 				postPresenters.add(0,postSummaryPanel);
 			}
 			else{
@@ -125,10 +125,17 @@ public final class PostCollectionPresenter extends BasePresenter<PostCollectionP
 			}
 		}
 		getView().getPostWidgets().clear();
-		for(PostPresenterCommon presenter : postPresenters)
+		for(PostPresenterCommon presenter : postPresenters){
 			getView().getPostWidgets().add(presenter.getWidget());
+		}
 	}
 	
+//	private SimplePanel createParentDelegateContainer(PostSummaryPanel postSummaryPanel) {
+//		SimplePanel parent = new SimplePanel();
+//		postSummaryPanel.addToWidget(parent);
+//		return parent;
+//	}
+
 	public int size(){
 		return postPresenters.size();
 	}

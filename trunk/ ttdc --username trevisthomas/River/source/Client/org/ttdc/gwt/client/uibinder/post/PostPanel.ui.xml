@@ -11,7 +11,7 @@
 					
 				<span class="tt-post-reply-count" ui:field="replyCountElement" />
 			</div>
-			<div style="clear:both;">
+			<div class="tt-post-container" style="clear:both;">
 				<table>
 					<tr>
 						<td>
@@ -38,7 +38,7 @@
 					</tr>
 				</table>
 			</div>
-			<g:Anchor ui:field="fetchMoreElement"/>
+			<div class="tt-post-fetch-more"><g:Anchor ui:field="fetchMoreElement"/></div>
 			<g:Widget ui:field="repliesElement" />
 		</div>
 	</g:HTMLPanel>

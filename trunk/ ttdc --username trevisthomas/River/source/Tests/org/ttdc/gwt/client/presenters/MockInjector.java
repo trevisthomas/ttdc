@@ -92,6 +92,7 @@ import org.ttdc.gwt.client.presenters.users.UserRowPresenter;
 import org.ttdc.gwt.client.presenters.users.UserToolsPresenter;
 import org.ttdc.gwt.client.services.RpcServiceAsync;
 import org.ttdc.gwt.client.uibinder.post.MoreOptionsPopupPanel;
+import org.ttdc.gwt.client.uibinder.post.PostExpanded;
 import org.ttdc.gwt.client.uibinder.post.PostPanel;
 import org.ttdc.gwt.client.uibinder.post.PostSummaryPanel;
 
@@ -1287,6 +1288,12 @@ public class MockInjector implements Injector{
 
 	@Override
 	public PostSummaryPanel createPostSummaryPanel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public PostExpanded createPostExpanded() {
 		// TODO Auto-generated method stub
 		return null;
 	}

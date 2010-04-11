@@ -166,5 +166,4 @@ public class PostPresenter extends BasePresenter<PostPresenter.View> implements 
 	public PostCollectionPresenter getPostCollection() {
 		return postCollection;
 	}
-	
 }

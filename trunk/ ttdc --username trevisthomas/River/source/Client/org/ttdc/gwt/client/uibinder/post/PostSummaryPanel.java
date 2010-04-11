@@ -2,15 +2,30 @@ package org.ttdc.gwt.client.uibinder.post;
 
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GPost;
+import org.ttdc.gwt.client.messaging.EventBus;
+import org.ttdc.gwt.client.messaging.post.PostEvent;
+import org.ttdc.gwt.client.messaging.post.PostEventType;
+import org.ttdc.gwt.client.presenters.post.PostPresenter;
 import org.ttdc.gwt.client.presenters.post.PostPresenterCommon;
 import org.ttdc.gwt.client.presenters.shared.HyperlinkPresenter;
+import org.ttdc.gwt.client.services.RpcServiceAsync;
+import org.ttdc.gwt.shared.commands.CommandResultCallback;
+import org.ttdc.gwt.shared.commands.PostCrudCommand;
+import org.ttdc.gwt.shared.commands.results.PostCommandResult;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.SpanElement;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Hyperlink;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
@@ -20,21 +35,27 @@ public class PostSummaryPanel extends Composite implements PostPresenterCommon{
     
     private Injector injector;
     private HyperlinkPresenter creatorLinkPresenter;
+    private GPost post;
     @UiField(provided = true) Hyperlink creatorLinkElement;
-    @UiField SpanElement bodySummaryElement;
+    @UiField HTML bodySummaryElement;
     @UiField SpanElement spacerElement;
+    @UiField HTMLPanel summaryElement;
+    @UiField(provided = true) SimplePanel expandedElement;
     @Inject
     public PostSummaryPanel(Injector injector) { 
     	this.injector = injector;
     	creatorLinkPresenter = injector.getHyperlinkPresenter();
     	
     	creatorLinkElement = creatorLinkPresenter.getHyperlink();
+    	expandedElement = new SimplePanel();
     	
     	initWidget(binder.createAndBindUi(this)); 
 	}
     
     public void init(GPost post){
-    	bodySummaryElement.setInnerHTML(post.getLatestEntry().getSummary());
+    	this.post = post;
+    	//bodySummaryElement.setInnerHTML(post.getLatestEntry().getSummary());
+    	bodySummaryElement.setHTML(post.getLatestEntry().getSummary());
     	creatorLinkPresenter.setPerson(post.getCreator());
     	setSpacer(post.getPath().split("\\.").length - 2);
     }
@@ -50,8 +71,46 @@ public class PostSummaryPanel extends Composite implements PostPresenterCommon{
 		}
 	}
     
+    @UiHandler("bodySummaryElement")
+    public void onClick(ClickEvent event){
+    	expandPost();
+    	    	
+    }
+    
+    
     @Override
     public Widget getWidget() {
     	return this;
     }
+    
+    public void expandPost() {
+		RpcServiceAsync service = injector.getService();
+		PostCrudCommand postCmd = new PostCrudCommand();
+		postCmd.setPostId(post.getPostId());
+		service.execute(postCmd,buildExpandedPostCallback());
+	}
+	
+	public void contractPost() {
+		//view.revert();
+	}
+	
+	private void notifyListeners(){
+		PostEvent postEvent = new PostEvent(PostEventType.EXPAND_CONTRACT, post);
+		EventBus.getInstance().fireEvent(postEvent);
+	}
+	
+	private CommandResultCallback<PostCommandResult> buildExpandedPostCallback() {
+		CommandResultCallback<PostCommandResult> rootPostCallback = new CommandResultCallback<PostCommandResult>(){
+			@Override
+			public void onSuccess(PostCommandResult result) {
+				notifyListeners();
+				summaryElement.setVisible(false);
+				PostExpanded postExpanded = injector.createPostExpanded();
+				postExpanded.init(post);
+				expandedElement.clear();
+				expandedElement.add(postExpanded);
+			}
+		};
+		return rootPostCallback;
+	}
 }
