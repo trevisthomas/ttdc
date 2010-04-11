@@ -24,33 +24,35 @@ public class ImageView implements ImagePresenter.View{
 		
 	@Override
 	public Widget getWidget() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("<img ");
-		if(height > 0){
-			sb.append("height=").append(height).append("\" ");
-		}
-		if(width > 0){
-			sb.append("width=\"").append(width).append("\" ");
-		}
-		if(StringUtil.notEmpty(title)){
-			sb.append("title=\"").append(title).append("\" ");
-		}
-		if(asThumbnail)
-			sb.append("src=\"").append(getThumbnailImagePath()).append("\"");
-		else
-			sb.append("src=\"").append(getFullImagePath()).append("\"");
-		sb.append("/>");
-		
-		if(linkToFull)
-			html.setHTML(linkImageToFullImage(sb.toString()));
-		else if(StringUtil.notEmpty(linkUrl)){
-			html.setHTML(linkImageToUrl(sb.toString(),linkUrl));
-		}
-		else
-			html.setHTML(sb.toString());
-		
-		main.add(html);
+//		StringBuilder sb = new StringBuilder();
+//		sb.append("<img ");
+//		if(height > 0){
+//			sb.append("height=").append(height).append("\" ");
+//		}
+//		if(width > 0){
+//			sb.append("width=\"").append(width).append("\" ");
+//		}
+//		if(StringUtil.notEmpty(title)){
+//			sb.append("title=\"").append(title).append("\" ");
+//		}
+//		if(asThumbnail)
+//			sb.append("src=\"").append(getThumbnailImagePath()).append("\"");
+//		else
+//			sb.append("src=\"").append(getFullImagePath()).append("\"");
+//		sb.append("/>");
+//		
+//		if(linkToFull)
+//			html.setHTML(linkImageToFullImage(sb.toString()));
+//		else if(StringUtil.notEmpty(linkUrl)){
+//			html.setHTML(linkImageToUrl(sb.toString(),linkUrl));
+//		}
+//		else
+//			html.setHTML(sb.toString());
+//		
+//		main.add(html);
+		renderHtml();
 		return main;
+		
 	}
 	
 	
@@ -97,6 +99,40 @@ public class ImageView implements ImagePresenter.View{
 	@Override
 	public void setImage(GImage image) {
 		this.image = image;
+	}
+
+
+
+	@Override
+	public void renderHtml() {
+		if(image == null || main.toString().trim().equals(""))
+			return;
+		StringBuilder sb = new StringBuilder();
+		sb.append("<img ");
+		if(height > 0){
+			sb.append("height=").append(height).append("\" ");
+		}
+		if(width > 0){
+			sb.append("width=\"").append(width).append("\" ");
+		}
+		if(StringUtil.notEmpty(title)){
+			sb.append("title=\"").append(title).append("\" ");
+		}
+		if(asThumbnail)
+			sb.append("src=\"").append(getThumbnailImagePath()).append("\"");
+		else
+			sb.append("src=\"").append(getFullImagePath()).append("\"");
+		sb.append("/>");
+		
+		if(linkToFull)
+			html.setHTML(linkImageToFullImage(sb.toString()));
+		else if(StringUtil.notEmpty(linkUrl)){
+			html.setHTML(linkImageToUrl(sb.toString(),linkUrl));
+		}
+		else
+			html.setHTML(sb.toString());
+		
+		main.add(html);
 	}
 
 	@Override

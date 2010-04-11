@@ -21,6 +21,7 @@ public class ImagePresenter extends BasePresenter<ImagePresenter.View>{
 		HasClickHandlers imageClickHandler();
 		void setClickableCursor(boolean clickable);
 		void setLinkUrl(String url);
+		void renderHtml();
 	}
 	
 	@Inject
@@ -40,7 +41,6 @@ public class ImagePresenter extends BasePresenter<ImagePresenter.View>{
 		view.setImage(image);
 		view.setImageTitle(title);
 		maybeSetHightAndWidth(image, width, height);
-		
 	}
 	private void maybeSetHightAndWidth(GImage image, int width, int height) {
 		if(image.getWidth() > width || image.getHeight() > height){
@@ -60,6 +60,15 @@ public class ImagePresenter extends BasePresenter<ImagePresenter.View>{
 	public void linkToFullImage(boolean enable){
 		view.setLinkToFull(enable);
 	}
+	
+	/**
+	 * This method allows you to call getWidget before you ever set the image. 
+	 * I added this when trying to port posts to uiBinder
+	 */
+	public void init(){
+		view.renderHtml();
+	}		
+
 
 	/**
 	 * Warning. If you call this method twice you'll probably get two actions on click.

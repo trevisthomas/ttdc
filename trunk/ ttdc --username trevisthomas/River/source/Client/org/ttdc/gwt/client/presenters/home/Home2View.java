@@ -2,6 +2,7 @@ package org.ttdc.gwt.client.presenters.home;
 
 import org.ttdc.gwt.client.messaging.history.HistoryConstants;
 import org.ttdc.gwt.client.messaging.history.HistoryToken;
+import org.ttdc.gwt.client.uibinder.Demo;
 
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
@@ -35,6 +36,7 @@ public class Home2View implements Home2Presenter.View{
 	private boolean fireHistoryEvent = true;
 	
 	public Home2View() {
+		main.add(new Demo());
 		main.add(loginPanel);
 		main.add(messagePannel);
 		main.add(searchPanel);
