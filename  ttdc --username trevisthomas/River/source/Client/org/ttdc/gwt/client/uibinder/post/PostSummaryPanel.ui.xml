@@ -7,9 +7,10 @@
 		<tr>
 			<td><span ui:field="spacerElement" /></td>
 			<td>
-				<div class="tt-post-summary tt-text-normal">
-					<span class="tt-post-body tt-text-normal" ui:field="bodySummaryElement" /> : <g:Hyperlink ui:field="creatorLinkElement" />
-				</div>
+				<g:SimplePanel ui:field="expandedElement"/>
+				<g:HTMLPanel styleName="tt-post-summary tt-text-normal" ui:field="summaryElement">
+					<g:HTML styleName="tt-post-body tt-text-normal tt-inline" ui:field="bodySummaryElement" /> : <g:Hyperlink ui:field="creatorLinkElement" />
+				</g:HTMLPanel>
 			</td>
 		</tr>
 		</table>	

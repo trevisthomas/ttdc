@@ -105,5 +105,4 @@ public class PostSummaryPresenter extends BasePresenter<PostSummaryPresenter.Vie
 		};
 		return rootPostCallback;
 	}
-	
 }
