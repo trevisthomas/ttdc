@@ -145,8 +145,9 @@ public final class PostCollectionPresenter extends BasePresenter<PostCollectionP
 		if(postEvent.getType().isExpandContract()){
 			for(PostPresenterCommon postPresenter : postPresenters){
 				//TODO think about adding a useful method to the PostPresenterCommon interface for this?
-				if(postPresenter instanceof PostSummaryPresenter)
-					((PostSummaryPresenter)postPresenter).contractPost();
+//				if(postPresenter instanceof PostSummaryPresenter)
+//					((PostSummaryPresenter)postPresenter).contractPost();
+				postPresenter.contractPost();
 			}
 		}
 	}

@@ -35,6 +35,7 @@ public class PostSummaryPanel extends Composite implements PostPresenterCommon{
     
     private Injector injector;
     private HyperlinkPresenter creatorLinkPresenter;
+    private PostExpanded postExpanded;
     private GPost post;
     @UiField(provided = true) Hyperlink creatorLinkElement;
     @UiField HTML bodySummaryElement;
@@ -89,9 +90,11 @@ public class PostSummaryPanel extends Composite implements PostPresenterCommon{
 		postCmd.setPostId(post.getPostId());
 		service.execute(postCmd,buildExpandedPostCallback());
 	}
-	
+    
+	@Override
 	public void contractPost() {
-		//view.revert();
+		expandedElement.setVisible(false);
+		summaryElement.setVisible(true);
 	}
 	
 	private void notifyListeners(){
@@ -105,10 +108,13 @@ public class PostSummaryPanel extends Composite implements PostPresenterCommon{
 			public void onSuccess(PostCommandResult result) {
 				notifyListeners();
 				summaryElement.setVisible(false);
-				PostExpanded postExpanded = injector.createPostExpanded();
-				postExpanded.init(post);
-				expandedElement.clear();
-				expandedElement.add(postExpanded);
+				if(postExpanded == null){
+					postExpanded = injector.createPostExpanded();
+					postExpanded.init(post);
+					expandedElement.clear();
+					expandedElement.add(postExpanded);
+				}
+				expandedElement.setVisible(true);
 			}
 		};
 		return rootPostCallback;
