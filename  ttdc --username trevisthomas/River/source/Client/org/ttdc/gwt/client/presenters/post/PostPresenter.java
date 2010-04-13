@@ -166,4 +166,8 @@ public class PostPresenter extends BasePresenter<PostPresenter.View> implements 
 	public PostCollectionPresenter getPostCollection() {
 		return postCollection;
 	}
+	@Override
+	public void contractPost() {
+		/*This class is going to be depracated eventually, so this has no impl*/
+	}
 }

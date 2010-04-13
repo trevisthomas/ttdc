@@ -169,5 +169,10 @@ public class PostPanel extends Composite implements PostPresenterCommon{
 			optionsPanel.setAutoHideEnabled(true);
 			optionsPanel.init(post);
 		}
+		
+		@Override
+		public void contractPost() {
+			//hmm, no impl?
+		}
 
 }
