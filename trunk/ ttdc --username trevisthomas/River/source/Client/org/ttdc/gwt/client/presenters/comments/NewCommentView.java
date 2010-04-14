@@ -81,6 +81,8 @@ public class NewCommentView implements NewCommentPresenter.View{
 				
 			}
 		});
+		
+		main.setStyleName("tt-comment-editor");
 	}
 	
 	

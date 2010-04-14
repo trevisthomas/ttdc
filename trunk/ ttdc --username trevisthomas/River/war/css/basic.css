@@ -16,8 +16,10 @@ ul{list-style-type: none;}
 .tt-text-normal{font-size:12px;}
 .tt-text-large{font-size:16px; font-weight: 500;}
 
-.tt-post-container{ border-width:1px 0; border-color: black; border-style: solid; }
-.tt-post-fetch-more{ width:100%; text-align: center; }
+.tt-post-container{ border-width:1px; border-color: black; border-style: solid; }
+.tt-post-fetch-more{ width:100%; border-width:1px; border-color: black; border-style: solid;}
+
+.tt-comment-editor{border: 1px solid black; width:500px;}
 
 
 .tt-fill{ width: 100%; }
