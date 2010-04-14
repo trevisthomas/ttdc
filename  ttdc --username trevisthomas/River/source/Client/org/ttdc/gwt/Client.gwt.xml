@@ -8,7 +8,7 @@
   <!-- any one of the following lines.                            -->
   
   <!-- Trevis, for your styles to work, you need to comment out the following. -->
-  <inherits name='com.google.gwt.user.theme.standard.Standard'/>
+  <!-- <inherits name='com.google.gwt.user.theme.standard.Standard'/>  -->
   <!-- <inherits name='com.google.gwt.user.theme.chrome.Chrome'/> -->
   <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
 

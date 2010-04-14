@@ -57,8 +57,8 @@ public class CommentToolbar extends Composite implements EmbedContentPopupSource
 	private PushButton orange;
 	private PushButton green;
 	
-	private PushButton italic;
-	private PushButton bold;
+	private ToggleButton italic;
+	private ToggleButton bold;
 	private PushButton big;
 	private PushButton small;
 	private PushButton spoiler;
@@ -101,8 +101,8 @@ public class CommentToolbar extends Composite implements EmbedContentPopupSource
 	
 	private List<RichStyleElement> colorStyleList = new ArrayList<RichStyleElement>();
 	
-	private RichStyleElement styleItalic = new RichStyleElement("Italic","span","shackTag_i","font-style:italic;");
-	private RichStyleElement styleBold = new RichStyleElement("Bold","span","shackTag_b","font-weight:bolder;");
+//	private RichStyleElement styleItalic = new RichStyleElement("Italic","span","shackTag_i","font-style:italic;");
+//	private RichStyleElement styleBold = new RichStyleElement("Bold","span","shackTag_b","font-weight:bolder;");
 //	private RichStyleElement styleBig = new RichStyleElement("Huge","span","shackTag_BIG","font-family:Arial, Verdana;line-height: 100%;font-size: 18pt;font-weight:700;");
 //	private RichStyleElement styleSmall = new RichStyleElement("Small","span","shackTag_s","font-size: 75%;	font-weight:lighter;");
 	private RichStyleElement styleSpoiler = new RichStyleElement("Spoiler","span","shackTag_i","font-style:italic;");
@@ -173,7 +173,11 @@ public class CommentToolbar extends Composite implements EmbedContentPopupSource
 				popup.center();
 				popup.show();	
 				
-			} else if (event.getSource().equals(texthtml)) {
+			}else if (event.getSource().equals(bold)) {
+					styleTextFormatter.toggleBold();
+			}else if (event.getSource().equals(italic)) {
+					styleTextFormatter.toggleItalic();
+			}else if (event.getSource().equals(texthtml)) {
 				if (texthtml.isDown()) {
 					styleText.setText(styleText.getHTML());
 				} else {
@@ -242,14 +246,14 @@ public class CommentToolbar extends Composite implements EmbedContentPopupSource
 
 	/** Private method to set the toggle buttons and disable/enable buttons which do not work in html-mode **/
 	private void updateStatus() {
-//		if (styleTextFormatter != null) {
-//			bold.setDown(styleTextFormatter.isBold());
-//			italic.setDown(styleTextFormatter.isItalic());
+		if (styleTextFormatter != null) {
+			bold.setDown(styleTextFormatter.isBold());
+			italic.setDown(styleTextFormatter.isItalic());
 //			underline.setDown(styleTextFormatter.isUnderlined());
 //			subscript.setDown(styleTextFormatter.isSubscript());
 //			superscript.setDown(styleTextFormatter.isSuperscript());
 //			stroke.setDown(styleTextFormatter.isStrikethrough());
-//		}
+		}
 //		
 		if (isHTMLMode()) {
 			embed.setEnabled(false);
@@ -274,8 +278,10 @@ public class CommentToolbar extends Composite implements EmbedContentPopupSource
 		topPanel.add(green = createPushButton("icon_green",styleGreen));
 		
 		topPanel.add(new HTML("&nbsp;"));
-		topPanel.add(italic = createPushButton(HTTP_STATIC_ICONS_GIF,0,60,20,20,styleItalic));
-		topPanel.add(bold = createPushButton(HTTP_STATIC_ICONS_GIF,0,0,20,20,styleBold));
+//		topPanel.add(italic = createPushButton(HTTP_STATIC_ICONS_GIF,0,60,20,20,styleItalic));
+//		topPanel.add(bold = createPushButton(HTTP_STATIC_ICONS_GIF,0,0,20,20,styleBold));
+		topPanel.add(bold = createToggleButton(HTTP_STATIC_ICONS_GIF,0,0,20,20,"Bold"));
+		topPanel.add(italic = createToggleButton(HTTP_STATIC_ICONS_GIF,0,60,20,20,"Italic"));
 //		topPanel.add(big = createPushButton(10,10,styleBig));
 //		topPanel.add(small = createPushButton(10,10,styleSmall));
 		topPanel.add(spoiler = createPushButton(HTTP_STATIC_ICONS_GIF,0,320,20,20,styleSpoiler, new ClickHandler() {
@@ -431,6 +437,8 @@ public class CommentToolbar extends Composite implements EmbedContentPopupSource
 		tb.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
+				if(getSelectedText().trim().equals(""))
+					return;
 				styleTextFormatter.insertHTML(style.wrap(getSelectedText()));
 			}
 		});
@@ -449,6 +457,8 @@ public class CommentToolbar extends Composite implements EmbedContentPopupSource
 		tb.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
+				if(getSelectedText().trim().equals(""))
+					return;
 				styleTextFormatter.insertHTML(style.wrap(getSelectedText()));
 			}
 		});

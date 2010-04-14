@@ -50,6 +50,7 @@ public class PostPanel extends Composite implements PostPresenterCommon{
 	    @UiField(provided = true) Widget createDateElement;
 	    @UiField Anchor moreOptionsElement;
 	    @UiField Anchor fetchMoreElement;
+	    @UiField SpanElement embedTargetElement;
 	    
 	    @UiField(provided = true) Widget repliesElement;
 	    
@@ -103,6 +104,8 @@ public class PostPanel extends Composite implements PostPresenterCommon{
 			moreOptionsElement.setText("> More Options");
 			moreOptionsElement.setStyleName("tt-cursor-pointer");
 			initializeOptionsPopup(post);
+			
+			embedTargetElement.setId(post.getPostId());
 						
 			if(post.getPosts().size() != 0){
 				//postCollectionPresenter = injector.getPostCollectionPresenter();

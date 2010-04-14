@@ -37,7 +37,9 @@
 						</td>
 					</tr>
 				</table>
+				<center><span ui:field="embedTargetElement"/></center>
 			</div>
+			
 			<div class="tt-post-fetch-more"><g:Anchor ui:field="fetchMoreElement"/></div>
 			<g:Widget ui:field="repliesElement" />
 		</div>
