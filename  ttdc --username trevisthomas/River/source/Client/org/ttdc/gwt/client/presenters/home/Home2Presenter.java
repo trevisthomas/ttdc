@@ -3,6 +3,7 @@ package org.ttdc.gwt.client.presenters.home;
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.messaging.history.HistoryConstants;
 import org.ttdc.gwt.client.messaging.history.HistoryToken;
+import org.ttdc.gwt.client.presenters.comments.NewCommentPresenter;
 import org.ttdc.gwt.client.presenters.search.SearchBoxPresenter;
 import org.ttdc.gwt.client.presenters.shared.BasePagePresenter;
 import org.ttdc.gwt.client.presenters.shared.BasePageView;
@@ -47,7 +48,9 @@ public class Home2Presenter extends BasePagePresenter<Home2Presenter.View>{
 		view.searhcPanel().clear();
 		view.searhcPanel().add(searchBoxPresenter.getWidget());
 		view.commentPanel().clear();
-		view.commentPanel().add(injector.getNewCommentPresenter().getWidget());
+		NewCommentPresenter commentPresneter = injector.getNewCommentPresenter();
+		commentPresneter.init();
+		view.commentPanel().add(commentPresneter.getWidget());
 		view.show();
 		
 		initializeTabs(token);

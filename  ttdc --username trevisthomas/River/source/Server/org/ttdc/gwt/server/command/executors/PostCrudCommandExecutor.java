@@ -22,6 +22,7 @@ import org.ttdc.gwt.server.dao.PersonDao;
 import org.ttdc.gwt.server.dao.PostDao;
 import org.ttdc.gwt.server.dao.TagDao;
 import org.ttdc.gwt.server.util.CalendarBuilder;
+import org.ttdc.gwt.server.util.PostFormatter;
 import org.ttdc.gwt.shared.commands.PostCrudCommand;
 import org.ttdc.gwt.shared.commands.results.PostCommandResult;
 import org.ttdc.gwt.shared.util.StringUtil;

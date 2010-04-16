@@ -13,6 +13,7 @@
 				</g:HTMLPanel>
 			</td>
 		</tr>
+		<td colspan="2"><g:SimplePanel ui:field="commentElement" /></td>
 		</table>	
 	</g:HTMLPanel>
 </ui:UiBinder>

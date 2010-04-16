@@ -4,6 +4,7 @@ import org.ttdc.gwt.client.beans.GPost;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -31,6 +32,10 @@ public class MoreOptionsPopupPanel extends PopupPanel{
     
     public void init(GPost post){
     	this.post = post;
+    }
+    
+    public void addReplyClickHandler(ClickHandler handler){
+    	replyElement.addClickHandler(handler);
     }
     
     @UiHandler("replyElement")

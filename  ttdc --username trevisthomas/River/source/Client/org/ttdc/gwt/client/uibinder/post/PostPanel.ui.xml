@@ -41,6 +41,7 @@
 			</div>
 			
 			<div class="tt-post-fetch-more"><g:Anchor ui:field="fetchMoreElement"/></div>
+			<g:SimplePanel ui:field="commentElement" />
 			<g:Widget ui:field="repliesElement" />
 		</div>
 	</g:HTMLPanel>

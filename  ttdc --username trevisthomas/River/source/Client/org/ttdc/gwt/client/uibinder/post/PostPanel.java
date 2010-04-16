@@ -2,6 +2,7 @@ package org.ttdc.gwt.client.uibinder.post;
 
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GPost;
+import org.ttdc.gwt.client.presenters.comments.NewCommentPresenter;
 import org.ttdc.gwt.client.presenters.post.PostCollectionPresenter;
 import org.ttdc.gwt.client.presenters.post.PostPresenterCommon;
 import org.ttdc.gwt.client.presenters.post.PostPresenter.Mode;
@@ -17,13 +18,14 @@ import org.ttdc.gwt.shared.commands.results.TopicCommandResult;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Hyperlink;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
@@ -32,9 +34,9 @@ public class PostPanel extends Composite implements PostPresenterCommon{
 	    private static final MyUiBinder binder = GWT.create(MyUiBinder.class);
 	    
 	    //private final PopupPanel optionsPopup = new PopupPanel();
+	    private final Injector injector;
 	    private MoreOptionsPopupPanel optionsPanel;
 	    private GPost post;
-	    private final Injector injector;
 	    private ImagePresenter imagePresenter;
 	    private HyperlinkPresenter creatorLinkPresenter;
 	    private HyperlinkPresenter postLinkPresenter;
@@ -51,6 +53,7 @@ public class PostPanel extends Composite implements PostPresenterCommon{
 	    @UiField Anchor moreOptionsElement;
 	    @UiField Anchor fetchMoreElement;
 	    @UiField SpanElement embedTargetElement;
+	    @UiField(provided = true) SimplePanel commentElement = new SimplePanel();
 	    
 	    @UiField(provided = true) Widget repliesElement;
 	    
@@ -121,8 +124,23 @@ public class PostPanel extends Composite implements PostPresenterCommon{
 					setupFetchMoreClickHandlerTitle();
 				}
 			}
+			
+			optionsPanel.addReplyClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					showNewCommentEditor();
+				}
+			});
 		}
 		
+		protected void showNewCommentEditor() {
+			NewCommentPresenter commentPresneter = injector.getNewCommentPresenter();
+			commentPresneter.init(post);
+			commentElement.clear();
+			commentElement.add(commentPresneter.getWidget());
+			
+		}
+
 		private void setupFetchMoreClickHandlerTitle() {
 			if(postCollectionPresenter.size() < post.getMass()){
 				fetchMoreElement.setVisible(true);
@@ -150,6 +168,7 @@ public class PostPanel extends Composite implements PostPresenterCommon{
 			RpcServiceAsync service = injector.getService();
 			service.execute(cmd,fetchMorePostsCallback);
 		}
+		
 		@UiHandler("moreOptionsElement")
 		void onClickMoreOptions(ClickEvent event){
 			Widget source = (Widget) event.getSource();
@@ -160,6 +179,8 @@ public class PostPanel extends Composite implements PostPresenterCommon{
 	        // Show the popup
 	        optionsPanel.show();
 		}
+		
+		
 		
 		@Override
 		public Widget getWidget() {

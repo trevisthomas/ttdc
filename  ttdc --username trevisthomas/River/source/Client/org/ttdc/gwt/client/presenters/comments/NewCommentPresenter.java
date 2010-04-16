@@ -68,6 +68,8 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 		HasWidgets tagSelectorPanel();
 		
 	}
+	
+	private GPost parentPost = null;
 	private String embedTargetPlaceholder = "EmbedTarget_PLACEHOLDER";
 	private SuggestBox parentSuggestionBox;
 	private SugestionOracle parentSuggestionOracle;
@@ -80,13 +82,11 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 	@Inject
 	public NewCommentPresenter(Injector injector){
 		super(injector, injector.getNewCommentView());
-		init();
 		view.setEmbedTargetPlaceholder(embedTargetPlaceholder);
 		
 		EventBus.getInstance().addListener(this);
 		GPerson currentUser = ConnectionId.getInstance().getCurrentUser();
 		configureForUser(currentUser);
-		
 	}
 
 	private void configureForUser(GPerson currentUser) {
@@ -113,10 +113,35 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 		
 	}
 	
+	public void init(GPost post){
+		parentPost = post;
+		init();
+	}
+	
 	public void init(){
-		parentSuggestionOracle = injector.getTagSugestionOracle();
-		parentSuggestionBox = parentSuggestionOracle.createSuggestBoxForTopics();
-		view.replyToPanel().add(parentSuggestionBox);
+		if(parentPost == null){
+			parentSuggestionOracle = injector.getTagSugestionOracle();
+			parentSuggestionBox = parentSuggestionOracle.createSuggestBoxForTopics();
+			view.replyToPanel().add(parentSuggestionBox);
+			
+			parentSuggestionBox.addSelectionHandler(new SelectionHandler<Suggestion>() {
+				@Override
+				public void onSelection(SelectionEvent<Suggestion> event) {
+					SuggestionObject suggestion = parentSuggestionOracle.getCurrentSuggestion();
+					if(suggestion != null){
+						GPost parent = suggestion.getPost();
+						if(parent != null){
+							PostCrudCommand cmd = new PostCrudCommand();
+							cmd.setPostId(parent.getPostId());
+							injector.getService().execute(cmd, callbackParentPostSelected());
+						}
+						else{
+							view.setReviewable(false);
+						}
+					}
+				}
+			});
+		}
 		
 		view.getAddCommentClickHandlers().addClickHandler(
 			new ClickHandler() {
@@ -126,24 +151,6 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 				}
 			}
 		);
-
-		parentSuggestionBox.addSelectionHandler(new SelectionHandler<Suggestion>() {
-			@Override
-			public void onSelection(SelectionEvent<Suggestion> event) {
-				SuggestionObject suggestion = parentSuggestionOracle.getCurrentSuggestion();
-				if(suggestion != null){
-					GPost parent = suggestion.getPost();
-					if(parent != null){
-						PostCrudCommand cmd = new PostCrudCommand();
-						cmd.setPostId(parent.getPostId());
-						injector.getService().execute(cmd, callbackParentPostSelected());
-					}
-					else{
-						view.setReviewable(false);
-					}
-				}
-			}
-		});
 		
 		tagSuggestionOracle = injector.getTagSugestionOracle();
 		tagSuggestionBox = tagSuggestionOracle.createSuggestBoxForPostView();
@@ -228,15 +235,18 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 		}
 		
 		//Determine if the user is creating a new topic or a new conversation in a topic
-		
-		if(parentSuggestionOracle.getCurrentSuggestion() != null){
-			SuggestionObject suggestion = parentSuggestionOracle.getCurrentSuggestion();
-			cmd.setParentId(suggestion.getPost().getPostId());
+		if(parentPost == null){
+			if(parentSuggestionOracle.getCurrentSuggestion() != null){
+				SuggestionObject suggestion = parentSuggestionOracle.getCurrentSuggestion();
+				cmd.setParentId(suggestion.getPost().getPostId());
+			}
+			else{
+				cmd.setTitle(parentSuggestionBox.getText());
+			}
 		}
 		else{
-			cmd.setTitle(parentSuggestionBox.getText());
+			cmd.setParentId(parentPost.getPostId());
 		}
-		
 		CommandResultCallback<PostCommandResult> callback = buildCreatePostCallback();
 		
 		getService().execute(cmd,callback);
