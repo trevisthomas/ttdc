@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.ttdc.gwt.server.util.PostFormatter;
 import org.ttdc.gwt.shared.util.PostFlagBitmasks;
 import org.ttdc.persistence.Persistence;
 import org.ttdc.persistence.objects.Entry;
@@ -57,7 +58,7 @@ final public class PostDao {
 		else{
 			entry.setBody(body);
 		}
-		
+		entry.setSummary(PostFormatter.getInstance().formatSummary(entry.getBody()));		
 		entry.setPost(post);
 		session().save(entry);
 		session().flush();

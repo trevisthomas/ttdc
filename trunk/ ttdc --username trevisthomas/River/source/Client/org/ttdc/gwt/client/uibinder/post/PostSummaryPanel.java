@@ -5,6 +5,7 @@ import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.messaging.EventBus;
 import org.ttdc.gwt.client.messaging.post.PostEvent;
 import org.ttdc.gwt.client.messaging.post.PostEventType;
+import org.ttdc.gwt.client.presenters.comments.NewCommentPresenter;
 import org.ttdc.gwt.client.presenters.post.PostPresenter;
 import org.ttdc.gwt.client.presenters.post.PostPresenterCommon;
 import org.ttdc.gwt.client.presenters.shared.HyperlinkPresenter;
@@ -16,6 +17,7 @@ import org.ttdc.gwt.shared.commands.results.PostCommandResult;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -42,6 +44,8 @@ public class PostSummaryPanel extends Composite implements PostPresenterCommon{
     @UiField SpanElement spacerElement;
     @UiField HTMLPanel summaryElement;
     @UiField(provided = true) SimplePanel expandedElement;
+    @UiField(provided = true) SimplePanel commentElement = new SimplePanel();
+    
     @Inject
     public PostSummaryPanel(Injector injector) { 
     	this.injector = injector;
@@ -59,6 +63,8 @@ public class PostSummaryPanel extends Composite implements PostPresenterCommon{
     	bodySummaryElement.setHTML(post.getLatestEntry().getSummary());
     	creatorLinkPresenter.setPerson(post.getCreator());
     	setSpacer(post.getPath().split("\\.").length - 2);
+    	
+    	
     }
     
     public void setSpacer(int tabCount) {
@@ -110,7 +116,16 @@ public class PostSummaryPanel extends Composite implements PostPresenterCommon{
 				summaryElement.setVisible(false);
 				if(postExpanded == null){
 					postExpanded = injector.createPostExpanded();
+					
 					postExpanded.init(post);
+					
+					postExpanded.addReplyClickHandler(new ClickHandler() {
+						@Override
+						public void onClick(ClickEvent event) {
+							showNewCommentEditor();
+						}
+					});
+					
 					expandedElement.clear();
 					expandedElement.add(postExpanded);
 				}
@@ -118,5 +133,12 @@ public class PostSummaryPanel extends Composite implements PostPresenterCommon{
 			}
 		};
 		return rootPostCallback;
+	}
+	
+	protected void showNewCommentEditor() {
+		NewCommentPresenter commentPresneter = injector.getNewCommentPresenter();
+		commentPresneter.init(post);
+		commentElement.clear();
+		commentElement.add(commentPresneter.getWidget());
 	}
 }
