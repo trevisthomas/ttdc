@@ -13,6 +13,7 @@ import org.ttdc.gwt.client.presenters.shared.BasePresenter;
 import org.ttdc.gwt.client.presenters.shared.BaseView;
 import org.ttdc.gwt.client.uibinder.post.PostPanel;
 import org.ttdc.gwt.client.uibinder.post.PostSummaryPanel;
+import org.ttdc.gwt.client.uibinder.post.ReviewSummaryPanel;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -77,7 +78,15 @@ public final class PostCollectionPresenter extends BasePresenter<PostCollectionP
 
 	public void addPostsToPostList(List<GPost> postList, Mode mode) {
 		for(GPost post : postList){
-			if(post.isSuggestSummary()){
+			
+			
+			if(post.isMovie()){
+				ReviewSummaryPanel reviewSummaryPanel = injector.createMovieReviewSummaryPanel();
+				reviewSummaryPanel.init(post);
+				getView().getPostWidgets().add(reviewSummaryPanel);
+				//postPresenters.add(reviewSummaryPanel);
+			}
+			else if(post.isSuggestSummary()){
 //				PostSummaryPresenter postPresenter = injector.getPostSummaryPresenter();
 //				postPresenter.setPost(post);
 //				getView().getPostWidgets().add(postPresenter.getWidget());

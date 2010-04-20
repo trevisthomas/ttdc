@@ -1,6 +1,7 @@
 package org.ttdc.gwt.client.presenters.movies;
 
 import org.ttdc.gwt.client.Injector;
+import org.ttdc.gwt.client.beans.GTag;
 import org.ttdc.gwt.client.presenters.shared.BasePagePresenter;
 import org.ttdc.gwt.client.presenters.shared.BasePresenter;
 import org.ttdc.gwt.client.presenters.shared.BaseView;
@@ -19,6 +20,12 @@ public class MovieRatingPresenter extends BasePresenter<MovieRatingPresenter.Vie
 	
 	public void setRating(String rating){
 		view.setRating(rating);
+	}
+	
+	public void setAverageRating(GTag ratingTag){
+		if(ratingTag == null)
+			return;
+		view.setRating(ratingTag.getValue()); //TODO make awesomer
 	}
 
 }

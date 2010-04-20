@@ -2,6 +2,7 @@ package org.ttdc.gwt.client.presenters.shared;
 
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GImage;
+import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.messaging.EventBus;
 import org.ttdc.gwt.client.messaging.history.HistoryToken;
 
@@ -49,6 +50,12 @@ public class ImagePresenter extends BasePresenter<ImagePresenter.View>{
 		}
 	}
 
+	public void setImageAsMoviePoster(GPost post){
+		setImage(post.getImage(), post.getTitle(),100,-1);
+		setLinkUrl(post.getUrl());
+		//Hmm, maybe clicking should take you to ttdc?
+	}
+	
 	public void setImage(GImage image, int width, int height){
 		setImage(image,image.getName(),width,height);
 	}

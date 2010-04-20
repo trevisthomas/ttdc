@@ -85,6 +85,27 @@ public class FastPostBeanConverter {
 		return gImages;
 	}
 	
+	//Initially created for inflating movie review summaries
+	public static ArrayList<GPost> convertPostsSimple(List<Post> persistentPostList){
+		ArrayList<GPost> list = new ArrayList<GPost>();
+		for(Post p : persistentPostList){
+			GPost rpcPost = convertPostSimple(p);
+			list.add(rpcPost);
+		}
+		return list;
+	}
+	//Initially created for inflating movie review summaries
+	public static GPost convertPostSimple(Post p) {
+		GPost gPost = new GPost();
+		gPost.setDate(p.getDate());
+		gPost.setLatestEntry(convertEntry(p.getEntry()));
+		gPost.setPostId(p.getPostId());
+		gPost.setPath(p.getPath());
+		gPost.setMass(p.getMass());
+		gPost.setReplyCount(p.getReplyCount());
+		return gPost;
+	}
+	
 	public static GPost convertPost(Post p) {
 		GPost gPost = new GPost();
 		gPost.setDate(p.getDate());
@@ -111,10 +132,18 @@ public class FastPostBeanConverter {
 		gPost.setMass(p.getMass());
 		gPost.setReplyCount(p.getReplyCount());
 		
-		if(!p.isRootPost())
-			gPost.setRoot(convertPost(p.getRoot()));
-		if(!p.isThreadPost() && !p.isRootPost())
-			gPost.setThread(convertPost(p.getThread()));
+		//If a post is a movie, get the reviews.  4/19/2010
+		if(p.isMovie()){
+			gPost.setPosts(convertPostsSimple(p.getPosts()));
+		}
+		else{
+			if(!p.isRootPost())
+				gPost.setRoot(convertPost(p.getRoot()));
+			if(!p.isThreadPost() && !p.isRootPost())
+				gPost.setThread(convertPost(p.getThread()));
+		}
+			
+		
 		
 		if(p.getImage() != null)
 			gPost.setImage(convertImage(p.getImage()));

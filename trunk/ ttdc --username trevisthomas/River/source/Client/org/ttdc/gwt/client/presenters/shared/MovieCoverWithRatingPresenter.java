@@ -26,7 +26,8 @@ public class MovieCoverWithRatingPresenter extends BasePresenter<MovieCoverWithR
 	}
 	public void init(GPost movie, String personId){
 		ImagePresenter imagePresenter = injector.getImagePresenter();
-		imagePresenter.setImage(movie.getImage(),movie.getTitle(),100,-1);
+		//imagePresenter.setImage(movie.getImage(),movie.getTitle(),100,-1);
+		imagePresenter.setImageAsMoviePoster(movie);
 		view.poster().add(imagePresenter.getWidget());
 		
 		MovieRatingPresenter ratingPresenter = injector.getMovieRatingPresenter();
