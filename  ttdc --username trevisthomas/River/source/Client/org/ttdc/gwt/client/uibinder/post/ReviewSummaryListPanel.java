@@ -20,8 +20,8 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
-public class ReviewSummaryPanel extends Composite{
-	interface MyUiBinder extends UiBinder<Widget, ReviewSummaryPanel> {}
+public class ReviewSummaryListPanel extends Composite{
+	interface MyUiBinder extends UiBinder<Widget, ReviewSummaryListPanel> {}
     private static final MyUiBinder binder = GWT.create(MyUiBinder.class);
     
 	private Injector injector;
@@ -45,7 +45,7 @@ public class ReviewSummaryPanel extends Composite{
     
     
 	@Inject
-    public ReviewSummaryPanel(Injector injector) { 
+    public ReviewSummaryListPanel(Injector injector) { 
 		this.injector = injector;
 		imagePresenter = injector.getImagePresenter();
 		averageMovieRatingPresenter = injector.getMovieRatingPresenter();
@@ -69,6 +69,10 @@ public class ReviewSummaryPanel extends Composite{
 		postLinkPresenter.setPost(post);
 		postLinkPresenter.init();
 		
+		
+		for(GPost p : post.getPosts()){
+			
+		}
 		
 		
 	}
