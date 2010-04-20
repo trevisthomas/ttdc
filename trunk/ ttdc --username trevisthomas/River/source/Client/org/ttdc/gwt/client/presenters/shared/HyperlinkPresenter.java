@@ -72,10 +72,14 @@ public class HyperlinkPresenter extends BasePresenter<HyperlinkPresenter.View> {
 	}
 	
 	public void setPost(GPost post) {
+		setPost(post,post.getTitle());
+	}
+	
+	public void setPost(GPost post, String title) {
 		this.post = post;
 		view.getHistoryToken().setParameter(HistoryConstants.VIEW, HistoryConstants.VIEW_TOPIC); 
 		view.getHistoryToken().setParameter(HistoryConstants.POST_ID_KEY,post.getPostId());
-		view.getDisplayName().setText(post.getTitle());
+		view.getDisplayName().setText(title);
 	}
 	
 	public void setUrl(String url){

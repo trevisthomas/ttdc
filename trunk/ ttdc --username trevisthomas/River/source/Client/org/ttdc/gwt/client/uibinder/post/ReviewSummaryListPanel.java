@@ -63,7 +63,7 @@ public class ReviewSummaryListPanel extends Composite{
 		imagePresenter.setImageAsMoviePoster(post);
 		imagePresenter.init();
 		
-		averageMovieRatingPresenter.setAverageRating(post.getAvgRatingTag());
+		averageMovieRatingPresenter.setRating(post.getAvgRatingTag());
 		
 		
 		postLinkPresenter.setPost(post);
@@ -71,7 +71,9 @@ public class ReviewSummaryListPanel extends Composite{
 		
 		
 		for(GPost p : post.getPosts()){
-			
+			ReviewSummaryPanel summaryPanel = injector.createReviewSummaryPanel();
+			summaryPanel.init(p);
+			reviewsElement.add(summaryPanel);
 		}
 		
 		
