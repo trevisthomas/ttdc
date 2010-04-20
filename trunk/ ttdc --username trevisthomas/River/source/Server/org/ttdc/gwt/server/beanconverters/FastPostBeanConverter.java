@@ -86,11 +86,13 @@ public class FastPostBeanConverter {
 	}
 	
 	//Initially created for inflating movie review summaries
-	public static ArrayList<GPost> convertPostsSimple(List<Post> persistentPostList){
+	public static ArrayList<GPost> convertReviewPosts(List<Post> persistentPostList){
 		ArrayList<GPost> list = new ArrayList<GPost>();
 		for(Post p : persistentPostList){
-			GPost rpcPost = convertPostSimple(p);
-			list.add(rpcPost);
+			if(p.isReview()){
+				GPost rpcPost = convertPostSimple(p);
+				list.add(rpcPost);
+			}
 		}
 		return list;
 	}
@@ -134,7 +136,7 @@ public class FastPostBeanConverter {
 		
 		//If a post is a movie, get the reviews.  4/19/2010
 		if(p.isMovie()){
-			gPost.setPosts(convertPostsSimple(p.getPosts()));
+			gPost.setPosts(convertReviewPosts(p.getPosts()));
 		}
 		else{
 			if(!p.isRootPost())
