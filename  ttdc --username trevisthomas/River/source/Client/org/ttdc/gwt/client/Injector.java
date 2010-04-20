@@ -90,6 +90,7 @@ import org.ttdc.gwt.client.uibinder.post.PostExpanded;
 import org.ttdc.gwt.client.uibinder.post.PostPanel;
 import org.ttdc.gwt.client.uibinder.post.PostSummaryPanel;
 import org.ttdc.gwt.client.uibinder.post.ReviewSummaryListPanel;
+import org.ttdc.gwt.client.uibinder.post.ReviewSummaryPanel;
 
 import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;
@@ -349,5 +350,6 @@ public interface Injector extends Ginjector {
 	public PostSummaryPanel createPostSummaryPanel();
 	public PostExpanded createPostExpanded();
 	public ReviewSummaryListPanel createReviewSummaryListPanel();
+	public ReviewSummaryPanel createReviewSummaryPanel();
 }
 
