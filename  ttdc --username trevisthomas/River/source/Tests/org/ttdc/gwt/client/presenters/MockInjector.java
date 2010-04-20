@@ -95,6 +95,7 @@ import org.ttdc.gwt.client.uibinder.post.MoreOptionsPopupPanel;
 import org.ttdc.gwt.client.uibinder.post.PostExpanded;
 import org.ttdc.gwt.client.uibinder.post.PostPanel;
 import org.ttdc.gwt.client.uibinder.post.PostSummaryPanel;
+import org.ttdc.gwt.client.uibinder.post.ReviewSummaryPanel;
 
 import com.google.gwt.user.client.ui.HasWidgets;
 
@@ -1294,6 +1295,12 @@ public class MockInjector implements Injector{
 	
 	@Override
 	public PostExpanded createPostExpanded() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ReviewSummaryPanel createMovieReviewSummaryPanel() {
 		// TODO Auto-generated method stub
 		return null;
 	}
