@@ -24,6 +24,7 @@ import org.ttdc.gwt.server.command.executors.ServerEventListCommandExecutor;
 import org.ttdc.gwt.server.command.executors.ServerEventOpenConnectionCommandExecutor;
 import org.ttdc.gwt.server.command.executors.StyleCommandExecutor;
 import org.ttdc.gwt.server.command.executors.StyleListCommandExecutor;
+import org.ttdc.gwt.server.command.executors.TagCommandExecutor;
 import org.ttdc.gwt.server.command.executors.TagSuggestionCommandExecutor;
 import org.ttdc.gwt.server.command.executors.TopicCommandExecutor;
 import org.ttdc.gwt.server.command.executors.UserObjectCrudCommandExecutor;
@@ -47,6 +48,7 @@ import org.ttdc.gwt.shared.commands.ServerEventListCommand;
 import org.ttdc.gwt.shared.commands.ServerEventOpenConnectionCommand;
 import org.ttdc.gwt.shared.commands.StyleCommand;
 import org.ttdc.gwt.shared.commands.StyleListCommand;
+import org.ttdc.gwt.shared.commands.TagCommand;
 import org.ttdc.gwt.shared.commands.TagSuggestionCommand;
 import org.ttdc.gwt.shared.commands.TopicCommand;
 import org.ttdc.gwt.shared.commands.UserObjectCrudCommand;
@@ -89,8 +91,7 @@ public class CommandExecutorFactory {
 		CommandExecutorFactory.registerExecutorForCommand(AccountCommand.class, AccountCommandExecutor.class);
 		CommandExecutorFactory.registerExecutorForCommand(UserObjectCrudCommand.class, UserObjectCrudCommandExecutor.class);
 		CommandExecutorFactory.registerExecutorForCommand(LatestPostsCommand.class, LatestPostCommandExecutor.class);
-		//CommandExecutorFactory.registerExecutorForCommand(TagCommand.class, TagCommandExecutor.class);
-		
+		CommandExecutorFactory.registerExecutorForCommand(TagCommand.class, TagCommandExecutor.class);
 	}
 	
 	private final static Logger log = Logger.getLogger(CommandExecutorFactory.class);

@@ -21,7 +21,4 @@ public class TagCommandResult implements CommandResult{
 	public void setTag(GTag tag) {
 		this.tag = tag;
 	}
-	
-	
-	
 }

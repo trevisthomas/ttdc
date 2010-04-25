@@ -1,11 +1,11 @@
 package org.ttdc.gwt.shared.commands;
 
+import org.ttdc.gwt.client.beans.GTag;
 import org.ttdc.gwt.client.services.Command;
-import org.ttdc.gwt.shared.commands.results.TagCommandResult;
+import org.ttdc.gwt.shared.commands.results.GenericListCommandResult;
 import org.ttdc.gwt.shared.commands.types.TagActionType;
 
-@Deprecated
-public class TagCommand extends Command<TagCommandResult>{
+public class TagCommand extends Command<GenericListCommandResult<GTag>>{
 	private TagActionType action;
 
 	public TagCommand() {

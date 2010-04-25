@@ -1,6 +1,9 @@
 package org.ttdc.gwt.client.uibinder.post;
 import org.ttdc.gwt.client.Injector;
+import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.beans.GPost;
+import org.ttdc.gwt.client.constants.PrivilegeConstants;
+import org.ttdc.gwt.client.messaging.ConnectionId;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -22,6 +25,8 @@ public class MoreOptionsPopupPanel extends PopupPanel{
     
     @UiField Anchor replyElement;
     @UiField Anchor likeElement;
+    @UiField Anchor ratingElement;
+    @UiField Anchor unRateElement;
     
     @Inject
     public MoreOptionsPopupPanel(Injector injector) { 
@@ -32,15 +37,44 @@ public class MoreOptionsPopupPanel extends PopupPanel{
     
     public void init(GPost post){
     	this.post = post;
+    	
+    	GPerson user = ConnectionId.getInstance().getCurrentUser();
+    	ratingElement.setVisible(false);
+    	unRateElement.setVisible(false);
+    	if(user.hasPrivilege(PrivilegeConstants.VOTER) || user.isAdministrator()){
+    		if(post.isRatable()){
+    			if(post.getRatingByPerson(user.getPersonId()) == null)
+    				ratingElement.setVisible(true);
+    			else
+    				unRateElement.setVisible(true);
+    		}
+    	}
     }
     
     public void addReplyClickHandler(ClickHandler handler){
     	replyElement.addClickHandler(handler);
     }
     
+    public void addRatingClickHandler(ClickHandler handler){
+    	ratingElement.addClickHandler(handler);
+    }
+    
+    public void addUnRateClickHandler(ClickHandler handler){
+    	unRateElement.addClickHandler(handler);
+    }
+    
+    @UiHandler("ratingElement")
+    void onClickRating(ClickEvent event){
+    	hide();
+    }
+    
+    @UiHandler("unRateElement")
+    void onClickUnRate(ClickEvent event){
+    	hide();
+    }
+    
     @UiHandler("replyElement")
     void onClickReply(ClickEvent event){
-    	Window.alert("Reply clicked for: "+post.getTitle());
     	hide();
     }
     
