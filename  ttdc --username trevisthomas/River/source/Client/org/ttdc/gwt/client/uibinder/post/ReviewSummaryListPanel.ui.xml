@@ -3,6 +3,8 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 	<g:HTMLPanel>
+	
+		
 		<div class="tt-post">
 			<div>
 				<span class="tt-post-title tt-text-large">
@@ -12,6 +14,13 @@
 				<span class="tt-post-reply-count" ui:field="replyCountElement" />
 			</div>
 			<div class="tt-post-container" style="clear:both;">
+			
+				<div width="100%" class="tt-text-mini">
+					<span class="tt-float-right">
+						<g:Anchor ui:field="moreOptionsElement"/>
+					</span>
+				</div>
+				
 				<table>
 					<tr>
 						<td>
@@ -33,6 +42,7 @@
 					</tr>
 				</table>
 			</div>
+			<g:SimplePanel ui:field="commentElement" />
 		</div>
 	</g:HTMLPanel>
 </ui:UiBinder>

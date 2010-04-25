@@ -15,6 +15,7 @@ import org.ttdc.gwt.client.messaging.ConnectionId;
 import org.ttdc.gwt.client.messaging.EventBus;
 import org.ttdc.gwt.client.messaging.person.PersonEvent;
 import org.ttdc.gwt.client.messaging.person.PersonEventListener;
+import org.ttdc.gwt.client.presenters.movies.MovieRatingPresenter;
 import org.ttdc.gwt.client.presenters.post.PostPresenter;
 import org.ttdc.gwt.client.presenters.shared.BasePresenter;
 import org.ttdc.gwt.client.presenters.shared.BaseView;
@@ -48,6 +49,7 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 		//HasWidgets getTextArea();
 		HasHTML getCommentBody();
 		HasWidgets replyToPanel();
+		HasWidgets ratingPanel();
 		HasClickHandlers getAddCommentClickHandlers();
 		HasWidgets getMessagePanel();
 		void setEmbedTargetPlaceholder(String embedTargetPlaceholder);
@@ -141,6 +143,12 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 					}
 				}
 			});
+		}
+		else if(parentPost.isRatable()){
+			MovieRatingPresenter movieRatingPresenter = injector.getMovieRatingPresenter();
+			view.ratingPanel().clear();
+			view.ratingPanel().add(movieRatingPresenter.getWidget());
+			movieRatingPresenter.setRatablePost(parentPost);
 		}
 		
 		view.getAddCommentClickHandlers().addClickHandler(

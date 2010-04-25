@@ -125,12 +125,7 @@ public class PostPanel extends Composite implements PostPresenterCommon{
 				}
 			}
 			
-			optionsPanel.addReplyClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(ClickEvent event) {
-					showNewCommentEditor();
-				}
-			});
+			
 		}
 		
 		protected void showNewCommentEditor() {
@@ -169,15 +164,11 @@ public class PostPanel extends Composite implements PostPresenterCommon{
 			service.execute(cmd,fetchMorePostsCallback);
 		}
 		
+		//TODO; share this code with ReviewSummaryListPanel
 		@UiHandler("moreOptionsElement")
 		void onClickMoreOptions(ClickEvent event){
 			Widget source = (Widget) event.getSource();
-	        int left = source.getAbsoluteLeft() + 10;
-	        int top = source.getAbsoluteTop() + 10;
-	        optionsPanel.setPopupPosition(left, top);
-	        
-	        // Show the popup
-	        optionsPanel.show();
+	        optionsPanel.showRelativeTo(source);
 		}
 		
 		
@@ -187,11 +178,18 @@ public class PostPanel extends Composite implements PostPresenterCommon{
 			return this;
 		}
 		
-		
+		//TODO: share - Common functionaly with ReviewSummaryListPanel
 		private void initializeOptionsPopup(GPost post) {
 			optionsPanel = injector.createOptionsPanel();
 			optionsPanel.setAutoHideEnabled(true);
 			optionsPanel.init(post);
+			
+			optionsPanel.addReplyClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					showNewCommentEditor();
+				}
+			});
 		}
 		
 		@Override

@@ -39,6 +39,7 @@ public class NewCommentView implements NewCommentPresenter.View{
 	private final FlowPanel tagsPanel = new FlowPanel();
 	private final SimplePanel tagSelectorPanel = new SimplePanel();
 	private final Button addTagButton = new Button("Add");
+	private final SimplePanel ratingPanel = new SimplePanel();
 	
 	private final FlowPanel checkboxPanel = new FlowPanel();
 	
@@ -49,6 +50,7 @@ public class NewCommentView implements NewCommentPresenter.View{
 	
 	public NewCommentView() {
 		main.add(messagePanel);
+		main.add(ratingPanel);
 		main.add(replyToPanel);
 		main.add(toolbar);
 		main.add(textArea);
@@ -210,6 +212,12 @@ public class NewCommentView implements NewCommentPresenter.View{
 			checkboxPanel.remove(reviewCheckbox);
 			reviewCheckbox.setValue(false);
 		}
+	}
+
+
+	@Override
+	public HasWidgets ratingPanel() {
+		return ratingPanel;
 	}
 	
 }
