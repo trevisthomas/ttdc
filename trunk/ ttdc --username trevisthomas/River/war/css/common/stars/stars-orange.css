@@ -1,0 +1,6 @@
+.ajax-wait-rating{	width: 16px; height: 16px; background-image:url('orange/ajax-wait.gif'); }
+.tt-rating-widget{width:80px;	height:16px; display: inline;}
+.tt-star-right-clear{ width:8px; height:16px; background-image:url('orange/RATING_1.0.png');background-position: -24 0;}
+.tt-star-right-filled{ width:8px; height:16px; background-image:url('orange/RATING_1.0.png');background-position: -8 0; }
+.tt-star-left-clear{ width:8px; height:16px; background-image:url('orange/RATING_1.0.png'); background-position: -16 0;}
+.tt-star-left-filled{ width:8px; height:16px; background-image:url('orange/RATING_1.0.png'); background-position: 0 0;}

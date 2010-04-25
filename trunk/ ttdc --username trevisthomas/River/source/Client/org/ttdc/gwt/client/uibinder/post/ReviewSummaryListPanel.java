@@ -2,17 +2,21 @@ package org.ttdc.gwt.client.uibinder.post;
 
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GPost;
+import org.ttdc.gwt.client.presenters.comments.NewCommentPresenter;
 import org.ttdc.gwt.client.presenters.movies.MovieRatingPresenter;
 import org.ttdc.gwt.client.presenters.post.PostCollectionPresenter;
 import org.ttdc.gwt.client.presenters.shared.DatePresenter;
 import org.ttdc.gwt.client.presenters.shared.HyperlinkPresenter;
 import org.ttdc.gwt.client.presenters.shared.ImagePresenter;
-import org.ttdc.gwt.client.uibinder.post.PostPanel.MyUiBinder;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.SpanElement;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -26,6 +30,7 @@ public class ReviewSummaryListPanel extends Composite{
     
 	private Injector injector;
 	
+	
 	private MoreOptionsPopupPanel optionsPanel;
     private GPost post;
     private ImagePresenter imagePresenter;
@@ -35,6 +40,7 @@ public class ReviewSummaryListPanel extends Composite{
     private PostCollectionPresenter postCollectionPresenter;
     private MovieRatingPresenter averageMovieRatingPresenter;
     
+    
 	@UiField(provided = true) Hyperlink titleElement;
     @UiField SpanElement replyCountElement;
     @UiField(provided = true) Widget posterElement;
@@ -42,7 +48,8 @@ public class ReviewSummaryListPanel extends Composite{
 //    @UiField(provided = true) Widget createDateElement;
     @UiField(provided = true) Widget averageRatingElement;
     @UiField VerticalPanel reviewsElement = new VerticalPanel();
-    
+    @UiField Anchor moreOptionsElement;
+    @UiField(provided = true) SimplePanel commentElement = new SimplePanel();
     
 	@Inject
     public ReviewSummaryListPanel(Injector injector) { 
@@ -59,7 +66,7 @@ public class ReviewSummaryListPanel extends Composite{
 	}
 	
 	public void init(GPost post){
-		
+		this.post = post;
 		imagePresenter.setImageAsMoviePoster(post);
 		imagePresenter.init();
 		
@@ -69,6 +76,8 @@ public class ReviewSummaryListPanel extends Composite{
 		postLinkPresenter.setPost(post);
 		postLinkPresenter.init();
 		
+		moreOptionsElement.setText("> More Options");
+		moreOptionsElement.setStyleName("tt-cursor-pointer");
 		
 		for(GPost p : post.getPosts()){
 			ReviewSummaryPanel summaryPanel = injector.createReviewSummaryPanel();
@@ -76,6 +85,32 @@ public class ReviewSummaryListPanel extends Composite{
 			reviewsElement.add(summaryPanel);
 		}
 		
+		initializeOptionsPopup(post);
+	}
+	
+	private void initializeOptionsPopup(GPost post) {
+		optionsPanel = injector.createOptionsPanel();
+		optionsPanel.setAutoHideEnabled(true);
+		optionsPanel.init(post);
 		
+		optionsPanel.addReplyClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				showNewCommentEditor();
+			}
+		});
+	}
+	protected void showNewCommentEditor() {
+		NewCommentPresenter commentPresneter = injector.getNewCommentPresenter();
+		commentPresneter.init(post);
+		commentElement.clear();
+		commentElement.add(commentPresneter.getWidget());
+		
+	}
+	
+	@UiHandler("moreOptionsElement")
+	void onClickMoreOptions(ClickEvent event){
+		Widget source = (Widget) event.getSource();
+        optionsPanel.showRelativeTo(source);
 	}
 }

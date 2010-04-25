@@ -50,4 +50,10 @@ public class MoreOptionsPopupPanel extends PopupPanel{
     	hide();
     }    
 
+    public void showRelativeTo(Widget source){
+    	int left = source.getAbsoluteLeft() + 10;
+        int top = source.getAbsoluteTop() + 10;
+        setPopupPosition(left, top);
+        show();
+    }
 }
