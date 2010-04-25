@@ -16,6 +16,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Hyperlink;
@@ -85,10 +86,10 @@ public class ReviewSummaryListPanel extends Composite{
 			reviewsElement.add(summaryPanel);
 		}
 		
-		initializeOptionsPopup(post);
+		
 	}
 	
-	private void initializeOptionsPopup(GPost post) {
+	private void initializeOptionsPopup(final GPost post) {
 		optionsPanel = injector.createOptionsPanel();
 		optionsPanel.setAutoHideEnabled(true);
 		optionsPanel.init(post);
@@ -97,6 +98,23 @@ public class ReviewSummaryListPanel extends Composite{
 			@Override
 			public void onClick(ClickEvent event) {
 				showNewCommentEditor();
+			}
+		});
+		
+		optionsPanel.addRatingClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				MovieRatingPresenter movieRatingPresenter = injector.getMovieRatingPresenter();
+				movieRatingPresenter.setRatablePost(post);
+				commentElement.clear();
+				commentElement.add(movieRatingPresenter.getWidget());
+			}
+		});
+		
+		optionsPanel.addUnRateClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				Window.alert("Unrate "+post.getTitle());
 			}
 		});
 	}
@@ -110,6 +128,7 @@ public class ReviewSummaryListPanel extends Composite{
 	
 	@UiHandler("moreOptionsElement")
 	void onClickMoreOptions(ClickEvent event){
+		initializeOptionsPopup(post);
 		Widget source = (Widget) event.getSource();
         optionsPanel.showRelativeTo(source);
 	}
