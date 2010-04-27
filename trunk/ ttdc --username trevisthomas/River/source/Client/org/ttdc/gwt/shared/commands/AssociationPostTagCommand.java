@@ -8,10 +8,26 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 
 public class AssociationPostTagCommand extends Command<AssociationPostTagResult> implements IsSerializable{
-	private enum Mode{CREATE,REMOVE};
+	public enum Mode{CREATE,REMOVE};
 	private String associationId;
 	private Mode mode;
 	private GTag tag;
+	public void setAssociationId(String associationId) {
+		this.associationId = associationId;
+	}
+
+	public void setMode(Mode mode) {
+		this.mode = mode;
+	}
+
+	public void setTag(GTag tag) {
+		this.tag = tag;
+	}
+
+	public void setPostId(String postId) {
+		this.postId = postId;
+	}
+
 	private String postId;
 	
 	public AssociationPostTagCommand() {}

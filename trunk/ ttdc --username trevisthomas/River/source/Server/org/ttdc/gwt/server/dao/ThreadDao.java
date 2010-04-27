@@ -61,8 +61,9 @@ public class ThreadDao extends FilteredPostPaginatedDaoBase{
 		for(Post post : threadStarters){
 			postIds.add(post.getPostId());
 		}
-		List<Post> posts;
-		posts = DaoUtils.executeLoadFromPostIds("ThreadDao.RepliesInThreads", postIds, buildFilterMask(getFilterFlags()));
+		List<Post> posts = new ArrayList<Post>();
+		if(postIds.size() > 0)
+			posts = DaoUtils.executeLoadFromPostIds("ThreadDao.RepliesInThreads", postIds, buildFilterMask(getFilterFlags()));
 		
 		return posts;
 	}

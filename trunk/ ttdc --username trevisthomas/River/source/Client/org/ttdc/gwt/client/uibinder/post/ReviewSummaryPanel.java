@@ -1,6 +1,7 @@
 package org.ttdc.gwt.client.uibinder.post;
 
 import org.ttdc.gwt.client.Injector;
+import org.ttdc.gwt.client.beans.GAssociationPostTag;
 import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.presenters.movies.MovieRatingPresenter;
 import org.ttdc.gwt.client.presenters.shared.HyperlinkPresenter;
@@ -49,10 +50,14 @@ public class ReviewSummaryPanel extends Composite {
 		summaryElement.setInnerText(post.getLatestEntry().getSummary());
 		postLinkPresenter.setPost(post,"More");
 		creatorLinkPresenter.setPerson(post.getCreator());
-		
+		creatorLinkPresenter.init();
 		movieRatingPresenter.setRating(post.getParent().getRatingByPerson(post.getCreator().getPersonId()));
-		
-		
+	}
+	
+	public void init(GAssociationPostTag ratingAss){
+		creatorLinkPresenter.setPerson(ratingAss.getCreator());
+		creatorLinkPresenter.init();
+		movieRatingPresenter.setRating(ratingAss);
 	}
 	
 }

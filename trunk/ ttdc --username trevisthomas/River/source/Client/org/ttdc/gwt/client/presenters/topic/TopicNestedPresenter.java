@@ -13,6 +13,8 @@ import org.ttdc.gwt.client.presenters.shared.BaseView;
 import org.ttdc.gwt.client.presenters.shared.PaginationPresenter;
 import org.ttdc.gwt.client.services.BatchCommandTool;
 import org.ttdc.gwt.client.services.RpcServiceAsync;
+import org.ttdc.gwt.client.uibinder.post.PostPanel;
+import org.ttdc.gwt.client.uibinder.post.ReviewSummaryListPanel;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
 import org.ttdc.gwt.shared.commands.PostCrudCommand;
 import org.ttdc.gwt.shared.commands.TopicCommand;
@@ -99,12 +101,20 @@ public class TopicNestedPresenter extends BasePresenter<TopicNestedPresenter.Vie
 		CommandResultCallback<PostCommandResult> rootPostCallback = new CommandResultCallback<PostCommandResult>(){
 			@Override
 			public void onSuccess(PostCommandResult result) {
-				PostPresenter postPresenter = injector.getPostPresenter();
+				GPost post = result.getPost();
 				
-				postPresenter.setPost(result.getPost());
-				view.threadTitle().setText(result.getPost().getTitle());
-				view.rootTarget().add(postPresenter.getWidget());
-				showSearchWithResults(result.getPost());
+				if(post.isMovie()){
+					ReviewSummaryListPanel reviewSummaryListPanel = injector.createReviewSummaryListPanel();
+					reviewSummaryListPanel.init(post);
+					view.rootTarget().add(reviewSummaryListPanel);
+				}
+				else{
+					PostPanel postPanel = injector.createPostPanel();
+					postPanel.setPost(post);
+					view.threadTitle().setText(result.getPost().getTitle());
+					view.rootTarget().add(postPanel.getWidget());
+				}
+				showSearchWithResults(post);
 				
 			}
 		};
