@@ -7,18 +7,28 @@ import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GAssociationPostTag;
 import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.beans.GTag;
+import org.ttdc.gwt.client.messaging.ConnectionId;
+import org.ttdc.gwt.client.messaging.EventBus;
+import org.ttdc.gwt.client.messaging.error.MessageEvent;
+import org.ttdc.gwt.client.messaging.error.MessageEventType;
 import org.ttdc.gwt.client.presenters.shared.BasePresenter;
 import org.ttdc.gwt.client.presenters.shared.BaseView;
+import org.ttdc.gwt.client.services.RpcServiceAsync;
+import org.ttdc.gwt.shared.commands.AssociationPostTagCommand;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
 import org.ttdc.gwt.shared.commands.TagCommand;
+import org.ttdc.gwt.shared.commands.AssociationPostTagCommand.Mode;
+import org.ttdc.gwt.shared.commands.results.AssociationPostTagResult;
 import org.ttdc.gwt.shared.commands.results.GenericListCommandResult;
 import org.ttdc.gwt.shared.commands.types.TagActionType;
 
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 
 public class MovieRatingPresenter extends BasePresenter<MovieRatingPresenter.View> implements RatableContentProcessor{
 	private Map<Float,GTag> ratingTagMap = new HashMap<Float,GTag>(); 
+	private GPost post;
 	
 	public interface View extends BaseView{
 		void setRating(String rating);
@@ -55,6 +65,7 @@ public class MovieRatingPresenter extends BasePresenter<MovieRatingPresenter.Vie
 	}
 
 	public void setRatablePost(GPost parentPost) {
+		this.post = parentPost;
 		view.initVoteMode(this);
 	}
 	
@@ -67,8 +78,34 @@ public class MovieRatingPresenter extends BasePresenter<MovieRatingPresenter.Vie
 		if(ratingTagMap.size() == 0)
 			throw new RuntimeException("Rating tag list hasn't been populated. This should not happen.");
 		
-		Window.alert("Vote: "+ratingTagMap.get(rating));
+		GTag tag = ratingTagMap.get(rating);
 		
+		RpcServiceAsync service = injector.getService();
+		//AssociationPostTagCommand cmd = AssociationPostTagCommand.createTagCommand(tag, post.getPostId());
+		
+		AssociationPostTagCommand cmd = new AssociationPostTagCommand();
+		cmd.setTag(tag);
+		cmd.setPostId(post.getPostId());
+		cmd.setMode(AssociationPostTagCommand.Mode.CREATE);
+		
+		
+		cmd.setConnectionId(ConnectionId.getInstance().getConnectionId());
+		
+		try{
+			service.execute(cmd, new PostRatingCallback());
+		}
+		catch (Exception e) {
+			Window.alert(e.getMessage());
+		}
+		
+		
+		//Window.alert("Vote: "+);
+		
+	}
+
+	private AsyncCallback<AssociationPostTagResult> createRatingCallback() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	private CommandResultCallback<GenericListCommandResult<GTag>> createTagRatingListCallback() {
@@ -79,5 +116,23 @@ public class MovieRatingPresenter extends BasePresenter<MovieRatingPresenter.Vie
 				}
 			};
 		};
+	}
+	
+	private class PostRatingCallback extends CommandResultCallback<AssociationPostTagResult>{
+		@Override
+		public void onSuccess(AssociationPostTagResult result) {
+			if(result.isCreate()){
+				//addTagAssociationToList(result.getAssociationPostTag());
+				Window.alert("Rated"+post.getTitle()+" "+result.getAssociationPostTag().getTag().getValue());
+			}
+			else if(result.isRemove()){
+				//nothing to do
+				Window.alert("Removed Rating"+post.getTitle()+" "+result.getAssociationPostTag().getTag().getValue());
+			}
+			else{
+				MessageEvent event = new MessageEvent(MessageEventType.SYSTEM_ERROR,result.getMessage());
+				EventBus.getInstance().fireEvent(event);
+			}
+		}
 	}
 }

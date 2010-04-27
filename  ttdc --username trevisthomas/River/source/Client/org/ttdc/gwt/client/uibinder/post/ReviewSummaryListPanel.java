@@ -1,7 +1,12 @@
 package org.ttdc.gwt.client.uibinder.post;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.ttdc.gwt.client.Injector;
+import org.ttdc.gwt.client.beans.GAssociationPostTag;
 import org.ttdc.gwt.client.beans.GPost;
+import org.ttdc.gwt.client.constants.TagConstants;
 import org.ttdc.gwt.client.presenters.comments.NewCommentPresenter;
 import org.ttdc.gwt.client.presenters.movies.MovieRatingPresenter;
 import org.ttdc.gwt.client.presenters.post.PostCollectionPresenter;
@@ -25,15 +30,11 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
-public class ReviewSummaryListPanel extends Composite{
+public class ReviewSummaryListPanel extends PostBaseComposite{
 	interface MyUiBinder extends UiBinder<Widget, ReviewSummaryListPanel> {}
     private static final MyUiBinder binder = GWT.create(MyUiBinder.class);
     
-	private Injector injector;
-	
-	
-	private MoreOptionsPopupPanel optionsPanel;
-    private GPost post;
+	private GPost post;
     private ImagePresenter imagePresenter;
     //private HyperlinkPresenter creatorLinkPresenter;
     private HyperlinkPresenter postLinkPresenter;
@@ -54,7 +55,7 @@ public class ReviewSummaryListPanel extends Composite{
     
 	@Inject
     public ReviewSummaryListPanel(Injector injector) { 
-		this.injector = injector;
+		super(injector);
 		imagePresenter = injector.getImagePresenter();
 		averageMovieRatingPresenter = injector.getMovieRatingPresenter();
 		postLinkPresenter = injector.getHyperlinkPresenter();
@@ -67,12 +68,12 @@ public class ReviewSummaryListPanel extends Composite{
 	}
 	
 	public void init(GPost post){
+		super.init(post, commentElement);
 		this.post = post;
 		imagePresenter.setImageAsMoviePoster(post);
 		imagePresenter.init();
 		
 		averageMovieRatingPresenter.setRating(post.getAvgRatingTag());
-		
 		
 		postLinkPresenter.setPost(post);
 		postLinkPresenter.init();
@@ -80,56 +81,21 @@ public class ReviewSummaryListPanel extends Composite{
 		moreOptionsElement.setText("> More Options");
 		moreOptionsElement.setStyleName("tt-cursor-pointer");
 		
+		List<String> personIdsWithReviews = new ArrayList<String>();
 		for(GPost p : post.getPosts()){
 			ReviewSummaryPanel summaryPanel = injector.createReviewSummaryPanel();
 			summaryPanel.init(p);
 			reviewsElement.add(summaryPanel);
+			personIdsWithReviews.add(p.getCreator().getPersonId());
 		}
 		
-		
-	}
-	
-	private void initializeOptionsPopup(final GPost post) {
-		optionsPanel = injector.createOptionsPanel();
-		optionsPanel.setAutoHideEnabled(true);
-		optionsPanel.init(post);
-		
-		optionsPanel.addReplyClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				showNewCommentEditor();
+		List<GAssociationPostTag> ratingAssList = post.readTagAssociations(TagConstants.TYPE_RATING);
+		for(GAssociationPostTag rating : ratingAssList){
+			if(!personIdsWithReviews.contains(rating.getCreator().getPersonId())){
+				ReviewSummaryPanel summaryPanel = injector.createReviewSummaryPanel();
+				summaryPanel.init(rating);
+				reviewsElement.add(summaryPanel);
 			}
-		});
-		
-		optionsPanel.addRatingClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				MovieRatingPresenter movieRatingPresenter = injector.getMovieRatingPresenter();
-				movieRatingPresenter.setRatablePost(post);
-				commentElement.clear();
-				commentElement.add(movieRatingPresenter.getWidget());
-			}
-		});
-		
-		optionsPanel.addUnRateClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				Window.alert("Unrate "+post.getTitle());
-			}
-		});
-	}
-	protected void showNewCommentEditor() {
-		NewCommentPresenter commentPresneter = injector.getNewCommentPresenter();
-		commentPresneter.init(post);
-		commentElement.clear();
-		commentElement.add(commentPresneter.getWidget());
-		
-	}
-	
-	@UiHandler("moreOptionsElement")
-	void onClickMoreOptions(ClickEvent event){
-		initializeOptionsPopup(post);
-		Widget source = (Widget) event.getSource();
-        optionsPanel.showRelativeTo(source);
+		}
 	}
 }

@@ -187,16 +187,16 @@ public class GPost extends GBase{
 	}
 	
 	
-//	public List<GAssociationPostTag> readTagAssociations(String type){
-//		List<GAssociationPostTag> foundAsses = new ArrayList<GAssociationPostTag>();
-//		List<GAssociationPostTag> tagasses = getTagAssociations();
-//		for(GAssociationPostTag a : tagasses){
-//			if(type.equals(a.getTag().getType())){
-//				foundAsses.add(a);
-//			}
-//		}
-//		return foundAsses;
-//	}
+	public List<GAssociationPostTag> readTagAssociations(String type){
+		List<GAssociationPostTag> foundAsses = new ArrayList<GAssociationPostTag>();
+		List<GAssociationPostTag> tagasses = getTagAssociations();
+		for(GAssociationPostTag a : tagasses){
+			if(type.equals(a.getTag().getType())){
+				foundAsses.add(a);
+			}
+		}
+		return foundAsses;
+	}
 
 	public String getTitle() {
 		return getTitleTag().getValue();

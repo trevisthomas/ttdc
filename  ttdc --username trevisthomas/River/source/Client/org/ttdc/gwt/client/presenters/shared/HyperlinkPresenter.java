@@ -72,7 +72,12 @@ public class HyperlinkPresenter extends BasePresenter<HyperlinkPresenter.View> {
 	}
 	
 	public void setPost(GPost post) {
-		setPost(post,post.getTitle());
+		try{
+			setPost(post,post.getTitle());
+		}
+		catch (Exception e) {
+			setPost(post,"Exception getting name");
+		}
 	}
 	
 	public void setPost(GPost post, String title) {
