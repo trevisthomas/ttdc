@@ -253,6 +253,13 @@ public class FastPostBeanConverter {
 		return gAss;
 	}
 	
+	public static GAssociationPostTag convertAssociationPostTagWithPost(AssociationPostTag ass){
+		GAssociationPostTag gAss = convertAssociationPostTag(ass);
+		gAss.setPost(convertPost(ass.getPost()));
+		gAss.setTag(convertTag(ass.getTag()));
+		return gAss;
+	}
+	
 	public static GUserObject convertUserObject(UserObject uo){
 		GUserObject gUo = new GUserObject();
 		gUo.setDate(uo.getDate());

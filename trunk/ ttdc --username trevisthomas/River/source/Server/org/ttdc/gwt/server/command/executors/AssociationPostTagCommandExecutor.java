@@ -2,11 +2,13 @@ package org.ttdc.gwt.server.command.executors;
 
 import org.apache.commons.lang.StringUtils;
 import org.ttdc.gwt.client.beans.GAssociationPostTag;
+import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.beans.GTag;
 import org.ttdc.gwt.client.messaging.tag.TagEvent;
 import org.ttdc.gwt.client.messaging.tag.TagEventType;
 import org.ttdc.gwt.client.services.CommandResult;
 import org.ttdc.gwt.server.activity.ServerEventBroadcaster;
+import org.ttdc.gwt.server.beanconverters.FastPostBeanConverter;
 import org.ttdc.gwt.server.beanconverters.GenericBeanConverter;
 import org.ttdc.gwt.server.command.CommandExecutor;
 import org.ttdc.gwt.server.dao.AssociationPostTagDao;
@@ -57,7 +59,8 @@ public class AssociationPostTagCommandExecutor extends CommandExecutor<Associati
 		dao.setCreator(getPerson());
 		
 		AssociationPostTag ass = dao.create();
-		GAssociationPostTag gAss = GenericBeanConverter.convertAssociationPostTag(ass);
+		//GAssociationPostTag gAss = GenericBeanConverter.convertAssociationPostTag(ass);
+		GAssociationPostTag gAss = FastPostBeanConverter.convertAssociationPostTagWithPost(ass);
 		result = new AssociationPostTagResult(AssociationPostTagResult.Status.CREATE);
 		result.setAssociationPostTag(gAss);
 		result.setMessage(ass.getGuid());
@@ -70,14 +73,26 @@ public class AssociationPostTagCommandExecutor extends CommandExecutor<Associati
 	private AssociationPostTagResult performRemoveAssociation(AssociationPostTagCommand command) {
 		AssociationPostTagResult result;
 		Persistence.beginSession();
-		AssociationPostTag ass = AssociationPostTagDao.remove(command.getAssociationId());
 		
-		GAssociationPostTag gAss = GenericBeanConverter.convertAssociationPostTag(ass);
+		AssociationPostTag ass = AssociationPostTagDao.load(command.getAssociationId());
+		GAssociationPostTag gAss = FastPostBeanConverter.convertAssociationPostTagWithPost(ass);
+		
+		AssociationPostTagDao.remove(command.getAssociationId());
+		
 		result = new AssociationPostTagResult(AssociationPostTagResult.Status.REMOVE);
-		result.setMessage(ass.getGuid());
+		result.setMessage(gAss.getGuid());
 		result.setAssociationPostTag(gAss);
 		
+//		AssociationPostTag ass = AssociationPostTagDao.remove(command.getAssociationId());
+//		
+//		GAssociationPostTag gAss = GenericBeanConverter.convertAssociationPostTag(ass);
+//		result = new AssociationPostTagResult(AssociationPostTagResult.Status.REMOVE);
+//		result.setMessage(ass.getGuid());
+//		result.setAssociationPostTag(gAss);
+//		
+		//Should probably instead be broadcasting a post update...
 		broadcastTagAssociation(ass, TagEventType.REMOVED);
+		
 		Persistence.commit();
 		return result;
 	}

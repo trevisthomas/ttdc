@@ -132,6 +132,7 @@ public class ImageView implements ImagePresenter.View{
 		else
 			html.setHTML(sb.toString());
 		
+		main.clear();
 		main.add(html);
 	}
 
