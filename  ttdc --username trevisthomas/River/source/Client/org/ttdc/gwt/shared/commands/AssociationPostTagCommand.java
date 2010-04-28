@@ -30,22 +30,22 @@ public class AssociationPostTagCommand extends Command<AssociationPostTagResult>
 
 	private String postId;
 	
-	public AssociationPostTagCommand() {}
-	
-	public static AssociationPostTagCommand createRemoveTagCommand(String associationId){
-		AssociationPostTagCommand cmd = new AssociationPostTagCommand();
-		cmd.associationId = associationId;
-		cmd.mode = Mode.REMOVE;
-		return cmd;
-	}
-	
-	public static AssociationPostTagCommand createTagCommand(GTag tag, String postId){
-		AssociationPostTagCommand cmd = new AssociationPostTagCommand();
-		cmd.tag = tag;
-		cmd.postId = postId;
-		cmd.mode = Mode.CREATE;
-		return cmd;
-	}
+	public AssociationPostTagCommand(){}
+
+//	public static AssociationPostTagCommand createRemoveTagCommand(String associationId){
+//		AssociationPostTagCommand cmd = new AssociationPostTagCommand();
+//		cmd.associationId = associationId;
+//		cmd.mode = Mode.REMOVE;
+//		return cmd;
+//	}
+//	
+//	public static AssociationPostTagCommand createTagCommand(GTag tag, String postId){
+//		AssociationPostTagCommand cmd = new AssociationPostTagCommand();
+//		cmd.tag = tag;
+//		cmd.postId = postId;
+//		cmd.mode = Mode.CREATE;
+//		return cmd;
+//	}
 	
 		
 	public String getAssociationId() {

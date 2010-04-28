@@ -22,6 +22,11 @@ final public class AssociationPostTagDao {
 		return ass;
 	}
 	
+	/*
+	 * Disabled L2 cache to get this working for movie ratings. Worked fine in unit
+	 * tests but not from ap.  disabling cache made it work.  Tried session.refresh but that 
+	 * didnt work.  4/27/2010
+	 */
 	public AssociationPostTag create(){
 		AssociationPostTag ass = new AssociationPostTag();
 		
@@ -59,6 +64,11 @@ final public class AssociationPostTagDao {
 		session().save(tag);
 	}
 	
+	/*
+	 * Disabled L2 cache to get this working for movie ratings. Worked fine in unit
+	 * tests but not from ap.  disabling cache made it work.  Tried session.refresh but that 
+	 * didnt work.  4/27/2010
+	 */
 	/**
 	 * REMEMBER you must call this with a fresh session and commit when you're done 
 	 * to see the changes.  If the remove method is called while the object you're removing
@@ -80,10 +90,10 @@ final public class AssociationPostTagDao {
 		
 		AssociationPostTag ass = load(associationId);
 		ass.getPost().getTagAssociations().remove(ass);
+		
 		decreaseMass(ass.getTag());
 		session().delete(ass);
 		session().flush();
-		
 		return ass;
 	}
 

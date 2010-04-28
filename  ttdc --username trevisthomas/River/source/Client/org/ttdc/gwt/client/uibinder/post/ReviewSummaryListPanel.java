@@ -7,6 +7,10 @@ import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GAssociationPostTag;
 import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.constants.TagConstants;
+import org.ttdc.gwt.client.messaging.EventBus;
+import org.ttdc.gwt.client.messaging.post.PostEvent;
+import org.ttdc.gwt.client.messaging.post.PostEventListener;
+import org.ttdc.gwt.client.messaging.post.PostEventType;
 import org.ttdc.gwt.client.presenters.comments.NewCommentPresenter;
 import org.ttdc.gwt.client.presenters.movies.MovieRatingPresenter;
 import org.ttdc.gwt.client.presenters.post.PostCollectionPresenter;
@@ -30,7 +34,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
-public class ReviewSummaryListPanel extends PostBaseComposite{
+public class ReviewSummaryListPanel extends PostBaseComposite implements PostEventListener{
 	interface MyUiBinder extends UiBinder<Widget, ReviewSummaryListPanel> {}
     private static final MyUiBinder binder = GWT.create(MyUiBinder.class);
     
@@ -65,6 +69,8 @@ public class ReviewSummaryListPanel extends PostBaseComposite{
 		averageRatingElement = averageMovieRatingPresenter.getWidget();
 		
 		initWidget(binder.createAndBindUi(this)); 
+		
+		EventBus.getInstance().addListener(this);
 	}
 	
 	public void init(GPost post){
@@ -82,6 +88,7 @@ public class ReviewSummaryListPanel extends PostBaseComposite{
 		moreOptionsElement.setStyleName("tt-cursor-pointer");
 		
 		List<String> personIdsWithReviews = new ArrayList<String>();
+		reviewsElement.clear();
 		for(GPost p : post.getPosts()){
 			ReviewSummaryPanel summaryPanel = injector.createReviewSummaryPanel();
 			summaryPanel.init(p);
@@ -96,6 +103,13 @@ public class ReviewSummaryListPanel extends PostBaseComposite{
 				summaryPanel.init(rating);
 				reviewsElement.add(summaryPanel);
 			}
+		}
+	}
+
+	@Override
+	public void onPostEvent(PostEvent postEvent) {
+		if(postEvent.is(PostEventType.EDIT) && postEvent.getSource().getPostId().equals(post.getPostId())){
+			init(postEvent.getSource());
 		}
 	}
 }

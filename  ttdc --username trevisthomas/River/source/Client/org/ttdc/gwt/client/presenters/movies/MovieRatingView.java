@@ -35,6 +35,7 @@ public class MovieRatingView implements MovieRatingPresenter.View{
 	
 	@Override
 	public void setRating(String rating) {
+		main.clear();
 		float r = Float.parseFloat(rating);
 		//HalfStarPanel hstar; 
 		createHalfStarPanel(r, 0.5f, CSS_STAR_LEFT_PREFIX);

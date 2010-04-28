@@ -172,7 +172,8 @@ public class PostTagListPresenter extends BasePresenter<TagListPresenterView> im
 		private final String tagId;
 		
 		public RemoveTagFromPostClickHandler(GAssociationPostTag ass) {
-			command = AssociationPostTagCommand.createRemoveTagCommand(ass.getGuid());
+			command = new AssociationPostTagCommand();
+			command.setAssociationId(ass.getGuid());
 			command.setConnectionId(ConnectionId.getInstance().getConnectionId());
 			tagId = ass.getTag().getTagId();
 		}
@@ -186,6 +187,7 @@ public class PostTagListPresenter extends BasePresenter<TagListPresenterView> im
 		}
 	}
 	
+	//I dont think that this code is really used anywhere
 	/**
 	 * Click Handler for adding a tag to a post. Be aware that this is assuming 
 	 * that the server will send out an event in the event bus about the new association.
@@ -197,7 +199,9 @@ public class PostTagListPresenter extends BasePresenter<TagListPresenterView> im
 		public void onClick(ClickEvent event) {
 			SuggestionObject tagSuggestion = view.getTagSuggestion();
 			final AssociationPostTagCommand addTagCommand = 
-				AssociationPostTagCommand.createTagCommand(tagSuggestion.getTag(),postId);
+				new AssociationPostTagCommand();
+			addTagCommand.setTag(tagSuggestion.getTag());
+			addTagCommand.setPostId(postId);
 			RpcServiceAsync service = injector.getService(); 
 			service.execute(addTagCommand, new AssociationPostTagCallback());
 		}

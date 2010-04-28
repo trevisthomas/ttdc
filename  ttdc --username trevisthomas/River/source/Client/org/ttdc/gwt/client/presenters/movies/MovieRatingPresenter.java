@@ -11,6 +11,8 @@ import org.ttdc.gwt.client.messaging.ConnectionId;
 import org.ttdc.gwt.client.messaging.EventBus;
 import org.ttdc.gwt.client.messaging.error.MessageEvent;
 import org.ttdc.gwt.client.messaging.error.MessageEventType;
+import org.ttdc.gwt.client.messaging.post.PostEvent;
+import org.ttdc.gwt.client.messaging.post.PostEventType;
 import org.ttdc.gwt.client.presenters.shared.BasePresenter;
 import org.ttdc.gwt.client.presenters.shared.BaseView;
 import org.ttdc.gwt.client.services.RpcServiceAsync;
@@ -71,10 +73,7 @@ public class MovieRatingPresenter extends BasePresenter<MovieRatingPresenter.Vie
 	
 	@Override
 	public void processRatingRequest(float rating) {
-		// TODO Auto-generated method stub
-		//Window.alert("Vote: "+rating);
 		//This cant work before the list comes back. it's asynch so check first, i guess.
-
 		if(ratingTagMap.size() == 0)
 			throw new RuntimeException("Rating tag list hasn't been populated. This should not happen.");
 		
@@ -88,18 +87,8 @@ public class MovieRatingPresenter extends BasePresenter<MovieRatingPresenter.Vie
 		cmd.setPostId(post.getPostId());
 		cmd.setMode(AssociationPostTagCommand.Mode.CREATE);
 		
-		
 		cmd.setConnectionId(ConnectionId.getInstance().getConnectionId());
-		
-		try{
-			service.execute(cmd, new PostRatingCallback());
-		}
-		catch (Exception e) {
-			Window.alert(e.getMessage());
-		}
-		
-		
-		//Window.alert("Vote: "+);
+		service.execute(cmd, new PostRatingCallback(post));
 		
 	}
 
@@ -118,20 +107,29 @@ public class MovieRatingPresenter extends BasePresenter<MovieRatingPresenter.Vie
 		};
 	}
 	
-	private class PostRatingCallback extends CommandResultCallback<AssociationPostTagResult>{
+	public static class PostRatingCallback extends CommandResultCallback<AssociationPostTagResult>{
+		private GPost post;
+		public PostRatingCallback(GPost post) {
+			this.post = post;
+		}
 		@Override
 		public void onSuccess(AssociationPostTagResult result) {
 			if(result.isCreate()){
 				//addTagAssociationToList(result.getAssociationPostTag());
-				Window.alert("Rated"+post.getTitle()+" "+result.getAssociationPostTag().getTag().getValue());
+				//Window.alert("Rated"+post.getTitle()+" "+result.getAssociationPostTag().getTag().getValue());
+				
+				PostEvent event = new PostEvent(PostEventType.EDIT,result.getAssociationPostTag().getPost());
+				EventBus.fireEvent(event);
 			}
 			else if(result.isRemove()){
 				//nothing to do
-				Window.alert("Removed Rating"+post.getTitle()+" "+result.getAssociationPostTag().getTag().getValue());
+				//Window.alert("Removed Rating"+post.getTitle()+" "+result.getAssociationPostTag().getTag().getValue());
+				PostEvent event = new PostEvent(PostEventType.EDIT,result.getAssociationPostTag().getPost());
+				EventBus.fireEvent(event);
 			}
 			else{
 				MessageEvent event = new MessageEvent(MessageEventType.SYSTEM_ERROR,result.getMessage());
-				EventBus.getInstance().fireEvent(event);
+				EventBus.fireEvent(event);
 			}
 		}
 	}

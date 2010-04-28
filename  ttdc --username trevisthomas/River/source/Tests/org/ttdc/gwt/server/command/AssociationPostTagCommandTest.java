@@ -1,7 +1,7 @@
 package org.ttdc.gwt.server.command;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
+
 
 import java.util.List;
 
@@ -9,15 +9,21 @@ import junit.framework.Assert;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.ttdc.gwt.client.beans.GAssociationPostTag;
+import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.beans.GTag;
 import org.ttdc.gwt.client.constants.TagConstants;
 import org.ttdc.gwt.client.messaging.Event;
 import org.ttdc.gwt.client.messaging.tag.TagEvent;
 import org.ttdc.gwt.client.messaging.tag.TagEventType;
 import org.ttdc.gwt.server.activity.ServerEventBroadcaster;
+import org.ttdc.gwt.server.beanconverters.FastPostBeanConverter;
 import org.ttdc.gwt.server.dao.Helpers;
+import org.ttdc.gwt.server.dao.PostDao;
 import org.ttdc.gwt.shared.commands.AssociationPostTagCommand;
 import org.ttdc.gwt.shared.commands.results.AssociationPostTagResult;
+import org.ttdc.persistence.Persistence;
+import org.ttdc.persistence.objects.Post;
 import org.ttdc.test.utils.ThreadUtils;
 
 
@@ -50,7 +56,7 @@ public class AssociationPostTagCommandTest{
 		
 		String postId = "0B20985A-0123-4933-8943-80C93F49A08B";//random post
 		
-		AssociationPostTagCommand cmd = AssociationPostTagCommand.createTagCommand(tag, postId);
+		AssociationPostTagCommand cmd = createTagCommand(tag, postId);
 		cmd.setConnectionId(serverEventConnId);
 		
 		
@@ -63,7 +69,7 @@ public class AssociationPostTagCommandTest{
 		
 		
 		//Now remove it
-		cmd = AssociationPostTagCommand.createRemoveTagCommand(result.getMessage());
+		cmd = createRemoveTagCommand(result.getMessage());
 		cmdexec = CommandExecutorFactory.createExecutor(Helpers.personIdTrevis,cmd);
 		result = (AssociationPostTagResult)cmdexec.executeCommand();
 		assertTrue("Remove Command says that it failed. ", result.isPassed());
@@ -76,30 +82,156 @@ public class AssociationPostTagCommandTest{
 	 */
 	@Test
 	public void testCreateAndRemoveAssociationForStringTag(){
+		
 		GTag tag = new GTag();
 		tag.setValue("Brand New Tag");
 		tag.setType(TagConstants.TYPE_TOPIC);
 		
 		String postId = "0B20985A-0123-4933-8943-80C93F49A08B";//random post
 		
-		AssociationPostTagCommand cmd = AssociationPostTagCommand.createTagCommand(tag, postId);
+		AssociationPostTagCommand cmd = createTagCommand(tag, postId);
 		
 		CommandExecutor cmdexec = CommandExecutorFactory.createExecutor(Helpers.personIdTrevis,cmd);
 		cmd.setConnectionId(serverEventConnId);
 		
 		AssociationPostTagResult result = (AssociationPostTagResult)cmdexec.executeCommand();
 		
+//		List<GAssociationPostTag> asses = result.getAssociationPostTag().getPost().getTagAssociations();
+//		boolean found = false;
+//		for(GAssociationPostTag ass : asses){
+//			if(ass.getTag().getValue().equals(tag.getValue())){
+//				found = true;
+//				break;
+//			}
+//		}
+//		if(found == false){
+//			fail("I dont have the tag" );
+//		}
+		
 		assertTrue("Create Command says that it failed. ", result.isPassed());
+		
+		assertTagged(result.getAssociationPostTag().getPost().getPostId(), tag.getValue());
 		
 		
 		//Now remove it
-		cmd = AssociationPostTagCommand.createRemoveTagCommand(result.getMessage());
+		cmd = createRemoveTagCommand(result.getMessage());
 		cmdexec = CommandExecutorFactory.createExecutor(Helpers.personIdTrevis,cmd);
 		result = (AssociationPostTagResult)cmdexec.executeCommand();
 		assertTrue("Remove Command says that it failed. ", result.isPassed());
 		
+		assertNotTagged(result.getAssociationPostTag().getPost().getPostId(),tag.getValue());
+		//String postId = result.getAssociationPostTag().getPost().getPostId();
+		
+//		Persistence.beginSession();
+//		Post post = PostDao.loadPost(postId);
+//		
+//		GPost gPost = FastPostBeanConverter.convertPost(post);
+//		
+//		//asses = result.getAssociationPostTag().getPost().getTagAssociations();
+//		asses = gPost.getTagAssociations();
+//		found = false;
+//		for(GAssociationPostTag ass : asses){
+//			if(ass.getTag().getValue().equals(tag.getValue())){
+//				found = true;
+//				break;
+//			}
+//		}
+//		if(found == true){
+//			fail("The tag wasnt removed from the post" );
+//		}
+//		Persistence.commit();
 	}
 	
+	
+	private void assertNotTaggedWithId(String postId, String tagId){
+		Persistence.beginSession();
+		Post post = PostDao.loadPost(postId);
+		
+		GPost gPost = FastPostBeanConverter.convertPost(post);
+		
+		//asses = result.getAssociationPostTag().getPost().getTagAssociations();
+		List<GAssociationPostTag> asses = gPost.getTagAssociations();
+		boolean found = false;
+		for(GAssociationPostTag ass : asses){
+			if(ass.getTag().getTagId().equals(tagId)){
+				found = true;
+				break;
+			}
+		}
+		if(found == true){
+			fail("The tag is still on the post" );
+		}
+		Persistence.commit();
+	}
+	private void assertNotTagged(String postId, String tagValue){
+		Persistence.beginSession();
+		Post post = PostDao.loadPost(postId);
+		
+		GPost gPost = FastPostBeanConverter.convertPost(post);
+		
+		//asses = result.getAssociationPostTag().getPost().getTagAssociations();
+		List<GAssociationPostTag> asses = gPost.getTagAssociations();
+		boolean found = false;
+		for(GAssociationPostTag ass : asses){
+			if(ass.getTag().getValue().equals(tagValue)){
+				found = true;
+				break;
+			}
+		}
+		if(found == true){
+			fail("The tag is still on the post" );
+		}
+		Persistence.commit();
+	}
+	private void assertTagged(String postId, String tagValue){
+		Persistence.beginSession();
+		Post post = PostDao.loadPost(postId);
+		
+		GPost gPost = FastPostBeanConverter.convertPost(post);
+		
+		//asses = result.getAssociationPostTag().getPost().getTagAssociations();
+		List<GAssociationPostTag> asses = gPost.getTagAssociations();
+		boolean found = false;
+		for(GAssociationPostTag ass : asses){
+			if(ass.getTag().getValue().equals(tagValue)){
+				found = true;
+				break;
+			}
+		}
+		
+		if(asses.size() == 0){
+			fail("Post has not tags" );
+		}
+		if(found == false){
+			fail("The tag is still on the post" );
+		}
+		Persistence.commit();
+	}
+	
+	private void assertTaggedWithId(String postId, String tagId){
+		Persistence.beginSession();
+		Post post = PostDao.loadPost(postId);
+		
+		GPost gPost = FastPostBeanConverter.convertPost(post);
+		
+		//asses = result.getAssociationPostTag().getPost().getTagAssociations();
+		List<GAssociationPostTag> asses = gPost.getTagAssociations();
+		boolean found = false;
+		for(GAssociationPostTag ass : asses){
+			if(ass.getTag().getTagId().equals(tagId)){
+				found = true;
+				break;
+			}
+		}
+		
+		if(asses.size() == 0){
+			fail("Post has not tags" );
+		}
+		if(found == false){
+			fail("The tag is still on the post" );
+		}
+		Persistence.commit();
+	}
 
 	@Test
 	public void testServerBroadcastNotifications(){
@@ -107,7 +239,7 @@ public class AssociationPostTagCommandTest{
 		tag.setTagId(Helpers.tagCorporateGoodness);
 		String postId = "0B20985A-0123-4933-8943-80C93F49A08B";//random post
 		
-		AssociationPostTagCommand cmd = AssociationPostTagCommand.createTagCommand(tag, postId);
+		AssociationPostTagCommand cmd = createTagCommand(tag, postId);
 		
 		//Create the association
 		CommandExecutor cmdexec = CommandExecutorFactory.createExecutor(Helpers.personIdTrevis,cmd);
@@ -119,7 +251,7 @@ public class AssociationPostTagCommandTest{
 		verifyTagCreationMessageWasBroadcast();
 		
 		//Now remove it
-		cmd = AssociationPostTagCommand.createRemoveTagCommand(result.getMessage());
+		cmd = createRemoveTagCommand(result.getMessage());
 		cmd.setConnectionId(serverEventConnId);
 		cmdexec = CommandExecutorFactory.createExecutor(Helpers.personIdTrevis,cmd);
 		result = (AssociationPostTagResult)cmdexec.executeCommand();
@@ -127,6 +259,46 @@ public class AssociationPostTagCommandTest{
 		
 		verifyTagRemoveMessageWasBroadcast();
 		
+	}
+	
+	@Test
+	public void testRateAMovie(){
+		GTag tag = new GTag();
+		tag.setTagId("8C86FFAB-37CC-43DC-AF3E-A8D0360E0192");
+		
+		String postId = "874D1519-B45D-46F6-9FA9-DE7ABC050C33"; //Wild heart or something?
+		
+		AssociationPostTagCommand cmd = createTagCommand(tag, postId);
+		
+		CommandExecutor cmdexec = CommandExecutorFactory.createExecutor(Helpers.personIdTrevis,cmd);
+		cmd.setConnectionId(serverEventConnId);
+		
+		AssociationPostTagResult result = (AssociationPostTagResult)cmdexec.executeCommand();
+		
+		assertTaggedWithId(postId,tag.getTagId());
+		
+		cmd = createRemoveTagCommand(result.getAssociationPostTag().getGuid());
+		cmdexec = CommandExecutorFactory.createExecutor(Helpers.personIdTrevis,cmd);
+		result = (AssociationPostTagResult)cmdexec.executeCommand();
+		assertTrue("Remove Command says that it failed. ", result.isPassed());
+		
+		assertNotTaggedWithId(result.getAssociationPostTag().getPost().getPostId(),tag.getTagId());
+		
+	}
+	
+	public static AssociationPostTagCommand createRemoveTagCommand(String associationId){
+		AssociationPostTagCommand cmd = new AssociationPostTagCommand();
+		cmd.setAssociationId(associationId);
+		cmd.setMode(AssociationPostTagCommand.Mode.REMOVE);
+		return cmd;
+	}
+	
+	public static AssociationPostTagCommand createTagCommand(GTag tag, String postId){
+		AssociationPostTagCommand cmd = new AssociationPostTagCommand();
+		cmd.setTag(tag);
+		cmd.setPostId(postId);
+		cmd.setMode(AssociationPostTagCommand.Mode.CREATE);
+		return cmd;
 	}
 	
 	//Modify broadcaster so that the browser that caused an event doesnt get the notification. 
