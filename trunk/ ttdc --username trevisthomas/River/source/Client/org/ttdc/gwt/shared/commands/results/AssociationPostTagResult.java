@@ -1,6 +1,7 @@
 package org.ttdc.gwt.shared.commands.results;
 
 import org.ttdc.gwt.client.beans.GAssociationPostTag;
+import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.services.CommandResult;
 
 /**
@@ -12,6 +13,7 @@ public class AssociationPostTagResult implements CommandResult {
 	private Status status;
 	private String message; 
 	private GAssociationPostTag associationPostTag;
+	private GPost post;
 	
 	public AssociationPostTagResult() { status = Status.ERROR; }
 	
@@ -23,11 +25,11 @@ public class AssociationPostTagResult implements CommandResult {
 		return !status.equals(Status.ERROR) ? true : false;
 	}
 
-	public String getMessage() {
+	public String getAssociationId() {
 		return message;
 	}
 
-	public void setMessage(String message) {
+	public void setAssociationId(String message) {
 		this.message = message;
 	}
 
@@ -45,5 +47,13 @@ public class AssociationPostTagResult implements CommandResult {
 
 	public boolean isCreate() {
 		return status.equals(Status.CREATE) ? true : false;
+	}
+	
+	public GPost getPost() {
+		return post;
+	}
+
+	public void setPost(GPost post) {
+		this.post = post;
 	}
 }	

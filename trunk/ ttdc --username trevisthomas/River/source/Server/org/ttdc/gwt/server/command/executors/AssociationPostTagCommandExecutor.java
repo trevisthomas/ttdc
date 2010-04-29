@@ -4,6 +4,8 @@ import org.apache.commons.lang.StringUtils;
 import org.ttdc.gwt.client.beans.GAssociationPostTag;
 import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.beans.GTag;
+import org.ttdc.gwt.client.messaging.post.PostEvent;
+import org.ttdc.gwt.client.messaging.post.PostEventType;
 import org.ttdc.gwt.client.messaging.tag.TagEvent;
 import org.ttdc.gwt.client.messaging.tag.TagEventType;
 import org.ttdc.gwt.client.services.CommandResult;
@@ -63,9 +65,11 @@ public class AssociationPostTagCommandExecutor extends CommandExecutor<Associati
 		GAssociationPostTag gAss = FastPostBeanConverter.convertAssociationPostTagWithPost(ass);
 		result = new AssociationPostTagResult(AssociationPostTagResult.Status.CREATE);
 		result.setAssociationPostTag(gAss);
-		result.setMessage(ass.getGuid());
+		result.setAssociationId(ass.getGuid());
 		
+		broadcastPostEvent(post, PostEventType.EDIT);
 		broadcastTagAssociation(ass, TagEventType.NEW);
+		
 		Persistence.commit();
 		return result;
 	}
@@ -75,13 +79,18 @@ public class AssociationPostTagCommandExecutor extends CommandExecutor<Associati
 		Persistence.beginSession();
 		
 		AssociationPostTag ass = AssociationPostTagDao.load(command.getAssociationId());
-		GAssociationPostTag gAss = FastPostBeanConverter.convertAssociationPostTagWithPost(ass);
+		Post post = ass.getPost();
+		//GAssociationPostTag gAss = FastPostBeanConverter.convertAssociationPostTagWithPost(ass);
 		
 		AssociationPostTagDao.remove(command.getAssociationId());
 		
 		result = new AssociationPostTagResult(AssociationPostTagResult.Status.REMOVE);
-		result.setMessage(gAss.getGuid());
-		result.setAssociationPostTag(gAss);
+		result.setAssociationId(ass.getGuid());
+		//result.setAssociationPostTag(gAss);
+		GPost gPost = FastPostBeanConverter.convertPost(post);
+		result.setPost(gPost);
+		
+		broadcastPostEvent(post, PostEventType.EDIT);
 		
 //		AssociationPostTag ass = AssociationPostTagDao.remove(command.getAssociationId());
 //		
@@ -102,6 +111,13 @@ public class AssociationPostTagCommandExecutor extends CommandExecutor<Associati
 		GAssociationPostTag gAss = GenericBeanConverter.convertAssociationPostTag(ass);
 		TagEvent tagEvent = new TagEvent(eventType,gAss);
 		broadcaster.broadcastEvent(tagEvent, getCommand().getConnectionId());
+	}
+	
+	private void broadcastPostEvent(Post post, PostEventType eventType) {
+		ServerEventBroadcaster broadcaster = ServerEventBroadcaster.getInstance();
+		GPost gPost = FastPostBeanConverter.convertPost(post);
+		PostEvent postEvent = new PostEvent(eventType,gPost);
+		broadcaster.broadcastEvent(postEvent, getCommand().getConnectionId());
 	}
 
 	private Tag getTagObject(GTag gTag) {

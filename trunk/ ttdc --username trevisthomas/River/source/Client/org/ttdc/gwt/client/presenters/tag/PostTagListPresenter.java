@@ -145,7 +145,7 @@ public class PostTagListPresenter extends BasePresenter<TagListPresenterView> im
 				//nothing to do
 			}
 			else{
-				MessageEvent event = new MessageEvent(MessageEventType.SYSTEM_ERROR,result.getMessage());
+				MessageEvent event = new MessageEvent(MessageEventType.SYSTEM_ERROR,result.getAssociationId());
 				EventBus.getInstance().fireEvent(event);
 			}
 		}

@@ -69,7 +69,7 @@ public class AssociationPostTagCommandTest{
 		
 		
 		//Now remove it
-		cmd = createRemoveTagCommand(result.getMessage());
+		cmd = createRemoveTagCommand(result.getAssociationId());
 		cmdexec = CommandExecutorFactory.createExecutor(Helpers.personIdTrevis,cmd);
 		result = (AssociationPostTagResult)cmdexec.executeCommand();
 		assertTrue("Remove Command says that it failed. ", result.isPassed());
@@ -114,12 +114,12 @@ public class AssociationPostTagCommandTest{
 		
 		
 		//Now remove it
-		cmd = createRemoveTagCommand(result.getMessage());
+		cmd = createRemoveTagCommand(result.getAssociationId());
 		cmdexec = CommandExecutorFactory.createExecutor(Helpers.personIdTrevis,cmd);
 		result = (AssociationPostTagResult)cmdexec.executeCommand();
 		assertTrue("Remove Command says that it failed. ", result.isPassed());
 		
-		assertNotTagged(result.getAssociationPostTag().getPost().getPostId(),tag.getValue());
+		assertNotTagged(result.getPost().getPostId(),tag.getValue());
 		//String postId = result.getAssociationPostTag().getPost().getPostId();
 		
 //		Persistence.beginSession();
@@ -251,7 +251,7 @@ public class AssociationPostTagCommandTest{
 		verifyTagCreationMessageWasBroadcast();
 		
 		//Now remove it
-		cmd = createRemoveTagCommand(result.getMessage());
+		cmd = createRemoveTagCommand(result.getAssociationId());
 		cmd.setConnectionId(serverEventConnId);
 		cmdexec = CommandExecutorFactory.createExecutor(Helpers.personIdTrevis,cmd);
 		result = (AssociationPostTagResult)cmdexec.executeCommand();
@@ -282,7 +282,7 @@ public class AssociationPostTagCommandTest{
 		result = (AssociationPostTagResult)cmdexec.executeCommand();
 		assertTrue("Remove Command says that it failed. ", result.isPassed());
 		
-		assertNotTaggedWithId(result.getAssociationPostTag().getPost().getPostId(),tag.getTagId());
+		assertNotTaggedWithId(result.getPost().getPostId(),tag.getTagId());
 		
 	}
 	
