@@ -124,11 +124,11 @@ public class MovieRatingPresenter extends BasePresenter<MovieRatingPresenter.Vie
 			else if(result.isRemove()){
 				//nothing to do
 				//Window.alert("Removed Rating"+post.getTitle()+" "+result.getAssociationPostTag().getTag().getValue());
-				PostEvent event = new PostEvent(PostEventType.EDIT,result.getAssociationPostTag().getPost());
+				PostEvent event = new PostEvent(PostEventType.EDIT,result.getPost());
 				EventBus.fireEvent(event);
 			}
 			else{
-				MessageEvent event = new MessageEvent(MessageEventType.SYSTEM_ERROR,result.getMessage());
+				MessageEvent event = new MessageEvent(MessageEventType.SYSTEM_ERROR,result.getAssociationId());
 				EventBus.fireEvent(event);
 			}
 		}
