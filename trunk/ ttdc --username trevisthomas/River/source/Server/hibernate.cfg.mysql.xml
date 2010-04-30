@@ -19,7 +19,7 @@
     <property name="hibernate.search.default.indexBase">/LuceneDatabaseIndexes/ttdc_v7_mar8_dbo</property>
     
     <property name="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</property>
-    <property name="hibernate.cache.use_second_level_cache">false</property>
+    <property name="hibernate.cache.use_second_level_cache">true</property>
     <property name="hibernate.cache.use_query_cache">true</property>
     
     

@@ -1,5 +1,6 @@
 package org.ttdc.gwt.client.presenters.home;
 
+import org.ttdc.gwt.client.messaging.ConnectionId;
 import org.ttdc.gwt.client.messaging.history.HistoryConstants;
 import org.ttdc.gwt.client.messaging.history.HistoryToken;
 import org.ttdc.gwt.client.uibinder.Demo;
@@ -10,6 +11,7 @@ import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabPanel;
@@ -71,7 +73,11 @@ public class Home2View implements Home2Presenter.View{
 	@Override
 	public void show() {
 		RootPanel.get("content").clear();
+		Label label = new Label(ConnectionId.getInstance().getCurrentUser().getLogin()+ "  " +ConnectionId.getInstance().getConnectionId());
+		RootPanel.get("content").add(label);
 		RootPanel.get("content").add(getWidget());
+		
+		
 	}
 	
 	@Override

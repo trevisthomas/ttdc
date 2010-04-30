@@ -15,6 +15,7 @@ import org.ttdc.gwt.shared.commands.results.PersonCommandResult;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.inject.Inject;
@@ -98,6 +99,7 @@ public class UserIdentityPresenter extends BasePresenter<UserIdentityPresenter.V
 				//This is how i notify others that the user has changed.
 				PersonEvent personEvent = new PersonEvent(PersonEventType.USER_CHANGED, person);
 				EventBus.fireEvent(personEvent);
+				Window.alert(ConnectionId.getInstance().getConnectionId());
 
 				init(person);
 			}

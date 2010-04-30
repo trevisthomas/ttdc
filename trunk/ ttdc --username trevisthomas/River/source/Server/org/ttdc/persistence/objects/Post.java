@@ -414,7 +414,7 @@ public class Post implements Comparable<Post>, HasGuid {
 	
 	@OneToMany(mappedBy="post", cascade={CascadeType.ALL})
 	//@Fetch(value=FetchMode.JOIN)
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    //@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     //@OrderBy(value="post.date asc")
     public List<AssociationPostTag> getTagAssociations() {
 		return tagAssociations;

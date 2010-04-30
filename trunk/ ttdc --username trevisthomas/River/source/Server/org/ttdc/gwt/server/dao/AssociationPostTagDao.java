@@ -26,6 +26,9 @@ final public class AssociationPostTagDao {
 	 * Disabled L2 cache to get this working for movie ratings. Worked fine in unit
 	 * tests but not from ap.  disabling cache made it work.  Tried session.refresh but that 
 	 * didnt work.  4/27/2010
+	 * 
+	 * 4/29/2010 re-enabled the damned cache.  I removed the cache stratagy from the post class
+	 * and now it seems to work
 	 */
 	public AssociationPostTag create(){
 		AssociationPostTag ass = new AssociationPostTag();
@@ -39,6 +42,7 @@ final public class AssociationPostTagDao {
 		increaseMass(tag);
 		session().save(ass);
 		session().flush();
+		session().refresh(post);
 		return ass;
 	}
 	
@@ -68,6 +72,9 @@ final public class AssociationPostTagDao {
 	 * Disabled L2 cache to get this working for movie ratings. Worked fine in unit
 	 * tests but not from ap.  disabling cache made it work.  Tried session.refresh but that 
 	 * didnt work.  4/27/2010
+	 * 
+	 * 4/29/2010 re-enabled the damned cache.  I removed the cache stratagy from the post class
+	 * and now it seems to work
 	 */
 	/**
 	 * REMEMBER you must call this with a fresh session and commit when you're done 
