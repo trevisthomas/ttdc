@@ -129,7 +129,19 @@
     maxElementsInMemory="10"
     eternal="false"
     timeToLiveSeconds="120"
-    overflowToDisk="false"/>	
+    overflowToDisk="false"/>
+    
+    <!-- 
+    <cache
+    	 name="org.ttdc.persistence.objects.AssociationPostTag"
+    maxElementsInMemory="0"
+    eternal="false"
+    timeToLiveSeconds="0"
+    timeToIdleSeconds="0"
+    overflowToDisk="false"
+    />
+     -->
+    	
 
     <!-- Place configuration for your caches following -->
    <!--  
