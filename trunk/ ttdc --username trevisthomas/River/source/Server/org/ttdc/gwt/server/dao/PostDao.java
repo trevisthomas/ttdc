@@ -72,9 +72,13 @@ final public class PostDao {
 		post.setTitleTag(titleTag);
 		post.setPublishYear(publishYear);
 		post.setUrl(url);
-		post.setMetaMask(metaMask);
+		
 		
 		if(parent != null){
+			if(parent.isPrivate()){
+				setPrivate();
+			}
+				
 			if(parent.isLegacyThreadHolder())
 				throw new RuntimeException("You can't reply to a legacy thread holder.");
 			
@@ -109,6 +113,8 @@ final public class PostDao {
 			session().save(parent.getRoot());
 			session().save(parent);
 		}
+		
+		post.setMetaMask(metaMask);
 		
 		session().save(post);
 		session().flush();

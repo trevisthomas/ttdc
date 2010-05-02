@@ -2,11 +2,9 @@
 <!-- The above doctype is to allow for special html characters in this xml file -->
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
-	<g:HTMLPanel>
+	<g:HTMLPanel styleName="tt-text-normal">
 		<g:Hyperlink ui:field="creatorLinkElement" /> <g:Widget ui:field="ratingElement" />
 		<span ui:field="summaryElement"/>	
 		<g:Hyperlink ui:field="postLinkElement" />
-		
-		
 	</g:HTMLPanel>
 </ui:UiBinder>
