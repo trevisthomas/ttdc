@@ -5,12 +5,16 @@ import org.ttdc.gwt.client.messaging.history.HistoryConstants;
 import org.ttdc.gwt.client.messaging.history.HistoryToken;
 import org.ttdc.gwt.client.uibinder.Demo;
 
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DisclosurePanel;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -32,8 +36,12 @@ public class Home2View implements Home2Presenter.View{
 	private final SimplePanel threadPanel = new SimplePanel();
 	private final SimplePanel searchPanel = new SimplePanel();
 	private final SimplePanel loginPanel = new SimplePanel();
-	private final DisclosurePanel commentPanel = new DisclosurePanel("Add Comment");
+	private final Button commentButton = new Button("Comment");
+	//private final DisclosurePanel commentPanel = new DisclosurePanel("Add Comment");
+	private final SimplePanel commentPanel = new SimplePanel();
 	private HistoryToken token = new HistoryToken();
+	private final HorizontalPanel searchAndReplyPanel = new HorizontalPanel();
+	private final SimplePanel siteUpdatePanel = new SimplePanel();
 	
 	private boolean fireHistoryEvent = true;
 	
@@ -41,12 +49,15 @@ public class Home2View implements Home2Presenter.View{
 		main.add(new Demo());
 		main.add(loginPanel);
 		main.add(messagePannel);
-		main.add(searchPanel);
+		main.add(siteUpdatePanel);
+		main.add(searchAndReplyPanel);
 		main.add(commentPanel);
 		main.add(bodyTable);
 		bodyTable.setWidget(0, 0, modulePanel);
 		bodyTable.setWidget(0, 1, centerTabPanel);
 		bodyTable.setWidget(0, 2, rightTabPanel);
+		searchAndReplyPanel.add(searchPanel);
+		searchAndReplyPanel.add(commentButton);
 		
 		centerTabPanel.add(nestedPanel, "Nested");
 		centerTabPanel.add(flatPanel, "Flat");
@@ -65,8 +76,6 @@ public class Home2View implements Home2Presenter.View{
 				updateHistoryToReflectCenterTabSelection(index);
 			}
 		});
-		
-		
 	}
 	
 	
@@ -76,8 +85,6 @@ public class Home2View implements Home2Presenter.View{
 		Label label = new Label(ConnectionId.getInstance().getCurrentUser().getLogin()+ "  " +ConnectionId.getInstance().getConnectionId());
 		RootPanel.get("content").add(label);
 		RootPanel.get("content").add(getWidget());
-		
-		
 	}
 	
 	@Override
@@ -85,6 +92,10 @@ public class Home2View implements Home2Presenter.View{
 		return main;
 	}
 	
+	@Override
+	public HasClickHandlers commentButton() {
+		return commentButton;
+	}
 
 	private void updateHistoryToReflectCenterTabSelection(int index) {
 		switch (index){
@@ -185,6 +196,11 @@ public class Home2View implements Home2Presenter.View{
 	@Override
 	public HasWidgets commentPanel() {
 		return commentPanel;
+	}
+
+	@Override
+	public HasWidgets siteUpdatePanel() {
+		return siteUpdatePanel;
 	}
 	
 }

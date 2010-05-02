@@ -7,6 +7,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class ServerEventListCommand extends Command<ServerEventCommandResult> implements IsSerializable{
 	private String connectionId;
+	
 	public ServerEventListCommand() {}
 	
 	public ServerEventListCommand(String connectionId) {

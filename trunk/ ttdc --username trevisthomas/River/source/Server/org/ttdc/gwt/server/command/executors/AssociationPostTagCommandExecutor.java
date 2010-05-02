@@ -22,6 +22,7 @@ import org.ttdc.persistence.Persistence;
 import org.ttdc.persistence.objects.AssociationPostTag;
 import org.ttdc.persistence.objects.Post;
 import org.ttdc.persistence.objects.Tag;
+import org.ttdc.util.RatingUtility;
 
 public class AssociationPostTagCommandExecutor extends CommandExecutor<AssociationPostTagResult>{
 	@Override
@@ -61,6 +62,9 @@ public class AssociationPostTagCommandExecutor extends CommandExecutor<Associati
 		dao.setCreator(getPerson());
 		
 		AssociationPostTag ass = dao.create();
+		if(Tag.TYPE_RATING.equals(tag.getType())){
+			RatingUtility.updateAverageRating(post);
+		}
 		//GAssociationPostTag gAss = GenericBeanConverter.convertAssociationPostTag(ass);
 		GAssociationPostTag gAss = FastPostBeanConverter.convertAssociationPostTagWithPost(ass);
 		result = new AssociationPostTagResult(AssociationPostTagResult.Status.CREATE);
@@ -69,6 +73,8 @@ public class AssociationPostTagCommandExecutor extends CommandExecutor<Associati
 		
 		broadcastPostEvent(post, PostEventType.EDIT);
 		broadcastTagAssociation(ass, TagEventType.NEW);
+		
+		
 		
 		Persistence.commit();
 		return result;
@@ -80,10 +86,14 @@ public class AssociationPostTagCommandExecutor extends CommandExecutor<Associati
 		
 		AssociationPostTag ass = AssociationPostTagDao.load(command.getAssociationId());
 		Post post = ass.getPost();
+		
+		boolean isRatingTagAss = ass.getTag().getType().equals(Tag.TYPE_RATING);
 		//GAssociationPostTag gAss = FastPostBeanConverter.convertAssociationPostTagWithPost(ass);
 		
 		AssociationPostTagDao.remove(command.getAssociationId());
-		
+		if(isRatingTagAss){
+			RatingUtility.updateAverageRating(post);
+		}
 		result = new AssociationPostTagResult(AssociationPostTagResult.Status.REMOVE);
 		result.setAssociationId(ass.getGuid());
 		//result.setAssociationPostTag(gAss);

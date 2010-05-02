@@ -32,14 +32,18 @@ public class ConversationPresenter extends BasePresenter<ConversationPresenter.V
 		view.postPanel().add(injector.getWaitPresenter().getWidget());
 		postCollection = injector.getPostCollectionPresenter();
 		if(resultCache == null){
-			LatestPostsCommand cmd = new LatestPostsCommand();
-			cmd.setAction(PostListType.LATEST_CONVERSATIONS);
-			CommandResultCallback<PaginatedListCommandResult<GPost>> callback = buildCallback();
-			getService().execute(cmd, callback);
+			refresh();
 		}
 		else{
 			showResult(resultCache);
 		}
+	}
+	
+	public void refresh() {
+		LatestPostsCommand cmd = new LatestPostsCommand();
+		cmd.setAction(PostListType.LATEST_CONVERSATIONS);
+		CommandResultCallback<PaginatedListCommandResult<GPost>> callback = buildCallback();
+		getService().execute(cmd, callback);
 	}
 
 	private CommandResultCallback<PaginatedListCommandResult<GPost>> buildCallback() {
@@ -58,4 +62,6 @@ public class ConversationPresenter extends BasePresenter<ConversationPresenter.V
 		view.postPanel().clear();
 		view.postPanel().add(postCollection.getWidget());
 	}
+
+	
 }

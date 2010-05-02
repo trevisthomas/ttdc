@@ -21,7 +21,7 @@ public class FlatPresenter extends BasePresenter<FlatPresenter.View>{
 	}
 	
 	private PostCollectionPresenter postCollection;
-	private static PaginatedListCommandResult<GPost> resultCache;
+	private static PaginatedListCommandResult<GPost> resultCache = null;
 	
 	@Inject
 	public FlatPresenter(Injector injector){
@@ -32,14 +32,18 @@ public class FlatPresenter extends BasePresenter<FlatPresenter.View>{
 		view.postPanel().add(injector.getWaitPresenter().getWidget());
 		postCollection = injector.getPostCollectionPresenter();
 		if(resultCache == null){
-			LatestPostsCommand cmd = new LatestPostsCommand();
-			cmd.setAction(PostListType.LATEST_FLAT);
-			CommandResultCallback<PaginatedListCommandResult<GPost>> callback = buildCallback();
-			getService().execute(cmd, callback);
+			refresh();
 		}
 		else{
 			showResult(resultCache);
 		}
+	}
+	
+	public void refresh(){
+		LatestPostsCommand cmd = new LatestPostsCommand();
+		cmd.setAction(PostListType.LATEST_FLAT);
+		CommandResultCallback<PaginatedListCommandResult<GPost>> callback = buildCallback();
+		getService().execute(cmd, callback);	
 	}
 
 	private CommandResultCallback<PaginatedListCommandResult<GPost>> buildCallback() {

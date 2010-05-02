@@ -15,6 +15,8 @@ import org.ttdc.gwt.client.messaging.ConnectionId;
 import org.ttdc.gwt.client.messaging.EventBus;
 import org.ttdc.gwt.client.messaging.person.PersonEvent;
 import org.ttdc.gwt.client.messaging.person.PersonEventListener;
+import org.ttdc.gwt.client.messaging.post.PostEvent;
+import org.ttdc.gwt.client.messaging.post.PostEventType;
 import org.ttdc.gwt.client.presenters.movies.MovieRatingPresenter;
 import org.ttdc.gwt.client.presenters.post.PostPresenter;
 import org.ttdc.gwt.client.presenters.shared.BasePresenter;
@@ -68,7 +70,7 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 		HasClickHandlers addTagClickHandler();
 		HasWidgets tagsPanel();
 		HasWidgets tagSelectorPanel();
-		
+		void close();
 	}
 	
 	private GPost parentPost = null;
@@ -265,7 +267,11 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 		CommandResultCallback<PostCommandResult> callback = new CommandResultCallback<PostCommandResult>(){
 			@Override
 			public void onSuccess(PostCommandResult result) {
-				Window.alert("Created");
+				//Window.alert("Created");
+				view.close();
+				//Window.Location.reload();
+				PostEvent event = new PostEvent(PostEventType.NEW_FORCE_REFRESH, result.getPost());
+				EventBus.fireEvent(event);
 			}
 			@Override
 			public void onFailure(Throwable caught) {

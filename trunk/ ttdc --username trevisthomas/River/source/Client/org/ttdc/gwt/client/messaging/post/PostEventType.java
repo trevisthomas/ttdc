@@ -4,6 +4,7 @@ public enum PostEventType {
 	NEW,
 	EDIT,
 	DELETE,
+	NEW_FORCE_REFRESH,
 	EXPAND_CONTRACT;
 	
 	public boolean isNew(){

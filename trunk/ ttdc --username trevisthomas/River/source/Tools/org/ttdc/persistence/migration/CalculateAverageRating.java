@@ -5,7 +5,6 @@ import static org.ttdc.persistence.Persistence.commit;
 import static org.ttdc.persistence.Persistence.rollback;
 import static org.ttdc.persistence.Persistence.session;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,7 +13,7 @@ import org.hibernate.Session;
 import org.ttdc.gwt.server.dao.TagDao;
 import org.ttdc.persistence.objects.AssociationPostTag;
 import org.ttdc.persistence.objects.Post;
-import org.ttdc.persistence.objects.Tag;
+import org.ttdc.util.RatingUtility;
 
 public class CalculateAverageRating {
 	private final static Logger log = Logger.getLogger(TagDao.class);
@@ -32,29 +31,7 @@ public class CalculateAverageRating {
 			List<Post> posts = session().createQuery("Select p FROM Post p WHERE bitwise_and(metaMask , 16) = 16").list();
 			
 			for(Post post : posts){
-				List<AssociationPostTag> ratingAsses = post.getRatingAssociations();
-				
-				List<Tag> ratings = new ArrayList<Tag>();
-				for(AssociationPostTag ass : ratingAsses){
-					ratings.add(ass.getTag());
-				}
-				String avgRating;
-				try {
-					avgRating = org.ttdc.util.CalculateAverageRating.determineAverageRating(ratings);
-				} catch (Exception e) {
-					avgRating = Tag.VALUE_RATING_0;
-				}
-				
-				TagDao tagDao = new TagDao();
-				tagDao.setDescription("");
-				tagDao.setType(Tag.TYPE_AVERAGE_RATING);
-				tagDao.setValue(avgRating);
-				Tag t = tagDao.createOrLoad();
-				
-				post.setAvgRatingTag(t);
-				
-				session().flush();
-				
+				RatingUtility.updateAverageRating(post);
 			}
 			commit();
 
@@ -68,6 +45,8 @@ public class CalculateAverageRating {
 		}
 		
 	}
+
+	
 	
 	Date start;
 	Date end;

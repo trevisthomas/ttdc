@@ -12,7 +12,12 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.beans.GTag;
+import org.ttdc.gwt.client.messaging.person.PersonEvent;
+import org.ttdc.gwt.client.messaging.person.PersonEventType;
+import org.ttdc.gwt.client.messaging.post.PostEvent;
+import org.ttdc.gwt.client.messaging.post.PostEventType;
 import org.ttdc.gwt.client.services.CommandResult;
+import org.ttdc.gwt.server.activity.ServerEventBroadcaster;
 import org.ttdc.gwt.server.beanconverters.FastPostBeanConverter;
 import org.ttdc.gwt.server.command.CommandExecutor;
 import org.ttdc.gwt.server.dao.AccountDao;
@@ -37,17 +42,19 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 	
 	@Override
 	protected CommandResult execute() {
+		boolean broadcastNewPost = false;
 		PostCrudCommand cmd = (PostCrudCommand)getCommand();
 		Post post = null;
 		try{
 			beginSession();
 			switch(cmd.getAction()){
-			case DELETE:
-				break;
-			case UPDATE:
-				break;
+//			case DELETE:
+//				break;
+//			case UPDATE:
+//				break;
 			case CREATE:
 				post = create(cmd);
+				broadcastNewPost = true;
 				break;
 			case READ:
 				post = read(cmd);
@@ -63,6 +70,11 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 			if(post!= null){
 				GPost gPost = FastPostBeanConverter.convertPost(post); 
 				result = new PostCommandResult(gPost);
+				
+				if(broadcastNewPost){
+					PostEvent event = new PostEvent(PostEventType.NEW,gPost);
+					ServerEventBroadcaster.getInstance().broadcastEvent(event,getCommand().getConnectionId());
+				}
 			}
 			
 			commit();

@@ -89,7 +89,7 @@ public class MovieRatingPresenter extends BasePresenter<MovieRatingPresenter.Vie
 		
 		cmd.setConnectionId(ConnectionId.getInstance().getConnectionId());
 		service.execute(cmd, new PostRatingCallback(post));
-		
+		getWidget().removeFromParent();
 	}
 
 	private AsyncCallback<AssociationPostTagResult> createRatingCallback() {
@@ -115,15 +115,10 @@ public class MovieRatingPresenter extends BasePresenter<MovieRatingPresenter.Vie
 		@Override
 		public void onSuccess(AssociationPostTagResult result) {
 			if(result.isCreate()){
-				//addTagAssociationToList(result.getAssociationPostTag());
-				//Window.alert("Rated"+post.getTitle()+" "+result.getAssociationPostTag().getTag().getValue());
-				
 				PostEvent event = new PostEvent(PostEventType.EDIT,result.getAssociationPostTag().getPost());
 				EventBus.fireEvent(event);
 			}
 			else if(result.isRemove()){
-				//nothing to do
-				//Window.alert("Removed Rating"+post.getTitle()+" "+result.getAssociationPostTag().getTag().getValue());
 				PostEvent event = new PostEvent(PostEventType.EDIT,result.getPost());
 				EventBus.fireEvent(event);
 			}
@@ -131,6 +126,7 @@ public class MovieRatingPresenter extends BasePresenter<MovieRatingPresenter.Vie
 				MessageEvent event = new MessageEvent(MessageEventType.SYSTEM_ERROR,result.getAssociationId());
 				EventBus.fireEvent(event);
 			}
+			
 		}
 	}
 }
