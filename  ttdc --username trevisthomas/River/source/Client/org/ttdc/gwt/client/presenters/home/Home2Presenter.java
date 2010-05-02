@@ -1,18 +1,26 @@
 package org.ttdc.gwt.client.presenters.home;
 
 import org.ttdc.gwt.client.Injector;
+import org.ttdc.gwt.client.messaging.EventBus;
 import org.ttdc.gwt.client.messaging.history.HistoryConstants;
 import org.ttdc.gwt.client.messaging.history.HistoryToken;
+import org.ttdc.gwt.client.messaging.post.PostEvent;
+import org.ttdc.gwt.client.messaging.post.PostEventListener;
+import org.ttdc.gwt.client.messaging.post.PostEventType;
 import org.ttdc.gwt.client.presenters.comments.NewCommentPresenter;
 import org.ttdc.gwt.client.presenters.search.SearchBoxPresenter;
 import org.ttdc.gwt.client.presenters.shared.BasePagePresenter;
 import org.ttdc.gwt.client.presenters.shared.BasePageView;
 import org.ttdc.gwt.client.presenters.util.PresenterHelpers;
+import org.ttdc.gwt.client.uibinder.SiteUpdatePanel;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.inject.Inject;
 
-public class Home2Presenter extends BasePagePresenter<Home2Presenter.View>{
+public class Home2Presenter extends BasePagePresenter<Home2Presenter.View> implements PostEventListener{
 	public interface View extends BasePageView{
 		HasWidgets nestedPanel();
 		HasWidgets flatPanel();
@@ -22,10 +30,16 @@ public class Home2Presenter extends BasePagePresenter<Home2Presenter.View>{
 		HasWidgets searhcPanel();
 		HasWidgets loginPanel();
 		HasWidgets commentPanel();
+		HasClickHandlers commentButton();
+		HasWidgets siteUpdatePanel();
 		
 		void displayTab(TabType tabs);
 	} 
 	
+	private FlatPresenter flatPresenter = null;
+	private NestedPresenter nestedPresenter = null;
+	private ThreadPresenter threadPresenter = null;
+	private ConversationPresenter conversationPresenter = null;
 	
 	
 	@Inject
@@ -39,8 +53,26 @@ public class Home2Presenter extends BasePagePresenter<Home2Presenter.View>{
 		view.modulePanel().add(injector.getTrafficPresenter().getWidget());
 		view.loginPanel().add(injector.getUserIdentityPresenter().getWidget());
 		
+		view.commentButton().addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				showCommentEditor();
+			}
+		});
+		
+		SiteUpdatePanel siteUpdatePanel = injector.createSiteUpdatePanel();
+		view.siteUpdatePanel().add(siteUpdatePanel);
+		
+		EventBus.getInstance().addListener(this);
 	}
 
+	private void showCommentEditor() {
+		view.commentPanel().clear();
+		NewCommentPresenter commentPresneter = injector.getNewCommentPresenter();
+		commentPresneter.init();
+		view.commentPanel().add(commentPresneter.getWidget());
+		
+	}
 	@Override
 	public void show(HistoryToken token) {
 		SearchBoxPresenter searchBoxPresenter = injector.getSearchBoxPresenter();
@@ -48,44 +80,27 @@ public class Home2Presenter extends BasePagePresenter<Home2Presenter.View>{
 		view.searhcPanel().clear();
 		view.searhcPanel().add(searchBoxPresenter.getWidget());
 		view.commentPanel().clear();
-		NewCommentPresenter commentPresneter = injector.getNewCommentPresenter();
-		commentPresneter.init();
-		view.commentPanel().add(commentPresneter.getWidget());
 		view.show();
 		
 		initializeTabs(token);
-		
-		
+	}
+	
+
+	@Override
+	public void onPostEvent(PostEvent postEvent) {
+		if(postEvent.is(PostEventType.NEW_FORCE_REFRESH)){
+			if(threadPresenter != null)
+				threadPresenter.refresh();	
+			if(nestedPresenter != null)
+				nestedPresenter.refresh();
+			if(conversationPresenter != null)
+				conversationPresenter.refresh();
+			if(flatPresenter != null)
+				flatPresenter.refresh();
+			
+		}
 	}
 
-//	private void initializeTabs(HistoryToken token) {
-//		String tab = token.getParameter(HistoryConstants.TAB_KEY);
-//		String tab2 = token.getParameter(HistoryConstants.TAB2_KEY);
-//				
-//		if(HistoryConstants.HOME_FLAT_TAB.equals(tab)){
-//			tabs[0] = TabType.FLAT; 
-//			buildFlatTab();
-//		}
-//		else{ // if(HistoryConstants.HOME_NESTED_TAB.equals(tab)){
-//			tabs[0] = TabType.NESTED;
-//			buildNestedTab();
-//		}
-//		
-//		
-//		if(HistoryConstants.HOME_THREAD_TAB.equals(tab2)){
-//			tabs[1] = TabType.THREAD;
-//			buildThreadTab();
-//		}
-//		else{ // if(HistoryConstants.HOME_NESTED_TAB.equals(tab)){
-//			tabs[1] = TabType.CONVERSATION;
-//			buildConversationTab();
-//		}
-//		
-//		view.displayTabs(tabs);
-//
-//	}
-	
-	
 	private void initializeTabs(HistoryToken token) {
 		String tab = token.getParameter(HistoryConstants.TAB_KEY);
 		TabType selected;
@@ -110,37 +125,34 @@ public class Home2Presenter extends BasePagePresenter<Home2Presenter.View>{
 	}
 
 	private void buildNestedTab() {
-//		view.nestedPanel().clear();
-//		view.nestedPanel().clear();
-//		view.nestedPanel().clear();
 		if(PresenterHelpers.isWidgetEmpty(view.nestedPanel())){
-			NestedPresenter presenter = injector.getNestedPresenter();
-			presenter.init();
-			view.nestedPanel().add(presenter.getWidget());
+			nestedPresenter = injector.getNestedPresenter();
+			nestedPresenter.init();
+			view.nestedPanel().add(nestedPresenter.getWidget());
 		}
 	}
 
 	private void buildThreadTab() {
 		if(PresenterHelpers.isWidgetEmpty(view.threadPanel())){
-			ThreadPresenter presenter = injector.getThreadPresenter();
-			presenter.init();
-			view.threadPanel().add(presenter.getWidget());
+			threadPresenter = injector.getThreadPresenter();
+			threadPresenter.init();
+			view.threadPanel().add(threadPresenter.getWidget());
 		}
 	}
 
 	private void buildConversationTab() {
 		if(PresenterHelpers.isWidgetEmpty(view.conversationPanel())){
-			ConversationPresenter presenter = injector.getConversationPresenter();
-			presenter.init();
-			view.conversationPanel().add(presenter.getWidget());
+			conversationPresenter = injector.getConversationPresenter();
+			conversationPresenter.init();
+			view.conversationPanel().add(conversationPresenter.getWidget());
 		}
 	}
-
+	
 	private void buildFlatTab() {
 		if(PresenterHelpers.isWidgetEmpty(view.flatPanel())){
-			FlatPresenter presenter = injector.getFlatPresenter();
-			presenter.init();
-			view.flatPanel().add(presenter.getWidget());
+			flatPresenter = injector.getFlatPresenter();
+			flatPresenter.init();
+			view.flatPanel().add(flatPresenter.getWidget());
 		}
 	}
 }

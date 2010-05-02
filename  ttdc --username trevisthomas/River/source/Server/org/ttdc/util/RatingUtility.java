@@ -1,10 +1,41 @@
 package org.ttdc.util;
 
+import static org.ttdc.persistence.Persistence.session;
+
+import java.util.ArrayList;
 import java.util.List;
 
+import org.ttdc.gwt.server.dao.TagDao;
+import org.ttdc.persistence.objects.AssociationPostTag;
+import org.ttdc.persistence.objects.Post;
 import org.ttdc.persistence.objects.Tag;
 
-public class CalculateAverageRating {
+public class RatingUtility {
+	
+	public static void updateAverageRating(Post post) {
+		List<AssociationPostTag> ratingAsses = post.getRatingAssociations();
+		
+		List<Tag> ratings = new ArrayList<Tag>();
+		for(AssociationPostTag ass : ratingAsses){
+			ratings.add(ass.getTag());
+		}
+		String avgRating;
+		try {
+			avgRating = org.ttdc.util.RatingUtility.determineAverageRating(ratings);
+		} catch (Exception e) {
+			avgRating = Tag.VALUE_RATING_0;
+		}
+		
+		TagDao tagDao = new TagDao();
+		tagDao.setDescription("");
+		tagDao.setType(Tag.TYPE_AVERAGE_RATING);
+		tagDao.setValue(avgRating);
+		Tag t = tagDao.createOrLoad();
+		
+		post.setAvgRatingTag(t);
+		
+		session().flush();
+	}
 	
 	/**
 	 * Rips through a list of tags and calculates the average rating

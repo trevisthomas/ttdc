@@ -32,16 +32,20 @@ public class ThreadPresenter extends BasePresenter<ThreadPresenter.View>{
 		postCollection = injector.getPostCollectionPresenter();
 		view.postPanel().add(injector.getWaitPresenter().getWidget());
 		if(resultCache == null){
-			LatestPostsCommand cmd = new LatestPostsCommand();
-			cmd.setAction(PostListType.LATEST_THREADS);
-			CommandResultCallback<PaginatedListCommandResult<GPost>> callback = buildCallback();
-			getService().execute(cmd, callback);
+			refresh();
 		}
 		else{
 			showResult(resultCache);
 		}
 	}
 
+	public void refresh(){
+		LatestPostsCommand cmd = new LatestPostsCommand();
+		cmd.setAction(PostListType.LATEST_THREADS);
+		CommandResultCallback<PaginatedListCommandResult<GPost>> callback = buildCallback();
+		getService().execute(cmd, callback);
+	}
+	
 	private CommandResultCallback<PaginatedListCommandResult<GPost>> buildCallback() {
 		CommandResultCallback<PaginatedListCommandResult<GPost>> callback = new CommandResultCallback<PaginatedListCommandResult<GPost>>(){
 			public void onSuccess(PaginatedListCommandResult<GPost> result) {

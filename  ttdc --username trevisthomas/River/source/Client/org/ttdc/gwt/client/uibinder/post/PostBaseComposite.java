@@ -4,24 +4,16 @@ import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GAssociationPostTag;
 import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.beans.GPost;
-import org.ttdc.gwt.client.beans.GTag;
 import org.ttdc.gwt.client.messaging.ConnectionId;
-import org.ttdc.gwt.client.messaging.EventBus;
-import org.ttdc.gwt.client.messaging.error.MessageEvent;
-import org.ttdc.gwt.client.messaging.error.MessageEventType;
 import org.ttdc.gwt.client.presenters.comments.NewCommentPresenter;
 import org.ttdc.gwt.client.presenters.movies.MovieRatingPresenter;
-import org.ttdc.gwt.client.presenters.movies.MovieRatingPresenter.PostRatingCallback;
 import org.ttdc.gwt.client.services.RpcServiceAsync;
 import org.ttdc.gwt.shared.commands.AssociationPostTagCommand;
-import org.ttdc.gwt.shared.commands.CommandResultCallback;
 import org.ttdc.gwt.shared.commands.AssociationPostTagCommand.Mode;
-import org.ttdc.gwt.shared.commands.results.AssociationPostTagResult;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
@@ -123,5 +115,6 @@ abstract public class PostBaseComposite extends Composite{
 		Widget source = (Widget) event.getSource();
 		initializeOptionsPopup(post,source);
         //optionsPanel.showRelativeTo(source);
+		injector.createSiteUpdatePanel();
 	}
 }

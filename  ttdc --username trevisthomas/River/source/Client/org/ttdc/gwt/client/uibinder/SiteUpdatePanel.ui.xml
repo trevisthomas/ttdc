@@ -1,0 +1,10 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<!-- The above doctype is to allow for special html characters in this xml file -->
+
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+    xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+	 <g:HTMLPanel>
+	 	<g:Label styleName="tt-site-update tt-cursor-pointer tt-text-normal-bold" ui:field="siteRefresh" ></g:Label>
+	 </g:HTMLPanel>
+</ui:UiBinder>

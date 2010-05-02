@@ -53,7 +53,7 @@ import org.ttdc.persistence.util.FilterFactoryForType;
 import org.ttdc.persistence.util.FilterFactoryForRootId;
 import org.ttdc.persistence.util.FilterFactoryForThreadId;
 import org.ttdc.persistence.util.FilterFactoryForTokenizedTagIds;
-import org.ttdc.util.CalculateAverageRating;
+import org.ttdc.util.RatingUtility;
 
 @Table(name="POST")
 @Indexed
@@ -674,7 +674,7 @@ public class Post implements Comparable<Post>, HasGuid {
 //	public String getAverageRating(){
 //		List<Tag> ratings = loadTags(Tag.TYPE_RATING);
 //		try {
-//			return CalculateAverageRating.determineAverageRating(ratings);
+//			return RatingUtility.determineAverageRating(ratings);
 //		} catch (Exception e) {
 //			return Tag.VALUE_RATING_0;
 //		}
@@ -684,7 +684,7 @@ public class Post implements Comparable<Post>, HasGuid {
 //		String value;
 //		List<Tag> ratings = loadTags(Tag.TYPE_RATING);
 //		try {
-//			value = CalculateAverageRating.determineMedianRating(ratings);
+//			value = RatingUtility.determineMedianRating(ratings);
 //		} catch (Exception e) {
 //			value = Tag.VALUE_RATING_0;
 //		}

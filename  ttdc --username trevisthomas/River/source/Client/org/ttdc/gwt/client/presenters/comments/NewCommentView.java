@@ -40,6 +40,7 @@ public class NewCommentView implements NewCommentPresenter.View{
 	private final SimplePanel tagSelectorPanel = new SimplePanel();
 	private final Button addTagButton = new Button("Add");
 	private final SimplePanel ratingPanel = new SimplePanel();
+	private final Button cancelButton = new Button("Cancel");
 	
 	private final FlowPanel checkboxPanel = new FlowPanel();
 	
@@ -57,6 +58,7 @@ public class NewCommentView implements NewCommentPresenter.View{
 		main.add(checkboxPanel);
 		controlPanel.add(addCommentButton);
 		controlPanel.add(previewButton);
+		controlPanel.add(cancelButton);
 		main.add(controlPanel);
 		
 		checkboxPanel.add(infCheckbox);
@@ -85,6 +87,13 @@ public class NewCommentView implements NewCommentPresenter.View{
 		});
 		
 		main.setStyleName("tt-comment-editor");
+		
+		cancelButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				close();
+			}
+		});
 	}
 	
 	
@@ -218,6 +227,12 @@ public class NewCommentView implements NewCommentPresenter.View{
 	@Override
 	public HasWidgets ratingPanel() {
 		return ratingPanel;
+	}
+	
+	@Override
+	public void close() {
+		main.clear();
+		main.setVisible(false);
 	}
 	
 }

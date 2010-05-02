@@ -49,6 +49,13 @@ public class ServerEventMonitor extends Timer implements PersonEventListener{
 			}
 			public void onSuccess(ServerEventCommandResult result) {
 				fireEvents(result.getEvents());
+				
+				//Check to see if the the server session user id changed. if it did, refresh this browser!
+				if(result.getPerson() != null && ConnectionId.getInstance().getCurrentUser() != null){
+					if(!ConnectionId.getInstance().getCurrentUser().getPersonId().equals(result.getPerson().getPersonId())){
+						Window.Location.reload();
+					}
+				}
 			}
 		});
 	}

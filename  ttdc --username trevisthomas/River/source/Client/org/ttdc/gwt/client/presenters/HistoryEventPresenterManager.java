@@ -35,6 +35,8 @@ public class HistoryEventPresenterManager implements HistoryEventListener{
 		new ServerEventMonitor();
 	}
 	
+	
+		
 	public void onHistoryEvent(HistoryEvent event) {
 		SearchBoxView.viewChangeNotification();//TODO: Use the event buss fool!
 		

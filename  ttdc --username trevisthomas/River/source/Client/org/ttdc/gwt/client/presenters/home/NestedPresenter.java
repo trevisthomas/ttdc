@@ -33,14 +33,18 @@ public class NestedPresenter extends BasePresenter<NestedPresenter.View>{
 		postCollection = injector.getPostCollectionPresenter();
 		
 		if(resultCache == null){
-			LatestPostsCommand cmd = new LatestPostsCommand();
-			cmd.setAction(PostListType.LATEST_NESTED);
-			CommandResultCallback<PaginatedListCommandResult<GPost>> callback = buildCallback();
-			getService().execute(cmd, callback);
+			refresh();
 		}
 		else{
 			addResults(resultCache);
 		}
+	}
+	
+	public void refresh() {
+		LatestPostsCommand cmd = new LatestPostsCommand();
+		cmd.setAction(PostListType.LATEST_NESTED);
+		CommandResultCallback<PaginatedListCommandResult<GPost>> callback = buildCallback();
+		getService().execute(cmd, callback);
 	}
 
 	private CommandResultCallback<PaginatedListCommandResult<GPost>> buildCallback() {
@@ -59,4 +63,6 @@ public class NestedPresenter extends BasePresenter<NestedPresenter.View>{
 		view.postPanel().clear();
 		view.postPanel().add(postCollection.getWidget());
 	}
+
+	
 }
