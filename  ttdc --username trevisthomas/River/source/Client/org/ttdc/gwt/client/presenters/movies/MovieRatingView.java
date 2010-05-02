@@ -13,13 +13,15 @@ import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class MovieRatingView implements MovieRatingPresenter.View{
-	private final HorizontalPanel main = new HorizontalPanel();
+	//private final HorizontalPanel main = new HorizontalPanel();
+	private final FlowPanel main = new FlowPanel();
 	private final Label temp = new Label();
 	private final String CSS_STAR_RIGHT_PREFIX  = "tt-star-right-";
 	private final String CSS_STAR_LEFT_PREFIX  = "tt-star-left-";

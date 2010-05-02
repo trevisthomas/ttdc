@@ -22,6 +22,7 @@ import org.ttdc.gwt.server.dao.PostDao;
 
 import org.ttdc.gwt.shared.commands.PostCrudCommand;
 import org.ttdc.gwt.shared.commands.types.PostActionType;
+import org.ttdc.gwt.shared.util.PostFlagBitmasks;
 import org.ttdc.persistence.Persistence;
 import org.ttdc.persistence.objects.AssociationPostTag;
 import org.ttdc.persistence.objects.Post;
@@ -762,5 +763,67 @@ public class PostCrudCommandExecutorTest {
 		}
 	}
 	
-	
+	@Test
+	public void createAReplyToAPrivatePostTest()
+	{
+		try{
+			
+			final PostCrudCommand cmd = UniqueCrudPostCommandObjectMother.createNewReply();
+			final String parentPostId = "8338F5B5-112D-4E21-81B0-A510A963F3EC"; // A private post
+			cmd.setAction(PostActionType.CREATE);
+			cmd.setParentId(parentPostId);
+			PostCrudCommandExecutor cmdexec = (PostCrudCommandExecutor)CommandExecutorFactory.createExecutor(Helpers.personIdTrevis,cmd);
+			//cmdexec.execute();
+			
+			beginSession();
+			Post parent = PostDao.loadPost(parentPostId);
+			
+			assertTrue("Precondition not satisfyied. This test requires that the parent post is private.",parent.isPrivate());
+			
+			
+			Post root = PostDao.loadPost(parent.getRoot().getPostId());
+			Post thread = PostDao.loadPost(parent.getThread().getPostId());
+			
+			//Remember, all posts have a reply count but only threads and roots have mass.
+			int originalParentReplyCount = parent.getReplyCount();
+			int originalRootMass = root.getMass();
+			int originalThreadMass = thread.getMass();
+			Post post = cmdexec.create(cmd);
+			
+			assertNotNull("Reply Post has no parent",post.getParent());
+			assertEquals("Post parent is oh so wrong",parentPostId,post.getParent().getPostId());
+			assertEquals("Post does not have the same root as it's parent. This is wrong.",post.getParent().getRoot().getPostId(), post.getRoot().getPostId());
+			assertNotNull("Thread_guid (conversationId) is null.  That only happens for root posts",post.getThread());
+			assertEquals("Post must be in the same conversation as it's parent, i sense a bug.",parent.getThread(),post.getThread());
+			Helpers.assertPostCreatedWithBody(post, cmd.getBody());
+			Helpers.assertPostCreatedWithProperPath(post);
+			
+			assertEquals("Post is not in the same thread as it's parent",parent.getThread().getPostId(),post.getThread().getPostId());
+			assertNotNull("Creator is null on the post object",post.getCreator());
+			assertEquals(Helpers.personIdTrevis,post.getCreator().getPersonId());
+			
+			assertEquals("Parent reply count didn't increment. ",originalParentReplyCount+1,post.getParent().getReplyCount());
+			assertEquals("Mass on the root post didn't increment. ",originalRootMass+1,post.getRoot().getMass());
+			assertEquals("Mass on the thread didn't increment. ",originalThreadMass+1,post.getThread().getMass());
+
+			assertEquals("Thread Reply Date isnt set properly", post.getDate(), post.getThread().getThreadReplyDate());
+			
+			assertTrue("Parent was private, reply should also be private",post.isPrivate());
+			
+			
+//			Helpers.assertPostDateTagsCorrect(post);
+						
+			
+			//commit();
+		}
+		catch(Exception e){
+			rollback();
+			fail(e.getMessage());
+		}	
+		finally{
+			rollback();
+		}
+
+	}
+
 }

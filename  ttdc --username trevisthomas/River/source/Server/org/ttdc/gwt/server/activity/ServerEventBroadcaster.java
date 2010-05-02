@@ -82,6 +82,8 @@ public class ServerEventBroadcaster {
 	Set<String> getActiveConnectionIdSet(){
 		return userQueues.keySet();
 	}
+	
+	
 	ServerEventQueue getQueueForConnectionId(String connectionId){
 		return userQueues.get(connectionId);
 	}

@@ -28,11 +28,11 @@
 						</td>
 						<td width="100%">
 							
-							<div width="100%" style="clear:both;" >
+							<div width="100%" style="clear:both;" class="tt-text-normal">
 								Average Rating: <g:Widget ui:field="averageRatingElement" />
 							</div>
 							
-							<div width="100%" style="clear:both;" >
+							<div width="100%" style="clear:both;" class="tt-text-normal">
 								Reviews:
 								<g:VerticalPanel ui:field="reviewsElement" />
 							</div>
