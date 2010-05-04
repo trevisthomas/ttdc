@@ -5,6 +5,7 @@
 	<g:HTMLPanel>
 		<g:VerticalPanel>
 			<g:Anchor ui:field="replyElement">Reply</g:Anchor>
+			<g:Anchor ui:field="editElement">Edit</g:Anchor>
 			<g:Anchor ui:field="likeElement">Like</g:Anchor>
 			<g:Anchor ui:field="ratingElement">rate</g:Anchor>
 			<g:Anchor ui:field="unRateElement">un-rate</g:Anchor>
