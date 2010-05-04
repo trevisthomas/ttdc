@@ -65,6 +65,15 @@ abstract public class PostBaseComposite extends Composite{
 				processRemoveRatingRequest();
 			}
 		});
+		
+		optionsPanel.addEditClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				showEditCommentEditor();
+			}
+
+			
+		});
 	}
 	
 	public void processRemoveRatingRequest() {
@@ -105,7 +114,14 @@ abstract public class PostBaseComposite extends Composite{
 	
 	private void showNewCommentEditor() {
 		NewCommentPresenter commentPresneter = injector.getNewCommentPresenter();
-		commentPresneter.init(post);
+		commentPresneter.init(NewCommentPresenter.Mode.CREATE, post);
+		commentElement.clear();
+		commentElement.add(commentPresneter.getWidget());
+	}
+	
+	private void showEditCommentEditor() {
+		NewCommentPresenter commentPresneter = injector.getNewCommentPresenter();
+		commentPresneter.init(NewCommentPresenter.Mode.EDIT, post);
 		commentElement.clear();
 		commentElement.add(commentPresneter.getWidget());
 	}

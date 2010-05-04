@@ -27,6 +27,8 @@ final public class PostDao {
 	private String url;
 	private Integer publishYear;
 	private long metaMask = 0;
+	private String postId;
+	
 	
 	public PostDao(){}
 
@@ -63,6 +65,16 @@ final public class PostDao {
 		session().save(entry);
 		session().flush();
 		return entry;
+	}
+	
+	public Post update(){
+		Post post = loadPost(getPostId());
+		Entry entry = buildEntry(post);
+		post.addEntry(entry);
+		post.setLatestEntry(entry);
+		post.setEditDate(entry.getDate());
+		session().flush();
+		return post;
 	}
 
 	private Post buildPost() {
@@ -376,6 +388,15 @@ final public class PostDao {
 		this.publishYear = publishYear;
 	}
 	
+	public String getPostId() {
+		return postId;
+	}
+
+	public void setPostId(String postId) {
+		this.postId = postId;
+	}
+
+	
 	public void setDeleted(){
 		metaMask = metaMask | PostFlagBitmasks.BITMASK_DELETED;
 	}
@@ -411,5 +432,6 @@ final public class PostDao {
 	public void setLocked(){
 		metaMask = metaMask | PostFlagBitmasks.BITMASK_LOCKED;
 	}
+
 		
 }

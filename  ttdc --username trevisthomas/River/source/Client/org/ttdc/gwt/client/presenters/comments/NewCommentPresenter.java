@@ -73,13 +73,15 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 		void close();
 	}
 	
-	private GPost parentPost = null;
+	public enum Mode{EDIT,CREATE}
+	private GPost post = null;
 	private String embedTargetPlaceholder = "EmbedTarget_PLACEHOLDER";
 	private SuggestBox parentSuggestionBox;
 	private SugestionOracle parentSuggestionOracle;
 	
 	private SuggestBox tagSuggestionBox;
 	private SugestionOracle tagSuggestionOracle;
+	private Mode mode = Mode.CREATE;
 	
 	private List<RemovableTagPresenter> tagPresenterList = new ArrayList<RemovableTagPresenter>();
 	
@@ -117,41 +119,57 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 		
 	}
 	
-	public void init(GPost post){
-		parentPost = post;
+	
+	public void init(Mode mode, GPost post){
+		this.mode = mode;
+		this.post = post;
 		init();
 	}
 	
 	public void init(){
-		if(parentPost == null){
-			parentSuggestionOracle = injector.getTagSugestionOracle();
-			parentSuggestionBox = parentSuggestionOracle.createSuggestBoxForTopics();
-			view.replyToPanel().add(parentSuggestionBox);
-			
-			parentSuggestionBox.addSelectionHandler(new SelectionHandler<Suggestion>() {
-				@Override
-				public void onSelection(SelectionEvent<Suggestion> event) {
-					SuggestionObject suggestion = parentSuggestionOracle.getCurrentSuggestion();
-					if(suggestion != null){
-						GPost parent = suggestion.getPost();
-						if(parent != null){
-							PostCrudCommand cmd = new PostCrudCommand();
-							cmd.setPostId(parent.getPostId());
-							injector.getService().execute(cmd, callbackParentPostSelected());
-						}
-						else{
-							view.setReviewable(false);
+		switch (mode) {
+		case CREATE:
+			if(post == null){
+				parentSuggestionOracle = injector.getTagSugestionOracle();
+				parentSuggestionBox = parentSuggestionOracle.createSuggestBoxForTopics();
+				view.replyToPanel().add(parentSuggestionBox);
+				
+				parentSuggestionBox.addSelectionHandler(new SelectionHandler<Suggestion>() {
+					@Override
+					public void onSelection(SelectionEvent<Suggestion> event) {
+						SuggestionObject suggestion = parentSuggestionOracle.getCurrentSuggestion();
+						if(suggestion != null){
+							GPost parent = suggestion.getPost();
+							if(parent != null){
+								PostCrudCommand cmd = new PostCrudCommand();
+								cmd.setPostId(parent.getPostId());
+								injector.getService().execute(cmd, callbackParentPostSelected());
+							}
+							else{
+								view.setReviewable(false);
+							}
 						}
 					}
-				}
-			});
+				});
+			}
+			else if(post.isRatable()){
+				MovieRatingPresenter movieRatingPresenter = injector.getMovieRatingPresenter();
+				view.ratingPanel().clear();
+				view.ratingPanel().add(movieRatingPresenter.getWidget());
+				movieRatingPresenter.setRatablePost(post);
+			}
+			break;
+		case EDIT:
+			if(post == null){
+				throw new RuntimeException("No post to edit! Cant edit null post.");
+			}
+			view.getCommentBody().setHTML(post.getEntry());
+			break;
+		default:
+			throw new RuntimeException("Not sure what to do");
 		}
-		else if(parentPost.isRatable()){
-			MovieRatingPresenter movieRatingPresenter = injector.getMovieRatingPresenter();
-			view.ratingPanel().clear();
-			view.ratingPanel().add(movieRatingPresenter.getWidget());
-			movieRatingPresenter.setRatablePost(parentPost);
-		}
+		
+		
 		
 		view.getAddCommentClickHandlers().addClickHandler(
 			new ClickHandler() {
@@ -245,7 +263,7 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 		}
 		
 		//Determine if the user is creating a new topic or a new conversation in a topic
-		if(parentPost == null){
+		if(post == null){
 			if(parentSuggestionOracle.getCurrentSuggestion() != null){
 				SuggestionObject suggestion = parentSuggestionOracle.getCurrentSuggestion();
 				cmd.setParentId(suggestion.getPost().getPostId());
@@ -255,7 +273,7 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 			}
 		}
 		else{
-			cmd.setParentId(parentPost.getPostId());
+			cmd.setParentId(post.getPostId());
 		}
 		CommandResultCallback<PostCommandResult> callback = buildCreatePostCallback();
 		

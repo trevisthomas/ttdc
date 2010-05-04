@@ -42,19 +42,21 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 	
 	@Override
 	protected CommandResult execute() {
-		boolean broadcastNewPost = false;
 		PostCrudCommand cmd = (PostCrudCommand)getCommand();
 		Post post = null;
+		PostEventType broadcastType = null;
 		try{
 			beginSession();
 			switch(cmd.getAction()){
 //			case DELETE:
 //				break;
-//			case UPDATE:
-//				break;
+			case UPDATE:
+				post = update(cmd);
+				broadcastType = PostEventType.EDIT;
+				break;
 			case CREATE:
 				post = create(cmd);
-				broadcastNewPost = true;
+				broadcastType = PostEventType.NEW;
 				break;
 			case READ:
 				post = read(cmd);
@@ -71,8 +73,8 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 				GPost gPost = FastPostBeanConverter.convertPost(post); 
 				result = new PostCommandResult(gPost);
 				
-				if(broadcastNewPost){
-					PostEvent event = new PostEvent(PostEventType.NEW,gPost);
+				if(broadcastType != null){
+					PostEvent event = new PostEvent(broadcastType,gPost);
 					ServerEventBroadcaster.getInstance().broadcastEvent(event,getCommand().getConnectionId());
 				}
 			}
@@ -88,6 +90,15 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 	}
 	
 	
+	protected Post update(PostCrudCommand cmd) {
+		PostDao dao = new PostDao();
+		dao.setBody(cmd.getBody());
+		dao.setPostId(cmd.getPostId());
+		Post post = dao.update();
+		return post;
+	}
+
+
 	protected Post reparent(PostCrudCommand cmd) {
 		//TODO secure for admin only
 		Post target = PostDao.loadPost(cmd.getPostId());

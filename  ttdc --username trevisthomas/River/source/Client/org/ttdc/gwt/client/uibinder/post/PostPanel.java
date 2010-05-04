@@ -123,13 +123,13 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon{
 		
 	}
 	
-	protected void showNewCommentEditor() {
-		NewCommentPresenter commentPresneter = injector.getNewCommentPresenter();
-		commentPresneter.init(post);
-		commentElement.clear();
-		commentElement.add(commentPresneter.getWidget());
-		
-	}
+//	protected void showNewCommentEditor() {
+//		NewCommentPresenter commentPresneter = injector.getNewCommentPresenter();
+//		commentPresneter.init(post);
+//		commentElement.clear();
+//		commentElement.add(commentPresneter.getWidget());
+//		
+//	}
 
 	private void setupFetchMoreClickHandlerTitle() {
 		if(postCollectionPresenter.size() < post.getMass()){

@@ -7,6 +7,7 @@ import static org.junit.Assert.fail;
 import static org.ttdc.persistence.Persistence.beginSession;
 import static org.ttdc.persistence.Persistence.rollback;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.time.StopWatch;
@@ -825,5 +826,52 @@ public class PostCrudCommandExecutorTest {
 		}
 
 	}
+	
+	
+	@Test
+	public void editAPostTest()
+	{
+		try{
+			
+			final PostCrudCommand cmd = new PostCrudCommand();
+			
+			cmd.setAction(PostActionType.CREATE);
+			cmd.setPostId("AA173DAE-3E89-4C70-9B9C-DB8A1A4A5656");
+			cmd.setAction(PostActionType.UPDATE);
+			String newBody = "neeeeboooo neeboo";
+			cmd.setBody(newBody);
+			
+			beginSession();
+			Post postBefore = PostDao.loadPost(cmd.getPostId());
+			int initialEditCount = postBefore.getEntries().size();
+			Date initialEditDate = postBefore.getEditDate();
+			Persistence.commit();
+			
+			PostCrudCommandExecutor cmdexec = (PostCrudCommandExecutor)CommandExecutorFactory.createExecutor(Helpers.personIdTrevis,cmd);
+			
+			beginSession();
+			cmdexec.update(cmd);
+			
+			Post post = PostDao.loadPost(cmd.getPostId());
+			
+			
+			assertEquals("Body was not updated",newBody, post.getEntry().getBody());
+			assertEquals("Entries list didnt increment",initialEditCount+1, post.getEntries().size());
+			assertTrue("Edit date didnt change",!initialEditDate.equals(post.getEditDate()) );
+			
+			//commit();
+		}
+		catch(Exception e){
+			rollback();
+			fail(e.getMessage());
+		}	
+		finally{
+			rollback();
+		}
+
+	}
+	
+	
+	
 
 }

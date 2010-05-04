@@ -27,6 +27,7 @@ public class MoreOptionsPopupPanel extends PopupPanel{
     @UiField Anchor likeElement;
     @UiField Anchor ratingElement;
     @UiField Anchor unRateElement;
+    @UiField Anchor editElement;
     
     @Inject
     public MoreOptionsPopupPanel(Injector injector) { 
@@ -63,6 +64,10 @@ public class MoreOptionsPopupPanel extends PopupPanel{
     	unRateElement.addClickHandler(handler);
     }
     
+    public void addEditClickHandler(ClickHandler handler){
+    	editElement.addClickHandler(handler);
+    }
+    
     @UiHandler("ratingElement")
     void onClickRating(ClickEvent event){
     	hide();
@@ -83,6 +88,11 @@ public class MoreOptionsPopupPanel extends PopupPanel{
     	Window.alert("Like clicked for: "+post.getTitle());
     	hide();
     }    
+    
+    @UiHandler("editElement")
+    void onClickEdit(ClickEvent event){
+    	hide();
+    }
 
     public void showRelativeTo(Widget source){
     	int left = source.getAbsoluteLeft() + 10;
