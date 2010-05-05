@@ -32,7 +32,10 @@ public class GPost extends GBase{
 	private GTag avgRatingTag;
 	private String url;
 	private Integer publishYear;
+	private boolean inEditWindow = false; 
 		
+	
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -335,10 +338,19 @@ public class GPost extends GBase{
 		return hasBit(PostFlag.LOCKED.getBitmask());
 	}
 	
+	public boolean isInEditWindow() {
+		return inEditWindow;
+	}
+
+	public void setInEditWindow(boolean inEditWindow) {
+		this.inEditWindow = inEditWindow;
+	}
 	
 	private boolean hasBit(long bitmask){
 		long mask = getMetaMask();
 		return (mask & bitmask) == bitmask;
 	}
+
+	
 	
 }

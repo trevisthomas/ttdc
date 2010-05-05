@@ -42,6 +42,7 @@ public class MoreOptionsPopupPanel extends PopupPanel{
     	GPerson user = ConnectionId.getInstance().getCurrentUser();
     	ratingElement.setVisible(false);
     	unRateElement.setVisible(false);
+    	editElement.setVisible(false);
     	if(user.hasPrivilege(PrivilegeConstants.VOTER) || user.isAdministrator()){
     		if(post.isRatable()){
     			if(post.getRatingByPerson(user.getPersonId()) == null)
@@ -50,9 +51,13 @@ public class MoreOptionsPopupPanel extends PopupPanel{
     				unRateElement.setVisible(true);
     		}
     	}
+    	
+    	if(user.isAdministrator() || (user.equals(post.getCreator()) && post.isInEditWindow())){
+    		editElement.setVisible(true);
+    	}
     }
     
-    public void addReplyClickHandler(ClickHandler handler){
+	public void addReplyClickHandler(ClickHandler handler){
     	replyElement.addClickHandler(handler);
     }
     
