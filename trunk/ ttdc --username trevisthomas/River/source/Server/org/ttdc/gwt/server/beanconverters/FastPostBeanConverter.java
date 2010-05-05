@@ -3,6 +3,7 @@ package org.ttdc.gwt.server.beanconverters;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Hibernate;
@@ -34,6 +35,8 @@ import org.ttdc.persistence.objects.UserObjectTemplate;
 
 
 public class FastPostBeanConverter {
+	
+
 	public static ArrayList<GPost> convertPosts(List<Post> persistentPostList){
 		ArrayList<GPost> rpcPostList = new ArrayList<GPost>();
 		for(Post p : persistentPostList){
@@ -135,6 +138,13 @@ public class FastPostBeanConverter {
 		gPost.setPath(p.getPath());
 		gPost.setMass(p.getMass());
 		gPost.setReplyCount(p.getReplyCount());
+		
+		Date cutoffTime = new Date();
+		cutoffTime.setTime(cutoffTime.getTime() - InitConstants.POST_EDIT_WINDOW_MS);
+		
+		if(gPost.getDate().after(cutoffTime)){
+			gPost.setInEditWindow(true);
+		}
 		
 		//If a post is a movie, get the reviews.  4/19/2010
 		if(p.isMovie()){

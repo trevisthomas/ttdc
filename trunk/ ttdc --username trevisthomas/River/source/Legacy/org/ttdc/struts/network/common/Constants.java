@@ -13,4 +13,5 @@ public interface Constants {
 	public static final String SESSION_KEY_NEWEST_POST = "newstpost";
 	
 	
+	
 }

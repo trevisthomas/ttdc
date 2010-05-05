@@ -91,10 +91,29 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 	
 	
 	protected Post update(PostCrudCommand cmd) {
+		
+		Person creator;
+		if(StringUtil.notEmpty(cmd.getLogin()) && StringUtil.notEmpty(cmd.getPassword())){
+			creator = AccountDao.login(cmd.getLogin(), cmd.getPassword());
+		}
+		else{
+			creator = PersonDao.loadPerson(getPerson().getPersonId());
+		}
+		
+		Post post = PostDao.loadPost(cmd.getPostId());
+		
+		if(!creator.hasPrivilege(Privilege.POST) && !creator.isAdministrator()){
+			throw new RuntimeException("You dont have privledges to create new content.");
+		}
+		
+		if(!(post.getCreator().equals(creator) || creator.isAdministrator()) ){
+			throw new RuntimeException("You didnt create this post, Hacker.");
+		}
+		
 		PostDao dao = new PostDao();
 		dao.setBody(cmd.getBody());
 		dao.setPostId(cmd.getPostId());
-		Post post = dao.update();
+		post = dao.update();
 		return post;
 	}
 
