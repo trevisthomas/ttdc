@@ -157,11 +157,23 @@ public class FastPostBeanConverter {
 				gPost.setThread(convertPost(p.getThread()));
 		}
 			
+		Image image = null;
+		if(p.getImage() != null ){
+			image = p.getImage();
+		}
+		else if(p.isReview()){
+			image = p.getParent().getImage();
+			//I added this when i was adding the detail info to movie posts.
+			GPost gParent = convertPostSimple(p.getRoot()); 
+			gParent.setTagAssociations(convertAssociationsPostTag(p.getParent().getTagAssociations()));
+			gPost.setParent(gParent);
+			
+		}
 		
 		
-		if(p.getImage() != null)
-			gPost.setImage(convertImage(p.getImage()));
-		else if(p.isMovie())
+		if(image != null)
+			gPost.setImage(convertImage(image));
+		else if(p.isMovie() || p.isReview())
 			gPost.setImage(convertImage(InitConstants.DEFAULT_POSTER));
 			
 		return gPost;

@@ -29,8 +29,11 @@
 									<g:Anchor ui:field="moreOptionsElement"/>
 								</span>
 							</div>
-							
 							<div width="100%" style="clear:both;" >
+								<div class="tt-float-right">
+									<g:Widget ui:field="ratingElement" />
+									<g:Widget ui:field="postImageElement" />
+								</div>
 								<span class="tt-post-body tt-text-normal" ui:field="bodyElement" />
 							</div>
 							

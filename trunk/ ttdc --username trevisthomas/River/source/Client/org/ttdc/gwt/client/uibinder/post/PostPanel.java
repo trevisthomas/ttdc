@@ -1,8 +1,10 @@
 package org.ttdc.gwt.client.uibinder.post;
 
 import org.ttdc.gwt.client.Injector;
+import org.ttdc.gwt.client.beans.GAssociationPostTag;
 import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.presenters.comments.NewCommentPresenter;
+import org.ttdc.gwt.client.presenters.movies.MovieRatingPresenter;
 import org.ttdc.gwt.client.presenters.post.PostCollectionPresenter;
 import org.ttdc.gwt.client.presenters.post.PostPresenterCommon;
 import org.ttdc.gwt.client.presenters.post.PostPresenter.Mode;
@@ -33,11 +35,13 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon{
     
     private final Injector injector;
     private GPost post;
-    private ImagePresenter imagePresenter;
+    private ImagePresenter creatorAvatorImagePresenter;
+    private ImagePresenter postImagePresenter;
     private HyperlinkPresenter creatorLinkPresenter;
     private HyperlinkPresenter postLinkPresenter;
     private DatePresenter createDatePresenter;
     private PostCollectionPresenter postCollectionPresenter;
+    private MovieRatingPresenter averageMovieRatingPresenter;
     private int childPostPage = 1;
     	    
     @UiField(provided = true) Hyperlink titleElement;
@@ -51,22 +55,29 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon{
     @UiField SpanElement embedTargetElement;
     @UiField(provided = true) SimplePanel commentElement = new SimplePanel();
     @UiField(provided = true) Widget repliesElement;
+    @UiField(provided = true) Widget postImageElement;
+    @UiField(provided = true) Widget ratingElement;
+    
     
     @Inject
     public PostPanel(Injector injector) { 
     	super(injector);
     	this.injector = injector;
-    	imagePresenter = injector.getImagePresenter();
+    	creatorAvatorImagePresenter = injector.getImagePresenter();
     	creatorLinkPresenter = injector.getHyperlinkPresenter();
     	postLinkPresenter = injector.getHyperlinkPresenter();
     	createDatePresenter = injector.getDatePresenter();
     	postCollectionPresenter = injector.getPostCollectionPresenter();
+    	postImagePresenter  = injector.getImagePresenter();
+    	averageMovieRatingPresenter = injector.getMovieRatingPresenter();
     	
-    	avatarElement = imagePresenter.getWidget();
+    	avatarElement = creatorAvatorImagePresenter.getWidget();
     	creatorLinkElement = creatorLinkPresenter.getHyperlink();
     	createDateElement = createDatePresenter.getWidget();
     	titleElement = postLinkPresenter.getHyperlink();
     	repliesElement = postCollectionPresenter.getWidget();
+    	postImageElement = postImagePresenter.getWidget();
+    	ratingElement = averageMovieRatingPresenter.getWidget();
     	
     	initWidget(binder.createAndBindUi(this)); 
     }
@@ -78,21 +89,37 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon{
 	public void setPost(GPost post, Mode mode) {
 		super.init(post, commentElement);
 		this.post = post;
-		//titleElement.setInnerHTML(post.getTitle());
 		bodyElement.setInnerHTML(post.getEntry());
 		
 		if(post.isRootPost() || post.isThreadPost()){
-			imagePresenter.setImage(post.getCreator().getImage(), post.getCreator().getLogin(), 50, 50);
+			creatorAvatorImagePresenter.setImage(post.getCreator().getImage(), post.getCreator().getLogin(), 50, 50);
 			avatarElement.setWidth("50px");
 			avatarElement.setHeight("50px");
 		}
 		else{
-			imagePresenter.setImage(post.getCreator().getImage(), post.getCreator().getLogin(), 20, 20);
+			creatorAvatorImagePresenter.setImage(post.getCreator().getImage(), post.getCreator().getLogin(), 20, 20);
 			avatarElement.setWidth("20px");
 			avatarElement.setHeight("20px");
 		}
-		imagePresenter.useThumbnail(true);
-		imagePresenter.init();
+		
+		
+		if(post.isReview()){
+			postImagePresenter.setImageAsMoviePoster(post);
+			postImagePresenter.init();
+			GAssociationPostTag ratingAss = post.getParent().getRatingByPerson(post.getCreator().getPersonId());
+			if(ratingAss != null){
+				averageMovieRatingPresenter.setRating(ratingAss);
+			}
+			else{
+				ratingElement.setVisible(false);
+			}
+		}
+		else{
+			postImageElement.setVisible(false);
+		}
+		
+		creatorAvatorImagePresenter.useThumbnail(true);
+		creatorAvatorImagePresenter.init();
 		createDatePresenter.init(post.getDate());
 		creatorLinkPresenter.setPerson(post.getCreator());
 		creatorLinkPresenter.init();
