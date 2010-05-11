@@ -53,6 +53,8 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 		HasWidgets replyToPanel();
 		HasWidgets ratingPanel();
 		HasClickHandlers getAddCommentClickHandlers();
+		//HasClickHandlers getAddReviewClickHandlers();
+		
 		HasWidgets getMessagePanel();
 		void setEmbedTargetPlaceholder(String embedTargetPlaceholder);
 		
@@ -82,6 +84,7 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 	private SuggestBox tagSuggestionBox;
 	private SugestionOracle tagSuggestionOracle;
 	private Mode mode = Mode.CREATE;
+	private GPerson currentUser;
 	
 	private List<RemovableTagPresenter> tagPresenterList = new ArrayList<RemovableTagPresenter>();
 	
@@ -91,7 +94,7 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 		view.setEmbedTargetPlaceholder(embedTargetPlaceholder);
 		
 		EventBus.getInstance().addListener(this);
-		GPerson currentUser = ConnectionId.getInstance().getCurrentUser();
+		currentUser = ConnectionId.getInstance().getCurrentUser();
 		configureForUser(currentUser);
 	}
 
@@ -130,34 +133,12 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 		switch (mode) {
 		case CREATE:
 			if(post == null){
-				parentSuggestionOracle = injector.getTagSugestionOracle();
-				parentSuggestionBox = parentSuggestionOracle.createSuggestBoxForTopics();
-				view.replyToPanel().add(parentSuggestionBox);
-				
-				parentSuggestionBox.addSelectionHandler(new SelectionHandler<Suggestion>() {
-					@Override
-					public void onSelection(SelectionEvent<Suggestion> event) {
-						SuggestionObject suggestion = parentSuggestionOracle.getCurrentSuggestion();
-						if(suggestion != null){
-							GPost parent = suggestion.getPost();
-							if(parent != null){
-								PostCrudCommand cmd = new PostCrudCommand();
-								cmd.setPostId(parent.getPostId());
-								injector.getService().execute(cmd, callbackParentPostSelected());
-							}
-							else{
-								view.setReviewable(false);
-							}
-						}
-					}
-				});
+				initAsNewRootMode();
 			}
 			else if(post.isRatable()){
-				MovieRatingPresenter movieRatingPresenter = injector.getMovieRatingPresenter();
-				view.ratingPanel().clear();
-				view.ratingPanel().add(movieRatingPresenter.getWidget());
-				movieRatingPresenter.setRatablePost(post);
+				initForRatableParent();
 			}
+			
 			break;
 		case EDIT:
 			if(post == null){
@@ -197,6 +178,42 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 					createRemovableTag(tag);
 				}
 				tagSuggestionOracle.clear();
+			}
+		});
+	}
+
+	private void initForRatableParent() {
+		if(post.isMovie() && !post.isReviewedBy(currentUser.getPersonId())){
+			view.setReviewable(true);
+		}
+		if(post.getRatingByPerson(currentUser.getPersonId()) == null){
+			MovieRatingPresenter movieRatingPresenter = injector.getMovieRatingPresenter();
+			view.ratingPanel().clear();
+			view.ratingPanel().add(movieRatingPresenter.getWidget());
+			movieRatingPresenter.setRatablePost(post);
+		}
+	}
+
+	private void initAsNewRootMode() {
+		parentSuggestionOracle = injector.getTagSugestionOracle();
+		parentSuggestionBox = parentSuggestionOracle.createSuggestBoxForTopics();
+		view.replyToPanel().add(parentSuggestionBox);
+		
+		parentSuggestionBox.addSelectionHandler(new SelectionHandler<Suggestion>() {
+			@Override
+			public void onSelection(SelectionEvent<Suggestion> event) {
+				SuggestionObject suggestion = parentSuggestionOracle.getCurrentSuggestion();
+				if(suggestion != null){
+					GPost parent = suggestion.getPost();
+					if(parent != null){
+						PostCrudCommand cmd = new PostCrudCommand();
+						cmd.setPostId(parent.getPostId());
+						injector.getService().execute(cmd, callbackParentPostSelected());
+					}
+					else{
+						view.setReviewable(false);
+					}
+				}
 			}
 		});
 	}

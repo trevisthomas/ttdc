@@ -351,6 +351,15 @@ public class GPost extends GBase{
 		return (mask & bitmask) == bitmask;
 	}
 
+	public boolean isReviewedBy(String personId) {
+		for(GPost post : getPosts()){
+			if(post.isReview() && post.getCreator().getPersonId().equals(personId)){
+				return true;
+			}
+		}
+		return false;
+	}
+
 	
 	
 }
