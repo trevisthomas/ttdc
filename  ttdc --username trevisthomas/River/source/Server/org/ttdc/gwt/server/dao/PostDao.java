@@ -12,6 +12,7 @@ import org.ttdc.gwt.shared.util.PostFlagBitmasks;
 import org.ttdc.persistence.Persistence;
 import org.ttdc.persistence.objects.Entry;
 import org.ttdc.persistence.objects.Image;
+import org.ttdc.persistence.objects.ImageFull;
 import org.ttdc.persistence.objects.Person;
 import org.ttdc.persistence.objects.Post;
 import org.ttdc.persistence.objects.Tag;
@@ -28,6 +29,7 @@ final public class PostDao {
 	private Integer publishYear;
 	private long metaMask = 0;
 	private String postId;
+	private String imageUrl;
 	
 	
 	public PostDao(){}
@@ -38,6 +40,35 @@ final public class PostDao {
 	}
 	
 	public Post create(){
+		if(isMovie()){
+			return createMoviePost();
+		}
+		else{
+			return createTraditionalPost();
+		}
+	}
+
+	private boolean isMovie() {
+		return (metaMask & PostFlagBitmasks.BITMASK_MOVIE) == PostFlagBitmasks.BITMASK_MOVIE;
+	}
+
+	private Post createMoviePost() {
+		
+		ImageDataDao imageDataDao = new ImageDataDao(creator);
+		ImageFull imageFull = imageDataDao.createImage(getImageUrl(), "");
+		session().save(imageFull);
+		
+		Post post = buildPost();
+		session().flush();
+		
+		Image image = ImageDao.loadImage(imageFull.getImageId());
+		post.setImage(image);
+		session().update(post);
+		
+		return post;
+	}
+
+	private Post createTraditionalPost() {
 		if(StringUtils.isEmpty(body)){
 			throw new RuntimeException("A Post cannot be created without content.");
 		}
@@ -84,7 +115,8 @@ final public class PostDao {
 		post.setTitleTag(titleTag);
 		post.setPublishYear(publishYear);
 		post.setUrl(url);
-		
+		if(image != null)
+			post.setImage(image);
 		
 		if(parent != null){
 			if(parent.isPrivate()){
@@ -397,6 +429,15 @@ final public class PostDao {
 	}
 
 	
+	
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+	}
+
 	public void setDeleted(){
 		metaMask = metaMask | PostFlagBitmasks.BITMASK_DELETED;
 	}
