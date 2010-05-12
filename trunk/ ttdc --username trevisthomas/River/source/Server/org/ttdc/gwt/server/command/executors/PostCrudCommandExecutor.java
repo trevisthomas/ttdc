@@ -3,6 +3,7 @@ package org.ttdc.gwt.server.command.executors;
 import static org.ttdc.persistence.Persistence.beginSession;
 import static org.ttdc.persistence.Persistence.commit;
 import static org.ttdc.persistence.Persistence.rollback;
+import static org.ttdc.persistence.Persistence.session;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -22,6 +23,8 @@ import org.ttdc.gwt.server.beanconverters.FastPostBeanConverter;
 import org.ttdc.gwt.server.command.CommandExecutor;
 import org.ttdc.gwt.server.dao.AccountDao;
 import org.ttdc.gwt.server.dao.AssociationPostTagDao;
+import org.ttdc.gwt.server.dao.ImageDao;
+import org.ttdc.gwt.server.dao.ImageDataDao;
 import org.ttdc.gwt.server.dao.InitConstants;
 import org.ttdc.gwt.server.dao.PersonDao;
 import org.ttdc.gwt.server.dao.PostDao;
@@ -33,6 +36,8 @@ import org.ttdc.gwt.shared.commands.results.PostCommandResult;
 import org.ttdc.gwt.shared.util.StringUtil;
 import org.ttdc.persistence.Persistence;
 import org.ttdc.persistence.objects.AssociationPostTag;
+import org.ttdc.persistence.objects.Image;
+import org.ttdc.persistence.objects.ImageFull;
 import org.ttdc.persistence.objects.Person;
 import org.ttdc.persistence.objects.Post;
 import org.ttdc.persistence.objects.Privilege;
@@ -210,8 +215,13 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 		dao.setParent(parent);
 		dao.setBody(cmd.getBody());
 		dao.setCreator(creator);
+		dao.setImageUrl(cmd.getImageUrl());
 		Tag titleTag = loadOrCreateTitleTag(cmd);
 		dao.setTitle(titleTag);
+		dao.setUrl(cmd.getUrl());
+		if(StringUtil.notEmpty(cmd.getYear())){
+			dao.setPublishYear(Integer.parseInt(cmd.getYear()));
+		}
 		
 		dao.setEmbedMarker(cmd.getEmbedMarker());
 		Post post = dao.create();

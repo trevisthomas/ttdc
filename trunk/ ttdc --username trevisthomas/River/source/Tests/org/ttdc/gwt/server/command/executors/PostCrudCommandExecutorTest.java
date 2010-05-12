@@ -24,6 +24,7 @@ import org.ttdc.gwt.server.dao.PostDao;
 import org.ttdc.gwt.shared.commands.PostCrudCommand;
 import org.ttdc.gwt.shared.commands.types.PostActionType;
 import org.ttdc.gwt.shared.util.PostFlagBitmasks;
+import org.ttdc.gwt.shared.util.StringUtil;
 import org.ttdc.persistence.Persistence;
 import org.ttdc.persistence.objects.AssociationPostTag;
 import org.ttdc.persistence.objects.Post;
@@ -871,7 +872,42 @@ public class PostCrudCommandExecutorTest {
 
 	}
 	
-	
+	@Test
+	public void createAMovie(){
+		try{
+			PostCrudCommand cmd = new PostCrudCommand();
+			cmd.setAction(PostActionType.CREATE);
+			
+			String title = "A New Movie Called Something Cool";
+			String poster = "http://www.iwatchstuff.com/2008/02/27/superhero-movie-poster.jpg";
+			String url = "http://www.imdb.com/title/tt0398913/";
+			cmd.setTitle(title);
+			cmd.setMovie(true);
+			cmd.setImageUrl(poster);
+			cmd.setYear("2010");
+			cmd.setUrl(url);
+			
+			PostCrudCommandExecutor cmdexec = (PostCrudCommandExecutor)CommandExecutorFactory.createExecutor(Helpers.personIdTrevis,cmd);
+			beginSession();
+			Post post = cmdexec.create(cmd);
+			
+			assertEquals(Helpers.personIdTrevis,post.getCreator().getPersonId());
+			
+			Tag titleTag = post.getTitleTag();
+			assertEquals("Title is wrong", title,titleTag.getValue());
+			assertEquals("URL is wrong", url, post.getUrl());
+			assertNotNull("Movie has no poster", post.getImage());
+			assertTrue("Year is wrong", 2010 == post.getPublishYear());
+		}
+		catch(Exception e){
+			rollback();
+			fail(e.getMessage());
+			e.printStackTrace();
+		}	
+		finally{
+			rollback();
+		}
+	}
 	
 
 }
