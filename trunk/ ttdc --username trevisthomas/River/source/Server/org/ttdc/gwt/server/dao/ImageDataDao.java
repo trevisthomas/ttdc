@@ -175,10 +175,12 @@ public class ImageDataDao {
 				throw new RuntimeException("Invalid URL");
 			}
 			
-			if(StringUtil.notEmpty(newName))
-				name = newName;
-			else
+			if(StringUtil.notEmpty(newName)){
+				name = appendDotExtentionIfNecessary(urlStr, newName);
+			}
+			else{
 				name = urlStr.substring(urlStr.lastIndexOf('/')+1);
+			}
 			
 			name = validateFileName(name);
 			
@@ -208,6 +210,21 @@ public class ImageDataDao {
 			log.error(e);
 			throw new RuntimeException(e);
 		} 
+	}
+
+	private String appendDotExtentionIfNecessary(String urlStr, String newName) {
+		String name;
+		if(newName.indexOf('.') < 0){
+			String extension = urlStr.substring(urlStr.lastIndexOf('.'));
+			if(extension.length() > 5)
+				name = newName;	//In case the image has no dot extension.
+			else
+				name = newName + extension;
+		}
+		else{
+			name = newName;
+		}
+		return name;
 	}
 
 	private void validatePerson() {

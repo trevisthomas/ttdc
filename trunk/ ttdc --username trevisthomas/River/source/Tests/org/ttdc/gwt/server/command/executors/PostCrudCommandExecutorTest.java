@@ -142,7 +142,7 @@ public class PostCrudCommandExecutorTest {
 			
 			assertTrue("Conversation starter post is not a conversation?!?",post.isThreadPost());
 			
-			assertEquals("Path is not what i expected","00039",post.getPath()); //parent expects to already have one child
+			assertEquals("Path is not what i expected","00041",post.getPath()); //parent expects to already have one child
 			
 			assertNotNull("Creator is null on the post object",post.getCreator());
 			assertEquals(Helpers.personIdTrevis,post.getCreator().getPersonId());
@@ -836,7 +836,6 @@ public class PostCrudCommandExecutorTest {
 			
 			final PostCrudCommand cmd = new PostCrudCommand();
 			
-			cmd.setAction(PostActionType.CREATE);
 			cmd.setPostId("AA173DAE-3E89-4C70-9B9C-DB8A1A4A5656");
 			cmd.setAction(PostActionType.UPDATE);
 			String newBody = "neeeeboooo neeboo";
@@ -848,7 +847,7 @@ public class PostCrudCommandExecutorTest {
 			Date initialEditDate = postBefore.getEditDate();
 			Persistence.commit();
 			
-			PostCrudCommandExecutor cmdexec = (PostCrudCommandExecutor)CommandExecutorFactory.createExecutor(Helpers.personIdTrevis,cmd);
+			PostCrudCommandExecutor cmdexec = (PostCrudCommandExecutor)CommandExecutorFactory.createExecutor(Helpers.personIdAdmin,cmd);
 			
 			beginSession();
 			cmdexec.update(cmd);
@@ -878,7 +877,7 @@ public class PostCrudCommandExecutorTest {
 			PostCrudCommand cmd = new PostCrudCommand();
 			cmd.setAction(PostActionType.CREATE);
 			
-			String title = "A New Movie Called Something Cool";
+			String title = "Cool Movie";
 			String poster = "http://www.iwatchstuff.com/2008/02/27/superhero-movie-poster.jpg";
 			String url = "http://www.imdb.com/title/tt0398913/";
 			cmd.setTitle(title);
@@ -897,6 +896,7 @@ public class PostCrudCommandExecutorTest {
 			assertEquals("Title is wrong", title,titleTag.getValue());
 			assertEquals("URL is wrong", url, post.getUrl());
 			assertNotNull("Movie has no poster", post.getImage());
+			assertEquals("CoolMovie.jpg", post.getImage().getName());
 			assertTrue("Year is wrong", 2010 == post.getPublishYear());
 		}
 		catch(Exception e){
@@ -909,5 +909,224 @@ public class PostCrudCommandExecutorTest {
 		}
 	}
 	
-
+	@Test
+	public void createAnInvalidMovie(){
+		try{
+			PostCrudCommand cmd = new PostCrudCommand();
+			cmd.setAction(PostActionType.CREATE);
+			
+			String title = "A New Movie Called Something Cool";
+			String poster = "http://www.iwatchstuff.com/2008/02/27/superhero-movie-poster.jpg";
+			String url = "http://www.imdb.com/title/tt0398913/";
+			cmd.setTitle(title);
+			cmd.setMovie(true);
+			cmd.setImageUrl(poster);
+			//cmd.setYear("2010");
+			cmd.setUrl(url);
+			
+			PostCrudCommandExecutor cmdexec = (PostCrudCommandExecutor)CommandExecutorFactory.createExecutor(Helpers.personIdTrevis,cmd);
+			beginSession();
+			Post post = cmdexec.create(cmd);
+			
+			fail("Movie post was created with date missing.");
+		}
+		catch(Exception e){
+			//Expected
+			rollback();
+			e.printStackTrace();
+		}	
+		finally{
+			rollback();
+		}
+	}
+	
+	@Test
+	public void createAnInvalidMovieMissingUrl(){
+		try{
+			PostCrudCommand cmd = new PostCrudCommand();
+			cmd.setAction(PostActionType.CREATE);
+			
+			String title = "A New Movie Called Something Cool";
+			String poster = "http://www.iwatchstuff.com/2008/02/27/superhero-movie-poster.jpg";
+			cmd.setTitle(title);
+			cmd.setMovie(true);
+			cmd.setImageUrl(poster);
+			cmd.setYear("2010");
+			
+			
+			PostCrudCommandExecutor cmdexec = (PostCrudCommandExecutor)CommandExecutorFactory.createExecutor(Helpers.personIdTrevis,cmd);
+			beginSession();
+			Post post = cmdexec.create(cmd);
+			
+			fail("Movie post was created with date missing.");
+		}
+		catch(Exception e){
+			//Expected
+			rollback();
+			e.printStackTrace();
+		}	
+		finally{
+			rollback();
+		}
+	}
+	
+	@Test
+	public void createAnInvalidMovieMissingTitle(){
+		try{
+			PostCrudCommand cmd = new PostCrudCommand();
+			cmd.setAction(PostActionType.CREATE);
+			
+			String poster = "http://www.iwatchstuff.com/2008/02/27/superhero-movie-poster.jpg";
+			String url = "http://www.imdb.com/title/tt0398913/";
+			cmd.setMovie(true);
+			cmd.setImageUrl(poster);
+			cmd.setYear("2010");
+			cmd.setUrl(url);
+			
+			PostCrudCommandExecutor cmdexec = (PostCrudCommandExecutor)CommandExecutorFactory.createExecutor(Helpers.personIdTrevis,cmd);
+			beginSession();
+			Post post = cmdexec.create(cmd);
+			
+			fail("Movie post was created with date missing.");
+		}
+		catch(Exception e){
+			//Expected
+			rollback();
+			e.printStackTrace();
+		}	
+		finally{
+			rollback();
+		}
+	}
+	
+	@Test
+	public void createAnInvalidMovieMissingPoster(){
+		try{
+			PostCrudCommand cmd = new PostCrudCommand();
+			cmd.setAction(PostActionType.CREATE);
+			
+			String title = "A New Movie Called Something Cool";
+			String url = "http://www.imdb.com/title/tt0398913/";
+			cmd.setTitle(title);
+			cmd.setMovie(true);
+			//cmd.setYear("2010");
+			cmd.setUrl(url);
+			
+			PostCrudCommandExecutor cmdexec = (PostCrudCommandExecutor)CommandExecutorFactory.createExecutor(Helpers.personIdTrevis,cmd);
+			beginSession();
+			Post post = cmdexec.create(cmd);
+			
+			fail("Movie post was created with date missing.");
+		}
+		catch(Exception e){
+			//Expected
+			rollback();
+			e.printStackTrace();
+		}	
+		finally{
+			rollback();
+		}
+	}
+	
+	//Edit movies...
+	public void editAMovieTitle(){
+		try{
+			
+			final PostCrudCommand cmd = new PostCrudCommand();
+			
+			String title = "Wack yo!";
+			cmd.setPostId("874D1519-B45D-46F6-9FA9-DE7ABC050C33");
+			cmd.setAction(PostActionType.UPDATE);
+			cmd.setTitle(title);
+			
+			beginSession();
+			Post postBefore = PostDao.loadPost(cmd.getPostId());
+			Persistence.commit();
+			
+			PostCrudCommandExecutor cmdexec = (PostCrudCommandExecutor)CommandExecutorFactory.createExecutor(Helpers.personIdAdmin,cmd);
+			
+			beginSession();
+			cmdexec.update(cmd);
+			
+			Post post = PostDao.loadPost(cmd.getPostId());
+			
+		
+			assertEquals(title,post.getTitle());
+			//commit();
+		}
+		catch(Exception e){
+			rollback();
+			fail(e.getMessage());
+		}	
+		finally{
+			rollback();
+		}
+	}
+	
+	public void editAMoviePubYear(){
+		try{
+			
+			final PostCrudCommand cmd = new PostCrudCommand();
+			
+			String pubYear = "1901";
+			cmd.setPostId("874D1519-B45D-46F6-9FA9-DE7ABC050C33");
+			cmd.setAction(PostActionType.UPDATE);
+			cmd.setYear(pubYear);
+			
+			beginSession();
+			Post postBefore = PostDao.loadPost(cmd.getPostId());
+			Persistence.commit();
+			
+			PostCrudCommandExecutor cmdexec = (PostCrudCommandExecutor)CommandExecutorFactory.createExecutor(Helpers.personIdAdmin,cmd);
+			
+			beginSession();
+			cmdexec.update(cmd);
+			
+			Post post = PostDao.loadPost(cmd.getPostId());
+			
+			assertEquals(pubYear,post.getPublishYear());
+			//commit();
+		}
+		catch(Exception e){
+			rollback();
+			fail(e.getMessage());
+		}	
+		finally{
+			rollback();
+		}
+	}
+	
+	public void editAMoviePoster(){
+		try{
+			
+			final PostCrudCommand cmd = new PostCrudCommand();
+			
+			String poster = "http://www.iwatchstuff.com/2008/02/27/superhero-movie-poster.jpg";
+			cmd.setPostId("874D1519-B45D-46F6-9FA9-DE7ABC050C33");
+			cmd.setAction(PostActionType.UPDATE);
+			cmd.setImageUrl(poster);
+			
+			beginSession();
+			Post postBefore = PostDao.loadPost(cmd.getPostId());
+			Persistence.commit();
+			
+			PostCrudCommandExecutor cmdexec = (PostCrudCommandExecutor)CommandExecutorFactory.createExecutor(Helpers.personIdAdmin,cmd);
+			
+			beginSession();
+			cmdexec.update(cmd);
+			
+			Post post = PostDao.loadPost(cmd.getPostId());
+			
+		
+			assertEquals("CrazyHeart_2.jpg",post.getImage().getName());
+			//commit();
+		}
+		catch(Exception e){
+			rollback();
+			fail(e.getMessage());
+		}	
+		finally{
+			rollback();
+		}
+	}
 }

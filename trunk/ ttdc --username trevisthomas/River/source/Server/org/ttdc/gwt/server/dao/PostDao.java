@@ -9,6 +9,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.ttdc.gwt.server.util.PostFormatter;
 import org.ttdc.gwt.shared.util.PostFlagBitmasks;
+import org.ttdc.gwt.shared.util.StringUtil;
 import org.ttdc.persistence.Persistence;
 import org.ttdc.persistence.objects.Entry;
 import org.ttdc.persistence.objects.Image;
@@ -31,7 +32,6 @@ final public class PostDao {
 	private String postId;
 	private String imageUrl;
 	
-	
 	public PostDao(){}
 
 	public static Post loadPost(String postId){
@@ -53,9 +53,11 @@ final public class PostDao {
 	}
 
 	private Post createMoviePost() {
+		validateParamsForMovie();
 		
 		ImageDataDao imageDataDao = new ImageDataDao(creator);
-		ImageFull imageFull = imageDataDao.createImage(getImageUrl(), "");
+		String compressedTitle = getTitle().getValue().replace(" ", "");
+		ImageFull imageFull = imageDataDao.createImage(getImageUrl(), compressedTitle);
 		session().save(imageFull);
 		
 		Post post = buildPost();
@@ -64,8 +66,22 @@ final public class PostDao {
 		Image image = ImageDao.loadImage(imageFull.getImageId());
 		post.setImage(image);
 		session().update(post);
-		
 		return post;
+	}
+
+	private void validateParamsForMovie() {
+		if(titleTag == null){
+			throw new RuntimeException("Title is required for movies.");
+		}
+		if(StringUtil.empty(url)){
+			throw new RuntimeException("URL is required");
+		}
+		if(publishYear == null){
+			throw new RuntimeException("Publish year is requred for movies");
+		}
+		if(imageUrl == null){
+			throw new RuntimeException("Movie poster image is required for movies");
+		}
 	}
 
 	private Post createTraditionalPost() {
