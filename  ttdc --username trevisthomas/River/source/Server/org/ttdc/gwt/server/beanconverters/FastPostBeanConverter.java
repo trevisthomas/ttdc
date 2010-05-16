@@ -123,7 +123,8 @@ public class FastPostBeanConverter {
 //		singleEntry.add(p.getEntry());
 //		gPost.setEntries(convertEntries(singleEntry));
 		
-		gPost.setLatestEntry(convertEntry(p.getEntry()));
+		if(p.getEntry() != null) //Because movies dont have a latest entry.  Oddly, didnt see this until doing create new movie.
+			gPost.setLatestEntry(convertEntry(p.getEntry()));
 		gPost.setPostId(p.getPostId());
 		//gPost.setPosts(convertPosts(p.getPosts()));
 		gPost.setTagAssociations(convertAssociationsPostTag(p.getTagAssociations()));

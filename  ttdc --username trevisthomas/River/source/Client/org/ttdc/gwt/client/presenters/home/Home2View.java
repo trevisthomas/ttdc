@@ -37,6 +37,7 @@ public class Home2View implements Home2Presenter.View{
 	private final SimplePanel searchPanel = new SimplePanel();
 	private final SimplePanel loginPanel = new SimplePanel();
 	private final Button commentButton = new Button("Comment");
+	private final Button movieButton = new Button("Movie");
 	//private final DisclosurePanel commentPanel = new DisclosurePanel("Add Comment");
 	private final SimplePanel commentPanel = new SimplePanel();
 	private HistoryToken token = new HistoryToken();
@@ -58,6 +59,7 @@ public class Home2View implements Home2Presenter.View{
 		bodyTable.setWidget(0, 2, rightTabPanel);
 		searchAndReplyPanel.add(searchPanel);
 		searchAndReplyPanel.add(commentButton);
+		searchAndReplyPanel.add(movieButton);
 		
 		centerTabPanel.add(nestedPanel, "Nested");
 		centerTabPanel.add(flatPanel, "Flat");
@@ -95,6 +97,11 @@ public class Home2View implements Home2Presenter.View{
 	@Override
 	public HasClickHandlers commentButton() {
 		return commentButton;
+	}
+	
+	@Override
+	public HasClickHandlers movieButton(){
+		return movieButton;
 	}
 
 	private void updateHistoryToReflectCenterTabSelection(int index) {

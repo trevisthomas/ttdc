@@ -116,8 +116,21 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 		}
 		
 		PostDao dao = new PostDao();
+		dao.setCreator(creator);
 		dao.setBody(cmd.getBody());
 		dao.setPostId(cmd.getPostId());
+		if(StringUtil.notEmpty(cmd.getTitle())){
+			Tag titleTag = loadOrCreateTitleTag(cmd);
+			dao.setTitle(titleTag);
+		}
+		dao.setUrl(cmd.getUrl());
+		if(StringUtil.notEmpty(cmd.getYear())){
+			dao.setPublishYear(Integer.parseInt(cmd.getYear()));
+		}
+		if(StringUtil.notEmpty(cmd.getImageUrl())){
+			dao.setImageUrl(cmd.getImageUrl());
+		}
+		
 		post = dao.update();
 		return post;
 	}

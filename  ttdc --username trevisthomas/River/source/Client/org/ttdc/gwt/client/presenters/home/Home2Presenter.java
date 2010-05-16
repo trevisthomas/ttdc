@@ -13,6 +13,7 @@ import org.ttdc.gwt.client.presenters.shared.BasePagePresenter;
 import org.ttdc.gwt.client.presenters.shared.BasePageView;
 import org.ttdc.gwt.client.presenters.util.PresenterHelpers;
 import org.ttdc.gwt.client.uibinder.SiteUpdatePanel;
+import org.ttdc.gwt.client.uibinder.post.NewMoviePanel;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -34,6 +35,7 @@ public class Home2Presenter extends BasePagePresenter<Home2Presenter.View> imple
 		HasWidgets siteUpdatePanel();
 		
 		void displayTab(TabType tabs);
+		HasClickHandlers movieButton();
 	} 
 	
 	private FlatPresenter flatPresenter = null;
@@ -60,12 +62,26 @@ public class Home2Presenter extends BasePagePresenter<Home2Presenter.View> imple
 			}
 		});
 		
+		view.movieButton().addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				showMovieEditor();
+			}
+		});
+		
 		SiteUpdatePanel siteUpdatePanel = injector.createSiteUpdatePanel();
 		view.siteUpdatePanel().add(siteUpdatePanel);
 		
 		EventBus.getInstance().addListener(this);
 	}
 
+	private void showMovieEditor() {
+		view.commentPanel().clear();
+		NewMoviePanel newMoviePanel = injector.createNewMoviePanel();
+		newMoviePanel.init();
+		view.commentPanel().add(newMoviePanel);
+	}
+	
 	private void showCommentEditor() {
 		view.commentPanel().clear();
 		NewCommentPresenter commentPresneter = injector.getNewCommentPresenter();

@@ -893,6 +893,7 @@ public class PostCrudCommandExecutorTest {
 			assertEquals(Helpers.personIdTrevis,post.getCreator().getPersonId());
 			
 			Tag titleTag = post.getTitleTag();
+			assertTrue ("This shold be a movie", post.isMovie());
 			assertEquals("Title is wrong", title,titleTag.getValue());
 			assertEquals("URL is wrong", url, post.getUrl());
 			assertNotNull("Movie has no poster", post.getImage());
@@ -908,6 +909,40 @@ public class PostCrudCommandExecutorTest {
 			rollback();
 		}
 	}
+	
+//	@Test
+//	public void createADuplicateMovie(){
+//		try{
+//			PostCrudCommand cmd = new PostCrudCommand();
+//			cmd.setAction(PostActionType.CREATE);
+//			
+//			String title = "Crazy Heart";
+//			String poster = "http://www.iwatchstuff.com/2008/02/27/superhero-movie-poster.jpg";
+//			String url = "http://www.imdb.com/title/tt0398913/";
+//			cmd.setTitle(title);
+//			cmd.setMovie(true);
+//			cmd.setImageUrl(poster);
+//			cmd.setYear("2009");
+//			cmd.setUrl(url);
+//			
+//			PostCrudCommandExecutor cmdexec = (PostCrudCommandExecutor)CommandExecutorFactory.createExecutor(Helpers.personIdTrevis,cmd);
+//			beginSession();
+//			Post post = cmdexec.create(cmd);
+//			
+//			fail("Movie with same title and year should be an error");
+//		}
+//		catch(RuntimeException e){
+//			//expected
+//			assertEquals("Movie with this title and year exist.  Cannot create duplicates.", e.getMessage());
+//		}
+//		catch(Exception e){
+//			fail(e.getMessage());
+//			e.printStackTrace();
+//		}	
+//		finally{
+//			rollback();
+//		}
+//	}
 	
 	@Test
 	public void createAnInvalidMovie(){
@@ -1029,6 +1064,7 @@ public class PostCrudCommandExecutorTest {
 	}
 	
 	//Edit movies...
+	@Test
 	public void editAMovieTitle(){
 		try{
 			
@@ -1051,7 +1087,7 @@ public class PostCrudCommandExecutorTest {
 			Post post = PostDao.loadPost(cmd.getPostId());
 			
 		
-			assertEquals(title,post.getTitle());
+			assertEquals("Title was not updated.",title,post.getTitle());
 			//commit();
 		}
 		catch(Exception e){
@@ -1062,7 +1098,7 @@ public class PostCrudCommandExecutorTest {
 			rollback();
 		}
 	}
-	
+	@Test
 	public void editAMoviePubYear(){
 		try{
 			
@@ -1084,7 +1120,7 @@ public class PostCrudCommandExecutorTest {
 			
 			Post post = PostDao.loadPost(cmd.getPostId());
 			
-			assertEquals(pubYear,post.getPublishYear());
+			assertTrue("Pub year not updated",Integer.parseInt(pubYear) == post.getPublishYear());
 			//commit();
 		}
 		catch(Exception e){
@@ -1096,6 +1132,7 @@ public class PostCrudCommandExecutorTest {
 		}
 	}
 	
+	@Test
 	public void editAMoviePoster(){
 		try{
 			
@@ -1119,6 +1156,41 @@ public class PostCrudCommandExecutorTest {
 			
 		
 			assertEquals("CrazyHeart_2.jpg",post.getImage().getName());
+			//commit();
+		}
+		catch(Exception e){
+			rollback();
+			fail(e.toString());
+		}	
+		finally{
+			rollback();
+		}
+	}
+	
+	@Test
+	public void editAMovieUrl(){
+		try{
+			
+			final PostCrudCommand cmd = new PostCrudCommand();
+			
+			String pubYear = "1901";
+			cmd.setPostId("874D1519-B45D-46F6-9FA9-DE7ABC050C33");
+			cmd.setAction(PostActionType.UPDATE);
+			String url = "http://www.google.com/";
+			cmd.setUrl(url);
+			
+			beginSession();
+			Post postBefore = PostDao.loadPost(cmd.getPostId());
+			Persistence.commit();
+			
+			PostCrudCommandExecutor cmdexec = (PostCrudCommandExecutor)CommandExecutorFactory.createExecutor(Helpers.personIdAdmin,cmd);
+			
+			beginSession();
+			cmdexec.update(cmd);
+			
+			Post post = PostDao.loadPost(cmd.getPostId());
+			
+			assertEquals("Url not properly updated",url,post.getUrl());
 			//commit();
 		}
 		catch(Exception e){
