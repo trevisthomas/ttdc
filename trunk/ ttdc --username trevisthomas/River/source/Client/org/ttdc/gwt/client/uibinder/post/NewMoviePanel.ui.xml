@@ -1,0 +1,32 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<!-- The above doctype is to allow for special html characters in this xml file -->
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+	<g:HTMLPanel>
+		<table>
+			<tr>
+				<td>Title</td>
+				<td><g:TextBox ui:field="titleElement"/></td>
+			</tr>
+			<tr>
+				<td>Release Year</td>
+				<td><g:TextBox ui:field="releaseYearElement"/></td>
+			</tr>
+			<tr>
+				<td>Imdb URL</td>
+				<td><g:TextBox ui:field="imdbUrlElement"/></td>
+			</tr>
+			<tr>
+				<td>Poster URL</td>
+				<td><g:TextBox ui:field="posterUrlElement"/></td>
+			</tr>
+			<tr>
+				<td colspan="2">
+				<g:Button ui:field="createButtonElement"/>
+				<g:Button ui:field="editButtonElement"/>
+				<g:Button ui:field="cancelButtonElement"/>
+				</td>
+			</tr>
+		</table>
+	</g:HTMLPanel>
+</ui:UiBinder>

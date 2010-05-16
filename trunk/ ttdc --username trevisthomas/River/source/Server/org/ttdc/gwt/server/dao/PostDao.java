@@ -55,20 +55,35 @@ final public class PostDao {
 	private Post createMoviePost() {
 		validateParamsForMovie();
 		
-		ImageDataDao imageDataDao = new ImageDataDao(creator);
-		String compressedTitle = getTitle().getValue().replace(" ", "");
-		ImageFull imageFull = imageDataDao.createImage(getImageUrl(), compressedTitle);
-		session().save(imageFull);
+		ImageFull imageFull = createFullImage(getTitle().getValue());
 		
 		Post post = buildPost();
+		
+		setBody("");
+		Entry entry = buildEntry(post);
+		post.addEntry(entry);
+		post.setLatestEntry(entry);
 		session().flush();
 		
-		Image image = ImageDao.loadImage(imageFull.getImageId());
-		post.setImage(image);
+		addImageToPost(imageFull, post);
 		session().update(post);
 		return post;
 	}
 
+	private void addImageToPost(ImageFull imageFull, Post post) {
+		Image image = ImageDao.loadImage(imageFull.getImageId());
+		post.setImage(image);
+	}
+
+	private ImageFull createFullImage(String title) {
+		ImageDataDao imageDataDao = new ImageDataDao(creator);
+		String compressedTitle = title.replace(" ", "");
+		ImageFull imageFull = imageDataDao.createImage(getImageUrl(), compressedTitle);
+		session().save(imageFull);
+		return imageFull;
+	}
+
+	
 	private void validateParamsForMovie() {
 		if(titleTag == null){
 			throw new RuntimeException("Title is required for movies.");
@@ -85,9 +100,7 @@ final public class PostDao {
 	}
 
 	private Post createTraditionalPost() {
-		if(StringUtils.isEmpty(body)){
-			throw new RuntimeException("A Post cannot be created without content.");
-		}
+		validateParams();
 		
 		Post post = buildPost();
 		Entry entry = buildEntry(post);
@@ -96,6 +109,12 @@ final public class PostDao {
 		
 		session().flush();
 		return post;
+	}
+
+	private void validateParams() {
+		if(StringUtils.isEmpty(body)){
+			throw new RuntimeException("A Post cannot be created without content.");
+		}
 	}
 
 	private Entry buildEntry(Post post) {
@@ -116,10 +135,25 @@ final public class PostDao {
 	
 	public Post update(){
 		Post post = loadPost(getPostId());
-		Entry entry = buildEntry(post);
-		post.addEntry(entry);
-		post.setLatestEntry(entry);
-		post.setEditDate(entry.getDate());
+		if(StringUtil.notEmpty(getBody())){
+			Entry entry = buildEntry(post);
+			post.addEntry(entry);
+			post.setLatestEntry(entry);
+			post.setEditDate(entry.getDate());
+		}
+		if(titleTag != null)
+			post.setTitleTag(titleTag);
+		if(publishYear != null)
+			post.setPublishYear(publishYear);
+		if(StringUtil.notEmpty(url))
+			post.setUrl(url);
+		ImageFull imageFull = null;
+		if(StringUtil.notEmpty(imageUrl)){
+			imageFull = createFullImage(post.getTitle());
+			addImageToPost(imageFull, post);
+		}
+		
+		session().update(post);
 		session().flush();
 		return post;
 	}
