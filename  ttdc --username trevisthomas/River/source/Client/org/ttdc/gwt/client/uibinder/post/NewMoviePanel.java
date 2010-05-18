@@ -31,11 +31,13 @@ public class NewMoviePanel extends Composite{
     @UiField (provided=true) TextBox releaseYearElement;
     @UiField (provided=true) TextBox imdbUrlElement;
     @UiField (provided=true) TextBox posterUrlElement;
-    @UiField (provided=true) Button createButtonElement = new Button("Create");
-    @UiField (provided=true) Button cancelButtonElement = new Button("Cancel");
-    @UiField (provided=true) Button editButtonElement = new Button("Edit");
+    @UiField (provided=true) Button createButtonElement;
+    @UiField (provided=true) Button cancelButtonElement;
+    @UiField (provided=true) Button editButtonElement;
     
     private String originalImageName = "";
+    private GPost post;
+    private PostActionType mode;
     
     @Inject
     public NewMoviePanel(Injector injector) { 
@@ -45,20 +47,33 @@ public class NewMoviePanel extends Composite{
     	releaseYearElement = new TextBox();
     	imdbUrlElement = new TextBox();
     	posterUrlElement = new TextBox();
-//    	createButtonElement = 
-//    	cancelButtonElement = new Button("Cancel");
-//    	editButtonElement = new Button("Edit");
+    	createButtonElement = new Button("Create");
+    	cancelButtonElement = new Button("Cancel");
+    	editButtonElement = new Button("Edit");
     	
     	initWidget(binder.createAndBindUi(this)); 
 	}
     
     public void init(){
-    	
+    	mode = PostActionType.CREATE;
+    	editButtonElement.setVisible(false);
+    	createButtonElement.setVisible(true);
     }
     
     public void init(GPost post){
     	//Init for edit mode
+    	mode = PostActionType.UPDATE;
+    	editButtonElement.setVisible(true);
+    	createButtonElement.setVisible(false);
     	originalImageName = post.getImage().getName();
+    	
+    	titleElement.setText(post.getTitle());
+    	releaseYearElement.setText(post.getPublishYear().toString());
+    	imdbUrlElement.setText(post.getUrl());
+    	if(post.getImage() != null)
+    		posterUrlElement.setText(post.getImage().getName());
+    	
+    	this.post = post;
     }
     
     @UiHandler("createButtonElement")
@@ -73,15 +88,19 @@ public class NewMoviePanel extends Composite{
     
     @UiHandler("editButtonElement")
     void editClickHandler(ClickEvent handler){
-    	
+    	createPost();
     }
     
     private void createPost() {
 		PostCrudCommand cmd = new PostCrudCommand();
-		cmd.setAction(PostActionType.CREATE);
+		cmd.setAction(mode);
 		cmd.setConnectionId(ConnectionId.getInstance().getConnectionId());
 		
 		cmd.setMovie(true);
+		
+		if(post != null){
+			cmd.setPostId(post.getPostId());
+		}
 		if(!originalImageName.equals(posterUrlElement.getText())){
 			cmd.setImageUrl(posterUrlElement.getText());
 		}
@@ -101,6 +120,31 @@ public class NewMoviePanel extends Composite{
 		injector.getService().execute(cmd,callback);
 		
 	}
+    
+//    private void editPost(){
+//    	PostCrudCommand cmd = new PostCrudCommand();
+//		cmd.setAction(PostActionType.UPDATE);
+//		cmd.setConnectionId(ConnectionId.getInstance().getConnectionId());
+//		cmd.setMovie(true);
+//		if(!originalImageName.equals(posterUrlElement.getText())){
+//			cmd.setImageUrl(posterUrlElement.getText());
+//		}
+//		else{
+//			cmd.setImageUrl(null);
+//		}
+//		cmd.setUrl(imdbUrlElement.getText());
+//		cmd.setYear(releaseYearElement.getText());
+//		cmd.setTitle(titleElement.getText());
+//		
+////		cmd.setLogin(login)
+////		cmd.setPassword(password)
+//		
+//		
+//		CommandResultCallback<PostCommandResult> callback = buildCreatePostCallback();
+//		
+//		injector.getService().execute(cmd,callback);
+//		
+//    }
 
 	private CommandResultCallback<PostCommandResult> buildCreatePostCallback() {
 		CommandResultCallback<PostCommandResult> callback = new CommandResultCallback<PostCommandResult>(){

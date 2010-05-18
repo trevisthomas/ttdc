@@ -1155,7 +1155,7 @@ public class PostCrudCommandExecutorTest {
 			Post post = PostDao.loadPost(cmd.getPostId());
 			
 		
-			assertEquals("CrazyHeart_2.jpg",post.getImage().getName());
+			assertEquals("CrazyHeart_000.jpg",post.getImage().getName());
 			//commit();
 		}
 		catch(Exception e){
