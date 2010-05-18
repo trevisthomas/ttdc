@@ -69,12 +69,18 @@ abstract public class PostBaseComposite extends Composite{
 		optionsPanel.addEditClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				showEditCommentEditor();
+				if(post.isMovie()){
+					showMovieEditor();
+				}
+				else{
+					showEditCommentEditor();
+				}
 			}
 
 			
 		});
 	}
+	
 	
 	public void processRemoveRatingRequest() {
 		RpcServiceAsync service = injector.getService();
@@ -118,6 +124,14 @@ abstract public class PostBaseComposite extends Composite{
 		commentElement.clear();
 		commentElement.add(commentPresneter.getWidget());
 	}
+	
+	protected void showMovieEditor() {
+		commentElement.clear();
+		NewMoviePanel newMoviePanel = injector.createNewMoviePanel();
+		newMoviePanel.init(post);
+		commentElement.add(newMoviePanel);
+	}
+
 	
 	private void showEditCommentEditor() {
 		NewCommentPresenter commentPresneter = injector.getNewCommentPresenter();

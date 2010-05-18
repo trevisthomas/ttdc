@@ -113,7 +113,6 @@ public class Home2Presenter extends BasePagePresenter<Home2Presenter.View> imple
 				conversationPresenter.refresh();
 			if(flatPresenter != null)
 				flatPresenter.refresh();
-			
 		}
 	}
 
