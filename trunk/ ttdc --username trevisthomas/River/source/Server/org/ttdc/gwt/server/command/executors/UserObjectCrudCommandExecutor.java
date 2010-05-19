@@ -5,6 +5,7 @@ import static org.ttdc.persistence.Persistence.commit;
 import static org.ttdc.persistence.Persistence.rollback;
 
 import org.ttdc.gwt.client.beans.GUserObject;
+import org.ttdc.gwt.client.constants.UserObjectConstants;
 import org.ttdc.gwt.client.services.CommandResult;
 import org.ttdc.gwt.server.beanconverters.FastPostBeanConverter;
 import org.ttdc.gwt.server.command.CommandExecutor;
@@ -62,14 +63,24 @@ public class UserObjectCrudCommandExecutor extends CommandExecutor<GenericComman
 	 * A word of warning, this method is exclusively for creating userobject template based user 
 	 * objects. You'll need to make changes to create other kinds of uo's
 	 * 
+	 * 5/18 - modifying to handle other types
+	 * 
 	 * @param cmd
 	 * @param person
 	 * @return
 	 */
 	private GenericCommandResult<GUserObject> createUserObject(UserObjectCrudCommand cmd, Person person) {
-		UserObjectTemplate template = UserObjectTemplateDao.load(cmd.getTemplateId());
-		//validate url pattern here or on client, probably client huh?
-		UserObject uo = UserObjectDao.createWebLinkFromTemplate(person, template, cmd.getValue());
+		UserObject uo = null;
+		if(UserObjectConstants.TYPE_WEBPAGE.equals(cmd.getType())){
+			UserObjectTemplate template = UserObjectTemplateDao.load(cmd.getTemplateId());
+			//validate url pattern here or on client, probably client huh?
+			uo = UserObjectDao.createWebLinkFromTemplate(person, template, cmd.getValue());
+		}
+		else if(UserObjectConstants.TYPE_FILTER_THREAD.equals(cmd.getType())){
+			uo = UserObjectDao.createThreadFilter(person, cmd.getValue());
+		}
+		if(uo == null)
+			throw new RuntimeException("User object was not created.  Code may not be prepared to handle requested type.");
 		return createResultsObject(uo);
 	}
 

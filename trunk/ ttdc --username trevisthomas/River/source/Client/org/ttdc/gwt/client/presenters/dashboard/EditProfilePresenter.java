@@ -6,6 +6,7 @@ import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.beans.GUserObject;
 import org.ttdc.gwt.client.beans.GUserObjectTemplate;
+import org.ttdc.gwt.client.constants.UserObjectConstants;
 import org.ttdc.gwt.client.constants.UserObjectTemplateConstants;
 import org.ttdc.gwt.client.messaging.EventBus;
 import org.ttdc.gwt.client.messaging.person.PersonEvent;
@@ -126,6 +127,7 @@ public class EditProfilePresenter extends BasePresenter<EditProfilePresenter.Vie
 			public void onClick(ClickEvent event) {
 				UserObjectCrudCommand cmd = new UserObjectCrudCommand();
 				cmd.setAction(ActionType.CREATE);
+				cmd.setType(UserObjectConstants.TYPE_WEBPAGE);
 				cmd.setTemplateId(view.getSelectedWebLinkTemplate());
 				cmd.setValue(view.webLinkUrlText().getText());
 				injector.getService().execute(cmd, buildAddWebLinkCallback());

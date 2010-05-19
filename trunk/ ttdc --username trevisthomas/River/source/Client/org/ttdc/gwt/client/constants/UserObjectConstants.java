@@ -5,6 +5,7 @@ public class UserObjectConstants {
 	public final static String TYPE_WEBPAGE = "WEBPAGE"; //For links to other user pages. Personal sites, facebook, myspace whatever.
 	public final static String TYPE_WIDGET = "WIDGET"; //For personal widget choices.
 	public final static String TYPE_FILTER_TAG = "FILTER_TAG"; //For filtering items with this tag
+	public final static String TYPE_FILTER_THREAD = "FILTER_THREAD"; //For posts from the front page that are in this tag
 	
 	public final static String TYPE_ENABLE_NWS = "ENABLE_NWS"; //When this UO is present nws content is shown to this user
 	public final static String TYPE_FRONTPAGE_MODE = "FRONT_PAGE_MODE"; //When this UO is present nws content is shown to this user

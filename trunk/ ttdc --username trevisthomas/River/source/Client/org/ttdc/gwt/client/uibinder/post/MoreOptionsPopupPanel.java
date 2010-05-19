@@ -28,6 +28,9 @@ public class MoreOptionsPopupPanel extends PopupPanel{
     @UiField Anchor ratingElement;
     @UiField Anchor unRateElement;
     @UiField Anchor editElement;
+    @UiField Anchor muteThreadElement;
+    @UiField Anchor unMuteThreadElement;
+    
     
     @Inject
     public MoreOptionsPopupPanel(Injector injector) { 
@@ -43,6 +46,8 @@ public class MoreOptionsPopupPanel extends PopupPanel{
     	ratingElement.setVisible(false);
     	unRateElement.setVisible(false);
     	editElement.setVisible(false);
+    	muteThreadElement.setVisible(false);
+    	unMuteThreadElement.setVisible(false);
     	if(user.hasPrivilege(PrivilegeConstants.VOTER) || user.isAdministrator()){
     		if(post.isRatable()){
     			if(post.getRatingByPerson(user.getPersonId()) == null)
@@ -50,6 +55,15 @@ public class MoreOptionsPopupPanel extends PopupPanel{
     			else
     				unRateElement.setVisible(true);
     		}
+    	}
+    	
+    	if(!user.isAnonymous()){
+    		if(user.isThreadFiltered(post.getRoot().getPostId())){
+        		unMuteThreadElement.setVisible(true);
+        	}
+        	else {
+        		muteThreadElement.setVisible(true);
+        	}
     	}
     	
     	if(user.isAdministrator() || (user.equals(post.getCreator()) && post.isInEditWindow())){
@@ -73,6 +87,14 @@ public class MoreOptionsPopupPanel extends PopupPanel{
     	editElement.addClickHandler(handler);
     }
     
+    public void addMuteThreadClickHandler(ClickHandler handler){
+    	muteThreadElement.addClickHandler(handler);
+    }
+    
+    public void addUnMuteThreadClickHandler(ClickHandler handler){
+    	unMuteThreadElement.addClickHandler(handler);
+    }
+    
     @UiHandler("ratingElement")
     void onClickRating(ClickEvent event){
     	hide();
@@ -94,10 +116,11 @@ public class MoreOptionsPopupPanel extends PopupPanel{
     	hide();
     }    
     
-    @UiHandler("editElement")
+    @UiHandler(value={"editElement","unMuteThreadElement","muteThreadElement"})
     void onClickEdit(ClickEvent event){
     	hide();
     }
+    
 
     public void showRelativeTo(Widget source){
     	int left = source.getAbsoluteLeft() + 10;

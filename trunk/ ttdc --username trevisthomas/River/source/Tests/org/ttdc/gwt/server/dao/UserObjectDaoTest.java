@@ -21,6 +21,13 @@ public class UserObjectDaoTest {
 		return false;
 	}
 	
+	boolean hasThreadIdFilter(Person p, String tagId){
+		for(UserObject uo : p.getThreadFilterUserObjects()){
+			if(uo.getValue().equals(tagId)) return true;
+		}
+		return false;
+	}
+	
 	@Test
 	public void testCreateAndDelete(){
 		try{
@@ -31,6 +38,27 @@ public class UserObjectDaoTest {
 			assertTrue(hasTagIdFilter(person,Helpers.tagApril));
 			UserObjectDao.delete(uo.getObjectId());
 			assertTrue(!hasTagIdFilter(person,Helpers.tagApril));
+		}
+		catch (Exception e) {
+			rollback();
+			fail(e.toString());
+		}
+		finally{
+			commit();
+		}
+	}
+	
+	@Test
+	public void testCreateAndDeleteThreadFilter(){
+		try{
+			beginSession();
+			Person person = PersonDao.loadPerson(Helpers.personIdCSam);
+			assertTrue(!hasThreadIdFilter(person, Helpers.tagCorporateGoodness));
+			UserObject uo = UserObjectDao.createThreadFilter(person, Helpers.tagCorporateGoodness);
+			assertTrue(hasThreadIdFilter(person,Helpers.tagCorporateGoodness));
+			//UserObjectDao.delete(uo.getObjectId());
+			UserObjectDao.removeThreadFilter(person, Helpers.tagCorporateGoodness);
+			assertTrue(!hasThreadIdFilter(person,Helpers.tagCorporateGoodness));
 		}
 		catch (Exception e) {
 			rollback();
