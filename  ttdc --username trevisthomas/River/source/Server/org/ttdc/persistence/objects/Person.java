@@ -498,6 +498,17 @@ public class Person implements HasGuid{
 		return list;
 	}
 	
+	@Transient
+	public List<UserObject> getThreadFilterUserObjects(){
+		List<UserObject> list = new ArrayList<UserObject>();
+		for(UserObject uo : getObjects()){
+			if(UserObject.TYPE_FILTER_THREAD.equals(uo.getType()))
+				list.add(uo);
+		}
+		return list;
+	}
+	
+	
 	
 	/**
 	 * retrieves the lits of tag id's that this user has filtered out

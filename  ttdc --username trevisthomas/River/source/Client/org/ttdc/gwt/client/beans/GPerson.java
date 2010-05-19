@@ -196,6 +196,15 @@ public class GPerson extends GBase{
 		return list;
 	}
 	
+	public List<GUserObject> getUserObjects(String type){
+		List<GUserObject> list = new ArrayList<GUserObject>();
+		for(GUserObject uo : getObjects()){
+			if(type.equals(uo.getType()))
+				list.add(uo);
+		}
+		return list;
+	}
+	
 	public boolean hasObject(String type){
 		return getObjectType(type) != null;
 	}
@@ -211,5 +220,15 @@ public class GPerson extends GBase{
 				return object;
 		}
 		return null;
+	}
+	
+	//Helper method for testing if a thread is muted by a user.
+	public boolean isThreadFiltered(String threadId){
+		List<GUserObject> threadFilters = getUserObjects(UserObjectConstants.TYPE_FILTER_THREAD);
+		for(GUserObject uo : threadFilters){
+			if(uo.getValue().equals(threadId))
+				return true;
+		}
+		return false;
 	}
 }

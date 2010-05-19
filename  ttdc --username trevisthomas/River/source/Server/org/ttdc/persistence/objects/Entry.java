@@ -351,12 +351,14 @@ import org.ttdc.gwt.shared.util.PostFlagBitmasks;
 			
 	// Latest Post		
 	@NamedQuery(name="LatestPostsDao.Nested", query="" +
-		"SELECT post FROM Post post WHERE post.threadReplyDate IS NOT NULL " +
+		"SELECT post FROM Post post WHERE post.threadReplyDate IS NOT NULL AND " +
+		"post.root.postId NOT IN (:threadIds)" +
 		"AND bitwise_and( post.metaMask, :filterMask ) = 0 "+
 		"ORDER BY post.threadReplyDate DESC"),
 		
 	@NamedQuery(name="LatestPostsDao.NestedCount", query="" +
 		"SELECT count(post.postId) FROM Post post WHERE post.threadReplyDate IS NOT NULL " +
+		"AND post.root.postId NOT IN (:threadIds)" +
 		"AND bitwise_and( post.metaMask, :filterMask ) = 0 "),	
 
 	@NamedQuery(name="LatestPostsDao.RepliesInThreads", query="" +
@@ -367,34 +369,40 @@ import org.ttdc.gwt.shared.util.PostFlagBitmasks;
 
 	@NamedQuery(name="LatestPostsDao.Flat", query="" +
 		"SELECT post FROM Post post " +
-		"WHERE bitwise_and( post.metaMask, :filterMask ) = 0  " +
+		"WHERE post.root.postId NOT IN (:threadIds) " +
+		"AND bitwise_and( post.metaMask, :filterMask ) = 0  " +
 		"AND post.parent is not null "+
 		"ORDER BY post.date DESC"),
 		
 	@NamedQuery(name="LatestPostsDao.FlatCount", query="" +
 		"SELECT count(post.postId) FROM Post post " +
-		"WHERE bitwise_and( post.metaMask, :filterMask ) = 0 "),	
+		"WHERE post.root.postId NOT IN (:threadIds) AND " +
+		"bitwise_and( post.metaMask, :filterMask ) = 0" ),	
 			
 	@NamedQuery(name="LatestPostsDao.Threads", query="" +
 		"SELECT post FROM Post post " +
-		"WHERE post.parent.postId IS NULL " +
+		"WHERE post.root.postId NOT IN (:threadIds) " +
+		"AND post.parent.postId IS NULL " +
 		"AND bitwise_and( post.metaMask, :filterMask ) = 0 "+
 		"ORDER BY post.date DESC"),
 		
 	@NamedQuery(name="LatestPostsDao.ThreadsCount", query="" +
 		"SELECT count(post.postId) FROM Post post " +
-		"WHERE post.parent.postId IS NULL " +
+		"WHERE post.root.postId NOT IN (:threadIds) AND " +
+		"post.parent.postId IS NULL " +
 		"AND bitwise_and( post.metaMask, :filterMask ) = 0 "),	
 			
 	@NamedQuery(name="LatestPostsDao.Conversations", query="" +
 		"SELECT post FROM Post post " +
-		"WHERE post.thread.postId = post.postId " +
+		"WHERE post.root.postId NOT IN (:threadIds) " +
+		"AND post.thread.postId = post.postId " +
 		"AND bitwise_and( post.metaMask, :filterMask ) = 0 "+
 		"ORDER BY post.date DESC"),
 		
 	@NamedQuery(name="LatestPostsDao.ConversationsCount", query="" +
 		"SELECT count(post.postId) FROM Post post " +
-		"WHERE post.thread.postId = post.postId " +
+		"WHERE post.root.postId NOT IN (:threadIds) " +
+		"AND post.thread.postId = post.postId " +
 		"AND bitwise_and( post.metaMask, :filterMask ) = 0 "),
 			
 

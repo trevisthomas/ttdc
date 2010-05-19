@@ -71,6 +71,41 @@ public class UserObjectDao {
 		}
 	}
 	
+	public static List<String> loadFilteredThreadIds(String personId){
+		Person person = PersonDao.loadPerson(personId);
+		List<UserObject> objects = person.getThreadFilterUserObjects();
+		List<String> threadIds = new ArrayList<String>();
+		for(UserObject uo : objects){
+			threadIds.add(uo.getValue());
+		}
+		return threadIds;
+	}
+	
+	public static UserObject createThreadFilter(Person person, String threadId){
+		UserObject uo = new UserObject();
+		uo.setType(UserObject.TYPE_FILTER_THREAD);
+		uo.setValue(threadId);
+		uo.setOwner(person);
+		
+		session().save(uo);
+		session().flush();
+		session().refresh(person);
+		return uo;
+	} 
+	
+	public static void removeThreadFilter(Person person, String threadId){
+		List<UserObject> objects = person.getObjects();
+		
+		for(UserObject uo : objects){
+			if(UserObject.TYPE_FILTER_THREAD.equals(uo.getType()) && uo.getValue().equals(threadId)){
+				session().delete(uo);
+				session().flush();
+				session().refresh(person);
+				break;
+			}
+		}
+	}
+	
 	
 	//This new version only does webpage links.  I'm skipping widget based templates until i decide if 
 	//the new site will have them

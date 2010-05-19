@@ -150,12 +150,16 @@ public class FastPostBeanConverter {
 		//If a post is a movie, get the reviews.  4/19/2010
 		if(p.isMovie()){
 			gPost.setPosts(convertReviewPosts(gPost,p.getPosts()));
+			gPost.setRoot(gPost);
 		}
 		else{
 			if(!p.isRootPost())
 				gPost.setRoot(convertPost(p.getRoot()));
+			else
+				gPost.setRoot(gPost);
 			if(!p.isThreadPost() && !p.isRootPost())
 				gPost.setThread(convertPost(p.getThread()));
+			
 		}
 			
 		Image image = null;
