@@ -14,18 +14,6 @@ public class LatestPostsDao extends FilteredPostPaginatedDaoBase{
 	private int replyMaxResults = DEFAULT_REPLY_MAX_RESULTS;
 	private List<String> filterThreadIds = new ArrayList<String>(); 
 	
-	public List<String> getFilterThreadIds() {
-		return filterThreadIds;
-	}
-
-	public void setFilterThreadIds(List<String> filterThreadIds) {
-		this.filterThreadIds = filterThreadIds;
-	}
-	
-	public void addFilterThreadId(String threadId){
-		this.filterThreadIds.add(threadId);
-	}
-
 	public LatestPostsDao() {
 		filterThreadIds.add("");
 	}
@@ -122,7 +110,17 @@ public class LatestPostsDao extends FilteredPostPaginatedDaoBase{
 		return results;
 	}
 	
+	public List<String> getFilterThreadIds() {
+		return filterThreadIds;
+	}
+
+	public void addFilterThreadIds(List<String> filterThreadIds){
+		this.filterThreadIds.addAll(filterThreadIds);
+	}
 	
+	public void addFilterThreadId(String threadId){
+		this.filterThreadIds.add(threadId);
+	}
 	
 	public int getReplyMaxResults() {
 		return replyMaxResults;

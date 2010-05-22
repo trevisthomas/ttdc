@@ -3,6 +3,7 @@ package org.ttdc.gwt.client.presenters.dashboard;
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.beans.GUserObject;
+import org.ttdc.gwt.client.constants.UserObjectConstants;
 import org.ttdc.gwt.client.messaging.ConnectionId;
 import org.ttdc.gwt.client.messaging.EventBus;
 import org.ttdc.gwt.client.messaging.person.PersonEvent;
@@ -55,6 +56,7 @@ public class RemovableWebLinkPresenter extends BasePresenter<RemovableWebLinkPre
 			@Override
 			public void onClick(ClickEvent event) {
 				UserObjectCrudCommand cmd = new UserObjectCrudCommand();
+				cmd.setType(UserObjectConstants.TYPE_WEBPAGE);
 				cmd.setAction(ActionType.DELETE);
 				cmd.setObjectId(uo.getObjectId());
 				injector.getService().execute(cmd, buildDeleteWebLinkCallback());				

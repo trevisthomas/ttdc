@@ -510,18 +510,21 @@ public class Person implements HasGuid{
 	
 	
 	
-	/**
-	 * retrieves the lits of tag id's that this user has filtered out
-	 * 
-	 * @return
-	 */
 	@Transient
-	public List<String> getFilteredTagIds(){
-		throw new RuntimeException("Users cant filter on tags yet. Please implement");
+	public List<String> getFrontPageFilteredThreadIds(){
+		List<String> list = new ArrayList<String>();
+		for(UserObject uo : getObjects()){
+			if(UserObject.TYPE_FILTER_THREAD.equals(uo.getType()))
+				list.add(uo.getValue());
+		}
+		return list;
 	}
 	
+	///TREVIS I DONT THINK THAT THIS WORKS! 
 	/**
 	 * Get Front Page filtered TagId's
+	 * 
+	 * 
 	 * @return
 	 */
 	@Transient

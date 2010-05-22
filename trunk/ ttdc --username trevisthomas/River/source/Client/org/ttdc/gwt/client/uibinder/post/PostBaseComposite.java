@@ -4,16 +4,27 @@ import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GAssociationPostTag;
 import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.beans.GPost;
+import org.ttdc.gwt.client.beans.GUserObject;
+import org.ttdc.gwt.client.constants.UserObjectConstants;
 import org.ttdc.gwt.client.messaging.ConnectionId;
+import org.ttdc.gwt.client.messaging.EventBus;
+import org.ttdc.gwt.client.messaging.post.PostEvent;
+import org.ttdc.gwt.client.messaging.post.PostEventType;
 import org.ttdc.gwt.client.presenters.comments.NewCommentPresenter;
 import org.ttdc.gwt.client.presenters.movies.MovieRatingPresenter;
 import org.ttdc.gwt.client.services.RpcServiceAsync;
 import org.ttdc.gwt.shared.commands.AssociationPostTagCommand;
+import org.ttdc.gwt.shared.commands.CommandResultCallback;
+import org.ttdc.gwt.shared.commands.UserObjectCrudCommand;
 import org.ttdc.gwt.shared.commands.AssociationPostTagCommand.Mode;
+import org.ttdc.gwt.shared.commands.results.GenericCommandResult;
+import org.ttdc.gwt.shared.commands.results.TopicCommandResult;
+import org.ttdc.gwt.shared.commands.types.ActionType;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
@@ -76,12 +87,53 @@ abstract public class PostBaseComposite extends Composite{
 					showEditCommentEditor();
 				}
 			}
-
-			
+		});
+		
+		optionsPanel.addMuteThreadClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				processMuteThreadRequest();
+			}
+		});
+		
+		optionsPanel.addUnMuteThreadClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				processUnMuteThreadRequest();
+			}
 		});
 	}
 	
 	
+	protected void processUnMuteThreadRequest() {
+		UserObjectCrudCommand cmd = new UserObjectCrudCommand();
+		cmd.setType(UserObjectConstants.TYPE_FILTER_THREAD);
+		cmd.setAction(ActionType.DELETE);
+		cmd.setValue(post.getRoot().getPostId());
+		
+		injector.getService().execute(cmd, createRefreshPageCallback());
+	}
+
+	protected void processMuteThreadRequest() {
+		UserObjectCrudCommand cmd = new UserObjectCrudCommand();
+		cmd.setType(UserObjectConstants.TYPE_FILTER_THREAD);
+		cmd.setAction(ActionType.CREATE);
+		cmd.setValue(post.getRoot().getPostId());
+		
+		injector.getService().execute(cmd,createRefreshPageCallback());
+	}
+
+	private CommandResultCallback<GenericCommandResult<GUserObject>> createRefreshPageCallback() {
+		return new CommandResultCallback<GenericCommandResult<GUserObject>>(){
+				@Override
+				public void onSuccess(
+						GenericCommandResult<GUserObject> result) {
+					PostEvent event = new PostEvent(PostEventType.NEW_FORCE_REFRESH, post);
+					EventBus.fireEvent(event);
+				}
+			};
+	}
+
 	public void processRemoveRatingRequest() {
 		RpcServiceAsync service = injector.getService();
 		//AssociationPostTagCommand cmd = AssociationPostTagCommand.createTagCommand(tag, post.getPostId());

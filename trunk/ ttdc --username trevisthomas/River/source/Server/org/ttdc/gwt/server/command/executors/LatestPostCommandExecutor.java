@@ -65,6 +65,7 @@ public class LatestPostCommandExecutor extends CommandExecutor<PaginatedListComm
 			dao.addFlagFilter(PostFlag.PRIVATE);
 		}
 		
+		dao.addFilterThreadIds(p.getFrontPageFilteredThreadIds());
 		return dao;
 	}
 
