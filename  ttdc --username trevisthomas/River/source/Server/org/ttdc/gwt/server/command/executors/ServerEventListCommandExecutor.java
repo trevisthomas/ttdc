@@ -10,6 +10,7 @@ import org.ttdc.gwt.server.beanconverters.FastPostBeanConverter;
 import org.ttdc.gwt.server.command.CommandExecutor;
 import org.ttdc.gwt.shared.commands.ServerEventListCommand;
 import org.ttdc.gwt.shared.commands.results.ServerEventCommandResult;
+import org.ttdc.persistence.Persistence;
 
 public class ServerEventListCommandExecutor extends CommandExecutor<ServerEventCommandResult>{
 	@Override
@@ -20,8 +21,9 @@ public class ServerEventListCommandExecutor extends CommandExecutor<ServerEventC
 		String connectionId = command.getConnectionId();
 		
 		events = ServerEventBroadcaster.getInstance().fetchMissedEvents(connectionId);
-		
+		Persistence.beginSession();
 		GPerson person = FastPostBeanConverter.convertPerson(getPerson());
+		Persistence.commit();
 		ServerEventCommandResult result = new ServerEventCommandResult(events, person);
 		
 		return result;

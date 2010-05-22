@@ -50,7 +50,15 @@ public class UserObjectCrudCommandExecutor extends CommandExecutor<GenericComman
 	}
 
 	private GenericCommandResult<GUserObject> deletePrivilege(UserObjectCrudCommand cmd) {
-		UserObjectDao.delete(cmd.getObjectId());
+		if(UserObjectConstants.TYPE_WEBPAGE.equals(cmd.getType())){
+			UserObjectDao.delete(cmd.getObjectId());
+		}
+		else if(UserObjectConstants.TYPE_FILTER_THREAD.equals(cmd.getType())){
+			UserObjectDao.removeThreadFilter(getPerson(), cmd.getValue());
+		}
+		else{
+			throw new RuntimeException("Command is not properly formed.");
+		}
 		return new GenericCommandResult<GUserObject>(null,"User object deleted.");
 	}
 

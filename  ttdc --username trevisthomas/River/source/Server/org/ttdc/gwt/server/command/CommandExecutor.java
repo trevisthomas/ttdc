@@ -11,20 +11,31 @@ import org.ttdc.persistence.objects.Person;
 abstract public class CommandExecutor<T extends CommandResult> {
 	private final static Logger log = Logger.getLogger(CommandExecutor.class);
 	private Command<T> command;
-	private Person person;
+	//private Person person;
+	private String personId;
 	
 	final public void initialize(String personId, Command<T> command){
-		Persistence.beginSession();
-		if(personId != null)
-			person = PersonDao.loadPerson(personId);
-		else
-			person = InitConstants.ANONYMOUS;
-		Persistence.commit();
+		this.personId = personId;
+//		Persistence.beginSession();
+//		if(personId != null)
+//			person = PersonDao.loadPerson(personId);
+//		else
+//			person = InitConstants.ANONYMOUS;
+//		Persistence.commit();
 		
 		this.command = command; 
 	}
 	
+	final protected String getPersonId(){
+		return personId;
+	}
+	
 	final public Person getPerson(){
+		Person person;
+		if(personId != null)
+			person = PersonDao.loadPerson(personId);
+		else
+			person = InitConstants.ANONYMOUS;
 		return person;
 	}
 	final protected Command<T> getCommand(){
