@@ -3,6 +3,7 @@ package org.ttdc.gwt.client.presenters.home;
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.presenters.post.PostCollectionPresenter;
+import org.ttdc.gwt.client.presenters.post.PostPresenter.Mode;
 import org.ttdc.gwt.client.presenters.shared.BasePresenter;
 import org.ttdc.gwt.client.presenters.shared.BaseView;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
@@ -58,7 +59,7 @@ public class FlatPresenter extends BasePresenter<FlatPresenter.View>{
 	
 	private void showResult(PaginatedListCommandResult<GPost> result) {
 		PaginatedList<GPost> results = result.getResults();
-		postCollection.setPostList(results.getList());
+		postCollection.setPostList(results.getList(), Mode.FLAT);
 		view.postPanel().clear();
 		view.postPanel().add(postCollection.getWidget());
 	}

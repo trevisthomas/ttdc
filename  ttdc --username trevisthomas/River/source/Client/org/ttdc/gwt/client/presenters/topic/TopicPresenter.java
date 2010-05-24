@@ -1,18 +1,24 @@
 package org.ttdc.gwt.client.presenters.topic;
 
 import org.ttdc.gwt.client.Injector;
+import org.ttdc.gwt.client.beans.GPost;
+import org.ttdc.gwt.client.messaging.EventBus;
 import org.ttdc.gwt.client.messaging.history.HistoryConstants;
 import org.ttdc.gwt.client.messaging.history.HistoryToken;
+import org.ttdc.gwt.client.messaging.post.PostEvent;
+import org.ttdc.gwt.client.messaging.post.PostEventListener;
+import org.ttdc.gwt.client.messaging.post.PostEventType;
 import org.ttdc.gwt.client.presenters.shared.BasePagePresenter;
 import org.ttdc.gwt.client.presenters.shared.BasePageView;
 
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.inject.Inject;
 
-public class TopicPresenter extends BasePagePresenter<TopicPresenter.View>{
+public class TopicPresenter extends BasePagePresenter<TopicPresenter.View> implements PostEventListener{
 	@Inject
 	public TopicPresenter(Injector injector) {
 		super(injector, injector.getTopicView());
+		EventBus.getInstance().addListener(this);
 	}
 
 	public interface View extends BasePageView{
@@ -68,5 +74,21 @@ public class TopicPresenter extends BasePagePresenter<TopicPresenter.View>{
 		flatPresenter.init(token);
 		view.topicTarget().add(flatPresenter.getWidget());
 		view.show();
+	}
+
+	@Override
+	public void onPostEvent(PostEvent postEvent) {
+		if(postEvent.is(PostEventType.NEW_FORCE_REFRESH)){
+			EventBus.reload();
+		}
+		else if(postEvent.is(PostEventType.NEW)){
+			//This is a bit hacky... i'm just gonna refresh everything for now
+			//GPost gPost = postEvent.getSource();
+			//if(postEvent.getSource().equals(post))
+			//Trevis, figure out a way to determine what post this thread is showing!!! 
+			//This implementation will refresh for any new post!
+			EventBus.reload();
+		}
+		
 	}
 }

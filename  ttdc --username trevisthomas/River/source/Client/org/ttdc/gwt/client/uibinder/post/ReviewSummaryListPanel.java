@@ -11,7 +11,6 @@ import org.ttdc.gwt.client.messaging.EventBus;
 import org.ttdc.gwt.client.messaging.post.PostEvent;
 import org.ttdc.gwt.client.messaging.post.PostEventListener;
 import org.ttdc.gwt.client.messaging.post.PostEventType;
-import org.ttdc.gwt.client.presenters.comments.NewCommentPresenter;
 import org.ttdc.gwt.client.presenters.movies.MovieRatingPresenter;
 import org.ttdc.gwt.client.presenters.post.PostCollectionPresenter;
 import org.ttdc.gwt.client.presenters.shared.DatePresenter;
@@ -20,20 +19,19 @@ import org.ttdc.gwt.client.presenters.shared.ImagePresenter;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.SpanElement;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
+/**
+ * I think that this class encapsulates a movie.  It shows the review summaries and average rating.
+ *
+ */
 public class ReviewSummaryListPanel extends PostBaseComposite implements PostEventListener{
 	interface MyUiBinder extends UiBinder<Widget, ReviewSummaryListPanel> {}
     private static final MyUiBinder binder = GWT.create(MyUiBinder.class);
