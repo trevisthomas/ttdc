@@ -6,15 +6,19 @@ import static org.ttdc.persistence.Persistence.rollback;
 
 import org.ttdc.gwt.client.beans.GUserObject;
 import org.ttdc.gwt.client.constants.UserObjectConstants;
+import org.ttdc.gwt.client.messaging.post.PostEvent;
 import org.ttdc.gwt.client.services.CommandResult;
+import org.ttdc.gwt.server.activity.ServerEventBroadcaster;
 import org.ttdc.gwt.server.beanconverters.FastPostBeanConverter;
 import org.ttdc.gwt.server.command.CommandExecutor;
 import org.ttdc.gwt.server.dao.PersonDao;
+import org.ttdc.gwt.server.dao.PostDao;
 import org.ttdc.gwt.server.dao.UserObjectDao;
 import org.ttdc.gwt.server.dao.UserObjectTemplateDao;
 import org.ttdc.gwt.shared.commands.UserObjectCrudCommand;
 import org.ttdc.gwt.shared.commands.results.GenericCommandResult;
 import org.ttdc.persistence.objects.Person;
+import org.ttdc.persistence.objects.Post;
 import org.ttdc.persistence.objects.UserObject;
 import org.ttdc.persistence.objects.UserObjectTemplate;
 
@@ -27,7 +31,7 @@ public class UserObjectCrudCommandExecutor extends CommandExecutor<GenericComman
 			beginSession();
 			switch(cmd.getAction()){
 			case DELETE:
-				result = deletePrivilege(cmd);
+				result = removeUserObject(cmd);
 				break;
 			case CREATE:
 				result = createUserObject(cmd,getPerson());
@@ -49,12 +53,14 @@ public class UserObjectCrudCommandExecutor extends CommandExecutor<GenericComman
 		}
 	}
 
-	private GenericCommandResult<GUserObject> deletePrivilege(UserObjectCrudCommand cmd) {
+	private GenericCommandResult<GUserObject> removeUserObject(UserObjectCrudCommand cmd) {
 		if(UserObjectConstants.TYPE_WEBPAGE.equals(cmd.getType())){
 			UserObjectDao.delete(cmd.getObjectId());
 		}
 		else if(UserObjectConstants.TYPE_FILTER_THREAD.equals(cmd.getType())){
 			UserObjectDao.removeThreadFilter(getPerson(), cmd.getValue());
+			
+			//Fire an event notifying interested users that things have changed with the underlying post
 		}
 		else{
 			throw new RuntimeException("Command is not properly formed.");
@@ -85,7 +91,10 @@ public class UserObjectCrudCommandExecutor extends CommandExecutor<GenericComman
 			uo = UserObjectDao.createWebLinkFromTemplate(person, template, cmd.getValue());
 		}
 		else if(UserObjectConstants.TYPE_FILTER_THREAD.equals(cmd.getType())){
-			uo = UserObjectDao.createThreadFilter(person, cmd.getValue());
+			if(!UserObjectDao.loadFilteredThreadIds(person.getPersonId()).contains(cmd.getValue()))
+				uo = UserObjectDao.createThreadFilter(person, cmd.getValue());
+			else
+				uo = null;
 		}
 		if(uo == null)
 			throw new RuntimeException("User object was not created.  Code may not be prepared to handle requested type.");

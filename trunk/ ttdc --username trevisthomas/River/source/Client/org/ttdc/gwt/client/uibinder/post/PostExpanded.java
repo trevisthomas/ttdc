@@ -17,7 +17,12 @@ import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
-
+/**
+ * This is the representation of an expanded reply. Thread roots and 
+ * conversation starters dont use this class
+ * 
+ *
+ */
 public class PostExpanded extends PostBaseComposite{
 	interface MyUiBinder extends UiBinder<Widget, PostExpanded> {}
     private static final MyUiBinder binder = GWT.create(MyUiBinder.class);

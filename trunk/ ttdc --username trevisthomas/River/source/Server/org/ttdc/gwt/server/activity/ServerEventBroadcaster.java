@@ -46,22 +46,32 @@ public class ServerEventBroadcaster {
 	}
 	
 	public List<Event<?,?>> fetchMissedEvents(String connectionId){
-		ServerEventQueue queue = getQueueForConnectionId(connectionId);
-		if(queue == null){
-			throw new RuntimeException("ServerEventBroadcaster not initalized for connection!");			
+		try{
+			ServerEventQueue queue = getQueueForConnectionId(connectionId);
+			if(queue == null){
+				throw new RuntimeException("ServerEventBroadcaster not initalized for connection!");			
+			}
+			//log.debug("Loaded "+queue.getPersonId()+" at connectionId:"+connectionId);
+			queue.setLastAccessed(new Date());
+			return queue.popAllEvents();
 		}
-		//log.debug("Loaded "+queue.getPersonId()+" at connectionId:"+connectionId);
-		queue.setLastAccessed(new Date());
-		return queue.popAllEvents();
+		catch (IllegalArgumentException e) {
+			
+			throw e;
+		}
 	}
 	
 	public void broadcastEvent(Event<?,?> event){
 		Callable<Object> callable = Executors.callable( new BroadcastEventJob(this, event));
 		try {
 			callable.call();
-		} catch (Exception e) {
+		} 
+		
+		catch (Exception e) {
 			log.error(e);
 		}
+		
+		
 	}
 	
 	/**

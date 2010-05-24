@@ -3,6 +3,10 @@ package org.ttdc.gwt.client.uibinder.post;
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GAssociationPostTag;
 import org.ttdc.gwt.client.beans.GPost;
+import org.ttdc.gwt.client.messaging.EventBus;
+import org.ttdc.gwt.client.messaging.post.PostEvent;
+import org.ttdc.gwt.client.messaging.post.PostEventListener;
+import org.ttdc.gwt.client.messaging.post.PostEventType;
 import org.ttdc.gwt.client.presenters.comments.NewCommentPresenter;
 import org.ttdc.gwt.client.presenters.movies.MovieRatingPresenter;
 import org.ttdc.gwt.client.presenters.post.PostCollectionPresenter;
@@ -29,7 +33,12 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
-public class PostPanel extends PostBaseComposite implements PostPresenterCommon{
+/**
+ * 
+ * This class represents conversation starters and thread roots but not movie roots.  Those are custom
+ *
+ */
+public class PostPanel extends PostBaseComposite implements PostPresenterCommon, PostEventListener{
     interface MyUiBinder extends UiBinder<Widget, PostPanel> {}
     private static final MyUiBinder binder = GWT.create(MyUiBinder.class);
     
@@ -58,11 +67,13 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon{
     @UiField(provided = true) Widget postImageElement;
     @UiField(provided = true) Widget ratingElement;
     
+    private Mode mode;
     
     @Inject
-    public PostPanel(Injector injector) { 
+    public PostPanel(Injector injector) {
     	super(injector);
     	this.injector = injector;
+    	
     	creatorAvatorImagePresenter = injector.getImagePresenter();
     	creatorLinkPresenter = injector.getHyperlinkPresenter();
     	postLinkPresenter = injector.getHyperlinkPresenter();
@@ -79,7 +90,8 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon{
     	postImageElement = postImagePresenter.getWidget();
     	ratingElement = averageMovieRatingPresenter.getWidget();
     	
-    	initWidget(binder.createAndBindUi(this)); 
+    	initWidget(binder.createAndBindUi(this));
+    	EventBus.getInstance().addListener(this);
     }
     
     public void setPost(GPost post) {
@@ -88,6 +100,7 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon{
 
 	public void setPost(GPost post, Mode mode) {
 		super.init(post, commentElement);
+		this.mode = mode;
 		this.post = post;
 		bodyElement.setInnerHTML(post.getEntry());
 		
@@ -134,7 +147,7 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon{
 					
 		if(post.getPosts().size() != 0){
 			//postCollectionPresenter = injector.getPostCollectionPresenter();
-			postCollectionPresenter.setPostList(post.getPosts());
+			postCollectionPresenter.setPostList(post.getPosts(), Mode.FLAT);
 			//A post will have only one child widget that widget will be 
 			//a widget containing all of the children
 			//view.getChildWidgetBucket().add(postCollectionPresenter.getWidget());
@@ -195,4 +208,15 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon{
 	public void contractPost() {
 		//hmm, no impl?
 	}
+
+	
+	//Trevis This hasnt really been tested!!
+	@Override
+	public void onPostEvent(PostEvent postEvent) {
+		if(postEvent.is(PostEventType.EDIT) && postEvent.getSource().getPostId().equals(post.getPostId())){
+			setPost(postEvent.getSource(),mode);
+		}
+	}
+	
+	
 }
