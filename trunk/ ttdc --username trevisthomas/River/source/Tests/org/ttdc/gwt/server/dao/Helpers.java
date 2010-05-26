@@ -50,6 +50,7 @@ public class Helpers {
 	public final static String personIdTrevis = "50E7F601-71FD-40BD-9517-9699DDA611D6";
 	public final static String personIdCSam = "32CF168E-2C06-4A80-924C-9C824C1770D7";
 	public final static String personIdAdmin = "3D9871D7-4889-41D1-9E7C-69351C8D022E";
+	public final static String personIdMatt = "B9734648-B7B4-43A0-864C-9D0F6A148420";
 	
 	public static void assertTagged(List<Post> posts, String tagId){
 		for(Post post : posts){

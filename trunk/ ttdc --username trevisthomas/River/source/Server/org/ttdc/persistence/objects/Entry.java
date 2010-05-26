@@ -405,6 +405,23 @@ import org.ttdc.gwt.shared.util.PostFlagBitmasks;
 		"AND post.thread.postId = post.postId " +
 		"AND bitwise_and( post.metaMask, :filterMask ) = 0 "),
 			
+		
+	//Inbox
+		
+		
+	@NamedQuery(name="InboxDao.Flat", query="" +
+				"SELECT post FROM Post post " +
+				"WHERE post.root.postId NOT IN (:threadIds) " +
+				"AND post.date > :startDate " +
+				"AND bitwise_and( post.metaMask, :filterMask ) = 0 "+
+				"ORDER BY post.date DESC"),
+				
+	@NamedQuery(name="InboxDao.FlatCount", query="" +
+				"SELECT count(post.postId) FROM Post post " +
+				"WHERE post.root.postId NOT IN (:threadIds) " +
+				"AND post.date > :startDate " +
+				"AND bitwise_and( post.metaMask, :filterMask ) = 0 "+
+				"ORDER BY post.date DESC"),
 
 	//Movies	 
 	@NamedQuery(name="MovieDao.peopleWithMovieRatings", query="SELECT distinct ass.creator.personId, count(ass.creator.personId) " +
