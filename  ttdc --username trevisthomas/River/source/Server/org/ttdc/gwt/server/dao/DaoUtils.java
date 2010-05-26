@@ -246,4 +246,6 @@ public class DaoUtils {
     	cal.set(Calendar.MILLISECOND, 0);
     	return cal.getTime();
 	}
+	
+	
 }
