@@ -2,7 +2,9 @@ package org.ttdc.gwt.client.uibinder.post;
 
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GAssociationPostTag;
+import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.beans.GPost;
+import org.ttdc.gwt.client.messaging.ConnectionId;
 import org.ttdc.gwt.client.messaging.EventBus;
 import org.ttdc.gwt.client.messaging.post.PostEvent;
 import org.ttdc.gwt.client.messaging.post.PostEventListener;
@@ -29,6 +31,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Hyperlink;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -66,6 +69,7 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
     @UiField(provided = true) Widget repliesElement;
     @UiField(provided = true) Widget postImageElement;
     @UiField(provided = true) Widget ratingElement;
+    @UiField Label postUnReadElement;
     
     private Mode mode;
     
@@ -160,6 +164,12 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 			}
 		}
 		
+		GPerson user = ConnectionId.getInstance().getCurrentUser();
+		if(!user.isAnonymous() && !post.isRead()){
+			postUnReadElement.setVisible(true);
+			postUnReadElement.setText("*");
+			postUnReadElement.addStyleName("tt-alert");
+		}
 		
 	}
 	

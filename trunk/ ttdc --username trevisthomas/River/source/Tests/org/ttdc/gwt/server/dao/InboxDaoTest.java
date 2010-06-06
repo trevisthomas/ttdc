@@ -40,6 +40,20 @@ public class InboxDaoTest {
 			log.info(post.getEntry());	
 		}
 		Persistence.commit();
-		
 	}
+	
+	@Test
+	public void testIsRead(){
+		String randomOldPostId = "00002B66-C3AF-4DE4-BEAA-F3E2378DFD80";
+		String randomNewPostId = "D372A550-A7A4-4B65-BB59-2DE0CA5850B8";
+		Persistence.beginSession();
+		Person person = PersonDao.loadPerson(Helpers.personIdMatt);
+		InboxDao dao = new InboxDao(person);
+		Assert.assertTrue("Old post should already be read by this person",dao.isRead(PostDao.loadPost(randomOldPostId)));
+		Assert.assertTrue("Old post should not be read by this person",!dao.isRead(PostDao.loadPost(randomNewPostId)));
+		
+		Persistence.commit();
+	}
+	
+	
 }

@@ -7,6 +7,7 @@ import org.ttdc.gwt.client.beans.GImage;
 import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.server.beanconverters.FastPostBeanConverter;
+import org.ttdc.gwt.server.dao.InboxDao;
 import org.ttdc.gwt.server.dao.Inflatinator;
 import org.ttdc.gwt.shared.util.PaginatedList;
 import org.ttdc.persistence.objects.Image;
@@ -25,11 +26,12 @@ public final class PaginatedResultConverters {
 		return destination;
 	}
 	
-	public final static PaginatedList<GPost> convertSearchResults(PaginatedList<Post> results){
+	public final static PaginatedList<GPost> convertSearchResults(PaginatedList<Post> results, Person person){
 		PaginatedList<GPost> gResults = copyMetaData(results);
 //		Inflatinator inf = new Inflatinator(results.getList());
 //		gResults.setList(inf.extractPosts());
-		gResults.setList(FastPostBeanConverter.convertPosts(results.getList()));
+		InboxDao inboxDao = new InboxDao(person);
+		gResults.setList(FastPostBeanConverter.convertPosts(results.getList(), inboxDao));
 		return gResults;
 	}
 
@@ -40,10 +42,10 @@ public final class PaginatedResultConverters {
 		return gResults;
 	}
 	
-	public static PaginatedList<GPost> convertSearchResultsNested(PaginatedList<Post> results) {
+	public static PaginatedList<GPost> convertSearchResultsNested(PaginatedList<Post> results, Person person) {
 		PaginatedList<GPost> gResults = copyMetaData(results);
 		Inflatinator inf = new Inflatinator(results.getList());
-		gResults.setList(inf.extractPostsNested());
+		gResults.setList(inf.extractPostsNested(person));
 		return gResults;
 	}
 	

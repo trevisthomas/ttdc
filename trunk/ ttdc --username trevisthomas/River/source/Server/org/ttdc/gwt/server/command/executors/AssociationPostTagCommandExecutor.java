@@ -14,12 +14,14 @@ import org.ttdc.gwt.server.beanconverters.FastPostBeanConverter;
 import org.ttdc.gwt.server.beanconverters.GenericBeanConverter;
 import org.ttdc.gwt.server.command.CommandExecutor;
 import org.ttdc.gwt.server.dao.AssociationPostTagDao;
+import org.ttdc.gwt.server.dao.InboxDao;
 import org.ttdc.gwt.server.dao.PostDao;
 import org.ttdc.gwt.server.dao.TagDao;
 import org.ttdc.gwt.shared.commands.AssociationPostTagCommand;
 import org.ttdc.gwt.shared.commands.results.AssociationPostTagResult;
 import org.ttdc.persistence.Persistence;
 import org.ttdc.persistence.objects.AssociationPostTag;
+import org.ttdc.persistence.objects.Inbox;
 import org.ttdc.persistence.objects.Post;
 import org.ttdc.persistence.objects.Tag;
 import org.ttdc.util.RatingUtility;
@@ -97,7 +99,8 @@ public class AssociationPostTagCommandExecutor extends CommandExecutor<Associati
 		result = new AssociationPostTagResult(AssociationPostTagResult.Status.REMOVE);
 		result.setAssociationId(ass.getGuid());
 		//result.setAssociationPostTag(gAss);
-		GPost gPost = FastPostBeanConverter.convertPost(post);
+		InboxDao inboxDao = new InboxDao(getPerson());
+		GPost gPost = FastPostBeanConverter.convertPost(post, inboxDao);
 		result.setPost(gPost);
 		
 		broadcastPostEvent(post, PostEventType.EDIT);
@@ -125,7 +128,8 @@ public class AssociationPostTagCommandExecutor extends CommandExecutor<Associati
 	
 	private void broadcastPostEvent(Post post, PostEventType eventType) {
 		ServerEventBroadcaster broadcaster = ServerEventBroadcaster.getInstance();
-		GPost gPost = FastPostBeanConverter.convertPost(post);
+		InboxDao inboxDao = new InboxDao(getPerson());
+		GPost gPost = FastPostBeanConverter.convertPost(post, inboxDao);
 		PostEvent postEvent = new PostEvent(eventType,gPost);
 		broadcaster.broadcastEvent(postEvent, getCommand().getConnectionId());
 	}

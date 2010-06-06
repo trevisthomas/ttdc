@@ -50,7 +50,7 @@ public class LatestPostCommandExecutor extends CommandExecutor<PaginatedListComm
 	private PaginatedListCommandResult<GPost> loadThreads() {
 		LatestPostsDao dao = getLatestPostDaoWithPersonalFilter();
 		PaginatedList<Post> results = dao.loadThreads();
-		PaginatedList<GPost> gResults = PaginatedResultConverters.convertSearchResults(results);
+		PaginatedList<GPost> gResults = PaginatedResultConverters.convertSearchResults(results, getPerson());
 		return new PaginatedListCommandResult<GPost>(gResults);
 	}
 
@@ -72,21 +72,21 @@ public class LatestPostCommandExecutor extends CommandExecutor<PaginatedListComm
 	private PaginatedListCommandResult<GPost> loadNested() {
 		LatestPostsDao dao = getLatestPostDaoWithPersonalFilter();
 		PaginatedList<Post> results = dao.loadNested();
-		PaginatedList<GPost> gResults = PaginatedResultConverters.convertSearchResultsNested(results);
+		PaginatedList<GPost> gResults = PaginatedResultConverters.convertSearchResultsNested(results, getPerson());
 		return new PaginatedListCommandResult<GPost>(gResults);
 	}
 
 	private PaginatedListCommandResult<GPost> loadFlat() {
 		LatestPostsDao dao = getLatestPostDaoWithPersonalFilter();
 		PaginatedList<Post> results = dao.loadFlat();
-		PaginatedList<GPost> gResults = PaginatedResultConverters.convertSearchResults(results);
+		PaginatedList<GPost> gResults = PaginatedResultConverters.convertSearchResults(results, getPerson());
 		return new PaginatedListCommandResult<GPost>(gResults);
 	}
 
 	private PaginatedListCommandResult<GPost> loadConversations() {
 		LatestPostsDao dao = getLatestPostDaoWithPersonalFilter();
 		PaginatedList<Post> results = dao.loadConversations();
-		PaginatedList<GPost> gResults = PaginatedResultConverters.convertSearchResultsNested(results);
+		PaginatedList<GPost> gResults = PaginatedResultConverters.convertSearchResultsNested(results, getPerson());
 		return new PaginatedListCommandResult<GPost>(gResults);
 	}
 	

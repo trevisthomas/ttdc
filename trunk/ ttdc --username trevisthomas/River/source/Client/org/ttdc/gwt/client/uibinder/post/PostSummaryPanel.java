@@ -1,7 +1,9 @@
 package org.ttdc.gwt.client.uibinder.post;
 
 import org.ttdc.gwt.client.Injector;
+import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.beans.GPost;
+import org.ttdc.gwt.client.messaging.ConnectionId;
 import org.ttdc.gwt.client.messaging.EventBus;
 import org.ttdc.gwt.client.messaging.post.PostEvent;
 import org.ttdc.gwt.client.messaging.post.PostEventType;
@@ -22,6 +24,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -40,6 +43,7 @@ public class PostSummaryPanel extends Composite implements PostPresenterCommon{
     @UiField HTMLPanel summaryElement;
     @UiField(provided = true) SimplePanel expandedElement;
     @UiField(provided = true) SimplePanel commentElement = new SimplePanel();
+    @UiField Label postUnReadElement;
     
     @Inject
     public PostSummaryPanel(Injector injector) { 
@@ -59,7 +63,12 @@ public class PostSummaryPanel extends Composite implements PostPresenterCommon{
     	creatorLinkPresenter.setPerson(post.getCreator());
     	setSpacer(post.getPath().split("\\.").length - 2);
     	
-    	
+    	GPerson user = ConnectionId.getInstance().getCurrentUser();
+		if(!user.isAnonymous() && !post.isRead()){
+			postUnReadElement.setVisible(true);
+			postUnReadElement.setText("*");
+			postUnReadElement.addStyleName("tt-alert");
+		}
     }
     
     public void setSpacer(int tabCount) {

@@ -9,7 +9,7 @@
 			<td>
 				<g:SimplePanel ui:field="expandedElement"/>
 				<g:HTMLPanel styleName="tt-post-summary tt-text-normal" ui:field="summaryElement">
-					<g:HTML styleName="tt-post-body tt-text-normal tt-inline" ui:field="bodySummaryElement" /> : <g:Hyperlink ui:field="creatorLinkElement" />
+					<g:HTML styleName="tt-post-body tt-text-normal tt-inline" ui:field="bodySummaryElement" /> : <g:Label ui:field="postUnReadElement" styleName="tt-float-left" /> <g:Hyperlink ui:field="creatorLinkElement" />
 				</g:HTMLPanel>
 			</td>
 		</tr>

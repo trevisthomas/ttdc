@@ -126,7 +126,7 @@ public final class Inflatinator {
 	 * 
 	 * @return
 	 */
-	public List<GPost> extractPostsNested(){
+	public List<GPost> extractPostsNested(Person person){
 		if(list.size() == 0){
 			log.debug("extractPosts() exited because list was empty.");
 			return new ArrayList<GPost>();
@@ -147,7 +147,13 @@ public final class Inflatinator {
 //		List<HasGuid> elementList = detangleHibernateObjectArrayList(objList);
 //		List<GPost> posts = convertElementsToGElements(elementList,Mode.FLAT);
 		
-		List<GPost> posts = FastPostBeanConverter.convertPosts(unNestedList);
+		InboxDao inboxDao = null;
+		
+		if(person != null){
+			inboxDao = new InboxDao(person);
+		}
+		
+		List<GPost> posts = FastPostBeanConverter.convertPosts(unNestedList, inboxDao);
 
 		
 		List<GPost> resultGPostList = transformFlatListToNestedThreads(posts);

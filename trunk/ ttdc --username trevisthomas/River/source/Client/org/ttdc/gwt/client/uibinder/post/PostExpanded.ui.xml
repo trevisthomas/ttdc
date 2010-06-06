@@ -14,6 +14,7 @@
 								<span class="tt-float-left">
 									<g:Hyperlink ui:field="creatorLinkElement" />
 								</span>
+								<g:Label ui:field="postUnReadElement" styleName="tt-float-left" />
 								<span class="tt-float-left">
 									<g:Widget ui:field="createDateElement" />
 								</span>
