@@ -42,7 +42,7 @@ public class MovieDaoTest {
 		log.info("post count: "+Post.iCount);
 	}
 	private void dumpTitleWithAverageRating(PaginatedList<Post> results) {
-		List<GPost> posts = FastPostBeanConverter.convertPosts(results.getList());
+		List<GPost> posts = FastPostBeanConverter.convertPosts(results.getList(), null);
 		for(GPost p : posts){
 			log.debug(p.getPublishYear() + " " +p.getTitle() + p.getAvgRatingTag());
 		}
@@ -50,7 +50,7 @@ public class MovieDaoTest {
 	
 	private void dumpTitleWithRatingBy(PaginatedList<Post> results, String personId) {
 		//Inflatinator inf = new Inflatinator(results.getList());
-		List<GPost> posts = FastPostBeanConverter.convertPosts(results.getList());
+		List<GPost> posts = FastPostBeanConverter.convertPosts(results.getList(), null);
 		for(GPost p : posts){
 			log.debug(p.getPublishYear() 
 					+" "+p.getTitle() +" "+p.getRatingByPerson(personId).getTag().getValue());

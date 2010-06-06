@@ -45,7 +45,7 @@ public class TopicCommandExecutor  extends CommandExecutor<TopicCommandResult>{
 			
 			if(TopicCommandType.FLAT.equals(type)){
 				results = dao.loadFlat();
-				gResults = PaginatedResultConverters.convertSearchResults(results);
+				gResults = PaginatedResultConverters.convertSearchResults(results, getPerson());
 			}
 			else if(TopicCommandType.HIERARCHY_UNPAGED_SUMMARY.equals(type)){
 				// This version does not page, it just grabs every post in the thread.
@@ -54,15 +54,15 @@ public class TopicCommandExecutor  extends CommandExecutor<TopicCommandResult>{
 			}
 			else if(TopicCommandType.HIERARCHY.equals(type)){
 				results = dao.loadHierarchy();
-				gResults = PaginatedResultConverters.convertSearchResults(results);
+				gResults = PaginatedResultConverters.convertSearchResults(results, getPerson());
 			}
 			else if(TopicCommandType.NESTED_THREAD_SUMMARY.equals(type)){
 				results = buildNestedThreadResults(command,post);
-				gResults = PaginatedResultConverters.convertSearchResultsNested(results);
+				gResults = PaginatedResultConverters.convertSearchResultsNested(results, getPerson());
 			}
 			else if(TopicCommandType.NESTED_THREAD_SUMMARY_FETCH_MORE.equals(type)){
 				results = buildNestedThreadMoreResults(command,post);
-				gResults = PaginatedResultConverters.convertSearchResults(results);
+				gResults = PaginatedResultConverters.convertSearchResults(results, getPerson());
 				for(GPost gp : gResults.getList()){
 					gp.setSuggestSummary(true);
 				}
@@ -79,7 +79,7 @@ public class TopicCommandExecutor  extends CommandExecutor<TopicCommandResult>{
 //			}
 			else if(TopicCommandType.CONVERSATION.equals(type)){
 				results = buildConversationResults(dao,post);
-				gResults = PaginatedResultConverters.convertSearchResults(results);
+				gResults = PaginatedResultConverters.convertSearchResults(results, getPerson());
 			}
 			else{
 				throw new RuntimeException("Type has no implementation. Otherwise how will I know what to do?");

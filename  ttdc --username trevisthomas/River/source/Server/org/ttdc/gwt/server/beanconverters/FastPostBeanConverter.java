@@ -18,6 +18,7 @@ import org.ttdc.gwt.client.beans.GStyle;
 import org.ttdc.gwt.client.beans.GTag;
 import org.ttdc.gwt.client.beans.GUserObject;
 import org.ttdc.gwt.client.beans.GUserObjectTemplate;
+import org.ttdc.gwt.server.dao.InboxDao;
 import org.ttdc.gwt.server.dao.InitConstants;
 import org.ttdc.gwt.server.dao.PersonDao;
 import org.ttdc.gwt.server.dao.TagDao;
@@ -37,11 +38,11 @@ import org.ttdc.persistence.objects.UserObjectTemplate;
 public class FastPostBeanConverter {
 	
 
-	public static ArrayList<GPost> convertPosts(List<Post> persistentPostList){
+	public static ArrayList<GPost> convertPosts(List<Post> persistentPostList, InboxDao inboxDao){
 		ArrayList<GPost> rpcPostList = new ArrayList<GPost>();
 		for(Post p : persistentPostList){
 			//if(!p.isHidden()){
-				GPost rpcPost = convertPost(p);
+				GPost rpcPost = convertPost(p, inboxDao);
 				rpcPostList.add(rpcPost);
 			//}
 		}
@@ -89,11 +90,11 @@ public class FastPostBeanConverter {
 	}
 	
 	//Initially created for inflating movie review summaries
-	public static ArrayList<GPost> convertReviewPosts(GPost parent, List<Post> persistentPostList){
+	private static ArrayList<GPost> convertReviewPosts(GPost parent, List<Post> persistentPostList, InboxDao inboxDao){
 		ArrayList<GPost> list = new ArrayList<GPost>();
 		for(Post p : persistentPostList){
 			if(p.isReview()){
-				GPost rpcPost = convertPostSimple(p);
+				GPost rpcPost = convertPostSimple(p, inboxDao);
 				rpcPost.setParent(parent);
 				list.add(rpcPost);
 			}
@@ -101,7 +102,7 @@ public class FastPostBeanConverter {
 		return list;
 	}
 	//Initially created for inflating movie review summaries
-	public static GPost convertPostSimple(Post p) {
+	public static GPost convertPostSimple(Post p, InboxDao inboxDao) {
 		GPost gPost = new GPost();
 		gPost.setDate(p.getDate());
 		gPost.setLatestEntry(convertEntry(p.getEntry()));
@@ -113,7 +114,7 @@ public class FastPostBeanConverter {
 		return gPost;
 	}
 	
-	public static GPost convertPost(Post p) {
+	public static GPost convertPost(Post p, InboxDao inboxDao) {
 		GPost gPost = new GPost();
 		gPost.setDate(p.getDate());
 		//gPost.setEntries(convertEntries(p.getEntries()));
@@ -149,16 +150,16 @@ public class FastPostBeanConverter {
 		
 		//If a post is a movie, get the reviews.  4/19/2010
 		if(p.isMovie()){
-			gPost.setPosts(convertReviewPosts(gPost,p.getPosts()));
+			gPost.setPosts(convertReviewPosts(gPost,p.getPosts(), inboxDao));
 			gPost.setRoot(gPost);
 		}
 		else{
 			if(!p.isRootPost())
-				gPost.setRoot(convertPost(p.getRoot()));
+				gPost.setRoot(convertPost(p.getRoot(), inboxDao));
 			else
 				gPost.setRoot(gPost);
 			if(!p.isThreadPost() && !p.isRootPost())
-				gPost.setThread(convertPost(p.getThread()));
+				gPost.setThread(convertPost(p.getThread(), inboxDao));
 			
 		}
 			
@@ -169,7 +170,7 @@ public class FastPostBeanConverter {
 		else if(p.isReview()){
 			image = p.getParent().getImage();
 			//I added this when i was adding the detail info to movie posts.
-			GPost gParent = convertPostSimple(p.getRoot()); 
+			GPost gParent = convertPostSimple(p.getRoot(), inboxDao); 
 			gParent.setTagAssociations(convertAssociationsPostTag(p.getParent().getTagAssociations()));
 			gPost.setParent(gParent);
 			
@@ -180,6 +181,10 @@ public class FastPostBeanConverter {
 			gPost.setImage(convertImage(image));
 		else if(p.isMovie() || p.isReview())
 			gPost.setImage(convertImage(InitConstants.DEFAULT_POSTER));
+		
+		if(inboxDao != null){
+			gPost.setRead(inboxDao.isRead(p));
+		}
 			
 		return gPost;
 	}
@@ -282,7 +287,7 @@ public class FastPostBeanConverter {
 	
 	public static GAssociationPostTag convertAssociationPostTagWithPost(AssociationPostTag ass){
 		GAssociationPostTag gAss = convertAssociationPostTag(ass);
-		gAss.setPost(convertPost(ass.getPost()));
+		gAss.setPost(convertPost(ass.getPost(), null));
 		gAss.setTag(convertTag(ass.getTag()));
 		return gAss;
 	}

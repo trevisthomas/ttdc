@@ -12,6 +12,7 @@ ul{list-style-type: none;}
 	border:1px black solid;
 }
 
+.tt-alert{color: red;}
 .tt-post{width: 500px; margin-bottom: 10px;}
 .tt-text-mini{font-size:9px;}
 .tt-text-normal{font-size:12px;}

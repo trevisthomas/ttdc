@@ -51,7 +51,7 @@ public class LatestPostsDaoTest {
 		PaginatedList<Post> results = dao.loadNested();
 		
 		Inflatinator inf = new Inflatinator(results.getList());
-		List<GPost> gPosts = inf.extractPostsNested();
+		List<GPost> gPosts = inf.extractPostsNested(null);
 		
 		Persistence.commit();
 		
@@ -72,7 +72,7 @@ public class LatestPostsDaoTest {
 		PaginatedList<Post> results = dao.loadNested();
 		
 		Inflatinator inf = new Inflatinator(results.getList());
-		List<GPost> gPosts = inf.extractPostsNested();
+		List<GPost> gPosts = inf.extractPostsNested(null);
 		
 		Persistence.commit();
 		
@@ -94,7 +94,7 @@ public class LatestPostsDaoTest {
 		PaginatedList<Post> results = dao.loadNested();
 		
 		Inflatinator inf = new Inflatinator(results.getList());
-		List<GPost> gPosts = inf.extractPostsNested();
+		List<GPost> gPosts = inf.extractPostsNested(null);
 		
 		Persistence.commit();
 		
@@ -117,7 +117,7 @@ public class LatestPostsDaoTest {
 		
 		//Inflatinator inf = new Inflatinator(results.getList());
 		//List<GPost> gPosts = inf.extractPosts();
-		List<GPost> gPosts = FastPostBeanConverter.convertPosts(results.getList());
+		List<GPost> gPosts = FastPostBeanConverter.convertPosts(results.getList(), null);
 		
 		Persistence.commit();
 		
@@ -144,7 +144,7 @@ public class LatestPostsDaoTest {
 		
 		//Inflatinator inf = new Inflatinator(results.getList());
 		//List<GPost> gPosts = inf.extractPosts();
-		List<GPost> gPosts = FastPostBeanConverter.convertPosts(results.getList());
+		List<GPost> gPosts = FastPostBeanConverter.convertPosts(results.getList(), null);
 		
 		Persistence.commit();
 		
@@ -164,7 +164,7 @@ public class LatestPostsDaoTest {
 		LatestPostsDao dao = new LatestPostsDao();
 		PaginatedList<Post> results = dao.loadFlat();
 		
-		List<GPost> gPosts = FastPostBeanConverter.convertPosts(results.getList());
+		List<GPost> gPosts = FastPostBeanConverter.convertPosts(results.getList(), null);
 		
 		Persistence.commit();
 		
@@ -182,7 +182,7 @@ public class LatestPostsDaoTest {
 		LatestPostsDao dao = new LatestPostsDao();
 		PaginatedList<Post> results = dao.loadThreads();
 		
-		List<GPost> gPosts = FastPostBeanConverter.convertPosts(results.getList());
+		List<GPost> gPosts = FastPostBeanConverter.convertPosts(results.getList(), null);
 		
 		Persistence.commit();
 		
@@ -201,7 +201,7 @@ public class LatestPostsDaoTest {
 		dao.addFlagFilter(PostFlag.DELETED);
 		PaginatedList<Post> results = dao.loadThreads();
 		
-		List<GPost> gPosts = FastPostBeanConverter.convertPosts(results.getList());
+		List<GPost> gPosts = FastPostBeanConverter.convertPosts(results.getList(), null);
 		
 		Persistence.commit();
 		
@@ -220,7 +220,7 @@ public class LatestPostsDaoTest {
 		LatestPostsDao dao = new LatestPostsDao();
 		PaginatedList<Post> results = dao.loadConversations();
 		
-		List<GPost> gPosts = FastPostBeanConverter.convertPosts(results.getList());
+		List<GPost> gPosts = FastPostBeanConverter.convertPosts(results.getList(), null);
 		
 		Persistence.commit();
 		
@@ -241,7 +241,7 @@ public class LatestPostsDaoTest {
 		dao.addFlagFilter(PostFlag.PRIVATE);
 		PaginatedList<Post> results = dao.loadConversations();
 		
-		List<GPost> gPosts = FastPostBeanConverter.convertPosts(results.getList());
+		List<GPost> gPosts = FastPostBeanConverter.convertPosts(results.getList(), null);
 		
 		Persistence.commit();
 		

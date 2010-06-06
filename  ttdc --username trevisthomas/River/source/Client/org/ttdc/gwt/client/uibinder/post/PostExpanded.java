@@ -2,7 +2,9 @@ package org.ttdc.gwt.client.uibinder.post;
 
 
 import org.ttdc.gwt.client.Injector;
+import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.beans.GPost;
+import org.ttdc.gwt.client.messaging.ConnectionId;
 import org.ttdc.gwt.client.presenters.shared.DatePresenter;
 import org.ttdc.gwt.client.presenters.shared.HyperlinkPresenter;
 import org.ttdc.gwt.client.presenters.shared.ImagePresenter;
@@ -14,6 +16,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Hyperlink;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
@@ -31,6 +34,7 @@ public class PostExpanded extends PostBaseComposite{
     @UiField(provided = true) Widget createDateElement;
     @UiField Anchor moreOptionsElement;
     @UiField(provided = true) Hyperlink creatorLinkElement;
+    @UiField Label postUnReadElement;
     private HyperlinkPresenter creatorLinkPresenter;
     
     private ImagePresenter imagePresenter;
@@ -86,6 +90,13 @@ public class PostExpanded extends PostBaseComposite{
 		createDatePresenter.init(post.getDate());
 		creatorLinkPresenter.setPerson(post.getCreator());
 		creatorLinkPresenter.init();
+		
+		GPerson user = ConnectionId.getInstance().getCurrentUser();
+		if(!user.isAnonymous() && !post.isRead()){
+			postUnReadElement.setVisible(true);
+			postUnReadElement.setText("*");
+			postUnReadElement.addStyleName("tt-alert");
+		}
 	}
 	
 //	public void addReplyClickHandler(ClickHandler handler){

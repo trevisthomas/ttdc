@@ -62,7 +62,7 @@ public class SearchPostsCommandExecutor extends CommandExecutor<SearchPostsComma
 				
 			dao.setCurrentPage(command.getPageNumber());
 			dao.setFilterFlags(filterList);
-			PaginatedList<GPost> gResults = PaginatedResultConverters.convertSearchResults(dao.search());
+			PaginatedList<GPost> gResults = PaginatedResultConverters.convertSearchResults(dao.search(), getPerson());
 			
 			if(command.getTagIdList().size() > 0){
 				translateTagIdListToSearchPhrase(command, gResults);

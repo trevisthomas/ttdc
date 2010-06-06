@@ -93,6 +93,9 @@ public class InboxDao extends FilteredPostPaginatedDaoBase{
 		
 		return results;
 	}
-	
+
+	public boolean isRead(Post post) {
+		return post.getDate().before(getLastReadDate());
+	}
 	
 }

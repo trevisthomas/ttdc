@@ -33,8 +33,8 @@ public class GPost extends GBase{
 	private String url;
 	private Integer publishYear;
 	private boolean inEditWindow = false; 
+	private boolean read = false;
 		
-	
 
 	@Override
 	public String toString() {
@@ -358,6 +358,14 @@ public class GPost extends GBase{
 			}
 		}
 		return false;
+	}
+
+	public void setRead(boolean read) {
+		this.read = read;
+	}
+
+	public boolean isRead() {
+		return read;
 	}
 
 	

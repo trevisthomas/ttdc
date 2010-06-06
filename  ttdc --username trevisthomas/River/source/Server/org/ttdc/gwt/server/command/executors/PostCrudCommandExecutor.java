@@ -25,6 +25,7 @@ import org.ttdc.gwt.server.dao.AccountDao;
 import org.ttdc.gwt.server.dao.AssociationPostTagDao;
 import org.ttdc.gwt.server.dao.ImageDao;
 import org.ttdc.gwt.server.dao.ImageDataDao;
+import org.ttdc.gwt.server.dao.InboxDao;
 import org.ttdc.gwt.server.dao.InitConstants;
 import org.ttdc.gwt.server.dao.PersonDao;
 import org.ttdc.gwt.server.dao.PostDao;
@@ -75,7 +76,8 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 			
 			PostCommandResult result = null;
 			if(post!= null){
-				GPost gPost = FastPostBeanConverter.convertPost(post); 
+				InboxDao inboxDao = new InboxDao(getPerson());
+				GPost gPost = FastPostBeanConverter.convertPost(post, inboxDao); 
 				result = new PostCommandResult(gPost);
 				
 				if(broadcastType != null){

@@ -147,7 +147,7 @@ public class AssociationPostTagCommandTest{
 		Persistence.beginSession();
 		Post post = PostDao.loadPost(postId);
 		
-		GPost gPost = FastPostBeanConverter.convertPost(post);
+		GPost gPost = FastPostBeanConverter.convertPost(post,null);
 		
 		//asses = result.getAssociationPostTag().getPost().getTagAssociations();
 		List<GAssociationPostTag> asses = gPost.getTagAssociations();
@@ -167,7 +167,7 @@ public class AssociationPostTagCommandTest{
 		Persistence.beginSession();
 		Post post = PostDao.loadPost(postId);
 		
-		GPost gPost = FastPostBeanConverter.convertPost(post);
+		GPost gPost = FastPostBeanConverter.convertPost(post, null);
 		
 		//asses = result.getAssociationPostTag().getPost().getTagAssociations();
 		List<GAssociationPostTag> asses = gPost.getTagAssociations();
@@ -187,7 +187,7 @@ public class AssociationPostTagCommandTest{
 		Persistence.beginSession();
 		Post post = PostDao.loadPost(postId);
 		
-		GPost gPost = FastPostBeanConverter.convertPost(post);
+		GPost gPost = FastPostBeanConverter.convertPost(post, null);
 		
 		//asses = result.getAssociationPostTag().getPost().getTagAssociations();
 		List<GAssociationPostTag> asses = gPost.getTagAssociations();
@@ -212,7 +212,7 @@ public class AssociationPostTagCommandTest{
 		Persistence.beginSession();
 		Post post = PostDao.loadPost(postId);
 		
-		GPost gPost = FastPostBeanConverter.convertPost(post);
+		GPost gPost = FastPostBeanConverter.convertPost(post, null);
 		
 		//asses = result.getAssociationPostTag().getPost().getTagAssociations();
 		List<GAssociationPostTag> asses = gPost.getTagAssociations();
