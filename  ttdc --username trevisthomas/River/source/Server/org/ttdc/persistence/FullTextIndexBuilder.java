@@ -41,7 +41,7 @@ public class FullTextIndexBuilder {
 	public static void main(String[] args) { 
 		FullTextIndexBuilder builder = new FullTextIndexBuilder();
 		builder.start();
-		builder.buildTagIndex();
+		//builder.buildTagIndex();
 		builder.buildPostIndex();
 		builder.end();
 		System.exit(0);

@@ -8,6 +8,7 @@ import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.services.CommandResult;
 import org.ttdc.gwt.server.beanconverters.FastPostBeanConverter;
 import org.ttdc.gwt.server.command.CommandExecutor;
+import org.ttdc.gwt.server.dao.InboxDao;
 import org.ttdc.gwt.server.dao.PersonDao;
 import org.ttdc.gwt.server.dao.PrivilegeDao;
 import org.ttdc.gwt.shared.commands.PersonCommand;
@@ -44,6 +45,9 @@ public class PersonCommandExecutor extends CommandExecutor<GenericCommandResult<
 				case REVOKE_PRIVILEGE:
 					revokePrivilege(personId, cmd.getPrivilegeId());
 					break;	
+				case MARK_SITE_READ:
+					markSiteRead(personId);
+					break;
 				case LOAD:
 					break;
 				default:
@@ -66,6 +70,15 @@ public class PersonCommandExecutor extends CommandExecutor<GenericCommandResult<
 		}
 		
 		return result;
+	}
+
+	private void markSiteRead(String personId) {
+		Person person = getPerson();//New style! (remember, older versions were not created in session
+		if(person.isAnonymous())
+			throw new RuntimeException("Anonymous users cant mark the site read.");
+		
+		InboxDao dao = new InboxDao(person);
+		dao.markSiteRead();
 	}
 
 	private void grantPrivilege(String personId, String privilegeId) {

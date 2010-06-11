@@ -3,7 +3,7 @@
 
 	Create columns (***For the love of all things holy make it so that style names can be more than 10 characters!)
 	Post
-	META_MASK	binary(8) (not null, default 0)
+	META_MASK	bigint (not null, default 0) [For june 10 load this was binary 8 and caused an exception when building post indexes]  
 	TAG_GUID_TITLE	uniqueidentifier
 	PERSON_GUID_CREATOR	uniqueidentifier
 	TAG_GUID_AVG_RATING	uniqueidentifier
@@ -31,7 +31,11 @@
 	V7_RENORMALIZATION_MetaBitmask.sql - Took: Over an hour! (redone two seconds now)
 	
 	//*** maybe disable bridges during this run? It's trying to build stuff and the bridges dont all work yet... or ignore exception
-	Java Prgrams (Version7AggrogatedMigrator run's all Time taken: 4519.294)
+	//Open hibernate.cfg.xml and update database name and index path
+	//open Persistence.java and update config refrence to point to sql server
+	//make sure you remember to fix the application account.
+	
+	Java Prgrams (Version7AggrogatedMigrator run's all Time taken: 4519.294)3694.211(June 10) 
 	CalculateAverageRating  (repaired)
 	MaterializedPathConversion
 	SortValueOnTag
@@ -42,7 +46,7 @@
 	V7_MIGRATION_AddCountsToPosts.sql - (seconds) merge
 	V7_MIGRATION_AddThreadIdToPost.sql - 2min not mergable, works on a subset
 	V7_MIGRATION_AddMassToPostRoots.sql - probably not worth merging
-	V7_MIGRATION_AddMassToPostThreadStarters.sql 2min - not mergable
+	V7_MIGRATION_AddMassToPostThreadStarters.sql 2min (June 10, 56sec) - not mergable
 	V7_MIGRATION_AddThreadReplyDateToPost.sql - not mergable
 	
 		

@@ -71,6 +71,14 @@ public class HyperlinkPresenter extends BasePresenter<HyperlinkPresenter.View> {
 		view.getDisplayName().setText(value);
 	}
 	
+	public void setView(String name, String viewConstant){
+		view.getHistoryToken().setParameter(HistoryConstants.VIEW, viewConstant);
+		view.getDisplayName().setText(name);
+		init();//This must be called before the link will render.  
+			   //Since this setView doesn't expect any other arguments, i do it here so that the users don't have to
+		 	   //but it's not very intuitive.
+	}
+	
 	public void setPost(GPost post) {
 		try{
 			setPost(post,post.getTitle());

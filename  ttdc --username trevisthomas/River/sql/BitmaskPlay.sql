@@ -47,3 +47,15 @@ select t.guid from association_post_tag a inner join tag t on a.tag_guid=t.guid 
 select distinct value,guid from tag where type not in ('WEEK_OF_YEAR','RELEASE_YEAR','DATE_DAY','DATE_YEAR','DATE_MONTH','TOPIC','SORT_TITLE','URL','AVERAGE_RATING','EARMARK','CREATOR','RATING')
 
 select * from post where meta_mask&1<>1
+
+select * from post where meta_mask&16=16
+
+select * from style
+
+update style set default_style=1 where guid='A50C080A-8696-485C-B4F0-C1291962E0D8'
+
+
+select * from person where 
+select * from tag
+
+update person set Login = 'Noneya' where guid='DAB19347-F4C5-404B-B2F3-8A9E45FB8054'

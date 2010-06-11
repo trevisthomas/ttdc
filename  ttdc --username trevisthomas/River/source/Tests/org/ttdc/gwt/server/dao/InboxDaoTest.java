@@ -55,5 +55,24 @@ public class InboxDaoTest {
 		Persistence.commit();
 	}
 	
-	
+	@Test
+	public void testMarkSiteAsRead(){
+		try{
+			Persistence.beginSession();
+			Person person = PersonDao.loadPerson(Helpers.personIdCSam);
+			InboxDao dao = new InboxDao(person);
+			
+			PaginatedList<Post> results = dao.loadFlat();
+			Assert.assertTrue(results.getList().size() > 0);
+			
+			dao.markSiteRead();
+			
+			results = dao.loadFlat();
+			Assert.assertTrue(results.getList().size() == 0);
+		}
+		finally{
+			Persistence.rollback();
+		}
+		
+	}
 }
