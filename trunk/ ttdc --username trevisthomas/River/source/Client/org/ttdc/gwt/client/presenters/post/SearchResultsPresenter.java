@@ -309,7 +309,8 @@ public class SearchResultsPresenter extends BasePresenter<SearchResultsPresenter
 			token.setParameter(HistoryConstants.SEARCH_START_DATE, lastToken.getParameter(SEARCH_START_DATE));
 		if(lastToken.hasParameter(SEARCH_END_DATE))
 			token.setParameter(HistoryConstants.SEARCH_END_DATE, lastToken.getParameter(SEARCH_END_DATE));
-		
+		if(lastToken.hasParameter(HistoryConstants.SEARCH_CREATOR_ID_KEY))
+			token.setParameter(HistoryConstants.SEARCH_CREATOR_ID_KEY, lastToken.getParameter(SEARCH_CREATOR_ID_KEY));
 		return token;
 	}
 	

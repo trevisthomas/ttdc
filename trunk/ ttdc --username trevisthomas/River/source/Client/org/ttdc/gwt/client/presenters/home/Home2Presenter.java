@@ -1,6 +1,8 @@
 package org.ttdc.gwt.client.presenters.home;
 
 import org.ttdc.gwt.client.Injector;
+import org.ttdc.gwt.client.beans.GPerson;
+import org.ttdc.gwt.client.messaging.ConnectionId;
 import org.ttdc.gwt.client.messaging.EventBus;
 import org.ttdc.gwt.client.messaging.history.HistoryConstants;
 import org.ttdc.gwt.client.messaging.history.HistoryToken;
@@ -12,8 +14,13 @@ import org.ttdc.gwt.client.presenters.search.SearchBoxPresenter;
 import org.ttdc.gwt.client.presenters.shared.BasePagePresenter;
 import org.ttdc.gwt.client.presenters.shared.BasePageView;
 import org.ttdc.gwt.client.presenters.util.PresenterHelpers;
+import org.ttdc.gwt.client.services.RpcServiceAsync;
 import org.ttdc.gwt.client.uibinder.SiteUpdatePanel;
 import org.ttdc.gwt.client.uibinder.post.NewMoviePanel;
+import org.ttdc.gwt.shared.commands.CommandResultCallback;
+import org.ttdc.gwt.shared.commands.PersonCommand;
+import org.ttdc.gwt.shared.commands.results.GenericCommandResult;
+import org.ttdc.gwt.shared.commands.types.PersonStatusType;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -31,7 +38,9 @@ public class Home2Presenter extends BasePagePresenter<Home2Presenter.View> imple
 		HasWidgets searhcPanel();
 		HasWidgets loginPanel();
 		HasWidgets commentPanel();
+		HasWidgets navigationPanel();
 		HasClickHandlers commentButton();
+		HasClickHandlers markReadButton();
 		HasWidgets siteUpdatePanel();
 		
 		void displayTab(TabType tabs);
@@ -69,12 +78,39 @@ public class Home2Presenter extends BasePagePresenter<Home2Presenter.View> imple
 			}
 		});
 		
+		view.markReadButton().addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				markSiteRead();
+			}
+		});
+		
+		
 		SiteUpdatePanel siteUpdatePanel = injector.createSiteUpdatePanel();
 		view.siteUpdatePanel().add(siteUpdatePanel);
+		
+		view.navigationPanel().add(injector.createNavigation());
 		
 		EventBus.getInstance().addListener(this);
 	}
 
+	private void markSiteRead() {
+		PersonCommand cmd = new PersonCommand(ConnectionId.getInstance().getCurrentUser().getPersonId(),
+				PersonStatusType.MARK_SITE_READ);
+		RpcServiceAsync service = injector.getService();
+		service.execute(cmd, createStatusUpdateCallback());
+	}
+
+	private CommandResultCallback<GenericCommandResult<GPerson>> createStatusUpdateCallback() {
+		return new CommandResultCallback<GenericCommandResult<GPerson>>(){
+			@Override
+			public void onSuccess(GenericCommandResult<GPerson> result) {
+				EventBus.reload();//TODO: probably should come up with a way to just refresh the parts i care about!
+			}
+		};
+	}
+
+	
 	private void showMovieEditor() {
 		view.commentPanel().clear();
 		NewMoviePanel newMoviePanel = injector.createNewMoviePanel();

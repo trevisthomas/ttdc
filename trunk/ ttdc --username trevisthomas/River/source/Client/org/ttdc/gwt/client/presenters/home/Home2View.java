@@ -38,16 +38,19 @@ public class Home2View implements Home2Presenter.View{
 	private final SimplePanel loginPanel = new SimplePanel();
 	private final Button commentButton = new Button("Comment");
 	private final Button movieButton = new Button("Movie");
+	private final Button markReadButton = new Button("Read");
 	//private final DisclosurePanel commentPanel = new DisclosurePanel("Add Comment");
 	private final SimplePanel commentPanel = new SimplePanel();
 	private HistoryToken token = new HistoryToken();
 	private final HorizontalPanel searchAndReplyPanel = new HorizontalPanel();
 	private final SimplePanel siteUpdatePanel = new SimplePanel();
+	private final SimplePanel navigationPanel = new SimplePanel();
 	
 	private boolean fireHistoryEvent = true;
 	
 	public Home2View() {
-		main.add(new Demo());
+		main.add(navigationPanel);
+		
 		main.add(loginPanel);
 		main.add(messagePannel);
 		main.add(siteUpdatePanel);
@@ -60,6 +63,7 @@ public class Home2View implements Home2Presenter.View{
 		searchAndReplyPanel.add(searchPanel);
 		searchAndReplyPanel.add(commentButton);
 		searchAndReplyPanel.add(movieButton);
+		searchAndReplyPanel.add(markReadButton);
 		
 		centerTabPanel.add(nestedPanel, "Nested");
 		centerTabPanel.add(flatPanel, "Flat");
@@ -159,6 +163,11 @@ public class Home2View implements Home2Presenter.View{
 //	public void displayThreadTab() {
 //		rightTabPanel.selectTab(0);
 //	}
+	
+	@Override
+	public HasClickHandlers markReadButton() {
+		return markReadButton;
+	}
 
 	@Override
 	public HasWidgets messagePanel() {
@@ -189,7 +198,6 @@ public class Home2View implements Home2Presenter.View{
 		return modulePanel;
 	}
 
-
 	@Override
 	public HasWidgets searhcPanel() {
 		return searchPanel;
@@ -208,6 +216,11 @@ public class Home2View implements Home2Presenter.View{
 	@Override
 	public HasWidgets siteUpdatePanel() {
 		return siteUpdatePanel;
+	}
+	
+	@Override
+	public HasWidgets navigationPanel() {
+		return navigationPanel;
 	}
 	
 }

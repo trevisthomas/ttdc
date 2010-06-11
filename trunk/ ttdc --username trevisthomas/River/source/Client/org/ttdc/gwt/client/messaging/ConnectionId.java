@@ -15,6 +15,14 @@ public class ConnectionId{
 			me = new ConnectionId();
 		return me;
 	}
+	
+	public static boolean isAdministrator(){
+		return getInstance().getCurrentUser().isAdministrator();
+	}
+	
+	public static boolean isAnonymous(){
+		return getInstance().getCurrentUser().isAnonymous();
+	}
 
 	public String getConnectionId() {
 		return connId;
