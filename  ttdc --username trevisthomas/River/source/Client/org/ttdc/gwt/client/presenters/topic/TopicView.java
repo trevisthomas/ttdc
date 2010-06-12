@@ -10,10 +10,17 @@ public class TopicView implements TopicPresenter.View{
 	private final VerticalPanel mainPanel = new VerticalPanel();
 	private final SimplePanel topicPanel = new SimplePanel();
 	private final SimplePanel messagesPanel = new SimplePanel();
+	private final SimplePanel navigationPanel = new SimplePanel();
 
 	public TopicView() {
+		mainPanel.add(navigationPanel);
 		mainPanel.add(messagesPanel);
 		mainPanel.add(topicPanel);
+	}
+
+	@Override
+	public HasWidgets navigationPanel() {
+		return navigationPanel;
 	}
 	
 	@Override

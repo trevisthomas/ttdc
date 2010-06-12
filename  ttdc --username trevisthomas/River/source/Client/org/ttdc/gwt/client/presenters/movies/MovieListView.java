@@ -36,10 +36,12 @@ public class MovieListView implements MovieListPresenter.View {
 	private final Label ratingLabel = new Label("Average Rating");
 	
 	private final FlexTable movieTable = new FlexTable();
+	private final SimplePanel navigationPanel = new SimplePanel();
 	
 	int row = 0;
 	
 	public MovieListView() {
+		main.add(navigationPanel);
 		main.add(messagesPanel);
 		reviewers.addItem("-- Reviewers --","-1");
 		
@@ -62,6 +64,11 @@ public class MovieListView implements MovieListPresenter.View {
 		
 		main.add(movieTable);
 		main.add(paginator);
+	}
+	
+	@Override
+	public HasWidgets navigationPanel() {
+		return navigationPanel;
 	}
 	
 	@Override

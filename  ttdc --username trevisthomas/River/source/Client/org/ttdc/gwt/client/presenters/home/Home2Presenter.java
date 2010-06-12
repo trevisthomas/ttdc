@@ -38,7 +38,6 @@ public class Home2Presenter extends BasePagePresenter<Home2Presenter.View> imple
 		HasWidgets searhcPanel();
 		HasWidgets loginPanel();
 		HasWidgets commentPanel();
-		HasWidgets navigationPanel();
 		HasClickHandlers commentButton();
 		HasClickHandlers markReadButton();
 		HasWidgets siteUpdatePanel();
@@ -89,7 +88,7 @@ public class Home2Presenter extends BasePagePresenter<Home2Presenter.View> imple
 		SiteUpdatePanel siteUpdatePanel = injector.createSiteUpdatePanel();
 		view.siteUpdatePanel().add(siteUpdatePanel);
 		
-		view.navigationPanel().add(injector.createNavigation());
+//		view.navigationPanel().add(injector.createNavigation());
 		
 		EventBus.getInstance().addListener(this);
 	}

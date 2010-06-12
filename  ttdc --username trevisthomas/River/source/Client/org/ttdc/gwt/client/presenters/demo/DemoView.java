@@ -17,8 +17,10 @@ public class DemoView implements DemoPresenter.View{
 	private final VerticalPanel main = new VerticalPanel();
 	private final SimplePanel show = new SimplePanel();
 	private final SimplePanel messages = new SimplePanel();
+	private final SimplePanel navigationPanel = new SimplePanel();
 	
 	public DemoView() {
+		main.add(navigationPanel);
 		main.add(messages);
 		rta.setWidth("600px");
 		rta.setHeight("500px");
@@ -92,6 +94,12 @@ public class DemoView implements DemoPresenter.View{
 		main.add(show);
 		main.add(new HTML("<center><span id=\"VidTarget_1262232501650\"></span></center>"));
 	}
+	
+	@Override
+	public HasWidgets navigationPanel() {
+		return navigationPanel;
+	}
+	
 	@Override
 	public HasWidgets messagePanel() {
 		return messages;

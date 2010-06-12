@@ -21,9 +21,11 @@ public class UserListView implements UserListPresenter.View{
 	private final FocusPanel memberSinceHeader = new FocusPanel();
 	private final FocusPanel emailHeader = new FocusPanel();
 	private final FocusPanel nameHeader = new FocusPanel();
+	private final SimplePanel navigationPanel = new SimplePanel();
 	
-	int row = 0;
+	private int row = 0;
 	public UserListView() {
+		main.add(navigationPanel);
 		main.add(messagePanel);
 		main.add(table);
 		main.add(paginator);
@@ -36,6 +38,11 @@ public class UserListView implements UserListPresenter.View{
 		emailHeader.add(new Label("Email"));
 		nameHeader.add(new Label("Name"));
 		
+	}
+	
+	@Override
+	public HasWidgets navigationPanel() {
+		return navigationPanel;
 	}
 
 	@Override

@@ -285,6 +285,22 @@ public class SearchPostsCommandTest{
 		
 	}
 	
+	//This test will fail if no threads are muted by the user
+	@Test
+	public void searchForFilteredThreads(){
+		SearchPostsCommand cmd = new SearchPostsCommand();
+		cmd.setPostSearchType(PostSearchType.FILTERED_BY_USER);
+		
+		CommandExecutor cmdexec = CommandExecutorFactory.createExecutor(personIdTrevis,cmd);
+		CommandResult result = cmdexec.executeCommand();
+		assertNotNull("Command execution produced a null result", result);
+		
+		PaginatedList<GPost> results = ((SearchPostsCommandResult)result).getResults();
+		
+		assertTrue("Found nothing, expected something.  Are you sure there are muted threads for this user?",results.getTotalResults() > 0);
+		//assertNotTagged(results.getList(),tagTrevis);
+	}
+	
 	//The following are similar to the ones in helper but these use GPost inseatd
 	// should probably make that class generic i guess?
 	public static void assertTagged(List<GPost> posts, String tagId){

@@ -22,8 +22,11 @@ public class AdminToolsView implements AdminToolsPresenter.View{
 	private final SimplePanel headerPanel = new SimplePanel();
 	private final SimplePanel messagePanel = new SimplePanel();
 	private final SimplePanel stylePanel = new SimplePanel();
+	private final SimplePanel navigationPanel = new SimplePanel();
+	
 	    
 	public AdminToolsView() {
+		main.add(navigationPanel);
 		main.add(headerPanel);
 		main.add(messagePanel);
 		tabPanel.setWidth("400px");
@@ -48,6 +51,11 @@ public class AdminToolsView implements AdminToolsPresenter.View{
 			}
 		});
 	    
+	}
+	
+	@Override
+	public HasWidgets navigationPanel() {
+		return navigationPanel;
 	}
 
 	/*

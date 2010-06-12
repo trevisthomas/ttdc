@@ -26,7 +26,11 @@ public class CalendarView implements CalendarPresenter.View{
 	private final SimplePanel searchPanel = new SimplePanel();
 	private final SimplePanel messagePanel = new SimplePanel();
 	
+	private final SimplePanel navigationPanel = new SimplePanel();
+	
+	
 	public CalendarView() {
+		mainPanel.add(navigationPanel);
 		mainPanel.add(headerPanel);
 		mainPanel.add(messagePanel);
 		prevNextPanel.add(prevLink);
@@ -47,6 +51,11 @@ public class CalendarView implements CalendarPresenter.View{
 		calendarPanel.setStyleName("tt-calendar");
 		
 		mainPanel.setStyleName("tt-view-container");
+	}
+	
+	@Override
+	public HasWidgets navigationPanel() {
+		return navigationPanel;
 	}
 	
 	public void show(){
