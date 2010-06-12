@@ -11,5 +11,6 @@ import com.google.gwt.user.client.ui.HasWidgets;
 public interface BasePageView extends BaseView{
 	void show();
 	HasWidgets messagePanel();
+	HasWidgets navigationPanel();
 	
 }

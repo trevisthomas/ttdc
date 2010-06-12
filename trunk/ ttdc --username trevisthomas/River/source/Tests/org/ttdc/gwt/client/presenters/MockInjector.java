@@ -93,6 +93,7 @@ import org.ttdc.gwt.client.presenters.users.UserToolsPresenter;
 import org.ttdc.gwt.client.services.RpcServiceAsync;
 import org.ttdc.gwt.client.uibinder.Navigation;
 import org.ttdc.gwt.client.uibinder.SiteUpdatePanel;
+import org.ttdc.gwt.client.uibinder.dashboard.FilteredPost;
 import org.ttdc.gwt.client.uibinder.post.MoreOptionsPopupPanel;
 import org.ttdc.gwt.client.uibinder.post.NewMoviePanel;
 import org.ttdc.gwt.client.uibinder.post.PostExpanded;
@@ -1329,6 +1330,12 @@ public class MockInjector implements Injector{
 
 	@Override
 	public Navigation createNavigation() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public FilteredPost createFilteredPost() {
 		// TODO Auto-generated method stub
 		return null;
 	}

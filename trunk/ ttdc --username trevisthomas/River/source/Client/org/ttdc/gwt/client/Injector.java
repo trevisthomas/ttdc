@@ -86,6 +86,7 @@ import org.ttdc.gwt.client.presenters.users.UserToolsPresenter;
 import org.ttdc.gwt.client.services.RpcServiceAsync;
 import org.ttdc.gwt.client.uibinder.Navigation;
 import org.ttdc.gwt.client.uibinder.SiteUpdatePanel;
+import org.ttdc.gwt.client.uibinder.dashboard.FilteredPost;
 import org.ttdc.gwt.client.uibinder.post.MoreOptionsPopupPanel;
 import org.ttdc.gwt.client.uibinder.post.NewMoviePanel;
 import org.ttdc.gwt.client.uibinder.post.PostExpanded;
@@ -357,5 +358,6 @@ public interface Injector extends Ginjector {
 	public NewMoviePanel createNewMoviePanel();
 	
 	public Navigation createNavigation();
+	public FilteredPost createFilteredPost();
 }
 

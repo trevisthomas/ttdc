@@ -27,11 +27,12 @@ public class PublicUserProfileView implements PublicUserProfilePresenter.View{
 	private final SimplePanel latestCoversationsPanel = new SimplePanel();
 	private final SimplePanel latestPostsPanel = new SimplePanel();
 	private final SimplePanel latestReviewsPanel = new SimplePanel();
-	
+	private final SimplePanel navigationPanel = new SimplePanel();
 	
 	private String personId;
 	
 	public PublicUserProfileView() {
+		main.add(navigationPanel);
 		main.add(messagePanel);
 		main.add(profilePanel);
 		main.add(tabPanel);
@@ -54,6 +55,11 @@ public class PublicUserProfileView implements PublicUserProfilePresenter.View{
 			}
 		});
 	}
+	
+	@Override
+	public HasWidgets navigationPanel() {
+		return navigationPanel;
+	}	
 	
 	/*
 	 * Trevis, be aware that calling History.newItem actually caues a history event to be

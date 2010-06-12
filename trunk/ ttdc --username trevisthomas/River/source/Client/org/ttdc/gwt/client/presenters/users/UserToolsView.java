@@ -20,8 +20,10 @@ public class UserToolsView implements UserToolsPresenter.View{
 	private final SimplePanel createPanel = new SimplePanel();
 	private final SimplePanel messagesPanel = new SimplePanel();
 	private final SimplePanel requestPasswordResetPanel = new SimplePanel();
-	    
+	private final SimplePanel navigationPanel = new SimplePanel();
+	
 	public UserToolsView() {
+		main.add(navigationPanel);
 		main.add(messagesPanel);
 		
 		tabPanel.setWidth("100%");
@@ -46,6 +48,12 @@ public class UserToolsView implements UserToolsPresenter.View{
 			}
 		});
 	}
+	
+	@Override
+	public HasWidgets navigationPanel() {
+		return navigationPanel;
+	}
+	
 	@Override
 	public void show() {
 		RootPanel.get("content").clear();

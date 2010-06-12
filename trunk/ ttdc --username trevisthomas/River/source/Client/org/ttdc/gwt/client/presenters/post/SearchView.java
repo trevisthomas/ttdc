@@ -18,6 +18,7 @@ public class SearchView extends Composite implements SearchPresenter.View{
 	private final SimplePanel tagResultsTarget = new SimplePanel();
 	private final SimplePanel toggleResultsTarget = new SimplePanel(); 
 	private final SimplePanel messagesPanel = new SimplePanel();
+	private final SimplePanel navigationPanel = new SimplePanel();
 
 	public HasText getSummaryDetail() {
 		return summaryDetail;
@@ -25,6 +26,7 @@ public class SearchView extends Composite implements SearchPresenter.View{
 	
 	@Override
 	public void show() {
+		rootPanel.add(navigationPanel);
 		rootPanel.add(messagesPanel);
 		rootPanel.add(controlsPanel);
 		
@@ -39,6 +41,11 @@ public class SearchView extends Composite implements SearchPresenter.View{
 		
 		RootPanel.get("content").clear();
 		RootPanel.get("content").add(this);
+	}
+	
+	@Override
+	public HasWidgets navigationPanel() {
+		return navigationPanel;
 	}
 	
 	@Override

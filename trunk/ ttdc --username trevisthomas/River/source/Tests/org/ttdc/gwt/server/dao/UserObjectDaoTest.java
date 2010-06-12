@@ -1,17 +1,21 @@
 package org.ttdc.gwt.server.dao;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.fail;
+import static org.ttdc.persistence.Persistence.beginSession;
+import static org.ttdc.persistence.Persistence.commit;
+import static org.ttdc.persistence.Persistence.rollback;
+
 import java.util.List;
 
 import org.junit.Test;
 import org.ttdc.gwt.client.constants.UserObjectConstants;
 import org.ttdc.gwt.client.constants.UserObjectTemplateConstants;
 import org.ttdc.persistence.objects.Person;
-import org.ttdc.persistence.objects.Tag;
 import org.ttdc.persistence.objects.UserObject;
 import org.ttdc.persistence.objects.UserObjectTemplate;
-
-import static junit.framework.Assert.*;
-import static org.ttdc.persistence.Persistence.*;
 public class UserObjectDaoTest {
 	
 	boolean hasTagIdFilter(Person p, String tagId){
@@ -163,5 +167,5 @@ public class UserObjectDaoTest {
 			commit();
 		}
 	}
-	
+
 }

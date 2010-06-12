@@ -25,6 +25,7 @@ public class InitConstants {
 	public final static Person ANONYMOUS;
 	public final static String ANON_PERSON_ID = "ANON_PERSON_ID";
 	public static final int POST_EDIT_WINDOW_MS = 1000*30*60;
+	public final static int MAX_FILTERED_THREADS_IN_DASHBOARD = 10;
 	
 	public static Style DEFAULT_STYLE;
 	//Bad mojo here trevis.  You have a mutable public attribute. Consider a fix

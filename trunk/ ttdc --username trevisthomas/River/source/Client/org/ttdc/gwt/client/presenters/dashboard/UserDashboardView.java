@@ -21,8 +21,10 @@ public class UserDashboardView implements UserDashboardPresenter.View{
 	private static final SimplePanel editProfilePanel = new SimplePanel();
 	private static final SimplePanel resetPassword = new SimplePanel();
 	private static final SimplePanel settings = new SimplePanel();
+	private final SimplePanel navigationPanel = new SimplePanel();
 	
 	public UserDashboardView() {
+		main.add(navigationPanel);
 		main.add(messagePanel);
 		main.add(tabPanel);
 		tabPanel.add(profilePanel,"Profile");
@@ -40,6 +42,11 @@ public class UserDashboardView implements UserDashboardPresenter.View{
 				updateHistoryToReflectTabSelection(index);
 			}
 		});
+	}
+	
+	@Override
+	public HasWidgets navigationPanel() {
+		return navigationPanel;
 	}
 	
 	private void updateHistoryToReflectTabSelection(int index) {

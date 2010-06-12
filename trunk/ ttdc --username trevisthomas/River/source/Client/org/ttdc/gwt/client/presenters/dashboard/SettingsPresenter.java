@@ -2,16 +2,21 @@ package org.ttdc.gwt.client.presenters.dashboard;
 
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GPerson;
+import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.beans.GStyle;
 import org.ttdc.gwt.client.messaging.EventBus;
 import org.ttdc.gwt.client.presenters.shared.BasePresenter;
 import org.ttdc.gwt.client.presenters.shared.BaseView;
+import org.ttdc.gwt.client.uibinder.dashboard.FilteredPost;
 import org.ttdc.gwt.shared.commands.AccountCommand;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
+import org.ttdc.gwt.shared.commands.SearchPostsCommand;
 import org.ttdc.gwt.shared.commands.StyleListCommand;
 import org.ttdc.gwt.shared.commands.results.GenericCommandResult;
 import org.ttdc.gwt.shared.commands.results.GenericListCommandResult;
+import org.ttdc.gwt.shared.commands.results.SearchPostsCommandResult;
 import org.ttdc.gwt.shared.commands.types.AccountActionType;
+import org.ttdc.gwt.shared.commands.types.PostSearchType;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -31,6 +36,8 @@ public class SettingsPresenter extends BasePresenter<SettingsPresenter.View>{
 		HasValue<Boolean> enableNwsValue();
 		
 		void clearAvailableStyles();
+		void clearFilteredThreadList();
+		void addFilteredThread(FilteredPost filteredPost);
 	}
 	
 	private GPerson person;
@@ -55,6 +62,11 @@ public class SettingsPresenter extends BasePresenter<SettingsPresenter.View>{
 		
 		StyleListCommand styleListCmd = new StyleListCommand();
 		injector.getService().execute(styleListCmd, buildStyleListCallback());
+		
+		SearchPostsCommand searchFilteredPostsCmd = new SearchPostsCommand();
+		searchFilteredPostsCmd.setPostSearchType(PostSearchType.FILTERED_BY_USER);
+		
+		injector.getService().execute(searchFilteredPostsCmd, buildFilteredThreadCallback());
 		
 		view.nwsCheckBoxClick().addClickHandler(new ClickHandler() {
 			@Override
@@ -98,6 +110,20 @@ public class SettingsPresenter extends BasePresenter<SettingsPresenter.View>{
 				}
 				GStyle style = person.getStyle();
 				view.setSelectedStyleId(style.getStyleId());
+			}
+		};
+	}
+	
+	private CommandResultCallback<SearchPostsCommandResult> buildFilteredThreadCallback() {
+		return new CommandResultCallback<SearchPostsCommandResult>(){
+			@Override
+			public void onSuccess(SearchPostsCommandResult result) {
+				view.clearFilteredThreadList();
+				for(GPost post : result.getResults().getList()){
+					FilteredPost filteredPost = injector.createFilteredPost();
+					filteredPost.init(post);
+					view.addFilteredThread(filteredPost);
+				}
 			}
 		};
 	}

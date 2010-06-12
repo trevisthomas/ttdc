@@ -6,19 +6,15 @@ import static org.ttdc.persistence.Persistence.rollback;
 
 import org.ttdc.gwt.client.beans.GUserObject;
 import org.ttdc.gwt.client.constants.UserObjectConstants;
-import org.ttdc.gwt.client.messaging.post.PostEvent;
 import org.ttdc.gwt.client.services.CommandResult;
-import org.ttdc.gwt.server.activity.ServerEventBroadcaster;
 import org.ttdc.gwt.server.beanconverters.FastPostBeanConverter;
 import org.ttdc.gwt.server.command.CommandExecutor;
 import org.ttdc.gwt.server.dao.PersonDao;
-import org.ttdc.gwt.server.dao.PostDao;
 import org.ttdc.gwt.server.dao.UserObjectDao;
 import org.ttdc.gwt.server.dao.UserObjectTemplateDao;
 import org.ttdc.gwt.shared.commands.UserObjectCrudCommand;
 import org.ttdc.gwt.shared.commands.results.GenericCommandResult;
 import org.ttdc.persistence.objects.Person;
-import org.ttdc.persistence.objects.Post;
 import org.ttdc.persistence.objects.UserObject;
 import org.ttdc.persistence.objects.UserObjectTemplate;
 

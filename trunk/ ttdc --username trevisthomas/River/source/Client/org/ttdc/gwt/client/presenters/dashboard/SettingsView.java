@@ -2,6 +2,7 @@ package org.ttdc.gwt.client.presenters.dashboard;
 
 import org.ttdc.gwt.client.beans.GStyle;
 import org.ttdc.gwt.client.presenters.util.MyListBox;
+import org.ttdc.gwt.client.uibinder.dashboard.FilteredPost;
 
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Button;
@@ -21,8 +22,8 @@ public class SettingsView implements SettingsPresenter.View{
 	private final Button updateStyleButton = new Button("Update Theme");
 	private final MyListBox styleListBox = new MyListBox();
 	private final VerticalPanel filterListPanel = new VerticalPanel();
-	//private final HorizontalPanel nwsFilterPanel = new HorizontalPanel();
 	private final CheckBox nwsCleckBox = new CheckBox();
+	private final VerticalPanel filtedThreads = new VerticalPanel();
 	
 	public SettingsView() {
 		stylePanel.add(new Label("Choose Style"));
@@ -37,6 +38,7 @@ public class SettingsView implements SettingsPresenter.View{
 		
 		main.add(styleFieldSet);
 		main.add(filtersFieldSet);
+		main.add(filtedThreads);
 	}
 	
 	@Override
@@ -77,5 +79,15 @@ public class SettingsView implements SettingsPresenter.View{
 	@Override
 	public HasClickHandlers updateStyleClick() {
 		return updateStyleButton;
+	}
+	
+	@Override
+	public void addFilteredThread(FilteredPost filteredPost) {
+		filtedThreads.add(filteredPost);		
+	}
+	
+	@Override
+	public void clearFilteredThreadList() {
+		filtedThreads.clear();
 	}
 }
