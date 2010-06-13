@@ -138,6 +138,7 @@ public class Tag implements HasGuid{
 	public final static String VALUE_RATING_1 = "1.0";
 	public final static String VALUE_RATING_0_5 = "0.5";
 	public final static String VALUE_RATING_0 = "0.0"; //Not sure about this one
+	public final static String TYPE_LIKE = "LIKE";
 	
 	
 		
