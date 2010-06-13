@@ -107,6 +107,12 @@ public class MovieRatingPresenter extends BasePresenter<MovieRatingPresenter.Vie
 		};
 	}
 	
+	/**
+	 * 
+	 *	This was originally used for movie ratings but i'm also trying to use it for like and unlike 
+	 *
+	 */
+	//TODO: If this is looking good, you might want to pull this class out of the movie area and use it as a generic post refresh
 	public static class PostRatingCallback extends CommandResultCallback<AssociationPostTagResult>{
 		private GPost post;
 		public PostRatingCallback(GPost post) {

@@ -1139,21 +1139,7 @@ public class Post implements Comparable<Post>, HasGuid {
 	 * @param person
 	 * @return
 	 */
-//	public boolean hasTagAssociation(String type, Person person) {
-//		if(type == null) return false;
-//		List<AssociationPostTag> tagasses = getTagAssociations();
-//		boolean retval = false;
-//		for(AssociationPostTag ass : tagasses){
-//			if(type.equals(ass.getTag().getType()) && ass.getCreator().equals(person)){
-//				return true;
-//			}
-//		}
-//		return retval;
-//	}
-	
-	public boolean hasRatingByPerson(String personId){
-		String type = Tag.TYPE_RATING;
-		
+	private boolean hasTagAssociation(String type, String personId) {
 		if(type == null) return false;
 		List<AssociationPostTag> tagasses = getTagAssociations();
 		boolean retval = false;
@@ -1164,6 +1150,27 @@ public class Post implements Comparable<Post>, HasGuid {
 		}
 		return retval;
 	}
+	
+	public boolean hasRatingByPerson(String personId){
+		String type = Tag.TYPE_RATING;
+		
+//		List<AssociationPostTag> tagasses = getTagAssociations();
+//		boolean retval = false;
+//		for(AssociationPostTag ass : tagasses){
+//			if(type.equals(ass.getTag().getType()) && ass.getCreator().getPersonId().equals(personId)){
+//				return true;
+//			}
+//		}
+//		return retval;
+		return hasTagAssociation(type, personId);
+		
+	}
+	
+	public boolean isLikedByPerson(String personId) {
+		String type = Tag.TYPE_LIKE;
+		return hasTagAssociation(type, personId);
+	}
+	
 	
 	public AssociationPostTag getRatingByPerson(String personId){
 		String type = Tag.TYPE_RATING;
@@ -1516,6 +1523,7 @@ public class Post implements Comparable<Post>, HasGuid {
 	public void setCreator(Person creator) {
 		this.creator = creator;
 	}
+
 	
 //	META_MASK	binary(8)	Unchecked
 //	TAG_GUID_TITLE	uniqueidentifier	Unchecked

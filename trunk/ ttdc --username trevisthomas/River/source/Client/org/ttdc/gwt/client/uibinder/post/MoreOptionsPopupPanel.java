@@ -25,6 +25,7 @@ public class MoreOptionsPopupPanel extends PopupPanel{
     
     @UiField Anchor replyElement;
     @UiField Anchor likeElement;
+    @UiField Anchor unLikeElement;
     @UiField Anchor ratingElement;
     @UiField Anchor unRateElement;
     @UiField Anchor editElement;
@@ -45,6 +46,8 @@ public class MoreOptionsPopupPanel extends PopupPanel{
     	GPerson user = ConnectionId.getInstance().getCurrentUser();
     	ratingElement.setVisible(false);
     	unRateElement.setVisible(false);
+    	unLikeElement.setVisible(false);
+    	likeElement.setVisible(false);
     	editElement.setVisible(false);
     	muteThreadElement.setVisible(false);
     	unMuteThreadElement.setVisible(false);
@@ -55,6 +58,11 @@ public class MoreOptionsPopupPanel extends PopupPanel{
     			else
     				unRateElement.setVisible(true);
     		}
+    		if(post.getLikedByPerson(user.getPersonId()) == null)
+    			likeElement.setVisible(true);
+			else
+				unLikeElement.setVisible(true);
+    		
     	}
     	
     	if(!user.isAnonymous()){
@@ -65,6 +73,8 @@ public class MoreOptionsPopupPanel extends PopupPanel{
         		muteThreadElement.setVisible(true);
         	}
     	}
+    	
+    	
     	
     	if(user.isAdministrator() || (user.equals(post.getCreator()) && post.isInEditWindow())){
     		editElement.setVisible(true);
@@ -95,6 +105,14 @@ public class MoreOptionsPopupPanel extends PopupPanel{
     	unMuteThreadElement.addClickHandler(handler);
     }
     
+    public void addLikePostClickHandler(ClickHandler handler){
+    	likeElement.addClickHandler(handler);
+    }
+    
+    public void addUnLikePostClickHandler(ClickHandler handler){
+    	unLikeElement.addClickHandler(handler);
+    }
+    
     @UiHandler("ratingElement")
     void onClickRating(ClickEvent event){
     	hide();
@@ -112,9 +130,13 @@ public class MoreOptionsPopupPanel extends PopupPanel{
     
     @UiHandler("likeElement")
     void onClickLike(ClickEvent event){
-    	Window.alert("Like clicked for: "+post.getTitle());
     	hide();
     }    
+    
+    @UiHandler("unLikeElement")
+    void onClickUnLike(ClickEvent event){
+    	hide();
+    }
     
     @UiHandler(value={"editElement","unMuteThreadElement","muteThreadElement"})
     void onClickEdit(ClickEvent event){

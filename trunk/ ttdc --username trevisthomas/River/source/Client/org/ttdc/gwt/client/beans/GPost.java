@@ -7,7 +7,6 @@ import java.util.List;
 import org.ttdc.gwt.client.constants.TagConstants;
 import org.ttdc.gwt.shared.util.PostFlag;
 
-
 public class GPost extends GBase{
 	private String postId;
 	private GPost parent;
@@ -189,6 +188,9 @@ public class GPost extends GBase{
 		return loadTagAssociationByPerson(TagConstants.TYPE_RATING, personId);
 	}
 	
+	public GAssociationPostTag getLikedByPerson(String personId) {
+		return loadTagAssociationByPerson(TagConstants.TYPE_LIKE, personId);
+	}
 	
 	public List<GAssociationPostTag> readTagAssociations(String type){
 		List<GAssociationPostTag> foundAsses = new ArrayList<GAssociationPostTag>();
@@ -359,6 +361,8 @@ public class GPost extends GBase{
 		}
 		return false;
 	}
+	
+	
 
 	public void setRead(boolean read) {
 		this.read = read;

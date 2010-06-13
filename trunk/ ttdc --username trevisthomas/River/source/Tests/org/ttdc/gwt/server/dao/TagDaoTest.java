@@ -1,5 +1,7 @@
 package org.ttdc.gwt.server.dao;
 
+import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.fail;
 import static org.junit.Assert.*;
 import static org.ttdc.persistence.Persistence.*;
 
@@ -8,7 +10,11 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.Test;
+import org.ttdc.persistence.objects.AssociationPostTag;
+import org.ttdc.persistence.objects.Person;
+import org.ttdc.persistence.objects.Post;
 import org.ttdc.persistence.objects.Tag;
+import org.ttdc.persistence.objects.UserObject;
 
 import static org.ttdc.gwt.server.dao.Helpers.*;
 

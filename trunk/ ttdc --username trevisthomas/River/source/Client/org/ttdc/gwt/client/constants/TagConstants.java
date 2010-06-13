@@ -35,7 +35,8 @@ public interface TagConstants {
 	public final static String TYPE_LEGACY_THREAD = "LEGACY_THREAD";
 		
 	public final static String TYPE_RATABLE = "RATABLE";//This tag
-	public final static String TYPE_EARMARK = "EARMARK";//Authenticated users can ear mark a post so that they can find it later. Value of this tag type should be the creator's guid 
+	public final static String TYPE_EARMARK = "EARMARK";//Authenticated users can ear mark a post so that they can find it later. Value of this tag type should be the creator's guid
+	public final static String TYPE_LIKE = "LIKE";
 	
 	public final static String TYPE_URL = "URL"; //Initially for imdb links to movies but could be used for lots of things
 	public final static String VALUE_RATING_5 = "5.0";

@@ -4,19 +4,25 @@ import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GAssociationPostTag;
 import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.beans.GPost;
+import org.ttdc.gwt.client.beans.GTag;
 import org.ttdc.gwt.client.beans.GUserObject;
+import org.ttdc.gwt.client.constants.TagConstants;
 import org.ttdc.gwt.client.constants.UserObjectConstants;
 import org.ttdc.gwt.client.messaging.ConnectionId;
 import org.ttdc.gwt.client.messaging.EventBus;
+import org.ttdc.gwt.client.messaging.error.MessageEvent;
+import org.ttdc.gwt.client.messaging.error.MessageEventType;
 import org.ttdc.gwt.client.messaging.post.PostEvent;
 import org.ttdc.gwt.client.messaging.post.PostEventType;
 import org.ttdc.gwt.client.presenters.comments.NewCommentPresenter;
 import org.ttdc.gwt.client.presenters.movies.MovieRatingPresenter;
+import org.ttdc.gwt.client.presenters.movies.MovieRatingPresenter.PostRatingCallback;
 import org.ttdc.gwt.client.services.RpcServiceAsync;
 import org.ttdc.gwt.shared.commands.AssociationPostTagCommand;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
 import org.ttdc.gwt.shared.commands.UserObjectCrudCommand;
 import org.ttdc.gwt.shared.commands.AssociationPostTagCommand.Mode;
+import org.ttdc.gwt.shared.commands.results.AssociationPostTagResult;
 import org.ttdc.gwt.shared.commands.results.GenericCommandResult;
 import org.ttdc.gwt.shared.commands.types.ActionType;
 
@@ -100,9 +106,68 @@ abstract public class PostBaseComposite extends Composite{
 				processUnMuteThreadRequest();
 			}
 		});
+		
+		optionsPanel.addLikePostClickHandler(new ClickHandler(){
+			@Override
+			public void onClick(ClickEvent event) {
+				processLikePostRequest();
+			}
+		});
+		
+		optionsPanel.addUnLikePostClickHandler(new ClickHandler(){
+			@Override
+			public void onClick(ClickEvent event) {
+				processUnLikePostRequest();
+			}
+		});
+	}
+	
+	protected void processUnLikePostRequest(){
+		AssociationPostTagCommand cmd = new AssociationPostTagCommand();
+		cmd.setMode(AssociationPostTagCommand.Mode.REMOVE);
+		
+		GPerson user = ConnectionId.getInstance().getCurrentUser();
+		GAssociationPostTag likeAssociation = post.getLikedByPerson(user.getPersonId());
+		
+		cmd.setAssociationId(likeAssociation.getGuid());
+		cmd.setMode(Mode.REMOVE);
+		
+		cmd.setConnectionId(ConnectionId.getInstance().getConnectionId());
+		//TODO: If this is looking good, you might want to pull this class out of the movie area and use it as a generic post refresh
+		injector.getService().execute(cmd, new MovieRatingPresenter.PostRatingCallback(post));
+	}
+	
+	protected void processLikePostRequest(){
+		AssociationPostTagCommand cmd = new AssociationPostTagCommand();
+		
+		GTag tag = new GTag();
+		tag.setValue(TagConstants.TYPE_LIKE);
+		tag.setType(TagConstants.TYPE_LIKE);
+		cmd.setTag(tag);
+		cmd.setPostId(post.getPostId());
+		cmd.setMode(AssociationPostTagCommand.Mode.CREATE);
+		//TODO: If this is looking good, you might want to pull this class out of the movie area and use it as a generic post refresh
+		cmd.setConnectionId(ConnectionId.getInstance().getConnectionId());
+		injector.getService().execute(cmd, new MovieRatingPresenter.PostRatingCallback(post));
 	}
 	
 	
+//	private class AssociationPostTagCallback extends CommandResultCallback<AssociationPostTagResult>{
+//		@Override
+//		public void onSuccess(AssociationPostTagResult result) {
+//			if(result.isCreate()){
+//				//addTagAssociationToList(result.getAssociationPostTag());
+//			}
+//			else if(result.isRemove()){
+//				//nothing to do
+//			}
+//			else{
+//				MessageEvent event = new MessageEvent(MessageEventType.SYSTEM_ERROR,result.getAssociationId());
+//				EventBus.getInstance().fireEvent(event);
+//			}
+//		}
+//	}
+//	
 	protected void processUnMuteThreadRequest() {
 		UserObjectCrudCommand cmd = new UserObjectCrudCommand();
 		cmd.setType(UserObjectConstants.TYPE_FILTER_THREAD);
