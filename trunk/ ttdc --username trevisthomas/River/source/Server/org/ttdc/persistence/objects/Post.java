@@ -1171,6 +1171,15 @@ public class Post implements Comparable<Post>, HasGuid {
 		return hasTagAssociation(type, personId);
 	}
 	
+	public boolean isEarmarkedByPerson(String personId) {
+		String type = Tag.TYPE_EARMARK;
+		return hasTagAssociation(type, personId);
+		//NOTE: This method isn't checking the tag value but it probably should?
+		//	 	the asumption being made is that an earmark would only exist on a post that
+		//		was created by the user but since a post can be ear marked multiple times the value of the tag is unique for each user
+	
+	}
+	
 	
 	public AssociationPostTag getRatingByPerson(String personId){
 		String type = Tag.TYPE_RATING;
@@ -1523,6 +1532,8 @@ public class Post implements Comparable<Post>, HasGuid {
 	public void setCreator(Person creator) {
 		this.creator = creator;
 	}
+
+	
 
 	
 //	META_MASK	binary(8)	Unchecked

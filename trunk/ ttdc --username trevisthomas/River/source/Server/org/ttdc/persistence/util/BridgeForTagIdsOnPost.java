@@ -14,6 +14,7 @@ public class BridgeForTagIdsOnPost implements StringBridge{
 		for(AssociationPostTag ass : asses){
 			sb.append(ass.getTag().getTagId());
 			sb.append(" ");
+			System.out.print(ass.getTag().getTagId());
 		}
 		return sb.toString();
 	}

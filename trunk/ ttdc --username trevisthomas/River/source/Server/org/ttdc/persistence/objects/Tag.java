@@ -116,7 +116,7 @@ public class Tag implements HasGuid{
 //	public final static String TYPE_RELEASE_YEAR = "RELEASE_YEAR"; //Initially for movies. Because the year it came out is often different from the year i added it
 //	public final static String TYPE_LEGACY_THREAD = "LEGACY_THREAD";
 //	public final static String TYPE_RATABLE = "RATABLE";//This tag
-//	public final static String TYPE_EARMARK = "EARMARK";//Authenticated users can ear mark a post so that they can find it later. Value of this tag type should be the creator's guid 
+	public final static String TYPE_EARMARK = "EARMARK";//Authenticated users can ear mark a post so that they can find it later. Value of this tag type should be the creator's guid 
 //	public final static String TYPE_URL = "URL"; //Initially for imdb links to movies but could be used for lots of things
 //	public final static String VALUE_NWS = "NWS";
 //	public final static String VALUE_INF = "INF";
