@@ -22,7 +22,9 @@ import org.ttdc.gwt.shared.commands.types.SearchSortBy;
 import org.ttdc.gwt.shared.util.PaginatedList;
 import org.ttdc.gwt.shared.util.PostFlag;
 import org.ttdc.persistence.objects.AssociationPostTag;
+import org.ttdc.persistence.objects.Person;
 import org.ttdc.persistence.objects.Post;
+import org.ttdc.persistence.objects.Tag;
 
 import static org.ttdc.gwt.server.dao.Helpers.*;
 
@@ -687,6 +689,65 @@ public class PostSearchDaoTest {
 			fail(e.toString());
 		}
 	
+	}
+	
+	@Test
+	public void testEarmarkedPost(){
+		try{
+			beginSession();
+			Person person = PersonDao.loadPerson(Helpers.personIdAdmin);
+//			
+//			String postIdPolitical = "93BD3F5D-FD00-44FA-AE9A-86F0B259B91D";
+//			Post post = PostDao.loadPost(postIdPolitical);
+//			
+//			assertTrue("Pre test condtition not satisfied.",!post.isEarmarkedByPerson(person.getPersonId()));
+//			
+//			AssociationPostTagDao assDao = new AssociationPostTagDao();
+//			TagDao tagDao = new TagDao();
+//			tagDao.setValue(person.getPersonId());
+//			tagDao.setType(org.ttdc.gwt.client.constants.TagConstants.TYPE_EARMARK);
+//			
+//			Tag tag = tagDao.createOrLoad();
+//			
+//			assDao.setCreator(person);
+//			assDao.setPost(post);
+//			assDao.setTag(tag);
+//			AssociationPostTag ass = assDao.create();
+//			
+//			assertTrue("Post is still not earmarked by person.",post.isEarmarkedByPerson(person.getPersonId()));
+//			
+			//Now get the list of earmarked posts
+			
+			
+			TagDao tagDao = new TagDao();
+			tagDao.setValue(person.getPersonId());
+			tagDao.setType(org.ttdc.gwt.client.constants.TagConstants.TYPE_EARMARK);
+			Tag tag = tagDao.load();
+			
+			PostSearchDao dao = new PostSearchDao();
+			int currentPage = 1;
+			dao.setCurrentPage(currentPage);
+			dao.addTagId(tag.getTagId());
+			
+			PaginatedList<Post> results = dao.search();
+			
+			assertSearchResults(dao.getTagIdList().toString(), currentPage, results);
+			Helpers.printResults(results,log);
+			
+			assertTagged(results.getList(), tag.getTagId());
+//			
+//			// Finished testing, remove the earmark
+//			AssociationPostTagDao.remove(ass.getGuid());
+//			
+//			assertTrue("Failed to remove earmark from the post.",!post.isEarmarkedByPerson(person.getPersonId()));
+			commit();
+		}
+		catch (Exception e) {
+			fail(e.toString());
+		}
+		finally{
+			//rollback();
+		}
 	}
 
 	private void assertSearchResults(String phrase, int currentPage, PaginatedList<Post> results) {

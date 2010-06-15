@@ -3,9 +3,12 @@ package org.ttdc.gwt.server.dao;
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.Assert.fail;
 import static org.junit.Assert.*;
+import static org.ttdc.gwt.server.dao.Helpers.assertTagged;
 import static org.ttdc.persistence.Persistence.*;
 
+import org.apache.jasper.compiler.TagConstants;
 import org.junit.Test;
+import org.ttdc.gwt.shared.util.PaginatedList;
 import org.ttdc.persistence.Persistence;
 import org.ttdc.persistence.objects.AssociationPostTag;
 import org.ttdc.persistence.objects.Person;
@@ -223,5 +226,46 @@ public class AssociationPostTagDaoTest {
 			rollback();
 		}
 	}
+	
+	@Test
+	public void testEarmarkAndRemoveEarmarkPost(){
+		try{
+			beginSession();
+			Person person = PersonDao.loadPerson(Helpers.personIdCSam);
+			
+			String postIdPolitical = "93BD3F5D-FD00-44FA-AE9A-86F0B259B91D";
+			Post post = PostDao.loadPost(postIdPolitical);
+			
+			
+			assertTrue("Pre test condtition not satisfied.",!post.isEarmarkedByPerson(person.getPersonId()));
+			
+			AssociationPostTagDao assDao = new AssociationPostTagDao();
+			TagDao tagDao = new TagDao();
+			tagDao.setValue(person.getPersonId());
+			tagDao.setType(org.ttdc.gwt.client.constants.TagConstants.TYPE_EARMARK);
+			
+			Tag tag = tagDao.createOrLoad();
+			
+			assDao.setCreator(person);
+			assDao.setPost(post);
+			assDao.setTag(tag);
+			AssociationPostTag ass = assDao.create();
+			
+			assertTrue("Post is still not earmarked by person.",post.isEarmarkedByPerson(person.getPersonId()));
+			
+			AssociationPostTagDao.remove(ass.getGuid());
+			
+			//Post post = PostDao.loadPost(postIdPolitical);
+			assertTrue("Failed to remove earmark from the post.",!post.isEarmarkedByPerson(person.getPersonId()));
+		}
+		catch (Exception e) {
+			fail(e.toString());
+		}
+		finally{
+			rollback();
+		}
+	}
+	
+	
 	
 }
