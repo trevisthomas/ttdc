@@ -34,12 +34,14 @@ public class Home2View implements Home2Presenter.View{
 	private final SimplePanel nestedPanel = new SimplePanel();
 	private final SimplePanel flatPanel = new SimplePanel();
 	private final SimplePanel threadPanel = new SimplePanel();
+	private final SimplePanel earmarksPanel = new SimplePanel();
+	
 	private final SimplePanel searchPanel = new SimplePanel();
 	private final SimplePanel loginPanel = new SimplePanel();
+	
 	private final Button commentButton = new Button("Comment");
 	private final Button movieButton = new Button("Movie");
 	private final Button markReadButton = new Button("Read");
-	//private final DisclosurePanel commentPanel = new DisclosurePanel("Add Comment");
 	private final SimplePanel commentPanel = new SimplePanel();
 	private HistoryToken token = new HistoryToken();
 	private final HorizontalPanel searchAndReplyPanel = new HorizontalPanel();
@@ -68,6 +70,7 @@ public class Home2View implements Home2Presenter.View{
 		centerTabPanel.add(nestedPanel, "Nested");
 		centerTabPanel.add(flatPanel, "Flat");
 		centerTabPanel.add(conversationPanel,"Conversations");
+		
 		rightTabPanel.add(threadPanel,"Threads");
 		
 		token.addParameter(HistoryConstants.VIEW, HistoryConstants.VIEW_HOME);
@@ -91,6 +94,11 @@ public class Home2View implements Home2Presenter.View{
 		Label label = new Label(ConnectionId.getInstance().getCurrentUser().getLogin()+ "  " +ConnectionId.getInstance().getConnectionId());
 		RootPanel.get("content").add(label);
 		RootPanel.get("content").add(getWidget());
+	}
+	
+	@Override
+	public void enableEarmarkTab(){
+		centerTabPanel.add(earmarksPanel,"Earmarked");
 	}
 	
 	@Override
@@ -118,6 +126,9 @@ public class Home2View implements Home2Presenter.View{
 				break;
 			case INDEX_CONVERSATION:
 				token.setParameter(HistoryConstants.TAB_KEY, HistoryConstants.HOME_CONVERSATION_TAB);
+				break;
+			case INDEX_EARMARKS:
+				token.setParameter(HistoryConstants.TAB_KEY, HistoryConstants.HOME_EARMARKS_TAB);	
 				break;				
 		}
 		History.newItem(token.toString(),fireHistoryEvent);
@@ -127,6 +138,7 @@ public class Home2View implements Home2Presenter.View{
 	final static int INDEX_THREAD = 0;
 	final static int INDEX_NESTED = 0;
 	final static int INDEX_CONVERSATION = 2;
+	final static int INDEX_EARMARKS = 3;
 
 	@Override
 	public void displayTab(TabType selected) {
@@ -136,6 +148,9 @@ public class Home2View implements Home2Presenter.View{
 		}else if(selected.equals(TabType.NESTED)){
 			centerTabPanel.selectTab(INDEX_NESTED);
 		}
+		else if(selected.equals(TabType.EARMARKS)){
+			centerTabPanel.selectTab(INDEX_EARMARKS);
+		}
 		else{
 			centerTabPanel.selectTab(INDEX_CONVERSATION);
 		}
@@ -143,26 +158,6 @@ public class Home2View implements Home2Presenter.View{
 		rightTabPanel.selectTab(INDEX_THREAD);
 		fireHistoryEvent = true;
 	}
-	
-//	@Override
-//	public void displayFlatTab() {
-//		centerTabPanel.selectTab(1);		
-//	}
-//
-//	@Override
-//	public void displayNestedTab() {
-//		centerTabPanel.selectTab(0);
-//	}
-//	
-//	@Override
-//	public void displayConversationTab() {
-//		rightTabPanel.selectTab(1);
-//	}
-//	
-//	@Override
-//	public void displayThreadTab() {
-//		rightTabPanel.selectTab(0);
-//	}
 	
 	@Override
 	public HasClickHandlers markReadButton() {
@@ -199,6 +194,11 @@ public class Home2View implements Home2Presenter.View{
 	}
 
 	@Override
+	public HasWidgets earmarksPanel() {
+		return earmarksPanel;
+	}
+	
+	@Override
 	public HasWidgets searhcPanel() {
 		return searchPanel;
 	}
@@ -222,5 +222,6 @@ public class Home2View implements Home2Presenter.View{
 	public HasWidgets navigationPanel() {
 		return navigationPanel;
 	}
+	
 	
 }

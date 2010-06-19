@@ -53,6 +53,7 @@ public class HyperlinkPresenter extends BasePresenter<HyperlinkPresenter.View> {
 		view.getHistoryToken().setParameter(HistoryConstants.PERSON_ID,person.getPersonId());
 		view.getDisplayName().setText(person.getLogin());
 		//No need to listen for the click, it's handled internally by the underlying Hyperlink
+		
 	}
 	
 	public void setTag(GTag tag){

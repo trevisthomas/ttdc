@@ -10,6 +10,7 @@ public class MovieListCommand extends Command<SearchPostsCommandResult>{
 	private SortDirection sortDirection;
 	private String personId;
 	private int pageNumber = 1;
+	private boolean speedrate = false;
 	
 	public int getPageNumber() {
 		return pageNumber;
@@ -35,6 +36,11 @@ public class MovieListCommand extends Command<SearchPostsCommandResult>{
 	public void setPersonId(String personId) {
 		this.personId = personId;
 	}
-
+	public void setSpeedRate(boolean b) {
+		speedrate = b;
+	}
+	public boolean isSpeedRate(){
+		return speedrate;
+	}
 		
 }

@@ -21,7 +21,6 @@ import org.ttdc.gwt.shared.commands.AssociationPostTagCommand;
 import org.ttdc.gwt.shared.commands.results.AssociationPostTagResult;
 import org.ttdc.persistence.Persistence;
 import org.ttdc.persistence.objects.AssociationPostTag;
-import org.ttdc.persistence.objects.Inbox;
 import org.ttdc.persistence.objects.Post;
 import org.ttdc.persistence.objects.Tag;
 import org.ttdc.util.RatingUtility;
@@ -90,7 +89,7 @@ public class AssociationPostTagCommandExecutor extends CommandExecutor<Associati
 		Post post = ass.getPost();
 		
 		boolean isRatingTagAss = ass.getTag().getType().equals(Tag.TYPE_RATING);
-		//GAssociationPostTag gAss = FastPostBeanConverter.convertAssociationPostTagWithPost(ass);
+		GAssociationPostTag gAss = FastPostBeanConverter.convertAssociationPostTagWithPost(ass);
 		
 		AssociationPostTagDao.remove(command.getAssociationId());
 		if(isRatingTagAss){
@@ -98,7 +97,7 @@ public class AssociationPostTagCommandExecutor extends CommandExecutor<Associati
 		}
 		result = new AssociationPostTagResult(AssociationPostTagResult.Status.REMOVE);
 		result.setAssociationId(ass.getGuid());
-		//result.setAssociationPostTag(gAss);
+		result.setAssociationPostTag(gAss);
 		InboxDao inboxDao = new InboxDao(getPerson());
 		GPost gPost = FastPostBeanConverter.convertPost(post, inboxDao);
 		result.setPost(gPost);

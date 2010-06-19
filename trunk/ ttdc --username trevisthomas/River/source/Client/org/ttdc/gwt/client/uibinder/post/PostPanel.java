@@ -1,16 +1,19 @@
 package org.ttdc.gwt.client.uibinder.post;
 
+import java.util.List;
+
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GAssociationPostTag;
 import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.beans.GPost;
+import org.ttdc.gwt.client.constants.TagConstants;
 import org.ttdc.gwt.client.messaging.ConnectionId;
 import org.ttdc.gwt.client.messaging.EventBus;
 import org.ttdc.gwt.client.messaging.post.PostEvent;
 import org.ttdc.gwt.client.messaging.post.PostEventListener;
 import org.ttdc.gwt.client.messaging.post.PostEventType;
-import org.ttdc.gwt.client.presenters.comments.NewCommentPresenter;
 import org.ttdc.gwt.client.presenters.movies.MovieRatingPresenter;
+import org.ttdc.gwt.client.presenters.post.LikesPresenter;
 import org.ttdc.gwt.client.presenters.post.PostCollectionPresenter;
 import org.ttdc.gwt.client.presenters.post.PostPresenterCommon;
 import org.ttdc.gwt.client.presenters.post.PostPresenter.Mode;
@@ -69,6 +72,7 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
     @UiField(provided = true) Widget repliesElement;
     @UiField(provided = true) Widget postImageElement;
     @UiField(provided = true) Widget ratingElement;
+    @UiField SimplePanel likesElement;
     @UiField Label postUnReadElement;
     
     private Mode mode;
@@ -170,6 +174,21 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 			postUnReadElement.setText("*");
 			postUnReadElement.addStyleName("tt-alert");
 		}
+		
+		List<GAssociationPostTag> likeList = post.readTagAssociations(TagConstants.TYPE_LIKE);
+		if(likeList.size() > 0){
+			likesElement.setVisible(true);
+			LikesPresenter likesPresenter = injector.getLikesPresenter();
+			likesPresenter.init(likeList);
+			likesElement.clear();
+			likesElement.add(likesPresenter.getWidget());
+		}
+		else{
+			likesElement.setVisible(false);
+		}
+		
+		
+		
 		
 	}
 	
