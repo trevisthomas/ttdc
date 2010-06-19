@@ -62,6 +62,8 @@ import org.ttdc.gwt.client.presenters.home.CalendarSelectorModulePresenter;
 import org.ttdc.gwt.client.presenters.home.CalendarSelectorModuleView;
 import org.ttdc.gwt.client.presenters.home.ConversationPresenter;
 import org.ttdc.gwt.client.presenters.home.ConversationView;
+import org.ttdc.gwt.client.presenters.home.EarmarkedPresenter;
+import org.ttdc.gwt.client.presenters.home.EarmarkedView;
 import org.ttdc.gwt.client.presenters.home.FlatPresenter;
 import org.ttdc.gwt.client.presenters.home.FlatView;
 import org.ttdc.gwt.client.presenters.home.Home2Presenter;
@@ -80,6 +82,8 @@ import org.ttdc.gwt.client.presenters.movies.MovieListPresenter;
 import org.ttdc.gwt.client.presenters.movies.MovieListView;
 import org.ttdc.gwt.client.presenters.movies.MovieRatingPresenter;
 import org.ttdc.gwt.client.presenters.movies.MovieRatingView;
+import org.ttdc.gwt.client.presenters.post.LikesPresenter;
+import org.ttdc.gwt.client.presenters.post.LikesView;
 import org.ttdc.gwt.client.presenters.post.PostCollectionPresenter;
 import org.ttdc.gwt.client.presenters.post.PostCollectionView;
 import org.ttdc.gwt.client.presenters.post.PostPresenter;
@@ -257,6 +261,8 @@ public class InjectorModule extends AbstractGinModule {
 		bind(SearchBoxDatePresenter.View.class).to(SearchBoxDateView.class);
 		bind(NewCommentPresenter.View.class).to(NewCommentView.class);
 		bind(RemovableTagPresenter.View.class).to(RemovableTagView.class);
-		
+		bind(EarmarkedPresenter.View.class).to(EarmarkedView.class);
+		bind(LikesPresenter.View.class).to(LikesView.class);
+				
 	}
 }

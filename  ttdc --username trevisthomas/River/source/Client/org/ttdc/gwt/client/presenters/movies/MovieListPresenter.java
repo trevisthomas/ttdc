@@ -1,10 +1,9 @@
 package org.ttdc.gwt.client.presenters.movies;
 
 import org.ttdc.gwt.client.Injector;
-import org.ttdc.gwt.client.beans.GAssociationPostTag;
 import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.beans.GPost;
-import org.ttdc.gwt.client.constants.TagConstants;
+import org.ttdc.gwt.client.messaging.ConnectionId;
 import org.ttdc.gwt.client.messaging.EventBus;
 import org.ttdc.gwt.client.messaging.history.HistoryConstants;
 import org.ttdc.gwt.client.messaging.history.HistoryToken;
@@ -21,8 +20,8 @@ import org.ttdc.gwt.shared.commands.PersonListCommand;
 import org.ttdc.gwt.shared.commands.results.PersonListCommandResult;
 import org.ttdc.gwt.shared.commands.results.SearchPostsCommandResult;
 import org.ttdc.gwt.shared.commands.types.PersonListType;
-import org.ttdc.gwt.shared.commands.types.SortDirection;
 import org.ttdc.gwt.shared.commands.types.SortBy;
+import org.ttdc.gwt.shared.commands.types.SortDirection;
 import org.ttdc.gwt.shared.util.StringUtil;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -49,12 +48,19 @@ public class MovieListPresenter extends BasePagePresenter<MovieListPresenter.Vie
 		HasClickHandlers releaseYearSortClickHandler();
 		HasClickHandlers ratingSortClickHandler();
 		HasClickHandlers titleSortClickHandler();
+		HasClickHandlers speedRateClickHandler();
+		HasClickHandlers exitSpeedRateClickHandler();
 		
 		void addMovie(String year, Widget titleLink, Widget imdbLink, Widget rating);
 		String getSelectedPersonId();
 		void setSelectedPersonId(String personId);
 		void addPerson(String login, String personId, int reviewCount);
 		HasClickHandlers goButton();
+
+		void enableExitSpeedRateButton();
+		void enableSpeedRateButton();
+
+		
 	}
 
 	@Override
@@ -63,6 +69,9 @@ public class MovieListPresenter extends BasePagePresenter<MovieListPresenter.Vie
 		final String sort = token.getParameter(HistoryConstants.SORT_KEY, HistoryConstants.MOVIES_SORT_BY_TITLE);
 		final String direction = token.getParameter(HistoryConstants.SORT_DIRECTION_KEY,HistoryConstants.SORT_ASC);
 		personId = token.getParameter(HistoryConstants.PERSON_ID);
+		
+		final String viewMode  = token.getParameter(HistoryConstants.MOVIES_LIST_MODE);
+		GPerson user = ConnectionId.getInstance().getCurrentUser();
 		
 		token.setParameter(HistoryConstants.SORT_KEY, sort);
 		token.setParameter(HistoryConstants.SORT_DIRECTION_KEY, direction);
@@ -76,6 +85,14 @@ public class MovieListPresenter extends BasePagePresenter<MovieListPresenter.Vie
 			cmd.setPersonId(personId);
 		
 		cmd.setPageNumber(pageNumber);
+		
+		if(HistoryConstants.MOVIES_LIST_MODE_SPEEDRATE.equals(viewMode) && !user.isAnonymous()){
+			cmd.setPersonId(user.getPersonId());
+			cmd.setSpeedRate(true);
+			view.enableExitSpeedRateButton();
+		} else if(!user.isAnonymous()){
+			view.enableSpeedRateButton();
+		}
 		
 		if(HistoryConstants.SORT_ASC.equals(direction))
 			cmd.setSortDirection(SortDirection.ASC);
@@ -102,9 +119,25 @@ public class MovieListPresenter extends BasePagePresenter<MovieListPresenter.Vie
 		RpcServiceAsync service = injector.getService();
 		service.execute(batcher.getActionList(), batcher);
 		
+		view.speedRateClickHandler().addClickHandler(speedRateClickHandler(token));
+		view.exitSpeedRateClickHandler().addClickHandler(exitSpeedRateClickHandler(token));
+		
 		view.show();
 	}
 
+	private ClickHandler speedRateClickHandler(final HistoryToken token){
+		return new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				HistoryToken newToken = new HistoryToken();
+				newToken.load(token);
+				newToken.removeParameter(HistoryConstants.PAGE_NUMBER_KEY);
+				newToken.removeParameter(HistoryConstants.PERSON_ID);
+				newToken.setParameter(HistoryConstants.MOVIES_LIST_MODE, HistoryConstants.MOVIES_LIST_MODE_SPEEDRATE);
+				EventBus.fireHistoryToken(newToken);
+			}
+		};
+	}
 	private ClickHandler personSelectedClickHandler(final HistoryToken token) {
 		return new ClickHandler() {
 			@Override
@@ -113,6 +146,20 @@ public class MovieListPresenter extends BasePagePresenter<MovieListPresenter.Vie
 				newToken.load(token);
 				newToken.removeParameter(HistoryConstants.PAGE_NUMBER_KEY);
 				newToken.setParameter(HistoryConstants.PERSON_ID, view.getSelectedPersonId());
+				EventBus.fireHistoryToken(newToken);
+			}
+		};
+	}
+	
+	private ClickHandler exitSpeedRateClickHandler(final HistoryToken token){
+		return new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				HistoryToken newToken = new HistoryToken();
+				newToken.load(token);
+				newToken.removeParameter(HistoryConstants.PAGE_NUMBER_KEY);
+				newToken.removeParameter(HistoryConstants.PERSON_ID);
+				newToken.removeParameter(HistoryConstants.MOVIES_LIST_MODE);
 				EventBus.fireHistoryToken(newToken);
 			}
 		};

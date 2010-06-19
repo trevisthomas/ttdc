@@ -36,6 +36,7 @@
 									<g:Widget ui:field="postImageElement" />
 								</div>
 								<span class="tt-post-body tt-text-normal" ui:field="bodyElement" />
+								<g:SimplePanel ui:field="likesElement"></g:SimplePanel>
 							</div>
 							
 						</td>

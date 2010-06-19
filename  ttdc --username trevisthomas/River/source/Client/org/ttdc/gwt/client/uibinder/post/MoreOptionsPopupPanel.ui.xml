@@ -12,6 +12,8 @@
 			<g:Anchor ui:field="unRateElement">un-rate</g:Anchor>
 			<g:Anchor ui:field="muteThreadElement">mute thread</g:Anchor>
 			<g:Anchor ui:field="unMuteThreadElement">un-mute thread</g:Anchor>
+			<g:Anchor ui:field="earmarkElement">earmark</g:Anchor>
+			<g:Anchor ui:field="unEarmarkElement">remove earmark</g:Anchor>
 		</g:VerticalPanel>
 	</g:HTMLPanel>
 </ui:UiBinder>

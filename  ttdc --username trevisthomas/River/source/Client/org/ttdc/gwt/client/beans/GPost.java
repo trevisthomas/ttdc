@@ -192,6 +192,11 @@ public class GPost extends GBase{
 		return loadTagAssociationByPerson(TagConstants.TYPE_LIKE, personId);
 	}
 	
+	public GAssociationPostTag getEarmarkByPerson(String personId) {
+		return loadTagAssociationByPerson(TagConstants.TYPE_EARMARK, personId);
+	}
+	
+	
 	public List<GAssociationPostTag> readTagAssociations(String type){
 		List<GAssociationPostTag> foundAsses = new ArrayList<GAssociationPostTag>();
 		List<GAssociationPostTag> tagasses = getTagAssociations();

@@ -10,8 +10,8 @@ import org.ttdc.persistence.objects.Post;
 public class EarmarkedPostDao extends PaginatedDaoBase{
 	private String personId;
 	private String tagId;
-	public PaginatedList<Post> getEarmarkedPosts(){
-		String query = "SELECT ass.post FROM AssociationPostTag ass WHERE ass.creator.personId=:personId AND ass.tag.tagId=:tagId";
+	public PaginatedList<Post> loadEarmarkedPosts(){
+		String query = "SELECT ass.post FROM AssociationPostTag ass WHERE ass.creator.personId=:personId AND ass.tag.tagId=:tagId ORDER BY ass.date DESC";
 		String queryCount = "SELECT count(ass.post.postId) FROM AssociationPostTag ass WHERE ass.creator.personId=:personId AND ass.tag.tagId=:tagId";
 		PaginatedList<Post> results = executeQuery(query,queryCount,personId,tagId);
 		return results;

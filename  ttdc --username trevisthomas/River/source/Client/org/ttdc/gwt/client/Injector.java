@@ -33,6 +33,7 @@ import org.ttdc.gwt.client.presenters.dashboard.UserDashboardPresenter;
 import org.ttdc.gwt.client.presenters.demo.DemoPresenter;
 import org.ttdc.gwt.client.presenters.home.CalendarSelectorModulePresenter;
 import org.ttdc.gwt.client.presenters.home.ConversationPresenter;
+import org.ttdc.gwt.client.presenters.home.EarmarkedPresenter;
 import org.ttdc.gwt.client.presenters.home.FlatPresenter;
 import org.ttdc.gwt.client.presenters.home.Home2Presenter;
 import org.ttdc.gwt.client.presenters.home.InteractiveCalendarPresenter;
@@ -42,6 +43,7 @@ import org.ttdc.gwt.client.presenters.home.TrafficPersonPresenter;
 import org.ttdc.gwt.client.presenters.home.TrafficPresenter;
 import org.ttdc.gwt.client.presenters.movies.MovieListPresenter;
 import org.ttdc.gwt.client.presenters.movies.MovieRatingPresenter;
+import org.ttdc.gwt.client.presenters.post.LikesPresenter;
 import org.ttdc.gwt.client.presenters.post.PostCollectionPresenter;
 import org.ttdc.gwt.client.presenters.post.PostPresenter;
 import org.ttdc.gwt.client.presenters.post.PostSummaryPresenter;
@@ -53,6 +55,7 @@ import org.ttdc.gwt.client.presenters.post.SearchWithinTaggedSubsetPresenter;
 import org.ttdc.gwt.client.presenters.post.SiteSearchPresenter;
 import org.ttdc.gwt.client.presenters.post.TagCloudPresenter;
 import org.ttdc.gwt.client.presenters.post.TagRemovePresenter;
+import org.ttdc.gwt.client.presenters.post.LikesPresenter.View;
 import org.ttdc.gwt.client.presenters.search.SearchBoxDatePresenter;
 import org.ttdc.gwt.client.presenters.search.SearchBoxPresenter;
 import org.ttdc.gwt.client.presenters.shared.ButtonPresenter;
@@ -347,6 +350,12 @@ public interface Injector extends Ginjector {
 	public RemovableTagPresenter.View getRemovableTagView();
 	public RemovableTagPresenter getRemovableTagPresenter();
 	
+	public EarmarkedPresenter.View getEarmarkedView();
+	public EarmarkedPresenter getEarmarkedPresenter();
+	
+	public LikesPresenter.View getLikesView();
+	public LikesPresenter getLikesPresenter();
+	
 	//
 	public PostPanel createPostPanel();
 	public MoreOptionsPopupPanel createOptionsPanel();
@@ -359,5 +368,8 @@ public interface Injector extends Ginjector {
 	
 	public Navigation createNavigation();
 	public FilteredPost createFilteredPost();
+
+		
+	
 }
 

@@ -13,18 +13,18 @@ import org.ttdc.gwt.client.messaging.error.MessageEvent;
 import org.ttdc.gwt.client.messaging.error.MessageEventType;
 import org.ttdc.gwt.client.messaging.post.PostEvent;
 import org.ttdc.gwt.client.messaging.post.PostEventType;
+import org.ttdc.gwt.client.messaging.tag.TagEvent;
+import org.ttdc.gwt.client.messaging.tag.TagEventType;
 import org.ttdc.gwt.client.presenters.shared.BasePresenter;
 import org.ttdc.gwt.client.presenters.shared.BaseView;
 import org.ttdc.gwt.client.services.RpcServiceAsync;
 import org.ttdc.gwt.shared.commands.AssociationPostTagCommand;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
 import org.ttdc.gwt.shared.commands.TagCommand;
-import org.ttdc.gwt.shared.commands.AssociationPostTagCommand.Mode;
 import org.ttdc.gwt.shared.commands.results.AssociationPostTagResult;
 import org.ttdc.gwt.shared.commands.results.GenericListCommandResult;
 import org.ttdc.gwt.shared.commands.types.TagActionType;
 
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 
@@ -118,15 +118,25 @@ public class MovieRatingPresenter extends BasePresenter<MovieRatingPresenter.Vie
 		public PostRatingCallback(GPost post) {
 			this.post = post;
 		}
+		
+		/*
+		 * NOTE:  I'm firing the tag event locally so that the browser that tagged gets the refresh
+		 * message too.  Other browser will get the event from the server
+		 * 
+		 */
 		@Override
 		public void onSuccess(AssociationPostTagResult result) {
 			if(result.isCreate()){
 				PostEvent event = new PostEvent(PostEventType.EDIT,result.getAssociationPostTag().getPost());
 				EventBus.fireEvent(event);
+				TagEvent tagEvent = new TagEvent(TagEventType.NEW, result.getAssociationPostTag());
+				EventBus.fireEvent(tagEvent);
 			}
 			else if(result.isRemove()){
 				PostEvent event = new PostEvent(PostEventType.EDIT,result.getPost());
 				EventBus.fireEvent(event);
+				TagEvent tagEvent = new TagEvent(TagEventType.REMOVED, result.getAssociationPostTag());
+				EventBus.fireEvent(tagEvent);
 			}
 			else{
 				MessageEvent event = new MessageEvent(MessageEventType.SYSTEM_ERROR,result.getAssociationId());

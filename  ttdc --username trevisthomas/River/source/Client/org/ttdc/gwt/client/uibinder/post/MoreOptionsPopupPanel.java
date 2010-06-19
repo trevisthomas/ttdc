@@ -31,6 +31,8 @@ public class MoreOptionsPopupPanel extends PopupPanel{
     @UiField Anchor editElement;
     @UiField Anchor muteThreadElement;
     @UiField Anchor unMuteThreadElement;
+    @UiField Anchor earmarkElement;
+    @UiField Anchor unEarmarkElement;
     
     
     @Inject
@@ -51,6 +53,8 @@ public class MoreOptionsPopupPanel extends PopupPanel{
     	editElement.setVisible(false);
     	muteThreadElement.setVisible(false);
     	unMuteThreadElement.setVisible(false);
+    	unEarmarkElement.setVisible(false);
+    	earmarkElement.setVisible(false);
     	if(user.hasPrivilege(PrivilegeConstants.VOTER) || user.isAdministrator()){
     		if(post.isRatable()){
     			if(post.getRatingByPerson(user.getPersonId()) == null)
@@ -72,6 +76,13 @@ public class MoreOptionsPopupPanel extends PopupPanel{
         	else {
         		muteThreadElement.setVisible(true);
         	}
+    		
+    		if(post.getEarmarkByPerson(user.getPersonId()) == null){
+    			earmarkElement.setVisible(true);
+    		}
+    		else{
+    			unEarmarkElement.setVisible(true);
+    		}
     	}
     	
     	
@@ -113,6 +124,14 @@ public class MoreOptionsPopupPanel extends PopupPanel{
     	unLikeElement.addClickHandler(handler);
     }
     
+    public void addEarmarkClickHandler(ClickHandler handler){
+    	earmarkElement.addClickHandler(handler);
+    }
+    
+    public void addUnEarmarkClickHandler(ClickHandler handler){
+    	unEarmarkElement.addClickHandler(handler);
+    }
+    
     @UiHandler("ratingElement")
     void onClickRating(ClickEvent event){
     	hide();
@@ -135,6 +154,15 @@ public class MoreOptionsPopupPanel extends PopupPanel{
     
     @UiHandler("unLikeElement")
     void onClickUnLike(ClickEvent event){
+    	hide();
+    }
+    
+    @UiHandler("unEarmarkElement")
+    void onClickUnEarmark(ClickEvent event){
+    	hide();
+    }
+    @UiHandler("earmarkElement")
+    void onClickEarmark(ClickEvent event){
     	hide();
     }
     

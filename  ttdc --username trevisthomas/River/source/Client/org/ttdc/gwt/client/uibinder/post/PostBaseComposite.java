@@ -120,16 +120,48 @@ abstract public class PostBaseComposite extends Composite{
 				processUnLikePostRequest();
 			}
 		});
+		
+		optionsPanel.addEarmarkClickHandler(new ClickHandler(){
+			@Override
+			public void onClick(ClickEvent event) {
+				processEarmarkPostRequest();
+			}
+		});
+		
+		optionsPanel.addUnEarmarkClickHandler(new ClickHandler(){
+			@Override
+			public void onClick(ClickEvent event) {
+				processUnEarmarkPostRequest();
+			}
+		});
+	}
+	
+	private void processUnEarmarkPostRequest() {
+		GPerson user = ConnectionId.getInstance().getCurrentUser();
+		GAssociationPostTag association = post.getEarmarkByPerson(user.getPersonId());
+		removeAssociation(association);
+	}
+	
+	private void processEarmarkPostRequest() {
+		GPerson user = ConnectionId.getInstance().getCurrentUser();
+		createAssociation(TagConstants.TYPE_EARMARK, user.getPersonId());
 	}
 	
 	protected void processUnLikePostRequest(){
+		GPerson user = ConnectionId.getInstance().getCurrentUser();
+		GAssociationPostTag association = post.getLikedByPerson(user.getPersonId());
+		removeAssociation(association);
+	}
+
+	protected void processLikePostRequest(){
+		GPerson user = ConnectionId.getInstance().getCurrentUser();
+		createAssociation(TagConstants.TYPE_LIKE, user.getPersonId());
+	}
+	
+	private void removeAssociation(GAssociationPostTag association) {
 		AssociationPostTagCommand cmd = new AssociationPostTagCommand();
 		cmd.setMode(AssociationPostTagCommand.Mode.REMOVE);
-		
-		GPerson user = ConnectionId.getInstance().getCurrentUser();
-		GAssociationPostTag likeAssociation = post.getLikedByPerson(user.getPersonId());
-		
-		cmd.setAssociationId(likeAssociation.getGuid());
+		cmd.setAssociationId(association.getGuid());
 		cmd.setMode(Mode.REMOVE);
 		
 		cmd.setConnectionId(ConnectionId.getInstance().getConnectionId());
@@ -137,12 +169,12 @@ abstract public class PostBaseComposite extends Composite{
 		injector.getService().execute(cmd, new MovieRatingPresenter.PostRatingCallback(post));
 	}
 	
-	protected void processLikePostRequest(){
+	private void createAssociation(String type, String value) {
 		AssociationPostTagCommand cmd = new AssociationPostTagCommand();
 		
 		GTag tag = new GTag();
-		tag.setValue(TagConstants.TYPE_LIKE);
-		tag.setType(TagConstants.TYPE_LIKE);
+		tag.setValue(value);
+		tag.setType(type);
 		cmd.setTag(tag);
 		cmd.setPostId(post.getPostId());
 		cmd.setMode(AssociationPostTagCommand.Mode.CREATE);

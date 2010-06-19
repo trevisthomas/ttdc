@@ -38,6 +38,7 @@ import org.ttdc.gwt.client.presenters.dashboard.UserDashboardPresenter;
 import org.ttdc.gwt.client.presenters.demo.DemoPresenter;
 import org.ttdc.gwt.client.presenters.home.CalendarSelectorModulePresenter;
 import org.ttdc.gwt.client.presenters.home.ConversationPresenter;
+import org.ttdc.gwt.client.presenters.home.EarmarkedPresenter;
 import org.ttdc.gwt.client.presenters.home.FlatPresenter;
 import org.ttdc.gwt.client.presenters.home.Home2Presenter;
 import org.ttdc.gwt.client.presenters.home.InteractiveCalendarPresenter;
@@ -47,6 +48,7 @@ import org.ttdc.gwt.client.presenters.home.TrafficPersonPresenter;
 import org.ttdc.gwt.client.presenters.home.TrafficPresenter;
 import org.ttdc.gwt.client.presenters.movies.MovieListPresenter;
 import org.ttdc.gwt.client.presenters.movies.MovieRatingPresenter;
+import org.ttdc.gwt.client.presenters.post.LikesPresenter;
 import org.ttdc.gwt.client.presenters.post.PostCollectionPresenter;
 import org.ttdc.gwt.client.presenters.post.PostPresenter;
 import org.ttdc.gwt.client.presenters.post.PostSummaryPresenter;
@@ -1336,6 +1338,30 @@ public class MockInjector implements Injector{
 	
 	@Override
 	public FilteredPost createFilteredPost() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public EarmarkedPresenter getEarmarkedPresenter() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public org.ttdc.gwt.client.presenters.home.EarmarkedPresenter.View getEarmarkedView() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public LikesPresenter getLikesPresenter() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public org.ttdc.gwt.client.presenters.post.LikesPresenter.View getLikesView() {
 		// TODO Auto-generated method stub
 		return null;
 	}

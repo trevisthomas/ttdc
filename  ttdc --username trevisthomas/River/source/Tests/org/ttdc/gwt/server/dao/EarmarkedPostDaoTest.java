@@ -1,16 +1,21 @@
 package org.ttdc.gwt.server.dao;
 
-import static junit.framework.Assert.assertTrue;
-import static junit.framework.Assert.fail;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.ttdc.gwt.server.dao.Helpers.assertTagged;
+
+import static org.junit.Assert.*;
+
 import static org.ttdc.persistence.Persistence.beginSession;
 import static org.ttdc.persistence.Persistence.commit;
 import static org.ttdc.persistence.Persistence.rollback;
 import static org.ttdc.persistence.Persistence.session;
 
 import org.junit.Test;
+import org.ttdc.gwt.client.beans.GPost;
+import org.ttdc.gwt.server.command.CommandExecutor;
+import org.ttdc.gwt.server.command.CommandExecutorFactory;
+import org.ttdc.gwt.server.command.executors.LatestPostCommandExecutor;
+import org.ttdc.gwt.shared.commands.LatestPostsCommand;
+import org.ttdc.gwt.shared.commands.results.PaginatedListCommandResult;
+import org.ttdc.gwt.shared.commands.types.PostListType;
 import org.ttdc.gwt.shared.util.PaginatedList;
 import org.ttdc.persistence.objects.AssociationPostTag;
 import org.ttdc.persistence.objects.Person;
@@ -51,7 +56,7 @@ public class EarmarkedPostDaoTest {
 			dao.setPersonId(person.getPersonId());
 			dao.setTagId(tag.getTagId());
 			
-			PaginatedList<Post> results = dao.getEarmarkedPosts();
+			PaginatedList<Post> results = dao.loadEarmarkedPosts();
 			
 			assertSearchResults("", currentPage, results);
 			//Helpers.printResults(results,log);
@@ -73,6 +78,18 @@ public class EarmarkedPostDaoTest {
 		}
 		finally{
 		}
+	}
+	
+	@Test
+	public void loadEarmarksTest(){
+		LatestPostsCommand cmd = new LatestPostsCommand();
+		cmd.setAction(PostListType.LATEST_EARMARKS);
+		CommandExecutor cmdexec = CommandExecutorFactory.createExecutor("50E7F601-71FD-40BD-9517-9699DDA611D6",cmd);
+		assertTrue("Factory returned the wrong implementation", cmdexec instanceof LatestPostCommandExecutor);
+		PaginatedListCommandResult<GPost> result = (PaginatedListCommandResult<GPost>)cmdexec.executeCommand();
+		
+		//Assert this for a user with a known number of earmarks...
+		//assertEquals(20, result.getResults().getList().size());
 	}
 	
 	private void assertSearchResults(String phrase, int currentPage, PaginatedList<Post> results) {

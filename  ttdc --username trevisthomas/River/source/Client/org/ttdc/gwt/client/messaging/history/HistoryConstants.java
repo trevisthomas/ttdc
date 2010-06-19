@@ -115,6 +115,7 @@ public interface HistoryConstants {
 	public static final String HOME_NESTED_TAB = "nested";
 	public static final String HOME_CONVERSATION_TAB = "conversation";
 	public static final String HOME_THREAD_TAB = "thread";
+	public static final String HOME_EARMARKS_TAB = "earmarks";
 
 	public static final String VIEW_HOME2 = "home2";
 
@@ -127,5 +128,10 @@ public interface HistoryConstants {
 	public static final String SEARCH_START_DATE = "startDate";
 
 	public static final String SEARCH_END_DATE = "endDate";
+
+	public static final String MOVIES_LIST_MODE = "mode";
+	public static final String MOVIES_LIST_MODE_SPEEDRATE = "speedrate";
+
+	
 
 }

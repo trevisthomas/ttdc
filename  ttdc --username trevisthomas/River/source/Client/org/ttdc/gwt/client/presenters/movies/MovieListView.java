@@ -34,6 +34,8 @@ public class MovieListView implements MovieListPresenter.View {
 	private final Button goButton = new Button();
 	private final SimplePanel messagesPanel = new SimplePanel();
 	private final Label ratingLabel = new Label("Average Rating");
+	private final Button speedRateButton = new Button("Speed Rate");
+	private final Button exitSpeedRateButton = new Button("End Speed Rate");
 	
 	private final FlexTable movieTable = new FlexTable();
 	private final SimplePanel navigationPanel = new SimplePanel();
@@ -48,6 +50,7 @@ public class MovieListView implements MovieListPresenter.View {
 		goButton.setText("Go");
 		personFilter.add(reviewers);
 		personFilter.add(goButton);
+		
 		main.add(personFilter);
 		
 		movieTable.setWidget(0, 0, releaseYearHeaderPanel);
@@ -102,6 +105,18 @@ public class MovieListView implements MovieListPresenter.View {
 		return title;
 	}
 
+	@Override
+	public void enableSpeedRateButton(){
+		personFilter.add(speedRateButton);
+		personFilter.remove(exitSpeedRateButton);
+	}
+	
+	@Override
+	public void enableExitSpeedRateButton() {
+		personFilter.add(exitSpeedRateButton);
+		personFilter.remove(speedRateButton);
+	}
+	
 	@Override
 	public void addMovie(String year, Widget titleLink, Widget imdbLink, Widget rating) {
 		//int row = movieTable.getRowCount() - 1;
@@ -172,5 +187,15 @@ public class MovieListView implements MovieListPresenter.View {
 	@Override
 	public HasClickHandlers titleSortClickHandler() {
 		return titleHeaderPanel;
+	}
+	
+	@Override
+	public HasClickHandlers speedRateClickHandler() {
+		return speedRateButton;
+	}
+	
+	@Override
+	public HasClickHandlers exitSpeedRateClickHandler() {
+		return exitSpeedRateButton;
 	}
 }

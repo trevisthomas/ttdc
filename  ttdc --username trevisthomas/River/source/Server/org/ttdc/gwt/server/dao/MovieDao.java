@@ -18,7 +18,7 @@ public class MovieDao extends PaginatedDaoBase{
 	private SortBy sortBy = SortBy.BY_RATING;
 	private SortDirection sortDirection = SortDirection.DESC;
 	private String personId; 
-	
+	private boolean invertFilter = false;
 	public MovieDao(){};
 	
 	public PaginatedList<Post> load(){
@@ -138,6 +138,14 @@ public class MovieDao extends PaginatedDaoBase{
 		}
 		
 		return map;
+	}
+
+	public void setInvertFilter(boolean invertFilter) {
+		this.invertFilter = invertFilter;
+	}
+
+	public boolean isInvertFilter() {
+		return invertFilter;
 	}
 	
 }

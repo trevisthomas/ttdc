@@ -34,6 +34,7 @@ public class Home2Presenter extends BasePagePresenter<Home2Presenter.View> imple
 		HasWidgets flatPanel();
 		HasWidgets threadPanel();
 		HasWidgets conversationPanel();
+		HasWidgets earmarksPanel();
 		HasWidgets modulePanel();
 		HasWidgets searhcPanel();
 		HasWidgets loginPanel();
@@ -44,13 +45,14 @@ public class Home2Presenter extends BasePagePresenter<Home2Presenter.View> imple
 		
 		void displayTab(TabType tabs);
 		HasClickHandlers movieButton();
+		void enableEarmarkTab();
 	} 
 	
 	private FlatPresenter flatPresenter = null;
+	private EarmarkedPresenter earmarksPresenter = null;
 	private NestedPresenter nestedPresenter = null;
 	private ThreadPresenter threadPresenter = null;
 	private ConversationPresenter conversationPresenter = null;
-	
 	
 	@Inject
 	public Home2Presenter(Injector injector) {
@@ -89,6 +91,9 @@ public class Home2Presenter extends BasePagePresenter<Home2Presenter.View> imple
 		view.siteUpdatePanel().add(siteUpdatePanel);
 		
 //		view.navigationPanel().add(injector.createNavigation());
+		GPerson user = ConnectionId.getInstance().getCurrentUser();
+		if(!user.isAnonymous())
+			view.enableEarmarkTab();
 		
 		EventBus.getInstance().addListener(this);
 	}
@@ -148,10 +153,13 @@ public class Home2Presenter extends BasePagePresenter<Home2Presenter.View> imple
 				conversationPresenter.refresh();
 			if(flatPresenter != null)
 				flatPresenter.refresh();
+			if(earmarksPresenter != null)
+				earmarksPresenter.refresh();
 		}
 	}
 
 	private void initializeTabs(HistoryToken token) {
+		GPerson user = ConnectionId.getInstance().getCurrentUser();
 		String tab = token.getParameter(HistoryConstants.TAB_KEY);
 		TabType selected;
 		
@@ -162,6 +170,10 @@ public class Home2Presenter extends BasePagePresenter<Home2Presenter.View> imple
 		else if(HistoryConstants.HOME_NESTED_TAB.equals(tab)){
 			selected = TabType.NESTED;
 			buildNestedTab();
+		}
+		else if(HistoryConstants.HOME_EARMARKS_TAB.equals(tab) && !user.isAnonymous()){
+			selected = TabType.EARMARKS;
+			buildEarmarksTab();
 		}
 		else{ // if(HistoryConstants.HOME_NESTED_TAB.equals(tab)){
 			selected = TabType.CONVERSATION;
@@ -203,6 +215,14 @@ public class Home2Presenter extends BasePagePresenter<Home2Presenter.View> imple
 			flatPresenter = injector.getFlatPresenter();
 			flatPresenter.init();
 			view.flatPanel().add(flatPresenter.getWidget());
+		}
+	}
+	
+	private void buildEarmarksTab() {
+		if(PresenterHelpers.isWidgetEmpty(view.earmarksPanel())){
+			earmarksPresenter = injector.getEarmarkedPresenter();
+			earmarksPresenter.init();
+			view.earmarksPanel().add(earmarksPresenter.getWidget());
 		}
 	}
 }
