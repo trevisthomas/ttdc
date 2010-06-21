@@ -134,7 +134,7 @@ public class MovieListView implements MovieListPresenter.View {
 	public String getSelectedPersonId() {
 		int ndx = reviewers.getSelectedIndex();
 		String personId = null;
-		if(ndx > 1)
+		if(ndx >= 1)
 			personId = reviewers.getValue(ndx);
 			
 		return personId;

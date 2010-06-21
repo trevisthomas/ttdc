@@ -24,6 +24,7 @@ import org.ttdc.gwt.shared.commands.TagCommand;
 import org.ttdc.gwt.shared.commands.results.AssociationPostTagResult;
 import org.ttdc.gwt.shared.commands.results.GenericListCommandResult;
 import org.ttdc.gwt.shared.commands.types.TagActionType;
+import org.ttdc.gwt.shared.util.StringUtil;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
@@ -32,9 +33,12 @@ public class MovieRatingPresenter extends BasePresenter<MovieRatingPresenter.Vie
 	private Map<Float,GTag> ratingTagMap = new HashMap<Float,GTag>(); 
 	private GPost post;
 	
+	boolean autohide = true;
+	
 	public interface View extends BaseView{
 		void setRating(String rating);
 		void initVoteMode(RatableContentProcessor ratingProcessor);
+		void initShowMode(String rating);
 	}
 	
 	
@@ -71,6 +75,27 @@ public class MovieRatingPresenter extends BasePresenter<MovieRatingPresenter.Vie
 		view.initVoteMode(this);
 	}
 	
+	public void reInititalize(String personId){
+		initializeMovieRatingPresenter(post, personId);
+	}
+	
+	public void initializeMovieRatingPresenter(GPost post, String personId) {
+		GAssociationPostTag ass;
+		this.post = post;
+		if(StringUtil.notEmpty(personId)){
+			ass = post.getRatingByPerson(personId);
+			if(ass != null){
+				setRating(ass.getTag().getValue());
+			}
+			else{
+				view.initVoteMode(this);
+			}
+		}
+		else{
+			setRating(post.getAvgRatingTag().getValue());
+		}
+	}
+	
 	@Override
 	public void processRatingRequest(float rating) {
 		//This cant work before the list comes back. it's asynch so check first, i guess.
@@ -89,7 +114,10 @@ public class MovieRatingPresenter extends BasePresenter<MovieRatingPresenter.Vie
 		
 		cmd.setConnectionId(ConnectionId.getInstance().getConnectionId());
 		service.execute(cmd, new PostRatingCallback(post));
-		getWidget().removeFromParent();
+		if(autohide)
+			getWidget().removeFromParent();	
+		else
+			view.initShowMode(tag.getValue());
 	}
 
 	private AsyncCallback<AssociationPostTagResult> createRatingCallback() {
@@ -145,4 +173,13 @@ public class MovieRatingPresenter extends BasePresenter<MovieRatingPresenter.Vie
 			
 		}
 	}
+	
+	public boolean isAutohide() {
+		return autohide;
+	}
+
+	public void setAutohide(boolean autohide) {
+		this.autohide = autohide;
+	}
+
 }
