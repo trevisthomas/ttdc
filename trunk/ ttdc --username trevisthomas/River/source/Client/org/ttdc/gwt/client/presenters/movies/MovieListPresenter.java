@@ -36,6 +36,7 @@ import com.google.inject.Inject;
 
 public class MovieListPresenter extends BasePagePresenter<MovieListPresenter.View>{
 	private String personId = null; 
+	private boolean speedRate = false;
 	private final List<MovieRatingPresenter> ratingPresenterList = new ArrayList<MovieRatingPresenter>();
 	
 	@Inject
@@ -91,8 +92,10 @@ public class MovieListPresenter extends BasePagePresenter<MovieListPresenter.Vie
 		
 		cmd.setPageNumber(pageNumber);
 		
+		speedRate = false;
 		if(HistoryConstants.MOVIES_LIST_MODE_SPEEDRATE.equals(viewMode) && !user.isAnonymous()){
-			cmd.setPersonId(user.getPersonId());
+			speedRate = true;
+			cmd.setPersonId(personId);
 			cmd.setSpeedRate(true);
 			view.enableExitSpeedRateButton();
 		} else if(!user.isAnonymous()){
@@ -134,13 +137,13 @@ public class MovieListPresenter extends BasePagePresenter<MovieListPresenter.Vie
 		return new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-//				HistoryToken newToken = new HistoryToken();
-//				newToken.load(token);
+				HistoryToken newToken = new HistoryToken();
+				newToken.load(token);
 //				newToken.removeParameter(HistoryConstants.PAGE_NUMBER_KEY);
 //				newToken.removeParameter(HistoryConstants.PERSON_ID);
-//				newToken.setParameter(HistoryConstants.MOVIES_LIST_MODE, HistoryConstants.MOVIES_LIST_MODE_SPEEDRATE);
-//				EventBus.fireHistoryToken(newToken);
-				enableSpeedRateMode();
+				newToken.setParameter(HistoryConstants.MOVIES_LIST_MODE, HistoryConstants.MOVIES_LIST_MODE_SPEEDRATE);
+				EventBus.fireHistoryToken(newToken);
+//				enableSpeedRateMode();
 			}
 
 			
@@ -163,27 +166,26 @@ public class MovieListPresenter extends BasePagePresenter<MovieListPresenter.Vie
 		return new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-//				HistoryToken newToken = new HistoryToken();
-//				newToken.load(token);
+				HistoryToken newToken = new HistoryToken();
+				newToken.load(token);
 //				newToken.removeParameter(HistoryConstants.PAGE_NUMBER_KEY);
 //				newToken.removeParameter(HistoryConstants.PERSON_ID);
-//				newToken.removeParameter(HistoryConstants.MOVIES_LIST_MODE);
-//				EventBus.fireHistoryToken(newToken);
+				newToken.removeParameter(HistoryConstants.MOVIES_LIST_MODE);
+				EventBus.fireHistoryToken(newToken);
 				
 			}
 		};
 	}
 	
-	private void enableSpeedRateMode() {
-		for(MovieRatingPresenter ratingPresenter : ratingPresenterList){
-			GPerson user = ConnectionId.getInstance().getCurrentUser();
-			if(!user.isAnonymous())
-				ratingPresenter.reInititalize(user.getPersonId());
-			else
-				throw new RuntimeException("Anonymous users can't rate");
-		}
-		
-	}
+//	private void enableSpeedRateMode() {
+//		for(MovieRatingPresenter ratingPresenter : ratingPresenterList){
+//			GPerson user = ConnectionId.getInstance().getCurrentUser();
+//			if(!user.isAnonymous())
+//				ratingPresenter.reInititalize(user.getPersonId());
+//			else
+//				throw new RuntimeException("Anonymous users can't rate");
+//		}
+//	}
 	
 	private void setupHeaders(final HistoryToken token){
 //		HyperlinkPresenter yearSortPresenter = injector.getHyperlinkPresenter();
@@ -250,7 +252,12 @@ public class MovieListPresenter extends BasePagePresenter<MovieListPresenter.Vie
 					ratingPresenter.setAutohide(false);
 					//PresenterHelpers.initializeMovieRatingPresenter(ratingPresenter, post, personId);
 					//PresenterHelpers.initializeMovieRatingPresenter(ratingPresenter, post, null);
-					ratingPresenter.initializeMovieRatingPresenter(post, personId);
+					GPerson user = ConnectionId.getInstance().getCurrentUser();
+					if(speedRate && !user.isAnonymous()){
+						ratingPresenter.initializeMovieRatingPresenter(post, user.getPersonId());
+					}
+					else
+						ratingPresenter.initializeMovieRatingPresenter(post, personId);
 					HyperlinkPresenter urlLinkPresenter = createPostUrlPresenter(post);
 					HyperlinkPresenter titlePresenter = injector.getHyperlinkPresenter();
 					titlePresenter.setPost(post);

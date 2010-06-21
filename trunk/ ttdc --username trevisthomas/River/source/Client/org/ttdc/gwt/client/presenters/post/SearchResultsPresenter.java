@@ -207,7 +207,8 @@ public class SearchResultsPresenter extends BasePresenter<SearchResultsPresenter
 				view.refreshResults(postCollection.getView().getWidget());
 				view.getSummaryDetail().setText(results.toString());
 				
-				final HistoryToken topicToken = buildHistoryToken(phrase, SEARCH_MODE_VALUE_TOPICS);
+				//final HistoryToken topicToken = buildHistoryToken(phrase, SEARCH_MODE_VALUE_TOPICS);
+				final HistoryToken topicToken = buildHistoryToken(phrase);
 				showPagination(results, topicToken);
 			}
 		};
@@ -283,6 +284,8 @@ public class SearchResultsPresenter extends BasePresenter<SearchResultsPresenter
 //		command.setTagIdList(tagIds);
 //		command.setRootId(rootId);
 		
+		command.setPostSearchType(PostSearchType.ALL);// 6/21/2010 i added this.  I was guessing.  Search from a thread didnt work without this
+		
 		CommandResultCallback<SearchPostsCommandResult> callback = new CommandResultCallback<SearchPostsCommandResult>(){
 			public void onSuccess(SearchPostsCommandResult result) {
 				addSearchResultsToView(phrase, result);
@@ -299,10 +302,10 @@ public class SearchResultsPresenter extends BasePresenter<SearchResultsPresenter
 		}
 	}
 
-	private HistoryToken buildHistoryToken(final String phrase, final String mode) {
+	private HistoryToken buildHistoryToken(final String phrase) {
 		final HistoryToken token = new HistoryToken();
 		token.setParameter(HistoryConstants.VIEW, HistoryConstants.VIEW_SEARCH_RESULTS);
-		token.setParameter(SEARCH_MODE_KEY,mode);
+		token.setParameter(SEARCH_MODE_KEY,lastToken.getParameter(SEARCH_MODE_KEY)); //For some reason this method used to take this as an arguement?! 6/21/2010
 		if(StringUtil.notEmpty(phrase))
 			token.setParameter(SEARCH_PHRASE_KEY,phrase);
 		if(lastToken.hasParameter(SEARCH_START_DATE))
@@ -311,8 +314,19 @@ public class SearchResultsPresenter extends BasePresenter<SearchResultsPresenter
 			token.setParameter(HistoryConstants.SEARCH_END_DATE, lastToken.getParameter(SEARCH_END_DATE));
 		if(lastToken.hasParameter(HistoryConstants.SEARCH_CREATOR_ID_KEY))
 			token.setParameter(HistoryConstants.SEARCH_CREATOR_ID_KEY, lastToken.getParameter(SEARCH_CREATOR_ID_KEY));
+		if(lastToken.hasParameter(HistoryConstants.ROOT_ID_KEY))
+			token.setParameter(HistoryConstants.ROOT_ID_KEY, lastToken.getParameter(ROOT_ID_KEY));
 		return token;
 	}
+	
+//	private HistoryToken buildHistoryToken(final String phrase, final String mode) {
+//		HistoryToken token = new HistoryToken();
+//		token.load(lastToken);
+//		token.removeParameter(PAGE_NUMBER_KEY);
+//		return token;
+//	}
+	
+	
 	
 	private void addSearchResultsToView(final String phrase, SearchPostsCommandResult result) {
 		PaginatedList<GPost> results = result.getResults();
@@ -320,7 +334,9 @@ public class SearchResultsPresenter extends BasePresenter<SearchResultsPresenter
 		view.refreshResults(postCollection.getView().getWidget());
 		view.getSummaryDetail().setText(results.toString());
 		
-		final HistoryToken topicToken = buildHistoryToken(phrase, SEARCH_MODE_VALUE_COMMENTS);
+		//final HistoryToken topicToken = buildHistoryToken(phrase, SEARCH_MODE_VALUE_COMMENTS);
+		final HistoryToken topicToken = buildHistoryToken(phrase);
+		
 		showPagination(results, topicToken);
 	}
 

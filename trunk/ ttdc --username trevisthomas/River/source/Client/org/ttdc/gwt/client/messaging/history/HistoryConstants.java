@@ -131,6 +131,9 @@ public interface HistoryConstants {
 
 	public static final String MOVIES_LIST_MODE = "mode";
 	public static final String MOVIES_LIST_MODE_SPEEDRATE = "speedrate";
+	
+	public static final String TOPIC_FLAT_TAB = "flat";
+	public static final String TOPIC_NESTED_TAB = "nested";
 
 	
 
