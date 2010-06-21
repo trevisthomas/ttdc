@@ -52,7 +52,12 @@ public class MovieRatingView implements MovieRatingPresenter.View{
 		createHalfStarPanel(r, 5.0f, CSS_STAR_RIGHT_PREFIX);
 	}
 	
-	
+	@Override
+	public void initShowMode(String rating){
+		interactiveMode = false;
+		setRating(rating);
+		this.rateMovie = null;
+	}
 
 	@Override
 	public void initVoteMode(RatableContentProcessor rateMovie){
