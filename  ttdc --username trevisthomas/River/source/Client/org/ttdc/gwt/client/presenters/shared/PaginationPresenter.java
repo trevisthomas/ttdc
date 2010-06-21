@@ -26,10 +26,13 @@ public class PaginationPresenter extends BasePresenter<PaginationPresenter.View>
 	
 	
 	
-	public <T> void initialize(HistoryToken token, PaginatedList<T> paginator){
+	public <T> void initialize(final HistoryToken t, final PaginatedList<T> paginator){
 //		view.prevButton().clear();
 //		view.nextButton().clear();
 //		view.pageButtons().clear();
+		
+		HistoryToken token = new HistoryToken();
+		token.load(t);
 		
 		int currentPage = paginator.getCurrentPage();
 		int maxPages = paginator.calculateNumberOfPages();

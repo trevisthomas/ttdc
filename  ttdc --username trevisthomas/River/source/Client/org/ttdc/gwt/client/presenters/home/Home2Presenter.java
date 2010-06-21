@@ -90,7 +90,6 @@ public class Home2Presenter extends BasePagePresenter<Home2Presenter.View> imple
 		SiteUpdatePanel siteUpdatePanel = injector.createSiteUpdatePanel();
 		view.siteUpdatePanel().add(siteUpdatePanel);
 		
-//		view.navigationPanel().add(injector.createNavigation());
 		GPerson user = ConnectionId.getInstance().getCurrentUser();
 		if(!user.isAnonymous())
 			view.enableEarmarkTab();
