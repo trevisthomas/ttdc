@@ -26,7 +26,8 @@ public class TopicFlatPresenter extends BasePresenter<TopicFlatPresenter.View>{
 	public interface View extends BaseView{
 		HasWidgets postsTarget();
 	}
-	String rootId;
+	private String rootId;
+	private int pageNumber;
 	public void init(HistoryToken token){
 		rootId = token.getParameter(HistoryConstants.POST_ID_KEY);
 		BatchCommandTool batcher = new BatchCommandTool();

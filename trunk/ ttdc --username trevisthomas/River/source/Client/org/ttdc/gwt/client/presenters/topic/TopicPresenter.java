@@ -80,6 +80,7 @@ public class TopicPresenter extends BasePagePresenter<TopicPresenter.View> imple
 	}
 	
 	private void updateHistoryToReflectTabSelection(int index) {
+		token.setParameter(HistoryConstants.PAGE_NUMBER_KEY, 1); 
 		switch (index){
 			case TopicView.INDEX_NESTED:
 				token.setParameter(HistoryConstants.TAB_KEY, HistoryConstants.TOPIC_NESTED_TAB);

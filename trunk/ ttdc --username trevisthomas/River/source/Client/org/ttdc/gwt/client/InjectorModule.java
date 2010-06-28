@@ -70,6 +70,8 @@ import org.ttdc.gwt.client.presenters.home.Home2Presenter;
 import org.ttdc.gwt.client.presenters.home.Home2View;
 import org.ttdc.gwt.client.presenters.home.InteractiveCalendarPresenter;
 import org.ttdc.gwt.client.presenters.home.InteractiveCalendarView;
+import org.ttdc.gwt.client.presenters.home.MoreLatestPresenter;
+import org.ttdc.gwt.client.presenters.home.MoreLatestView;
 import org.ttdc.gwt.client.presenters.home.NestedPresenter;
 import org.ttdc.gwt.client.presenters.home.NestedView;
 import org.ttdc.gwt.client.presenters.home.ThreadPresenter;
@@ -263,6 +265,7 @@ public class InjectorModule extends AbstractGinModule {
 		bind(RemovableTagPresenter.View.class).to(RemovableTagView.class);
 		bind(EarmarkedPresenter.View.class).to(EarmarkedView.class);
 		bind(LikesPresenter.View.class).to(LikesView.class);
+		bind(MoreLatestPresenter.View.class).to(MoreLatestView.class);
 				
 	}
 }

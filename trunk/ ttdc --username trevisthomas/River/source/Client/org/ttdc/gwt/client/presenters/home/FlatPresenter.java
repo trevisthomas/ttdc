@@ -1,5 +1,7 @@
 package org.ttdc.gwt.client.presenters.home;
 
+import java.util.List;
+
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.presenters.post.PostCollectionPresenter;
@@ -15,7 +17,7 @@ import org.ttdc.gwt.shared.util.PaginatedList;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.inject.Inject;
 
-public class FlatPresenter extends BasePresenter<FlatPresenter.View>{
+public class FlatPresenter extends BasePresenter<FlatPresenter.View> implements MoreLatestPresenter.MoreLatestObserver{
 	public interface View extends BaseView{
 		HasWidgets postPanel();
 		HasWidgets postFooterPanel();
@@ -23,6 +25,7 @@ public class FlatPresenter extends BasePresenter<FlatPresenter.View>{
 	
 	private PostCollectionPresenter postCollection;
 	private static PaginatedListCommandResult<GPost> resultCache = null;
+	private int pageNumber = 1;
 	
 	@Inject
 	public FlatPresenter(Injector injector){
@@ -52,6 +55,10 @@ public class FlatPresenter extends BasePresenter<FlatPresenter.View>{
 			public void onSuccess(PaginatedListCommandResult<GPost> result) {
 				resultCache = result;
 				showResult(result);
+				MoreLatestPresenter morePresenter = injector.getMoreLatestPresenter();
+				morePresenter.init(FlatPresenter.this, PostListType.LATEST_FLAT, result.getResults());
+				view.postFooterPanel().clear();
+				view.postFooterPanel().add(morePresenter.getWidget());
 			}
 		};
 		return callback;
@@ -62,5 +69,12 @@ public class FlatPresenter extends BasePresenter<FlatPresenter.View>{
 		postCollection.setPostList(results.getList(), Mode.FLAT);
 		view.postPanel().clear();
 		view.postPanel().add(postCollection.getWidget());
+	}
+
+	@Override
+	public void onMorePosts(List<GPost> posts) {
+		// TODO Auto-generated method stub
+		//Make an add method on postCollection
+		//postCollection.setPostList(results.getList(), Mode.FLAT);
 	}
 }

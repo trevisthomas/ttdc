@@ -37,6 +37,7 @@ import org.ttdc.gwt.client.presenters.home.EarmarkedPresenter;
 import org.ttdc.gwt.client.presenters.home.FlatPresenter;
 import org.ttdc.gwt.client.presenters.home.Home2Presenter;
 import org.ttdc.gwt.client.presenters.home.InteractiveCalendarPresenter;
+import org.ttdc.gwt.client.presenters.home.MoreLatestPresenter;
 import org.ttdc.gwt.client.presenters.home.NestedPresenter;
 import org.ttdc.gwt.client.presenters.home.ThreadPresenter;
 import org.ttdc.gwt.client.presenters.home.TrafficPersonPresenter;
@@ -356,6 +357,9 @@ public interface Injector extends Ginjector {
 	public LikesPresenter.View getLikesView();
 	public LikesPresenter getLikesPresenter();
 	
+	public MoreLatestPresenter.View getMoreLatestView();
+	public MoreLatestPresenter getMoreLatestPresenter();
+	
 	//
 	public PostPanel createPostPanel();
 	public MoreOptionsPopupPanel createOptionsPanel();
@@ -368,6 +372,7 @@ public interface Injector extends Ginjector {
 	
 	public Navigation createNavigation();
 	public FilteredPost createFilteredPost();
+
 
 		
 	

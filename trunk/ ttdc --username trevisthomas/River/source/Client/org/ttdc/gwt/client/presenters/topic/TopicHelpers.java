@@ -8,7 +8,8 @@ import org.ttdc.gwt.client.presenters.post.SearchWithinSubsetPresenter;
 public class TopicHelpers {
 	public static HistoryToken buildFlatPageToken(String postId){
 		HistoryToken token = new HistoryToken();
-		token.setParameter(HistoryConstants.VIEW, HistoryConstants.VIEW_TOPIC_FLAT);
+		token.setParameter(HistoryConstants.VIEW, HistoryConstants.VIEW_TOPIC);
+		token.setParameter(HistoryConstants.TAB_KEY, HistoryConstants.TOPIC_FLAT_TAB);
 		token.setParameter(HistoryConstants.POST_ID_KEY, postId);
 		return token;
 	}
@@ -49,7 +50,8 @@ public class TopicHelpers {
 
 	public static HistoryToken buildNestedPageToken(String postId) {
 		HistoryToken token = new HistoryToken();
-		token.setParameter(HistoryConstants.VIEW, HistoryConstants.VIEW_TOPIC_NESTED);
+		token.setParameter(HistoryConstants.VIEW, HistoryConstants.VIEW_TOPIC);
+		token.setParameter(HistoryConstants.TAB_KEY, HistoryConstants.TOPIC_NESTED_TAB);
 		token.setParameter(HistoryConstants.POST_ID_KEY, postId);
 		return token;
 	}
