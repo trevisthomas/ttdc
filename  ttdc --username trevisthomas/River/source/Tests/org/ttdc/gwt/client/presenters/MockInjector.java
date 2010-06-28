@@ -42,6 +42,7 @@ import org.ttdc.gwt.client.presenters.home.EarmarkedPresenter;
 import org.ttdc.gwt.client.presenters.home.FlatPresenter;
 import org.ttdc.gwt.client.presenters.home.Home2Presenter;
 import org.ttdc.gwt.client.presenters.home.InteractiveCalendarPresenter;
+import org.ttdc.gwt.client.presenters.home.MoreLatestPresenter;
 import org.ttdc.gwt.client.presenters.home.NestedPresenter;
 import org.ttdc.gwt.client.presenters.home.ThreadPresenter;
 import org.ttdc.gwt.client.presenters.home.TrafficPersonPresenter;
@@ -1362,6 +1363,18 @@ public class MockInjector implements Injector{
 
 	@Override
 	public org.ttdc.gwt.client.presenters.post.LikesPresenter.View getLikesView() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public MoreLatestPresenter getMoreLatestPresenter() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public org.ttdc.gwt.client.presenters.home.MoreLatestPresenter.View getMoreLatestView() {
 		// TODO Auto-generated method stub
 		return null;
 	}

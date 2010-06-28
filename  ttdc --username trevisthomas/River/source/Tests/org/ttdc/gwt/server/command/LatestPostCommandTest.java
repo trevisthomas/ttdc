@@ -43,6 +43,20 @@ public class LatestPostCommandTest {
 		assertEquals(20, result.getResults().getList().size());
 	}
 	
+	
+	@Test
+	public void loadNestedMore(){
+		LatestPostsCommand cmd = new LatestPostsCommand();
+		cmd.setAction(PostListType.LATEST_NESTED);
+		cmd.setPageNumber(2);
+		CommandExecutor cmdexec = CommandExecutorFactory.createExecutor("50E7F601-71FD-40BD-9517-9699DDA611D6",cmd);
+		assertTrue("Factory returned the wrong implementation", cmdexec instanceof LatestPostCommandExecutor);
+		PaginatedListCommandResult<GPost> result = (PaginatedListCommandResult<GPost>)cmdexec.executeCommand();
+		
+		assertEquals(20, result.getResults().getList().size());
+		assertEquals(2, result.getResults().getCurrentPage());
+	}
+	
 	@Test
 	public void loadEarmarksTest(){
 		LatestPostsCommand cmd = new LatestPostsCommand();

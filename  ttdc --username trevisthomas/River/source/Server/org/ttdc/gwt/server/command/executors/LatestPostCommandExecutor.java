@@ -27,19 +27,19 @@ public class LatestPostCommandExecutor extends CommandExecutor<PaginatedListComm
 			Persistence.beginSession();
 			switch (cmd.getAction()) {
 			case LATEST_CONVERSATIONS:
-				result = loadConversations();
+				result = loadConversations(cmd);
 				break;
 			case LATEST_FLAT:
-				result = loadFlat();
+				result = loadFlat(cmd);
 				break;
 			case LATEST_NESTED:
-				result = loadNested();
+				result = loadNested(cmd);
 				break;
 			case LATEST_THREADS:
-				result = loadThreads();
+				result = loadThreads(cmd);
 				break;
 			case LATEST_EARMARKS:
-				result = loadEarmarks();
+				result = loadEarmarks(cmd);
 				break;
 			default:
 				throw new RuntimeException("LatestPostCommandExecutor doesnt understand that action type");
@@ -55,15 +55,16 @@ public class LatestPostCommandExecutor extends CommandExecutor<PaginatedListComm
 
 	
 
-	private PaginatedListCommandResult<GPost> loadThreads() {
-		LatestPostsDao dao = getLatestPostDaoWithPersonalFilter();
+	private PaginatedListCommandResult<GPost> loadThreads(LatestPostsCommand cmd) {
+		LatestPostsDao dao = getLatestPostDaoWithPersonalFilter(cmd);
 		PaginatedList<Post> results = dao.loadThreads();
 		PaginatedList<GPost> gResults = PaginatedResultConverters.convertSearchResults(results, getPerson());
 		return new PaginatedListCommandResult<GPost>(gResults);
 	}
 
-	private LatestPostsDao getLatestPostDaoWithPersonalFilter() {
+	private LatestPostsDao getLatestPostDaoWithPersonalFilter(LatestPostsCommand cmd) {
 		LatestPostsDao dao = new LatestPostsDao();
+		dao.setCurrentPage(cmd.getPageNumber());
 		Person p = getPerson();
 		if(!p.isNwsEnabled()){
 			dao.addFlagFilter(PostFlag.NWS);
@@ -77,12 +78,13 @@ public class LatestPostCommandExecutor extends CommandExecutor<PaginatedListComm
 		return dao;
 	}
 
-	private PaginatedListCommandResult<GPost> loadEarmarks() {
+	private PaginatedListCommandResult<GPost> loadEarmarks(LatestPostsCommand cmd) {
 		Person person = getPerson();
 		if(person.isAnonymous())
 			throw new RuntimeException("Anonymous users don't have ear marks.");
 		
 		EarmarkedPostDao dao = new EarmarkedPostDao();
+		dao.setCurrentPage(cmd.getPageNumber());
 		dao.setPersonId(person.getPersonId());
 		
 		TagDao tagDao = new TagDao();
@@ -102,22 +104,22 @@ public class LatestPostCommandExecutor extends CommandExecutor<PaginatedListComm
 		return new PaginatedListCommandResult<GPost>(gResults);
 	}
 	
-	private PaginatedListCommandResult<GPost> loadNested() {
-		LatestPostsDao dao = getLatestPostDaoWithPersonalFilter();
+	private PaginatedListCommandResult<GPost> loadNested(LatestPostsCommand cmd) {
+		LatestPostsDao dao = getLatestPostDaoWithPersonalFilter(cmd);
 		PaginatedList<Post> results = dao.loadNested();
 		PaginatedList<GPost> gResults = PaginatedResultConverters.convertSearchResultsNested(results, getPerson());
 		return new PaginatedListCommandResult<GPost>(gResults);
 	}
 
-	private PaginatedListCommandResult<GPost> loadFlat() {
-		LatestPostsDao dao = getLatestPostDaoWithPersonalFilter();
+	private PaginatedListCommandResult<GPost> loadFlat(LatestPostsCommand cmd) {
+		LatestPostsDao dao = getLatestPostDaoWithPersonalFilter(cmd);
 		PaginatedList<Post> results = dao.loadFlat();
 		PaginatedList<GPost> gResults = PaginatedResultConverters.convertSearchResults(results, getPerson());
 		return new PaginatedListCommandResult<GPost>(gResults);
 	}
 
-	private PaginatedListCommandResult<GPost> loadConversations() {
-		LatestPostsDao dao = getLatestPostDaoWithPersonalFilter();
+	private PaginatedListCommandResult<GPost> loadConversations(LatestPostsCommand cmd) {
+		LatestPostsDao dao = getLatestPostDaoWithPersonalFilter(cmd);
 		PaginatedList<Post> results = dao.loadConversations();
 		PaginatedList<GPost> gResults = PaginatedResultConverters.convertSearchResultsNested(results, getPerson());
 		return new PaginatedListCommandResult<GPost>(gResults);
