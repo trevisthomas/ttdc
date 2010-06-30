@@ -19,9 +19,7 @@ import com.google.inject.Inject;
 
 public class MoreLatestPresenter extends BasePresenter<MoreLatestPresenter.View>{
 	public interface MoreLatestObserver {
-		//HistoryToken getToken();
 		void onMorePosts(final List<GPost> posts);
-		//void showResult(PaginatedListCommandResult<GPost> result);
 	}
 	
 	public interface View extends BaseView{

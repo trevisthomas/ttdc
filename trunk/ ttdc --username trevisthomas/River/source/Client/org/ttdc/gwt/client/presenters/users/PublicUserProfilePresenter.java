@@ -1,12 +1,16 @@
 package org.ttdc.gwt.client.presenters.users;
 
+import java.util.List;
+
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.messaging.history.HistoryConstants;
 import org.ttdc.gwt.client.messaging.history.HistoryToken;
 import org.ttdc.gwt.client.presenters.dashboard.ProfilePresenter;
+import org.ttdc.gwt.client.presenters.home.MoreLatestPresenter;
 import org.ttdc.gwt.client.presenters.post.PostCollectionPresenter;
+import org.ttdc.gwt.client.presenters.post.PostPresenter.Mode;
 import org.ttdc.gwt.client.presenters.shared.BasePagePresenter;
 import org.ttdc.gwt.client.presenters.shared.BasePageView;
 import org.ttdc.gwt.client.presenters.shared.GenericTabularFlowPresenter;
@@ -29,7 +33,8 @@ import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.inject.Inject;
 
-public class PublicUserProfilePresenter extends BasePagePresenter<PublicUserProfilePresenter.View>{
+public class PublicUserProfilePresenter extends BasePagePresenter<PublicUserProfilePresenter.View> {
+	
 	public interface View extends BasePageView{
 		HasWidgets profile();
 		
@@ -39,6 +44,10 @@ public class PublicUserProfilePresenter extends BasePagePresenter<PublicUserProf
 		HasWidgets latestConversationsPanel();
 		HasWidgets latestPostsPanel();
 		HasWidgets latestReviewsPanel();
+		
+		HasWidgets latestConversationsFooterPanel();
+		HasWidgets latestPostsFooterPanel();
+		HasWidgets latestReviewsFooterPanel();
 		
 		void displayBioTab();
 		void displayBestMoviesTab();
@@ -161,7 +170,8 @@ public class PublicUserProfilePresenter extends BasePagePresenter<PublicUserProf
 		cmd.setPersonId(person.getPersonId());
 		cmd.setPageSize(10);
 		if(PresenterHelpers.isWidgetEmpty(view.latestConversationsPanel()))
-			injector.getService().execute(cmd, buildPostListCallback(view.latestConversationsPanel(),person.getLogin()+ " hasn't started any conversations."));
+			injector.getService().execute(cmd, buildPostListCallback(cmd,view.latestConversationsPanel(), 
+					view.latestConversationsFooterPanel(),person.getLogin()+ " hasn't started any conversations."));
 	}
 
 	public void buildLatestPostsTab() {
@@ -171,7 +181,8 @@ public class PublicUserProfilePresenter extends BasePagePresenter<PublicUserProf
 		cmd.setNonReviewsOnly(true);
 		cmd.setPageSize(10);	
 		if(PresenterHelpers.isWidgetEmpty(view.latestPostsPanel()))
-			injector.getService().execute(cmd, buildPostListCallback(view.latestPostsPanel(),person.getLogin()+ " hasn't made any comments."));
+			injector.getService().execute(cmd, buildPostListCallback(cmd,view.latestPostsPanel(), 
+					view.latestPostsFooterPanel(),person.getLogin()+ " hasn't made any comments."));
 	}
 
 
@@ -182,30 +193,50 @@ public class PublicUserProfilePresenter extends BasePagePresenter<PublicUserProf
 		cmd.setReviewsOnly(true);
 		cmd.setPageSize(10);	
 		if(PresenterHelpers.isWidgetEmpty(view.latestReviewsPanel()))
-			injector.getService().execute(cmd, buildPostListCallback(view.latestReviewsPanel(),person.getLogin()+ " hasn't left any reviews."));
+			injector.getService().execute(cmd, buildPostListCallback(cmd,view.latestReviewsPanel(), 
+					view.latestReviewsFooterPanel(),person.getLogin()+ " hasn't left any reviews."));
 	}
 
-	
-	
-	private CommandResultCallback<SearchPostsCommandResult> buildPostListCallback(final HasWidgets target, final String noResutsMessage) {
+	private CommandResultCallback<SearchPostsCommandResult> buildPostListCallback(final SearchPostsCommand cmd, 
+			final HasWidgets target,
+			final HasWidgets moreTarget, 
+			final String noResutsMessage) {
 		target.add(injector.getWaitPresenter().getWidget());
-		CommandResultCallback<SearchPostsCommandResult> replyListCallback = new CommandResultCallback<SearchPostsCommandResult>(){
-			@Override
-			public void onSuccess(SearchPostsCommandResult result) {
-				target.clear();
-				PostCollectionPresenter postCollection = injector.getPostCollectionPresenter();
-				if(!result.getResults().isEmpty()){
-					postCollection.setPostList(result.getResults().getList());
-					target.add(postCollection.getWidget());
-				}
-				else{
-					TextPresenter textPresenter = injector.getTextPresenter();
-					textPresenter.setText(noResutsMessage);
-					target.add(textPresenter.getWidget());
-				}
-			}
-		};
+		CommandResultCallback<SearchPostsCommandResult> replyListCallback = new MyCommandCallback(cmd,target,moreTarget,noResutsMessage);
 		return replyListCallback;
+	}
+	
+	
+	private class MyCommandCallback extends CommandResultCallback<SearchPostsCommandResult>{
+		SearchPostsCommand cmd;
+		HasWidgets target; 
+		String noResutsMessage;
+		HasWidgets moreTarget;
+		
+		public MyCommandCallback(final SearchPostsCommand cmd, final HasWidgets target, final HasWidgets moreTarget, final String noResutsMessage) {
+			this.cmd = cmd;
+			this.target = target;
+			this.noResutsMessage = noResutsMessage;
+			this.moreTarget = moreTarget;
+		}
+		@Override
+		public void onSuccess(SearchPostsCommandResult result) {
+			target.clear();
+			PostCollectionPresenter postCollection = injector.getPostCollectionPresenter();
+			if(!result.getResults().isEmpty()){
+				postCollection.setPostList(result.getResults().getList());
+				target.add(postCollection.getWidget());
+				MoreSearchPresenter moreSearchPresenter = injector.getMoreSearchPresenter();
+				moreSearchPresenter.init(new MyMoreObserver(postCollection), result.getResults(), cmd);
+				moreTarget.clear();
+				moreTarget.add(moreSearchPresenter.getWidget());
+			}
+			else{
+				TextPresenter textPresenter = injector.getTextPresenter();
+				textPresenter.setText(noResutsMessage);
+				target.add(textPresenter.getWidget());
+			}
+		}
 	}
 	
 	CommandResultCallback<SearchPostsCommandResult> buildMovieListCallback(final HasWidgets target,final String noResutsMessage) {
@@ -232,5 +263,20 @@ public class PublicUserProfilePresenter extends BasePagePresenter<PublicUserProf
 		};
 		return replyListCallback;
 	}
+
+	class MyMoreObserver implements MoreSearchPresenter.MoreSearchObserver{
+		private PostCollectionPresenter postCollection;
+		public MyMoreObserver(PostCollectionPresenter postCollection) {
+			this.postCollection = postCollection;
+		}
+		@Override
+		public void onMorePosts(List<GPost> posts) {
+			postCollection.addPostsToPostList(posts, Mode.FLAT);
+		}
+	}
+//	@Override
+//	public void onMorePosts(List<GPost> posts) {
+//		postCollection.addPostsToPostList(posts, Mode.FLAT);
+//	}
 
 }

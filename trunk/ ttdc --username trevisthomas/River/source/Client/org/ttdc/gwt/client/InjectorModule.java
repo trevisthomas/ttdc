@@ -154,6 +154,8 @@ import org.ttdc.gwt.client.presenters.users.CreateAccountPresenter;
 import org.ttdc.gwt.client.presenters.users.CreateAccountView;
 import org.ttdc.gwt.client.presenters.users.LoginPresenter;
 import org.ttdc.gwt.client.presenters.users.LoginView;
+import org.ttdc.gwt.client.presenters.users.MoreSearchPresenter;
+import org.ttdc.gwt.client.presenters.users.MoreSearchView;
 import org.ttdc.gwt.client.presenters.users.PublicUserProfilePresenter;
 import org.ttdc.gwt.client.presenters.users.PublicUserProfileView;
 import org.ttdc.gwt.client.presenters.users.RequestPasswordResetPresenter;
@@ -266,6 +268,7 @@ public class InjectorModule extends AbstractGinModule {
 		bind(EarmarkedPresenter.View.class).to(EarmarkedView.class);
 		bind(LikesPresenter.View.class).to(LikesView.class);
 		bind(MoreLatestPresenter.View.class).to(MoreLatestView.class);
+		bind(MoreSearchPresenter.View.class).to(MoreSearchView.class);
 				
 	}
 }

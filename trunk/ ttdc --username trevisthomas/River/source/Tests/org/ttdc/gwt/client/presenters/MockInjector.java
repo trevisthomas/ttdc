@@ -88,6 +88,7 @@ import org.ttdc.gwt.client.presenters.topic.TopicPresenter;
 import org.ttdc.gwt.client.presenters.topic.TopicSummaryPresenter;
 import org.ttdc.gwt.client.presenters.users.CreateAccountPresenter;
 import org.ttdc.gwt.client.presenters.users.LoginPresenter;
+import org.ttdc.gwt.client.presenters.users.MoreSearchPresenter;
 import org.ttdc.gwt.client.presenters.users.PublicUserProfilePresenter;
 import org.ttdc.gwt.client.presenters.users.RequestPasswordResetPresenter;
 import org.ttdc.gwt.client.presenters.users.UserListPresenter;
@@ -1375,6 +1376,18 @@ public class MockInjector implements Injector{
 
 	@Override
 	public org.ttdc.gwt.client.presenters.home.MoreLatestPresenter.View getMoreLatestView() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public MoreSearchPresenter getMoreSearchPresenter() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public org.ttdc.gwt.client.presenters.users.MoreSearchPresenter.View getMoreSearchView() {
 		// TODO Auto-generated method stub
 		return null;
 	}
