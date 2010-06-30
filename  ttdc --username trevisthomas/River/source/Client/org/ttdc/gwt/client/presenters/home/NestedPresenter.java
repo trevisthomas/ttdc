@@ -1,5 +1,7 @@
 package org.ttdc.gwt.client.presenters.home;
 
+import java.util.List;
+
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.presenters.post.PostCollectionPresenter;
@@ -15,7 +17,7 @@ import org.ttdc.gwt.shared.util.PaginatedList;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.inject.Inject;
 
-public class NestedPresenter extends BasePresenter<NestedPresenter.View>{
+public class NestedPresenter extends BasePresenter<NestedPresenter.View> implements MoreLatestPresenter.MoreLatestObserver{
 	public interface View extends BaseView{
 		HasWidgets postPanel();
 		HasWidgets postFooterPanel();
@@ -52,6 +54,7 @@ public class NestedPresenter extends BasePresenter<NestedPresenter.View>{
 			public void onSuccess(PaginatedListCommandResult<GPost> result) {
 				resultCache = result;
 				addResults(result);
+				setupMorePresenter(result);
 			}
 		};
 		return callback;
@@ -62,7 +65,18 @@ public class NestedPresenter extends BasePresenter<NestedPresenter.View>{
 		postCollection.setPostList(results.getList(), Mode.NESTED_SUMMARY);
 		view.postPanel().clear();
 		view.postPanel().add(postCollection.getWidget());
+		setupMorePresenter(result);
+	}
+	
+	private void setupMorePresenter(PaginatedListCommandResult<GPost> result) {
+		MoreLatestPresenter morePresenter = injector.getMoreLatestPresenter();
+		morePresenter.init(NestedPresenter.this, PostListType.LATEST_NESTED, result.getResults());
+		view.postFooterPanel().clear();
+		view.postFooterPanel().add(morePresenter.getWidget());
 	}
 
-	
+	@Override
+	public void onMorePosts(List<GPost> posts) {
+		postCollection.addPostsToPostList(posts, Mode.NESTED_SUMMARY);
+	}
 }

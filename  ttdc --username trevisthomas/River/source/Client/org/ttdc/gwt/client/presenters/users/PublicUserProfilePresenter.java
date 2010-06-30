@@ -166,6 +166,7 @@ public class PublicUserProfilePresenter extends BasePagePresenter<PublicUserProf
 
 	public void buildLatestPostsTab() {
 		SearchPostsCommand cmd = new SearchPostsCommand();
+		cmd.setPostSearchType(PostSearchType.REPLIES);
 		cmd.setPersonId(person.getPersonId());
 		cmd.setNonReviewsOnly(true);
 		cmd.setPageSize(10);	
@@ -176,6 +177,7 @@ public class PublicUserProfilePresenter extends BasePagePresenter<PublicUserProf
 
 	public void buildLatestReviewsTab() {
 		SearchPostsCommand cmd = new SearchPostsCommand();
+		cmd.setPostSearchType(PostSearchType.CONVERSATIONS);
 		cmd.setPersonId(person.getPersonId());
 		cmd.setReviewsOnly(true);
 		cmd.setPageSize(10);	
