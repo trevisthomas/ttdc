@@ -70,7 +70,7 @@ public class MoreLatestPresenter extends BasePresenter<MoreLatestPresenter.View>
 	
 	private void determineIfMoreAvailable(PaginatedList<GPost> results) {
 		if(results.calculateNumberOfPages() >= results.getCurrentPage() + 1){
-			pageNumber = results.getCurrentPage();
+			pageNumber = results.getCurrentPage() + 1;
 			view.setVisible(true);
 		}
 		else{

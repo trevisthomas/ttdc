@@ -25,8 +25,7 @@ public class FlatPresenter extends BasePresenter<FlatPresenter.View> implements 
 	
 	private PostCollectionPresenter postCollection;
 	private static PaginatedListCommandResult<GPost> resultCache = null;
-	private int pageNumber = 1;
-	
+
 	@Inject
 	public FlatPresenter(Injector injector){
 		super(injector,injector.getFlatView());
@@ -55,11 +54,10 @@ public class FlatPresenter extends BasePresenter<FlatPresenter.View> implements 
 			public void onSuccess(PaginatedListCommandResult<GPost> result) {
 				resultCache = result;
 				showResult(result);
-				MoreLatestPresenter morePresenter = injector.getMoreLatestPresenter();
-				morePresenter.init(FlatPresenter.this, PostListType.LATEST_FLAT, result.getResults());
-				view.postFooterPanel().clear();
-				view.postFooterPanel().add(morePresenter.getWidget());
+				setupMorePresenter(result);
 			}
+
+			
 		};
 		return callback;
 	}
@@ -69,12 +67,20 @@ public class FlatPresenter extends BasePresenter<FlatPresenter.View> implements 
 		postCollection.setPostList(results.getList(), Mode.FLAT);
 		view.postPanel().clear();
 		view.postPanel().add(postCollection.getWidget());
+		
+		setupMorePresenter(result);
 	}
 
+	private void setupMorePresenter(
+			PaginatedListCommandResult<GPost> result) {
+		MoreLatestPresenter morePresenter = injector.getMoreLatestPresenter();
+		morePresenter.init(FlatPresenter.this, PostListType.LATEST_FLAT, result.getResults());
+		view.postFooterPanel().clear();
+		view.postFooterPanel().add(morePresenter.getWidget());
+	}
+	
 	@Override
 	public void onMorePosts(List<GPost> posts) {
-		// TODO Auto-generated method stub
-		//Make an add method on postCollection
-		//postCollection.setPostList(results.getList(), Mode.FLAT);
+		postCollection.addPostsToPostList(posts, Mode.FLAT);
 	}
 }
