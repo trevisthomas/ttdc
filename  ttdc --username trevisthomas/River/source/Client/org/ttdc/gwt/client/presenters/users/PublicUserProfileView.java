@@ -24,10 +24,19 @@ public class PublicUserProfileView implements PublicUserProfilePresenter.View{
 	private final HtmlLabel bioHtml = new HtmlLabel();
 	private final SimplePanel bestMoviesPanel = new SimplePanel();
 	private final SimplePanel worstMoviesPanel = new SimplePanel();
+	private final VerticalPanel latestCoversationsTabPanel = new VerticalPanel();
+	private final VerticalPanel latestPostsTabPanel = new VerticalPanel();
+	private final VerticalPanel latestReviewsTabPanel = new VerticalPanel();
+	
+	private final SimplePanel navigationPanel = new SimplePanel();
+	
 	private final SimplePanel latestCoversationsPanel = new SimplePanel();
 	private final SimplePanel latestPostsPanel = new SimplePanel();
 	private final SimplePanel latestReviewsPanel = new SimplePanel();
-	private final SimplePanel navigationPanel = new SimplePanel();
+		
+	private final SimplePanel latestConversationsFooterPanel = new SimplePanel();
+	private final SimplePanel latestPostsFooterPanel = new SimplePanel();
+	private final SimplePanel latestReviewsFooterPanel = new SimplePanel();
 	
 	private String personId;
 	
@@ -37,12 +46,23 @@ public class PublicUserProfileView implements PublicUserProfilePresenter.View{
 		main.add(profilePanel);
 		main.add(tabPanel);
 		
+		
+		latestCoversationsTabPanel.add(latestCoversationsPanel);
+		latestCoversationsTabPanel.add(latestConversationsFooterPanel);
+		
+		latestPostsTabPanel.add(latestPostsPanel);
+		latestPostsTabPanel.add(latestPostsFooterPanel);
+		
+		latestReviewsTabPanel.add(latestReviewsPanel);
+		latestReviewsTabPanel.add(latestReviewsFooterPanel);
+		
+		
 		tabPanel.add(bioHtml, "Bio");
 		tabPanel.add(bestMoviesPanel, "Best Movies");
 		tabPanel.add(worstMoviesPanel, "Worst Movies");
-		tabPanel.add(latestCoversationsPanel, "Conversations");
-		tabPanel.add(latestReviewsPanel, "Reviews");
-		tabPanel.add(latestPostsPanel, "Comments");
+		tabPanel.add(latestCoversationsTabPanel, "Conversations");
+		tabPanel.add(latestReviewsTabPanel, "Reviews");
+		tabPanel.add(latestPostsTabPanel, "Comments");
 		
 		tabPanel.addSelectionHandler(new SelectionHandler<Integer>() {
 			@Override
@@ -193,5 +213,20 @@ public class PublicUserProfileView implements PublicUserProfilePresenter.View{
 		latestCoversationsPanel.clear();
 		latestPostsPanel.clear();
 		latestReviewsPanel.clear();
+	}
+
+	@Override
+	public HasWidgets latestConversationsFooterPanel() {
+		return latestConversationsFooterPanel;
+	}
+
+	@Override
+	public HasWidgets latestPostsFooterPanel() {
+		return latestPostsFooterPanel;
+	}
+
+	@Override
+	public HasWidgets latestReviewsFooterPanel() {
+		return latestReviewsFooterPanel;
 	}
 }

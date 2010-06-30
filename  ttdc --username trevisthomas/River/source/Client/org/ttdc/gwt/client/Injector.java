@@ -82,6 +82,7 @@ import org.ttdc.gwt.client.presenters.topic.TopicPresenter;
 import org.ttdc.gwt.client.presenters.topic.TopicSummaryPresenter;
 import org.ttdc.gwt.client.presenters.users.CreateAccountPresenter;
 import org.ttdc.gwt.client.presenters.users.LoginPresenter;
+import org.ttdc.gwt.client.presenters.users.MoreSearchPresenter;
 import org.ttdc.gwt.client.presenters.users.PublicUserProfilePresenter;
 import org.ttdc.gwt.client.presenters.users.RequestPasswordResetPresenter;
 import org.ttdc.gwt.client.presenters.users.UserListPresenter;
@@ -360,6 +361,9 @@ public interface Injector extends Ginjector {
 	public MoreLatestPresenter.View getMoreLatestView();
 	public MoreLatestPresenter getMoreLatestPresenter();
 	
+	public MoreSearchPresenter.View getMoreSearchView();
+	public MoreSearchPresenter getMoreSearchPresenter();
+	
 	//
 	public PostPanel createPostPanel();
 	public MoreOptionsPopupPanel createOptionsPanel();
@@ -372,6 +376,8 @@ public interface Injector extends Ginjector {
 	
 	public Navigation createNavigation();
 	public FilteredPost createFilteredPost();
+
+	
 
 
 		
