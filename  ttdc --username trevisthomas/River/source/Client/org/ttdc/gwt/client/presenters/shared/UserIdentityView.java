@@ -54,11 +54,19 @@ public class UserIdentityView implements UserIdentityPresenter.View{
 	public void modeLogin(){
 		main.clear();
 		main.add(fromGrid);
-		fromGrid.setWidget(0, 0, new Label("Name"));
+		fromGrid.setWidget(0, 0, createLabel("Username"));
 		fromGrid.setWidget(1, 0, loginTextBox);
-		fromGrid.setWidget(0, 1, new Label("Password"));
+		fromGrid.setWidget(0, 1, createLabel("Password"));
 		fromGrid.setWidget(1, 1, passwordTextBox);
+		fromGrid.setWidget(0, 2, createLabel(""));
 		fromGrid.setWidget(1, 2, loginButton);
+	}
+	
+	private Label createLabel(String text){
+		Label label = new Label(text);
+		label.setStyleName("tt-text-mini");
+		label.addStyleName("tt-text-center");
+		return label;
 	}
 	
 	@Override

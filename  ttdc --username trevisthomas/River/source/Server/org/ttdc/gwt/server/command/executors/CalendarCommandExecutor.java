@@ -20,6 +20,8 @@ import org.ttdc.gwt.shared.calender.Week;
 import org.ttdc.gwt.shared.calender.Year;
 import org.ttdc.gwt.shared.commands.CalendarCommand;
 import org.ttdc.gwt.shared.commands.results.CalendarCommandResult;
+import org.ttdc.gwt.shared.util.PostFlag;
+import org.ttdc.persistence.objects.Person;
 
 public class CalendarCommandExecutor  extends CommandExecutor<CalendarCommandResult>{
 	private final static Logger log = Logger.getLogger(CalendarCommandExecutor.class);
@@ -32,6 +34,17 @@ public class CalendarCommandExecutor  extends CommandExecutor<CalendarCommandRes
 		try{
 			beginSession();
 			CalendarDao dao = new CalendarDao();
+			Person p = getPerson();
+			if(!p.isNwsEnabled()){
+				dao.addFlagFilter(PostFlag.NWS);
+			}
+			
+			if(!p.isPrivateAccessAccount()){
+				dao.addFlagFilter(PostFlag.PRIVATE);
+			}
+			
+			dao.addFilterThreadIds(p.getFrontPageFilteredThreadIds());
+			
 			if (cmd.getScope().equals(CalendarCommand.Scope.YEAR)) {
 				dao.setYearNumber(cmd.getYear());
 				Year year = dao.buildYear();

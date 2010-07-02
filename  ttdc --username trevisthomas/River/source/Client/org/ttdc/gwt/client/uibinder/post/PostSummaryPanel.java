@@ -10,6 +10,7 @@ import org.ttdc.gwt.client.messaging.post.PostEventType;
 import org.ttdc.gwt.client.presenters.post.PostPresenterCommon;
 import org.ttdc.gwt.client.presenters.shared.HyperlinkPresenter;
 import org.ttdc.gwt.client.services.RpcServiceAsync;
+import org.ttdc.gwt.shared.calender.CalendarPost;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
 import org.ttdc.gwt.shared.commands.PostCrudCommand;
 import org.ttdc.gwt.shared.commands.results.PostCommandResult;
@@ -37,6 +38,7 @@ public class PostSummaryPanel extends Composite implements PostPresenterCommon{
     private HyperlinkPresenter creatorLinkPresenter;
     private PostExpanded postExpanded;
     private GPost post;
+    private CalendarPost cp;
     @UiField(provided = true) Hyperlink creatorLinkElement;
     @UiField HTML bodySummaryElement;
     @UiField SpanElement spacerElement;
@@ -58,7 +60,6 @@ public class PostSummaryPanel extends Composite implements PostPresenterCommon{
     
     public void init(GPost post){
     	this.post = post;
-    	//bodySummaryElement.setInnerHTML(post.getLatestEntry().getSummary());
     	bodySummaryElement.setHTML(post.getLatestEntry().getSummary());
     	creatorLinkPresenter.setPerson(post.getCreator());
     	setSpacer(post.getPath().split("\\.").length - 2);
@@ -70,6 +71,25 @@ public class PostSummaryPanel extends Composite implements PostPresenterCommon{
 			postUnReadElement.addStyleName("tt-alert");
 		}
     }
+    
+    public void init(CalendarPost cp) {
+    	this.cp = cp;
+    	bodySummaryElement.setHTML(cp.getSummary());
+    	
+    	GPerson liteCreator = new GPerson();
+    	liteCreator.setLogin(cp.getCreatorLogin());
+    	liteCreator.setPersonId(cp.getCreatorId());
+    	creatorLinkPresenter.setPerson(liteCreator);
+    	setSpacer(-1);
+    	
+    	GPerson user = ConnectionId.getInstance().getCurrentUser();
+//    	Figure out how to make the calender post have the read/unread info!
+//		if(!user.isAnonymous() && !post.isRead()){
+//			postUnReadElement.setVisible(true);
+//			postUnReadElement.setText("*");
+//			postUnReadElement.addStyleName("tt-alert");
+//		}
+	}
     
     public void setSpacer(int tabCount) {
     	StringBuilder sb = new StringBuilder();
@@ -97,10 +117,23 @@ public class PostSummaryPanel extends Composite implements PostPresenterCommon{
     public void expandPost() {
 		RpcServiceAsync service = injector.getService();
 		PostCrudCommand postCmd = new PostCrudCommand();
-		postCmd.setPostId(post.getPostId());
+		postCmd.setPostId(getPostId());
 		service.execute(postCmd,buildExpandedPostCallback());
 	}
     
+    
+	private String getPostId() {
+		if(post != null){
+			return post.getPostId();
+		}
+		else if(cp != null){
+			return cp.getPostId();
+		}
+		else{
+			throw new RuntimeException("PostSummaryPanel cant expand a post that doesnt exist!");
+		}
+	}
+
 	@Override
 	public void contractPost() {
 		expandedElement.setVisible(false);
@@ -117,6 +150,7 @@ public class PostSummaryPanel extends Composite implements PostPresenterCommon{
 			@Override
 			public void onSuccess(PostCommandResult result) {
 				notifyListeners();
+				post = result.getPost(); //Added 7/1/2010! Why was this not here?
 				summaryElement.setVisible(false);
 				if(postExpanded == null){
 					postExpanded = injector.createPostExpanded();
@@ -129,4 +163,6 @@ public class PostSummaryPanel extends Composite implements PostPresenterCommon{
 		};
 		return rootPostCallback;
 	}
+
+	
 }
