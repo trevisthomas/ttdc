@@ -141,8 +141,13 @@ public class PostSummaryPanel extends Composite implements PostPresenterCommon{
 	}
 	
 	private void notifyListeners(){
-		PostEvent postEvent = new PostEvent(PostEventType.EXPAND_CONTRACT, post);
-		EventBus.getInstance().fireEvent(postEvent);
+		if(post != null){
+			PostEvent postEvent = new PostEvent(PostEventType.EXPAND_CONTRACT, post);
+			EventBus.getInstance().fireEvent(postEvent);
+		}
+		else{
+			throw new RuntimeException("PostSummaryPanel notifyListeners called without a post.  This is probably working in calendar now. Please fix.");
+		}
 	}
 	
 	private CommandResultCallback<PostCommandResult> buildExpandedPostCallback() {
