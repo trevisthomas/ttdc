@@ -274,9 +274,5 @@ public class PublicUserProfilePresenter extends BasePagePresenter<PublicUserProf
 			postCollection.addPostsToPostList(posts, Mode.FLAT);
 		}
 	}
-//	@Override
-//	public void onMorePosts(List<GPost> posts) {
-//		postCollection.addPostsToPostList(posts, Mode.FLAT);
-//	}
 
 }

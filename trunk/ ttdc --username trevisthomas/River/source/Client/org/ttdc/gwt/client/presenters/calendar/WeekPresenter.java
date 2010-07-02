@@ -33,7 +33,7 @@ public class WeekPresenter extends BasePresenter<WeekPresenter.View>{
 			if(day.isContent()){
 				for(Hour h : day.getHours()){
 					HourPresenter hourPresenter = injector.getHourPresenter();
-					hourPresenter.setHour(h);
+					hourPresenter.setHourWithoutSummary(h);
 					view.insertHourWidget(dayOfWeek, h.getHourOfDay(), hourPresenter.getWidget());
 				}
 			}
