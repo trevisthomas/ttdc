@@ -105,6 +105,7 @@ import org.ttdc.gwt.client.uibinder.post.PostPanel;
 import org.ttdc.gwt.client.uibinder.post.PostSummaryPanel;
 import org.ttdc.gwt.client.uibinder.post.ReviewSummaryListPanel;
 import org.ttdc.gwt.client.uibinder.post.ReviewSummaryPanel;
+import org.ttdc.gwt.client.uibinder.post.SmallPostSummaryPanel;
 
 import com.google.gwt.user.client.ui.HasWidgets;
 
@@ -1388,6 +1389,12 @@ public class MockInjector implements Injector{
 
 	@Override
 	public org.ttdc.gwt.client.presenters.users.MoreSearchPresenter.View getMoreSearchView() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public SmallPostSummaryPanel createSmallSummaryPanel() {
 		// TODO Auto-generated method stub
 		return null;
 	}
