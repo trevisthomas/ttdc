@@ -12,6 +12,9 @@ import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.beans.GTag;
 import org.ttdc.gwt.client.constants.TagConstants;
 import org.ttdc.gwt.client.messaging.EventBus;
+import org.ttdc.gwt.client.messaging.error.MessageEvent;
+import org.ttdc.gwt.client.messaging.error.MessageEventListener;
+import org.ttdc.gwt.client.messaging.error.MessageEventType;
 import org.ttdc.gwt.client.messaging.history.HistoryConstants;
 import org.ttdc.gwt.client.messaging.history.HistoryToken;
 import org.ttdc.gwt.client.presenters.home.InteractiveCalendarPresenter;
@@ -44,7 +47,8 @@ import com.google.inject.Inject;
  * To replace SiteSearchPresenter,SearchWithinSubsetPresenter and SearchWithinTaggedSubsetPresenter 
  * with one, far more awesome search box.
  */
-public class SearchBoxPresenter extends BasePresenter<SearchBoxPresenter.View> /*implements DayClickHandler implements CalendarEventListener*/{
+public class SearchBoxPresenter extends BasePresenter<SearchBoxPresenter.View> implements MessageEventListener /*implements DayClickHandler implements CalendarEventListener*/
+	{
 	public interface View extends BaseView{
 		HasClickHandlers searchClickHandler();
 				
@@ -61,6 +65,7 @@ public class SearchBoxPresenter extends BasePresenter<SearchBoxPresenter.View> /
 		String getSearchPhrase();
 		String getSelectedCreatorId();
 		HasText searchBox();
+		void hidePopup();
 	}
 
 	private String rootId;
@@ -78,6 +83,7 @@ public class SearchBoxPresenter extends BasePresenter<SearchBoxPresenter.View> /
 	private DateRangeLite dateRange;
 	
 	
+	
 	private InteractiveCalendarPresenter startCalendarPresenter;
 	private InteractiveCalendarPresenter endCalendarPresenter;
 
@@ -92,6 +98,15 @@ public class SearchBoxPresenter extends BasePresenter<SearchBoxPresenter.View> /
 				performSearch();
 			}
 		});
+		
+		EventBus.getInstance().addListener(this);
+	}
+	
+	@Override
+	public void onMessageEvent(MessageEvent event) {
+		if(event.is(MessageEventType.VIEW_CHANGE)){
+			view.hidePopup();
+		}
 	}
 	
 	public void init(Date startDate, Date endDate) {

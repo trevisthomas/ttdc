@@ -1,78 +1,96 @@
 package org.ttdc.gwt.client.presenters.shared;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyUpEvent;
-import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Grid;
-import com.google.gwt.user.client.ui.HasText;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.PasswordTextBox;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 public class UserIdentityView implements UserIdentityPresenter.View{
 	private final FlowPanel main = new FlowPanel(); 
 	private final Button loginButton = new Button("Go");
 	private final SimplePanel logoutPanel = new SimplePanel();
-	private final Grid fromGrid = new Grid(2,3);
-	private final TextBox loginTextBox = new TextBox();
-	private final PasswordTextBox passwordTextBox = new PasswordTextBox();
 	private final SimplePanel userPanel = new SimplePanel();
-	private final Anchor logoutLink = new Anchor("Logout");
-
-	public UserIdentityView() {
-		KeyUpHandler handler = clickLoginButtonOnEnterKeyUpHandler();
-		loginTextBox.addKeyUpHandler(handler);
-		passwordTextBox.addKeyUpHandler(handler);
-		
+	private final Anchor logoutLink = new Anchor("logout");
+	private final static PopupPanel loginPopup = new PopupPanel(true);
+	private final Anchor loginLink = new Anchor("login");
+	private final HTML seperator = new HTML();
+	private final HTML welcomeMessage = new HTML();
+	private final SimplePanel createLink = new SimplePanel();
+	
+	@Override
+	public void hideLoginPopup() {
+		if(loginPopup.isShowing()){
+			loginPopup.hide();
+		}
 	}
 	
-	private KeyUpHandler clickLoginButtonOnEnterKeyUpHandler() {
-		return new KeyUpHandler() {
-			public void onKeyUp(KeyUpEvent event) {
-				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-					loginButton.click();
+	@Override
+	public void setLoginWidget(Widget w) {
+		loginPopup.clear();
+		loginPopup.add(w);
+	}
+	
+	public UserIdentityView() {
+		welcomeMessage.setHTML("Sup, ");
+		seperator.setHTML(" | ");
+		
+		createLink.addStyleName("tt-inline");
+		welcomeMessage.addStyleName("tt-inline");
+		seperator.addStyleName("tt-inline");
+		userPanel.addStyleName("tt-inline");
+		
+		loginLink.addClickHandler(new ClickHandler() {
+		@Override
+		public void onClick(ClickEvent event) {
+				if(loginPopup.isShowing()){
+					loginPopup.hide();
+				}
+				else{
+					// Reposition the popup relative to the button
+		            //Widget source = (Widget) event.getSource();
+		            
+		            int left = main.getAbsoluteLeft();
+		            int top = main.getAbsoluteTop() + main.getOffsetHeight() - 1;
+		            loginPopup.setPopupPosition(left, top);
+
+		            // Show the popup
+		            loginPopup.show();	
 				}
 			}
-		};
+		});
 	}
-
+	
+	@Override
+	public HasWidgets accountCreatePanel(){
+		return createLink;
+	}
+	
 	@Override
 	public Widget getWidget() {
 		return main;
-		
-		
 	}
 
 	@Override
 	public void modeLogin(){
 		main.clear();
-		main.add(fromGrid);
-		fromGrid.setWidget(0, 0, createLabel("Username"));
-		fromGrid.setWidget(1, 0, loginTextBox);
-		fromGrid.setWidget(0, 1, createLabel("Password"));
-		fromGrid.setWidget(1, 1, passwordTextBox);
-		fromGrid.setWidget(0, 2, createLabel(""));
-		fromGrid.setWidget(1, 2, loginButton);
-	}
-	
-	private Label createLabel(String text){
-		Label label = new Label(text);
-		label.setStyleName("tt-text-mini");
-		label.addStyleName("tt-text-center");
-		return label;
+		main.add(loginLink);
+		main.add(seperator);
+		main.add(createLink);
 	}
 	
 	@Override
 	public void modeLogout(){
 		main.clear();
+		main.add(welcomeMessage);
 		main.add(userPanel);
+		main.add(seperator);
 		main.add(logoutLink);
 	}
 	
@@ -81,17 +99,6 @@ public class UserIdentityView implements UserIdentityPresenter.View{
 		return loginButton;
 	}
 	
-	@Override
-	public HasText loginTextBox() {
-		return loginTextBox;
-	}
-
-	@Override
-	public HasText passwordTextBox() {
-		return passwordTextBox;
-	}
-
-
 	@Override
 	public HasWidgets authenticatedUserPanel() {
 		return userPanel;
@@ -109,8 +116,6 @@ public class UserIdentityView implements UserIdentityPresenter.View{
 
 	@Override
 	public void clear() {
-		loginTextBox.setText("");
-		passwordTextBox.setText("");
 		userPanel.clear();
 	}
 

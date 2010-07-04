@@ -5,6 +5,7 @@ import org.ttdc.gwt.client.messaging.history.HistoryConstants;
 import org.ttdc.gwt.client.messaging.history.HistoryToken;
 import org.ttdc.gwt.client.presenters.shared.BasePagePresenter;
 import org.ttdc.gwt.client.presenters.shared.BasePageView;
+import org.ttdc.gwt.client.presenters.util.CookieTool;
 import org.ttdc.gwt.shared.util.StringUtil;
 
 
@@ -40,6 +41,9 @@ public class UserToolsPresenter extends BasePagePresenter<UserToolsPresenter.Vie
 		requestPassowrdResetPresenter.init();
 				
 		String tab = token.getParameter(HistoryConstants.TAB_KEY);
+		
+		CookieTool.clear(); //I added this here after removing it from the LoginPresenter
+		
 		if(StringUtil.notEmpty(tab)){
 			if(HistoryConstants.USER_LOGIN_TAB.equals(tab)){
 				view.displayLoginTab();

@@ -8,6 +8,7 @@ import org.ttdc.gwt.client.messaging.ConnectionId;
 import org.ttdc.gwt.client.presenters.search.SearchBoxPresenter;
 import org.ttdc.gwt.client.presenters.shared.DatePresenter;
 import org.ttdc.gwt.client.presenters.shared.HyperlinkPresenter;
+import org.ttdc.gwt.client.presenters.shared.UserIdentityPresenter;
 import org.ttdc.gwt.client.uibinder.Navigation;
 import org.ttdc.gwt.shared.calender.CalendarPost;
 
@@ -26,6 +27,7 @@ public class StandardPageHeaderPanel extends Composite{
     
     private Injector injector;
     private final SearchBoxPresenter searchBoxPresenter;
+    private final UserIdentityPresenter userIdentityPresenter;
     private Navigation navigation;
     //private PageTitlePanel pageTitlePanel;
     
@@ -35,7 +37,7 @@ public class StandardPageHeaderPanel extends Composite{
     @UiField Label subTitleElement;
     
     @UiField(provided = true) Widget searchElement;
-//    @UiField(provided = true) Widget loginElement;
+	@UiField(provided = true) Widget loginElement;
 //    @UiField(provided = true) Widget todayCalenderElement;
 //    @UiField(provided = true) Widget contentElement;
     
@@ -48,6 +50,8 @@ public class StandardPageHeaderPanel extends Composite{
     	navigationElement = navigation;
     	searchElement = searchBoxPresenter.getWidget();
     	
+    	userIdentityPresenter = injector.getUserIdentityPresenter();
+    	loginElement = userIdentityPresenter.getWidget(); 
     	
 //    	creatorLinkElement = creatorLinkPresenter.getHyperlink();
 //    	titleElement = titleLinkPresenter.getHyperlink();

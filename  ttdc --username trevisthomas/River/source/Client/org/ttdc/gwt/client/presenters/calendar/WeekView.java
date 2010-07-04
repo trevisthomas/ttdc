@@ -65,12 +65,4 @@ public class WeekView implements WeekPresenter.View{
 		hours.setWidget(0, dayOfWeek, w);
 	}
 	
-	
-	
-//	public void insertDayHeader(int month, int dayOfWeek, int dayOfMonth, String dayName) {
-//		HTMLPanel widget = new HTMLPanel(dayName + " " + month+"/"+dayOfMonth);
-//		widget.setStyleName("tt-calendar-day-header");
-//		hours.setWidget(0, dayOfWeek, widget);
-//	}
-
 }
