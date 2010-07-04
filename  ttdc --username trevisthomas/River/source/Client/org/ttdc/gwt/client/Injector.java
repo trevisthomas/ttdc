@@ -100,6 +100,7 @@ import org.ttdc.gwt.client.uibinder.post.PostSummaryPanel;
 import org.ttdc.gwt.client.uibinder.post.ReviewSummaryListPanel;
 import org.ttdc.gwt.client.uibinder.post.ReviewSummaryPanel;
 import org.ttdc.gwt.client.uibinder.post.SmallPostSummaryPanel;
+import org.ttdc.gwt.client.uibinder.shared.StandardPageHeaderPanel;
 
 import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;
@@ -379,8 +380,8 @@ public interface Injector extends Ginjector {
 	public FilteredPost createFilteredPost();
 
 	public SmallPostSummaryPanel createSmallSummaryPanel();
-	
 
+	public StandardPageHeaderPanel createStandardPageHeaderPanel();
 
 		
 	

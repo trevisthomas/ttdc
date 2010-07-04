@@ -52,7 +52,11 @@ public class WeekView implements WeekPresenter.View{
 
 	@Override
 	public void insertHourWidget(int dayOfWeek, int hourOfDay, Widget w) {
-		hours.setWidget(hourOfDay,dayOfWeek,w);
+		/* WOW. It took me a good hour and a half to find this bug.  The +1 was missing which caused
+		 * all of the data on a week to be shifted.  It was shifting by one hour per day, so that by the 
+		 * of the week it was off by 7 hours.  Very strange looking.
+		 */
+		hours.setWidget(hourOfDay+1,dayOfWeek,w);
 	}
 	
 	@Override
