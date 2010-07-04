@@ -30,7 +30,8 @@ public class CalendarView implements CalendarPresenter.View{
 	
 	
 	public CalendarView() {
-		mainPanel.add(navigationPanel);
+		//mainPanel.add(navigationPanel);
+		
 		mainPanel.add(headerPanel);
 		mainPanel.add(messagePanel);
 		prevNextPanel.add(prevLink);
@@ -51,6 +52,12 @@ public class CalendarView implements CalendarPresenter.View{
 		calendarPanel.setStyleName("tt-calendar");
 		
 		mainPanel.setStyleName("tt-view-container");
+	}
+	
+	
+	@Override
+	public void insertPageHeader(Widget w) {
+		mainPanel.insert(w, 0);
 	}
 	
 	@Override

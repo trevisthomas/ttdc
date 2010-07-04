@@ -159,14 +159,17 @@ public class CalendarCommandExecutor  extends CommandExecutor<CalendarCommandRes
 		Calendar tmp = GregorianCalendar.getInstance();
 		tmp.set(Calendar.YEAR,year);
 		//tmp.set(Calendar.DAY_OF_WEEK, 0);
-		tmp.set(Calendar.WEEK_OF_YEAR, weekOfYear);
+		tmp.set(Calendar.WEEK_OF_YEAR, weekOfYear - 1);
 		
 		tmp.set(Calendar.HOUR, -12);
 		tmp.set(Calendar.MINUTE, 0);
 		tmp.set(Calendar.SECOND, 0);
 		tmp.set(Calendar.MILLISECOND, 0);
 		
+		tmp.add(Calendar.DAY_OF_MONTH, 1);
 		Date startDate = tmp.getTime();
+		
+		tmp.add(Calendar.DAY_OF_MONTH, -1);
 		tmp.add(Calendar.WEEK_OF_YEAR, 1);
 		
 		Date endDate = tmp.getTime();

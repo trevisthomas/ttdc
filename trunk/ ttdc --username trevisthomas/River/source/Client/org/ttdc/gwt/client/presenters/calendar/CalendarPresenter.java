@@ -22,6 +22,7 @@ import org.ttdc.gwt.client.presenters.shared.BasePagePresenter;
 import org.ttdc.gwt.client.presenters.shared.BasePageView;
 import org.ttdc.gwt.client.presenters.shared.HyperlinkPresenter;
 import org.ttdc.gwt.client.services.RpcServiceAsync;
+import org.ttdc.gwt.client.uibinder.shared.StandardPageHeaderPanel;
 import org.ttdc.gwt.shared.calender.Day;
 import org.ttdc.gwt.shared.commands.CalendarCommand;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
@@ -29,16 +30,19 @@ import org.ttdc.gwt.shared.commands.results.CalendarCommandResult;
 
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
 public class CalendarPresenter extends BasePagePresenter<CalendarPresenter.View> {
 	//private String 
 	private HistoryToken lastToken;
 	private final Map<HistoryToken,CalendarCommandResult> cacheMap = new HashMap<HistoryToken,CalendarCommandResult>(); 
+	private final StandardPageHeaderPanel pageHeaderPanel;
 	
 	@Inject
 	public CalendarPresenter(Injector injector) {
 		super(injector,injector.getCalendarView());
+		pageHeaderPanel = injector.createStandardPageHeaderPanel();
 		view.title().setText("loading...");
 		view.headerPanel().add(injector.getUserIdentityPresenter().getWidget());
 	}
@@ -56,6 +60,7 @@ public class CalendarPresenter extends BasePagePresenter<CalendarPresenter.View>
 		HasWidgets calendar();
 		HasWidgets searchTarget();
 		HasWidgets headerPanel();
+		void insertPageHeader(Widget w);
 		void clear();
 	}
 	
@@ -63,6 +68,9 @@ public class CalendarPresenter extends BasePagePresenter<CalendarPresenter.View>
 	
 	@Override
 	public void show(HistoryToken args) {
+		
+		view.insertPageHeader(pageHeaderPanel);
+		
 		if(lastToken != null && args.equals(lastToken)){
 			view.show();
 			return;
@@ -70,15 +78,19 @@ public class CalendarPresenter extends BasePagePresenter<CalendarPresenter.View>
 			
 		String scale = args.getParameter(CALENDAR_SCALE_KEY);
 		if(CALENDAR_SCALE_VALUE_YEAR.equals(scale)){
+			pageHeaderPanel.init("Calendar Year","A Year in the Life");
 			showYearCalendar(args);
 		}
 		else if(CALENDAR_SCALE_VALUE_MONTH.equals(scale)){
+			pageHeaderPanel.init("Calendar Month","One Month...");
 			showMonthCalendar(args);
 		}
 		else if(CALENDAR_SCALE_VALUE_WEEK.equals(scale)){
+			pageHeaderPanel.init("Calendar Week","Une semain");
 			showWeekCalendar(args);
 		}
 		else if(CALENDAR_SCALE_VALUE_DAY.equals(scale)){
+			pageHeaderPanel.init("Calendar Day","One day...");
 			showDayCalendar(args);
 		}
 		else{
@@ -86,6 +98,7 @@ public class CalendarPresenter extends BasePagePresenter<CalendarPresenter.View>
 			//throw new RuntimeException("Unrecongizied scale value \""+scale+"\"");
 			Date date = new Date();
 			HistoryToken today = CalendarHelpers.buildMonthHistoryToken(1900+date.getYear(), 1+date.getMonth());
+			pageHeaderPanel.init("Calendar Month","One Month...");
 			showMonthCalendar(today);
 		}
 		lastToken = args;
@@ -295,8 +308,6 @@ public class CalendarPresenter extends BasePagePresenter<CalendarPresenter.View>
 	}
 	
 	private void showSearchWithResults(CalendarCommandResult result) {
-		SearchBoxPresenter searchPresenter = injector.getSearchBoxPresenter();
-		searchPresenter.init(result.getStartDate(), result.getEndDate());
-		view.searchTarget().add(searchPresenter.getWidget());
+		pageHeaderPanel.getSearchBoxPresenter().init(result.getStartDate(), result.getEndDate());
 	}
 }

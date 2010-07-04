@@ -104,6 +104,7 @@ public class SearchResultsPresenter extends BasePresenter<SearchResultsPresenter
 
 	private void performSearchForComments(HistoryToken token) {
 		SearchPostsCommand command = createSearchPostsCommand(token);
+		command.setPostSearchType(PostSearchType.REPLIES);
 		view.getSummaryDetail().setText("Searching comments for "+command.getPhrase()+"...");
 		final String phrase = command.getPhrase(); 
 		

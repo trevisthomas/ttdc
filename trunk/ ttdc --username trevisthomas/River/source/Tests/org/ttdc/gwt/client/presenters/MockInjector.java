@@ -106,6 +106,7 @@ import org.ttdc.gwt.client.uibinder.post.PostSummaryPanel;
 import org.ttdc.gwt.client.uibinder.post.ReviewSummaryListPanel;
 import org.ttdc.gwt.client.uibinder.post.ReviewSummaryPanel;
 import org.ttdc.gwt.client.uibinder.post.SmallPostSummaryPanel;
+import org.ttdc.gwt.client.uibinder.shared.StandardPageHeaderPanel;
 
 import com.google.gwt.user.client.ui.HasWidgets;
 
@@ -1395,6 +1396,12 @@ public class MockInjector implements Injector{
 
 	@Override
 	public SmallPostSummaryPanel createSmallSummaryPanel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public StandardPageHeaderPanel createStandardPageHeaderPanel() {
 		// TODO Auto-generated method stub
 		return null;
 	}
