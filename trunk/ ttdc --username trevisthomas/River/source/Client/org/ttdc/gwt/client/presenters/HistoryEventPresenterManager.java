@@ -4,6 +4,8 @@ import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.messaging.EventBus;
 import org.ttdc.gwt.client.messaging.ServerEventMonitor;
+import org.ttdc.gwt.client.messaging.error.MessageEvent;
+import org.ttdc.gwt.client.messaging.error.MessageEventType;
 import org.ttdc.gwt.client.messaging.history.HistoryConstants;
 import org.ttdc.gwt.client.messaging.history.HistoryEvent;
 import org.ttdc.gwt.client.messaging.history.HistoryEventListener;
@@ -12,6 +14,7 @@ import org.ttdc.gwt.client.presenters.search.SearchBoxView;
 import org.ttdc.gwt.client.presenters.topic.TopicPresenter;
 import org.ttdc.gwt.client.presenters.users.UserToolsPresenter;
 import org.ttdc.gwt.client.presenters.util.LoadCurrentUser;
+
 
 import com.google.inject.Inject;
 
@@ -38,15 +41,9 @@ public class HistoryEventPresenterManager implements HistoryEventListener{
 	
 		
 	public void onHistoryEvent(HistoryEvent event) {
-		SearchBoxView.viewChangeNotification();//TODO: Use the event buss fool!
-		
-//		GPerson oldPerson = ConnectionId.getInstance().getCurrentUser();
-//		LoadCurrentUser.load(new Worker(event));
-//		GPerson newPerson = ConnectionId.getInstance().getCurrentUser();
-//		if(oldPerson == null || !oldPerson.getPersonId().equals(newPerson.getPersonId())){
-//			EventBus.reload(); //When the user changes refresh the app!
-//		}
-
+		MessageEvent e = new MessageEvent(MessageEventType.VIEW_CHANGE, null);
+		EventBus.fireEvent(e);
+//		SearchBoxView.viewChangeNotification();//TODO: Use the event buss fool!
 		LoadCurrentUser.load(new Worker(event));
 	}
 	

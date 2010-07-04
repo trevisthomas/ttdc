@@ -6,6 +6,8 @@ import org.ttdc.gwt.client.messaging.ConnectionId;
 import org.ttdc.gwt.client.messaging.EventBus;
 import org.ttdc.gwt.client.messaging.history.HistoryConstants;
 import org.ttdc.gwt.client.messaging.history.HistoryToken;
+import org.ttdc.gwt.client.messaging.person.PersonEvent;
+import org.ttdc.gwt.client.messaging.person.PersonEventType;
 import org.ttdc.gwt.client.presenters.shared.BasePresenter;
 import org.ttdc.gwt.client.presenters.shared.BaseView;
 import org.ttdc.gwt.client.presenters.shared.PageMessagesPresenter;
@@ -41,8 +43,8 @@ public class LoginPresenter extends BasePresenter<LoginPresenter.View> {
 		pageMessagesPresenter = injector.getPageMessagesPresenter();
 		view.messagesPanel().add(pageMessagesPresenter.getWidget());
 		init();
-		CookieTool.clear();
-		logout();
+//		CookieTool.clear();
+//		logout();
 	}
 	
 	private void logout() {
@@ -78,15 +80,17 @@ public class LoginPresenter extends BasePresenter<LoginPresenter.View> {
 					CookieTool.savePwd(person.getPassword());
 				}
 
-				EventBus.reloadHome();
-				
+				//EventBus.reloadHome();
+				PersonEvent event = new PersonEvent(PersonEventType.USER_CHANGED, person);
+				EventBus.fireEvent(event);
 				EventBus.fireMessage("Hi, "+person.getLogin());
 			}
 			@Override
 			public void onFailure(Throwable caught) {
 				//ConnectionId.getInstance().setCurrentUser(null);
 				EventBus.fireErrorMessage(caught.getMessage());
-				//CookieTool.clear();
+				view.passwordTextBox().setText("");
+				CookieTool.clear();
 			}
 			
 			

@@ -4,7 +4,13 @@ import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.messaging.ConnectionId;
 import org.ttdc.gwt.client.messaging.EventBus;
+import org.ttdc.gwt.client.messaging.error.MessageEvent;
+import org.ttdc.gwt.client.messaging.error.MessageEventListener;
+import org.ttdc.gwt.client.messaging.error.MessageEventType;
+import org.ttdc.gwt.client.messaging.history.HistoryConstants;
+import org.ttdc.gwt.client.messaging.history.HistoryToken;
 import org.ttdc.gwt.client.messaging.person.PersonEvent;
+import org.ttdc.gwt.client.messaging.person.PersonEventListener;
 import org.ttdc.gwt.client.messaging.person.PersonEventType;
 import org.ttdc.gwt.client.presenters.util.CookieTool;
 import org.ttdc.gwt.client.presenters.util.LoadCurrentUser;
@@ -18,12 +24,11 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
-public class UserIdentityPresenter extends BasePresenter<UserIdentityPresenter.View>{
+public class UserIdentityPresenter extends BasePresenter<UserIdentityPresenter.View> implements PersonEventListener, MessageEventListener{
 	public interface View extends BaseView{
-		HasText loginTextBox();
-		HasText passwordTextBox();
 		HasClickHandlers loginButton();
 		HasWidgets logoutPanel();
 		HasClickHandlers logoutButton();
@@ -31,6 +36,10 @@ public class UserIdentityPresenter extends BasePresenter<UserIdentityPresenter.V
 		void modeLogin();
 		void modeLogout();
 		void clear();
+		void setLoginWidget(Widget w);
+		void hideLoginPopup();
+		HasWidgets accountCreatePanel();
+		
 	}
 	
 	@Inject
@@ -39,27 +48,30 @@ public class UserIdentityPresenter extends BasePresenter<UserIdentityPresenter.V
 		
 		LoadCurrentUser.load(new Worker());
 		
-		view.loginButton().addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				RpcServiceAsync service = injector.getService();
-				CommandResultCallback<PersonCommandResult> callback = loginCallback();
-				service.authenticate(view.loginTextBox().getText(), view.passwordTextBox().getText(), callback);
-			}
-		});
-		
 		view.logoutButton().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				processLogout();
 			}
 		});
+		
+		view.setLoginWidget(injector.getLoginPresenter().getWidget()); 
+		EventBus.getInstance().addListener((MessageEventListener)this);
+		EventBus.getInstance().addListener((PersonEventListener)this);
 	}
 	
 	private void init(GPerson person) {
 		view.clear();
 		if(person.isAnonymous()){
 			view.modeLogin();
+			
+			HistoryToken token = new HistoryToken();
+			//view=user&tab=create
+			token.addParameter(HistoryConstants.VIEW, HistoryConstants.VIEW_USER_TOOLS);
+			token.addParameter(HistoryConstants.TAB_KEY, HistoryConstants.USER_CREATE_ACCOUNT_TAB);
+			HyperlinkPresenter createAccountPresenter = injector.getHyperlinkPresenter();
+			createAccountPresenter.setToken(token, "create");
+			view.accountCreatePanel().add(createAccountPresenter.getWidget());
 		}
 		else{
 			HyperlinkPresenter personLink = injector.getHyperlinkPresenter();
@@ -105,6 +117,22 @@ public class UserIdentityPresenter extends BasePresenter<UserIdentityPresenter.V
 			}
 		};
 		return callback;
+	}
+	
+	@Override
+	public void onMessageEvent(MessageEvent event) {
+		if(event.is(MessageEventType.VIEW_CHANGE)){
+			view.hideLoginPopup();
+		}
+	}
+	
+	@Override
+	public void onPersonEvent(PersonEvent event) {
+		if(event.is(PersonEventType.USER_CHANGED)){
+			view.modeLogout();
+			view.hideLoginPopup();
+			init(event.getSource());
+		}
 	}
 	
 	/**

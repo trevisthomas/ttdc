@@ -12,6 +12,7 @@
 	 			<g:Label styleName="tt-pageHeader-subtitle" ui:field="subTitleElement"></g:Label>
 	 		</div>
 	 		<div class="tt-float-right">
+	 			<g:Widget styleName="tt-text-small" ui:field="loginElement"></g:Widget>
 	 	 		<g:Widget ui:field="searchElement" ></g:Widget>
 	 	 	</div>
 		</div>

@@ -1,5 +1,8 @@
 package org.ttdc.gwt.client.presenters.search;
 
+import org.ttdc.gwt.client.messaging.error.MessageEvent;
+import org.ttdc.gwt.client.messaging.error.MessageEventListener;
+import org.ttdc.gwt.client.messaging.error.MessageEventType;
 import org.ttdc.gwt.client.presenters.util.ClickableIconPanel;
 import org.ttdc.gwt.client.presenters.util.DateFormatUtil;
 import org.ttdc.gwt.client.presenters.util.MyListBox;
@@ -54,10 +57,11 @@ public class SearchBoxView implements SearchBoxPresenter.View{
 	private String searchPhrase;
 	private String defaultMessage;
 	
-	public static void viewChangeNotification(){
+	@Override
+	public void hidePopup() {
 		if(controlsPopup.isShowing()){
 			controlsPopup.hide();
-		}
+		}	
 	}
 	
 	public SearchBoxView() {
