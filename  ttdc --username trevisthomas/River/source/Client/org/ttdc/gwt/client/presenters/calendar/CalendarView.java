@@ -1,5 +1,7 @@
 package org.ttdc.gwt.client.presenters.calendar;
 
+import org.ttdc.gwt.client.uibinder.calendar.CalendarPanel;
+
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasText;
@@ -10,6 +12,13 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+/**
+ * 
+ * See {@link CalendarPanel}
+ * 
+ * @deprecated
+ *
+ */
 public class CalendarView implements CalendarPresenter.View{
 	private final Label title = new Label();
 	
