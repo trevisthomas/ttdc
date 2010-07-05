@@ -5,7 +5,6 @@ import java.util.Date;
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.presenters.util.DateFormatUtil;
 
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.inject.Inject;
 
@@ -15,7 +14,6 @@ import com.google.inject.Inject;
  *
  */
 public class DatePresenter extends BasePresenter<DatePresenter.View>{
-	private final static DateTimeFormat dateFormat = DateTimeFormat.getFormat("MM/dd/yyyy");//TODO create a cool custom presenter for dates!
 	public interface View extends BaseView{
 		HasText dateText();
 	}
@@ -27,7 +25,6 @@ public class DatePresenter extends BasePresenter<DatePresenter.View>{
 	public void init(Date date){
 		String value;
 		if(date != null)
-			//value = dateFormat.format(date);
 			value = DateFormatUtil.formatLongDate(date);
 		else
 			value = "Never Happened";

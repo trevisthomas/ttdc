@@ -158,7 +158,7 @@ public class CalendarCommandExecutor  extends CommandExecutor<CalendarCommandRes
 	private void loadDateRangeForWeek(CalendarCommandResult result, int year, int weekOfYear) {
 		Calendar tmp = GregorianCalendar.getInstance();
 		tmp.set(Calendar.YEAR,year);
-		//tmp.set(Calendar.DAY_OF_WEEK, 0);
+		tmp.set(Calendar.DAY_OF_WEEK, 0);
 		tmp.set(Calendar.WEEK_OF_YEAR, weekOfYear - 1);
 		
 		tmp.set(Calendar.HOUR, -12);

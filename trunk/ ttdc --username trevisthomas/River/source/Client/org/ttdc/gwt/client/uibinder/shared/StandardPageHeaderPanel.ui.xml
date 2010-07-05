@@ -6,15 +6,22 @@
     xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 	 <g:HTMLPanel styleName="tt-pageHeader">
 	 	<g:Widget styleName="tt-text-center tt-text-small" ui:field="navigationElement" ></g:Widget>
-	 	<div>
-	 		<div class="tt-float-left">
-	 			<g:Label styleName="tt-pageHeader-title tt-text-huge" ui:field="titleElement"></g:Label>
-	 			<g:Label styleName="tt-pageHeader-subtitle" ui:field="subTitleElement"></g:Label>
-	 		</div>
-	 		<div class="tt-float-right">
-	 			<g:Widget styleName="tt-text-small" ui:field="loginElement"></g:Widget>
-	 	 		<g:Widget ui:field="searchElement" ></g:Widget>
-	 	 	</div>
-		</div>
+	 	<table class="tt-fill">
+	 		<tr>
+	 			<td class="tt-fill">
+		 			<g:Label styleName="tt-pageHeader-title tt-text-huge" ui:field="titleElement"></g:Label>
+	 				<g:Label styleName="tt-pageHeader-subtitle" ui:field="subTitleElement"></g:Label>
+	 			</td>
+	 			<td>
+	 				<table align="right">
+	 					<tr>
+ 							<td><g:Widget styleName="tt-text-small tt-inline" ui:field="loginElement"></g:Widget></td>
+ 							<td><g:Widget styleName="tt-text-small tt-inline" ui:field="popupCalendarDateElement" /></td>
+	 					</tr>
+	 				</table>
+	 				<g:Widget ui:field="searchElement" ></g:Widget>
+	 			</td>
+	 		</tr>
+	 	</table>
 	 </g:HTMLPanel>
 </ui:UiBinder>

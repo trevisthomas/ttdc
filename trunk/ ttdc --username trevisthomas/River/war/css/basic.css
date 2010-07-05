@@ -5,9 +5,8 @@ html, body, div, h1, h2, h3, h4, h5, h6, ul, ol, dl, li, dt, dd, p, blockquote, 
 table {border-spacing: 0px; border-collapse: collapse;} /*Evil*/
 ul{list-style-type: none;}
 
-.tt-view-container{
-	width:1000px;
-}
+.tt-view-container{width:1000px; margin: 0px auto; text-align: center;}
+
 .tt-border{ border:1px black solid;}
 
 .tt-alert{color: red;}
@@ -29,7 +28,14 @@ ul{list-style-type: none;}
 	width: 100%;
 }
 
+.tt-center{text-align:center; margin: 0 auto;};
 .tt-text-center{text-align:center;}
+
+/* tt-float-container is a trick to allow the container to have floating things 
+	inside of it but for it not to colapse. It's an alternative to having a clear:both element
+	*/
+.tt-float-container{ overflow: auto; width: 100%}
+
 
 .tt-fill{ width: 100%; }
 .tt-text-left{text-align: left;}
@@ -107,9 +113,8 @@ ul{list-style-type: none;}
 .tt-cursor-pointer{cursor: pointer;}
 
 .tt-textbox-disabled{ color: #ddd;}
-.tt-textbox-search{width: 400px; font-size: 1.2em;}
-
-.tt-search-panel{width:500px; height:30px; border: solid black 1px; background: gray;}
+.tt-textbox-search{width: 400px;}
+.tt-search-panel{height:30px; border: solid black 1px; background: gray;}
 .tt-search-panel-adv{width:498px; height:200px; background: gray;  border: solid black; border-width: 0 1px 1px 1px; }
 
 .tt-highlight{border: 1px green solid; background-color: #ccc;}

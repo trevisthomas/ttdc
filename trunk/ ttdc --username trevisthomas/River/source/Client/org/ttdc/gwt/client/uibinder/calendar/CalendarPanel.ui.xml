@@ -1,0 +1,20 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<!-- The above doctype is to allow for special html characters in this xml file -->
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+    xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+	 <g:HTMLPanel>
+	 	<g:Widget styleName="tt-fill" ui:field="pageHeaderElement"/>
+	 	<div class="tt-fill tt-float-container">
+		 			<g:SimplePanel styleName="tt-float-right" ui:field="scaleElement"/>
+	 				<g:SimplePanel styleName="tt-float-left" ui:field="prevElement"/>
+	 				<g:SimplePanel styleName="tt-float-left" ui:field="nextElement"/>
+	 	</div>
+	 	
+		<div class="tt-fill">
+			<g:Label styleName="tt-text-center tt-text-huge" ui:field="calendarTitleElement"/>
+		</div>
+		<div class="tt-fill">
+	 		<g:SimplePanel styleName="tt-text-normal" ui:field="calendarBodyElement"/>
+	 	</div>
+	 </g:HTMLPanel>
+</ui:UiBinder>

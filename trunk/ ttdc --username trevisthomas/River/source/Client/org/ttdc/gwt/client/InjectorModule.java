@@ -130,6 +130,8 @@ import org.ttdc.gwt.client.presenters.shared.PageMessagesPresenter;
 import org.ttdc.gwt.client.presenters.shared.PageMessagesView;
 import org.ttdc.gwt.client.presenters.shared.PaginationPresenter;
 import org.ttdc.gwt.client.presenters.shared.PaginationView;
+import org.ttdc.gwt.client.presenters.shared.PopupCalendarDatePresenter;
+import org.ttdc.gwt.client.presenters.shared.PopupCalendarDateView;
 import org.ttdc.gwt.client.presenters.shared.TextPresenter;
 import org.ttdc.gwt.client.presenters.shared.TextView;
 import org.ttdc.gwt.client.presenters.shared.UserIdentityPresenter;
@@ -269,6 +271,7 @@ public class InjectorModule extends AbstractGinModule {
 		bind(LikesPresenter.View.class).to(LikesView.class);
 		bind(MoreLatestPresenter.View.class).to(MoreLatestView.class);
 		bind(MoreSearchPresenter.View.class).to(MoreSearchView.class);
+		bind(PopupCalendarDatePresenter.View.class).to(PopupCalendarDateView.class);
 				
 	}
 }

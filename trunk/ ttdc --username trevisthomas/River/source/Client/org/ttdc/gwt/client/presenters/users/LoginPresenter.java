@@ -47,14 +47,26 @@ public class LoginPresenter extends BasePresenter<LoginPresenter.View> {
 //		logout();
 	}
 	
-	private void logout() {
+	public void logout() {
+//		CommandResultCallback<PersonCommandResult> callback = new CommandResultCallback<PersonCommandResult>(){
+//			public void onSuccess(PersonCommandResult result) {
+//				ConnectionId.getInstance().setCurrentUser(result.getPerson());
+//			}
+//		};
+//		RpcServiceAsync service = injector.getService();
+//		service.logout(callback);
+		
 		CommandResultCallback<PersonCommandResult> callback = new CommandResultCallback<PersonCommandResult>(){
 			public void onSuccess(PersonCommandResult result) {
-				ConnectionId.getInstance().setCurrentUser(result.getPerson());
+				GPerson person = result.getPerson();
+				CookieTool.clear();
+				ConnectionId.getInstance().setCurrentUser(person);
+				PersonEvent personEvent = new PersonEvent(PersonEventType.USER_CHANGED, person);
+				EventBus.fireEvent(personEvent);
+				applyCss(person.getStyle().getCss());
 			}
 		};
-		RpcServiceAsync service = injector.getService();
-		service.logout(callback);
+		injector.getService().logout(callback);	
 		
 	}
 
@@ -84,6 +96,10 @@ public class LoginPresenter extends BasePresenter<LoginPresenter.View> {
 				PersonEvent event = new PersonEvent(PersonEventType.USER_CHANGED, person);
 				EventBus.fireEvent(event);
 				EventBus.fireMessage("Hi, "+person.getLogin());
+				
+				applyCss(person.getStyle().getCss());
+				
+				
 			}
 			@Override
 			public void onFailure(Throwable caught) {
@@ -97,5 +113,23 @@ public class LoginPresenter extends BasePresenter<LoginPresenter.View> {
 		};
 		return callback;
 	}
+	public static native void applyCss(String css) /*-{
+		function createCss(filename){
+			var fileref=$doc.createElement("link");
+			fileref.setAttribute("rel", "stylesheet");
+			fileref.setAttribute("type", "text/css");
+			fileref.setAttribute("id", "mainCss");
+			fileref.setAttribute("href", filename);
+			return fileref;
+		}
 
+		function replaceCss(newFilename){
+			var newelement=createCss(newFilename);
+			var element = $doc.getElementById('mainCss');
+			element.parentNode.replaceChild(newelement, element);
+		}
+	  replaceCss('/css/'+css);
+	}-*/;
+	
+	
 }

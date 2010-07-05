@@ -12,6 +12,14 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
+
+/**
+ * 
+ *  * SEE User IdentityPanel!
+ * 
+ * @deprecated
+ *
+ */
 public class UserIdentityView implements UserIdentityPresenter.View{
 	private final FlowPanel main = new FlowPanel(); 
 	private final Button loginButton = new Button("Go");
