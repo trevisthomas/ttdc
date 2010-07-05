@@ -22,6 +22,7 @@ import org.ttdc.gwt.client.presenters.shared.BasePagePresenter;
 import org.ttdc.gwt.client.presenters.shared.BasePageView;
 import org.ttdc.gwt.client.presenters.shared.HyperlinkPresenter;
 import org.ttdc.gwt.client.services.RpcServiceAsync;
+import org.ttdc.gwt.client.uibinder.calendar.CalendarPanel;
 import org.ttdc.gwt.client.uibinder.shared.StandardPageHeaderPanel;
 import org.ttdc.gwt.shared.calender.Day;
 import org.ttdc.gwt.shared.commands.CalendarCommand;
@@ -33,6 +34,11 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
+/**
+ * See {@link CalendarPanel}
+ * 
+ * @deprecated
+ */
 public class CalendarPresenter extends BasePagePresenter<CalendarPresenter.View> {
 	//private String 
 	private HistoryToken lastToken;
