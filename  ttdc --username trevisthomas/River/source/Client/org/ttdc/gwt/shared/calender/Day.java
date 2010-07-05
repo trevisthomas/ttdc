@@ -15,7 +15,14 @@ public class Day implements IsSerializable{
 	private int year;
 	private List<Hour> hours;
 	private List<CalendarThreadSummary> threads;
+	private Date date;
 	
+	public Date getDate() {
+		if(date == null)
+			date = new Date(year-1900, month+1, day);
+		return date;
+	}
+
 	private boolean visable = false; 
 	private boolean content = false;
 	private boolean today = false;
@@ -49,9 +56,11 @@ public class Day implements IsSerializable{
 		// TODO Auto-generated constructor stub
 	}
 	
-	public Day(Date date){
-		if(date == null)
+	public Day(Date d){
+		if(d == null)
 			date = new Date();
+		else
+			date = d;
 		
 		int year = 1900+date.getYear();
 		int month = 1+date.getMonth();

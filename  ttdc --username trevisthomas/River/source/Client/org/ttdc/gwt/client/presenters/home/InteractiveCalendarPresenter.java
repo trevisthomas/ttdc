@@ -28,6 +28,11 @@ public class InteractiveCalendarPresenter extends BasePresenter<InteractiveCalen
 	private CalendarSelectorModulePresenter selectorPresenter;
 	private MonthPresenter monthPresenter;
 	private Mode mode;
+	private Date dateToday;
+
+	public Date getDateToday() {
+		return dateToday;
+	}
 
 	@Inject
 	protected InteractiveCalendarPresenter(Injector injector) {
@@ -48,6 +53,7 @@ public class InteractiveCalendarPresenter extends BasePresenter<InteractiveCalen
 			select = false;
 			date = new Date();
 		}
+		dateToday = date;
 		Day day = new Day(date);
 		showCalendar(day.getYear(),day.getMonth());
 		

@@ -41,7 +41,7 @@
     	}
     	catch(Exception e){}
     %>
-    <link href="<%=request.getContextPath()%>/css/<%=cssFileName%>" rel="stylesheet" type="text/css" />
+    <link id="mainCss" href="<%=request.getContextPath()%>/css/<%=cssFileName%>" rel="stylesheet" type="text/css" />
     
     <script type="text/javascript" language="javascript" src="client/client.nocache.js"></script>
     
@@ -67,6 +67,23 @@
        else
           e.style.display = 'block';
     }
+	</script>
+	
+	<script type="text/javascript">
+		function createCss(filename){
+			var fileref=document.createElement("link");
+			fileref.setAttribute("rel", "stylesheet");
+			fileref.setAttribute("type", "text/css");
+			fileref.setAttribute("id", "mainCss");
+			fileref.setAttribute("href", filename);
+			return fileref;
+		}
+
+		function replaceCss(newFilename){
+			var newelement=createCss(newFilename);
+			var element = getElementById('mainCss');
+			element.parentNode.replaceChild(newelement);
+		}
 	</script>
 	
 	

@@ -4,6 +4,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import org.ttdc.gwt.client.Injector;
+
 import org.ttdc.gwt.client.autocomplete.SugestionOracle;
 import org.ttdc.gwt.client.components.widgets.PostPanelWidget;
 import org.ttdc.gwt.client.messaging.history.HistoryToken;
@@ -73,6 +74,7 @@ import org.ttdc.gwt.client.presenters.shared.MovieCoverWithRatingPresenter;
 import org.ttdc.gwt.client.presenters.shared.PageMessagesPresenter;
 import org.ttdc.gwt.client.presenters.shared.PaginationPresenter;
 import org.ttdc.gwt.client.presenters.shared.PaginationView;
+import org.ttdc.gwt.client.presenters.shared.PopupCalendarDatePresenter;
 import org.ttdc.gwt.client.presenters.shared.TextPresenter;
 import org.ttdc.gwt.client.presenters.shared.UserIdentityPresenter;
 import org.ttdc.gwt.client.presenters.shared.WaitPresenter;
@@ -97,6 +99,7 @@ import org.ttdc.gwt.client.presenters.users.UserToolsPresenter;
 import org.ttdc.gwt.client.services.RpcServiceAsync;
 import org.ttdc.gwt.client.uibinder.Navigation;
 import org.ttdc.gwt.client.uibinder.SiteUpdatePanel;
+import org.ttdc.gwt.client.uibinder.calendar.CalendarPanel;
 import org.ttdc.gwt.client.uibinder.dashboard.FilteredPost;
 import org.ttdc.gwt.client.uibinder.post.MoreOptionsPopupPanel;
 import org.ttdc.gwt.client.uibinder.post.NewMoviePanel;
@@ -107,6 +110,7 @@ import org.ttdc.gwt.client.uibinder.post.ReviewSummaryListPanel;
 import org.ttdc.gwt.client.uibinder.post.ReviewSummaryPanel;
 import org.ttdc.gwt.client.uibinder.post.SmallPostSummaryPanel;
 import org.ttdc.gwt.client.uibinder.shared.StandardPageHeaderPanel;
+import org.ttdc.gwt.client.uibinder.shared.UserIdentityPanel;
 
 import com.google.gwt.user.client.ui.HasWidgets;
 
@@ -1402,6 +1406,30 @@ public class MockInjector implements Injector{
 
 	@Override
 	public StandardPageHeaderPanel createStandardPageHeaderPanel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public PopupCalendarDatePresenter getPopupCalendarDatePresenter() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public PopupCalendarDatePresenter.View getPopupCalendarDateView() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public UserIdentityPanel createUserIdentityPanel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CalendarPanel createCalendarPanel() {
 		// TODO Auto-generated method stub
 		return null;
 	}

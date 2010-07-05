@@ -154,8 +154,8 @@ public class PostSummaryPanel extends Composite implements PostPresenterCommon{
 		CommandResultCallback<PostCommandResult> rootPostCallback = new CommandResultCallback<PostCommandResult>(){
 			@Override
 			public void onSuccess(PostCommandResult result) {
-				notifyListeners();
 				post = result.getPost(); //Added 7/1/2010! Why was this not here?
+				notifyListeners();
 				summaryElement.setVisible(false);
 				if(postExpanded == null){
 					postExpanded = injector.createPostExpanded();

@@ -56,7 +56,6 @@ import org.ttdc.gwt.client.presenters.post.SearchWithinTaggedSubsetPresenter;
 import org.ttdc.gwt.client.presenters.post.SiteSearchPresenter;
 import org.ttdc.gwt.client.presenters.post.TagCloudPresenter;
 import org.ttdc.gwt.client.presenters.post.TagRemovePresenter;
-import org.ttdc.gwt.client.presenters.post.LikesPresenter.View;
 import org.ttdc.gwt.client.presenters.search.SearchBoxDatePresenter;
 import org.ttdc.gwt.client.presenters.search.SearchBoxPresenter;
 import org.ttdc.gwt.client.presenters.shared.ButtonPresenter;
@@ -68,6 +67,7 @@ import org.ttdc.gwt.client.presenters.shared.ImageUploadPresenter;
 import org.ttdc.gwt.client.presenters.shared.MovieCoverWithRatingPresenter;
 import org.ttdc.gwt.client.presenters.shared.PageMessagesPresenter;
 import org.ttdc.gwt.client.presenters.shared.PaginationPresenter;
+import org.ttdc.gwt.client.presenters.shared.PopupCalendarDatePresenter;
 import org.ttdc.gwt.client.presenters.shared.TextPresenter;
 import org.ttdc.gwt.client.presenters.shared.UserIdentityPresenter;
 import org.ttdc.gwt.client.presenters.shared.WaitPresenter;
@@ -91,6 +91,7 @@ import org.ttdc.gwt.client.presenters.users.UserToolsPresenter;
 import org.ttdc.gwt.client.services.RpcServiceAsync;
 import org.ttdc.gwt.client.uibinder.Navigation;
 import org.ttdc.gwt.client.uibinder.SiteUpdatePanel;
+import org.ttdc.gwt.client.uibinder.calendar.CalendarPanel;
 import org.ttdc.gwt.client.uibinder.dashboard.FilteredPost;
 import org.ttdc.gwt.client.uibinder.post.MoreOptionsPopupPanel;
 import org.ttdc.gwt.client.uibinder.post.NewMoviePanel;
@@ -101,6 +102,7 @@ import org.ttdc.gwt.client.uibinder.post.ReviewSummaryListPanel;
 import org.ttdc.gwt.client.uibinder.post.ReviewSummaryPanel;
 import org.ttdc.gwt.client.uibinder.post.SmallPostSummaryPanel;
 import org.ttdc.gwt.client.uibinder.shared.StandardPageHeaderPanel;
+import org.ttdc.gwt.client.uibinder.shared.UserIdentityPanel;
 
 import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;
@@ -366,6 +368,9 @@ public interface Injector extends Ginjector {
 	public MoreSearchPresenter.View getMoreSearchView();
 	public MoreSearchPresenter getMoreSearchPresenter();
 	
+	public PopupCalendarDatePresenter.View getPopupCalendarDateView();
+	public PopupCalendarDatePresenter getPopupCalendarDatePresenter();
+	
 	//
 	public PostPanel createPostPanel();
 	public MoreOptionsPopupPanel createOptionsPanel();
@@ -375,13 +380,13 @@ public interface Injector extends Ginjector {
 	public ReviewSummaryPanel createReviewSummaryPanel();
 	public SiteUpdatePanel createSiteUpdatePanel();
 	public NewMoviePanel createNewMoviePanel();
-	
 	public Navigation createNavigation();
 	public FilteredPost createFilteredPost();
-
 	public SmallPostSummaryPanel createSmallSummaryPanel();
-
 	public StandardPageHeaderPanel createStandardPageHeaderPanel();
+	public UserIdentityPanel createUserIdentityPanel();
+	public CalendarPanel createCalendarPanel();
+	
 
 		
 	

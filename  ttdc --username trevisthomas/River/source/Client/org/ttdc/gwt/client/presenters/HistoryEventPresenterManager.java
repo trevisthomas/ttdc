@@ -60,7 +60,8 @@ public class HistoryEventPresenterManager implements HistoryEventListener{
 			injector.getSearchTagResultsPresenter().show(event.getSource());
 		}
 		else if(HistoryConstants.VIEW_CALENDAR.equals(view)){
-			injector.getCalendarPresenter().show(event.getSource());
+			//injector.getCalendarPresenter().show(event.getSource());
+			injector.createCalendarPanel().show(event.getSource()); //Note: This is the first time use of a uibinder component as a top level view
 		}
 		else if(HistoryConstants.VIEW_TOPIC.equals(view) || 
 				HistoryConstants.VIEW_TOPIC_FLAT.equals(view) ||

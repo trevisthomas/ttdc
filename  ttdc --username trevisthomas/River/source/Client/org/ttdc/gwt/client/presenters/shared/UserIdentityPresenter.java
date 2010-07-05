@@ -27,6 +27,14 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
+
+/**
+ * 
+ * SEE User IdentityPanel!
+ * 
+ * @deprecated
+ *
+ */
 public class UserIdentityPresenter extends BasePresenter<UserIdentityPresenter.View> implements PersonEventListener, MessageEventListener{
 	public interface View extends BaseView{
 		HasClickHandlers loginButton();
@@ -66,7 +74,6 @@ public class UserIdentityPresenter extends BasePresenter<UserIdentityPresenter.V
 			view.modeLogin();
 			
 			HistoryToken token = new HistoryToken();
-			//view=user&tab=create
 			token.addParameter(HistoryConstants.VIEW, HistoryConstants.VIEW_USER_TOOLS);
 			token.addParameter(HistoryConstants.TAB_KEY, HistoryConstants.USER_CREATE_ACCOUNT_TAB);
 			HyperlinkPresenter createAccountPresenter = injector.getHyperlinkPresenter();
