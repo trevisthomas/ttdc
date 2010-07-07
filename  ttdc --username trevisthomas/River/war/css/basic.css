@@ -5,7 +5,9 @@ html, body, div, h1, h2, h3, h4, h5, h6, ul, ol, dl, li, dt, dd, p, blockquote, 
 table {border-spacing: 0px; border-collapse: collapse;} /*Evil*/
 ul{list-style-type: none;}
 
-.tt-view-container{width:1000px; margin: 0px auto; text-align: center;}
+body{text-align:center; margin: 0 auto;}
+
+.tt-view-container{width:1000px;}
 
 .tt-border{ border:1px black solid;}
 
@@ -28,7 +30,7 @@ ul{list-style-type: none;}
 	width: 100%;
 }
 
-.tt-center{text-align:center; margin: 0 auto;};
+.tt-center{text-align:center; margin: 0 auto;}
 .tt-text-center{text-align:center;}
 
 /* tt-float-container is a trick to allow the container to have floating things 
@@ -79,19 +81,20 @@ ul{list-style-type: none;}
 
 .tt-graybar{ background-color: #eee;}
 
-.tt-calendar-hour{ min-height: 20px; width:100%; }
+
 
 .tt-fullwidth{ width: 100%; }
 
-.tt-calendar-hour-label{ width: 100%; height: 100%; }
-.tt-calendar-hour-label-cell{ width: 100px; height: 100%;}
+.tt-calendar-hour-label{ width: 100px; height: 50px; }
+.tt-calendar-hour-label-cell{ }
 
+.tt-calendar-hour{ min-height: 20px; width:100%; }
 .tt-calendar-day td{
 		
 }
 
 .tt-calendar{ width: 100%;}
-.tt-calendar-day{ width: 100%; }
+.tt-calendar-day{ width: 600px; margin: 0 auto;}
 .tt-calendar-day table{ width: 100%; }
 
 .tt-calendar-month-day-header{background-color: #999; color: white;}

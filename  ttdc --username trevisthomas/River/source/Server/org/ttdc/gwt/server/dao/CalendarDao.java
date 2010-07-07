@@ -306,7 +306,7 @@ public class CalendarDao extends FilteredPostPaginatedDaoBase{
     		
     		CalendarPost calendarPost = buildCalendarPostFromSimplePostEntity(sp);
     		
-    		h.add(calendarPost);
+    		h.addCalendarPost(calendarPost);
     	}
 		return data;
 	}

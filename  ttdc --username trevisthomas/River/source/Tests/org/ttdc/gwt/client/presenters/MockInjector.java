@@ -100,6 +100,7 @@ import org.ttdc.gwt.client.services.RpcServiceAsync;
 import org.ttdc.gwt.client.uibinder.Navigation;
 import org.ttdc.gwt.client.uibinder.SiteUpdatePanel;
 import org.ttdc.gwt.client.uibinder.calendar.CalendarPanel;
+import org.ttdc.gwt.client.uibinder.calendar.DayPanel;
 import org.ttdc.gwt.client.uibinder.dashboard.FilteredPost;
 import org.ttdc.gwt.client.uibinder.post.MoreOptionsPopupPanel;
 import org.ttdc.gwt.client.uibinder.post.NewMoviePanel;
@@ -1430,6 +1431,12 @@ public class MockInjector implements Injector{
 
 	@Override
 	public CalendarPanel createCalendarPanel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public DayPanel createDayPanel() {
 		// TODO Auto-generated method stub
 		return null;
 	}
