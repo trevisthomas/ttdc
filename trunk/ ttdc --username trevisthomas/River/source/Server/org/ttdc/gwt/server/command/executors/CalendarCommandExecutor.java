@@ -12,8 +12,10 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.ttdc.gwt.client.services.CommandResult;
+import org.ttdc.gwt.server.beanconverters.FastPostBeanConverter;
 import org.ttdc.gwt.server.command.CommandExecutor;
 import org.ttdc.gwt.server.dao.CalendarDao;
+import org.ttdc.gwt.server.dao.InboxDao;
 import org.ttdc.gwt.shared.calender.Day;
 import org.ttdc.gwt.shared.calender.Month;
 import org.ttdc.gwt.shared.calender.Week;
@@ -119,6 +121,12 @@ public class CalendarCommandExecutor  extends CommandExecutor<CalendarCommandRes
 				dao.setMonthOfYear(cmd.getMonthOfYear());
 				dao.setYearNumber(cmd.getYear());
 				Day day = dao.buildDay();
+				
+				//Special!! Madness!!
+				InboxDao inboxDao = new InboxDao(getPerson());
+				FastPostBeanConverter.inflateDay(day,inboxDao);
+				//////////
+				
 				result.setDay(day);
 				loadDateRangeForDay(result,cmd.getYear(), cmd.getMonthOfYear(), cmd.getDayOfMonth());
 				
@@ -138,8 +146,9 @@ public class CalendarCommandExecutor  extends CommandExecutor<CalendarCommandRes
 			
 			commit();
 		}
-		catch(Exception e){
+		catch(RuntimeException e){
 			rollback();
+			throw e;
 		}
 		return result;
 	}

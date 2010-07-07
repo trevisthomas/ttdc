@@ -231,12 +231,18 @@ public class CalendarPanel extends BasePageComposite{
 	}
 	
 	private void displayCalendarResultsDay(CalendarCommandResult result) {
-		DayPresenter dayPresenter = injector.getDayPresenter();
+//		DayPresenter dayPresenter = injector.getDayPresenter();
+//		Day day = result.getDay();
+//		dayPresenter.setDay(day);
+//		calendarBodyElement.clear();
+//		calendarBodyElement.add(dayPresenter.getWidget());
+		
+		DayPanel dayPanel = injector.createDayPanel();
 		Day day = result.getDay();
-		dayPresenter.setDay(day);
+		dayPanel.setDay(day);
 		calendarBodyElement.clear();
-		calendarBodyElement.add(dayPresenter.getWidget());
-		//day.getMonth()+" "+day.getDay()+" "+day.getYear()
+		calendarBodyElement.add(dayPanel);
+		
 		calendarTitleElement.setText(DateFormatUtil.formatLongDay(day.getDate()));
 				
 		HistoryToken token = CalendarHelpers.buildDayHistoryToken(result.getPrevYear(), result.getPrevMonthOfYear(), result.getPrevDayOfMonth());

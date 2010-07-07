@@ -123,7 +123,7 @@ public class CalendarCommandTest {
 		
 		Week week = result.getWeek();
 		
-		assertEquals("Test hour didnt have the expected number of posts",7,week.getDays().get(0).getHour(19).getPosts().size());
+		assertEquals("Test hour didnt have the expected number of posts",7,week.getDays().get(0).getHour(19).getCalendarPosts().size());
 		
 		List<String> tagIds = result.getCalendarTagIdList();
 //		Helpers.assertEqualsOneOfExpected(tagIds, "F4EA1844-EFBB-4903-8806-0AB1BF8B9E3D"); //2009
@@ -176,7 +176,7 @@ public class CalendarCommandTest {
 		assertEquals(y,day.getYear());
 		
 		//2 posts at 1 am new years day 2008
-		assertEquals(2,day.getHour(1).getPosts().size());
+		assertEquals(2,day.getHour(1).getCalendarPosts().size());
 //		List<String> tagIds = result.getCalendarTagIdList();
 //		Helpers.assertEqualsOneOfExpected(tagIds, "C3A03265-D406-4701-84F2-9782E60B7CC1"); //2008
 //		Helpers.assertEqualsOneOfExpected(tagIds, "FDE20875-75E1-4D12-AF2B-BB17A83DB319"); //Month Jan

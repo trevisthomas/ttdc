@@ -2,12 +2,10 @@ package org.ttdc.gwt.server.beanconverters;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Hibernate;
-import org.mortbay.log.Log;
 import org.ttdc.gwt.client.beans.GAssociationPostTag;
 import org.ttdc.gwt.client.beans.GEntry;
 import org.ttdc.gwt.client.beans.GImage;
@@ -20,8 +18,10 @@ import org.ttdc.gwt.client.beans.GUserObject;
 import org.ttdc.gwt.client.beans.GUserObjectTemplate;
 import org.ttdc.gwt.server.dao.InboxDao;
 import org.ttdc.gwt.server.dao.InitConstants;
-import org.ttdc.gwt.server.dao.PersonDao;
-import org.ttdc.gwt.server.dao.TagDao;
+import org.ttdc.gwt.server.dao.PostDao;
+import org.ttdc.gwt.shared.calender.CalendarPost;
+import org.ttdc.gwt.shared.calender.Day;
+import org.ttdc.gwt.shared.calender.Hour;
 import org.ttdc.persistence.objects.AssociationPostTag;
 import org.ttdc.persistence.objects.Entry;
 import org.ttdc.persistence.objects.Image;
@@ -37,6 +37,33 @@ import org.ttdc.persistence.objects.UserObjectTemplate;
 
 public class FastPostBeanConverter {
 	
+	
+	public static void inflateDay(Day day, InboxDao inboxDao){
+		
+		List<String> postIds = new ArrayList<String>();
+		for(Hour hour : day.getHours()){
+			for(CalendarPost cp : hour.getCalendarPosts()){
+				postIds.add(cp.getPostId());
+			}
+		}
+		
+		if(postIds.size() == 0)
+			return;
+		
+		
+		/* This query gets the posts into the cache so that 
+		 * the following loadPost commands can be fast
+		 */
+		PostDao.loadPosts(postIds);
+		
+		for(Hour hour : day.getHours()){
+			for(CalendarPost cp : hour.getCalendarPosts()){
+				Post post = PostDao.loadPost(cp.getPostId());
+				GPost gPost = convertPost(post, inboxDao);
+				hour.addPost(gPost);
+			}
+		}
+	}	
 
 	public static ArrayList<GPost> convertPosts(List<Post> persistentPostList, InboxDao inboxDao){
 		ArrayList<GPost> rpcPostList = new ArrayList<GPost>();

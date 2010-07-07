@@ -34,6 +34,15 @@ final public class PostDao {
 	
 	public PostDao(){}
 
+	final static String postListQuery = "SELECT p FROM Post p WHERE p.postId IN (:postIds)";
+	@SuppressWarnings("unchecked")
+	public static List<Post> loadPosts(List<String> postIds){
+		List<Post> list = session().createQuery(postListQuery)
+			.setParameterList("postIds", postIds)
+			.list();
+		return list;
+	}
+	
 	public static Post loadPost(String postId){
 		Post p = (Post)session().load(Post.class, postId);
 		return p;

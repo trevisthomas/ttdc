@@ -22,7 +22,7 @@ public class HourPresenter extends BasePresenter<HourPresenter.View> {
 	}
 	
 	public void setHour(Hour hour){
-		for(CalendarPost cp : hour.getPosts()){
+		for(CalendarPost cp : hour.getCalendarPosts()){
 			PostSummaryPanel postSummaryPanel = injector.createPostSummaryPanel();
 			postSummaryPanel.init(cp);
 			view.calendarPostTarget().add(postSummaryPanel);
@@ -30,7 +30,7 @@ public class HourPresenter extends BasePresenter<HourPresenter.View> {
 	}
 	
 	public void setHourWithoutSummary(Hour hour){
-		for(CalendarPost cp : hour.getPosts()){
+		for(CalendarPost cp : hour.getCalendarPosts()){
 //			CalendarPostPresenter calendarPostPresenter = injector.getCalendarPostSummaryPresenter();
 //			calendarPostPresenter.setCalendarPost(cp);
 //			view.calendarPostTarget().add(calendarPostPresenter.getWidget());

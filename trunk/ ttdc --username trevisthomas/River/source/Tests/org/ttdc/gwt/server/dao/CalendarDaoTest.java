@@ -46,7 +46,7 @@ public class CalendarDaoTest {
 		
 		Week week = dao.buildWeek();
 		
-		assertEquals("Test hour didnt have the expected number of posts",7,week.getDays().get(0).getHour(19).getPosts().size());
+		assertEquals("Test hour didnt have the expected number of posts",7,week.getDays().get(0).getHour(19).getCalendarPosts().size());
 		commit();
 	}
 	
@@ -137,7 +137,7 @@ public class CalendarDaoTest {
 		assertEquals(y,day.getYear());
 		
 		//2 posts at 1 am new years day 2008
-		assertEquals(2,day.getHour(1).getPosts().size());
+		assertEquals(2,day.getHour(1).getCalendarPosts().size());
 		
 		
 	}
