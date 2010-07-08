@@ -6,8 +6,8 @@ table {border-spacing: 0px; border-collapse: collapse;} /*Evil*/
 ul{list-style-type: none;}
 
 body{text-align:center; margin: 0 auto;}
-
-.tt-view-container{width:1000px;}
+/*Above for IE, below for FF*/
+.tt-view-container{width:1000px;text-align:center; margin: 0 auto;}
 
 .tt-border{ border:1px black solid;}
 
@@ -93,9 +93,12 @@ body{text-align:center; margin: 0 auto;}
 		
 }
 
+.tt-calendar-week-day{width: 120px;}
+	
 .tt-calendar{ width: 100%;}
 .tt-calendar-day{ width: 600px; margin: 0 auto;}
 .tt-calendar-day table{ width: 100%; }
+.tt-calendar-week-day-header{}
 
 .tt-calendar-month-day-header{background-color: #999; color: white;}
 .tt-calendar-month-day{width: 150px; height:150px;}
