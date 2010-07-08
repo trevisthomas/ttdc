@@ -29,7 +29,7 @@ public class WeekView implements WeekPresenter.View{
 				html = h-12+"p";
 			}
 			HTMLPanel htmlPanel = new HTMLPanel(html);
-			htmlPanel.setStyleName("tt-calendar-hour-label");
+			htmlPanel.setStyleName("tt-calendar-hour-label tt-text-huge");
 			hours.setWidget(h+1, 0, htmlPanel);
 			
 			if(h%2 != 0 ){
@@ -40,7 +40,7 @@ public class WeekView implements WeekPresenter.View{
 			for(int i = 1 ; i < 8 ; i++){ //Skip the first col
 				hours.getCellFormatter().addStyleName(h+1, i, "tt-calendar-day-of-week");
 			}
-			hours.getCellFormatter().addStyleName(h+1, 0, "tt-calendar-hour-label-cell");
+//			hours.getCellFormatter().addStyleName(h+1, 0, "tt-calendar-hour-label-cell");
 			
 		}
 	}
@@ -61,7 +61,6 @@ public class WeekView implements WeekPresenter.View{
 	
 	@Override
 	public void insertDayHeader(int dayOfWeek, Widget w) {
-		w.setStyleName("tt-calendar-day-header");
 		hours.setWidget(0, dayOfWeek, w);
 	}
 	
