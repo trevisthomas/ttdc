@@ -7,6 +7,7 @@ import org.ttdc.gwt.client.beans.GTag;
 import org.ttdc.gwt.client.messaging.ConnectionId;
 import org.ttdc.gwt.client.presenters.shared.DatePresenter;
 import org.ttdc.gwt.client.presenters.shared.HyperlinkPresenter;
+import org.ttdc.gwt.client.presenters.util.DateFormatUtil;
 import org.ttdc.gwt.shared.calender.CalendarPost;
 
 import com.google.gwt.core.client.GWT;
@@ -65,7 +66,7 @@ public class SmallPostSummaryPanel extends Composite{
     	titleLinkPresenter.setPost(litePost);
     	titleLinkPresenter.init();
     	
-    	createDatePresenter.init(cp.getDate());
+    	createDatePresenter.init(cp.getDate(),DateFormatUtil.shortTimeFormatter);
     	
     	    	GPerson user = ConnectionId.getInstance().getCurrentUser();
 //    	Figure out how to make the calender post have the read/unread info!

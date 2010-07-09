@@ -50,18 +50,17 @@ public class DayPanel extends Composite{
 				html = (h!=0?h:12)+"a";
 			}
 			else if(h == 12){
-				html = "Noon";
+				html = "N";
 			}
 			else {
 				html = h-12+"p";
 			}
 			HTMLPanel htmlPanel = new HTMLPanel(html);
-			htmlPanel.setStyleName("tt-calendar-hour-label tt-text-huge");
+			htmlPanel.setStyleName("tt-calendar-hour-label tt-text-huge tt-color-contrast1");
 			tableElement.setWidget(h, 0, htmlPanel);
-			//hours.getCellFormatter().setStyleName(h, 0, "tt-calendar-hour-label-cell");
+			tableElement.getCellFormatter().setStyleName(h, 0, "tt-fill-height tt-special-border-bottom");
 			if(h%2 == 0 ){
-				tableElement.getCellFormatter().setStyleName(h, 0, "tt-graybar");
-				tableElement.getCellFormatter().setStyleName(h, 1, "tt-graybar");
+				tableElement.getCellFormatter().setStyleName(h, 1, "tt-graybar tt-special-border-bottom");
 			}
 			
 			//hours.getRowFormatter().setStyleName(h, "tt-border");

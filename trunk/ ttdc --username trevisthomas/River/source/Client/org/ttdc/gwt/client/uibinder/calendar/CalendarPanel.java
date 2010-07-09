@@ -217,7 +217,9 @@ public class CalendarPanel extends BasePageComposite{
 		WeekPresenter weekPresenter = injector.getWeekPresenter();
 		weekPresenter.setWeek(result.getWeek());
 		calendarBodyElement.add(weekPresenter.getWidget());
-		calendarTitleElement.setText("Week");
+		//calendarTitleElement.setText("Week");
+		calendarTitleElement.setText("");
+		//calendarTitleElement.setVisible(false);
 				
 		HistoryToken token = CalendarHelpers.buildWeekHistoryToken(result.getPrevYear(), result.getPrevWeekOfYear());
 		configurePrevLink(token);

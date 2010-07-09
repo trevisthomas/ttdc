@@ -78,7 +78,7 @@ public class WeekPresenter extends BasePresenter<WeekPresenter.View>{
 		panel.add(nameWidget);
 		widget.add(panel);
 		widget.setStyleName("tt-text-center");
-		widget.addStyleName("tt-calendar-day-header");
+		//widget.addStyleName("tt-color-contrast1");
 		widget.addStyleName("tt-cursor-pointer");
 		panel.setStyleName("tt-center");
 		
