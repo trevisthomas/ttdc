@@ -13,6 +13,7 @@ body{text-align:center; margin: 0 auto;}
 
 .tt-alert{color: red;}
 .tt-post{width: 500px; margin-bottom: 10px;}
+.tt-text-nano{font-size:7px;}
 .tt-text-mini{font-size:9px;}
 .tt-text-small{font-size:10px;}
 .tt-text-normal{font-size:12px;}
@@ -40,6 +41,7 @@ body{text-align:center; margin: 0 auto;}
 
 
 .tt-fill{ width: 100%; }
+.tt-fill-height{ height:100%;}
 .tt-text-left{text-align: left;}
 .tt-text-right{text-align: right;}
 .tt-float-left{ float: left;}
@@ -85,8 +87,8 @@ body{text-align:center; margin: 0 auto;}
 
 .tt-fullwidth{ width: 100%; }
 
-.tt-calendar-hour-label{ width: 100px; height: 50px; }
-.tt-calendar-hour-label-cell{ }
+.tt-calendar-hour-label{ width: 50px; min-height: 40px;height:100%; }
+.tt-calendar-hour-label-cell{ height:100%;}
 
 .tt-calendar-hour{ min-height: 20px; width:100%; }
 .tt-calendar-day td{
@@ -96,8 +98,8 @@ body{text-align:center; margin: 0 auto;}
 .tt-calendar-week-day{width: 120px;}
 	
 .tt-calendar{ width: 100%;}
-.tt-calendar-day{ width: 600px; margin: 0 auto;}
-.tt-calendar-day table{ width: 100%; }
+.tt-calendar-day{ width: 550px; margin: 0 auto;}
+
 .tt-calendar-week-day-header{}
 
 .tt-calendar-month-day-header{background-color: #999; color: white;}
@@ -127,7 +129,13 @@ body{text-align:center; margin: 0 auto;}
 .tt-calendar-small-month-dayHasContent{ font: bolder; background-color: #eee}
 .tt-calendar-month-daySelected{ border: solid yellow 1px; background-color: #fc5}
 
+.tt-special-border-bottom{border: white solid; border-width: 0 0 2px 0;}
 
 .spoiler{ color : #f6f6f6; background-color : #f6f6f6;}
 .reveal{ color : #000; background-color : #f6f6f6;}
 
+
+/* 
+ * Colors to be moved into color css
+ */
+.tt-color-contrast1{ background: grey; color: white; }

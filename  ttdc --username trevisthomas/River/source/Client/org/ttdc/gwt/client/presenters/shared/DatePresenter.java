@@ -5,6 +5,7 @@ import java.util.Date;
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.presenters.util.DateFormatUtil;
 
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.inject.Inject;
 
@@ -22,12 +23,16 @@ public class DatePresenter extends BasePresenter<DatePresenter.View>{
 		super(injector, injector.getDateView());
 	}
 
-	public void init(Date date){
+	public void init(Date date, DateTimeFormat formater){
 		String value;
 		if(date != null)
-			value = DateFormatUtil.formatLongDate(date);
+			value = formater.format(date);
 		else
-			value = "Never Happened";
+			value = "...";
 		view.dateText().setText(value);
+	}
+	
+	public void init(Date date){
+		init(date,DateFormatUtil.longDateFormatter);
 	}
 }
