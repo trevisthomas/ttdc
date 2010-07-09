@@ -18,6 +18,7 @@ public class WeekView implements WeekPresenter.View{
 		
 		HTML blank = new HTML("&nbsp;");
 		blank.setStyleName("tt-calendar-hour-label ");
+		hours.setStyleName("tt-center");
 		hours.getCellFormatter().addStyleName(0, 0, "tt-fill-height");
 		hours.setWidget(0, 0, blank);
 	}
@@ -39,16 +40,21 @@ public class WeekView implements WeekPresenter.View{
 			htmlPanel.setStyleName("tt-calendar-hour-label tt-text-huge tt-color-contrast1");
 			hours.setWidget(h+1, 0, htmlPanel);
 			
-			if((h+1)%2 != 0 ){
-				for(int i = 0 ; i < 8 ; i++){
-					hours.getCellFormatter().setStyleName(h+1, i, "tt-graybar tt-special-border-bottom");
-				}
-			}
+//			if((h+1)%2 != 0 ){
+//				for(int i = 0 ; i < 8 ; i++){
+//					hours.getCellFormatter().setStyleName(h+1, i, "tt-graybar tt-special-border-bottom");
+//				}
+//			}
 			for(int i = 1 ; i < 8 ; i++){ //Skip the first col
-				hours.getCellFormatter().addStyleName(h+1, i, "tt-calendar-day-of-week");
+				hours.getCellFormatter().addStyleName(h+1, i, "tt-calendar-week-day tt-color-contrast2 tt-border-right-bottom");
 			}
 			hours.getCellFormatter().addStyleName(h+1, 0, "tt-fill-height tt-special-border-bottom");
+		
 			
+		}
+		
+		for(int i = 1 ; i < 8 ; i++){ //Skip the first col
+			hours.getCellFormatter().addStyleName(0, i, "tt-color-contrast2 tt-border-bottom");
 		}
 	}
 	
