@@ -44,7 +44,7 @@ public class SmallPostSummaryPanel extends Composite{
     	creatorLinkElement = creatorLinkPresenter.getHyperlink();
     	titleElement = titleLinkPresenter.getHyperlink();
     	createDateElement = createDatePresenter.getWidget(); 
-    	
+    	createDateElement.setVisible(false);
     	initWidget(binder.createAndBindUi(this)); 
 	}
     

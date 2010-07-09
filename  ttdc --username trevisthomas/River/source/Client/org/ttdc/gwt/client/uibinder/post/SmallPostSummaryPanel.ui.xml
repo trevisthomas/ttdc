@@ -6,12 +6,12 @@
 		<table class="tt-text-mini">
 		<tr>
 			<td>
-				<g:Hyperlink ui:field="titleElement" />
+				<g:Hyperlink ui:field="titleElement" />: <g:Label ui:field="postUnReadElement" styleName="tt-float-left" /><g:Hyperlink ui:field="creatorLinkElement" />
 			</td>
 		</tr>
 		<tr>
 			<td>
-				<g:Label ui:field="postUnReadElement" styleName="tt-float-left" /><g:Hyperlink ui:field="creatorLinkElement" />
+				
 			</td>
 		</tr>
 		<tr>

@@ -59,11 +59,13 @@ public class DayPanel extends Composite{
 			htmlPanel.setStyleName("tt-calendar-hour-label tt-text-huge tt-color-contrast1");
 			tableElement.setWidget(h, 0, htmlPanel);
 			tableElement.getCellFormatter().setStyleName(h, 0, "tt-fill-height tt-special-border-bottom");
-			if(h%2 == 0 ){
-				tableElement.getCellFormatter().setStyleName(h, 1, "tt-graybar tt-special-border-bottom");
-			}
+//			if(h%2 == 0 ){
+//				//tableElement.getCellFormatter().setStyleName(h, 1, "tt-graybar tt-special-border-bottom");
+//				tableElement.getCellFormatter().setStyleName(h, 1, "tt-color-contrast2-border tt-border-top-bottom");
+//			}
 			
-			//hours.getRowFormatter().setStyleName(h, "tt-border");
+			tableElement.getCellFormatter().setStyleName(h, 1, "tt-color-contrast2 tt-border-bottom");
+			
 		}
 	}
     
