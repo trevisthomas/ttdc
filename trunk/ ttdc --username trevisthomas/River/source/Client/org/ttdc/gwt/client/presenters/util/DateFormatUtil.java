@@ -7,8 +7,10 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 public class DateFormatUtil {
 	public static final DateTimeFormat longDateFormatter = DateTimeFormat.getFormat("EEE, MMM d, yyyyy 'at' HH:mm:ss a");
 	public static final DateTimeFormat longDayFormatter = DateTimeFormat.getFormat("EEEE, MMM d, yyyy");
+	public static final DateTimeFormat mediumDayFormatter = DateTimeFormat.getFormat("MMM d, yyyy");
 	public static final DateTimeFormat timeFormatter = DateTimeFormat.getFormat("hh:mm:ss a");
 	public static final DateTimeFormat shortTimeFormatter = DateTimeFormat.getFormat("h:mm:ss");
+	public static final DateTimeFormat longDayOfWeekFormatter = DateTimeFormat.getFormat("EEEE"); 
 	
 	public static String formatLongDate(Date date){
 		return longDateFormatter.format(date);
@@ -21,5 +23,12 @@ public class DateFormatUtil {
 	public static String formatTime(Date date){
 		return timeFormatter.format(date);
 	}
+
+	public static String formatLongDayOfWeek(Date date) {
+		return longDayOfWeekFormatter.format(date);
+	}
 	
+	public static String formatMediumDay(Date date){
+		return mediumDayFormatter.format(date);
+	}
 }	

@@ -99,6 +99,7 @@ import org.ttdc.gwt.client.presenters.users.UserToolsPresenter;
 import org.ttdc.gwt.client.services.RpcServiceAsync;
 import org.ttdc.gwt.client.uibinder.Navigation;
 import org.ttdc.gwt.client.uibinder.SiteUpdatePanel;
+import org.ttdc.gwt.client.uibinder.calendar.CalendarBreadCrumbPanel;
 import org.ttdc.gwt.client.uibinder.calendar.CalendarPanel;
 import org.ttdc.gwt.client.uibinder.calendar.DayPanel;
 import org.ttdc.gwt.client.uibinder.dashboard.FilteredPost;
@@ -1437,6 +1438,12 @@ public class MockInjector implements Injector{
 
 	@Override
 	public DayPanel createDayPanel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CalendarBreadCrumbPanel createBreadCrumbPanel() {
 		// TODO Auto-generated method stub
 		return null;
 	}

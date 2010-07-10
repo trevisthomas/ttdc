@@ -19,7 +19,7 @@ public class Day implements IsSerializable{
 	
 	public Date getDate() {
 		if(date == null)
-			date = new Date(year-1900, month+1, day);
+			date = new Date(year-1900, month-1, day);
 		return date;
 	}
 
