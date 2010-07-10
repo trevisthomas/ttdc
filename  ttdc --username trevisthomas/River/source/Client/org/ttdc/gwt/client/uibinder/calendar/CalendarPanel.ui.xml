@@ -10,6 +10,10 @@
 	 				<g:SimplePanel styleName="tt-float-left" ui:field="nextElement"/>
 	 	</div>
 	 	
+	 	<g:SimplePanel ui:field="calendarBreadCrumbElement" styleName="tt-fill tt-text-right">
+	 		
+	 	</g:SimplePanel>
+	 	
 		<div class="tt-fill">
 			<g:Label styleName="tt-text-center tt-text-huge" ui:field="calendarTitleElement"/>
 		</div>

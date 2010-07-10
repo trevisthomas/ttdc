@@ -49,7 +49,7 @@ public class CalendarPanel extends BasePageComposite{
     private HistoryToken lastToken;
 	private final Map<HistoryToken,CalendarCommandResult> cacheMap = new HashMap<HistoryToken,CalendarCommandResult>(); 
 	private final StandardPageHeaderPanel pageHeaderPanel;
-    
+    private final CalendarBreadCrumbPanel calendarBreadCrumbPanel;
     
     @UiField(provided = true) Widget pageHeaderElement;
     @UiField(provided = true) SimplePanel scaleElement = new SimplePanel();
@@ -57,7 +57,7 @@ public class CalendarPanel extends BasePageComposite{
     @UiField(provided = true) SimplePanel nextElement = new SimplePanel();
     @UiField Label calendarTitleElement;
     @UiField(provided = true) SimplePanel calendarBodyElement = new SimplePanel();
-        
+    @UiField SimplePanel calendarBreadCrumbElement;    
     
     @Inject
     public CalendarPanel(Injector injector) { 
@@ -68,6 +68,8 @@ public class CalendarPanel extends BasePageComposite{
     	initWidget(binder.createAndBindUi(this));
     	
     	calendarTitleElement.setText("loading...");
+    	calendarBreadCrumbPanel = injector.createBreadCrumbPanel();
+    	calendarBreadCrumbElement.add(calendarBreadCrumbPanel);
 	}
     
     
@@ -211,27 +213,6 @@ public class CalendarPanel extends BasePageComposite{
 		}
 	}
 	
-	
-	private void displayCalendarResultsWeek(CalendarCommandResult result) {
-		calendarBodyElement.clear();
-		WeekPresenter weekPresenter = injector.getWeekPresenter();
-		weekPresenter.setWeek(result.getWeek());
-		calendarBodyElement.add(weekPresenter.getWidget());
-		//calendarTitleElement.setText("Week");
-		calendarTitleElement.setText("");
-		//calendarTitleElement.setVisible(false);
-				
-		HistoryToken token = CalendarHelpers.buildWeekHistoryToken(result.getPrevYear(), result.getPrevWeekOfYear());
-		configurePrevLink(token);
-		
-		token = CalendarHelpers.buildWeekHistoryToken(result.getNextYear(), result.getNextWeekOfYear());
-		configureNextLink(token);
-		
-		setupCalendarScale(result);
-		
-		showSearchWithResults(result);
-	}
-	
 	private void displayCalendarResultsDay(CalendarCommandResult result) {
 //		DayPresenter dayPresenter = injector.getDayPresenter();
 //		Day day = result.getDay();
@@ -256,7 +237,48 @@ public class CalendarPanel extends BasePageComposite{
 		setupCalendarScale(result);
 		
 		showSearchWithResults(result);
+		
+		calendarBreadCrumbPanel.setYear(day.getYear());
+		calendarBreadCrumbPanel.setMonth(day.getYear(),day.getMonth());
+//		calendarBreadCrumbPanel.setWeek(day.getYear(),day.getMonth());
+//		calendarBreadCrumbPanel.setWeek(result.getWeek().getWeekOfYear(), result.getWeek().getYear(), firstDayOfWeek.getDate(), lastDayOfWeek.getDate());
+		calendarBreadCrumbPanel.setDay(day.getDate(), day.getYear(),day.getMonth(),day.getDay());
+		
+		calendarBreadCrumbPanel.setPrevNext(CalendarHelpers.buildDayHistoryToken(result.getPrevYear(), result.getPrevMonthOfYear(), result.getPrevDayOfMonth()),
+				CalendarHelpers.buildDayHistoryToken(result.getNextYear(), result.getNextMonthOfYear(), result.getNextDayOfMonth()));
 	}
+	
+	private void displayCalendarResultsWeek(CalendarCommandResult result) {
+		calendarBodyElement.clear();
+		WeekPresenter weekPresenter = injector.getWeekPresenter();
+		weekPresenter.setWeek(result.getWeek());
+		calendarBodyElement.add(weekPresenter.getWidget());
+		//calendarTitleElement.setText("Week");
+		calendarTitleElement.setText("");
+		//calendarTitleElement.setVisible(false);
+				
+		HistoryToken token = CalendarHelpers.buildWeekHistoryToken(result.getPrevYear(), result.getPrevWeekOfYear());
+		configurePrevLink(token);
+		
+		token = CalendarHelpers.buildWeekHistoryToken(result.getNextYear(), result.getNextWeekOfYear());
+		configureNextLink(token);
+		
+		setupCalendarScale(result);
+		
+		showSearchWithResults(result);
+		
+		Day firstDayOfWeek = result.getWeek().getDays().get(0);
+		Day lastDayOfWeek = result.getWeek().getDays().get(6);
+		
+		calendarBreadCrumbPanel.setYear(lastDayOfWeek.getYear());
+		calendarBreadCrumbPanel.setMonth(lastDayOfWeek.getYear(), lastDayOfWeek.getMonth());
+		calendarBreadCrumbPanel.setWeek(result.getWeek().getWeekOfYear(), result.getWeek().getYear(), firstDayOfWeek.getDate(), lastDayOfWeek.getDate());
+		
+		calendarBreadCrumbPanel.setPrevNext(CalendarHelpers.buildWeekHistoryToken(result.getPrevYear(), result.getPrevWeekOfYear()),
+				CalendarHelpers.buildWeekHistoryToken(result.getNextYear(), result.getNextWeekOfYear()));
+	}
+	
+	
 	
 	private void displayCalendarResultsMonth(CalendarCommandResult result) {
 		
@@ -264,7 +286,7 @@ public class CalendarPanel extends BasePageComposite{
 		monthDetailPresenter.setMonth(result.getMonth());
 		calendarBodyElement.clear();
 		calendarBodyElement.add(monthDetailPresenter.getWidget());
-		calendarTitleElement.setText("TODO: Month "+result.getMonth().getMonthNumber()+" needs a name");
+		calendarTitleElement.setText( "TODO: Month "+result.getMonth().getMonthNumber()+" needs a name");
 				
 		HistoryToken token = CalendarHelpers.buildMonthHistoryToken(result.getPrevYear(), result.getPrevMonthOfYear());
 		configurePrevLink(token);
@@ -273,8 +295,14 @@ public class CalendarPanel extends BasePageComposite{
 		configureNextLink(token);
 		
 		setupCalendarScale(result);
-		
+
 		showSearchWithResults(result);
+		
+		calendarBreadCrumbPanel.setYear(result.getMonth().getYearNumber());
+		calendarBreadCrumbPanel.setMonth(result.getMonth().getYearNumber(),result.getMonth().getMonthNumber());
+		
+		calendarBreadCrumbPanel.setPrevNext(CalendarHelpers.buildMonthHistoryToken(result.getPrevYear(), result.getPrevMonthOfYear()),
+				CalendarHelpers.buildMonthHistoryToken(result.getNextYear(), result.getNextMonthOfYear()));
 	}
 	
 	private void displayCalendarResultsYear(CalendarCommandResult result) {
@@ -293,9 +321,15 @@ public class CalendarPanel extends BasePageComposite{
 		setupCalendarScale(result);
 		
 		showSearchWithResults(result);
+		
+		
+		calendarBreadCrumbPanel.setYear(result.getYear().getYearNumber());
+		
+		calendarBreadCrumbPanel.setPrevNext(CalendarHelpers.buildYearHistoryToken(result.getPrevYear()),
+				CalendarHelpers.buildYearHistoryToken(result.getNextYear()));
 	}
-	
 
+	
 	private void setupCalendarScale(CalendarCommandResult result) {
 		String scale = "";
 		if(CalendarCommand.Scope.DAY.equals(result.getScope()))

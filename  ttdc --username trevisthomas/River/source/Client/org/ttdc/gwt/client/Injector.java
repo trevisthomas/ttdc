@@ -91,6 +91,7 @@ import org.ttdc.gwt.client.presenters.users.UserToolsPresenter;
 import org.ttdc.gwt.client.services.RpcServiceAsync;
 import org.ttdc.gwt.client.uibinder.Navigation;
 import org.ttdc.gwt.client.uibinder.SiteUpdatePanel;
+import org.ttdc.gwt.client.uibinder.calendar.CalendarBreadCrumbPanel;
 import org.ttdc.gwt.client.uibinder.calendar.CalendarPanel;
 import org.ttdc.gwt.client.uibinder.calendar.DayPanel;
 import org.ttdc.gwt.client.uibinder.dashboard.FilteredPost;
@@ -388,6 +389,6 @@ public interface Injector extends Ginjector {
 	public UserIdentityPanel createUserIdentityPanel();
 	public CalendarPanel createCalendarPanel();
 	public DayPanel createDayPanel();
-	
+	public CalendarBreadCrumbPanel createBreadCrumbPanel();
 }
 
