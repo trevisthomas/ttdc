@@ -67,6 +67,9 @@ public class DayOfMonthPresenter extends BasePresenter<DayOfMonthPresenter.View>
 					//view.dayTarget(weekOfMonth, dayOfWeek, day.getDay()).add();
 				}
 			}
+			else{
+				//view.threadSummaryTarget().add();
+			}
 		}
 		else{
 			// Hm, maybe do something special?

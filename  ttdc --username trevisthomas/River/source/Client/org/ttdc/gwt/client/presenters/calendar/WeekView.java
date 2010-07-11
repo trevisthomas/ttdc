@@ -1,5 +1,7 @@
 package org.ttdc.gwt.client.presenters.calendar;
 
+import org.ttdc.gwt.client.presenters.util.ClickableHoverSyncPanel;
+
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -40,17 +42,11 @@ public class WeekView implements WeekPresenter.View{
 			htmlPanel.setStyleName("tt-calendar-hour-label tt-text-huge tt-color-contrast1");
 			hours.setWidget(h+1, 0, htmlPanel);
 			
-//			if((h+1)%2 != 0 ){
-//				for(int i = 0 ; i < 8 ; i++){
-//					hours.getCellFormatter().setStyleName(h+1, i, "tt-graybar tt-special-border-bottom");
-//				}
-//			}
 			for(int i = 1 ; i < 8 ; i++){ //Skip the first col
-				hours.getCellFormatter().addStyleName(h+1, i, "tt-calendar-week-day tt-color-contrast2 tt-border-right-bottom");
+				//hours.getCellFormatter().addStyleName(h+1, i, "tt-calendar-week-day tt-color-contrast2 tt-border-bottom-right");
+				hours.getCellFormatter().addStyleName(h+1, i, "tt-calendar-week-day");
 			}
 			hours.getCellFormatter().addStyleName(h+1, 0, "tt-fill-height tt-special-border-bottom");
-		
-			
 		}
 		
 		for(int i = 1 ; i < 8 ; i++){ //Skip the first col
@@ -70,11 +66,17 @@ public class WeekView implements WeekPresenter.View{
 		 * of the week it was off by 7 hours.  Very strange looking.
 		 */
 		hours.setWidget(hourOfDay+1,dayOfWeek,w);
+		w.addStyleName("tt-color-contrast2 tt-border-bottom-right");
 	}
 	
 	@Override
-	public void insertDayHeader(int dayOfWeek, Widget w) {
-		hours.setWidget(0, dayOfWeek, w);
+	public void insertDayHeader(int dayOfWeek, ClickableHoverSyncPanel panel) {
+		hours.setWidget(0, dayOfWeek, panel);
+		
+		for(int h = 1; h < 25 ; h++){
+			Widget w = hours.getWidget(h, dayOfWeek);	
+			panel.addSynchedHoverTarget(w);
+		}
 	}
 	
 }

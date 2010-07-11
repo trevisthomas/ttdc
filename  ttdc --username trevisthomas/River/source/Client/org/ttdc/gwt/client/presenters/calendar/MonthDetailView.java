@@ -8,12 +8,15 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class MonthDetailView implements MonthDetailPresenter.View{
 	private final Grid mainPanel = new Grid(7,8);
+	
+	
 	@Override
 	public Widget getWidget() {
 		return mainPanel;
 	}
 	
 	public MonthDetailView() {
+		mainPanel.setStyleName("tt-center");
 		setupHeader();
 	}
 	

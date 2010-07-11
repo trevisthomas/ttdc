@@ -8,6 +8,7 @@ import org.ttdc.gwt.client.uibinder.post.SmallPostSummaryPanel;
 import org.ttdc.gwt.shared.calender.CalendarPost;
 import org.ttdc.gwt.shared.calender.Hour;
 
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.inject.Inject;
 
@@ -37,6 +38,9 @@ public class HourPresenter extends BasePresenter<HourPresenter.View> {
 			SmallPostSummaryPanel createSmallSummaryPanel = injector.createSmallSummaryPanel();
 			createSmallSummaryPanel.init(cp);
 			view.calendarPostTarget().add(createSmallSummaryPanel.getWidget());
+		}
+		if(hour.getCalendarPosts().size() == 0){
+			view.calendarPostTarget().add(new HTML("&nbsp;"));
 		}
 	}
 }
