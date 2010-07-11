@@ -11,7 +11,7 @@ body{text-align:center; margin: 0 auto;}
 
 .tt-border{ border:1px black solid;}
 .tt-border-bottom{ border-width: 0 0 1px 0; border-style: solid;}
-.tt-border-right-bottom{ border-width: 0 1px 1px; border-style: solid;}
+.tt-border-bottom-right{ border-width: 0 1px 1px 0; border-style: solid;}
 
 .tt-alert{color: red;}
 .tt-post{width: 500px; margin-bottom: 10px;}
@@ -21,6 +21,7 @@ body{text-align:center; margin: 0 auto;}
 .tt-text-normal{font-size:12px;}
 .tt-text-normal-bold{font-size:12px; font-weight: bold;}
 .tt-text-large{font-size:16px; font-weight: 500;}
+.tt-text-large-bold{font-size:16px; font-weight: 700;}
 .tt-text-huge{font-size:22px; font-weight: 700;}
 
 .tt-post-container{  }
@@ -43,6 +44,7 @@ body{text-align:center; margin: 0 auto;}
 
 
 .tt-fill{ width: 100%; }
+.tt-fill-both{ height:100%; width:100%;}
 .tt-fill-height{ height:100%;}
 .tt-text-left{text-align: left;}
 .tt-text-right{text-align: right;}
@@ -92,7 +94,7 @@ body{text-align:center; margin: 0 auto;}
 .tt-calendar-hour-label{ width: 50px; min-height: 40px;height:100%; text-align: right; }
 .tt-calendar-hour-label-cell{ height:100%;}
 
-.tt-calendar-hour{ min-height: 20px; width:100%; }
+.tt-calendar-hour{ min-height: 20px; width:100%; height:100%;}
 .tt-calendar-day td{
 		
 }
@@ -104,8 +106,9 @@ body{text-align:center; margin: 0 auto;}
 
 .tt-calendar-week-day-header{}
 
-.tt-calendar-month-day-header{background-color: #999; color: white;}
-.tt-calendar-month-day{width: 150px; height:150px;}
+.tt-calendar-month-day-headerLabel{}
+.tt-calendar-month-day-header{text-align: right; height: 20px;}
+.tt-calendar-month-day{width: 130px; height:130px;}
 
 .tt-calendar-year-day{}
 .tt-calendar-year-week-target{width:10px;background-color: #eee;}
@@ -142,4 +145,5 @@ body{text-align:center; margin: 0 auto;}
  * Colors to be moved into color css
  */
 .tt-color-contrast1{ background: grey; color: white; border-color: #eee;}
+.tt-color-contrast2-hover{ border-color: grey; background: #eee;}
 .tt-color-contrast2{ border-color: #eee;}
