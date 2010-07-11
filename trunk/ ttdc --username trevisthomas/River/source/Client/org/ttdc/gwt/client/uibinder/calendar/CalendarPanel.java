@@ -228,21 +228,12 @@ public class CalendarPanel extends BasePageComposite{
 		
 		calendarTitleElement.setText(DateFormatUtil.formatLongDay(day.getDate()));
 				
-		HistoryToken token = CalendarHelpers.buildDayHistoryToken(result.getPrevYear(), result.getPrevMonthOfYear(), result.getPrevDayOfMonth());
-		configurePrevLink(token);
-		
-		token = CalendarHelpers.buildDayHistoryToken(result.getNextYear(), result.getNextMonthOfYear(), result.getNextDayOfMonth());
-		configureNextLink(token);
-		
-		setupCalendarScale(result);
-		
 		showSearchWithResults(result);
 		
 		calendarBreadCrumbPanel.setYear(day.getYear());
-		calendarBreadCrumbPanel.setMonth(day.getYear(),day.getMonth());
-//		calendarBreadCrumbPanel.setWeek(day.getYear(),day.getMonth());
-//		calendarBreadCrumbPanel.setWeek(result.getWeek().getWeekOfYear(), result.getWeek().getYear(), firstDayOfWeek.getDate(), lastDayOfWeek.getDate());
-		calendarBreadCrumbPanel.setDay(day.getDate(), day.getYear(),day.getMonth(),day.getDay());
+		calendarBreadCrumbPanel.setMonth(day.getYear(), day.getMonth());
+		calendarBreadCrumbPanel.setWeek(result.getRelevantWeekOfYear(), day.getYear(), result.getWeekStartDate(), result.getWeekEndDate());
+		//calendarBreadCrumbPanel.setDay(day.getDate(), day.getYear(),day.getMonth(),day.getDay());
 		
 		calendarBreadCrumbPanel.setPrevNext(CalendarHelpers.buildDayHistoryToken(result.getPrevYear(), result.getPrevMonthOfYear(), result.getPrevDayOfMonth()),
 				CalendarHelpers.buildDayHistoryToken(result.getNextYear(), result.getNextMonthOfYear(), result.getNextDayOfMonth()));
@@ -253,26 +244,16 @@ public class CalendarPanel extends BasePageComposite{
 		WeekPresenter weekPresenter = injector.getWeekPresenter();
 		weekPresenter.setWeek(result.getWeek());
 		calendarBodyElement.add(weekPresenter.getWidget());
-		//calendarTitleElement.setText("Week");
 		calendarTitleElement.setText("");
-		//calendarTitleElement.setVisible(false);
 				
-		HistoryToken token = CalendarHelpers.buildWeekHistoryToken(result.getPrevYear(), result.getPrevWeekOfYear());
-		configurePrevLink(token);
-		
-		token = CalendarHelpers.buildWeekHistoryToken(result.getNextYear(), result.getNextWeekOfYear());
-		configureNextLink(token);
-		
-		setupCalendarScale(result);
-		
 		showSearchWithResults(result);
 		
 		Day firstDayOfWeek = result.getWeek().getDays().get(0);
 		Day lastDayOfWeek = result.getWeek().getDays().get(6);
-		
+
 		calendarBreadCrumbPanel.setYear(lastDayOfWeek.getYear());
 		calendarBreadCrumbPanel.setMonth(lastDayOfWeek.getYear(), lastDayOfWeek.getMonth());
-		calendarBreadCrumbPanel.setWeek(result.getWeek().getWeekOfYear(), result.getWeek().getYear(), firstDayOfWeek.getDate(), lastDayOfWeek.getDate());
+//		calendarBreadCrumbPanel.setWeek(result.getWeek().getWeekOfYear(), result.getWeek().getYear(), firstDayOfWeek.getDate(), lastDayOfWeek.getDate());
 		
 		calendarBreadCrumbPanel.setPrevNext(CalendarHelpers.buildWeekHistoryToken(result.getPrevYear(), result.getPrevWeekOfYear()),
 				CalendarHelpers.buildWeekHistoryToken(result.getNextYear(), result.getNextWeekOfYear()));
@@ -288,18 +269,10 @@ public class CalendarPanel extends BasePageComposite{
 		calendarBodyElement.add(monthDetailPresenter.getWidget());
 		calendarTitleElement.setText( "TODO: Month "+result.getMonth().getMonthNumber()+" needs a name");
 				
-		HistoryToken token = CalendarHelpers.buildMonthHistoryToken(result.getPrevYear(), result.getPrevMonthOfYear());
-		configurePrevLink(token);
-		
-		token = CalendarHelpers.buildMonthHistoryToken(result.getNextYear(), result.getNextMonthOfYear());
-		configureNextLink(token);
-		
-		setupCalendarScale(result);
-
 		showSearchWithResults(result);
 		
 		calendarBreadCrumbPanel.setYear(result.getMonth().getYearNumber());
-		calendarBreadCrumbPanel.setMonth(result.getMonth().getYearNumber(),result.getMonth().getMonthNumber());
+		//calendarBreadCrumbPanel.setMonth(result.getMonth().getYearNumber(),result.getMonth().getMonthNumber());
 		
 		calendarBreadCrumbPanel.setPrevNext(CalendarHelpers.buildMonthHistoryToken(result.getPrevYear(), result.getPrevMonthOfYear()),
 				CalendarHelpers.buildMonthHistoryToken(result.getNextYear(), result.getNextMonthOfYear()));
@@ -312,18 +285,9 @@ public class CalendarPanel extends BasePageComposite{
 		calendarBodyElement.add(yearPresenter.getWidget());
 		calendarTitleElement.setText(""+result.getYear().getYearNumber());
 				
-		HistoryToken token = CalendarHelpers.buildYearHistoryToken(result.getPrevYear());
-		configurePrevLink(token);
-		
-		token = CalendarHelpers.buildYearHistoryToken(result.getNextYear());
-		configureNextLink(token);
-		
-		setupCalendarScale(result);
-		
 		showSearchWithResults(result);
 		
-		
-		calendarBreadCrumbPanel.setYear(result.getYear().getYearNumber());
+		//calendarBreadCrumbPanel.setYear(result.getYear().getYearNumber());
 		
 		calendarBreadCrumbPanel.setPrevNext(CalendarHelpers.buildYearHistoryToken(result.getPrevYear()),
 				CalendarHelpers.buildYearHistoryToken(result.getNextYear()));

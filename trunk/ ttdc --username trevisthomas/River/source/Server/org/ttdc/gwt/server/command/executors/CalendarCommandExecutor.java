@@ -137,6 +137,18 @@ public class CalendarCommandExecutor  extends CommandExecutor<CalendarCommandRes
 				cal.set(Calendar.MONTH, cmd.getMonthOfYear()-1);
 				cal.set(Calendar.DAY_OF_MONTH, cmd.getDayOfMonth());
 				setRelevantDateValues(result, cal, cmd.getScope());
+				
+				//Set the week beginning end.  This is used to allow a day to link back to it's containing week
+				Calendar weekCal = GregorianCalendar.getInstance();
+				weekCal.set(Calendar.WEEK_OF_YEAR, result.getRelevantWeekOfYear());
+				weekCal.set(Calendar.YEAR, result.getRelevantYear());
+				weekCal.set(Calendar.HOUR, 0);
+				weekCal.set(Calendar.MINUTE, 0);
+				weekCal.set(Calendar.SECOND, 0);
+				
+				result.setWeekStartDate(weekCal.getTime());
+				weekCal.add(Calendar.DAY_OF_YEAR, 6);
+				result.setWeekEndDate(weekCal.getTime());
 			}
 			else {
 				throw new RuntimeException("Unimplemented CalendarCommand Scope");
@@ -166,11 +178,12 @@ public class CalendarCommandExecutor  extends CommandExecutor<CalendarCommandRes
 
 	private void loadDateRangeForWeek(CalendarCommandResult result, int year, int weekOfYear) {
 		Calendar tmp = GregorianCalendar.getInstance();
+		
 		tmp.set(Calendar.YEAR,year);
 		tmp.set(Calendar.DAY_OF_WEEK, 0);
 		tmp.set(Calendar.WEEK_OF_YEAR, weekOfYear - 1);
 		
-		tmp.set(Calendar.HOUR, -12);
+		tmp.set(Calendar.HOUR, 0);
 		tmp.set(Calendar.MINUTE, 0);
 		tmp.set(Calendar.SECOND, 0);
 		tmp.set(Calendar.MILLISECOND, 0);
@@ -263,13 +276,18 @@ public class CalendarCommandExecutor  extends CommandExecutor<CalendarCommandRes
 		Calendar cal = GregorianCalendar.getInstance();
 		cal.set(Calendar.YEAR, cmd.getYear());
 		cal.set(Calendar.WEEK_OF_YEAR, cmd.getWeekOfYear());
+		cal.set(Calendar.DAY_OF_WEEK, 0);
+		cal.set(Calendar.HOUR, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		
 		cal.add(Calendar.WEEK_OF_YEAR, -1);
 		result.setPrevYear(cal.get(Calendar.YEAR));
 		result.setPrevWeekOfYear(cal.get(Calendar.WEEK_OF_YEAR));
 		
-		cal.set(Calendar.YEAR, cmd.getYear());
-		cal.set(Calendar.WEEK_OF_YEAR,cmd.getWeekOfYear());
-		cal.add(Calendar.WEEK_OF_YEAR, 1);
+//		cal.set(Calendar.YEAR, cmd.getYear());
+//		cal.set(Calendar.WEEK_OF_YEAR, cmd.getWeekOfYear());
+		cal.add(Calendar.WEEK_OF_YEAR, 2);
 		result.setNextYear(cal.get(Calendar.YEAR));
 		result.setNextWeekOfYear(cal.get(Calendar.WEEK_OF_YEAR));
 	}

@@ -7,7 +7,8 @@
 	<g:HTMLPanel>
 		<g:Hyperlink ui:field="homeElement" /> <g:Hyperlink ui:field="searchElement" />
 		<g:Hyperlink ui:field="movieElement" /> <g:Hyperlink ui:field="historyElement" /> 
-		<g:Hyperlink ui:field="usersElement" /> <g:Hyperlink ui:field="dashboardElement" />  
+		<g:Hyperlink ui:field="usersElement" /> <g:Hyperlink ui:field="dashboardElement" />
+		<g:Hyperlink ui:field="calendarElement" />    
 		<g:Hyperlink ui:field="adminElement" /> 
 	</g:HTMLPanel>
 	
