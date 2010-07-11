@@ -32,6 +32,8 @@ public class CalendarCommandResult implements CommandResult{
 	private int relevantMonthOfYear;
 	private int relevantWeekOfYear;
 	private int relevantDayOfMonth;
+	private Date weekStartDate;
+	private Date weekEndDate;
 	
 	private Date startDate;
 	private Date endDate;
@@ -155,6 +157,18 @@ public class CalendarCommandResult implements CommandResult{
 	}
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
+	}
+	public Date getWeekStartDate() {
+		return weekStartDate;
+	}
+	public void setWeekStartDate(Date weekStartDate) {
+		this.weekStartDate = weekStartDate;
+	}
+	public Date getWeekEndDate() {
+		return weekEndDate;
+	}
+	public void setWeekEndDate(Date weekEndDate) {
+		this.weekEndDate = weekEndDate;
 	}
 	
 }

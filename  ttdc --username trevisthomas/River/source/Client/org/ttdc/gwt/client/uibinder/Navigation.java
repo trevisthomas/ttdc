@@ -3,7 +3,6 @@ package org.ttdc.gwt.client.uibinder;
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.messaging.ConnectionId;
 import org.ttdc.gwt.client.messaging.history.HistoryConstants;
-import org.ttdc.gwt.client.messaging.history.HistoryToken;
 import org.ttdc.gwt.client.presenters.shared.HyperlinkPresenter;
 
 import com.google.gwt.core.client.GWT;
@@ -25,6 +24,7 @@ public class Navigation extends Composite {
 	private HyperlinkPresenter usersLinkPresenter;
 	private HyperlinkPresenter dashboardLinkPresenter;
 	private HyperlinkPresenter adminLinkPresenter;
+	private HyperlinkPresenter calendarLinkPresenter;
 	
 	private Injector injector;
 	
@@ -35,6 +35,7 @@ public class Navigation extends Composite {
 	@UiField(provided = true) Hyperlink usersElement;
 	@UiField(provided = true) Hyperlink dashboardElement;
 	@UiField(provided = true) Hyperlink adminElement;
+	@UiField(provided = true) Hyperlink calendarElement;
 	
 	@Inject
 	public Navigation(Injector injector) {
@@ -47,6 +48,7 @@ public class Navigation extends Composite {
 		usersLinkPresenter = injector.getHyperlinkPresenter();
 		dashboardLinkPresenter = injector.getHyperlinkPresenter();
 		adminLinkPresenter = injector.getHyperlinkPresenter();
+		calendarLinkPresenter = injector.getHyperlinkPresenter();
 		
 		homeLinkPresenter.setView("Home", HistoryConstants.VIEW_HOME);
 		homeElement = homeLinkPresenter.getHyperlink();
@@ -65,6 +67,10 @@ public class Navigation extends Composite {
 		
 		dashboardLinkPresenter.setView("Dashboard", HistoryConstants.VIEW_DASHBOARD);
 		dashboardElement = dashboardLinkPresenter.getHyperlink();
+		
+		calendarLinkPresenter.setView("Calendar", HistoryConstants.VIEW_CALENDAR);
+		calendarElement = calendarLinkPresenter.getHyperlink();
+		
 		
 		if(ConnectionId.isAnonymous()){
 			dashboardElement.setVisible(false);
