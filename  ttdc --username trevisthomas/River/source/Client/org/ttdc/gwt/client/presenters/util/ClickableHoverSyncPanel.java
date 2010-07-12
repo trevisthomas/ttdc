@@ -41,6 +41,7 @@ public class ClickableHoverSyncPanel extends FocusPanel{
 	}
 	
 	private void init(){
+		addStyleName("tt-cursor-pointer");
 		addMouseOverHandler(new MouseOverHandler() {
 			@Override
 			public void onMouseOver(MouseOverEvent event) {
@@ -72,7 +73,11 @@ public class ClickableHoverSyncPanel extends FocusPanel{
 		if(!isDisableHoverStyleOnSelf())
 			addStyleName(hoverStyle);	
 		for(Widget w : synched){
-			w.addStyleName(hoverStyle);
+			if(w instanceof ClickableHoverSyncPanel){
+				((ClickableHoverSyncPanel)w).broadcastAddStyle(hoverStyle);
+			}
+			else
+				w.addStyleName(hoverStyle);
 		}
 	}
 	
@@ -80,7 +85,11 @@ public class ClickableHoverSyncPanel extends FocusPanel{
 		if(!isDisableHoverStyleOnSelf())
 			removeStyleName(hoverStyle);
 		for(Widget w : synched){
-			w.removeStyleName(hoverStyle);
+			if(w instanceof ClickableHoverSyncPanel){
+				((ClickableHoverSyncPanel)w).broadcastAddStyle(hoverStyle);
+			}
+			else
+				w.removeStyleName(hoverStyle);
 		}
 	}
 

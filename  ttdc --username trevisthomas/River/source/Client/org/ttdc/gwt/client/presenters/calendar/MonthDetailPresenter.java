@@ -9,6 +9,7 @@ import org.ttdc.gwt.client.messaging.history.HistoryToken;
 import org.ttdc.gwt.client.presenters.shared.BasePresenter;
 import org.ttdc.gwt.client.presenters.shared.BaseView;
 import org.ttdc.gwt.client.presenters.shared.HyperlinkPresenter;
+import org.ttdc.gwt.client.presenters.util.ClickableHoverSyncPanel;
 import org.ttdc.gwt.shared.calender.CalendarThreadSummary;
 import org.ttdc.gwt.shared.calender.Day;
 import org.ttdc.gwt.shared.calender.Month;
@@ -30,7 +31,8 @@ public class MonthDetailPresenter extends BasePresenter<MonthDetailPresenter.Vie
 	public interface View extends BaseView{
 		void insertDay(int weekOfMonth, int dayOfWeek, int dayOfMonth, Widget widget);
 		HasClickHandlers weekTargetClickHandlers(int weekOfMonth);
-		HasText weekTargetText(int weekOfMonth); 
+		HasText weekTargetText(int weekOfMonth);
+		ClickableHoverSyncPanel getWeekSyncPanel(int weekOfMonth); 
 	}
 	
 	public void setMonth(Month month){
