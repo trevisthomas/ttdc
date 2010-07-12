@@ -108,7 +108,8 @@ body{text-align:center; margin: 0 auto;}
 
 .tt-calendar-month-day-headerLabel{}
 .tt-calendar-month-day-header{text-align: right; height: 20px;}
-.tt-calendar-month-day{width: 130px; height:130px;}
+.tt-calendar-month-day-body{}
+.tt-calendar-month-day{width: 130px; height:130px; overflow: auto;}
 
 .tt-calendar-year-day{}
 .tt-calendar-year-week-target{width:10px;background-color: #eee;}

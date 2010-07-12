@@ -1,5 +1,7 @@
 package org.ttdc.gwt.client.presenters.calendar;
 
+import org.ttdc.gwt.client.presenters.util.ClickableHoverSyncPanel;
+
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HasText;
@@ -27,28 +29,38 @@ public class MonthDetailView implements MonthDetailPresenter.View{
 
 	@Override
 	public void insertDay(int weekOfMonth, int dayOfWeek, int dayOfMonth, Widget widget) {
+		getWeekSyncPanel(weekOfMonth).addSynchedHoverTarget(widget);
 		mainPanel.setWidget(weekOfMonth, dayOfWeek, widget);
 	}
 
 	@Override
 	public HasClickHandlers weekTargetClickHandlers(int weekOfMonth) {
-		return getWeekLabelFromGrid(weekOfMonth);
+		return getWeekSyncPanel(weekOfMonth);
 	}
 
 	@Override
 	public HasText weekTargetText(int weekOfMonth) {
+		return (Label)getWeekSyncPanel(weekOfMonth).getWidget();
+	}
+	
+	@Override
+	public ClickableHoverSyncPanel getWeekSyncPanel(int weekOfMonth){
 		return getWeekLabelFromGrid(weekOfMonth);
 	}
 	
-	private Label getWeekLabelFromGrid(int weekOfMonth){
+	private ClickableHoverSyncPanel getWeekLabelFromGrid(int weekOfMonth){
 		Widget w = mainPanel.getWidget(weekOfMonth, 0);
 		if(w != null){
-			return (Label)w;
+			return (ClickableHoverSyncPanel)w;
 		}
 		else{
+			ClickableHoverSyncPanel clickablePanel = new ClickableHoverSyncPanel("tt-color-contrast2","tt-color-contrast2-hover");
 			Label label = new Label();
-			mainPanel.setWidget(weekOfMonth, 0, label);
-			return label;
+			clickablePanel.add(label);
+			mainPanel.setWidget(weekOfMonth, 0, clickablePanel);
+			mainPanel.getCellFormatter().addStyleName(weekOfMonth, 0, "tt-fill-height");
+			clickablePanel.addStyleName("tt-fill-both");
+			return clickablePanel;
 		}
 	}
 
