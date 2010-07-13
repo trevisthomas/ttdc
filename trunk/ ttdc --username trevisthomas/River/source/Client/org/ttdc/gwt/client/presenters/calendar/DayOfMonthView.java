@@ -24,7 +24,7 @@ public class DayOfMonthView implements DayOfMonthPresenter.View{
 		header.setDisableHoverStyleOnSelf(true);
 		
 		mainPanel.setStyleName("tt-calendar-month-day tt-border-bottom-right tt-color-contrast2");
-		header.setStyleName("tt-color-contrast1 tt-text-large-bold");
+		header.setStyleName("tt-color-contrast2 tt-text-large-bold");
 		header.add(headerLabel);
 		bodyGrid.addStyleName("tt-fill-both");
 		bodyGrid.setWidget(0, 0, header);
@@ -57,6 +57,11 @@ public class DayOfMonthView implements DayOfMonthPresenter.View{
 
 	@Override
 	public HasClickHandlers dayClickTarget() {
+		return header;
+	}
+	
+	@Override
+	public ClickableHoverSyncPanel getSynchTarget() {
 		return header;
 	}
 }

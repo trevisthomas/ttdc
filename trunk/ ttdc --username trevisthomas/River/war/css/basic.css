@@ -146,5 +146,6 @@ body{text-align:center; margin: 0 auto;}
  * Colors to be moved into color css
  */
 .tt-color-contrast1{ background: grey; color: white; border-color: #eee;}
+.tt-color-contrast1-hover{ background: #eee; color: black; border-color: grey;}
 .tt-color-contrast2-hover{ border-color: grey; background: #eee;}
 .tt-color-contrast2{ border-color: #eee;}

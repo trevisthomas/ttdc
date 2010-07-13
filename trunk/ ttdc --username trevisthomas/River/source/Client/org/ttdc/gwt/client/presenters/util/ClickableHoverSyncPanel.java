@@ -45,18 +45,14 @@ public class ClickableHoverSyncPanel extends FocusPanel{
 		addMouseOverHandler(new MouseOverHandler() {
 			@Override
 			public void onMouseOver(MouseOverEvent event) {
-				broadcastRemoveStyle(style);
-				
-				broadcastAddStyle(hoverStyle);
+				performMouseOver();
 			}
 		});
 		
 		addMouseOutHandler(new MouseOutHandler() {
 			@Override
 			public void onMouseOut(MouseOutEvent event) {
-				
-				broadcastRemoveStyle(hoverStyle);
-				broadcastAddStyle(style);
+				performMouseOut();
 			}
 		});
 		
@@ -69,15 +65,33 @@ public class ClickableHoverSyncPanel extends FocusPanel{
 		});
 	}
 	
+	private void performMouseOver() {
+		broadcastRemoveStyle(style);
+		broadcastAddStyle(hoverStyle);
+		for(Widget w : synched){
+			if(w instanceof ClickableHoverSyncPanel){
+				((ClickableHoverSyncPanel)w).performMouseOver();
+			}
+		}
+	}
+	
+	private void performMouseOut() {
+		broadcastRemoveStyle(hoverStyle);
+		broadcastAddStyle(style);
+		for(Widget w : synched){
+			if(w instanceof ClickableHoverSyncPanel){
+				((ClickableHoverSyncPanel)w).performMouseOut();
+			}
+		}
+	}
+	
 	private void broadcastAddStyle(String hoverStyle) {
 		if(!isDisableHoverStyleOnSelf())
 			addStyleName(hoverStyle);	
 		for(Widget w : synched){
-			if(w instanceof ClickableHoverSyncPanel){
-				((ClickableHoverSyncPanel)w).broadcastAddStyle(hoverStyle);
-			}
-			else
+			if(!(w instanceof ClickableHoverSyncPanel)){
 				w.addStyleName(hoverStyle);
+			}
 		}
 	}
 	
@@ -85,11 +99,9 @@ public class ClickableHoverSyncPanel extends FocusPanel{
 		if(!isDisableHoverStyleOnSelf())
 			removeStyleName(hoverStyle);
 		for(Widget w : synched){
-			if(w instanceof ClickableHoverSyncPanel){
-				((ClickableHoverSyncPanel)w).broadcastAddStyle(hoverStyle);
-			}
-			else
+			if(!(w instanceof ClickableHoverSyncPanel)){
 				w.removeStyleName(hoverStyle);
+			}
 		}
 	}
 
