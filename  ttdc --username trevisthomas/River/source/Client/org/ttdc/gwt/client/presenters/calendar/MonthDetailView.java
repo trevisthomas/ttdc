@@ -28,8 +28,8 @@ public class MonthDetailView implements MonthDetailPresenter.View{
 	}
 
 	@Override
-	public void insertDay(int weekOfMonth, int dayOfWeek, int dayOfMonth, Widget widget) {
-		getWeekSyncPanel(weekOfMonth).addSynchedHoverTarget(widget);
+	public void insertDay(int weekOfMonth, int dayOfWeek, int dayOfMonth, Widget widget, ClickableHoverSyncPanel synchPanel) {
+		getWeekSyncPanel(weekOfMonth).addSynchedHoverTarget(synchPanel);
 		mainPanel.setWidget(weekOfMonth, dayOfWeek, widget);
 	}
 
@@ -54,7 +54,10 @@ public class MonthDetailView implements MonthDetailPresenter.View{
 			return (ClickableHoverSyncPanel)w;
 		}
 		else{
-			ClickableHoverSyncPanel clickablePanel = new ClickableHoverSyncPanel("tt-color-contrast2","tt-color-contrast2-hover");
+			ClickableHoverSyncPanel clickablePanel = new ClickableHoverSyncPanel("tt-color-contrast1","tt-color-contrast1-hover");
+			clickablePanel.setDisableHoverStyleOnSelf(true);
+			clickablePanel.setStyleName("tt-color-contrast1-hover");
+			
 			Label label = new Label();
 			clickablePanel.add(label);
 			mainPanel.setWidget(weekOfMonth, 0, clickablePanel);

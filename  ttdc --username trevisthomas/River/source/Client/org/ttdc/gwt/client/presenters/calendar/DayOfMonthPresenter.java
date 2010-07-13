@@ -9,6 +9,7 @@ import org.ttdc.gwt.client.messaging.history.HistoryToken;
 import org.ttdc.gwt.client.presenters.shared.BasePresenter;
 import org.ttdc.gwt.client.presenters.shared.BaseView;
 import org.ttdc.gwt.client.presenters.shared.HyperlinkPresenter;
+import org.ttdc.gwt.client.presenters.util.ClickableHoverSyncPanel;
 import org.ttdc.gwt.shared.calender.CalendarThreadSummary;
 import org.ttdc.gwt.shared.calender.Day;
 
@@ -24,6 +25,7 @@ public class DayOfMonthPresenter extends BasePresenter<DayOfMonthPresenter.View>
 		void setDayOfMonth(int dayOfMonth);
 		HasWidgets threadSummaryTarget();
 		HasClickHandlers dayClickTarget();
+		ClickableHoverSyncPanel getSynchTarget();
 	}
 	
 	
@@ -74,5 +76,9 @@ public class DayOfMonthPresenter extends BasePresenter<DayOfMonthPresenter.View>
 		else{
 			// Hm, maybe do something special?
 		}
+	}
+
+	public ClickableHoverSyncPanel getSynchTarget() {
+		return view.getSynchTarget();
 	}	
 }
