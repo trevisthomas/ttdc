@@ -54,9 +54,9 @@ public class MonthDetailView implements MonthDetailPresenter.View{
 			return (ClickableHoverSyncPanel)w;
 		}
 		else{
-			ClickableHoverSyncPanel clickablePanel = new ClickableHoverSyncPanel("tt-color-contrast1","tt-color-contrast1-hover");
-			clickablePanel.setDisableHoverStyleOnSelf(true);
-			clickablePanel.setStyleName("tt-color-contrast1-hover");
+			ClickableHoverSyncPanel clickablePanel = new ClickableHoverSyncPanel("tt-color-contrast2","tt-color-contrast2-hover");
+			//clickablePanel.setDisableHoverStyleOnSelf(true);
+			//clickablePanel.setStyleName("tt-color-contrast2");
 			
 			Label label = new Label();
 			clickablePanel.add(label);

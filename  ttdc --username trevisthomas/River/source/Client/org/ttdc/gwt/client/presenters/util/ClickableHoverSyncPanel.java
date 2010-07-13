@@ -40,7 +40,14 @@ public class ClickableHoverSyncPanel extends FocusPanel{
 		synched.add(widget);
 	}
 	
+	@Override
+	public void setStyleName(String style) {
+		super.setStyleName(style);
+		super.addStyleName("tt-cursor-pointer");
+	}
+	
 	private void init(){
+		setStyleName(style);
 		addStyleName("tt-cursor-pointer");
 		addMouseOverHandler(new MouseOverHandler() {
 			@Override
