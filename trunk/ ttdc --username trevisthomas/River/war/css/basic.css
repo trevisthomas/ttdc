@@ -11,7 +11,7 @@ body{text-align:center; margin: 0 auto;}
 
 .tt-border{ border:1px black solid;}
 .tt-border-bottom{ border-width: 0 0 1px 0; border-style: solid;}
-.tt-border-bottom-right{ border-width: 0 1px 1px 0; border-style: solid;}
+.tt-border-bottom-right{ border-width: 0 5px 5px 0; border-style: solid;}
 
 .tt-alert{color: red;}
 .tt-post{width: 500px; margin-bottom: 10px;}
@@ -108,8 +108,8 @@ body{text-align:center; margin: 0 auto;}
 
 .tt-calendar-month-day-headerLabel{}
 .tt-calendar-month-day-header{text-align: right; height: 20px;}
-.tt-calendar-month-day-body{}
-.tt-calendar-month-day{width: 130px; height:130px; overflow: auto;}
+.tt-calendar-month-day-body{overflow: auto; width: 130px; height:130px;}
+.tt-calendar-month-day{}
 
 .tt-calendar-year-day{}
 .tt-calendar-year-week-target{width:10px;background-color: #eee;}
@@ -149,3 +149,6 @@ body{text-align:center; margin: 0 auto;}
 .tt-color-contrast1-hover{ background: #eee; color: black; border-color: grey;}
 .tt-color-contrast2-hover{ border-color: grey; background: #eee;}
 .tt-color-contrast2{ border-color: #eee;}
+
+.tt-color-contrast3-hover{ border-color: grey; background: #eee;}
+.tt-color-contrast3{ border-color: #ccc; background-color: #fcfcfc;}

@@ -26,7 +26,7 @@ public class MonthDetailPresenter extends BasePresenter<MonthDetailPresenter.Vie
 		void insertDay(int weekOfMonth, int dayOfWeek, int dayOfMonth, Widget widget, ClickableHoverSyncPanel synchPanel);
 		HasClickHandlers weekTargetClickHandlers(int weekOfMonth);
 		HasText weekTargetText(int weekOfMonth);
-		ClickableHoverSyncPanel getWeekSyncPanel(int weekOfMonth); 
+		//ClickableHoverSyncPanel getWeekSyncPanel(int weekOfMonth); 
 	}
 	
 	public void setMonth(Month month){
