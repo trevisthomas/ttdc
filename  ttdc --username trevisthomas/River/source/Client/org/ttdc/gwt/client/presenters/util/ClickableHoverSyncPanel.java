@@ -18,26 +18,43 @@ import com.google.gwt.user.client.ui.Widget;
 public class ClickableHoverSyncPanel extends FocusPanel{
 	private String hoverStyle;
 	private String style;
-	private final HistoryToken token;
+	private String childHoverStyle;
+	private String childStyle;
+	private HistoryToken token;
 	private List<Widget> synched = new ArrayList<Widget>();
-	private boolean disableHoverStyleOnSelf = false;
+	//private boolean disableHoverStyleOnSelf = false;
 	
-	public ClickableHoverSyncPanel(HistoryToken token, String style, String hoverStyle) {
-		this.token = token;
+	public ClickableHoverSyncPanel(String style, String hoverStyle) {
 		this.hoverStyle = hoverStyle;
 		this.style=style;
+		this.childHoverStyle = hoverStyle;
+		this.childStyle=style;
 		init();
 	}
 	
-	public ClickableHoverSyncPanel(String style, String hoverStyle) {
-		this.token = null;
+	
+	
+	public HistoryToken getToken() {
+		return token;
+	}
+
+	public void setToken(HistoryToken token) {
+		this.token = token;
+	}
+
+
+
+	public ClickableHoverSyncPanel(String style, String hoverStyle, String childStyle, String childHoverStyle) {
 		this.hoverStyle = hoverStyle;
 		this.style=style;
+		this.childHoverStyle = childHoverStyle;
+		this.childStyle=childStyle;
 		init();
 	}
 	
 	public void addSynchedHoverTarget(Widget widget){
 		synched.add(widget);
+		performMouseOut();
 	}
 	
 	@Override
@@ -47,7 +64,7 @@ public class ClickableHoverSyncPanel extends FocusPanel{
 	}
 	
 	private void init(){
-		setStyleName(style);
+		performMouseOut();
 		addStyleName("tt-cursor-pointer");
 		addMouseOverHandler(new MouseOverHandler() {
 			@Override
@@ -73,8 +90,8 @@ public class ClickableHoverSyncPanel extends FocusPanel{
 	}
 	
 	private void performMouseOver() {
-		broadcastRemoveStyle(style);
-		broadcastAddStyle(hoverStyle);
+		broadcastRemoveStyle(style, childStyle);
+		broadcastAddStyle(hoverStyle, childHoverStyle);
 		for(Widget w : synched){
 			if(w instanceof ClickableHoverSyncPanel){
 				((ClickableHoverSyncPanel)w).performMouseOver();
@@ -83,8 +100,8 @@ public class ClickableHoverSyncPanel extends FocusPanel{
 	}
 	
 	private void performMouseOut() {
-		broadcastRemoveStyle(hoverStyle);
-		broadcastAddStyle(style);
+		broadcastRemoveStyle(hoverStyle, childHoverStyle);
+		broadcastAddStyle(style, childStyle);
 		for(Widget w : synched){
 			if(w instanceof ClickableHoverSyncPanel){
 				((ClickableHoverSyncPanel)w).performMouseOut();
@@ -92,31 +109,31 @@ public class ClickableHoverSyncPanel extends FocusPanel{
 		}
 	}
 	
-	private void broadcastAddStyle(String hoverStyle) {
-		if(!isDisableHoverStyleOnSelf())
-			addStyleName(hoverStyle);	
+	private void broadcastAddStyle(String css, String css2) {
+//		if(!isDisableHoverStyleOnSelf())
+			addStyleName(css);	
 		for(Widget w : synched){
 			if(!(w instanceof ClickableHoverSyncPanel)){
-				w.addStyleName(hoverStyle);
+				w.addStyleName(css2);
 			}
 		}
 	}
 	
-	private void broadcastRemoveStyle(String hoverStyle) {
-		if(!isDisableHoverStyleOnSelf())
-			removeStyleName(hoverStyle);
+	private void broadcastRemoveStyle(String css, String css2) {
+//		if(!isDisableHoverStyleOnSelf())
+			removeStyleName(css);
 		for(Widget w : synched){
 			if(!(w instanceof ClickableHoverSyncPanel)){
-				w.removeStyleName(hoverStyle);
+				w.removeStyleName(css2);
 			}
 		}
 	}
 
-	public void setDisableHoverStyleOnSelf(boolean b) {
-		disableHoverStyleOnSelf = b;
-	}
-	
-	public boolean isDisableHoverStyleOnSelf() {
-		return disableHoverStyleOnSelf;
-	}
+//	public void setDisableHoverStyleOnSelf(boolean b) {
+//		disableHoverStyleOnSelf = b;
+//	}
+//	
+//	public boolean isDisableHoverStyleOnSelf() {
+//		return disableHoverStyleOnSelf;
+//	}
 }

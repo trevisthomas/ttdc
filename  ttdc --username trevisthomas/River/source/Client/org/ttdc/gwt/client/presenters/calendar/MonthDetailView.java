@@ -1,5 +1,8 @@
 package org.ttdc.gwt.client.presenters.calendar;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.ttdc.gwt.client.presenters.util.ClickableHoverSyncPanel;
 
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -43,27 +46,40 @@ public class MonthDetailView implements MonthDetailPresenter.View{
 		return (Label)getWeekSyncPanel(weekOfMonth).getWidget();
 	}
 	
-	@Override
-	public ClickableHoverSyncPanel getWeekSyncPanel(int weekOfMonth){
+	
+	private ClickableHoverSyncPanel getWeekSyncPanel(int weekOfMonth){
 		return getWeekLabelFromGrid(weekOfMonth);
 	}
 	
+	private final Map<Integer, ClickableHoverSyncPanel> map = new HashMap<Integer, ClickableHoverSyncPanel>();
+	
 	private ClickableHoverSyncPanel getWeekLabelFromGrid(int weekOfMonth){
-		Widget w = mainPanel.getWidget(weekOfMonth, 0);
-		if(w != null){
-			return (ClickableHoverSyncPanel)w;
+		//Widget w = mainPanel.getWidget(weekOfMonth, 0);
+		//ClickableHoverSyncPanel panel = map.get(weekOfMonth);
+		if(map.containsKey(weekOfMonth)){
+			return map.get(weekOfMonth);
 		}
 		else{
-			ClickableHoverSyncPanel clickablePanel = new ClickableHoverSyncPanel("tt-color-contrast2","tt-color-contrast2-hover");
+			ClickableHoverSyncPanel clickablePanel = new ClickableHoverSyncPanel("tt-color-contrast1","tt-color-contrast1-hover");
 			//clickablePanel.setDisableHoverStyleOnSelf(true);
 			//clickablePanel.setStyleName("tt-color-contrast2");
 			
+			Grid table = new Grid(2,1);
+			table.setStyleName("tt-fill-both");
+			table.getRowFormatter().addStyleName(0, "tt-calendar-month-day-header");
+			table.setWidget(1, 0, clickablePanel);
+			
 			Label label = new Label();
 			clickablePanel.add(label);
-			mainPanel.setWidget(weekOfMonth, 0, clickablePanel);
+			mainPanel.setWidget(weekOfMonth, 0, table);
 			mainPanel.getCellFormatter().addStyleName(weekOfMonth, 0, "tt-fill-height");
 			clickablePanel.addStyleName("tt-fill-both");
+			
+			map.put(weekOfMonth, clickablePanel);
+			
 			return clickablePanel;
+			
+			
 		}
 	}
 

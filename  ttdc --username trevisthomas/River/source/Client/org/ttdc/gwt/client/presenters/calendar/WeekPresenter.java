@@ -81,8 +81,8 @@ public class WeekPresenter extends BasePresenter<WeekPresenter.View>{
 	
 	private ClickableHoverSyncPanel buildDayHeaderCellWidget(final Integer month, final Integer day,final String name,final HistoryToken token){
 		
-		final ClickableHoverSyncPanel widget = new ClickableHoverSyncPanel(token,"tt-color-contrast2","tt-color-contrast2-hover");
-		
+		final ClickableHoverSyncPanel widget = new ClickableHoverSyncPanel("tt-color-contrast2","tt-color-contrast3-hover","tt-color-contrast2","tt-color-contrast3-hover" );
+		widget.setToken(token);
 		VerticalPanel panel = new VerticalPanel();
 		HTML dateWidget = new HTML(month+"/"+day);
 		dateWidget.setStyleName("tt-text-huge");
