@@ -6,6 +6,11 @@ import com.google.gwt.user.client.ui.Widget;
 public class YearView implements YearPresenter.View{
 	private final Grid mainPanel = new Grid(3,4);
 	
+	
+	public YearView() {
+		mainPanel.setStyleName("tt-center");
+	}
+	
 	@Override
 	public Widget getWidget() {
 		return mainPanel;
@@ -25,7 +30,10 @@ public class YearView implements YearPresenter.View{
 		}
 		int i = monthOfYear-1;
 		mainPanel.setWidget(row, col-1 , widget);
-		
+		//mainPanel.addStyleName("")
+		//mainPanel.getCellFormatter().setWidth(row, col-1, "230");
+		mainPanel.getCellFormatter().setStyleName(row, col-1, "tt-calendar-year-month-cell");
+		widget.addStyleName("tt-center");
 	}
 	
 }

@@ -95,7 +95,7 @@ public class InteractiveCalendarPresenter extends BasePresenter<InteractiveCalen
 	private void showCalendar(int year, int monthOfYear) {
 		if(PresenterHelpers.isWidgetEmpty(view.calendarPanel())){
 			monthPresenter = injector.getMonthPresenter();
-			monthPresenter.init(year, monthOfYear);
+			monthPresenter.initInteractive(year, monthOfYear);
 			if(mode.equals(Mode.DATE_PICKER_MODE))
 				monthPresenter.setSelectableDayMode(true);
 			else

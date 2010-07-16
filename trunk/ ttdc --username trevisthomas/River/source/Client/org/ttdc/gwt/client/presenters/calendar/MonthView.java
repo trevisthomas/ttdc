@@ -3,9 +3,13 @@ package org.ttdc.gwt.client.presenters.calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.ttdc.gwt.client.presenters.util.ClickableHoverSyncPanel;
 import org.ttdc.gwt.client.presenters.util.ClickableIconPanel;
 import org.ttdc.gwt.shared.calender.Day;
 
+import com.google.gwt.dom.client.NativeEvent;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
@@ -50,6 +54,8 @@ public class MonthView implements MonthPresenter.View{
 		//Init that only happens once
 		headerPanelGrid.setWidget(0, 1, headerPanel);
 		
+		grid.addStyleName("tt-calendar-small-month");
+		
 	}
 	
 	@Override
@@ -85,15 +91,15 @@ public class MonthView implements MonthPresenter.View{
 		mainPanel.add(controls);
 		controls.add(clearButton);
 		controls.add(nowButton);
-		
 		setupHeader();
 	}
 	
 		
 	
 	private final void setupHeader(){
-		for(int dayOfWeek = 1 ; dayOfWeek < 8 ; dayOfWeek++)
-			grid.setWidget(0, dayOfWeek, new Label(CalendarHelpers.getDayAbbreviation(dayOfWeek)));
+		for(int dayOfWeek = 1 ; dayOfWeek < 8 ; dayOfWeek++){
+			grid.setWidget(0, dayOfWeek, createFilledCenteredLabel(CalendarHelpers.getDayAbbreviation(dayOfWeek)));
+		}
 	}
 	
 	@Override
@@ -101,21 +107,26 @@ public class MonthView implements MonthPresenter.View{
 		dayClickHandler = handler;
 	}
 
-	@Override
-	public void insertDay(int weekOfMonth, int dayOfWeek, int dayOfMonth, Day day, Widget widget) {
-		widget.setStyleName("tt-calendar-year-day");
-		ClickableDay clickableDay = new ClickableDay(day);
-		clickableDay.add(widget);
-		grid.setWidget(weekOfMonth, dayOfWeek, widget);
+//	@Override
+//	public void insertDay(int weekOfMonth, int dayOfWeek, int dayOfMonth, Day day, Widget widget) {
+////		widget.setStyleName("tt-calendar-year-day");
+//		ClickableDay clickableDay = new ClickableDay(day);
+//		clickableDay.add(widget);
+//		grid.setWidget(weekOfMonth, dayOfWeek, widget);
+//		//grid.getColumnFormatter().setStyleName("", arg1);
+//	}
+	
+	
+	private Label createFilledCenteredLabel(String labelText){
+		Label label = new Label(labelText);
+		label.setStyleName("tt-fill-both tt-text-center");
+		return label;
 	}
-	
-	
-	
 	@Override
 	public void insertDay(int weekOfMonth, int dayOfWeek, int dayOfMonth, Day day) {
 		//SimplePanel simpleDay = new SimplePanel();
-		Label dayLabel = new Label();
-		dayLabel.setStyleName("tt-calendar-year-day");
+		Label dayLabel = createFilledCenteredLabel("");
+//		dayLabel.setStyleName("tt-calendar-year-day");
 		
 		dayLabel.setText(""+day.getDay());
 		if(day.isToday())
@@ -127,6 +138,10 @@ public class MonthView implements MonthPresenter.View{
 		
 		clickableDay.add(dayLabel);
 		grid.setWidget(weekOfMonth, dayOfWeek, clickableDay);
+		
+		ClickableHoverSyncPanel weekClicker = getWeekLabelFromGrid(weekOfMonth);
+		
+		weekClicker.addSynchedHoverTarget(clickableDay);
 	}
 	
 	
@@ -136,16 +151,21 @@ public class MonthView implements MonthPresenter.View{
 		return getWeekLabelFromGrid(weekOfMonth);
 	}
 
-	private HasClickHandlers getWeekLabelFromGrid(int weekOfMonth){
+	private ClickableHoverSyncPanel getWeekLabelFromGrid(int weekOfMonth){
 		Widget w = grid.getWidget(weekOfMonth, 0);
 		if(w != null){
-			return (Label)w;
+			return (ClickableHoverSyncPanel)w;
 		}
 		else{
-			FocusPanel focusPanel = new FocusPanel(new Label("*"));
-			focusPanel.addStyleName("tt-calendar-year-week-target");
-			grid.setWidget(weekOfMonth, 0, focusPanel);
-			return focusPanel;
+			ClickableHoverSyncPanel weekClicker = new ClickableHoverSyncPanel("tt-color-contrast1","tt-color-contrast1-hover");
+			weekClicker.setStyleName("tt-calendar-year-week-target tt-float-right");
+			weekClicker.add(new Label("+"));
+			grid.setWidget(weekOfMonth, 0, weekClicker);
+//			FocusPanel focusPanel = new FocusPanel(new Label("*"));
+//			focusPanel.addStyleName("tt-calendar-year-week-target tt-float-right");
+//			grid.setWidget(weekOfMonth, 0, focusPanel);
+//			return focusPanel;
+			return weekClicker;
 		}
 	}
 	
@@ -202,7 +222,7 @@ public class MonthView implements MonthPresenter.View{
 	 *
 	 */
 	public interface DayClickHandler{
-		void onDayClick(Day day);
+		void onDayClick(ClickableDay day);
 	} 
 	
 	
@@ -228,50 +248,96 @@ public class MonthView implements MonthPresenter.View{
 	}
 	
 	
-	class ClickableDay extends FocusPanel{
-		private String hoverStyle = "tt-highlight";
+//	class ClickableDay extends FocusPanel{
+//		private String hoverStyle = "tt-color-contrast2-hover";
+//		private final Day day;
+//		
+//		public Day getDay() {
+//			return day;
+//		}
+//		public void highlight(){
+//			addStyleName("tt-color-selected");
+//		}
+//		public void removeHighlight(){
+//			removeStyleName("tt-color-selected");
+//		}
+//		
+//		public ClickableDay(Day day) {
+//			dayMap.put(day, this);
+//			//this.handler = handler;
+//			this.day = day;
+//			
+//			setStyleName("tt-cursor-pointer tt-border tt-fill-both");
+//			//addStyleName("tt-calendar-small-month-day");
+//			if(day.isContent()){
+//				addStyleName("tt-calendar-small-month-dayHasContent");	
+//			}
+//			
+//			addMouseOverHandler(new MouseOverHandler() {
+//				@Override
+//				public void onMouseOver(MouseOverEvent event) {
+//					addStyleName(hoverStyle);
+//				}
+//			});
+//			
+//			addMouseOutHandler(new MouseOutHandler() {
+//				@Override
+//				public void onMouseOut(MouseOutEvent event) {
+//					removeStyleName(hoverStyle);
+//				}
+//			});
+//			
+//			addMouseUpHandler(new MouseUpHandler() {
+//				@Override
+//				public void onMouseUp(MouseUpEvent event) {
+//					if(event.getNativeButton() == NativeEvent.BUTTON_LEFT){
+//						if(dayClickHandler != null)
+//							dayClickHandler.onDayClick(ClickableDay.this);
+//					
+//					}
+//				}
+//			});
+//			
+//			
+//		}
+//	}
+	
+	class ClickableDay extends ClickableHoverSyncPanel{
 		private final Day day;
 		
+		public Day getDay() {
+			return day;
+		}
 		public void highlight(){
-			addStyleName("tt-calendar-month-daySelected");
+			addStyleName("tt-color-selected");
 		}
 		public void removeHighlight(){
-			removeStyleName("tt-calendar-month-daySelected");
+			removeStyleName("tt-color-selected");
 		}
 		
 		public ClickableDay(Day day) {
+			super("tt-color-contrast3","tt-color-contrast3-hover","tt-color-contrast2","tt-color-contrast2-hover");
 			dayMap.put(day, this);
 			//this.handler = handler;
 			this.day = day;
-			setStyleName("tt-cursor-pointer");
-			addStyleName("tt-calendar-small-month-day");
+			
+			setStyleName("tt-border tt-fill-both");
+			//addStyleName("tt-calendar-small-month-day");
 			if(day.isContent()){
-				addStyleName("tt-calendar-small-month-dayHasContent");	
+				//addStyleName("tt-calendar-small-month-dayHasContent");
+				setStyle("tt-color-contrast1");
+				setHoverStyle("tt-color-contrast1-hover");
 			}
 			
-			addMouseOverHandler(new MouseOverHandler() {
+			addClickHandler(new ClickHandler() {
 				@Override
-				public void onMouseOver(MouseOverEvent event) {
-					addStyleName(hoverStyle);
-				}
-			});
-			
-			addMouseOutHandler(new MouseOutHandler() {
-				@Override
-				public void onMouseOut(MouseOutEvent event) {
-					removeStyleName(hoverStyle);
-				}
-			});
-			
-			addMouseUpHandler(new MouseUpHandler() {
-				@Override
-				public void onMouseUp(MouseUpEvent event) {
+				public void onClick(ClickEvent event) {
 					if(dayClickHandler != null)
-						dayClickHandler.onDayClick(ClickableDay.this.day);
-					
-					highlight();
+						dayClickHandler.onDayClick(ClickableDay.this);
 				}
 			});
+			
+			
 		}
 	}
 

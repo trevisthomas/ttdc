@@ -114,11 +114,17 @@ body{text-align:center; margin: 0 auto;}
 .tt-calendar-year-day{}
 .tt-calendar-year-week-target{width:10px;background-color: #eee;}
 .tt-calendar-year-month{}
+.tt-calendar-year-month-cell{width:230px;}
 .tt-calendar-is-today{color:blue; background: #b0c4de}
 .tt-calendar-is-future{}
 
 .tt-calendar-scale-selector{width:100px; height:40px; text-align: center; float: left;}
 .tt-calendar-scale-selector div{  margin: 4px auto; width: 100%}
+
+
+.tt-calendar-small-month{}
+.tt-calendar-small-month td{width:24px;}
+.tt-calendar-small-month tr{height:24px;}
 
 .tt-post-summary-text {float: left;}
 .tt-post-summary-spacer {float: left;}
@@ -131,9 +137,8 @@ body{text-align:center; margin: 0 auto;}
 .tt-search-panel{height:30px; border: solid black 1px; background: gray;}
 .tt-search-panel-adv{width:498px; height:200px; background: gray;  border: solid black; border-width: 0 1px 1px 1px; }
 
-.tt-highlight{border: 1px green solid; background-color: #ccc;}
 .tt-calendar-small-month-dayHasContent{ font: bolder; background-color: #eee}
-.tt-calendar-month-daySelected{ border: solid yellow 1px; background-color: #fc5}
+.tt-calendar-small-month-daySelected{ border: solid yellow 1px; background-color: #fc5}
 
 .tt-special-border-bottom{border: white solid; border-width: 0 0 2px 0;}
 
@@ -145,6 +150,8 @@ body{text-align:center; margin: 0 auto;}
 /* 
  * Colors to be moved into color css
  */
+ 
+.tt-color-selected{border: solid yellow; background-color: #fc5}
 .tt-color-contrast1{ background: grey; color: white; border-color: #eee;}
 .tt-color-contrast1-hover{ background: #eee; color: black; border-color: grey;}
 .tt-color-contrast2-hover{ border-color: grey; background: #eee;}

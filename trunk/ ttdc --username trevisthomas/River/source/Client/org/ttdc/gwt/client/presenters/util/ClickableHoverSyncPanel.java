@@ -17,6 +17,8 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class ClickableHoverSyncPanel extends FocusPanel{
 	private String hoverStyle;
+	
+
 	private String style;
 	private String childHoverStyle;
 	private String childStyle;
@@ -127,6 +129,51 @@ public class ClickableHoverSyncPanel extends FocusPanel{
 				w.removeStyleName(css2);
 			}
 		}
+	}
+	protected String getHoverStyle() {
+		return hoverStyle;
+	}
+
+
+
+	protected void setHoverStyle(String hoverStyle) {
+		this.hoverStyle = hoverStyle;
+	}
+
+
+
+	protected String getStyle() {
+		return style;
+	}
+
+
+
+	protected void setStyle(String style) {
+		this.style = style;
+	}
+
+
+
+	protected String getChildHoverStyle() {
+		return childHoverStyle;
+	}
+
+
+
+	protected void setChildHoverStyle(String childHoverStyle) {
+		this.childHoverStyle = childHoverStyle;
+	}
+
+
+
+	protected String getChildStyle() {
+		return childStyle;
+	}
+
+
+
+	protected void setChildStyle(String childStyle) {
+		this.childStyle = childStyle;
 	}
 
 //	public void setDisableHoverStyleOnSelf(boolean b) {

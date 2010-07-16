@@ -39,9 +39,10 @@ public class DayOfMonthView implements DayOfMonthPresenter.View{
 		bodyGrid.addStyleName("tt-fill-both");
 		bodyGrid.setWidget(0, 0, header);
 		bodyGrid.getRowFormatter().addStyleName(0, "tt-calendar-month-day-header");
-			
+		
 		threadSummaryPanel.setStyleName("tt-fill-both tt-border tt-calendar-month-day-body");
 		threadSummaryPanel.add(threadSummaryVerticalTable);
+		threadSummaryVerticalTable.setStyleName("tt-text-small");
 		bodyGrid.setWidget(1, 0,threadSummaryPanel);
 		
 		header.addSynchedHoverTarget(threadSummaryPanel);
