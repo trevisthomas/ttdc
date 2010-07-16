@@ -39,6 +39,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.datepicker.client.CalendarUtil;
 import com.google.inject.Inject;
 
 public class CalendarPanel extends BasePageComposite{
@@ -267,7 +268,7 @@ public class CalendarPanel extends BasePageComposite{
 		monthDetailPresenter.setMonth(result.getMonth());
 		calendarBodyElement.clear();
 		calendarBodyElement.add(monthDetailPresenter.getWidget());
-		calendarTitleElement.setText( "TODO: Month "+result.getMonth().getMonthNumber()+" needs a name");
+		calendarTitleElement.setText( CalendarHelpers.getMonthName(result.getMonth().getMonthNumber()) + " " + result.getMonth().getYearNumber());
 				
 		showSearchWithResults(result);
 		

@@ -6,6 +6,7 @@ import java.util.List;
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.messaging.EventBus;
 import org.ttdc.gwt.client.messaging.history.HistoryToken;
+import org.ttdc.gwt.client.presenters.calendar.MonthView.ClickableDay;
 import org.ttdc.gwt.client.presenters.calendar.MonthView.DayClickHandler;
 import org.ttdc.gwt.client.presenters.shared.BasePresenter;
 import org.ttdc.gwt.client.presenters.shared.BaseView;
@@ -26,7 +27,7 @@ import com.google.inject.Inject;
 
 public class MonthPresenter extends BasePresenter<MonthPresenter.View> implements DayClickHandler{
 	public interface View extends BaseView{
-		void insertDay(int weekOfMonth, int dayOfWeek, int dayOfMonth, Day day, Widget widget);
+		//void insertDay(int weekOfMonth, int dayOfWeek, int dayOfMonth, Day day, Widget widget);
 		void insertDay(int weekOfMonth, int dayOfWeek, int dayOfMonth, Day day);
 		HasClickHandlers weekTargetClickHandlers(int weekOfMonth);
 		HasWidgets monthHeaderTarget();
@@ -56,7 +57,7 @@ public class MonthPresenter extends BasePresenter<MonthPresenter.View> implement
 	private int nextMonth;
 	private int year;
 	private int month;
-	
+	//private boolean interactive;
 	private Day now;
 	
 	private Day selectedDay = null;
@@ -101,16 +102,17 @@ public class MonthPresenter extends BasePresenter<MonthPresenter.View> implement
 			}
 		});
 		
-		//view.enableSelectableDayMode(selectableDayMode);
+		view.enableSelectableDayMode(selectableDayMode);
 	}
 	
 	
 	public void init(Month month){
 		renderMonth(month,false);
 		view.setDayClickHandler(this);
+		//view.enableSelectableDayMode(false);
 	}
 	
-	public void init(int year,int monthOfYear){
+	public void initInteractive(int year,int monthOfYear){
 		if(dayClickHandler == null)
 			init(year, monthOfYear, this);
 		else
@@ -203,6 +205,7 @@ public class MonthPresenter extends BasePresenter<MonthPresenter.View> implement
 				}
 				dayOfWeek++;
 			}
+			
 			weekOfMonth++;
 		}
 	}
@@ -219,13 +222,14 @@ public class MonthPresenter extends BasePresenter<MonthPresenter.View> implement
 	 * Called when a user clicks a day in the calendar 
 	 */
 	@Override
-	public void onDayClick(Day day) {
+	public void onDayClick(ClickableDay day) {
 		if(isSelectableDayMode()){
 			//processDayClickAsSelection(day);
-			view.setSelectedDay(day);
+			view.setSelectedDay(day.getDay());
+			day.highlight();
 		}
 		else{
-			processDayClickAsLink(day);
+			processDayClickAsLink(day.getDay());
 		}
 	}
 	
