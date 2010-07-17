@@ -8,7 +8,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 
 public class WeekClickHandler implements ClickHandler{
 	private HistoryToken token;
-	WeekClickHandler(HistoryToken token){
+	public WeekClickHandler(HistoryToken token){
 		this.token = token;
 	}
 	

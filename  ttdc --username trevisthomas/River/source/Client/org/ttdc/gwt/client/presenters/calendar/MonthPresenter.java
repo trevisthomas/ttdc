@@ -11,6 +11,7 @@ import org.ttdc.gwt.client.presenters.calendar.MonthView.DayClickHandler;
 import org.ttdc.gwt.client.presenters.shared.BasePresenter;
 import org.ttdc.gwt.client.presenters.shared.BaseView;
 import org.ttdc.gwt.client.presenters.shared.HyperlinkPresenter;
+import org.ttdc.gwt.client.uibinder.calendar.SmallMonthPanel;
 import org.ttdc.gwt.shared.calender.Day;
 import org.ttdc.gwt.shared.calender.Month;
 import org.ttdc.gwt.shared.calender.Week;
@@ -25,6 +26,12 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
+/**
+ * 
+ * see {@link SmallMonthPanel}
+ *
+ */
+@Deprecated
 public class MonthPresenter extends BasePresenter<MonthPresenter.View> implements DayClickHandler{
 	public interface View extends BaseView{
 		//void insertDay(int weekOfMonth, int dayOfWeek, int dayOfMonth, Day day, Widget widget);
@@ -129,7 +136,7 @@ public class MonthPresenter extends BasePresenter<MonthPresenter.View> implement
 	 * sufficent when operating as a stand alone calendar.  Basically It gets it's own data since it 
 	 * needs to have the know how to have a prev next... 
 	 */
-	public void init(int year,int monthOfYear, DayClickHandler handler){
+	private void init(int year,int monthOfYear, DayClickHandler handler){
 		if(handler != null){
 			this.dayClickHandler = handler;
 			view.setDayClickHandler(handler);

@@ -11,6 +11,7 @@ import org.ttdc.gwt.client.presenters.shared.HyperlinkPresenter;
 import org.ttdc.gwt.client.presenters.shared.PopupCalendarDatePresenter;
 import org.ttdc.gwt.client.presenters.shared.UserIdentityPresenter;
 import org.ttdc.gwt.client.uibinder.Navigation;
+import org.ttdc.gwt.client.uibinder.search.SearchBoxPanel;
 import org.ttdc.gwt.shared.calender.CalendarPost;
 
 import com.google.gwt.core.client.GWT;
@@ -27,7 +28,7 @@ public class StandardPageHeaderPanel extends Composite{
     private static final MyUiBinder binder = GWT.create(MyUiBinder.class);
     
     private Injector injector;
-    private final SearchBoxPresenter searchBoxPresenter;
+    private final SearchBoxPanel searchBoxPanel;
     //private final UserIdentityPresenter userIdentityPresenter;
     private final PopupCalendarDatePresenter popupCalendarDatePresenter;
     
@@ -47,11 +48,11 @@ public class StandardPageHeaderPanel extends Composite{
     @Inject
     public StandardPageHeaderPanel(Injector injector) { 
     	this.injector = injector;
-    	searchBoxPresenter = injector.getSearchBoxPresenter();
+    	searchBoxPanel = injector.createSearchBoxPanel();
     	navigation = injector.createNavigation();
     	
     	navigationElement = navigation;
-    	searchElement = searchBoxPresenter.getWidget();
+    	searchElement = searchBoxPanel.getWidget();
     	
 //    	userIdentityPresenter = injector.getUserIdentityPresenter();
 //    	loginElement = userIdentityPresenter.getWidget();
@@ -79,8 +80,8 @@ public class StandardPageHeaderPanel extends Composite{
     	return this;
     }
     
-    public SearchBoxPresenter getSearchBoxPresenter(){
-    	return searchBoxPresenter;
+    public SearchBoxPanel getSearchBoxPresenter(){
+    	return searchBoxPanel;
     }
     
 }

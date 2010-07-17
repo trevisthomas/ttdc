@@ -17,6 +17,7 @@ import org.ttdc.gwt.client.presenters.shared.HyperlinkPresenter;
 import org.ttdc.gwt.client.presenters.shared.PaginationPresenter;
 import org.ttdc.gwt.client.presenters.util.DateRangeLite;
 import org.ttdc.gwt.client.services.BatchCommandTool;
+import org.ttdc.gwt.client.uibinder.search.SearchBoxPanel;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
 import org.ttdc.gwt.shared.commands.SearchPostsCommand;
 import org.ttdc.gwt.shared.commands.SearchTagsCommand;
@@ -33,7 +34,7 @@ import com.google.inject.Inject;
 
 public class SearchResultsPresenter extends BasePresenter<SearchResultsPresenter.View> {
 	private final PostCollectionPresenter postCollection;
-	private final SearchBoxPresenter searchPresenter;
+	private final SearchBoxPanel searchPresenter;
 	private final PaginationPresenter paginationPresenter;
 	private HistoryToken lastToken;
 	
@@ -56,7 +57,7 @@ public class SearchResultsPresenter extends BasePresenter<SearchResultsPresenter
 		super(injector, injector.getSearchResultsView());
 		postCollection = injector.getPostCollectionPresenter();
 		paginationPresenter = injector.getPaginationPresenter();
-		searchPresenter = injector.getSearchBoxPresenter();
+		searchPresenter = injector.createSearchBoxPanel();
 		view.getSiteSearchTarget().add(searchPresenter.getWidget());
 		//Trevis!? Is this a singleton?
 	}

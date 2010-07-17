@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.ttdc.gwt.client.presenters.util.ClickableHoverSyncPanel;
 import org.ttdc.gwt.client.presenters.util.ClickableIconPanel;
+import org.ttdc.gwt.client.uibinder.calendar.SmallMonthPanel;
 import org.ttdc.gwt.shared.calender.Day;
 
 import com.google.gwt.dom.client.NativeEvent;
@@ -18,6 +19,7 @@ import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Grid;
@@ -27,11 +29,18 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+/**
+ * 
+ * see {@link SmallMonthPanel}
+ *
+ */
+@Deprecated
 public class MonthView implements MonthPresenter.View{
 	private final VerticalPanel mainPanel = new VerticalPanel();
 	private final SimplePanel monthNameTarget = new SimplePanel();
 	private final SimplePanel yearNameTarget = new SimplePanel(); 
 	private final FlowPanel headerPanel = new FlowPanel();
+	
 	private final Grid headerPanelGrid = new Grid(1,3); 
 	private final Grid grid = new Grid(7,8);
 	private final ClickableIconPanel prevClickTarget = new ClickableIconPanel("tt-clickable-icon-prev");
@@ -53,6 +62,9 @@ public class MonthView implements MonthPresenter.View{
 		setup();
 		//Init that only happens once
 		headerPanelGrid.setWidget(0, 1, headerPanel);
+		headerPanelGrid.setStyleName("tt-fill");
+		
+		headerPanel.setStyleName("tt-center");
 		
 		grid.addStyleName("tt-calendar-small-month");
 		
@@ -309,10 +321,15 @@ public class MonthView implements MonthPresenter.View{
 			return day;
 		}
 		public void highlight(){
-			addStyleName("tt-color-selected");
+			updatePrimary("tt-color-selected","tt-color-selected-hover");
 		}
 		public void removeHighlight(){
-			removeStyleName("tt-color-selected");
+			if(day.isContent()){
+				updatePrimary("tt-color-contrast1","tt-color-contrast1-hover");
+			}
+			else{
+				updatePrimary("tt-color-contrast3","tt-color-contrast3-hover");
+			}
 		}
 		
 		public ClickableDay(Day day) {
@@ -321,12 +338,10 @@ public class MonthView implements MonthPresenter.View{
 			//this.handler = handler;
 			this.day = day;
 			
-			setStyleName("tt-border tt-fill-both");
+			setStyleName("tt-border tt-calendar-small-month-day");
 			//addStyleName("tt-calendar-small-month-day");
 			if(day.isContent()){
-				//addStyleName("tt-calendar-small-month-dayHasContent");
-				setStyle("tt-color-contrast1");
-				setHoverStyle("tt-color-contrast1-hover");
+				updatePrimary("tt-color-contrast1","tt-color-contrast1-hover");
 			}
 			
 			addClickHandler(new ClickHandler() {

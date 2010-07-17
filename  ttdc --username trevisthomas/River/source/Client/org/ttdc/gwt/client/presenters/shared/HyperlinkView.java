@@ -38,6 +38,7 @@ public class HyperlinkView implements HyperlinkPresenter.View {
 	
 	@Override
 	public Hyperlink getHyperlink() {
+		getWidget();
 		return link;
 	}
 	
