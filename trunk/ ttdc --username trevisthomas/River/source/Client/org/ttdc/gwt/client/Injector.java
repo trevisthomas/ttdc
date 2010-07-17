@@ -94,6 +94,8 @@ import org.ttdc.gwt.client.uibinder.SiteUpdatePanel;
 import org.ttdc.gwt.client.uibinder.calendar.CalendarBreadCrumbPanel;
 import org.ttdc.gwt.client.uibinder.calendar.CalendarPanel;
 import org.ttdc.gwt.client.uibinder.calendar.DayPanel;
+import org.ttdc.gwt.client.uibinder.calendar.InteractiveCalendarPanel;
+import org.ttdc.gwt.client.uibinder.calendar.SmallMonthPanel;
 import org.ttdc.gwt.client.uibinder.dashboard.FilteredPost;
 import org.ttdc.gwt.client.uibinder.post.MoreOptionsPopupPanel;
 import org.ttdc.gwt.client.uibinder.post.NewMoviePanel;
@@ -103,6 +105,8 @@ import org.ttdc.gwt.client.uibinder.post.PostSummaryPanel;
 import org.ttdc.gwt.client.uibinder.post.ReviewSummaryListPanel;
 import org.ttdc.gwt.client.uibinder.post.ReviewSummaryPanel;
 import org.ttdc.gwt.client.uibinder.post.SmallPostSummaryPanel;
+import org.ttdc.gwt.client.uibinder.search.RefineSearchPanel;
+import org.ttdc.gwt.client.uibinder.search.SearchBoxPanel;
 import org.ttdc.gwt.client.uibinder.shared.StandardPageHeaderPanel;
 import org.ttdc.gwt.client.uibinder.shared.UserIdentityPanel;
 
@@ -390,5 +394,9 @@ public interface Injector extends Ginjector {
 	public CalendarPanel createCalendarPanel();
 	public DayPanel createDayPanel();
 	public CalendarBreadCrumbPanel createBreadCrumbPanel();
+	public SmallMonthPanel createSmallMonthPanel();
+	public InteractiveCalendarPanel createInteractiveCalendarPanel();
+	public RefineSearchPanel createRefineSearchPanel();
+	public SearchBoxPanel createSearchBoxPanel();
 }
 

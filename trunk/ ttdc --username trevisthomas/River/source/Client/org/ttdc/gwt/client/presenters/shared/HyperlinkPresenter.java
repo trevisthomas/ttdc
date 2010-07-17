@@ -70,6 +70,7 @@ public class HyperlinkPresenter extends BasePresenter<HyperlinkPresenter.View> {
 	public void setToken(HistoryToken token, String value){
 		view.getHistoryToken().load(token);
 		view.getDisplayName().setText(value);
+		init();//This must be called before the link will render.  
 	}
 	
 	public void setView(String name, String viewConstant){

@@ -3,6 +3,7 @@ package org.ttdc.gwt.client.presenters.calendar;
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.presenters.shared.BasePresenter;
 import org.ttdc.gwt.client.presenters.shared.BaseView;
+import org.ttdc.gwt.client.uibinder.calendar.SmallMonthPanel;
 import org.ttdc.gwt.shared.calender.Month;
 import org.ttdc.gwt.shared.calender.Year;
 
@@ -22,9 +23,9 @@ public class YearPresenter extends BasePresenter<YearPresenter.View>{
 	public void setYear(Year year){
 		for(int mo = 1; mo < 13 ; mo++){
 			Month month = year.getMonth(mo);
-			MonthPresenter monthPresenter = injector.getMonthPresenter();
-			monthPresenter.init(month);
-			getView().insertMonth(mo,monthPresenter.getWidget());
+			SmallMonthPanel monthPanel = injector.createSmallMonthPanel();
+			monthPanel.init(month);
+			getView().insertMonth(mo,monthPanel);
 		}
 	}
 }

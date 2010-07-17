@@ -24,7 +24,6 @@ public class ClickableHoverSyncPanel extends FocusPanel{
 	private String childStyle;
 	private HistoryToken token;
 	private List<Widget> synched = new ArrayList<Widget>();
-	//private boolean disableHoverStyleOnSelf = false;
 	
 	public ClickableHoverSyncPanel(String style, String hoverStyle) {
 		this.hoverStyle = hoverStyle;
@@ -34,8 +33,6 @@ public class ClickableHoverSyncPanel extends FocusPanel{
 		init();
 	}
 	
-	
-	
 	public HistoryToken getToken() {
 		return token;
 	}
@@ -43,8 +40,6 @@ public class ClickableHoverSyncPanel extends FocusPanel{
 	public void setToken(HistoryToken token) {
 		this.token = token;
 	}
-
-
 
 	public ClickableHoverSyncPanel(String style, String hoverStyle, String childStyle, String childHoverStyle) {
 		this.hoverStyle = hoverStyle;
@@ -112,8 +107,7 @@ public class ClickableHoverSyncPanel extends FocusPanel{
 	}
 	
 	private void broadcastAddStyle(String css, String css2) {
-//		if(!isDisableHoverStyleOnSelf())
-			addStyleName(css);	
+		addStyleName(css);	
 		for(Widget w : synched){
 			if(!(w instanceof ClickableHoverSyncPanel)){
 				w.addStyleName(css2);
@@ -122,65 +116,44 @@ public class ClickableHoverSyncPanel extends FocusPanel{
 	}
 	
 	private void broadcastRemoveStyle(String css, String css2) {
-//		if(!isDisableHoverStyleOnSelf())
-			removeStyleName(css);
+		removeStyleName(css);
 		for(Widget w : synched){
 			if(!(w instanceof ClickableHoverSyncPanel)){
 				w.removeStyleName(css2);
 			}
 		}
 	}
+	
+	protected void updatePrimary(String newStyle, String newHoverStyle){
+		removeStyleName(this.style);
+		removeStyleName(this.hoverStyle);
+		this.style = newStyle;
+		this.hoverStyle = newHoverStyle;
+		performMouseOut();
+	}
+	
+	protected void updateChild(String newStyle, String newHoverStyle){
+//		removeStyleName(this.style);
+//		removeStyleName(this.hoverStyle);
+//		this.style = newStyle;
+//		this.hoverStyle = newHoverStyle;
+//		performMouseOut();
+		throw new RuntimeException("Not implemented");
+	}
+	
 	protected String getHoverStyle() {
 		return hoverStyle;
 	}
-
-
-
-	protected void setHoverStyle(String hoverStyle) {
-		this.hoverStyle = hoverStyle;
-	}
-
-
 
 	protected String getStyle() {
 		return style;
 	}
 
-
-
-	protected void setStyle(String style) {
-		this.style = style;
-	}
-
-
-
 	protected String getChildHoverStyle() {
 		return childHoverStyle;
 	}
 
-
-
-	protected void setChildHoverStyle(String childHoverStyle) {
-		this.childHoverStyle = childHoverStyle;
-	}
-
-
-
 	protected String getChildStyle() {
 		return childStyle;
 	}
-
-
-
-	protected void setChildStyle(String childStyle) {
-		this.childStyle = childStyle;
-	}
-
-//	public void setDisableHoverStyleOnSelf(boolean b) {
-//		disableHoverStyleOnSelf = b;
-//	}
-//	
-//	public boolean isDisableHoverStyleOnSelf() {
-//		return disableHoverStyleOnSelf;
-//	}
 }

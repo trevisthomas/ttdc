@@ -7,6 +7,8 @@ import org.ttdc.gwt.client.presenters.calendar.MonthPresenter;
 import org.ttdc.gwt.client.presenters.shared.BasePresenter;
 import org.ttdc.gwt.client.presenters.shared.BaseView;
 import org.ttdc.gwt.client.presenters.util.PresenterHelpers;
+import org.ttdc.gwt.client.uibinder.calendar.InteractiveCalendarPanel;
+import org.ttdc.gwt.client.uibinder.calendar.SmallMonthPanel;
 import org.ttdc.gwt.shared.calender.Day;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -15,6 +17,12 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.inject.Inject;
 
+/**
+ * 
+ * see {@link InteractiveCalendarPanel}
+ *
+ */
+@Deprecated
 public class InteractiveCalendarPresenter extends BasePresenter<InteractiveCalendarPresenter.View>{
 	public interface View extends BaseView{
 		HasWidgets calendarPanel();
@@ -26,7 +34,7 @@ public class InteractiveCalendarPresenter extends BasePresenter<InteractiveCalen
 		HasClickHandlers hideSelectorClickHandler();
 	}
 	private CalendarSelectorModulePresenter selectorPresenter;
-	private MonthPresenter monthPresenter;
+	private SmallMonthPanel monthPresenter;
 	private Mode mode;
 	private Date dateToday;
 
@@ -94,14 +102,14 @@ public class InteractiveCalendarPresenter extends BasePresenter<InteractiveCalen
 	
 	private void showCalendar(int year, int monthOfYear) {
 		if(PresenterHelpers.isWidgetEmpty(view.calendarPanel())){
-			monthPresenter = injector.getMonthPresenter();
+			monthPresenter = injector.createSmallMonthPanel();
 			monthPresenter.initInteractive(year, monthOfYear);
 			if(mode.equals(Mode.DATE_PICKER_MODE))
 				monthPresenter.setSelectableDayMode(true);
 			else
 				monthPresenter.setSelectableDayMode(false);
 			view.calendarPanel().clear();
-			view.calendarPanel().add(monthPresenter.getWidget());
+			view.calendarPanel().add(monthPresenter);
 		}
 		view.showCalendar();
 	}
