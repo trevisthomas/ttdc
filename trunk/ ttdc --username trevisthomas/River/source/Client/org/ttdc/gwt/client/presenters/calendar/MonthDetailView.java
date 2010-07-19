@@ -54,16 +54,11 @@ public class MonthDetailView implements MonthDetailPresenter.View{
 	private final Map<Integer, ClickableHoverSyncPanel> map = new HashMap<Integer, ClickableHoverSyncPanel>();
 	
 	private ClickableHoverSyncPanel getWeekLabelFromGrid(int weekOfMonth){
-		//Widget w = mainPanel.getWidget(weekOfMonth, 0);
-		//ClickableHoverSyncPanel panel = map.get(weekOfMonth);
 		if(map.containsKey(weekOfMonth)){
 			return map.get(weekOfMonth);
 		}
 		else{
 			ClickableHoverSyncPanel clickablePanel = new ClickableHoverSyncPanel("tt-color-contrast1","tt-color-contrast1-hover");
-			//clickablePanel.setDisableHoverStyleOnSelf(true);
-			//clickablePanel.setStyleName("tt-color-contrast2");
-			
 			Grid table = new Grid(2,1);
 			table.setStyleName("tt-fill-both");
 			table.getRowFormatter().addStyleName(0, "tt-calendar-month-day-header");
@@ -78,8 +73,6 @@ public class MonthDetailView implements MonthDetailPresenter.View{
 			map.put(weekOfMonth, clickablePanel);
 			
 			return clickablePanel;
-			
-			
 		}
 	}
 

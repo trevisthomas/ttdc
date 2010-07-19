@@ -54,7 +54,8 @@ public class HistoryEventPresenterManager implements HistoryEventListener{
 			injector.getSearchPresenter().show(event.getSource());
 		}
 		else if(HistoryConstants.VIEW_SEARCH_RESULTS.equals(view)){
-			injector.getSearchResultsPresenter().show(event.getSource());
+			//injector.getSearchResultsPresenter().show(event.getSource());
+			injector.createSearchResultsPanel().show(event.getSource());
 		}
 		else if(HistoryConstants.VIEW_SEARCH_TAG_RESULTS.equals(view)){
 			injector.getSearchTagResultsPresenter().show(event.getSource());

@@ -115,6 +115,7 @@ import org.ttdc.gwt.client.uibinder.post.ReviewSummaryPanel;
 import org.ttdc.gwt.client.uibinder.post.SmallPostSummaryPanel;
 import org.ttdc.gwt.client.uibinder.search.RefineSearchPanel;
 import org.ttdc.gwt.client.uibinder.search.SearchBoxPanel;
+import org.ttdc.gwt.client.uibinder.search.SearchResultsPanel;
 import org.ttdc.gwt.client.uibinder.shared.StandardPageHeaderPanel;
 import org.ttdc.gwt.client.uibinder.shared.UserIdentityPanel;
 
@@ -1472,6 +1473,12 @@ public class MockInjector implements Injector{
 
 	@Override
 	public SearchBoxPanel createSearchBoxPanel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public SearchResultsPanel createSearchResultsPanel() {
 		// TODO Auto-generated method stub
 		return null;
 	}

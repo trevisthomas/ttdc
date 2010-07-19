@@ -11,7 +11,7 @@ body{text-align:center; margin: 0 auto;}
 
 .tt-border{ border:1px black solid;}
 .tt-border-bottom{ border-width: 0 0 1px 0; border-style: solid;}
-.tt-border-bottom-right{ border-width: 0 5px 5px 0; border-style: solid;}
+.tt-border-bottom-right{ border-width: 0 1px 1px 0; border-style: solid;}
 
 .tt-alert{color: red;}
 .tt-post{width: 500px; margin-bottom: 10px;}

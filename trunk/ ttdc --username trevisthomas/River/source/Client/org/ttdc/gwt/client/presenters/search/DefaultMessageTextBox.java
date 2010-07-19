@@ -97,7 +97,15 @@ public class DefaultMessageTextBox extends TextBox{
 	}
 	
 	public String getActiveText(){
-		return message;
+		if(getText().equals(defaultMessage)){
+			if(StringUtil.notEmpty(message))
+				return message;
+			else
+				return "";
+		}
+		else{
+			return getText();
+		}
 	}
 	
 	
