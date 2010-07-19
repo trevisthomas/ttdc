@@ -71,12 +71,13 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
     	refineSearchPanel = injector.createRefineSearchPanel();
     	
     	initWidget(binder.createAndBindUi(this));
-    	
+    	searchPhraseElement.setStyleName("tt-textbox-search");
     	searchPhraseElement.setDefaultMessage("Enter phrase to perform search");
+    	searchPhraseElement.addEnterKeyPressedListener(this);
 		
 		EventBus.getInstance().addListener(this);
 		
-		searchPhraseElement.setStyleName("tt-textbox-search");
+		
 		refineSearchPanel.setStyleName("tt-search-panel-adv");
 		
 		controlsPopup.clear();

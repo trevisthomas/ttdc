@@ -107,6 +107,7 @@ import org.ttdc.gwt.client.uibinder.post.ReviewSummaryPanel;
 import org.ttdc.gwt.client.uibinder.post.SmallPostSummaryPanel;
 import org.ttdc.gwt.client.uibinder.search.RefineSearchPanel;
 import org.ttdc.gwt.client.uibinder.search.SearchBoxPanel;
+import org.ttdc.gwt.client.uibinder.search.SearchResultsPanel;
 import org.ttdc.gwt.client.uibinder.shared.StandardPageHeaderPanel;
 import org.ttdc.gwt.client.uibinder.shared.UserIdentityPanel;
 
@@ -398,5 +399,6 @@ public interface Injector extends Ginjector {
 	public InteractiveCalendarPanel createInteractiveCalendarPanel();
 	public RefineSearchPanel createRefineSearchPanel();
 	public SearchBoxPanel createSearchBoxPanel();
+	public SearchResultsPanel createSearchResultsPanel();
 }
 
