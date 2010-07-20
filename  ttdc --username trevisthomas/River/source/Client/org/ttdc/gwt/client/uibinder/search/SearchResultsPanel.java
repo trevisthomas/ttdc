@@ -46,7 +46,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
-public class SearchResultsPanel extends BasePageComposite{
+public class SearchResultsPanel extends BasePageComposite implements SearchDetailListener{
 	interface MyUiBinder extends UiBinder<Widget, SearchResultsPanel> {}
     private static final MyUiBinder binder = GWT.create(MyUiBinder.class);
     private final HyperlinkPresenter linkPresenter;
@@ -95,7 +95,8 @@ public class SearchResultsPanel extends BasePageComposite{
 		//int pageNumber = Integer.parseInt(args.getParameter(PAGE_NUMBER_KEY,"1"));
 		String phrase = token.getParameter(SEARCH_PHRASE_KEY);
 		
-		pageHeaderPanel.getSearchBoxPresenter().setPhrase(phrase);
+		//pageHeaderPanel.getSearchBoxPresenter().setPhrase(phrase); I think that init takes care of this.
+		pageHeaderPanel.getSearchBoxPresenter().addSearchDetailListener(this);
 		pageHeaderPanel.getSearchBoxPresenter().init(token);
 		
 		if(token.isParameterEq(SEARCH_MODE_KEY,SEARCH_MODE_VALUE_COMMENTS)){
@@ -122,22 +123,6 @@ public class SearchResultsPanel extends BasePageComposite{
 		}
 		//view.show()
 	}
-	
-	private void performSearchForComments(HistoryToken token) {
-		SearchPostsCommand command = createSearchPostsCommand(token);
-		command.setPostSearchType(PostSearchType.REPLIES);
-		searchSummaryDetailElement.setText("TODO fix me 'performSearchForComments'! Searching comments for "+command.getPhrase()+"...");
-		final String phrase = command.getPhrase(); 
-		
-		CommandResultCallback<SearchPostsCommandResult> callback = new CommandResultCallback<SearchPostsCommandResult>(){
-			public void onSuccess(SearchPostsCommandResult result) {
-				addSearchResultsToView(phrase, result);
-			}
-		};
-				
-		injector.getService().execute(command, callback);
-	}
-	
 	
 	private void performSearchForReplySummary(BatchCommandTool batcher, HistoryToken token){
 		SearchPostsCommand command = createSearchPostsCommand(token);
@@ -192,24 +177,6 @@ public class SearchResultsPanel extends BasePageComposite{
 		return command;
 	}
 	
-	private void performSearchForTopics(BatchCommandTool batcher, HistoryToken token){
-		SearchPostsCommand command = createSearchPostsCommand(token);
-		final String phrase = command.getPhrase(); 
-
-		searchSummaryDetailElement.setText("TODO fix me! 'performSearchForTopics' Searching for content matching "+phrase+"...");
-		command.setPostSearchType(PostSearchType.TOPICS); // NOT_REPLIES was broken, check PostSearchDao before using
-
-		CommandResultCallback<SearchPostsCommandResult> callback = new CommandResultCallback<SearchPostsCommandResult>(){
-			public void onSuccess(SearchPostsCommandResult result) {
-				PaginatedList<GPost> results = result.getResults();
-				postCollection.setPostList(results.getList());
-				
-				addSearchResultsToView(phrase, result);
-			}
-		};
-		batcher.add(command, callback);
-	}
-	
 	private void performSearchForTags(BatchCommandTool batcher, HistoryToken token){
 		tagResultsElement.clear();
 		String phrase = token.getParameter(SEARCH_PHRASE_KEY);
@@ -238,6 +205,56 @@ public class SearchResultsPanel extends BasePageComposite{
 				
 		batcher.add(command, callback);
 	}
+	
+	private void performSearchForTopics(BatchCommandTool batcher, HistoryToken token){
+		SearchPostsCommand command = createSearchPostsCommand(token);
+		final String phrase = command.getPhrase(); 
+
+		//searchSummaryDetailElement.setText("TODO fix me! 'performSearchForTopics' Searching for content matching "+phrase+"...");
+		
+//		searchSummaryDetailElement.setText(createSearchMessage(command));
+		
+		command.setPostSearchType(PostSearchType.TOPICS); // NOT_REPLIES was broken, check PostSearchDao before using
+
+		CommandResultCallback<SearchPostsCommandResult> callback = new CommandResultCallback<SearchPostsCommandResult>(){
+			public void onSuccess(SearchPostsCommandResult result) {
+				PaginatedList<GPost> results = result.getResults();
+				postCollection.setPostList(results.getList());
+				
+				addSearchResultsToView(phrase, result);
+			}
+		};
+		batcher.add(command, callback);
+	}
+	
+//	private String createSearchMessage(SearchPostsCommand command) {
+//		pageHeaderPanel.getSearchBoxPresenter().getPerson
+//		
+//		return null;
+//	}
+
+	@Override
+	public void onSearchDetail(SearchDetail detail) {
+		//pageHeaderPanel.getSearchBoxPresenter().
+		
+		searchSummaryDetailElement.setText("got detail it");
+	}
+
+	private void performSearchForComments(HistoryToken token) {
+		SearchPostsCommand command = createSearchPostsCommand(token);
+		command.setPostSearchType(PostSearchType.REPLIES);
+		searchSummaryDetailElement.setText("TODO fix me 'performSearchForComments'! Searching comments for "+command.getPhrase()+"...");
+		final String phrase = command.getPhrase(); 
+		
+		CommandResultCallback<SearchPostsCommandResult> callback = new CommandResultCallback<SearchPostsCommandResult>(){
+			public void onSuccess(SearchPostsCommandResult result) {
+				addSearchResultsToView(phrase, result);
+			}
+		};
+				
+		injector.getService().execute(command, callback);
+	}
+	
 	
 	private void performSearchInConversation(HistoryToken token) {
 		SearchPostsCommand command = createSearchPostsCommand(token);
