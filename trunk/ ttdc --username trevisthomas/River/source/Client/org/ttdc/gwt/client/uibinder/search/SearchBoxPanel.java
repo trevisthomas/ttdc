@@ -63,10 +63,13 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 	private String threadTitle;
 	private String tagTitles;
 	
+	private SearchDetailListenerSmartCollection searchDetailListenerCollection;
     
     @Inject
     public SearchBoxPanel(Injector injector) { 
     	this.injector = injector;
+    	
+    	searchDetailListenerCollection = new SearchDetailListenerSmartCollection();
     	
     	refineSearchPanel = injector.createRefineSearchPanel();
     	
@@ -327,6 +330,10 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 	public void setTagList(List<GTag> tagList) {
 		if(tagList != null)
 			this.tagList = tagList;
+	}
+
+	public void addSearchDetailListener(SearchDetailListener listener) {
+		searchDetailListenerCollection.addListener(listener);
 	}
 }
 

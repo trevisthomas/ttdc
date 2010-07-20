@@ -24,10 +24,9 @@ public class SearchPostsCommand extends Command<SearchPostsCommandResult> implem
 	private Date startDate;
 	private Date endDate;
 	private String personId;
-
 	private String rootId;
 	private String threadId;
-	
+		
 	private SearchSortBy sortOrder = null;
 	private SortDirection sortDirection = null;
 	
