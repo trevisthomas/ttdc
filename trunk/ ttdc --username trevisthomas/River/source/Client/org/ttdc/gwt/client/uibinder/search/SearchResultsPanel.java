@@ -243,7 +243,7 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 	private void performSearchForComments(HistoryToken token) {
 		SearchPostsCommand command = createSearchPostsCommand(token);
 		command.setPostSearchType(PostSearchType.REPLIES);
-		searchSummaryDetailElement.setText("TODO fix me 'performSearchForComments'! Searching comments for "+command.getPhrase()+"...");
+		//searchSummaryDetailElement.setText("TODO fix me 'performSearchForComments'! Searching comments for "+command.getPhrase()+"...");
 		final String phrase = command.getPhrase(); 
 		
 		CommandResultCallback<SearchPostsCommandResult> callback = new CommandResultCallback<SearchPostsCommandResult>(){
@@ -260,7 +260,7 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 		SearchPostsCommand command = createSearchPostsCommand(token);
 		final String phrase = command.getPhrase(); 
 		
-		searchSummaryDetailElement.setText("TODO: fix this too, Searching comments for "+phrase+"...");
+	//	searchSummaryDetailElement.setText("TODO: fix this too, Searching comments for "+phrase+"...");
 		
 		CommandResultCallback<SearchPostsCommandResult> callback = new CommandResultCallback<SearchPostsCommandResult>(){
 			public void onSuccess(SearchPostsCommandResult result) {
@@ -274,7 +274,7 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 		SearchPostsCommand command = createSearchPostsCommand(token);
 		final String phrase = command.getPhrase(); 
 		
-		searchSummaryDetailElement.setText("TODO: fix this too, Searching comments for "+phrase+"...");
+	//	searchSummaryDetailElement.setText("TODO: fix this too, Searching comments for "+phrase+"...");
 		
 		command.setPostSearchType(PostSearchType.ALL);// 6/21/2010 i added this.  I was guessing.  Search from a thread didnt work without this
 		
@@ -318,7 +318,7 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 		
 		postListElement.clear();
 		postListElement.add(postCollection.getView().getWidget());
-		searchSummaryDetailElement.setText(results.toString());
+		//searchSummaryDetailElement.setText(results.toString());
 		
 		final HistoryToken topicToken = buildHistoryToken(phrase);
 		showPagination(results, topicToken);

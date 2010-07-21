@@ -56,7 +56,7 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 	private String threadId;
 	private String postId;
 	private List<String> tagIdList = new ArrayList<String>();
-	private List<GTag> tagList = new ArrayList<GTag>();
+//	private List<GTag> tagList = new ArrayList<GTag>();
 	private final static PopupPanel controlsPopup = new PopupPanel(false);
 	private final RefineSearchPanel refineSearchPanel;
 	
@@ -79,7 +79,7 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
     	searchPhraseElement.addEnterKeyPressedListener(this);
 		
 		EventBus.getInstance().addListener(this);
-		
+		refineSearchPanel.setSearchDetailListenerCollection(searchDetailListenerCollection);
 		
 		refineSearchPanel.setStyleName("tt-search-panel-adv");
 		
@@ -141,17 +141,22 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 	
 	public void init(HistoryToken token){
 		refineSearchPanel.init(token);
+		searchDetailListenerCollection.setDateRange(refineSearchPanel.getDateRange());
 		
 		BatchCommandTool batcher = new BatchCommandTool();
 
 		threadTitle = "";
 		tagTitles = "";
-		searchPhraseElement.setActiveText(token.getParameter(SEARCH_PHRASE_KEY));
-		
+		String phrase = token.getParameter(SEARCH_PHRASE_KEY);
+		searchPhraseElement.setActiveText(phrase);
+		searchDetailListenerCollection.setPhrase(phrase);
 		PostCrudCommand postCmd = new PostCrudCommand();
 		if(postId != null){
 			postCmd.setPostId(postId);
 			batcher.add(postCmd,buildPostCallback());
+		}
+		else{
+			searchDetailListenerCollection.setThreadTitle("");
 		}
 		
 		tagIdList.addAll(token.getParameterList(SEARCH_TAG_ID_KEY));
@@ -160,13 +165,18 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 			SearchTagsCommand command = new SearchTagsCommand(tagIdList);
 			batcher.add(command,buildTagListCallback());
 		}
-		if(tagList.size() > 0){
-			extractTagTitles(tagList);
+		else{
+			searchDetailListenerCollection.setTags("");
 		}
+//		if(tagList.size() > 0){
+//			extractTagTitles(tagList);
+//		}
 		
 		setDefaultMessage();//Will be over ridden if there is more info to show
 		
 		injector.getService().execute(batcher.getActionList(), batcher);
+		
+		
 	}
 	
 	/**
@@ -201,6 +211,7 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 			sb.append(tag.getValue());
 		}
 		tagTitles = sb.toString();
+		searchDetailListenerCollection.setTags(tagTitles);
 	}
 
 	private CommandResultCallback<PostCommandResult> buildPostCallback() {
@@ -210,6 +221,7 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 				GPost post = result.getPost();
 				threadTitle = post.getTitle();		
 				
+				searchDetailListenerCollection.setThreadTitle(threadTitle);
 				if(post.isRootPost()){
 					//Nothing to do
 					rootId = post.getPostId();
@@ -323,14 +335,14 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 		tagIdList.remove(tagId);
 	}
 	
-	public List<GTag> getTagList() {
-		return tagList;
-	}
-
-	public void setTagList(List<GTag> tagList) {
-		if(tagList != null)
-			this.tagList = tagList;
-	}
+//	public List<GTag> getTagList() {
+//		return tagList;
+//	}
+//
+//	public void setTagList(List<GTag> tagList) {
+//		if(tagList != null)
+//			this.tagList = tagList;
+//	}
 
 	public void addSearchDetailListener(SearchDetailListener listener) {
 		searchDetailListenerCollection.addListener(listener);
