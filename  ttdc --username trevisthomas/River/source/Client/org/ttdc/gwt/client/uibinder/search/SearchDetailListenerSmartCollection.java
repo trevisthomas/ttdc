@@ -23,7 +23,6 @@ public class SearchDetailListenerSmartCollection implements SearchDetail{
 		listeners.add(listener);
 		maybeNotifyListeners();
 	}
-	
 	private String person = null;
 	private String tags = null;
 	private String threadTitle = null;
@@ -88,7 +87,10 @@ public class SearchDetailListenerSmartCollection implements SearchDetail{
 	}
 
 	public void setPhrase(String phrase) {
-		this.phrase = phrase;
+		if(phrase == null)
+			this.phrase = "";
+		else
+			this.phrase = phrase;
 		maybeNotifyListeners();
 	}
 

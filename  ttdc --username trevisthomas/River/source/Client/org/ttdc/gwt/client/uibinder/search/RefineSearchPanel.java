@@ -32,7 +32,7 @@ import com.google.inject.Inject;
 public class RefineSearchPanel extends Composite{
 	interface MyUiBinder extends UiBinder<Widget, RefineSearchPanel> {}
     private static final MyUiBinder binder = GWT.create(MyUiBinder.class);
-    
+    private SearchDetailListenerSmartCollection searchDetailListenerCollection;
     private Injector injector;
     
     //@UiField(provided = true) Grid tableElement =  new Grid(24,2);
@@ -119,12 +119,17 @@ public class RefineSearchPanel extends Composite{
 			public void onSuccess(PersonListCommandResult result) {
 				addPerson("", "");
 				setSelectedCreatorId("");
+				String creatorLogin = "";
 				for(GPerson person : result.getResults().getList()){
 					addPerson(person.getPersonId(), person.getLogin());
+					if(person.getPersonId().equals(creatorId)){
+						creatorLogin = person.getLogin();
+					}
 				}
-				
-				if(creatorId != null)
+				searchDetailListenerCollection.setPerson(creatorLogin);
+				if(creatorId != null){
 					setSelectedCreatorId(creatorId);
+				}
 			}
 		};
 		return replyListCallback;
@@ -161,6 +166,11 @@ public class RefineSearchPanel extends Composite{
 			Date endDate = endDay.toDate();
 			token.addParameter(HistoryConstants.SEARCH_END_DATE, ""+endDate.getTime());
 		}
+	}
+
+	public void setSearchDetailListenerCollection(SearchDetailListenerSmartCollection searchDetailListenerCollection) {
+		this.searchDetailListenerCollection = searchDetailListenerCollection;	
+		
 	}
 
 }
