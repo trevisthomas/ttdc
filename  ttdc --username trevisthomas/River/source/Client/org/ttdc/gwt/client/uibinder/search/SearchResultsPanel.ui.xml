@@ -6,10 +6,16 @@
 	 	<g:Widget styleName="tt-fill" ui:field="pageHeaderElement"/>
 	 	<g:Label ui:field="searchSummaryDetailElement"/>
 	 	<g:Hyperlink styleName="tt-fill" ui:field="expandSearchResultsElement"/>
-	 	<g:SimplePanel styleName="tt-fill" ui:field="postListElement"/>
 	 	<g:SimplePanel styleName="tt-fill" ui:field="tagResultsElement"/>
-	 	<g:SimplePanel styleName="tt-fill" ui:field="paginationElement"/>
-	 	
+	 	<div class="tt-post-container-header">
+	 		<g:Label styleName="tt-float-left" ui:field="pageResultMessageElement"/>
+	 		<g:Hyperlink styleName="tt-float-right" ui:field="prevElement"/>
+	 		<g:Hyperlink styleName="tt-float-right" ui:field="nextElement"/>
+	 	</div>
+	 	<g:SimplePanel styleName="tt-fill" ui:field="postListElement"/>
+	 	<div class="tt-post-container-footer">
+	 		<g:SimplePanel styleName="tt-fill" ui:field="paginationElement"/>
+	 	</div>
 	 </g:HTMLPanel>
 </ui:UiBinder>
 

@@ -11,6 +11,8 @@ import com.google.inject.Inject;
 
 public class PaginationPresenter extends BasePresenter<PaginationPresenter.View>{
 	private String pageNumberKey = PAGE_NUMBER_KEY;
+	private HistoryToken prevToken;
+	private HistoryToken nextToken;
 	
 	public interface View extends BaseView{
 		HasWidgets prevButton();
@@ -80,12 +82,23 @@ public class PaginationPresenter extends BasePresenter<PaginationPresenter.View>
 		return startPage;
 	}
 	
+	public HistoryToken getPrevToken() {
+		return prevToken;
+	}
+
+	public HistoryToken getNextToken() {
+		return nextToken;
+	}
+
 	private void buildNextButton(HistoryToken token, int currentPage) {
 		HyperlinkPresenter nextButtonPresenter = injector.getHyperlinkPresenter();
 		token.setParameter(pageNumberKey, currentPage+1);
 		nextButtonPresenter.setStyleType(HyperlinkPresenter.StyleType.PAGINATOR);
 		nextButtonPresenter.setToken(token, "Next");
 		view.nextButton().add(nextButtonPresenter.getWidget());
+		
+		nextToken = new HistoryToken();
+		nextToken.load(token);
 	}
 
 	private void buildPrevButton(HistoryToken token, int currentPage) {
@@ -94,6 +107,9 @@ public class PaginationPresenter extends BasePresenter<PaginationPresenter.View>
 		prevButtonPresenter.setStyleType(HyperlinkPresenter.StyleType.PAGINATOR);
 		prevButtonPresenter.setToken(token, "Prev");
 		view.prevButton().add(prevButtonPresenter.getWidget());
+		
+		prevToken = new HistoryToken();
+		prevToken.load(token);
 	}
 
 	public String getPageNumberKey() {

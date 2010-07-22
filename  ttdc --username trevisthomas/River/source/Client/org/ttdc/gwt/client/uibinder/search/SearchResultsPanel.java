@@ -50,6 +50,8 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 	interface MyUiBinder extends UiBinder<Widget, SearchResultsPanel> {}
     private static final MyUiBinder binder = GWT.create(MyUiBinder.class);
     private final HyperlinkPresenter linkPresenter;
+    private final HyperlinkPresenter prevLinkPresenter;
+    private final HyperlinkPresenter nextLinkPresenter;
     private StandardPageHeaderPanel pageHeaderPanel;
     private Injector injector;
     
@@ -59,6 +61,10 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
     @UiField(provided = true) SimplePanel paginationElement = new SimplePanel();
     @UiField Label searchSummaryDetailElement;
     @UiField (provided = true) Hyperlink expandSearchResultsElement;
+    @UiField Label pageResultMessageElement;
+    @UiField (provided = true) Hyperlink prevElement;
+    @UiField (provided = true) Hyperlink nextElement;
+    
     private final PostCollectionPresenter postCollection;
 	private final PaginationPresenter paginationPresenter;
 	private HistoryToken lastToken;
@@ -72,8 +78,12 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
     	postCollection = injector.getPostCollectionPresenter();
 		paginationPresenter = injector.getPaginationPresenter();
 		linkPresenter = injector.getHyperlinkPresenter();
+		prevLinkPresenter = injector.getHyperlinkPresenter();
+		nextLinkPresenter = injector.getHyperlinkPresenter();
 		expandSearchResultsElement = linkPresenter.getHyperlink();
 		
+		prevElement = prevLinkPresenter.getHyperlink();
+		nextElement = nextLinkPresenter.getHyperlink();
 		
     	initWidget(binder.createAndBindUi(this));
     	
@@ -327,6 +337,28 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 			paginationPresenter.initialize(topicToken, results);
 			paginationElement.clear();
 			paginationElement.add(paginationPresenter.getWidget());
+			
+			HistoryToken prevToken = paginationPresenter.getPrevToken();
+			HistoryToken nextToken = paginationPresenter.getNextToken();
+			
+			if(prevToken != null){
+				prevLinkPresenter.setToken(nextToken, "prev");
+			}
+			else{
+				prevElement.setVisible(false); 
+			}
+			
+			if(nextToken != null){
+				nextLinkPresenter.setToken(nextToken, "next");
+			}
+			else{
+				nextElement.setVisible(false);
+			}
+			
+		}
+		else{
+			prevElement.setVisible(false); 
+			nextElement.setVisible(false); 
 		}
 	}
 
@@ -353,7 +385,7 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 		
 		postListElement.clear();
 		postListElement.add(postCollection.getView().getWidget());
-		searchSummaryDetailElement.setText(searchSummaryDetailElement.getText() + " " +results.toString());
+		pageResultMessageElement.setText(results.toString());
 		
 		final HistoryToken topicToken = buildHistoryToken(phrase);
 		showPagination(results, topicToken);
