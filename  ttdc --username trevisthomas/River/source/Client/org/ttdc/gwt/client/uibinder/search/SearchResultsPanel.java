@@ -93,7 +93,7 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 	protected void onShow(HistoryToken token) {
 		lastToken = token;
 		//int pageNumber = Integer.parseInt(args.getParameter(PAGE_NUMBER_KEY,"1"));
-		String phrase = token.getParameter(SEARCH_PHRASE_KEY);
+//		String phrase = token.getParameter(SEARCH_PHRASE_KEY);
 		
 		//pageHeaderPanel.getSearchBoxPresenter().setPhrase(phrase); I think that init takes care of this.
 		pageHeaderPanel.getSearchBoxPresenter().addSearchDetailListener(this);
@@ -227,17 +227,52 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 		batcher.add(command, callback);
 	}
 	
-//	private String createSearchMessage(SearchPostsCommand command) {
-//		pageHeaderPanel.getSearchBoxPresenter().getPerson
-//		
-//		return null;
-//	}
-
 	@Override
 	public void onSearchDetail(SearchDetail detail) {
-		//pageHeaderPanel.getSearchBoxPresenter().
+		String date = detail.getDateRange().toString();
+		String creator = detail.getPerson();
+		String tagTitles = detail.getTags();
+		String threadTitle = detail.getThreadTitle();
+		String phrase = detail.getPhrase();
 		
-		searchSummaryDetailElement.setText("got detail it");
+		StringBuilder buff = new StringBuilder();
+		if(StringUtil.notEmpty(phrase)){
+			if(lastToken.isParameterEq(SEARCH_MODE_KEY,SEARCH_MODE_IN_ROOT)){
+				buff.append("Searching for replies containing \'").append(phrase).append("\'");
+			}
+			else if(lastToken.isParameterEq(SEARCH_MODE_KEY,SEARCH_MODE_VALUE_TOPICS)){
+				buff.append("Searching for replies containing \'").append(phrase).append("\'");
+			}
+			else if(lastToken.isParameterEq(SEARCH_MODE_KEY,SEARCH_MODE_IN_THREAD)){
+				buff.append("Searching for replies containing \'").append(phrase).append("\'");
+			}
+			else{
+				buff.append("Searching for replies containing \'").append(phrase).append("\'");
+			}
+		}
+		else{
+			buff.append("Locating all content");
+		}
+		
+		if(StringUtil.notEmpty(creator)){
+			buff.append(" created by ").append(creator);
+		}
+		
+		if(StringUtil.notEmpty(threadTitle)){
+			buff.append(" in ").append(threadTitle);
+		}
+		
+		if(StringUtil.notEmpty(tagTitles)){
+			buff.append(", tagged ").append(tagTitles);
+		}
+		
+		if(StringUtil.notEmpty(date)){
+			buff.append(" added ").append(date);
+		}
+		
+		buff.append(".");
+		
+		searchSummaryDetailElement.setText(buff.toString());
 	}
 
 	private void performSearchForComments(HistoryToken token) {
@@ -318,7 +353,7 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 		
 		postListElement.clear();
 		postListElement.add(postCollection.getView().getWidget());
-		//searchSummaryDetailElement.setText(results.toString());
+		searchSummaryDetailElement.setText(searchSummaryDetailElement.getText() + " " +results.toString());
 		
 		final HistoryToken topicToken = buildHistoryToken(phrase);
 		showPagination(results, topicToken);
