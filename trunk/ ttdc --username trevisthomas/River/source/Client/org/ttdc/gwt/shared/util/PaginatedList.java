@@ -17,13 +17,13 @@ public class PaginatedList<T> implements IsSerializable{
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("Search for: '"+phrase+"' ");
+		//sb.append("Search for: '"+phrase+"' ");
 		if(list.size() == 0){
-			sb.append("found no results.");
+			sb.append("Found no results.");
 		}
 		else{
 			sb.append(
-					"now showing "+(nowShowingFrom())+
+					"Showing "+(nowShowingFrom())+
 					" through "+nowShowingTo()+
 					" of "+totalResults);
 			if(calculateNumberOfPages() > 1){
