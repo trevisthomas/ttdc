@@ -58,7 +58,8 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
     @UiField(provided = true) Widget pageHeaderElement;
     @UiField(provided = true) SimplePanel postListElement = new SimplePanel();
     @UiField(provided = true) SimplePanel tagResultsElement = new SimplePanel();
-    @UiField(provided = true) SimplePanel paginationElement = new SimplePanel();
+    //@UiField(provided = true) SimplePanel paginationElement = new SimplePanel();
+    @UiField(provided = true) Widget paginationElement;
     @UiField Label searchSummaryDetailElement;
     @UiField (provided = true) Hyperlink expandSearchResultsElement;
     @UiField Label pageResultMessageElement;
@@ -81,6 +82,8 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 		prevLinkPresenter = injector.getHyperlinkPresenter();
 		nextLinkPresenter = injector.getHyperlinkPresenter();
 		expandSearchResultsElement = linkPresenter.getHyperlink();
+		
+		paginationElement = paginationPresenter.getWidget();
 		
 		prevElement = prevLinkPresenter.getHyperlink();
 		nextElement = nextLinkPresenter.getHyperlink();
@@ -335,8 +338,8 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 	private void showPagination(PaginatedList<GPost> results, final HistoryToken topicToken) {
 		if(results.calculateNumberOfPages() > 1){
 			paginationPresenter.initialize(topicToken, results);
-			paginationElement.clear();
-			paginationElement.add(paginationPresenter.getWidget());
+			//paginationElement.clear();
+			//paginationElement.add(paginationPresenter.getWidget());
 			
 			HistoryToken prevToken = paginationPresenter.getPrevToken();
 			HistoryToken nextToken = paginationPresenter.getNextToken();

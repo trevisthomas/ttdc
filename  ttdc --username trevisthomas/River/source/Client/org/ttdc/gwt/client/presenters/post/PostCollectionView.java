@@ -20,7 +20,7 @@ public class PostCollectionView implements PostCollectionPresenter.View{
 	}
 	
 	public PostCollectionView() {
-		//postPanel.addStyleName("tt-post-container");
+		postPanel.setStyleName("tt-post-container tt-center");
 	}
 
 	public void setExpanded(boolean expanded) {

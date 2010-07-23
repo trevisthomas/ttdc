@@ -7,14 +7,15 @@
 	 	<g:Label ui:field="searchSummaryDetailElement"/>
 	 	<g:Hyperlink styleName="tt-fill" ui:field="expandSearchResultsElement"/>
 	 	<g:SimplePanel styleName="tt-fill" ui:field="tagResultsElement"/>
-	 	<div class="tt-post-container-header">
+	 	<div class="tt-post-container-header tt-center">
 	 		<g:Label styleName="tt-float-left" ui:field="pageResultMessageElement"/>
-	 		<g:Hyperlink styleName="tt-float-right" ui:field="prevElement"/>
-	 		<g:Hyperlink styleName="tt-float-right" ui:field="nextElement"/>
+	 		<div class="tt-float-right">
+	 			<g:Hyperlink ui:field="prevElement"/> | <g:Hyperlink ui:field="nextElement"/>
+	 		</div>
 	 	</div>
 	 	<g:SimplePanel styleName="tt-fill" ui:field="postListElement"/>
-	 	<div class="tt-post-container-footer">
-	 		<g:SimplePanel styleName="tt-fill" ui:field="paginationElement"/>
+	 	<div class="tt-post-container-footer tt-center">
+	 		<g:Widget styleName="tt-center" ui:field="paginationElement"/>
 	 	</div>
 	 </g:HTMLPanel>
 </ui:UiBinder>
