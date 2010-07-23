@@ -15,7 +15,7 @@ body{text-align:center; margin: 0 auto;}
 
 .tt-alert{color: red;}
 .tt-post{width: 500px; margin-bottom: 10px;}
-.tt-post-container-header{width: 500px;}
+.tt-post-container-header{width: 500px; display: inline-block;}
 .tt-post-container-footer{width: 500px;}
 	
 .tt-text-nano{font-size:7px;}
