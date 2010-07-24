@@ -95,7 +95,9 @@ public class InboxDao extends FilteredPostPaginatedDaoBase{
 	}
 
 	public boolean isRead(Post post) {
-		return post.getDate().before(getLastReadDate());
+		//This method is brutal.  Speed it up
+		//return post.getDate().before(getLastReadDate());
+		return false;
 	}
 
 	public void markSiteRead() {

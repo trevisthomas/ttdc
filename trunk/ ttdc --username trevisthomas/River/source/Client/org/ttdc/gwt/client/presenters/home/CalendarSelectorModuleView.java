@@ -30,6 +30,7 @@ public class CalendarSelectorModuleView implements CalendarSelectorModulePresent
 	private Map<Integer, Year> yearMap = new HashMap<Integer, Year>();
 	
 	public CalendarSelectorModuleView() {
+		main.setStyleName("tt-calendar-month-year-selector-module");
 		main.add(monthGrid);
 		main.add(yearGrid);
 		yearGrid.setWidget(0, 0, prevPage);
