@@ -4,15 +4,7 @@
     xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 	 <g:HTMLPanel>
 	 	<g:Widget styleName="tt-fill" ui:field="pageHeaderElement"/>
-	 	<div class="tt-fill tt-float-container">
-		 			<g:SimplePanel styleName="tt-float-right" ui:field="scaleElement"/>
-	 				<g:SimplePanel styleName="tt-float-left" ui:field="prevElement"/>
-	 				<g:SimplePanel styleName="tt-float-left" ui:field="nextElement"/>
-	 	</div>
-	 	
-	 	<g:SimplePanel ui:field="calendarBreadCrumbElement" styleName="tt-fill tt-text-right">
-	 		
-	 	</g:SimplePanel>
+	 	<g:SimplePanel ui:field="calendarBreadCrumbElement" />
 	 	
 		<div class="tt-fill">
 			<g:Label styleName="tt-text-center tt-text-huge" ui:field="calendarTitleElement"/>

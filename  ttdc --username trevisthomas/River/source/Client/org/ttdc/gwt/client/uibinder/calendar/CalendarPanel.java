@@ -53,9 +53,7 @@ public class CalendarPanel extends BasePageComposite{
     private final CalendarBreadCrumbPanel calendarBreadCrumbPanel;
     
     @UiField(provided = true) Widget pageHeaderElement;
-    @UiField(provided = true) SimplePanel scaleElement = new SimplePanel();
-    @UiField(provided = true) SimplePanel prevElement = new SimplePanel();
-    @UiField(provided = true) SimplePanel nextElement = new SimplePanel();
+    
     @UiField Label calendarTitleElement;
     @UiField(provided = true) SimplePanel calendarBodyElement = new SimplePanel();
     @UiField SimplePanel calendarBreadCrumbElement;    
@@ -295,37 +293,37 @@ public class CalendarPanel extends BasePageComposite{
 	}
 
 	
-	private void setupCalendarScale(CalendarCommandResult result) {
-		String scale = "";
-		if(CalendarCommand.Scope.DAY.equals(result.getScope()))
-			scale = HistoryConstants.CALENDAR_SCALE_VALUE_DAY;
-		if(CalendarCommand.Scope.WEEK.equals(result.getScope()))
-			scale = HistoryConstants.CALENDAR_SCALE_VALUE_WEEK;
-		if(CalendarCommand.Scope.MONTH.equals(result.getScope()))
-			scale = HistoryConstants.CALENDAR_SCALE_VALUE_MONTH;
-		if(CalendarCommand.Scope.YEAR.equals(result.getScope()))
-			scale = HistoryConstants.CALENDAR_SCALE_VALUE_YEAR;
-		
-		ScaleSelectorPresenter scaleSelectorPresenter = injector.getScaleSelectorPresenter();
-		scaleSelectorPresenter.setToday(result.getRelevantYear(), result.getRelevantMonthOfYear(), result.getRelevantWeekOfYear(), result.getRelevantDayOfMonth(), scale);
-		scaleElement.clear();
-		scaleElement.add(scaleSelectorPresenter.getWidget());
-	}
-	
-	private void configurePrevLink(HistoryToken token) {
-		HyperlinkPresenter linkPresenter = injector.getHyperlinkPresenter();
-		linkPresenter.setToken(token, "<<Prev");
-		prevElement.clear();
-		prevElement.add(linkPresenter.getWidget());
-	}
-
-	private void configureNextLink(HistoryToken token) {
-		HyperlinkPresenter linkPresenter;
-		linkPresenter = injector.getHyperlinkPresenter();
-		linkPresenter.setToken(token, "Next>>");
-		nextElement.clear();
-		nextElement.add(linkPresenter.getWidget());
-	}
+//	private void setupCalendarScale(CalendarCommandResult result) {
+//		String scale = "";
+//		if(CalendarCommand.Scope.DAY.equals(result.getScope()))
+//			scale = HistoryConstants.CALENDAR_SCALE_VALUE_DAY;
+//		if(CalendarCommand.Scope.WEEK.equals(result.getScope()))
+//			scale = HistoryConstants.CALENDAR_SCALE_VALUE_WEEK;
+//		if(CalendarCommand.Scope.MONTH.equals(result.getScope()))
+//			scale = HistoryConstants.CALENDAR_SCALE_VALUE_MONTH;
+//		if(CalendarCommand.Scope.YEAR.equals(result.getScope()))
+//			scale = HistoryConstants.CALENDAR_SCALE_VALUE_YEAR;
+//		
+//		ScaleSelectorPresenter scaleSelectorPresenter = injector.getScaleSelectorPresenter();
+//		scaleSelectorPresenter.setToday(result.getRelevantYear(), result.getRelevantMonthOfYear(), result.getRelevantWeekOfYear(), result.getRelevantDayOfMonth(), scale);
+//		scaleElement.clear();
+//		scaleElement.add(scaleSelectorPresenter.getWidget());
+//	}
+//	
+//	private void configurePrevLink(HistoryToken token) {
+//		HyperlinkPresenter linkPresenter = injector.getHyperlinkPresenter();
+//		linkPresenter.setToken(token, "<<Prev");
+//		prevElement.clear();
+//		prevElement.add(linkPresenter.getWidget());
+//	}
+//
+//	private void configureNextLink(HistoryToken token) {
+//		HyperlinkPresenter linkPresenter;
+//		linkPresenter = injector.getHyperlinkPresenter();
+//		linkPresenter.setToken(token, "Next>>");
+//		nextElement.clear();
+//		nextElement.add(linkPresenter.getWidget());
+//	}
 	
 	
 //	private String generateCalendarTitle(CalendarCommandResult result){

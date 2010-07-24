@@ -10,7 +10,7 @@
 	 	<div class="tt-post-container-header tt-center">
 	 		<g:Label styleName="tt-float-left" ui:field="pageResultMessageElement"/>
 	 		<div class="tt-float-right">
-	 			<g:Hyperlink ui:field="prevElement"/> | <g:Hyperlink ui:field="nextElement"/>
+	 			<g:Hyperlink ui:field="prevElement"/> &nbsp;&nbsp; <g:Hyperlink ui:field="nextElement"/>
 	 		</div>
 	 	</div>
 	 	<g:SimplePanel styleName="tt-fill" ui:field="postListElement"/>
