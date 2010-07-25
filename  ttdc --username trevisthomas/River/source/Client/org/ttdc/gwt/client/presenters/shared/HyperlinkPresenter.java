@@ -45,6 +45,7 @@ public class HyperlinkPresenter extends BasePresenter<HyperlinkPresenter.View> {
 		public void setStyleType(StyleType styleType);
 		public void setUrl(String url);
 		public Hyperlink getHyperlink();
+		public void setStyleName(String style);
 	}
 	
 	public void setPerson(GPerson person){
@@ -53,7 +54,7 @@ public class HyperlinkPresenter extends BasePresenter<HyperlinkPresenter.View> {
 		view.getHistoryToken().setParameter(HistoryConstants.PERSON_ID,person.getPersonId());
 		view.getDisplayName().setText(person.getLogin());
 		//No need to listen for the click, it's handled internally by the underlying Hyperlink
-		
+		init();
 	}
 	
 	public void setTag(GTag tag){
@@ -122,6 +123,10 @@ public class HyperlinkPresenter extends BasePresenter<HyperlinkPresenter.View> {
 	 */
 	public GTag getTag() {
 		return tag;
+	}
+	
+	public void setStyleName(String style){
+		view.setStyleName(style);
 	}
 
 	/**

@@ -17,6 +17,7 @@ import org.ttdc.persistence.objects.Post;
 public class InboxDao extends FilteredPostPaginatedDaoBase{
 	private Person person;
 	private final static Date defaultStartDate;
+	private Date lastReadDate = null;
 	static{
 		Calendar cal = GregorianCalendar.getInstance();
 		cal.set(1970, 11, 21);
@@ -35,6 +36,8 @@ public class InboxDao extends FilteredPostPaginatedDaoBase{
 		if(!person.isPrivateAccessAccount()){
 			addFlagFilter(PostFlag.PRIVATE);
 		}
+		
+		getLastReadDate();
 	}
 	
 	public PaginatedList<Post> loadFlat(){
@@ -46,19 +49,21 @@ public class InboxDao extends FilteredPostPaginatedDaoBase{
 	
 	@SuppressWarnings("unchecked")
 	private Date getLastReadDate(){
-		List<InboxCache> list = session().createCriteria(InboxCache.class)
-		.add(Restrictions.isNull("post"))
-		.add(Restrictions.eq("person.personId", person.getPersonId()))
-		.list();
-		
-		
-		if(list.size() == 0){
-			return defaultStartDate;
-		}
-		else{
-			return list.get(0).getDate();
-		}
+		if(lastReadDate == null){
+			List<InboxCache> list = session().createCriteria(InboxCache.class)
+			.add(Restrictions.isNull("post"))
+			.add(Restrictions.eq("person.personId", person.getPersonId()))
+			.list();
 			
+			
+			if(list.size() == 0){
+				lastReadDate = defaultStartDate;
+			}
+			else{
+				lastReadDate = list.get(0).getDate();
+			}
+		}
+		return lastReadDate;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -96,8 +101,8 @@ public class InboxDao extends FilteredPostPaginatedDaoBase{
 
 	public boolean isRead(Post post) {
 		//This method is brutal.  Speed it up
-		//return post.getDate().before(getLastReadDate());
-		return false;
+		return post.getDate().before(getLastReadDate());
+		//return false;
 	}
 
 	public void markSiteRead() {

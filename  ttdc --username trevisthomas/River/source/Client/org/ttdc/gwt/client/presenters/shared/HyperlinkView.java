@@ -18,7 +18,15 @@ public class HyperlinkView implements HyperlinkPresenter.View {
 	private StyleType styleType = HyperlinkPresenter.StyleType.DEFAULT;
 	
 	public HyperlinkView() {
-		link.setStylePrimaryName("tt-hyperLinkView");
+		//link.setStylePrimaryName("tt-hyperLinkView");
+		//link.setStyleName("tt-hyperLinkView");
+		link.setStyleName("tt-inline");
+	}
+	
+	@Override
+	public void setStyleName(String style) {
+		link.setStyleName(style);
+		
 	}
 	
 	@Override
