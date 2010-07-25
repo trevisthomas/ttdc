@@ -66,6 +66,9 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
     @UiField (provided = true) Hyperlink prevElement;
     @UiField (provided = true) Hyperlink nextElement;
     
+    @UiField Label tagLabelElement; 
+    @UiField Label postLabelElement;
+    
     private final PostCollectionPresenter postCollection;
 	private final PaginationPresenter paginationPresenter;
 	private HistoryToken lastToken;
@@ -91,6 +94,12 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
     	initWidget(binder.createAndBindUi(this));
     	
     	searchSummaryDetailElement.setText("Loading...");
+    	
+    	tagLabelElement.setText("Tags");
+    	postLabelElement.setText("Conversations");
+    	
+    	tagLabelElement.setVisible(false);
+    	postLabelElement.setVisible(false);
     	
     	pageHeaderPanel.init("Search","By keyword, by tag, by date, by person");
 	}
@@ -150,7 +159,14 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 		CommandResultCallback<SearchPostsCommandResult> callback = new CommandResultCallback<SearchPostsCommandResult>(){
 			public void onSuccess(SearchPostsCommandResult result) {
 				if(result.getResults().getTotalResults() > 0){
-					linkPresenter.setToken(tokenToExpandResults, "See " + result.getResults().getTotalResults() + " replies containing \"" + result.getResults().getPhrase() + "\". ");
+					String linkMsg;
+					if(result.getResults().getTotalResults() == 1){
+						linkMsg = "View reply matching criteria. ";
+					}
+					else{
+						linkMsg = "Browse " + result.getResults().getTotalResults() + " replies matching search. ";
+					}
+					linkPresenter.setToken(tokenToExpandResults, linkMsg);
 					expandSearchResultsElement.setVisible(true);
 				}
 				else{
@@ -207,6 +223,7 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 				PaginatedList<GTag> results = result.getResults();
 				TagCloudPresenter tagResultPresenter = injector.getTagCloudPresenter();
 				if(results.getList().size() > 0){
+					tagLabelElement.setVisible(true);
 					tagResultPresenter.setTagList(results.getList());
 					tagResultsElement.add(tagResultPresenter.getWidget());
 				}
@@ -234,7 +251,7 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 				PaginatedList<GPost> results = result.getResults();
 				postCollection.setPostList(results.getList());
 				
-				addSearchResultsToView(phrase, result);
+				addSearchResultsToView(phrase, result, "Topics");
 			}
 		};
 		batcher.add(command, callback);
@@ -253,14 +270,17 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 			if(lastToken.isParameterEq(SEARCH_MODE_KEY,SEARCH_MODE_IN_ROOT)){
 				buff.append("Searching for replies containing \'").append(phrase).append("\'");
 			}
-			else if(lastToken.isParameterEq(SEARCH_MODE_KEY,SEARCH_MODE_VALUE_TOPICS)){
+			else if(lastToken.isParameterEq(SEARCH_MODE_KEY,SEARCH_MODE_VALUE_COMMENTS)){
 				buff.append("Searching for replies containing \'").append(phrase).append("\'");
+			}
+			else if(lastToken.isParameterEq(SEARCH_MODE_KEY,SEARCH_MODE_VALUE_TOPICS)){
+				buff.append("Searching tags, threads and conversations containing \'").append(phrase).append("\'");
 			}
 			else if(lastToken.isParameterEq(SEARCH_MODE_KEY,SEARCH_MODE_IN_THREAD)){
 				buff.append("Searching for replies containing \'").append(phrase).append("\'");
 			}
 			else{
-				buff.append("Searching for replies containing \'").append(phrase).append("\'");
+				buff.append("Searcing for stuff \'").append(phrase).append("\'");
 			}
 		}
 		else{
@@ -296,7 +316,7 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 		
 		CommandResultCallback<SearchPostsCommandResult> callback = new CommandResultCallback<SearchPostsCommandResult>(){
 			public void onSuccess(SearchPostsCommandResult result) {
-				addSearchResultsToView(phrase, result);
+				addSearchResultsToView(phrase, result, "Replies");
 			}
 		};
 				
@@ -312,7 +332,7 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 		
 		CommandResultCallback<SearchPostsCommandResult> callback = new CommandResultCallback<SearchPostsCommandResult>(){
 			public void onSuccess(SearchPostsCommandResult result) {
-				addSearchResultsToView(phrase, result);
+				addSearchResultsToView(phrase, result, "In conversation");
 			}
 		};
 		injector.getService().execute(command, callback);
@@ -328,7 +348,7 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 		
 		CommandResultCallback<SearchPostsCommandResult> callback = new CommandResultCallback<SearchPostsCommandResult>(){
 			public void onSuccess(SearchPostsCommandResult result) {
-				addSearchResultsToView(phrase, result);
+				addSearchResultsToView(phrase, result, "In topic");
 			}
 		};
 		injector.getService().execute(command, callback);
@@ -382,7 +402,7 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 		return token;
 	}
 	
-	private void addSearchResultsToView(final String phrase, SearchPostsCommandResult result) {
+	private void addSearchResultsToView(final String phrase, final SearchPostsCommandResult result, final String label) {
 		PaginatedList<GPost> results = result.getResults();
 		postCollection.setPostList(results.getList());
 		
@@ -392,5 +412,15 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 		
 		final HistoryToken topicToken = buildHistoryToken(phrase);
 		showPagination(results, topicToken);
+		
+		searchSummaryDetailElement.setVisible(false);
+		
+		if(result.getResults().getTotalResults() > 0){
+			postLabelElement.setVisible(true);
+			postLabelElement.setText(label);
+		}
+		else{
+			postLabelElement.setVisible(false);
+		}
 	}
 }

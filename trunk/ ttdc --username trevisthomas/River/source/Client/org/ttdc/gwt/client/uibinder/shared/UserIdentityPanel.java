@@ -63,6 +63,7 @@ public class UserIdentityPanel extends Composite implements PersonEventListener,
 		HyperlinkPresenter createAccountPresenter = injector.getHyperlinkPresenter();
 		createAccountPresenter.setToken(token, "create");
 		createElement = createAccountPresenter.getWidget();
+		createElement.setStyleName("tt-inline");
 		
 		personLink = injector.getHyperlinkPresenter();
 		userElement = personLink.getWidget();

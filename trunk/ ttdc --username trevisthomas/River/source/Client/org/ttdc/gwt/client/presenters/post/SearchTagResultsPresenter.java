@@ -19,6 +19,7 @@ import org.ttdc.gwt.shared.commands.SearchPostsCommand;
 import org.ttdc.gwt.shared.commands.SearchTagsCommand;
 import org.ttdc.gwt.shared.commands.results.SearchPostsCommandResult;
 import org.ttdc.gwt.shared.commands.results.SearchTagsCommandResult;
+import org.ttdc.gwt.shared.commands.types.PostSearchType;
 import org.ttdc.gwt.shared.util.PaginatedList;
 
 import com.google.gwt.user.client.ui.HasText;
@@ -76,6 +77,7 @@ public class SearchTagResultsPresenter extends BasePresenter<SearchTagResultsPre
 		SearchPostsCommand command = new SearchPostsCommand();
 		
 		DateRangeLite dateRange = new DateRangeLite(lastToken);
+		command.setPostSearchType(PostSearchType.ALL);
 		command.setStartDate(dateRange.getStartDate());
 		command.setEndDate(dateRange.getEndDate());
 		

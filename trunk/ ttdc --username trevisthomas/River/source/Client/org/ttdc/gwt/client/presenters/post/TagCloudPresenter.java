@@ -42,6 +42,7 @@ public class TagCloudPresenter extends BasePresenter<TagCloudPresenter.View>{
 	public void setTagList(List<GTag> tagList){
 		for(GTag tag : tagList){
 			HyperlinkPresenter hyperLink = injector.getHyperlinkPresenter();
+			hyperLink.setStyleName(""); //Clearing out the inline
 			hyperLink.setTag(tag); //This sets up the history stuff all on it's own.
 			view.getTagWidgets().add(hyperLink.getWidget());
 		}
