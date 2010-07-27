@@ -12,6 +12,7 @@ import static org.ttdc.gwt.client.messaging.history.HistoryConstants.SEARCH_MODE
 import static org.ttdc.gwt.client.messaging.history.HistoryConstants.SEARCH_PHRASE_KEY;
 import static org.ttdc.gwt.client.messaging.history.HistoryConstants.SEARCH_START_DATE;
 import static org.ttdc.gwt.client.messaging.history.HistoryConstants.SEARCH_TAG_ID_KEY;
+import static org.ttdc.gwt.client.messaging.history.HistoryConstants.SEARCH_MODE_TAG;
 
 import java.util.List;
 
@@ -122,7 +123,7 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 		pageHeaderPanel.getSearchBoxPresenter().init(token);
 		
 		if(token.isParameterEq(SEARCH_MODE_KEY,SEARCH_MODE_VALUE_COMMENTS)){
-			performSearchForComments(token);
+			performSearchForReplies(token);
 		}
 		else if(token.isParameterEq(SEARCH_MODE_KEY,SEARCH_MODE_VALUE_TOPICS)){
 			BatchCommandTool batcher = new BatchCommandTool();
@@ -138,6 +139,13 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 		}
 		else if(token.isParameterEq(SEARCH_MODE_KEY,SEARCH_MODE_IN_THREAD)){
 			performSearchInConversation(token);
+		}
+		else if(token.isParameterEq(SEARCH_MODE_KEY,SEARCH_MODE_TAG)){
+			BatchCommandTool batcher = new BatchCommandTool();
+			performSearchForTags(batcher, token);
+			performSearchAllComments(token);
+			
+			injector.getService().execute(batcher.getActionList(), batcher);
 		}
 		else{
 			throw new RuntimeException("SearchResultsPresenter was told to do something that it didn't understand.");
@@ -216,8 +224,19 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 		command.setStartDate(dateRange.getStartDate());
 		command.setEndDate(dateRange.getEndDate());
 		command.setPhrase(phrase);
+		if(token.isParameterEq(SEARCH_MODE_KEY,SEARCH_MODE_TAG)){
+			command.setMode(SearchTagsCommand.TagSearchMode.UNION);
+		}
+		else
+			command.setMode(SearchTagsCommand.TagSearchMode.SEARCH);
 		
-		CommandResultCallback<SearchTagsCommandResult> callback = new CommandResultCallback<SearchTagsCommandResult>(){
+		CommandResultCallback<SearchTagsCommandResult> callback = createTagListCallback();
+				
+		batcher.add(command, callback);
+	}
+
+	private CommandResultCallback<SearchTagsCommandResult> createTagListCallback() {
+		return new CommandResultCallback<SearchTagsCommandResult>(){
 			@Override
 			public void onSuccess(SearchTagsCommandResult result) {
 				PaginatedList<GTag> results = result.getResults();
@@ -232,8 +251,6 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 				}
 			}
 		};
-				
-		batcher.add(command, callback);
 	}
 	
 	private void performSearchForTopics(BatchCommandTool batcher, HistoryToken token){
@@ -308,7 +325,7 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 		searchSummaryDetailElement.setText(buff.toString());
 	}
 
-	private void performSearchForComments(HistoryToken token) {
+	private void performSearchForReplies(HistoryToken token) {
 		SearchPostsCommand command = createSearchPostsCommand(token);
 		command.setPostSearchType(PostSearchType.REPLIES);
 		//searchSummaryDetailElement.setText("TODO fix me 'performSearchForComments'! Searching comments for "+command.getPhrase()+"...");
@@ -349,6 +366,21 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 		CommandResultCallback<SearchPostsCommandResult> callback = new CommandResultCallback<SearchPostsCommandResult>(){
 			public void onSuccess(SearchPostsCommandResult result) {
 				addSearchResultsToView(phrase, result, "In topic");
+			}
+		};
+		injector.getService().execute(command, callback);
+		
+	}
+	
+	private void performSearchAllComments(HistoryToken token) {
+		SearchPostsCommand command = createSearchPostsCommand(token);
+		final String phrase = command.getPhrase(); 
+		
+		command.setPostSearchType(PostSearchType.ALL);
+		
+		CommandResultCallback<SearchPostsCommandResult> callback = new CommandResultCallback<SearchPostsCommandResult>(){
+			public void onSuccess(SearchPostsCommandResult result) {
+				addSearchResultsToView(phrase, result, "Comments");
 			}
 		};
 		injector.getService().execute(command, callback);

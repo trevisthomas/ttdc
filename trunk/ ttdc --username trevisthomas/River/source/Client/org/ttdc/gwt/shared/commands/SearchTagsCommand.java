@@ -20,8 +20,15 @@ public class SearchTagsCommand extends Command<SearchTagsCommandResult> implemen
 	private String phrase;
 	private int pageNumber = 1;
 	private List<String> tagIdList = new ArrayList<String>();
+	private List<String> tagIdExcludeList = new ArrayList<String>();
 	private Date startDate;
 	private Date endDate;
+	private TagSearchMode mode = TagSearchMode.SEARCH;
+	
+	public enum TagSearchMode{
+		SEARCH,
+		UNION
+	}
 	
 	public SearchTagsCommand(){};
 	
@@ -76,5 +83,24 @@ public class SearchTagsCommand extends Command<SearchTagsCommandResult> implemen
 		this.endDate = endDate;
 	}
 
+	public TagSearchMode getMode() {
+		return mode;
+	}
+
+	public void setMode(TagSearchMode mode) {
+		this.mode = mode;
+	}
+
+	public List<String> getTagIdExcludeList() {
+		return tagIdExcludeList;
+	}
+
+	public void addTagIdExclude(String tagId){
+		tagIdExcludeList.add(tagId);
+	}
+
+	public void setExcludeTagIds(List<String> tagIds) {
+		tagIdExcludeList.addAll(tagIds);
+	}
 	
 }
