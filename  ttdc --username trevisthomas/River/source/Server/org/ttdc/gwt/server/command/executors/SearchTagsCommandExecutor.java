@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+import org.ttdc.gwt.client.autocomplete.SuggestionObject;
 import org.ttdc.gwt.client.beans.GTag;
 import org.ttdc.gwt.client.services.CommandResult;
 import org.ttdc.gwt.server.beanconverters.GenericBeanConverter;
@@ -18,9 +20,13 @@ import org.ttdc.gwt.server.dao.DateRange;
 import org.ttdc.gwt.server.dao.TagDao;
 import org.ttdc.gwt.server.dao.TagSearchDao;
 import org.ttdc.gwt.shared.commands.SearchTagsCommand;
+import org.ttdc.gwt.shared.commands.TagSuggestionCommand;
+import org.ttdc.gwt.shared.commands.TagSuggestionCommandMode;
 import org.ttdc.gwt.shared.commands.results.SearchTagsCommandResult;
 import org.ttdc.gwt.shared.util.PaginatedList;
 import org.ttdc.persistence.objects.Tag;
+
+import com.google.gwt.user.client.ui.SuggestOracle;
 
 public class SearchTagsCommandExecutor extends CommandExecutor<SearchTagsCommandResult>{
 	private final SimpleDateFormat dateFormatWeekBoundary = new SimpleDateFormat("MMM d");
@@ -31,13 +37,21 @@ public class SearchTagsCommandExecutor extends CommandExecutor<SearchTagsCommand
 			SearchTagsCommand command = (SearchTagsCommand)getCommand();
 			
 			beginSession();
-			PaginatedList<GTag> gResults;
-			if(command.getTagIdList().size() > 0){
-				gResults = performLookup(command);
+			PaginatedList<GTag> gResults = null;
+			switch(command.getMode()){
+				case SEARCH:
+					if(command.getTagIdList().size() > 0){
+						gResults = performLookup(command);
+					}
+					else{
+						gResults = performSearch(command);
+					}
+					break;
+				case UNION:
+					gResults = performUnion(command);
+					break;
 			}
-			else{
-				gResults = performSearch(command);
-			}
+			
 			return new SearchTagsCommandResult(gResults);
 			
 		} catch (Throwable t) {
@@ -49,6 +63,69 @@ public class SearchTagsCommandExecutor extends CommandExecutor<SearchTagsCommand
 		
 	}
 
+	
+	private PaginatedList<GTag> performUnion(SearchTagsCommand command) {
+		TagSearchDao dao = new TagSearchDao();
+		dao.setPageSize(20);
+		dao.setCurrentPage(1);
+		dao.setPhrase(command.getPhrase());
+
+		for (String tagId : command.getTagIdExcludeList()) {
+			dao.addTagIdExclude(tagId);
+		}
+		for (String tagId : command.getTagIdList()) {
+			dao.addTagId(tagId);
+		}
+//		for (String type : getTagTypeFilterListForMode(command.getMode())) {
+//			dao.addFilterForTagType(type);
+//		}
+		
+		dao.addFilterForTagType(Tag.TYPE_TOPIC);
+		
+		if (TagSuggestionCommandMode.CREATE.equals(command.getMode())) {
+			dao.setTitlesOnly(true);
+		} else {
+			dao.setTitlesOnly(false);
+		}
+
+		PaginatedList<Tag> results = dao.search();
+		
+		PaginatedList<GTag> gResults = new PaginatedList<GTag>();
+		
+		gResults.setCurrentPage(results.getCurrentPage());
+		gResults.setPageSize(results.getPageSize());
+		gResults.setPhrase(results.getPhrase());
+		gResults.setTotalResults(results.getTotalResults());
+		
+		List<GTag> gTags = new ArrayList<GTag>();
+		
+		for(Tag t : results.getList()){
+			gTags.add(GenericBeanConverter.convertTag(t));
+		}
+		
+		gResults.setList(gTags);
+		
+		return gResults;
+		
+//		List<SuggestionObject> suggestions = new ArrayList<SuggestionObject>();
+//		
+//		if(!StringUtils.isEmpty(request.getQuery()) || command.isLoadDefault()){
+//			beginSession();
+//
+//			PaginatedList<Tag> results = dao.search();
+//			
+//			for (Tag tag : results.getList()) {
+//				suggestions.add(createDynamicSugestion(request.getQuery(), tag));
+//			}
+//			
+//			if (!TagSuggestionCommandMode.SEARCH.equals(command.getMode())) {
+//				suggestions.add(createSugestionForNewTag(request.getQuery()));
+//			}
+//			commit();
+//		}
+//		response.setSuggestions(suggestions);
+	}
+	
 	private PaginatedList<GTag> performLookup(SearchTagsCommand command) {
 		List<GTag> tags = new ArrayList<GTag>();
 		

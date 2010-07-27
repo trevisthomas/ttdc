@@ -59,7 +59,9 @@ public class HyperlinkPresenter extends BasePresenter<HyperlinkPresenter.View> {
 	
 	public void setTag(GTag tag){
 		this.tag = tag;
-		view.getHistoryToken().setParameter(HistoryConstants.VIEW, HistoryConstants.VIEW_SEARCH_TAG_RESULTS); 
+		//view.getHistoryToken().setParameter(HistoryConstants.VIEW, HistoryConstants.VIEW_SEARCH_TAG_RESULTS);
+		view.getHistoryToken().setParameter(HistoryConstants.VIEW, HistoryConstants.VIEW_SEARCH_RESULTS);
+		view.getHistoryToken().setParameter(HistoryConstants.SEARCH_MODE_KEY, HistoryConstants.SEARCH_MODE_TAG); 
 		view.getHistoryToken().setParameter(HistoryConstants.SEARCH_TAG_ID_KEY,tag.getTagId());
 		
 		view.getDisplayName().setText(tag.getValue());
