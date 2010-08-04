@@ -56,7 +56,7 @@ public class DayPanel extends Composite{
 				html = h-12+"p";
 			}
 			HTMLPanel htmlPanel = new HTMLPanel(html);
-			htmlPanel.setStyleName("tt-calendar-hour-label tt-text-huge tt-color-contrast1");
+			htmlPanel.setStyleName("tt-calendar-hour-label tt-text-huge tt-color-calendar-hour-label");
 			tableElement.setWidget(h, 0, htmlPanel);
 			tableElement.getCellFormatter().setStyleName(h, 0, "tt-fill-height tt-special-border-bottom");
 //			if(h%2 == 0 ){
@@ -64,7 +64,7 @@ public class DayPanel extends Composite{
 //				tableElement.getCellFormatter().setStyleName(h, 1, "tt-color-contrast2-border tt-border-top-bottom");
 //			}
 			
-			tableElement.getCellFormatter().setStyleName(h, 1, "tt-color-contrast2 tt-border-bottom");
+			tableElement.getCellFormatter().setStyleName(h, 1, "tt-color-calendar-day-hour tt-border-bottom");
 			
 		}
 	}

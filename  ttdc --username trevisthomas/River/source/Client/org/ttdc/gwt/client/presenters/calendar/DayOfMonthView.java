@@ -16,7 +16,7 @@ public class DayOfMonthView implements DayOfMonthPresenter.View{
 	private final SimplePanel threadSummaryPanel = new SimplePanel();
 	private final VerticalPanel threadSummaryVerticalTable = new VerticalPanel();
 	private final Label headerLabel = new Label();
-	private final ClickableHoverSyncPanel header = new ClickableHoverSyncPanel("tt-color-contrast3","tt-color-contrast3-hover","tt-color-contrast2","tt-color-contrast2-hover");
+	private final ClickableHoverSyncPanel header = new ClickableHoverSyncPanel("tt-color-month-day-header","tt-color-month-day-header-hover","tt-color-month-day-body","tt-color-month-day-body-hover");
 	
 	
 	public DayOfMonthView() {
@@ -32,7 +32,7 @@ public class DayOfMonthView implements DayOfMonthPresenter.View{
 		mainPanel.add(bodyGrid);
 		//header.setDisableHoverStyleOnSelf(true);
 		
-		mainPanel.setStyleName("tt-calendar-month-day tt-color-contrast2");
+		mainPanel.setStyleName("tt-calendar-month-day");
 		//header.setStyleName("tt-color-contrast3");
 		header.addStyleName("tt-text-large-bold");
 		header.add(headerLabel);

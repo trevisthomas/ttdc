@@ -148,8 +148,10 @@ body{text-align:center; margin: 0 auto;}
 .tt-search-panel{height:30px; border: solid black 1px; background: gray;}
 .tt-search-panel-adv{}
 
+/*
 .tt-calendar-small-month-dayHasContent{ font: bolder; background-color: #eee}
 .tt-calendar-small-month-daySelected{ border: solid yellow 1px; background-color: #fc5}
+*/
 .tt-calendar-small-month-day{	margin:0 2px 2px 0;}
 
 .tt-special-border-bottom{border: white solid; border-width: 0 0 2px 0;}
@@ -162,14 +164,59 @@ body{text-align:center; margin: 0 auto;}
 /* 
  * Colors to be moved into color css
  */
- 
+
+.tt-textbox-disabled{ color: #ddd;}
+
+/*
 .tt-color-selected{border-color: yellow; background-color: #fc5}
 .tt-color-selected-hover{border-color: yellow; background-color: white;}
 .tt-color-contrast1{ background: grey; color: white; border-color: #eee;}
 .tt-color-contrast1-hover{ background: #eee; color: black; border-color: grey;}
 .tt-color-contrast2-hover{ border-color: grey; background: #eee;}
 .tt-color-contrast2{ border-color: #eee;}
-.tt-textbox-disabled{ color: #ddd;}
-
 .tt-color-contrast3-hover{ border-color: grey; background: #eee;}
 .tt-color-contrast3{ border-color: #ccc; background-color: #fcfcfc;}
+*/
+
+.tt-color-month-week-header,	
+.tt-color-calendar-small-month-week{ background: grey; color: white; border-color: #eee;}
+
+.tt-color-month-week-header-hover,
+.tt-color-calendar-small-month-week-hover{ background: #eee; color: black; border-color: grey;}
+
+.tt-color-calendar-small-month-day-selected{border-color: yellow; background-color: #fc5}
+.tt-color-calendar-small-month-day-selected-hover{border-color: yellow; background-color: white;}
+
+.tt-color-calendar-nav
+.tt-color-calendar-small-month-day-content{ background: grey; color: white; border-color: #eee;}
+
+.tt-color-calendar-nav-hover,
+.tt-color-calendar-small-month-day-content-hover{ background: #eee; color: black; border-color: grey;}
+
+.tt-color-calendar-day-hour,
+.tt-color-calendar-hour,
+.tt-color-month-day-body{ border-color: #eee;}
+
+
+.tt-color-month-day-body-hover{ border-color: grey; background: #eee;}
+
+.tt-color-calendar-week-date-hover,
+.tt-color-calendar-hour-label,	
+.tt-color-month-day-header-hover,
+.tt-color-calendar-small-month-day{ border-color: grey; background: #eee;}
+
+.tt-color-calendar-week-date,
+.tt-color-calendar-hour-hover,
+.tt-color-month-day-header,
+.tt-color-calendar-small-month-day-hover{ border-color: #ccc; background-color: #fcfcfc;}
+
+
+
+	
+	
+
+
+
+
+
+	

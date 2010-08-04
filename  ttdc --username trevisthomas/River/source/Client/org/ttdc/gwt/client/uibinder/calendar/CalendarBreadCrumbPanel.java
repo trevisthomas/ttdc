@@ -47,7 +47,7 @@ public class CalendarBreadCrumbPanel extends Composite{
     }
 
 	private ClickableHoverSyncPanel buildMeAClickable(final String lableText) {
-		ClickableHoverSyncPanel button = new ClickableHoverSyncPanel("tt-color-contrast1","tt-color-contrast1-hover");
+		ClickableHoverSyncPanel button = new ClickableHoverSyncPanel("tt-color-calendar-nav","tt-color-calendar-nav-hover");
     	button.addStyleName("tt-calendar-scale-button tt-border");
     	button.add(new Label(lableText));
 		return button;

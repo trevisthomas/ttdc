@@ -39,7 +39,7 @@ public class WeekView implements WeekPresenter.View{
 				html = h-12+"p";
 			}
 			HTMLPanel htmlPanel = new HTMLPanel(html);
-			htmlPanel.setStyleName("tt-calendar-hour-label tt-text-huge tt-color-contrast1");
+			htmlPanel.setStyleName("tt-calendar-hour-label tt-text-huge tt-color-calendar-hour-label");
 			hours.setWidget(h+1, 0, htmlPanel);
 			
 			for(int i = 1 ; i < 8 ; i++){ //Skip the first col
@@ -50,7 +50,7 @@ public class WeekView implements WeekPresenter.View{
 		}
 		
 		for(int i = 1 ; i < 8 ; i++){ //Skip the first col
-			hours.getCellFormatter().addStyleName(0, i, "tt-color-contrast2 tt-border-bottom");
+			hours.getCellFormatter().addStyleName(0, i, "tt-border-bottom");
 		}
 	}
 	
@@ -66,7 +66,7 @@ public class WeekView implements WeekPresenter.View{
 		 * of the week it was off by 7 hours.  Very strange looking.
 		 */
 		hours.setWidget(hourOfDay+1,dayOfWeek,w);
-		w.addStyleName("tt-color-contrast2 tt-border-bottom-right");
+		w.addStyleName("tt-border-bottom-right");
 	}
 	
 	@Override

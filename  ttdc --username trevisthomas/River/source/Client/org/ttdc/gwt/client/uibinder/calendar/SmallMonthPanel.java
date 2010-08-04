@@ -311,7 +311,7 @@ public class SmallMonthPanel extends Composite implements DayClickHandler{
 			return (ClickableHoverSyncPanel)w;
 		}
 		else{
-			ClickableHoverSyncPanel weekClicker = new ClickableHoverSyncPanel("tt-color-contrast1","tt-color-contrast1-hover");
+			ClickableHoverSyncPanel weekClicker = new ClickableHoverSyncPanel("tt-color-calendar-small-month-week","tt-color-calendar-small-month-week-hover");
 			weekClicker.setStyleName("tt-calendar-year-week-target tt-float-right");
 			weekClicker.add(new Label("+"));
 			daysGridElement.setWidget(weekOfMonth, 0, weekClicker);
@@ -326,25 +326,25 @@ public class SmallMonthPanel extends Composite implements DayClickHandler{
 			return day;
 		}
 		public void highlight(){
-			updatePrimary("tt-color-selected","tt-color-selected-hover");
+			updatePrimary("tt-color-calendar-small-month-day-selected","tt-color-calendar-small-month-day-selected-hover");
 		}
 		public void removeHighlight(){
 			if(day.isContent()){
-				updatePrimary("tt-color-contrast1","tt-color-contrast1-hover");
+				updatePrimary("tt-color-calendar-small-month-day-content","tt-color-calendar-small-month-day-content-hover");
 			}
 			else{
-				updatePrimary("tt-color-contrast3","tt-color-contrast3-hover");
+				updatePrimary("tt-color-calendar-small-month-day","tt-color-calendar-small-month-day-hover");
 			}
 		}
 		
 		public ClickableDay(Day day) {
-			super("tt-color-contrast3","tt-color-contrast3-hover","tt-color-contrast2","tt-color-contrast2-hover");
+			super("tt-color-calendar-small-month-day","tt-color-calendar-small-month-day-hover","tt-no-clue-what-this-does","tt-no-clue-what-this-does-hover");
 			dayMap.put(day, this);
 			this.day = day;
 			
 			setStyleName("tt-border tt-calendar-small-month-day");
 			if(day.isContent()){
-				updatePrimary("tt-color-contrast1","tt-color-contrast1-hover");
+				updatePrimary("tt-color-calendar-small-month-day-content","tt-color-calendar-small-month-day-content-hover");
 			}
 			
 			addClickHandler(new ClickHandler() {
