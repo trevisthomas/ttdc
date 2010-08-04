@@ -58,7 +58,7 @@ public class MonthDetailView implements MonthDetailPresenter.View{
 			return map.get(weekOfMonth);
 		}
 		else{
-			ClickableHoverSyncPanel clickablePanel = new ClickableHoverSyncPanel("tt-color-contrast1","tt-color-contrast1-hover");
+			ClickableHoverSyncPanel clickablePanel = new ClickableHoverSyncPanel("tt-color-month-week-header","tt-color-month-week-header-hover");
 			Grid table = new Grid(2,1);
 			table.setStyleName("tt-fill-both");
 			table.getRowFormatter().addStyleName(0, "tt-calendar-month-day-header");

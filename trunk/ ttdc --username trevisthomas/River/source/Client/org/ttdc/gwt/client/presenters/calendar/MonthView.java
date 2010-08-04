@@ -321,19 +321,19 @@ public class MonthView implements MonthPresenter.View{
 			return day;
 		}
 		public void highlight(){
-			updatePrimary("tt-color-selected","tt-color-selected-hover");
+			updatePrimary("tt-color-calendar-small-month-day-selected","tt-color-calendar-small-month-day-selected-hover");
 		}
 		public void removeHighlight(){
 			if(day.isContent()){
-				updatePrimary("tt-color-contrast1","tt-color-contrast1-hover");
+				updatePrimary("tt-color-calendar-small-month-day-content","tt-color-calendar-small-month-day-content-hover");
 			}
 			else{
-				updatePrimary("tt-color-contrast3","tt-color-contrast3-hover");
+				updatePrimary("tt-color-calendar-small-month-day","tt-color-calendar-small-month-day-hover");
 			}
 		}
 		
 		public ClickableDay(Day day) {
-			super("tt-color-contrast3","tt-color-contrast3-hover","tt-color-contrast2","tt-color-contrast2-hover");
+			super("tt-color-calendar-small-month-day","tt-color-calendar-small-month-day-hover","tt-color-contrast2","tt-color-contrast2-hover");
 			dayMap.put(day, this);
 			//this.handler = handler;
 			this.day = day;
@@ -341,7 +341,7 @@ public class MonthView implements MonthPresenter.View{
 			setStyleName("tt-border tt-calendar-small-month-day");
 			//addStyleName("tt-calendar-small-month-day");
 			if(day.isContent()){
-				updatePrimary("tt-color-contrast1","tt-color-contrast1-hover");
+				updatePrimary("tt-color-calendar-small-month-day-content","tt-color-calendar-small-month-day-selected-hover");
 			}
 			
 			addClickHandler(new ClickHandler() {
