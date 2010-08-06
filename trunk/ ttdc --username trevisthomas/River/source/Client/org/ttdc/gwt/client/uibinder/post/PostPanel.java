@@ -57,6 +57,7 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
     private DatePresenter createDatePresenter;
     private PostCollectionPresenter postCollectionPresenter;
     private MovieRatingPresenter averageMovieRatingPresenter;
+    private TagListPanel tagListPanel;
     private int childPostPage = 1;
     	    
     @UiField(provided = true) Hyperlink titleElement;
@@ -72,6 +73,7 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
     @UiField(provided = true) Widget repliesElement;
     @UiField(provided = true) Widget postImageElement;
     @UiField(provided = true) Widget ratingElement;
+    @UiField(provided = true) Widget tagsElement;
     @UiField SimplePanel likesElement;
     @UiField Label postUnReadElement;
     
@@ -89,6 +91,10 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
     	postCollectionPresenter = injector.getPostCollectionPresenter();
     	postImagePresenter  = injector.getImagePresenter();
     	averageMovieRatingPresenter = injector.getMovieRatingPresenter();
+    	tagListPanel = injector.createTagListPanel();
+    	//injector.getTa
+    	
+    	tagsElement = new Label();
     	
     	avatarElement = creatorAvatorImagePresenter.getWidget();
     	creatorLinkElement = creatorLinkPresenter.getHyperlink();
@@ -97,6 +103,9 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
     	repliesElement = postCollectionPresenter.getWidget();
     	postImageElement = postImagePresenter.getWidget();
     	ratingElement = averageMovieRatingPresenter.getWidget();
+    	tagsElement = tagListPanel;
+    	
+    	//tagsElement
     	
     	initWidget(binder.createAndBindUi(this));
     	EventBus.getInstance().addListener(this);
@@ -187,6 +196,8 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 			likesElement.setVisible(false);
 		}
 		
+		//TODO secure
+		tagListPanel.init(post.getTagAssociations(), TagListPanel.Mode.EDITABLE);
 		
 		
 		

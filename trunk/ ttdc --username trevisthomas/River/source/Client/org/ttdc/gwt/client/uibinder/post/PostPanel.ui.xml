@@ -41,6 +41,11 @@
 							
 						</td>
 					</tr>
+					<tr>
+						<td colspan="2">
+							<g:Widget ui:field="tagsElement"></g:Widget>
+						</td>
+					</tr>
 				</table>
 				<center><span ui:field="embedTargetElement"/></center>
 			</div>
