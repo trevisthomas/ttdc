@@ -38,12 +38,18 @@ public class CalendarBreadCrumbPanel extends Composite{
     	monthElement = buildMeAClickable("Month");
     	weekElement = buildMeAClickable("Week");
     	
+    	yearElement.setVisible(false);
+    	monthElement.setVisible(false);
+    	weekElement.setVisible(false);
+    	
+    	
     	initWidget(binder.createAndBindUi(this));
 	}
 
     public void setYear(final int year){
     	HistoryToken token = CalendarHelpers.buildYearHistoryToken(year);
     	yearElement.setToken(token);
+    	yearElement.setVisible(true);
     }
 
 	private ClickableHoverSyncPanel buildMeAClickable(final String lableText) {
@@ -56,11 +62,13 @@ public class CalendarBreadCrumbPanel extends Composite{
     public void setMonth(final int year, final int month){
     	HistoryToken token = CalendarHelpers.buildMonthHistoryToken(year, month);
     	monthElement.setToken(token);
+    	monthElement.setVisible(true);
     }
 
 	public void setWeek(final int weekOfYear, final int year, final Date startDate, final Date endDate){
 		HistoryToken token = CalendarHelpers.buildWeekHistoryToken(year, weekOfYear);
 		weekElement.setToken(token);
+		weekElement.setVisible(true);
 	}
 	
     public void setPrevNext(HistoryToken prevToken, HistoryToken nextToken){

@@ -178,6 +178,8 @@ body{text-align:center; margin: 0 auto;}
 .tt-color-contrast3{ border-color: #ccc; background-color: #fcfcfc;}
 */
 
+.tt-color-search-results-header{color: grey;}
+	
 .tt-color-month-week-header,	
 .tt-color-calendar-small-month-week{ background: grey; color: white; border-color: #eee;}
 

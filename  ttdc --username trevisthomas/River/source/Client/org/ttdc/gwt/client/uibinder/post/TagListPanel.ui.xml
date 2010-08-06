@@ -1,0 +1,19 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<!-- The above doctype is to allow for special html characters in this xml file -->
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+	<g:HTMLPanel>
+			<g:HTMLPanel ui:field="tagListElement" styleName="tt-color-tagList">
+				<g:FlowPanel ui:field="tagsElement"/>
+			</g:HTMLPanel>
+			<g:HTMLPanel ui:field="editableTagListElement" styleName="tt-color-editableTagList">
+				<table>
+					<tr>
+						<td><g:FlowPanel ui:field="editableTagsElement"/></td>
+						<td><g:SimplePanel ui:field="tagSelectorElement"/></td>
+						<td><g:Button ui:field="addButtonElement"/></td>
+					</tr>
+				</table>
+			</g:HTMLPanel>
+	</g:HTMLPanel>
+</ui:UiBinder>
