@@ -272,6 +272,6 @@ public class InjectorModule extends AbstractGinModule {
 		bind(MoreLatestPresenter.View.class).to(MoreLatestView.class);
 		bind(MoreSearchPresenter.View.class).to(MoreSearchView.class);
 		bind(PopupCalendarDatePresenter.View.class).to(PopupCalendarDateView.class);
-				
+						
 	}
 }
