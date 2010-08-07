@@ -402,5 +402,7 @@ public interface Injector extends Ginjector {
 	public SearchBoxPanel createSearchBoxPanel();
 	public SearchResultsPanel createSearchResultsPanel();
 	public TagListPanel createTagListPanel();
+
+
 }
 

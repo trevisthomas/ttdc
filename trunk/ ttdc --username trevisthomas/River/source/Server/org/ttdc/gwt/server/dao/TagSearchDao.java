@@ -122,7 +122,7 @@ final public class TagSearchDao {
 		//TODO: MASS
 		
 		results.setPhrase(phrase);
-		results.setTotalResults(ftquery.getResultSize());
+		results.setTotalResults(list.size());
 		results.setList(list);
 		results.setCurrentPage(getCurrentPage());
 		results.setPageSize(pageSize);

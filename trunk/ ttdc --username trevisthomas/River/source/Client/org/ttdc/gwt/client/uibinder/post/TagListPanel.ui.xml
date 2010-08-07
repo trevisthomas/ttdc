@@ -4,14 +4,16 @@
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 	<g:HTMLPanel>
 			<g:HTMLPanel ui:field="tagListElement" styleName="tt-color-tagList">
-				<g:FlowPanel ui:field="tagsElement"/>
+				<g:FlowPanel styleName="tt-inline" ui:field="tagsElement">
+				</g:FlowPanel>
+				<div class="tt-inline">(<g:Anchor ui:field="editTagsLinkElement" styleName="tt-cursor-pointer"/>)</div>
 			</g:HTMLPanel>
 			<g:HTMLPanel ui:field="editableTagListElement" styleName="tt-color-editableTagList">
 				<table>
 					<tr>
 						<td><g:FlowPanel ui:field="editableTagsElement"/></td>
 						<td><g:SimplePanel ui:field="tagSelectorElement"/></td>
-						<td><g:Button ui:field="addButtonElement"/></td>
+						<td><g:Button ui:field="addButtonElement"/><g:Button ui:field="cancelButtonElement"/></td>
 					</tr>
 				</table>
 			</g:HTMLPanel>
