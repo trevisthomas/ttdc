@@ -6,7 +6,9 @@
 			<g:HTMLPanel ui:field="tagListElement" styleName="tt-color-tagList">
 				<g:FlowPanel styleName="tt-inline" ui:field="tagsElement">
 				</g:FlowPanel>
-				<div class="tt-inline">(<g:Anchor ui:field="editTagsLinkElement" styleName="tt-cursor-pointer"/>)</div>
+				<g:HTMLPanel ui:field="tagEditElement" styleName="tt-inline">
+					(<g:Anchor ui:field="editTagsLinkElement" styleName="tt-cursor-pointer"/>)
+				</g:HTMLPanel>
 			</g:HTMLPanel>
 			<g:HTMLPanel ui:field="editableTagListElement" styleName="tt-color-editableTagList">
 				<table>
