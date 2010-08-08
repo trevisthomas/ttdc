@@ -197,7 +197,7 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 		}
 		
 		//TODO secure
-		tagListPanel.init(post.getTagAssociations(), TagListPanel.Mode.EDITABLE);
+		tagListPanel.init(post, TagListPanel.Mode.EDITABLE);
 		
 		
 		

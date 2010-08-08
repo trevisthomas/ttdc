@@ -271,6 +271,7 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 		cmd.setReview(view.getReviewCheckbox().getValue());
 		cmd.setLocked(view.getLockedCheckbox().getValue());
 		
+		
 //		cmd.setLogin(login)
 //		cmd.setPassword(password)
 		
