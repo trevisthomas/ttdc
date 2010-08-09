@@ -172,6 +172,12 @@ public class GPerson extends GBase{
 		return hasPrivilege(PrivilegeConstants.ADMINISTRATOR);
 	}
 	
+	public boolean isPrivateAccessAccount(){
+		if(isAdministrator()) return true;
+		else
+			return hasPrivilege(PrivilegeConstants.PRIVATE);
+	}
+	
 	/**
 	 * Utility function to search for a specific privileges value. 
 	 * @param value
