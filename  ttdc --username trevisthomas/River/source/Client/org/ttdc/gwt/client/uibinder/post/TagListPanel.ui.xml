@@ -17,6 +17,16 @@
 						<td><g:SimplePanel ui:field="tagSelectorElement"/></td>
 						<td><g:Button ui:field="addButtonElement"/><g:Button ui:field="cancelButtonElement"/></td>
 					</tr>
+					<tr>
+						<td colspan="3">
+							<g:CheckBox ui:field="nwsCheckBoxElement">NWS</g:CheckBox>
+							<g:CheckBox ui:field="infCheckBoxElement">Informative</g:CheckBox>
+							<g:CheckBox ui:field="privateCheckBoxElement">Private</g:CheckBox>
+							<g:CheckBox ui:field="lockedCheckBoxElement">Locked</g:CheckBox>
+							<g:CheckBox ui:field="deletedCheckBoxElement">Deleted</g:CheckBox>
+							<g:CheckBox ui:field="reviewCheckBoxElement">Review</g:CheckBox>
+						</td>
+					</tr>
 				</table>
 			</g:HTMLPanel>
 	</g:HTMLPanel>

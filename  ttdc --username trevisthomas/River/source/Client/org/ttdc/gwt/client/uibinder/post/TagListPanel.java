@@ -32,12 +32,15 @@ import org.ttdc.gwt.shared.commands.results.AssociationPostTagResult;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
@@ -71,6 +74,15 @@ public class TagListPanel extends Composite implements PersonEventListener, Post
 	@UiField Anchor editTagsLinkElement;
 	@UiField HTMLPanel tagEditElement;
 	
+	@UiField CheckBox nwsCheckBoxElement;
+	@UiField CheckBox infCheckBoxElement;
+	@UiField CheckBox privateCheckBoxElement;
+	@UiField CheckBox lockedCheckBoxElement;
+	@UiField CheckBox deletedCheckBoxElement;
+	@UiField CheckBox reviewCheckBoxElement;
+	
+	
+	
 	public enum Mode{
 		STATIC,
 		EDITABLE,
@@ -97,6 +109,14 @@ public class TagListPanel extends Composite implements PersonEventListener, Post
 		tagSelectorElement.add(tagSuggestionBox);
 		EventBus.getInstance().addListener((PersonEventListener)this);
 		EventBus.getInstance().addListener((PostEventListener)this);
+		
+//		nwsCheckBoxElement.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
+//			@Override
+//			public void onValueChange(ValueChangeEvent<Boolean> event) {
+//				// TODO Auto-generated method stub
+//				
+//			}
+//		});
 
 	}
 	
@@ -134,6 +154,37 @@ public class TagListPanel extends Composite implements PersonEventListener, Post
 			else{
 				createNonRemovableTag(ass.getTag());
 			}
+		}
+		
+		
+		nwsCheckBoxElement.setValue(post.isNWS());
+		infCheckBoxElement.setValue(post.isINF());
+		privateCheckBoxElement.setValue(post.isPrivate());
+		lockedCheckBoxElement.setValue(post.isLocked());
+		deletedCheckBoxElement.setValue(post.isDeleted());
+		reviewCheckBoxElement.setValue(post.isReview());
+		
+		if(person.isPrivateAccessAccount()){
+			privateCheckBoxElement.setVisible(true);
+		}
+		else{
+			privateCheckBoxElement.setVisible(false);
+		}
+		
+		if(person.isAdministrator()){
+			deletedCheckBoxElement.setVisible(true);
+			lockedCheckBoxElement.setVisible(true);
+		}
+		else{
+			privateCheckBoxElement.setVisible(false);
+			lockedCheckBoxElement.setVisible(false);
+		}
+		
+		if((post.getParent() != null && post.getParent().isMovie()) && (person.isAdministrator() || person.equals(post.getCreator()))){
+			reviewCheckBoxElement.setVisible(false);
+		}
+		else{
+			reviewCheckBoxElement.setVisible(false);
 		}
 	}
 
@@ -215,6 +266,11 @@ public class TagListPanel extends Composite implements PersonEventListener, Post
 	@UiHandler("editTagsLinkElement")
 	public void onClickEdit(ClickEvent event){
 		changeToMode(Mode.EDIT);
+	}
+	
+	@UiHandler("nwsCheckBoxElement")
+	public void onNwsClickBoxValueChange(ValueChangeEvent<Boolean> event){
+		Window.alert("Doo it! " + event.getValue());
 	}
 	
 	
