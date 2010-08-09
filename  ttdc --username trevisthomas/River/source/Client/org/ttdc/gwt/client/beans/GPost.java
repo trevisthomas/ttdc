@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.ttdc.gwt.client.constants.TagConstants;
 import org.ttdc.gwt.shared.util.PostFlag;
+import org.ttdc.gwt.shared.util.PostFlagBitmasks;
 
 public class GPost extends GBase{
 	private String postId;
@@ -375,6 +376,44 @@ public class GPost extends GBase{
 
 	public boolean isRead() {
 		return read;
+	}
+	
+	//the meta methods below are for post edit/create
+
+	public void toggleDeleted(){
+		metaMask = metaMask ^ PostFlagBitmasks.BITMASK_DELETED;
+	}
+	
+	public void toggleInf(){
+		metaMask = metaMask ^ PostFlagBitmasks.BITMASK_INF;
+	}
+	
+	public void toggleLink(){
+		metaMask = metaMask ^ PostFlagBitmasks.BITMASK_LINK;
+	}
+	
+	public void toggleMovie(){
+		metaMask = metaMask ^ PostFlagBitmasks.BITMASK_MOVIE;
+	}
+	
+	public void toggleNws(){
+		metaMask = metaMask ^ PostFlagBitmasks.BITMASK_NWS;
+	}
+	
+	public void togglePrivate(){
+		metaMask = metaMask ^ PostFlagBitmasks.BITMASK_PRIVATE;
+	}
+	
+	public void toggleRatable(){
+		metaMask = metaMask ^ PostFlagBitmasks.BITMASK_RATABLE;
+	}
+	
+	public void toggleReview(){
+		metaMask = metaMask ^ PostFlagBitmasks.BITMASK_REVIEW;
+	}
+	
+	public void toggleLocked(){
+		metaMask = metaMask | PostFlagBitmasks.BITMASK_LOCKED;
 	}
 
 	

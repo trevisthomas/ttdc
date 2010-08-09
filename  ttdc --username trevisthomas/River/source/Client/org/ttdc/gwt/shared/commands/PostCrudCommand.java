@@ -35,6 +35,8 @@ public class PostCrudCommand extends Command<PostCommandResult>{
 //	private List<String> tagIds = new ArrayList<String>();
 	private List<GTag> tags = new ArrayList<GTag>();
 	
+	private Long metaMask = null;
+	
 	
 	public PostCrudCommand() {}
 	public PostCrudCommand(String postId) {
@@ -199,4 +201,13 @@ public class PostCrudCommand extends Command<PostCommandResult>{
 	public void setTags(List<GTag> tags) {
 		this.tags = tags;
 	}
+	
+	public Long getMetaMask() {
+		return metaMask;
+	}
+	
+	public void setMetaMask(long mask){
+		metaMask = mask;
+	}
+	
 }

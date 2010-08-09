@@ -60,6 +60,10 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 				post = update(cmd);
 				broadcastType = PostEventType.EDIT;
 				break;
+			case UPDATE_META:
+				post = updateMeta(cmd);
+				broadcastType = PostEventType.EDIT;
+				break;
 			case CREATE:
 				post = create(cmd);
 				broadcastType = PostEventType.NEW;
@@ -96,26 +100,32 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 		}
 	}
 	
+	protected Post updateMeta(PostCrudCommand cmd){
+		Person creator = determinePerson(cmd);
+		Post post = PostDao.loadPost(cmd.getPostId());
+		authenticateForAddUpdateAccess(creator, post);
+		
+		PostDao dao = new PostDao();
+		dao.setCreator(creator);
+		dao.setPostId(cmd.getPostId());
+		
+		Long metaMask = cmd.getMetaMask();
+		if(metaMask != null){
+			dao.setMetaMask(metaMask);
+			post = dao.update();
+			return post;
+		}
+		throw new RuntimeException("Meta mask not provided for update!");
+	}
 	
 	protected Post update(PostCrudCommand cmd) {
 		
 		Person creator;
-		if(StringUtil.notEmpty(cmd.getLogin()) && StringUtil.notEmpty(cmd.getPassword())){
-			creator = AccountDao.login(cmd.getLogin(), cmd.getPassword());
-		}
-		else{
-			creator = PersonDao.loadPerson(getPerson().getPersonId());
-		}
+		creator = determinePerson(cmd);
 		
 		Post post = PostDao.loadPost(cmd.getPostId());
 		
-		if(!creator.hasPrivilege(Privilege.POST) && !creator.isAdministrator()){
-			throw new RuntimeException("You dont have privledges to create new content.");
-		}
-		
-		if(!(post.getCreator().equals(creator) || creator.isAdministrator()) ){
-			throw new RuntimeException("You didnt create this post, Hacker.");
-		}
+		authenticateForAddUpdateAccess(creator, post);
 		
 		PostDao dao = new PostDao();
 		dao.setCreator(creator);
@@ -133,8 +143,32 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 			dao.setImageUrl(cmd.getImageUrl());
 		}
 		
+		if(cmd.getMetaMask() != null)
+			dao.setMetaMask(cmd.getMetaMask());
+		
 		post = dao.update();
 		return post;
+	}
+
+	private void authenticateForAddUpdateAccess(Person creator, Post post) {
+		if(!creator.hasPrivilege(Privilege.POST) && !creator.isAdministrator()){
+			throw new RuntimeException("You dont have privledges to create new content.");
+		}
+		
+		if(!(post.getCreator().equals(creator) || creator.isAdministrator()) ){
+			throw new RuntimeException("You didnt create this post, Hacker.");
+		}
+	}
+
+	private Person determinePerson(PostCrudCommand cmd) {
+		Person creator;
+		if(StringUtil.notEmpty(cmd.getLogin()) && StringUtil.notEmpty(cmd.getPassword())){
+			creator = AccountDao.login(cmd.getLogin(), cmd.getPassword());
+		}
+		else{
+			creator = PersonDao.loadPerson(getPerson().getPersonId());
+		}
+		return creator;
 	}
 
 
@@ -189,12 +223,7 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 	protected Post create(PostCrudCommand cmd) {
 		Person creator;
 		
-		if(StringUtil.notEmpty(cmd.getLogin()) && StringUtil.notEmpty(cmd.getPassword())){
-			creator = AccountDao.login(cmd.getLogin(), cmd.getPassword());
-		}
-		else{
-			creator = PersonDao.loadPerson(getPerson().getPersonId());
-		}
+		creator = determinePerson(cmd);
 		
 		if(!creator.hasPrivilege(Privilege.POST) && !creator.isAdministrator())
 			throw new RuntimeException("You dont have privledges to create new content.");

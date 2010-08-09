@@ -10,6 +10,7 @@ import org.ttdc.gwt.client.beans.GAssociationPostTag;
 import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.beans.GTag;
+import org.ttdc.gwt.client.constants.TagConstants;
 import org.ttdc.gwt.client.messaging.ConnectionId;
 import org.ttdc.gwt.client.messaging.EventBus;
 import org.ttdc.gwt.client.messaging.error.MessageEvent;
@@ -27,7 +28,10 @@ import org.ttdc.gwt.client.presenters.movies.MovieRatingPresenter.PostRatingCall
 import org.ttdc.gwt.client.presenters.shared.HyperlinkPresenter;
 import org.ttdc.gwt.shared.commands.AssociationPostTagCommand;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
+import org.ttdc.gwt.shared.commands.PostCrudCommand;
 import org.ttdc.gwt.shared.commands.results.AssociationPostTagResult;
+import org.ttdc.gwt.shared.commands.results.PostCommandResult;
+import org.ttdc.gwt.shared.commands.types.PostActionType;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -270,9 +274,35 @@ public class TagListPanel extends Composite implements PersonEventListener, Post
 	
 	@UiHandler("nwsCheckBoxElement")
 	public void onNwsClickBoxValueChange(ValueChangeEvent<Boolean> event){
-		Window.alert("Doo it! " + event.getValue());
+		post.toggleNws(); 
+		
+		updateMetaMask(post);
+	}
+
+	private void updateMetaMask(GPost p) {
+		PostCrudCommand cmd = new PostCrudCommand();
+		cmd.setAction(PostActionType.UPDATE_META);
+		cmd.setMetaMask(p.getMetaMask());
+		cmd.setPostId(p.getPostId());
+		
+		cmd.setConnectionId(ConnectionId.getInstance().getConnectionId());
+		injector.getService().execute(cmd, buildCreatePostCallback());
 	}
 	
+	private CommandResultCallback<PostCommandResult> buildCreatePostCallback() {
+		CommandResultCallback<PostCommandResult> callback = new CommandResultCallback<PostCommandResult>(){
+			@Override
+			public void onSuccess(PostCommandResult result) {
+				PostEvent event = new PostEvent(PostEventType.EDIT, result.getPost());
+				EventBus.fireEvent(event);
+			}
+			@Override
+			public void onFailure(Throwable caught) {
+				EventBus.fireErrorMessage(caught.getMessage());
+			}
+		};
+		return callback;
+	}
 	
 	private void processTagRemove(GAssociationPostTag ass){
 		AssociationPostTagCommand cmd = new AssociationPostTagCommand();
