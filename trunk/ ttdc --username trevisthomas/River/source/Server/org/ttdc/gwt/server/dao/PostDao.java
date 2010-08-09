@@ -162,6 +162,8 @@ final public class PostDao {
 			addImageToPost(imageFull, post);
 		}
 		
+		post.setMetaMask(metaMask);
+		
 		session().update(post);
 		session().flush();
 		return post;
@@ -495,6 +497,16 @@ final public class PostDao {
 
 	public void setImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
+	}
+	
+	
+
+	public long getMetaMask() {
+		return metaMask;
+	}
+
+	public void setMetaMask(long metaMask) {
+		this.metaMask = metaMask;
 	}
 
 	public void setDeleted(){
