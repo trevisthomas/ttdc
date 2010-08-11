@@ -44,7 +44,10 @@ final public class TagSearchDao {
 	private final List<String> allTagTypeFilters = Collections.unmodifiableList(Arrays.asList(
 			Tag.TYPE_AVERAGE_RATING,
 			Tag.TYPE_RATING,
-			Tag.TYPE_TOPIC));
+			Tag.TYPE_TOPIC,
+			Tag.TYPE_LIKE,
+			Tag.TYPE_EARMARK
+			));
 	
 
 	public PaginatedList<Tag> search(){

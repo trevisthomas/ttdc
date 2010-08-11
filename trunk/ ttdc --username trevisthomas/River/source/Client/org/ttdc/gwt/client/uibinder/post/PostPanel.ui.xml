@@ -2,57 +2,55 @@
 <!-- The above doctype is to allow for special html characters in this xml file -->
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
-	<g:HTMLPanel>
-		<div class="tt-post">
-			<div>
-				<span class="tt-post-title tt-text-large">
-					<g:Hyperlink ui:field="titleElement" />
-				</span>
-					
-				<span class="tt-post-reply-count" ui:field="replyCountElement" />
-			</div>
-			<div class="tt-post-container" style="clear:both;">
-				<table>
-					<tr>
-						<td>
-							<g:Widget ui:field="avatarElement" />
-						</td>
-						<td width="100%">
-							<div width="100%" class="tt-text-mini">
-								<span class="tt-float-left">
-									<g:Hyperlink ui:field="creatorLinkElement" />
-								</span>
-								<g:Label ui:field="postUnReadElement" styleName="tt-float-left" />
-								<span class="tt-float-left">
-									<g:Widget ui:field="createDateElement" />
-								</span>
-								<span class="tt-float-right">
-									<g:Anchor ui:field="moreOptionsElement"/>
-								</span>
-							</div>
-							<div width="100%" style="clear:both;" >
-								<div class="tt-float-right">
-									<g:Widget ui:field="ratingElement" />
-									<g:Widget ui:field="postImageElement" />
-								</div>
-								<span class="tt-post-body tt-text-normal" ui:field="bodyElement" />
-								<g:SimplePanel ui:field="likesElement"></g:SimplePanel>
-							</div>
-							
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<g:Widget ui:field="tagsElement"></g:Widget>
-						</td>
-					</tr>
-				</table>
-				<center><span ui:field="embedTargetElement"/></center>
-			</div>
-			
-			<div class="tt-post-fetch-more"><g:Anchor ui:field="fetchMoreElement"/></div>
-			<g:SimplePanel ui:field="commentElement" />
-			<g:Widget ui:field="repliesElement" />
+	<g:HTMLPanel ui:field="postMainElement" styleName="tt-post">
+		<div>
+			<span class="tt-post-title tt-text-large">
+				<g:Hyperlink ui:field="titleElement" />
+			</span>
+				
+			<span class="tt-post-reply-count" ui:field="replyCountElement" />
 		</div>
+		<div class="tt-post-container" style="clear:both;">
+			<table>
+				<tr>
+					<td>
+						<g:Widget ui:field="avatarElement" />
+					</td>
+					<td width="100%">
+						<div width="100%" class="tt-text-mini">
+							<span class="tt-float-left">
+								<g:Hyperlink ui:field="creatorLinkElement" />
+							</span>
+							<g:Label ui:field="postUnReadElement" styleName="tt-float-left" />
+							<span class="tt-float-left">
+								<g:Widget ui:field="createDateElement" />
+							</span>
+							<span class="tt-float-right">
+								<g:Anchor ui:field="moreOptionsElement"/>
+							</span>
+						</div>
+						<div width="100%" style="clear:both;" >
+							<div class="tt-float-right">
+								<g:Widget ui:field="ratingElement" />
+								<g:Widget ui:field="postImageElement" />
+							</div>
+							<span class="tt-post-body tt-text-normal" ui:field="bodyElement" />
+							<g:SimplePanel ui:field="likesElement"></g:SimplePanel>
+						</div>
+						
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<g:Widget ui:field="tagsElement"></g:Widget>
+					</td>
+				</tr>
+			</table>
+			<center><span ui:field="embedTargetElement"/></center>
+		</div>
+		
+		<div class="tt-post-fetch-more"><g:Anchor ui:field="fetchMoreElement"/></div>
+		<g:SimplePanel ui:field="commentElement" />
+		<g:Widget ui:field="repliesElement" />
 	</g:HTMLPanel>
 </ui:UiBinder>

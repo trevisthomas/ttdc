@@ -180,7 +180,7 @@ public class TagListPanel extends Composite implements PersonEventListener, Post
 			lockedCheckBoxElement.setVisible(true);
 		}
 		else{
-			privateCheckBoxElement.setVisible(false);
+			deletedCheckBoxElement.setVisible(false);
 			lockedCheckBoxElement.setVisible(false);
 		}
 		
@@ -275,9 +275,46 @@ public class TagListPanel extends Composite implements PersonEventListener, Post
 	@UiHandler("nwsCheckBoxElement")
 	public void onNwsClickBoxValueChange(ValueChangeEvent<Boolean> event){
 		post.toggleNws(); 
-		
 		updateMetaMask(post);
 	}
+	
+	@UiHandler("infCheckBoxElement")
+	public void onInfClickBoxValueChange(ValueChangeEvent<Boolean> event){
+		post.toggleInf(); 
+		updateMetaMask(post);
+	}
+	
+	@UiHandler("privateCheckBoxElement")
+	public void onPrivateClickBoxValueChange(ValueChangeEvent<Boolean> event){
+		post.togglePrivate(); 
+		updateMetaMask(post);
+	}
+	
+	@UiHandler("lockedCheckBoxElement")
+	public void onLockedClickBoxValueChange(ValueChangeEvent<Boolean> event){
+		post.toggleLocked(); 
+		updateMetaMask(post);
+	}
+	
+	@UiHandler("deletedCheckBoxElement")
+	public void onDeletedClickBoxValueChange(ValueChangeEvent<Boolean> event){
+		post.toggleDeleted(); 
+		updateMetaMask(post);
+	}
+	
+	@UiHandler("reviewCheckBoxElement")
+	public void onReviewClickBoxValueChange(ValueChangeEvent<Boolean> event){
+		post.toggleReview(); 
+		updateMetaMask(post);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 
 	private void updateMetaMask(GPost p) {
 		PostCrudCommand cmd = new PostCrudCommand();

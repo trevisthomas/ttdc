@@ -2,16 +2,16 @@
 <!-- The above doctype is to allow for special html characters in this xml file -->
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
-	<g:HTMLPanel>
-			<g:HTMLPanel ui:field="tagListElement" styleName="tt-color-tagList">
+	<g:HTMLPanel styleName="tt-fill tt-color-tagList">
+			<g:HTMLPanel ui:field="tagListElement" styleName="tt-text-small">
 				<g:FlowPanel styleName="tt-inline" ui:field="tagsElement">
 				</g:FlowPanel>
 				<g:HTMLPanel ui:field="tagEditElement" styleName="tt-inline">
 					(<g:Anchor ui:field="editTagsLinkElement" styleName="tt-cursor-pointer"/>)
 				</g:HTMLPanel>
 			</g:HTMLPanel>
-			<g:HTMLPanel ui:field="editableTagListElement" styleName="tt-color-editableTagList">
-				<table>
+			<g:HTMLPanel ui:field="editableTagListElement">
+				<table class="tt-text-normal">
 					<tr>
 						<td><g:FlowPanel ui:field="editableTagsElement"/></td>
 						<td><g:SimplePanel ui:field="tagSelectorElement"/></td>

@@ -33,11 +33,13 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+
 
 /**
  * 
@@ -76,6 +78,7 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
     @UiField(provided = true) Widget tagsElement;
     @UiField SimplePanel likesElement;
     @UiField Label postUnReadElement;
+    @UiField HTMLPanel postMainElement;
     
     private Mode mode;
     
@@ -119,6 +122,22 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 		super.init(post, commentElement);
 		this.mode = mode;
 		this.post = post;
+		
+		if(post.isNWS()){
+			postMainElement.addStyleName("tt-color-nws");
+		}
+		else{
+			postMainElement.removeStyleName("tt-color-nws");
+		}
+		
+		if(post.isINF()){
+			postMainElement.addStyleName("tt-color-inf");
+		}
+		else{
+			postMainElement.removeStyleName("tt-color-inf");
+		}
+		
+		
 		bodyElement.setInnerHTML(post.getEntry());
 		
 		if(post.isRootPost() || post.isThreadPost()){
