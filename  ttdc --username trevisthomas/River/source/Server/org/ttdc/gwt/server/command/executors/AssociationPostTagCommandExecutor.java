@@ -1,6 +1,7 @@
 package org.ttdc.gwt.server.command.executors;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.search.FullTextSession;
 import org.ttdc.gwt.client.beans.GAssociationPostTag;
 import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.beans.GTag;
@@ -75,12 +76,22 @@ public class AssociationPostTagCommandExecutor extends CommandExecutor<Associati
 		broadcastPostEvent(post, PostEventType.EDIT);
 		broadcastTagAssociation(ass, TagEventType.NEW);
 		
-		
+		reIndexTagsOnPost(post);
 		
 		Persistence.commit();
+		
+		
 		return result;
 	}
 
+	//Hm, should i refactor and move this to the ass DAO?
+	private void reIndexTagsOnPost(Post post){
+		FullTextSession fullTextSession = Persistence.fullTextSession();
+		for (AssociationPostTag ass : post.getTagAssociations()) {
+		    fullTextSession.index(ass.getTag());
+		}
+	}
+	
 	private AssociationPostTagResult performRemoveAssociation(AssociationPostTagCommand command) {
 		AssociationPostTagResult result;
 		Persistence.beginSession();
@@ -103,6 +114,13 @@ public class AssociationPostTagCommandExecutor extends CommandExecutor<Associati
 		result.setPost(gPost);
 		
 		broadcastPostEvent(post, PostEventType.EDIT);
+		
+		Tag tag = ass.getTag();
+		FullTextSession fullTextSession = Persistence.fullTextSession();
+		fullTextSession.index(tag);
+		
+		reIndexTagsOnPost(post);
+		
 		
 //		AssociationPostTag ass = AssociationPostTagDao.remove(command.getAssociationId());
 //		

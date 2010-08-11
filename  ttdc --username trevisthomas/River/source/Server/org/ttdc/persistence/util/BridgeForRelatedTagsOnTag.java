@@ -1,6 +1,8 @@
 package org.ttdc.persistence.util;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.search.bridge.StringBridge;
 import org.ttdc.persistence.Persistence;
@@ -19,8 +21,17 @@ public class BridgeForRelatedTagsOnTag  implements StringBridge{
 		
 		
 		StringBuilder sb = new StringBuilder();
+		
+		//I didnt understand why this had duplicates... i added this set to take them out.  This was
+		//discovered 8/10/2010 while i was adding the reindixing logic for when tag associations were created.
+		Set<String> dedup = new HashSet<String>();
 		for(Tag t : list){
-			sb.append(t.getTagId());
+			dedup.add(t.getTagId());
+		}
+		
+		
+		for(String s : dedup){
+			sb.append(s);
 			sb.append(" ");
 		}
 		//System.out.println(sb.toString());
