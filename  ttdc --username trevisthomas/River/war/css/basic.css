@@ -14,7 +14,7 @@ body{text-align:center; margin: 0 auto;}
 .tt-border-bottom-right{ border-width: 0 1px 1px 0; border-style: solid;}
 
 .tt-alert{color: red;}
-.tt-post{width: 500px; margin-bottom: 10px;}
+.tt-post{width: 500px; margin-bottom: 10px; border:1px solid;}
 .tt-post-container-header{overflow: auto;}
 .tt-post-container-footer{}
 
@@ -215,7 +215,10 @@ body{text-align:center; margin: 0 auto;}
 
 
 .tt-color-nws{ border-color: red; background-color: #FFE8EB; }
-.tt-color-inf{ border-color: #F5F23B; background-color: #FFFFE6; }	
+.tt-color-inf{ border-color: #F5F23B; background-color: #FFFFE6; }
+
+.tt-post{ background-color: #fefefe; border-color:#eee; color: white;}
+.tt-post-body{color: grey;}
 	
 
 

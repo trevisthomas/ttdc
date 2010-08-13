@@ -10,26 +10,20 @@ import org.ttdc.gwt.client.beans.GAssociationPostTag;
 import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.beans.GTag;
-import org.ttdc.gwt.client.constants.TagConstants;
 import org.ttdc.gwt.client.messaging.ConnectionId;
 import org.ttdc.gwt.client.messaging.EventBus;
-import org.ttdc.gwt.client.messaging.error.MessageEvent;
-import org.ttdc.gwt.client.messaging.error.MessageEventType;
 import org.ttdc.gwt.client.messaging.person.PersonEvent;
 import org.ttdc.gwt.client.messaging.person.PersonEventListener;
 import org.ttdc.gwt.client.messaging.person.PersonEventType;
 import org.ttdc.gwt.client.messaging.post.PostEvent;
 import org.ttdc.gwt.client.messaging.post.PostEventListener;
 import org.ttdc.gwt.client.messaging.post.PostEventType;
-import org.ttdc.gwt.client.messaging.tag.TagEvent;
-import org.ttdc.gwt.client.messaging.tag.TagEventType;
 import org.ttdc.gwt.client.presenters.comments.RemovableTagPresenter;
 import org.ttdc.gwt.client.presenters.movies.MovieRatingPresenter.PostRatingCallback;
 import org.ttdc.gwt.client.presenters.shared.HyperlinkPresenter;
 import org.ttdc.gwt.shared.commands.AssociationPostTagCommand;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
 import org.ttdc.gwt.shared.commands.PostCrudCommand;
-import org.ttdc.gwt.shared.commands.results.AssociationPostTagResult;
 import org.ttdc.gwt.shared.commands.results.PostCommandResult;
 import org.ttdc.gwt.shared.commands.types.PostActionType;
 
@@ -37,19 +31,15 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.SuggestBox;
@@ -61,7 +51,6 @@ public class TagListPanel extends Composite implements PersonEventListener, Post
 	private static final MyUiBinder binder = GWT.create(MyUiBinder.class);
 	
 	private Injector injector;
-//	private List<GAssociationPostTag> tagAssociationList = new ArrayList<GAssociationPostTag>();
 	private List<RemovableTagPresenter> tagPresenterList = new ArrayList<RemovableTagPresenter>();
 	private Mode mode;
 	private SugestionOracle tagSuggestionOracle;
@@ -75,8 +64,8 @@ public class TagListPanel extends Composite implements PersonEventListener, Post
 	@UiField SimplePanel tagSelectorElement;
 	@UiField Button addButtonElement;
 	@UiField Button cancelButtonElement;
-	@UiField Anchor editTagsLinkElement;
-	@UiField HTMLPanel tagEditElement;
+	//@UiField Anchor editTagsLinkElement;
+	//@UiField HTMLPanel tagEditElement;
 	
 	@UiField CheckBox nwsCheckBoxElement;
 	@UiField CheckBox infCheckBoxElement;
@@ -84,8 +73,6 @@ public class TagListPanel extends Composite implements PersonEventListener, Post
 	@UiField CheckBox lockedCheckBoxElement;
 	@UiField CheckBox deletedCheckBoxElement;
 	@UiField CheckBox reviewCheckBoxElement;
-	
-	
 	
 	public enum Mode{
 		STATIC,
@@ -114,14 +101,6 @@ public class TagListPanel extends Composite implements PersonEventListener, Post
 		EventBus.getInstance().addListener((PersonEventListener)this);
 		EventBus.getInstance().addListener((PostEventListener)this);
 		
-//		nwsCheckBoxElement.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
-//			@Override
-//			public void onValueChange(ValueChangeEvent<Boolean> event) {
-//				// TODO Auto-generated method stub
-//				
-//			}
-//		});
-
 	}
 	
 	public void init(GPost post, Mode mode){
@@ -130,19 +109,19 @@ public class TagListPanel extends Composite implements PersonEventListener, Post
 		
 		changeToMode(mode);
 		
-		editTagsLinkElement.setText("edit");
+		//editTagsLinkElement.setText("edit");
 
 		applyUserPrivilege();
 	}
 
 	private void applyUserPrivilege() {
 		GPerson person = ConnectionId.getInstance().getCurrentUser();
-		if(person.isAnonymous()){
-			tagEditElement.setVisible(false);
-		}
-		else{
-			tagEditElement.setVisible(true);
-		}
+//		if(person.isAnonymous()){
+//			tagEditElement.setVisible(false);
+//		}
+//		else{
+//			tagEditElement.setVisible(true);
+//		}
 		
 		tagsElement.clear();
 		editableTagsElement.clear();
@@ -192,12 +171,16 @@ public class TagListPanel extends Composite implements PersonEventListener, Post
 		}
 	}
 
+	public void showEditor(){
+		changeToMode(Mode.EDIT);
+	}
+	
 	private void changeToMode(Mode mode) {
 		if(Mode.EDIT_ONLY.equals(mode) || Mode.EDIT.equals(mode)){
 			editableTagListElement.setVisible(true);
 			tagListElement.setVisible(false);
 		}
-		else{ //Mode.STATIC.equals(mode) || Mode.EDITABLE.equals(mode)
+		else if(tagPresenterList.size() > 0){ //Mode.STATIC.equals(mode) || Mode.EDITABLE.equals(mode)
 			editableTagListElement.setVisible(false);
 			tagListElement.setVisible(true);
 		}
@@ -214,19 +197,9 @@ public class TagListPanel extends Composite implements PersonEventListener, Post
 		tagPresenter.init(ass.getTag(), new RemoveTagClickHandler(tagPresenter, ass));
 	}
 	
-//	private void createRemovableTagWithoutAssociation(GTag tag) {
-//		RemovableTagPresenter tagPresenter = injector.getRemovableTagPresenter();
-//		tagPresenterList.add(tagPresenter);
-//		editableTagsElement.add(tagPresenter.getWidget());
-//		tagPresenter.init(tag, new RemoveTagClickHandler(tagPresenter));
-//	}
-	
 	private class RemoveTagClickHandler implements ClickHandler{
 		private RemovableTagPresenter presenter;
 		private GAssociationPostTag ass;
-//		public RemoveTagClickHandler(RemovableTagPresenter presenter) {
-//			this.presenter = presenter;
-//		}
 		
 		public RemoveTagClickHandler(RemovableTagPresenter presenter, GAssociationPostTag ass) {
 			this.presenter = presenter;
@@ -255,11 +228,7 @@ public class TagListPanel extends Composite implements PersonEventListener, Post
 		}
 		tagSuggestionOracle.clear();
 		
-		
-		//createRemovableTagWithoutAssociation(tag);
-		
 		processTagCreation(tag);
-		
 	}
 	
 	@UiHandler("cancelButtonElement")
@@ -267,10 +236,10 @@ public class TagListPanel extends Composite implements PersonEventListener, Post
 		changeToMode(Mode.STATIC);
 	}
 	
-	@UiHandler("editTagsLinkElement")
-	public void onClickEdit(ClickEvent event){
-		changeToMode(Mode.EDIT);
-	}
+//	@UiHandler("editTagsLinkElement")
+//	public void onClickEdit(ClickEvent event){
+//		changeToMode(Mode.EDIT);
+//	}
 	
 	@UiHandler("nwsCheckBoxElement")
 	public void onNwsClickBoxValueChange(ValueChangeEvent<Boolean> event){
@@ -308,14 +277,6 @@ public class TagListPanel extends Composite implements PersonEventListener, Post
 		updateMetaMask(post);
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-
 	private void updateMetaMask(GPost p) {
 		PostCrudCommand cmd = new PostCrudCommand();
 		cmd.setAction(PostActionType.UPDATE_META);
@@ -361,39 +322,6 @@ public class TagListPanel extends Composite implements PersonEventListener, Post
 		cmd.setConnectionId(ConnectionId.getInstance().getConnectionId());
 		injector.getService().execute(cmd, new PostRatingCallback(post));
 	}
-	
-//	private class CreateTagCallback extends CommandResultCallback<AssociationPostTagResult>{
-//		private GPost post;
-//		public CreateTagCallback(GPost post) {
-//			this.post = post;
-//		}
-//		
-//		/*
-//		 * NOTE:  I'm firing the tag event locally so that the browser that tagged gets the refresh
-//		 * message too.  Other browser will get the event from the server
-//		 * 
-//		 */
-//		@Override
-//		public void onSuccess(AssociationPostTagResult result) {
-//			if(result.isCreate()){
-//				PostEvent event = new PostEvent(PostEventType.EDIT,result.getAssociationPostTag().getPost());
-//				EventBus.fireEvent(event);
-//				TagEvent tagEvent = new TagEvent(TagEventType.NEW, result.getAssociationPostTag());
-//				EventBus.fireEvent(tagEvent);
-//			}
-//			else if(result.isRemove()){
-//				PostEvent event = new PostEvent(PostEventType.EDIT,result.getPost());
-//				EventBus.fireEvent(event);
-//				TagEvent tagEvent = new TagEvent(TagEventType.REMOVED, result.getAssociationPostTag());
-//				EventBus.fireEvent(tagEvent);
-//			}
-//			else{
-//				MessageEvent event = new MessageEvent(MessageEventType.SYSTEM_ERROR,result.getAssociationId());
-//				EventBus.fireEvent(event);
-//			}
-//			
-//		}
-//	}
 	
 	@Override
 	public void onPersonEvent(PersonEvent event) {

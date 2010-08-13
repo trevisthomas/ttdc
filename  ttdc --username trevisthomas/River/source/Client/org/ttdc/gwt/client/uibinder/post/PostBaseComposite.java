@@ -38,6 +38,8 @@ abstract public class PostBaseComposite extends Composite{
 	
 	protected Injector injector;
 	private HasWidgets commentElement;
+	private TagListPanel tagListPanel;
+	
 	private GPost post;
 	
 	//Not using the annotation was intentional. I didnt think that i should.
@@ -45,10 +47,10 @@ abstract public class PostBaseComposite extends Composite{
 		this.injector = injector;
 	}
 	
-	public void init(GPost post, HasWidgets commentElement){
+	public void init(GPost post, HasWidgets commentElement, TagListPanel tagListPanel){
 		this.post = post;
 		this.commentElement = commentElement;
-		
+		this.tagListPanel = tagListPanel;
 	}	
 	private void initializeOptionsPopup(final GPost post, Widget showRelativeTo) {
 		optionsPanel = injector.createOptionsPanel();
@@ -134,8 +136,24 @@ abstract public class PostBaseComposite extends Composite{
 				processUnEarmarkPostRequest();
 			}
 		});
+		
+		optionsPanel.addTagClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				//processMuteThreadRequest();
+				processTagPostRequest();
+			}
+		});
 	}
 	
+//	public TagListPanel getTagListPanel() {
+//		return tagListPanel;
+//	}
+//
+//	public void setTagListPanel(TagListPanel tagListPanel) {
+//		this.tagListPanel = tagListPanel;
+//	}
+//	
 	private void processUnEarmarkPostRequest() {
 		GPerson user = ConnectionId.getInstance().getCurrentUser();
 		GAssociationPostTag association = post.getEarmarkByPerson(user.getPersonId());
@@ -264,6 +282,10 @@ abstract public class PostBaseComposite extends Composite{
 //			}
 //		}
 //	}
+	
+	private void processTagPostRequest() {
+		tagListPanel.showEditor();
+	}
 	
 	private void showNewCommentEditor() {
 		NewCommentPresenter commentPresneter = injector.getNewCommentPresenter();

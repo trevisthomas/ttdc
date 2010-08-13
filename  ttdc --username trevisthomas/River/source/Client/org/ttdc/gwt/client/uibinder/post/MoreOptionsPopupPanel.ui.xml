@@ -6,6 +6,7 @@
 		<g:VerticalPanel>
 			<g:Anchor ui:field="replyElement">Reply</g:Anchor>
 			<g:Anchor ui:field="editElement">Edit</g:Anchor>
+			<g:Anchor ui:field="tagElement">Tag</g:Anchor>
 			<g:Anchor ui:field="likeElement">Like</g:Anchor>
 			<g:Anchor ui:field="unLikeElement">Unlike</g:Anchor>
 			<g:Anchor ui:field="ratingElement">rate</g:Anchor>
