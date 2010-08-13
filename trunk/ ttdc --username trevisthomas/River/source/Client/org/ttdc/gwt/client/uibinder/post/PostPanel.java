@@ -119,7 +119,7 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 	}
 
 	public void setPost(GPost post, Mode mode) {
-		super.init(post, commentElement);
+		super.init(post, commentElement, tagListPanel);
 		this.mode = mode;
 		this.post = post;
 		

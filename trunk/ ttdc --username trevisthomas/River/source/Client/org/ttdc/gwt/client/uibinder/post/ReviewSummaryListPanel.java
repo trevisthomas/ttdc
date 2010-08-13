@@ -72,7 +72,7 @@ public class ReviewSummaryListPanel extends PostBaseComposite implements PostEve
 	}
 	
 	public void init(GPost post){
-		super.init(post, commentElement);
+		super.init(post, commentElement, null);
 		this.post = post;
 		imagePresenter.setImageAsMoviePoster(post);
 		imagePresenter.init();

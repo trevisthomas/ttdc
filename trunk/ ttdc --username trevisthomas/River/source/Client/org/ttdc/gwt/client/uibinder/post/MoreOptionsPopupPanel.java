@@ -33,6 +33,7 @@ public class MoreOptionsPopupPanel extends PopupPanel{
     @UiField Anchor unMuteThreadElement;
     @UiField Anchor earmarkElement;
     @UiField Anchor unEarmarkElement;
+    @UiField Anchor tagElement;
     
     
     @Inject
@@ -55,6 +56,7 @@ public class MoreOptionsPopupPanel extends PopupPanel{
     	unMuteThreadElement.setVisible(false);
     	unEarmarkElement.setVisible(false);
     	earmarkElement.setVisible(false);
+    	tagElement.setVisible(false);
     	if(user.hasPrivilege(PrivilegeConstants.VOTER) || user.isAdministrator()){
     		if(post.isRatable()){
     			if(post.getRatingByPerson(user.getPersonId()) == null)
@@ -89,6 +91,10 @@ public class MoreOptionsPopupPanel extends PopupPanel{
     	
     	if(user.isAdministrator() || (user.equals(post.getCreator()) && post.isInEditWindow())){
     		editElement.setVisible(true);
+    	}
+    	
+    	if(!user.isAnonymous()){
+    		tagElement.setVisible(true);
     	}
     }
     
@@ -132,6 +138,10 @@ public class MoreOptionsPopupPanel extends PopupPanel{
     	unEarmarkElement.addClickHandler(handler);
     }
     
+    public void addTagClickHandler(ClickHandler handler){
+    	tagElement.addClickHandler(handler);
+    }
+    
     @UiHandler("ratingElement")
     void onClickRating(ClickEvent event){
     	hide();
@@ -166,7 +176,8 @@ public class MoreOptionsPopupPanel extends PopupPanel{
     	hide();
     }
     
-    @UiHandler(value={"editElement","unMuteThreadElement","muteThreadElement"})
+    
+    @UiHandler(value={"editElement","unMuteThreadElement","muteThreadElement","tagElement"})
     void onClickEdit(ClickEvent event){
     	hide();
     }

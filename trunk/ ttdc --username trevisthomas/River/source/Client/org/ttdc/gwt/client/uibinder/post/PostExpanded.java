@@ -67,7 +67,7 @@ public class PostExpanded extends PostBaseComposite{
 	}
 	
 	public void init(GPost post, HasWidgets commentElement){
-		super.init(post, commentElement);
+		super.init(post, commentElement, null);
 		bodyElement.setInnerHTML(post.getEntry());
 //		this.post = post;
 		moreOptionsElement.setText("> More Options");
