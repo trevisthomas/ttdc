@@ -15,14 +15,12 @@
 				
 			</g:HTMLPanel>
 			<g:HTMLPanel ui:field="editableTagListElement">
-				<table class="tt-text-normal">
-					<tr>
-						<td><g:FlowPanel ui:field="editableTagsElement"/></td>
-						<td><g:SimplePanel ui:field="tagSelectorElement"/></td>
-						<td><g:Button ui:field="addButtonElement"/><g:Button ui:field="cancelButtonElement"/></td>
+				<table class="tt-fill tt-text-normal">
+					<tr>	
+						<td><div class="tt-text-normal-bold">Flags:</div></td>
 					</tr>
 					<tr>
-						<td colspan="3">
+						<td style="padding: 0 0 0 5px;">
 							<g:CheckBox ui:field="nwsCheckBoxElement">NWS</g:CheckBox>
 							<g:CheckBox ui:field="infCheckBoxElement">Informative</g:CheckBox>
 							<g:CheckBox ui:field="privateCheckBoxElement">Private</g:CheckBox>
@@ -30,6 +28,15 @@
 							<g:CheckBox ui:field="deletedCheckBoxElement">Deleted</g:CheckBox>
 							<g:CheckBox ui:field="reviewCheckBoxElement">Review</g:CheckBox>
 						</td>
+					</tr>
+					<tr>
+						<td><div class="tt-text-normal-bold">Tags:</div></td>
+					</tr>
+					<tr>
+						<td style="padding: 0 0 0 5px;"><g:FlowPanel ui:field="editableTagsElement"/></td>
+					</tr>
+					<tr>
+						<td><g:SimplePanel styleName="tt-inline" ui:field="tagSelectorElement"/><g:Button ui:field="addButtonElement"/><g:Button ui:field="cancelButtonElement"/></td>
 					</tr>
 				</table>
 			</g:HTMLPanel>

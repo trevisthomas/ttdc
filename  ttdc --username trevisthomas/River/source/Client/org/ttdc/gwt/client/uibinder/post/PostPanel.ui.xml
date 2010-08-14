@@ -3,12 +3,38 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 	<g:HTMLPanel ui:field="postMainElement" styleName="tt-post tt-color-post">
-		<div>
-			<span class="tt-post-title tt-text-large">
+		<div class="tt-post-title tt-text-large">
+			<span>
 				<g:Hyperlink ui:field="titleElement" />
 			</span>
+			<table class="tt-inline">
+				<tr>
+					<td>
+						<g:Label ui:field="nwsElement" styleName="tt-color-nws">NWS</g:Label>
+					</td>
+					<td>
+						<g:Label ui:field="infElement" styleName="tt-inline tt-color-inf">INF</g:Label>
+					</td>
+					<td>
+						<g:Label ui:field="privateElement" styleName="ui-icon ui-icon-star"></g:Label>
+					</td>
+				</tr>
+			</table>
 				
+			<table class="tt-inline tt-float-right">
+				<tr>
+					<td>
+						<g:Label ui:field="replyCountElement"></g:Label>
+					</td>
+					<td>
+						<g:Label ui:field="conversationCountElement"></g:Label>
+					</td>
+				</tr>
+			</table>
+			
+			<!-- 
 			<span class="tt-post-reply-count" ui:field="replyCountElement" />
+			 -->
 		</div>
 		<div class="tt-post-container" style="clear:both;">
 			<table>
@@ -35,13 +61,13 @@
 								<g:Widget ui:field="postImageElement" />
 							</div>
 							<span class="tt-post-body tt-text-normal" ui:field="bodyElement" />
-							<g:SimplePanel ui:field="likesElement"></g:SimplePanel>
 						</div>
 						
 					</td>
 				</tr>
 				<tr>
 					<td colspan="2">
+						<g:SimplePanel ui:field="likesElement"></g:SimplePanel>
 						<g:Widget ui:field="tagsElement"></g:Widget>
 					</td>
 				</tr>

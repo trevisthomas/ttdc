@@ -39,6 +39,7 @@ public class LikesView implements LikesPresenter.View{
 		html+=".";
 		
 		main = new HTMLPanel("<div>"+html+"</div>");
+		main.setStyleName("tt-text-small tt-likes");
 		
 	}
 }

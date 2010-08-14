@@ -102,9 +102,10 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 	
 	protected Post updateMeta(PostCrudCommand cmd){
 		Person creator = determinePerson(cmd);
+		if(!creator.hasPrivilege(Privilege.POST) && !creator.isAdministrator()){
+			throw new RuntimeException("You dont have the priviledges to flag this post.");
+		}
 		Post post = PostDao.loadPost(cmd.getPostId());
-		authenticateForAddUpdateAccess(creator, post);
-		
 		PostDao dao = new PostDao();
 		dao.setCreator(creator);
 		dao.setPostId(cmd.getPostId());

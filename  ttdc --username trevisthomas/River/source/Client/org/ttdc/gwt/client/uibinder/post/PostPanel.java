@@ -33,6 +33,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Label;
@@ -63,7 +64,8 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
     private int childPostPage = 1;
     	    
     @UiField(provided = true) Hyperlink titleElement;
-    @UiField SpanElement replyCountElement;
+    @UiField Label replyCountElement;
+    @UiField Label conversationCountElement;
     @UiField SpanElement bodyElement;
     @UiField(provided = true) Widget avatarElement;
     @UiField(provided = true) Hyperlink creatorLinkElement;
@@ -79,6 +81,9 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
     @UiField SimplePanel likesElement;
     @UiField Label postUnReadElement;
     @UiField HTMLPanel postMainElement;
+    @UiField Widget nwsElement;
+    @UiField Widget infElement;
+    @UiField Widget privateElement;
     
     private Mode mode;
     
@@ -112,6 +117,12 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
     	
     	initWidget(binder.createAndBindUi(this));
     	EventBus.getInstance().addListener(this);
+    	
+    	nwsElement.setVisible(false);
+    	infElement.setVisible(false);
+    	privateElement.setVisible(false);
+    	replyCountElement.setStyleName("tt-reply-count");
+    	conversationCountElement.setStyleName("tt-conversation-count");
     }
     
     public void setPost(GPost post) {
@@ -123,20 +134,22 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 		this.mode = mode;
 		this.post = post;
 		
-		if(post.isNWS()){
-			postMainElement.addStyleName("tt-color-nws");
+		nwsElement.setVisible(post.isNWS());
+		infElement.setVisible(post.isINF());
+		privateElement.setVisible(post.isPrivate());
+		
+		
+		replyCountElement.setText(""+post.getMass());
+		
+		replyCountElement.setTitle( post.getMass() + " replies in this branch.");
+		if(post.isRootPost()){
+			conversationCountElement.setVisible(true);
+			conversationCountElement.setText(""+post.getReplyCount());
+			conversationCountElement.setTitle(post.getReplyCount() + " conversations within this topic.");
 		}
 		else{
-			postMainElement.removeStyleName("tt-color-nws");
+			conversationCountElement.setVisible(false);
 		}
-		
-		if(post.isINF()){
-			postMainElement.addStyleName("tt-color-inf");
-		}
-		else{
-			postMainElement.removeStyleName("tt-color-inf");
-		}
-		
 		
 		bodyElement.setInnerHTML(post.getEntry());
 		

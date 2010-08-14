@@ -2,6 +2,8 @@ package org.ttdc.gwt.client.beans;
 
 import java.util.Date;
 
+import org.ttdc.gwt.client.constants.TagConstants;
+
 public class GAssociationPostTag extends GBase{
 	private String guid;
 	private GTag tag;
@@ -54,5 +56,8 @@ public class GAssociationPostTag extends GBase{
 	public void setTitle(boolean title) {
 		this.title = title;
 	}
-		
+	public boolean isType(String type){
+		return type.equals(getTag().getType());
+	}
+	
 }
