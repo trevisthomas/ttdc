@@ -93,7 +93,7 @@ public class TagListPanel extends Composite implements PersonEventListener, Post
 		addButtonElement.setText("Add");
 		
 		editableTagListElement.setVisible(false);
-		tagListElement.setVisible(false);
+		tagListElement.setVisible(true);
 		
 		tagSuggestionOracle = injector.getTagSugestionOracle();
 		tagSuggestionBox = tagSuggestionOracle.createSuggestBoxForPostView();
@@ -107,25 +107,16 @@ public class TagListPanel extends Composite implements PersonEventListener, Post
 		this.post = post;
 		this.mode = mode;
 		
-		changeToMode(mode);
-		
-		//editTagsLinkElement.setText("edit");
-
 		applyUserPrivilege();
+		changeToMode(mode);
 	}
 
 	private void applyUserPrivilege() {
 		GPerson person = ConnectionId.getInstance().getCurrentUser();
-//		if(person.isAnonymous()){
-//			tagEditElement.setVisible(false);
-//		}
-//		else{
-//			tagEditElement.setVisible(true);
-//		}
 		
 		tagsElement.clear();
 		editableTagsElement.clear();
-		for(GAssociationPostTag ass : post.getTagAssociations()){
+		for(GAssociationPostTag ass : post.getTopicTagAssociations()){
 			HyperlinkPresenter tagLink = injector.getHyperlinkPresenter();
 			tagLink.setTag(ass.getTag());
 			tagLink.init();//TODO: refactor this call out
@@ -180,9 +171,13 @@ public class TagListPanel extends Composite implements PersonEventListener, Post
 			editableTagListElement.setVisible(true);
 			tagListElement.setVisible(false);
 		}
-		else if(tagPresenterList.size() > 0){ //Mode.STATIC.equals(mode) || Mode.EDITABLE.equals(mode)
+		else if(post.getTopicTagAssociations().size() > 0){ //Mode.STATIC.equals(mode) || Mode.EDITABLE.equals(mode)
 			editableTagListElement.setVisible(false);
 			tagListElement.setVisible(true);
+		}
+		else{
+			editableTagListElement.setVisible(false);
+			tagListElement.setVisible(false);
 		}
 	}
 	

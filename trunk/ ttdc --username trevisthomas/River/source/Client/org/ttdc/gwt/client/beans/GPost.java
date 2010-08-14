@@ -89,6 +89,15 @@ public class GPost extends GBase{
 	public List<GAssociationPostTag> getTagAssociations() {
 		return tagAssociations;
 	}
+	public List<GAssociationPostTag> getTopicTagAssociations(){
+		List<GAssociationPostTag> list = new ArrayList<GAssociationPostTag>();
+		for(GAssociationPostTag ass : getTagAssociations()){
+			if(ass.isType(TagConstants.TYPE_TOPIC)){
+				list.add(ass);
+			}
+		}
+		return list;
+	}
 	public void setTagAssociations(List<GAssociationPostTag> tagAssociations) {
 		this.tagAssociations = tagAssociations;
 	}

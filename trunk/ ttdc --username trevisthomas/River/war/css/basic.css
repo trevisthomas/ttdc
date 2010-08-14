@@ -1,5 +1,6 @@
 @import "common/icons/richtext2-light.css";
 @import "common/stars/stars-orange.css";
+@import "common/icons/icons-grey.css";
 
 html, body, div, h1, h2, h3, h4, h5, h6, ul, ol, dl, li, dt, dd, p, blockquote, pre, form, fieldset, table, th, td {vertical-align: top; margin: 0; padding: 0; }
 table {border-spacing: 0px; border-collapse: collapse;} /*Evil*/
@@ -159,6 +160,8 @@ body{text-align:center; margin: 0 auto;}
 .spoiler{ color : #f6f6f6; background-color : #f6f6f6;}
 .reveal{ color : #000; background-color : #f6f6f6;}
 
+.tt-reply-count,
+.tt-conversation-count{ border: 1px solid; padding: 0px 3px}
 
 
 /* 
@@ -213,15 +216,15 @@ body{text-align:center; margin: 0 auto;}
 .tt-color-calendar-small-month-day-hover{ border-color: #ccc; background-color: #fcfcfc;}
 
 
-
-.tt-color-nws{ border-color: red; background-color: #FFE8EB; }
-.tt-color-inf{ border-color: #F5F23B; background-color: #FFFFE6; }
+.tt-color-nws{ color: red; }
+.tt-color-inf{ color: #F5F23B; }
 
 .tt-post{ background-color: #fefefe; border-color:#eee; color: white;}
 .tt-post-body{color: grey;}
 	
 
-
+.tt-conversation-count{background-color: #F5F23B; border-color: white; color: grey;}
+.tt-reply-count{background-color: #cecece; border-color: white; color: #fefefe;}
 
 
 
