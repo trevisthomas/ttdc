@@ -100,6 +100,8 @@ public class TopicCommandExecutor  extends CommandExecutor<TopicCommandResult>{
 		ThreadDao dao = new ThreadDao();
 		dao.setCurrentPage(command.getPageNumber());
 		dao.setRootId(post.getRoot().getPostId());
+		dao.setSourcePost(post);
+		
 		dao.setFilterFlags(ExecutorHelpers.createFlagFilterListForPerson(getPerson()));
 		
 		PaginatedList<Post> results;

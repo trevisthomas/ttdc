@@ -1,5 +1,7 @@
 package org.ttdc.gwt.server.dao;
 
+import static org.ttdc.persistence.Persistence.session;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -10,6 +12,8 @@ import org.ttdc.persistence.objects.Post;
 public class ThreadDao extends FilteredPostPaginatedDaoBase{
 	private String rootId;
 	private String threadId;
+	private Post sourcePost;
+	
 	public final static int THREAD_REPLY_MAX_RESULTS = 5; //TODO probably want to move this to being a user choice?
 	
 	public void setRootId(String rootId) {
@@ -31,9 +35,39 @@ public class ThreadDao extends FilteredPostPaginatedDaoBase{
 		return results;
 	}
 	
+	private final static String HQL_ThreadIdsByDate = "SELECT post.postId FROM Post post " +
+			"WHERE post.parent.postId=:threadId AND bitwise_and( post.metaMask, :filterMask ) = 0 " +
+			"ORDER BY post.threadReplyDate DESC";
+	
+	
 	public PaginatedList<Post> loadByReplyDate() {
 		PaginatedList<Post> results;
 		//Grab the first page of starters requested by the user
+		int page = 1;
+		int subPage = 1;
+		if(getCurrentPage() == -1){
+			if(!sourcePost.isRootPost() && getCurrentPage() == -1){
+				//Source is not a root, find the thread page
+				threadId = sourcePost.getThread().getPostId();
+				@SuppressWarnings("unchecked")
+				List<String> list = session().createQuery(HQL_ThreadIdsByDate)
+					.setParameter("threadId", sourcePost.getRoot().getPostId())
+					.setParameter("filterMask", buildFilterMask(getFilterFlags()))
+					.list();
+				
+				int ndx = list.indexOf(threadId);
+				if(ndx >= 0){
+					page = (ndx / getPageSize())+1;
+				}
+				
+				if(!sourcePost.isThreadPost()){
+					//Reply post
+				}
+			}
+			
+			setCurrentPage(page);
+		}
+		
 		results = DaoUtils.executeLoadFromPostId(this,"ThreadDao.StartersByReplyDate","ThreadDao.StartersCount",rootId, buildFilterMask(getFilterFlags()));
 		List<Post> posts = loadAllPostsForThreads(results.getList());
 		for(Post p : results.getList()){
@@ -98,5 +132,8 @@ public class ThreadDao extends FilteredPostPaginatedDaoBase{
 		this.threadId = threadId;
 	}
 	
+	public void setSourcePost(Post post){
+		this.sourcePost = post;
+	}
 	
 }
