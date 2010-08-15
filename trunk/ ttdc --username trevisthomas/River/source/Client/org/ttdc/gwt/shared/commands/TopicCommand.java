@@ -9,7 +9,7 @@ public class TopicCommand extends Command<TopicCommandResult>  {
 	private String rootId;
 	private String postId;//Post ID to find. (when this is used the page number should be determined
 	private String conversationId;
-	private int pageNumber = 1;
+	private int pageNumber = -1;
 	private TopicCommandType type;
 	private boolean sortByDate = true; //By date sorting is not used for all types.  First use of this is in THREAD_SUMMARY
 	

@@ -32,7 +32,7 @@ public class TopicNestedPresenter extends BasePresenter<TopicNestedPresenter.Vie
 	}
 	
 	public void init(HistoryToken token){
-		final int pageNumber = token.getParameterAsInt(HistoryConstants.PAGE_NUMBER_KEY,1);
+		final int pageNumber = token.getParameterAsInt(HistoryConstants.PAGE_NUMBER_KEY,-1);
 		final String postId = token.getParameter(HistoryConstants.POST_ID_KEY);
 		
 		BatchCommandTool batcher = new BatchCommandTool();
