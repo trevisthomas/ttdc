@@ -36,9 +36,12 @@ public class ThreadDao extends FilteredPostPaginatedDaoBase{
 	}
 	
 	private final static String HQL_ThreadIdsByDate = "SELECT post.postId FROM Post post " +
-			"WHERE post.parent.postId=:threadId AND bitwise_and( post.metaMask, :filterMask ) = 0 " +
+			"WHERE post.parent.postId=:parentId AND bitwise_and( post.metaMask, :filterMask ) = 0 " +
 			"ORDER BY post.threadReplyDate DESC";
 	
+	private final static String HQL_SUB_THREAD_BY_PATH = "SELECT post.postId FROM Post post " +
+			"WHERE post.thread.postId=:postId AND bitwise_and( post.metaMask, :filterMask ) = 0 " +
+			"ORDER BY post.path DESC";
 	
 	public PaginatedList<Post> loadByReplyDate() {
 		PaginatedList<Post> results;
@@ -51,7 +54,7 @@ public class ThreadDao extends FilteredPostPaginatedDaoBase{
 				threadId = sourcePost.getThread().getPostId();
 				@SuppressWarnings("unchecked")
 				List<String> list = session().createQuery(HQL_ThreadIdsByDate)
-					.setParameter("threadId", sourcePost.getRoot().getPostId())
+					.setParameter("parentId", sourcePost.getRoot().getPostId())
 					.setParameter("filterMask", buildFilterMask(getFilterFlags()))
 					.list();
 				
@@ -62,6 +65,13 @@ public class ThreadDao extends FilteredPostPaginatedDaoBase{
 				
 				if(!sourcePost.isThreadPost()){
 					//Reply post
+					//10F4325D-8BE0-4346-B126-F257D5A308B5
+					subPage = determinePageNumber(HQL_SUB_THREAD_BY_PATH, 
+												sourcePost.getThread().getPostId(),
+												sourcePost.getPostId(),
+												THREAD_REPLY_MAX_RESULTS);
+					
+					
 				}
 			}
 			
@@ -71,11 +81,31 @@ public class ThreadDao extends FilteredPostPaginatedDaoBase{
 		results = DaoUtils.executeLoadFromPostId(this,"ThreadDao.StartersByReplyDate","ThreadDao.StartersCount",rootId, buildFilterMask(getFilterFlags()));
 		List<Post> posts = loadAllPostsForThreads(results.getList());
 		for(Post p : results.getList()){
-			loadRepliesFromPostList(p, posts);
+			if(p.equals(sourcePost.getThread()) && subPage != 1)
+				loadRepliesFromPostList(p, posts, subPage);
+			else
+				loadRepliesFromPostList(p, posts);
 		}
 		return results;
 	}
 	
+	private int determinePageNumber(String query, String refPostId, String sourcePostId,int perPage) {
+
+		int page = 1;	
+		@SuppressWarnings("unchecked")
+		List<String> list = session().createQuery(query)
+			.setParameter("postId", refPostId)
+			.setParameter("filterMask", buildFilterMask(getFilterFlags()))
+			.list();
+		
+		int ndx = list.indexOf(sourcePostId);
+		if(ndx >= 0){
+			page = (ndx / perPage)+1;
+		}
+		
+		return page;
+	}
+
 	private void loadRepliesFromPostList(Post thread, List<Post> posts) {
 		List<Post> flatReplyHierarchy = new ArrayList<Post>();
 		for(Post p : posts){
@@ -84,6 +114,22 @@ public class ThreadDao extends FilteredPostPaginatedDaoBase{
 		}	
 		if(flatReplyHierarchy.size() > THREAD_REPLY_MAX_RESULTS){
 			thread.setPosts(flatReplyHierarchy.subList(flatReplyHierarchy.size()-THREAD_REPLY_MAX_RESULTS, flatReplyHierarchy.size()));
+		}
+		else
+			thread.setPosts(flatReplyHierarchy);
+		
+	}
+	
+	private void loadRepliesFromPostList(Post thread, List<Post> posts, int subPage) {
+		List<Post> flatReplyHierarchy = new ArrayList<Post>();
+		for(Post p : posts){
+			if(!p.isThreadPost() && p.getThread().getPostId().equals(thread.getPostId()))
+				flatReplyHierarchy.add(p);
+		}	
+		if(flatReplyHierarchy.size() > THREAD_REPLY_MAX_RESULTS){
+			int start = flatReplyHierarchy.size()-(THREAD_REPLY_MAX_RESULTS * subPage);
+			int end = start + THREAD_REPLY_MAX_RESULTS;
+			thread.setPosts(flatReplyHierarchy.subList(start, end));
 		}
 		else
 			thread.setPosts(flatReplyHierarchy);
