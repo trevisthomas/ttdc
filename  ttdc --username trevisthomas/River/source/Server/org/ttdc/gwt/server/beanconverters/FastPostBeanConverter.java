@@ -168,6 +168,9 @@ public class FastPostBeanConverter {
 		gPost.setMass(p.getMass());
 		gPost.setReplyCount(p.getReplyCount());
 		
+		gPost.setReplyStartIndex(p.getReplyStartIndex());//Only used to let the client know that the child posts are a subset that doesnt start at the natural bottom
+		gPost.setReplyPage(p.getReplyPage());//Only used to let the client know that the child posts are a subset that doesnt start at the natural bottom
+		
 		Date cutoffTime = new Date();
 		cutoffTime.setTime(cutoffTime.getTime() - InitConstants.POST_EDIT_WINDOW_MS);
 		

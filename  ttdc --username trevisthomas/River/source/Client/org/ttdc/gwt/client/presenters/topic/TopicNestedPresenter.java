@@ -3,8 +3,8 @@ package org.ttdc.gwt.client.presenters.topic;
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.messaging.history.HistoryConstants;
 import org.ttdc.gwt.client.messaging.history.HistoryToken;
+import org.ttdc.gwt.client.presenters.post.Mode;
 import org.ttdc.gwt.client.presenters.post.PostCollectionPresenter;
-import org.ttdc.gwt.client.presenters.post.PostPresenter;
 import org.ttdc.gwt.client.presenters.shared.BasePresenter;
 import org.ttdc.gwt.client.presenters.shared.BaseView;
 import org.ttdc.gwt.client.presenters.shared.PaginationPresenter;
@@ -58,7 +58,7 @@ public class TopicNestedPresenter extends BasePresenter<TopicNestedPresenter.Vie
 			@Override
 			public void onSuccess(TopicCommandResult result) {
 				PostCollectionPresenter postCollectionPresenter = injector.getPostCollectionPresenter();
-				postCollectionPresenter.setPostList(result.getResults().getList(),PostPresenter.Mode.NESTED_SUMMARY);
+				postCollectionPresenter.setPostList(result.getResults().getList(),Mode.NESTED_SUMMARY);
 				
 				view.postsTarget().add(postCollectionPresenter.getWidget());
 				

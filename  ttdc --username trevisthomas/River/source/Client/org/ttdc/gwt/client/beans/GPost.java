@@ -34,8 +34,9 @@ public class GPost extends GBase{
 	private Integer publishYear;
 	private boolean inEditWindow = false; 
 	private boolean read = false;
-		
-
+	private int replyStartIndex = 1;
+	private int replyPage = 1;
+	
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -423,6 +424,22 @@ public class GPost extends GBase{
 	
 	public void toggleLocked(){
 		metaMask = metaMask | PostFlagBitmasks.BITMASK_LOCKED;
+	}
+
+	public int getReplyStartIndex() {
+		return replyStartIndex;
+	}
+
+	public void setReplyStartIndex(int replyStartIndex) {
+		this.replyStartIndex = replyStartIndex;
+	}
+
+	public int getReplyPage() {
+		return replyPage;
+	}
+
+	public void setReplyPage(int replyPage) {
+		this.replyPage = replyPage;
 	}
 
 	

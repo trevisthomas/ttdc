@@ -8,7 +8,6 @@ import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.messaging.EventBus;
 import org.ttdc.gwt.client.messaging.post.PostEvent;
 import org.ttdc.gwt.client.messaging.post.PostEventListener;
-import org.ttdc.gwt.client.presenters.post.PostPresenter.Mode;
 import org.ttdc.gwt.client.presenters.shared.BasePresenter;
 import org.ttdc.gwt.client.presenters.shared.BaseView;
 import org.ttdc.gwt.client.uibinder.post.PostPanel;

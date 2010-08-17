@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GPost;
+import org.ttdc.gwt.client.presenters.post.Mode;
 import org.ttdc.gwt.client.presenters.post.PostCollectionPresenter;
-import org.ttdc.gwt.client.presenters.post.PostPresenter.Mode;
 import org.ttdc.gwt.client.presenters.shared.BasePresenter;
 import org.ttdc.gwt.client.presenters.shared.BaseView;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;

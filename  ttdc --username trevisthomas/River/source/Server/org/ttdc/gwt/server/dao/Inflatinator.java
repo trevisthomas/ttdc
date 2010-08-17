@@ -10,6 +10,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.time.StopWatch;
 import org.apache.log4j.Logger;
+import org.mortbay.log.Log;
 import org.ttdc.gwt.client.beans.GAssociationPostTag;
 import org.ttdc.gwt.client.beans.GEntry;
 import org.ttdc.gwt.client.beans.GImage;

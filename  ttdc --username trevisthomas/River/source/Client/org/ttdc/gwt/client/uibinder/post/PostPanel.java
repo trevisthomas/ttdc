@@ -14,9 +14,9 @@ import org.ttdc.gwt.client.messaging.post.PostEventListener;
 import org.ttdc.gwt.client.messaging.post.PostEventType;
 import org.ttdc.gwt.client.presenters.movies.MovieRatingPresenter;
 import org.ttdc.gwt.client.presenters.post.LikesPresenter;
+import org.ttdc.gwt.client.presenters.post.Mode;
 import org.ttdc.gwt.client.presenters.post.PostCollectionPresenter;
 import org.ttdc.gwt.client.presenters.post.PostPresenterCommon;
-import org.ttdc.gwt.client.presenters.post.PostPresenter.Mode;
 import org.ttdc.gwt.client.presenters.shared.DatePresenter;
 import org.ttdc.gwt.client.presenters.shared.HyperlinkPresenter;
 import org.ttdc.gwt.client.presenters.shared.ImagePresenter;
@@ -245,7 +245,19 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 	private void setupFetchMoreClickHandlerTitle() {
 		if(postCollectionPresenter.size() < post.getMass()){
 			fetchMoreElement.setVisible(true);
-			fetchMoreElement.setText("Now showing "+postCollectionPresenter.size()+ " of "+post.getMass() +" comments. Click for more." );
+//			fetchMoreElement.setText("Now showing "+postCollectionPresenter.size()+ " of "+post.getMass() +" comments. Click for more." );
+			
+			
+				if(post.getReplyStartIndex() > 1){
+					fetchMoreElement.setText("Now showing "+post.getReplyStartIndex()+" to "+(post.getReplyStartIndex()+postCollectionPresenter.size())
+							+ " of "+post.getMass() +" comments. Click for more." );
+					if(childPostPage == 1)
+						childPostPage = post.getReplyPage();
+				}
+				else{
+					fetchMoreElement.setText("Now showing "+postCollectionPresenter.size()+ " of "+post.getMass() +" comments. Click for more." );
+				}
+			
 		}
 		else{
 			fetchMoreElement.setText("");

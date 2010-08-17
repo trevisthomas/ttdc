@@ -140,6 +140,29 @@ public class Post implements Comparable<Post>, HasGuid {
 	private String url;
 	private Integer publishYear;
 	
+	private int replyPage = 1;
+	private int replyStartIndex = 1;//This is a shameless hack that i'm adding to keep track of the fact that
+	//the artifically inserted child posts in this post start at an index other 
+	//than Mass - NestedThreadPageSize
+	
+	@Transient
+	public int getReplyPage() {
+		return replyPage;
+	}
+
+	public void setReplyPage(int replyPage) {
+		this.replyPage = replyPage;
+	}
+
+	@Transient
+	public int getReplyStartIndex() {
+		return replyStartIndex;
+	}
+
+	public void setReplyStartIndex(int replyStartIndex) {
+		this.replyStartIndex = replyStartIndex;
+	}
+
 	public static int iCount = 0; 
 	public Post(){
 		iCount++;

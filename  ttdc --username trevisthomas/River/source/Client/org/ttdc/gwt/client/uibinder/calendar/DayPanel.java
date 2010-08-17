@@ -1,8 +1,8 @@
 package org.ttdc.gwt.client.uibinder.calendar;
 
 import org.ttdc.gwt.client.Injector;
+import org.ttdc.gwt.client.presenters.post.Mode;
 import org.ttdc.gwt.client.presenters.post.PostCollectionPresenter;
-import org.ttdc.gwt.client.presenters.post.PostPresenter.Mode;
 import org.ttdc.gwt.shared.calender.Day;
 import org.ttdc.gwt.shared.calender.Hour;
 
