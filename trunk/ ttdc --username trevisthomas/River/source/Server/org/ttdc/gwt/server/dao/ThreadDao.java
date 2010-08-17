@@ -128,11 +128,15 @@ public class ThreadDao extends FilteredPostPaginatedDaoBase{
 		}	
 		if(flatReplyHierarchy.size() > THREAD_REPLY_MAX_RESULTS){
 			int start = flatReplyHierarchy.size()-(THREAD_REPLY_MAX_RESULTS * subPage);
-			int end = start + THREAD_REPLY_MAX_RESULTS;
+			int end = (start + THREAD_REPLY_MAX_RESULTS) <= flatReplyHierarchy.size() ? (start + THREAD_REPLY_MAX_RESULTS) : flatReplyHierarchy.size();
+			thread.setReplyStartIndex(start);
+			thread.setReplyPage(subPage);
 			thread.setPosts(flatReplyHierarchy.subList(start, end));
 		}
-		else
+		else{
+			thread.setReplyStartIndex(1);
 			thread.setPosts(flatReplyHierarchy);
+		}
 		
 	}
 

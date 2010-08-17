@@ -20,12 +20,11 @@ import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.inject.Inject;
 
+@Deprecated //( I think. )
 public class PostPresenter extends BasePresenter<PostPresenter.View> implements PostPresenterCommon{
 	private GPost post;
 	private PostCollectionPresenter postCollection = null;
 	private int childPostPage = 1;
-	
-	public enum Mode {NESTED_SUMMARY,FLAT}
 	
 	@Inject
 	public PostPresenter(Injector injector) {
@@ -162,6 +161,7 @@ public class PostPresenter extends BasePresenter<PostPresenter.View> implements 
 			view.fetchMoreTitle().setText("Now showing "+postCollection.size()+ " of "+post.getMass() +" comments. Click for more." );
 		else
 			view.fetchMoreTitle().setText("");
+		
 	}
 	public PostCollectionPresenter getPostCollection() {
 		return postCollection;

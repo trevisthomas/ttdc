@@ -1,6 +1,5 @@
 package org.ttdc.gwt.client.presenters.post;
 
-import org.ttdc.gwt.client.presenters.post.PostPresenter.Mode;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
