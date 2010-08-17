@@ -265,19 +265,38 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 		}
 	}
 
+//	@UiHandler("fetchMoreElement")
+//	void onClickFetchMore(ClickEvent event){
+//		CommandResultCallback<TopicCommandResult> fetchMorePostsCallback = new CommandResultCallback<TopicCommandResult>(){
+//			@Override
+//			public void onSuccess(TopicCommandResult result) {
+//				postCollectionPresenter.insertPostsToPostList(result.getResults().getList(), Mode.NESTED_SUMMARY);
+//				setupFetchMoreClickHandlerTitle();
+//			}
+//		};
+//		TopicCommand cmd = new TopicCommand();
+//		cmd.setPostId(post.getPostId());
+//		cmd.setType(TopicCommandType.NESTED_THREAD_SUMMARY_FETCH_MORE);
+//		cmd.setPageNumber(++childPostPage);
+//		RpcServiceAsync service = injector.getService();
+//		service.execute(cmd,fetchMorePostsCallback);
+//	}
+	
 	@UiHandler("fetchMoreElement")
 	void onClickFetchMore(ClickEvent event){
 		CommandResultCallback<TopicCommandResult> fetchMorePostsCallback = new CommandResultCallback<TopicCommandResult>(){
 			@Override
 			public void onSuccess(TopicCommandResult result) {
 				postCollectionPresenter.insertPostsToPostList(result.getResults().getList(), Mode.NESTED_SUMMARY);
-				setupFetchMoreClickHandlerTitle();
+				//setupFetchMoreClickHandlerTitle();
+				fetchMoreElement.setText("");
+				fetchMoreElement.setVisible(false);
 			}
 		};
 		TopicCommand cmd = new TopicCommand();
 		cmd.setPostId(post.getPostId());
 		cmd.setType(TopicCommandType.NESTED_THREAD_SUMMARY_FETCH_MORE);
-		cmd.setPageNumber(++childPostPage);
+		cmd.setPageNumber(-1);
 		RpcServiceAsync service = injector.getService();
 		service.execute(cmd,fetchMorePostsCallback);
 	}

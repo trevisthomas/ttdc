@@ -158,13 +158,26 @@ public class ThreadDao extends FilteredPostPaginatedDaoBase{
 	 * conversation.  (the view will will just present the user with a more button...
 	 * 
 	 * REMMEMBER this method pages in reverse order (from the newest to the oldest posts in a thread
+	 * 
+	 * NEW (8/16/2010) If the requested page is set to -1 i just get everything
+	 * 
 	 */
 	public PaginatedList<Post> loadThreadSummmary(){
-		setPageSize(THREAD_REPLY_MAX_RESULTS);
-		PaginatedList<Post> results;
-		results = DaoUtils.executeLoadFromPostId(this, "ThreadDao.Thread", "ThreadDao.ThreadCount", threadId, buildFilterMask(getFilterFlags()));
-		Collections.reverse(results.getList());
-		return results;
+		if(getCurrentPage() > -1){
+			setPageSize(THREAD_REPLY_MAX_RESULTS);
+			PaginatedList<Post> results;
+			results = DaoUtils.executeLoadFromPostId(this, "ThreadDao.Thread", "ThreadDao.ThreadCount", threadId, buildFilterMask(getFilterFlags()));
+			Collections.reverse(results.getList());
+			return results;
+		}
+		else{
+			setPageSize(10000);//Silly right?
+			setCurrentPage(1);
+			PaginatedList<Post> results;
+			results = DaoUtils.executeLoadFromPostId(this, "ThreadDao.Thread", "ThreadDao.ThreadCount", threadId, buildFilterMask(getFilterFlags()));
+			Collections.reverse(results.getList());
+			return results;
+		}
 	}
 	
 //	private PaginatedDaoBase makeArtificialPaginationInfoForReplies(int maxRepliesToShow){
