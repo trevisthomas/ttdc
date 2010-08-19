@@ -20,6 +20,7 @@ import org.ttdc.gwt.client.presenters.post.PostPresenterCommon;
 import org.ttdc.gwt.client.presenters.shared.DatePresenter;
 import org.ttdc.gwt.client.presenters.shared.HyperlinkPresenter;
 import org.ttdc.gwt.client.presenters.shared.ImagePresenter;
+import org.ttdc.gwt.client.presenters.topic.TopicHelpers;
 import org.ttdc.gwt.client.services.RpcServiceAsync;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
 import org.ttdc.gwt.shared.commands.TopicCommand;
@@ -137,6 +138,7 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 		infElement.setVisible(post.isINF());
 		privateElement.setVisible(post.isPrivate());
 		
+		//postMainElement.getElement().setId(post.getPostId());
 		
 		replyCountElement.setText(""+post.getMass());
 		
@@ -230,7 +232,7 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 		//TODO secure
 		tagListPanel.init(post, TagListPanel.Mode.EDITABLE);
 		
-		
+		TopicHelpers.testPost(this);
 		
 	}
 	
@@ -247,15 +249,14 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 			fetchMoreElement.setVisible(true);
 //			fetchMoreElement.setText("Now showing "+postCollectionPresenter.size()+ " of "+post.getMass() +" comments. Click for more." );
 			
-			
 				if(post.getReplyStartIndex() > 1){
 					fetchMoreElement.setText("Now showing "+post.getReplyStartIndex()+" to "+(post.getReplyStartIndex()+postCollectionPresenter.size())
-							+ " of "+post.getMass() +" comments. Click for more." );
+							+ " of "+post.getMass() +" comments. Click to expand." );
 					if(childPostPage == 1)
 						childPostPage = post.getReplyPage();
 				}
 				else{
-					fetchMoreElement.setText("Now showing "+postCollectionPresenter.size()+ " of "+post.getMass() +" comments. Click for more." );
+					fetchMoreElement.setText("Now showing "+postCollectionPresenter.size()+ " of "+post.getMass() +" comments. Click to expand." );
 				}
 			
 		}
@@ -287,7 +288,8 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 		CommandResultCallback<TopicCommandResult> fetchMorePostsCallback = new CommandResultCallback<TopicCommandResult>(){
 			@Override
 			public void onSuccess(TopicCommandResult result) {
-				postCollectionPresenter.insertPostsToPostList(result.getResults().getList(), Mode.NESTED_SUMMARY);
+				//postCollectionPresenter.insertPostsToPostList(result.getResults().getList(), Mode.NESTED_SUMMARY);
+				postCollectionPresenter.setPostList(result.getResults().getList(), Mode.NESTED_SUMMARY);
 				//setupFetchMoreClickHandlerTitle();
 				fetchMoreElement.setText("");
 				fetchMoreElement.setVisible(false);
@@ -299,6 +301,7 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 		cmd.setPageNumber(-1);
 		RpcServiceAsync service = injector.getService();
 		service.execute(cmd,fetchMorePostsCallback);
+		
 	}
 	
 	@Override
@@ -320,5 +323,9 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 		}
 	}
 	
+	@Override
+	public String getPostId() {
+		return post.getPostId();
+	}
 	
 }

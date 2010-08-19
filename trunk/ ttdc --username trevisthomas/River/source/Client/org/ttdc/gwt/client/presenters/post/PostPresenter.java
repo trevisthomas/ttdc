@@ -170,4 +170,10 @@ public class PostPresenter extends BasePresenter<PostPresenter.View> implements 
 	public void contractPost() {
 		/*This class is going to be depracated eventually, so this has no impl*/
 	}
+
+	@Override
+	public String getPostId() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

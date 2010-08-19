@@ -15,6 +15,8 @@ import org.ttdc.gwt.shared.commands.TopicCommand;
 import org.ttdc.gwt.shared.commands.TopicCommandType;
 import org.ttdc.gwt.shared.commands.results.TopicCommandResult;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.inject.Inject;
 
@@ -48,8 +50,9 @@ public class TopicNestedPresenter extends BasePresenter<TopicNestedPresenter.Vie
 		service.execute(batcher.getActionList(), batcher);
 		
 		lastToken = token;
+		
+		TopicHelpers.setSourcePostId(postId);
 	}
-	
 	
 	private CommandResultCallback<TopicCommandResult> buildNestedListCallback(final String postId) {
 		view.paginationTarget().clear();
@@ -66,6 +69,10 @@ public class TopicNestedPresenter extends BasePresenter<TopicNestedPresenter.Vie
 				HistoryToken token = TopicHelpers.buildNestedPageToken(postId);
 				paginationPresenter.initialize(token, result.getResults());
 				view.paginationTarget().add(paginationPresenter.getWidget());
+				
+				if(TopicHelpers.getPostComponent() != null){
+					TopicHelpers.getPostComponent().getWidget().getElement().scrollIntoView();
+				}
 			}
 		};
 		return replyListCallback;

@@ -9,6 +9,7 @@ import org.ttdc.gwt.client.messaging.post.PostEvent;
 import org.ttdc.gwt.client.messaging.post.PostEventType;
 import org.ttdc.gwt.client.presenters.post.PostPresenterCommon;
 import org.ttdc.gwt.client.presenters.shared.HyperlinkPresenter;
+import org.ttdc.gwt.client.presenters.topic.TopicHelpers;
 import org.ttdc.gwt.client.services.RpcServiceAsync;
 import org.ttdc.gwt.shared.calender.CalendarPost;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
@@ -46,6 +47,7 @@ public class PostSummaryPanel extends Composite implements PostPresenterCommon{
     @UiField(provided = true) SimplePanel expandedElement;
     @UiField(provided = true) SimplePanel commentElement = new SimplePanel();
     @UiField Label postUnReadElement;
+    @UiField HTMLPanel parentElement;
     
     @Inject
     public PostSummaryPanel(Injector injector) { 
@@ -70,6 +72,8 @@ public class PostSummaryPanel extends Composite implements PostPresenterCommon{
 			postUnReadElement.setText("*");
 			postUnReadElement.addStyleName("tt-alert");
 		}
+		
+		TopicHelpers.testPost(this);
     }
     
     public void init(CalendarPost cp) {
@@ -89,6 +93,8 @@ public class PostSummaryPanel extends Composite implements PostPresenterCommon{
 //			postUnReadElement.setText("*");
 //			postUnReadElement.addStyleName("tt-alert");
 //		}
+    	
+    	TopicHelpers.testPost(this);
 	}
     
     public void setSpacer(int tabCount) {
@@ -121,8 +127,8 @@ public class PostSummaryPanel extends Composite implements PostPresenterCommon{
 		service.execute(postCmd,buildExpandedPostCallback());
 	}
     
-    
-	private String getPostId() {
+    @Override
+	public String getPostId() {
 		if(post != null){
 			return post.getPostId();
 		}

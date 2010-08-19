@@ -10,19 +10,16 @@ import org.ttdc.gwt.client.constants.TagConstants;
 import org.ttdc.gwt.client.constants.UserObjectConstants;
 import org.ttdc.gwt.client.messaging.ConnectionId;
 import org.ttdc.gwt.client.messaging.EventBus;
-import org.ttdc.gwt.client.messaging.error.MessageEvent;
-import org.ttdc.gwt.client.messaging.error.MessageEventType;
 import org.ttdc.gwt.client.messaging.post.PostEvent;
 import org.ttdc.gwt.client.messaging.post.PostEventType;
 import org.ttdc.gwt.client.presenters.comments.NewCommentPresenter;
 import org.ttdc.gwt.client.presenters.movies.MovieRatingPresenter;
-import org.ttdc.gwt.client.presenters.movies.MovieRatingPresenter.PostRatingCallback;
+import org.ttdc.gwt.client.presenters.post.PostPresenterCommon;
 import org.ttdc.gwt.client.services.RpcServiceAsync;
 import org.ttdc.gwt.shared.commands.AssociationPostTagCommand;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
 import org.ttdc.gwt.shared.commands.UserObjectCrudCommand;
 import org.ttdc.gwt.shared.commands.AssociationPostTagCommand.Mode;
-import org.ttdc.gwt.shared.commands.results.AssociationPostTagResult;
 import org.ttdc.gwt.shared.commands.results.GenericCommandResult;
 import org.ttdc.gwt.shared.commands.types.ActionType;
 
@@ -316,4 +313,5 @@ abstract public class PostBaseComposite extends Composite{
         //optionsPanel.showRelativeTo(source);
 		injector.createSiteUpdatePanel();
 	}
+	
 }

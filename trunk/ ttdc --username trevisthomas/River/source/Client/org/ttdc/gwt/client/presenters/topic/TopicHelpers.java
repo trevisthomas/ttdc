@@ -3,6 +3,7 @@ package org.ttdc.gwt.client.presenters.topic;
 import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.messaging.history.HistoryConstants;
 import org.ttdc.gwt.client.messaging.history.HistoryToken;
+import org.ttdc.gwt.client.presenters.post.PostPresenterCommon;
 import org.ttdc.gwt.client.presenters.post.SearchWithinSubsetPresenter;
 
 public class TopicHelpers {
@@ -54,5 +55,26 @@ public class TopicHelpers {
 		token.setParameter(HistoryConstants.TAB_KEY, HistoryConstants.TOPIC_NESTED_TAB);
 		token.setParameter(HistoryConstants.POST_ID_KEY, postId);
 		return token;
+	}
+	
+	
+	/* The bit of funkyness below is so that PostPresenterCommon imlementers (PostPanel, PostSummeryPanel) 
+	 * can have a place to connect with Topic*Presenter's so that the presenters can scroll
+	 * the proper post into view.   
+	 */
+	private static PostPresenterCommon postComponent = null;
+	private static String sourcePostId;
+	public static PostPresenterCommon getPostComponent() {
+		return postComponent;
+	}
+
+	public static void testPost(PostPresenterCommon postComponent){
+		if(sourcePostId != null && sourcePostId.equals(postComponent.getPostId())){
+			TopicHelpers.postComponent = postComponent;
+		}
+	}
+	
+	public static void setSourcePostId(String sourcePostId){
+		TopicHelpers.sourcePostId = sourcePostId;
 	}
 }
