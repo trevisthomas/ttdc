@@ -2,7 +2,7 @@
 <!-- The above doctype is to allow for special html characters in this xml file -->
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
-	<g:HTMLPanel>
+	<g:HTMLPanel ui:field="parentElement">
 		<table>
 		<tr>
 			<td><span ui:field="spacerElement" /></td>

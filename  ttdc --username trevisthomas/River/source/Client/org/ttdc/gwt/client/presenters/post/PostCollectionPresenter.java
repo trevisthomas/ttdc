@@ -132,6 +132,10 @@ public final class PostCollectionPresenter extends BasePresenter<PostCollectionP
 	public int size(){
 		return postPresenters.size();
 	}
+	
+	public List<PostPresenterCommon> getPostPresenterList(){
+		return postPresenters;
+	}
 
 	@Override
 	public void onPostEvent(PostEvent postEvent) {

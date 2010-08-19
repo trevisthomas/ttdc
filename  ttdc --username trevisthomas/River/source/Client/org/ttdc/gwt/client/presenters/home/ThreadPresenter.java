@@ -61,6 +61,8 @@ public class ThreadPresenter extends BasePresenter<ThreadPresenter.View> impleme
 		return callback;
 	}
 	
+	
+	
 	private void showResult(PaginatedListCommandResult<GPost> result) {
 		PaginatedList<GPost> results = result.getResults();
 		postCollection.setPostList(results.getList(), Mode.FLAT);

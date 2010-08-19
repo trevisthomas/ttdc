@@ -23,6 +23,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
+@Deprecated //I think (8/18/2010)
 public class PostSummaryPresenter extends BasePresenter<PostSummaryPresenter.View> implements PostPresenterCommon{
 	private GPost post;
 	
@@ -104,5 +105,11 @@ public class PostSummaryPresenter extends BasePresenter<PostSummaryPresenter.Vie
 			}
 		};
 		return rootPostCallback;
+	}
+	
+	@Override
+	public String getPostId() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
