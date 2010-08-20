@@ -36,12 +36,10 @@
 			<span class="tt-post-reply-count" ui:field="replyCountElement" />
 			 -->
 		</div>
-		<div class="tt-post-container" style="clear:both;">
-			<table>
+		<div class="tt-post-container tt-post-panel-root" style="clear:both;">
+			<table class="tt-fill">
 				<tr>
-					<td>
-						<g:Widget ui:field="avatarElement" />
-					</td>
+					
 					<td width="100%">
 						<div width="100%" class="tt-text-mini">
 							<span class="tt-float-left">
@@ -59,9 +57,14 @@
 							<div class="tt-float-right">
 								<g:Widget ui:field="ratingElement" />
 								<g:Widget ui:field="postImageElement" />
+								<g:Widget styleName="tt-float-right" ui:field="avatarElement" />
 							</div>
 							<span class="tt-post-body tt-text-normal" ui:field="bodyElement" />
+							
 						</div>
+						
+					</td>
+					<td>
 						
 					</td>
 				</tr>
