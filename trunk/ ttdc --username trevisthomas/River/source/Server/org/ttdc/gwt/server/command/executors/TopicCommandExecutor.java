@@ -66,7 +66,7 @@ public class TopicCommandExecutor  extends CommandExecutor<TopicCommandResult>{
 				for(GPost gp : gResults.getList()){
 					gp.setSuggestSummary(true);
 				}
-				Collections.reverse(gResults.getList());
+				//Collections.reverse(gResults.getList());
 			}
 //			else if(TopicCommandType.REPLIES.equals(type)){
 //				dao.setConversationId(command.getConversationId());
