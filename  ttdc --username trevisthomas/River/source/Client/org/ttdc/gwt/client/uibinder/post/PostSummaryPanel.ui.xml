@@ -3,10 +3,10 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 	<g:HTMLPanel ui:field="parentElement">
-		<table class="tt-fill wahoo">
+		<table class="tt-fill">
 		<tr>
 			<td><span ui:field="spacerElement" /></td>
-			<td>
+			<td class="tt-fill">
 				<g:SimplePanel ui:field="expandedElement"/>
 				<g:HTMLPanel styleName="tt-post-summary tt-post-summary tt-post-body tt-text-normal" ui:field="summaryElement">
 					<g:HTML styleName="tt-inline" ui:field="bodySummaryElement" /> <g:Label styleName="tt-inline"  ui:field="postUnReadElement" /> <g:Hyperlink ui:field="creatorLinkElement" />

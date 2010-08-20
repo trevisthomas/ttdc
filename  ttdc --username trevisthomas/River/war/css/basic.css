@@ -227,10 +227,11 @@ body{text-align:center; margin: 0 auto;}
 .tt-color-nws{ color: red; }
 .tt-color-inf{ color: #F5F23B; }
 
-.tt-post-expanded,
-.tt-post-panel-root{ border-color: #black;}
+.tt-post-expanded{ border-color: #black;}
+
 
 /*
+.tt-post-panel-root
 .tt-post{ background-color: #fefefe; border-color:#eee; color: white;}
 */
 .tt-post{ background-color: transparent; border-color:#eee;}
