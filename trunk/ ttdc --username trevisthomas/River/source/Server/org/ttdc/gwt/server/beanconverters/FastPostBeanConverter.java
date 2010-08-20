@@ -224,7 +224,12 @@ public class FastPostBeanConverter {
 		gEntry.setBody(e.getBody());
 		gEntry.setDate(e.getDate());
 		gEntry.setEntryId(e.getEntryId());
-		gEntry.setSummary(e.getSummary());
+		//Removing any html from the summary.
+		String summary = e.getSummary();
+		if(summary.length() > 60){
+			summary = e.getSummary().substring(0, 60);
+		}
+		gEntry.setSummary(summary.replaceAll("\\<.*?\\>", ""));
 		return gEntry;
 	}
 	

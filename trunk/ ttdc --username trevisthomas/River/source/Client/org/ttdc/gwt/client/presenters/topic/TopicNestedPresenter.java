@@ -18,6 +18,7 @@ import org.ttdc.gwt.shared.commands.results.TopicCommandResult;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
 public class TopicNestedPresenter extends BasePresenter<TopicNestedPresenter.View>{
@@ -71,6 +72,10 @@ public class TopicNestedPresenter extends BasePresenter<TopicNestedPresenter.Vie
 				view.paginationTarget().add(paginationPresenter.getWidget());
 				
 				if(TopicHelpers.getPostComponent() != null){
+					//The shameless hack below is to get the window to scroll to the bottom 
+					//so that the following line can get the focused post scrolled to the top
+					//of the window.
+					((Widget)view.paginationTarget()).getElement().scrollIntoView();
 					TopicHelpers.getPostComponent().getWidget().getElement().scrollIntoView();
 				}
 			}
