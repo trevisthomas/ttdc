@@ -15,7 +15,7 @@ body{text-align:center; margin: 0 auto;}
 .tt-border-bottom-right{ border-width: 0 1px 1px 0; border-style: solid;}
 
 .tt-alert{color: red;}
-.tt-post{width: 500px; margin-bottom: 10px; border:1px solid;}
+.tt-post{width: 500px; margin-bottom: 2px; border:1px solid; padding:1px;}
 .tt-post-container-header{overflow: auto;}
 .tt-post-container-footer{}
 
@@ -23,9 +23,14 @@ body{text-align:center; margin: 0 auto;}
 	
 .tt-text-nano{font-size:7px;}
 .tt-text-mini{font-size:9px;}
+.tt-post-expanded-date,
+.tt-post-panel-head-date,
 .tt-text-small{font-size:10px;}
+.tt-post-expanded-creator,
+.tt-post-panel-head-creator,
 .tt-text-normal{font-size:12px;}
 .tt-text-normal-bold{font-size:12px; font-weight: bold;}
+.tt-post-panel-head-title,
 .tt-text-large{font-size:16px; font-weight: 500;}
 .tt-text-large-bold{font-size:16px; font-weight: 700;}
 .tt-text-huge{font-size:22px; font-weight: 700;}
@@ -33,8 +38,19 @@ body{text-align:center; margin: 0 auto;}
 .tt-post-container{ width:100%; }
 .tt-post-fetch-more{ width:100%;}
 .tt-comment-editor{border: 1px solid black; width:500px;}
-.tt-post-panel-root{ border-width: 1px 0 0 0; border-style:solid; margin: 0 0 20px 0; }
-.tt-post-expanded{ border-width: 1px; border-style:solid; margin: 2px 0; padding:0px;}
+.tt-post-panel-content{ margin: 0 0 2px 0; width:100%;}
+.tt-post-panel-head{border-style: solid; border-width: 0 0 1px 0;}
+.tt-post-panel-head-date,
+.tt-post-panel-head-creator{padding: 0 0 0 2px;}
+.tt-post-expanded{ border-width: 1px; border-style:solid; margin: 2px 0; padding:0px; width: 100%;}
+.tt-post-conversation{ margin: 0 0 20px 0;}
+
+
+/*
+.tt-post-expanded-content{width:100%; clear:both;}
+*/
+.tt-post-expanded-header{width:100%;}
+.tt-post-expanded-content{padding:2px 4px; clear:both;}
 
 .tt-pageHeader-subtitle{font-size:12px; font-weight: bold; font-style: italic; margin-top: -7px; padding-left: 10px;}
 .tt-pageHeader-title{ margin: auto; overflow: hidden;}
@@ -236,6 +252,7 @@ body{text-align:center; margin: 0 auto;}
 */
 .tt-post{ background-color: transparent; border-color:#eee;}
 .tt-post-body{color: grey;}
+.tt-post-panel-head{ background-color: #fcfcfc; border-color:#eee;}
 	
 
 .tt-conversation-count{background-color: #F5F23B; border-color: white; color: grey;}

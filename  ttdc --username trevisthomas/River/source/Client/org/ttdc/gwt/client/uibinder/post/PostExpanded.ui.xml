@@ -3,28 +3,26 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 	<g:HTMLPanel>
-			<div class="tt-post-container tt-post-expanded" width="100%">
-				<div width="100%" class="tt-text-mini">
-					<span class="tt-float-left">
-						By <g:Hyperlink ui:field="creatorLinkElement" />
+			<div class="tt-post-expanded">
+				<div class="tt-post-expanded-header">
+					<g:Widget styleName="tt-float-left" ui:field="avatarElement" />
+					<span class="tt-float-left tt-post-expanded-creator">
+						by <g:Hyperlink ui:field="creatorLinkElement" />
 					</span>
-					<g:Label ui:field="postUnReadElement" styleName="tt-float-left" />
-					<span class="tt-float-left">
-						
-					</span>
-					<span class="tt-float-right">
-						<g:Anchor ui:field="moreOptionsElement"/>
+					<span class="tt-float-right tt-post-expanded-date">
+						<g:Widget ui:field="createDateElement" />
 					</span>
 				</div>
 											
-				<div width="100%" style="clear:both;" >
-					<div class="tt-float-right">
-						<g:Widget styleName="tt-float-right" ui:field="avatarElement" />
-					</div>
+				<div class="tt-post-expanded-content" >
+					<g:Label ui:field="postUnReadElement" styleName="tt-float-left" />
+					<span class="tt-float-right">
+						<g:Anchor ui:field="moreOptionsElement"/>
+					</span>
 					<span class="tt-post-body tt-text-normal" ui:field="bodyElement" />
 				</div>
 				<div class="tt-fill tt-text-right tt-text-mini">
-					<g:Widget ui:field="createDateElement" />
+					
 				</div>
 			</div>
 	</g:HTMLPanel>
