@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Hibernate;
+import org.mortbay.log.Log;
 import org.ttdc.gwt.client.beans.GAssociationPostTag;
 import org.ttdc.gwt.client.beans.GEntry;
 import org.ttdc.gwt.client.beans.GImage;
@@ -22,6 +23,7 @@ import org.ttdc.gwt.server.dao.PostDao;
 import org.ttdc.gwt.shared.calender.CalendarPost;
 import org.ttdc.gwt.shared.calender.Day;
 import org.ttdc.gwt.shared.calender.Hour;
+import org.ttdc.gwt.shared.util.StringUtil;
 import org.ttdc.persistence.objects.AssociationPostTag;
 import org.ttdc.persistence.objects.Entry;
 import org.ttdc.persistence.objects.Image;
@@ -69,10 +71,23 @@ public class FastPostBeanConverter {
 		ArrayList<GPost> rpcPostList = new ArrayList<GPost>();
 		for(Post p : persistentPostList){
 			//if(!p.isHidden()){
-				GPost rpcPost = convertPost(p, inboxDao);
+			GPost rpcPost;
+			try{
+				
+				if(p.getPostId().equals("0e603137-36d2-11df-899b-6068e957f7d4")){
+					Log.info("break");
+				}
+				
+				rpcPost = convertPost(p, inboxDao);
 				rpcPostList.add(rpcPost);
+			}
+			catch(NullPointerException e){
+				Log.info(e.getMessage());
+			}
 			//}
+		
 		}
+		
 		return rpcPostList;
 	}
 	public static ArrayList<GEntry> convertEntries(List<Entry> entryList){
@@ -224,12 +239,7 @@ public class FastPostBeanConverter {
 		gEntry.setBody(e.getBody());
 		gEntry.setDate(e.getDate());
 		gEntry.setEntryId(e.getEntryId());
-		//Removing any html from the summary.
-		String summary = e.getSummary();
-		if(summary.length() > 60){
-			summary = e.getSummary().substring(0, 60);
-		}
-		gEntry.setSummary(summary.replaceAll("\\<.*?\\>", ""));
+		gEntry.setSummary(ConversionUtils.preparePostSummaryForDisplay(e.getSummary()));
 		return gEntry;
 	}
 	
