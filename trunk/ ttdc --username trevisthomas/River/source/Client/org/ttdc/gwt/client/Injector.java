@@ -106,6 +106,8 @@ import org.ttdc.gwt.client.uibinder.post.ReviewSummaryListPanel;
 import org.ttdc.gwt.client.uibinder.post.ReviewSummaryPanel;
 import org.ttdc.gwt.client.uibinder.post.SmallPostSummaryPanel;
 import org.ttdc.gwt.client.uibinder.post.TagListPanel;
+import org.ttdc.gwt.client.uibinder.post.NestedPostPanel;
+import org.ttdc.gwt.client.uibinder.post.TopicPanel;
 import org.ttdc.gwt.client.uibinder.search.RefineSearchPanel;
 import org.ttdc.gwt.client.uibinder.search.SearchBoxPanel;
 import org.ttdc.gwt.client.uibinder.search.SearchResultsPanel;
@@ -402,6 +404,8 @@ public interface Injector extends Ginjector {
 	public SearchBoxPanel createSearchBoxPanel();
 	public SearchResultsPanel createSearchResultsPanel();
 	public TagListPanel createTagListPanel();
+	public NestedPostPanel createNestedPostPanel();
+	public TopicPanel createTopicPanel();
 
 
 }

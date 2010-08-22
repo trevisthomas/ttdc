@@ -64,6 +64,7 @@ public class TopicHelpers {
 	 */
 	private static PostPresenterCommon postComponent = null;
 	private static String sourcePostId;
+
 	public static PostPresenterCommon getPostComponent() {
 		return postComponent;
 	}
@@ -76,5 +77,6 @@ public class TopicHelpers {
 	
 	public static void setSourcePostId(String sourcePostId){
 		TopicHelpers.sourcePostId = sourcePostId;
+		TopicHelpers.postComponent = null;
 	}
 }

@@ -108,7 +108,9 @@ public class TopicCommandExecutor  extends CommandExecutor<TopicCommandResult>{
 		if(command.isSortByDate())
 			results = dao.loadByReplyDate();
 		else
-			results = dao.loadThreadSummmary();
+			results = dao.loadByCreateDate();
+			
+			//results = dao.loadThreadSummmary();
 		
 		return results;
 	}

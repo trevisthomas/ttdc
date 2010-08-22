@@ -126,6 +126,9 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
     	privateElement.setVisible(false);
     	replyCountElement.setStyleName("tt-reply-count");
     	conversationCountElement.setStyleName("tt-conversation-count");
+    	
+    	moreOptionsElement.add(new Label("OPTIONS"));
+		moreOptionsElement.addStyleName("tt-options-button");
     }
     
     public void setPost(GPost post) {
@@ -157,17 +160,20 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 		
 		bodyElement.setInnerHTML(post.getEntry());
 		
-		if(post.isRootPost() || post.isThreadPost()){
-			creatorAvatorImagePresenter.setImage(post.getCreator().getImage(), post.getCreator().getLogin(), 50, 50);
-			avatarElement.setWidth("50px");
-			avatarElement.setHeight("50px");
-		}
-		else{
-			creatorAvatorImagePresenter.setImage(post.getCreator().getImage(), post.getCreator().getLogin(), 20, 20);
-			avatarElement.setWidth("20px");
-			avatarElement.setHeight("20px");
-		}
+//		if(post.isRootPost() || post.isThreadPost()){
+//			creatorAvatorImagePresenter.setImage(post.getCreator().getImage(), post.getCreator().getLogin(), 50, 50);
+//			avatarElement.setWidth("50px");
+//			avatarElement.setHeight("50px");
+//		}
+//		else{
+//			creatorAvatorImagePresenter.setImage(post.getCreator().getImage(), post.getCreator().getLogin(), 20, 20);
+//			avatarElement.setWidth("20px");
+//			avatarElement.setHeight("20px");
+//		}
 		
+		creatorAvatorImagePresenter.setImage(post.getCreator().getImage(), post.getCreator().getLogin(), 40, 40);
+//		avatarElement.setWidth("40px");
+//		avatarElement.setHeight("40px");
 		
 		if(post.isReview()){
 			postImagePresenter.setImageAsMoviePoster(post);
@@ -196,8 +202,7 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 //		moreOptionsElement.setText("More Options");
 //		moreOptionsElement.setStyleName("tt-cursor-pointer tt-text-small");
 		
-		moreOptionsElement.add(new Label("OPTIONS"));
-		moreOptionsElement.addStyleName("tt-options-button");
+		
 		
 		embedTargetElement.setId(post.getPostId());
 					

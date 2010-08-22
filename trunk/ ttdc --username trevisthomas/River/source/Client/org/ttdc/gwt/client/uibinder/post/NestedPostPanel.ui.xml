@@ -1,0 +1,26 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<!-- The above doctype is to allow for special html characters in this xml file -->
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+	
+	<g:HTMLPanel>
+		<table>
+			<tr>
+				<td class="tt-text-right tt-text-normal">
+					sort by: <g:Anchor ui:field="sortByReplyDateElement">reply</g:Anchor> | <g:Anchor ui:field="sortByThreadDateElement">creation</g:Anchor>
+				</td>	
+			</tr>
+			<tr>
+				<td>
+					<g:SimplePanel ui:field="postContainerElement"/>
+					
+				</td>	
+			</tr>
+			<tr>
+				<td>
+					<g:SimplePanel ui:field="paginationElement"/>
+				</td>
+			</tr>
+		</table>		
+	</g:HTMLPanel>
+</ui:UiBinder>

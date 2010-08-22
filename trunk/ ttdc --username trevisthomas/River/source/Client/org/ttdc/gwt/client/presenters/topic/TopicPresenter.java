@@ -25,9 +25,15 @@ import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.inject.Inject;
 
+@Deprecated 
+/**
+ * See NestedPostPanel and TopicPanel
+ */
 public class TopicPresenter extends BasePagePresenter<TopicPresenter.View> implements PostEventListener{
 	private HistoryToken token;
 	boolean fireHistoryEvent = false;
+	private TopicNestedPresenter nestedPresenter;
+	private TopicFlatPresenter flatPresenter;
 	
 	@Inject
 	public TopicPresenter(Injector injector) {
@@ -115,8 +121,7 @@ public class TopicPresenter extends BasePagePresenter<TopicPresenter.View> imple
 		
 	}
 
-	private TopicNestedPresenter nestedPresenter;
-	private TopicFlatPresenter flatPresenter;
+	
 	
 	private void createTopicNestedPresenter(HistoryToken token) {
 		nestedPresenter = injector.getTopicNestedPresenter();
