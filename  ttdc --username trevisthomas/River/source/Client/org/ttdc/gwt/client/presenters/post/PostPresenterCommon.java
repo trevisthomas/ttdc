@@ -6,4 +6,5 @@ public interface PostPresenterCommon {
 	public Widget getWidget();
 	public void contractPost();
 	public String getPostId();
+	public void expandPost();
 }

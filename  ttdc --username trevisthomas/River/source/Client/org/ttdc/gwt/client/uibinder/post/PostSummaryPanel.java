@@ -10,6 +10,7 @@ import org.ttdc.gwt.client.messaging.post.PostEventType;
 import org.ttdc.gwt.client.presenters.post.PostPresenterCommon;
 import org.ttdc.gwt.client.presenters.shared.HyperlinkPresenter;
 import org.ttdc.gwt.client.presenters.topic.TopicHelpers;
+import org.ttdc.gwt.client.presenters.util.ClickableHoverSyncPanel;
 import org.ttdc.gwt.client.services.RpcServiceAsync;
 import org.ttdc.gwt.shared.calender.CalendarPost;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
@@ -48,6 +49,7 @@ public class PostSummaryPanel extends Composite implements PostPresenterCommon{
     @UiField(provided = true) SimplePanel commentElement = new SimplePanel();
     @UiField Label postUnReadElement;
     @UiField HTMLPanel parentElement;
+    @UiField(provided = true) ClickableHoverSyncPanel hoverTargetElement;
     
     @Inject
     public PostSummaryPanel(Injector injector) { 
@@ -57,6 +59,8 @@ public class PostSummaryPanel extends Composite implements PostPresenterCommon{
     	creatorLinkElement = creatorLinkPresenter.getHyperlink();
     	expandedElement = new SimplePanel();
     	
+    	hoverTargetElement = new ClickableHoverSyncPanel("tt-color-post-summary","tt-color-post-summary-hover");
+//    	hoverTargetElement.addStyleName("tt-inline");
     	initWidget(binder.createAndBindUi(this)); 
 	}
     
@@ -108,7 +112,8 @@ public class PostSummaryPanel extends Composite implements PostPresenterCommon{
 		}
 	}
     
-    @UiHandler("bodySummaryElement")
+    //@UiHandler("bodySummaryElement")
+    @UiHandler("hoverTargetElement")
     public void onClick(ClickEvent event){
     	expandPost();
     	    	
@@ -120,6 +125,7 @@ public class PostSummaryPanel extends Composite implements PostPresenterCommon{
     	return this;
     }
     
+    @Override
     public void expandPost() {
 		RpcServiceAsync service = injector.getService();
 		PostCrudCommand postCmd = new PostCrudCommand();

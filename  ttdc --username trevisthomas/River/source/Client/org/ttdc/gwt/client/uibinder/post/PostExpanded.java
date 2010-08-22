@@ -70,8 +70,8 @@ public class PostExpanded extends PostBaseComposite{
 		super.init(post, commentElement, null);
 		bodyElement.setInnerHTML(post.getEntry());
 //		this.post = post;
-		moreOptionsElement.setText("> More Options");
-		moreOptionsElement.setStyleName("tt-cursor-pointer");
+		moreOptionsElement.setText("More Options");
+		moreOptionsElement.setStyleName("tt-cursor-pointer tt-text-small");
 		
 		
 		

@@ -77,6 +77,7 @@ public class TopicNestedPresenter extends BasePresenter<TopicNestedPresenter.Vie
 					//of the window.
 					((Widget)view.paginationTarget()).getElement().scrollIntoView();
 					TopicHelpers.getPostComponent().getWidget().getElement().scrollIntoView();
+					TopicHelpers.getPostComponent().expandPost();
 				}
 			}
 		};
