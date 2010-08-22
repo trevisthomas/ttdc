@@ -114,6 +114,8 @@ import org.ttdc.gwt.client.uibinder.post.ReviewSummaryListPanel;
 import org.ttdc.gwt.client.uibinder.post.ReviewSummaryPanel;
 import org.ttdc.gwt.client.uibinder.post.SmallPostSummaryPanel;
 import org.ttdc.gwt.client.uibinder.post.TagListPanel;
+import org.ttdc.gwt.client.uibinder.post.NestedPostPanel;
+import org.ttdc.gwt.client.uibinder.post.TopicPanel;
 import org.ttdc.gwt.client.uibinder.search.RefineSearchPanel;
 import org.ttdc.gwt.client.uibinder.search.SearchBoxPanel;
 import org.ttdc.gwt.client.uibinder.search.SearchResultsPanel;
@@ -1486,6 +1488,18 @@ public class MockInjector implements Injector{
 
 	@Override
 	public TagListPanel createTagListPanel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public NestedPostPanel createNestedPostPanel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public TopicPanel createTopicPanel() {
 		// TODO Auto-generated method stub
 		return null;
 	}

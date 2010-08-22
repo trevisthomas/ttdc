@@ -136,6 +136,8 @@ public interface HistoryConstants {
 	public static final String TOPIC_FLAT_TAB = "flat";
 	public static final String TOPIC_NESTED_TAB = "nested";
 
+	public static final String SORT_BY_CREATE_DATE = "byCreateDate";
+	public static final String SORT_BY_REPLY_DATE = "byReplyDate";
 	
 
 }

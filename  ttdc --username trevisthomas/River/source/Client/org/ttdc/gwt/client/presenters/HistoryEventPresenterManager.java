@@ -14,6 +14,7 @@ import org.ttdc.gwt.client.presenters.search.SearchBoxView;
 import org.ttdc.gwt.client.presenters.topic.TopicPresenter;
 import org.ttdc.gwt.client.presenters.users.UserToolsPresenter;
 import org.ttdc.gwt.client.presenters.util.LoadCurrentUser;
+import org.ttdc.gwt.client.uibinder.post.TopicPanel;
 
 
 import com.google.inject.Inject;
@@ -70,8 +71,10 @@ public class HistoryEventPresenterManager implements HistoryEventListener{
 				HistoryConstants.VIEW_TOPIC_CONVERSATION.equals(view) ||
 				HistoryConstants.VIEW_TOPIC_SUMMARY.equals(view) ||
 				HistoryConstants.VIEW_TOPIC_NESTED.equals(view)){
-			TopicPresenter presenter = injector.getTopicPresenter();
-			presenter.show(event.getSource());
+//			TopicPresenter presenter = injector.getTopicPresenter();
+//			presenter.show(event.getSource());
+			TopicPanel topicPanel = injector.createTopicPanel();
+			topicPanel.show(event.getSource());
 		}
 		else if(HistoryConstants.VIEW_MOVIE_LIST.equals(view)){
 			injector.getMovieListPresenter().show(event.getSource());

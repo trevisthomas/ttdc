@@ -151,6 +151,11 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 		searchPhraseElement.setActiveText(phrase);
 		searchDetailListenerCollection.setPhrase(phrase);
 		PostCrudCommand postCmd = new PostCrudCommand();
+		
+		if(postId == null && token.hasParameter(HistoryConstants.POST_ID_KEY)){
+			postId = token.getParameter(HistoryConstants.POST_ID_KEY);
+		}
+		
 		if(postId != null){
 			postCmd.setPostId(postId);
 			batcher.add(postCmd,buildPostCallback());

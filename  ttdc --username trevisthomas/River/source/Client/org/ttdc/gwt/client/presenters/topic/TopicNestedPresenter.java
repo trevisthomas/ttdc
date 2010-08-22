@@ -21,6 +21,11 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
+@Deprecated 
+/**
+ * see TopicNestedPanel 
+ */
+
 public class TopicNestedPresenter extends BasePresenter<TopicNestedPresenter.View>{
 	private HistoryToken lastToken = null;
 	
