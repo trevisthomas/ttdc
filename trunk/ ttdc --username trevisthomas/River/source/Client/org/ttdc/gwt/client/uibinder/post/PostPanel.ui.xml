@@ -1,7 +1,8 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <!-- The above doctype is to allow for special html characters in this xml file -->
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
-	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	xmlns:t='urn:import:org.ttdc.gwt.client.presenters.util'>
 	<g:HTMLPanel styleName="tt-post-conversation" ui:field="postMainElement">
 		<div class="tt-post tt-color-post" >
 			<div class="tt-post-panel-head">
@@ -32,10 +33,10 @@
 									</tr>
 								</table>
 							</div>
-							<div class="tt-post-panel-head-date">
+							<div class="tt-post-panel-head-creator">
 								by <g:Hyperlink ui:field="creatorLinkElement" />
 							</div>
-							<div class="tt-post-panel-head-creator">
+							<div class="tt-post-panel-head-date">
 								<g:Widget ui:field="createDateElement" />
 							</div>
 						</td>
@@ -63,7 +64,7 @@
 						<td width="100%">
 							<div width="100%" style="clear:both;" >
 								<span class="tt-float-right">
-									<g:Anchor ui:field="moreOptionsElement"/>
+									<t:ClickableHoverSyncPanel ui:field="moreOptionsElement"/>
 								</span>
 								<div class="tt-float-right"  style="clear:both;">
 									<g:Widget ui:field="ratingElement" />

@@ -21,6 +21,7 @@ import org.ttdc.gwt.client.presenters.shared.DatePresenter;
 import org.ttdc.gwt.client.presenters.shared.HyperlinkPresenter;
 import org.ttdc.gwt.client.presenters.shared.ImagePresenter;
 import org.ttdc.gwt.client.presenters.topic.TopicHelpers;
+import org.ttdc.gwt.client.presenters.util.ClickableHoverSyncPanel;
 import org.ttdc.gwt.client.services.RpcServiceAsync;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
 import org.ttdc.gwt.shared.commands.TopicCommand;
@@ -70,7 +71,7 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
     @UiField(provided = true) Widget avatarElement;
     @UiField(provided = true) Hyperlink creatorLinkElement;
     @UiField(provided = true) Widget createDateElement;
-    @UiField Anchor moreOptionsElement;
+    @UiField (provided = true)ClickableHoverSyncPanel moreOptionsElement;
     @UiField Anchor fetchMoreElement;
     @UiField SpanElement embedTargetElement;
     @UiField(provided = true) SimplePanel commentElement = new SimplePanel();
@@ -112,6 +113,8 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
     	postImageElement = postImagePresenter.getWidget();
     	ratingElement = averageMovieRatingPresenter.getWidget();
     	tagsElement = tagListPanel;
+    	
+    	moreOptionsElement = new ClickableHoverSyncPanel("tt-color-options-button","tt-color-options-button-hover");
     	
     	//tagsElement
     	
@@ -190,8 +193,11 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 		postLinkPresenter.setPost(post);
 		postLinkPresenter.init();
 		
-		moreOptionsElement.setText("> More Options");
-		moreOptionsElement.setStyleName("tt-cursor-pointer");
+//		moreOptionsElement.setText("More Options");
+//		moreOptionsElement.setStyleName("tt-cursor-pointer tt-text-small");
+		
+		moreOptionsElement.add(new Label("OPTIONS"));
+		moreOptionsElement.addStyleName("tt-options-button");
 		
 		embedTargetElement.setId(post.getPostId());
 					
@@ -311,6 +317,11 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 	
 	@Override
 	public void contractPost() {
+		//hmm, no impl?
+	}
+	
+	@Override
+	public void expandPost() {
 		//hmm, no impl?
 	}
 

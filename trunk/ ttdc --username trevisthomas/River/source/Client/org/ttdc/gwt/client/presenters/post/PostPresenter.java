@@ -168,7 +168,12 @@ public class PostPresenter extends BasePresenter<PostPresenter.View> implements 
 	}
 	@Override
 	public void contractPost() {
-		/*This class is going to be depracated eventually, so this has no impl*/
+		/*This class is going to be deprecated eventually, so this has no impl*/
+	}
+	
+	@Override
+	public void expandPost() {
+		/* deprecated class, never had or needed an impl*/
 	}
 
 	@Override

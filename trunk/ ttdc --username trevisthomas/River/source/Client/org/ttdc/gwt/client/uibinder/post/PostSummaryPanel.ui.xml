@@ -1,22 +1,42 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <!-- The above doctype is to allow for special html characters in this xml file -->
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
-	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	xmlns:t='urn:import:org.ttdc.gwt.client.presenters.util'>
 	<g:HTMLPanel ui:field="parentElement">
 		<table class="tt-fill">
 		<tr>
 			<td><span ui:field="spacerElement" /></td>
 			<td class="tt-fill">
 				<g:SimplePanel ui:field="expandedElement"/>
-				<g:HTMLPanel styleName="tt-post-summary tt-post-summary tt-post-body tt-text-normal" ui:field="summaryElement">
-					<g:HTML styleName="tt-inline" ui:field="bodySummaryElement" /> <g:Label styleName="tt-inline"  ui:field="postUnReadElement" /> <g:Hyperlink ui:field="creatorLinkElement" />
-				</g:HTMLPanel>
-			<!-- 
+				<!--  
+				<t:ClickableHoverSyncPanel  styleName="tt-post-summary tt-post-summary tt-post-body tt-text-normal" ui:field="hoverTargetElement">
+					<g:HTMLPanel>
+						<g:Label styleName="tt-inline" ui:field="postUnReadElement" /> <g:HTML styleName="tt-inline" ui:field="bodySummaryElement" /> <g:Hyperlink ui:field="creatorLinkElement" />
+					</g:HTMLPanel>
+				</t:ClickableHoverSyncPanel>
 				
-				<g:HTMLPanel styleName="tt-post-summary tt-text-normal" ui:field="summaryElement">
-					<g:HTML styleName="tt-post-body tt-text-normal tt-inline" ui:field="bodySummaryElement" /> : <g:Label ui:field="postUnReadElement" styleName="tt-float-left" /> <g:Hyperlink ui:field="creatorLinkElement" />
-				</g:HTMLPanel>
 				-->
+				
+					<g:HTMLPanel styleName="tt-post-summary" ui:field="summaryElement">
+						<table class="tt-text-normal">
+							<tr>
+								<td>
+									<g:Label styleName="tt-inline" ui:field="postUnReadElement" />
+								</td>
+								<td>
+									<t:ClickableHoverSyncPanel ui:field="hoverTargetElement"><g:HTML styleName="tt-post-summary-body" ui:field="bodySummaryElement" /></t:ClickableHoverSyncPanel>
+								</td>
+								<td>
+									<g:Hyperlink ui:field="creatorLinkElement" />
+								</td>
+							</tr>
+						</table>
+						 
+					</g:HTMLPanel>
+					
+					
+					
 			</td>
 			 
 		</tr>
