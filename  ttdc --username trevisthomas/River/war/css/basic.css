@@ -44,7 +44,7 @@ body{text-align:center; margin: 0 auto;}
 .tt-post-panel-head-date,
 .tt-post-panel-head-creator{padding: 0 0 0 2px;}
 
-.tt-post-panel-head-date{display:inline; clear: both; float: right;}
+.tt-post-panel-head-date{float: right;}
 .tt-post-expanded{ border-width: 1px; border-style:solid; margin: 2px 0; padding:0px; width: 100%;}
 .tt-post-conversation{ margin: 0 0 20px 0;}
 .tt-options-button{border: 1px solid; padding:2px;}
@@ -257,6 +257,7 @@ body{text-align:center; margin: 0 auto;}
 */
 .tt-post{ background-color: transparent; border-color:#eee;}
 
+.tt-post-panel-number,
 .tt-post-summary-body,
 .tt-color-search-results-header,
 .tt-post-body{color: grey;}
