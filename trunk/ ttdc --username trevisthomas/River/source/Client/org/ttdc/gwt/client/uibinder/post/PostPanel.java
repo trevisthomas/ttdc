@@ -79,6 +79,7 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
     @UiField(provided = true) Widget postImageElement;
     @UiField(provided = true) Widget ratingElement;
     @UiField(provided = true) Widget tagsElement;
+    @UiField Label postNumberElement;
     @UiField SimplePanel likesElement;
     @UiField Label postUnReadElement;
     @UiField HTMLPanel postMainElement;
@@ -240,10 +241,20 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 			likesElement.setVisible(false);
 		}
 		
+		if(post.isThreadPost()){
+			postNumberElement.setText("#"+(1+Integer.parseInt(post.getPath()))); //Path is the post number for these conversation staters!
+		}
+		else{
+			postNumberElement.setText("");
+		}
+		
 		//TODO secure
 		tagListPanel.init(post, TagListPanel.Mode.EDITABLE);
 		
-		TopicHelpers.testPost(this);
+		//Dont scroll to root posts. It's crazy making!
+		if(!post.isRootPost())
+			TopicHelpers.testPost(this);
+		
 		
 	}
 	

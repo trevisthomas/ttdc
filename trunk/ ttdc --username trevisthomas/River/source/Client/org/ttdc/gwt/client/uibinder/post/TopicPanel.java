@@ -109,13 +109,10 @@ public class TopicPanel extends BasePageComposite implements PostEventListener{
 				else{
 					PostPanel postPanel = injector.createPostPanel();
 					postPanel.setPost(post);
-//					view.topicTitle().setText(result.getPost().getTitle());
-//					view.topicTarget().add(postPanel.getWidget());
-					
 					rootPostElement.add(postPanel.getWidget());
 				}
 				//showSearchWithResults(post);
-				pageHeaderPanel.init(result.getPost().getTitle(), "todo: thread subtitle");
+				pageHeaderPanel.init(result.getPost().getTitle(), "this view shows conversations on a topic");
 				pageHeaderPanel.getSearchBoxPresenter().init(token);
 			}
 		};

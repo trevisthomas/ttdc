@@ -40,6 +40,9 @@
 							<table class="tt-inline tt-float-right">
 								<tr>
 									<td>
+										<g:Label styleName="tt-post-panel-number" ui:field="postNumberElement"></g:Label>
+									</td>
+									<td>
 										<g:Label ui:field="replyCountElement"></g:Label>
 									</td>
 									<td>
@@ -51,11 +54,12 @@
 					</tr>
 					<tr>
 						<td colspan="2">
-							<div class="tt-post-panel-head-creator">
-								by <g:Hyperlink ui:field="creatorLinkElement" />
-								
-								<g:Widget styleName="tt-post-panel-head-date" ui:field="createDateElement" />
-							</div>
+							<table class="tt-fill">
+								<tr>
+									<td class="tt-post-panel-head-creator t">by <g:Hyperlink ui:field="creatorLinkElement" /></td>
+									<td><g:Widget styleName="tt-post-panel-head-date" ui:field="createDateElement" /></td>
+								</tr>
+							</table>
 						</td>
 					</tr>
 				</table>
