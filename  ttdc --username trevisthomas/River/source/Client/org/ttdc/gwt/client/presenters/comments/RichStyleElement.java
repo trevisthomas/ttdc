@@ -22,7 +22,12 @@ public class RichStyleElement {
 	}
 
 	public String getCloseTag() {
-		return "</"+getTag()+">";
+		if(tag.equals("div")){
+			return "</"+getTag()+"><br>";
+		}
+		else{
+			return "</"+getTag()+">";
+		}
 		//return String.format("</%1>",getTag());
 	}
 

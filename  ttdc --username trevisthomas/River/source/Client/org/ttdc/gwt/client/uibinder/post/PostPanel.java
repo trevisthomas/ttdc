@@ -255,7 +255,6 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 		if(!post.isRootPost())
 			TopicHelpers.testPost(this);
 		
-		
 	}
 	
 //	protected void showNewCommentEditor() {

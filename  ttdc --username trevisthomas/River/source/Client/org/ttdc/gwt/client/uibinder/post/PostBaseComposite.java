@@ -141,6 +141,7 @@ abstract public class PostBaseComposite extends Composite{
 				processTagPostRequest();
 			}
 		});
+		
 	}
 	
 //	public TagListPanel getTagListPanel() {
@@ -284,7 +285,7 @@ abstract public class PostBaseComposite extends Composite{
 		tagListPanel.showEditor();
 	}
 	
-	private void showNewCommentEditor() {
+	protected void showNewCommentEditor() {
 		NewCommentPresenter commentPresneter = injector.getNewCommentPresenter();
 		commentPresneter.init(NewCommentPresenter.Mode.CREATE, post);
 		commentElement.clear();

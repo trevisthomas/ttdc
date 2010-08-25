@@ -1,8 +1,15 @@
 package org.ttdc.gwt.client.presenters.comments;
 
+import com.google.gwt.dom.client.Node;
+import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.FocusEvent;
+import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -49,6 +56,11 @@ public class NewCommentView implements NewCommentPresenter.View{
 	
 	private final FlowPanel controlPanel = new FlowPanel(); 
 	
+	private final static String ID_PREFIX = "RTA";
+	private static int idCounter = 1;
+	
+	private String myId;
+	
 	public NewCommentView() {
 		main.add(messagePanel);
 		main.add(ratingPanel);
@@ -94,8 +106,61 @@ public class NewCommentView implements NewCommentPresenter.View{
 				close();
 			}
 		});
+		
+		myId = ID_PREFIX+idCounter++;
+		
+		textArea.getElement().setId(myId);
+		
+		
+		
+		
+		textArea.addFocusHandler(new FocusHandler() {
+			@Override
+			public void onFocus(FocusEvent event) {
+				applyCss(myId);
+			}
+		});
+		//textArea.setStyleName("tt-text-normal");
+//		textArea.addKeyUpHandler(new KeyUpHandler() {
+//			@Override
+//			public void onKeyUp(KeyUpEvent event) {
+//				//grow();
+//				textArea.setHeight("400px");
+//			}
+//		});
 	}
 	
+	@Override
+	public void styleNeedsAKickStart() {
+		applyCss(myId);
+	}
+	
+	public static native void applyCss(String id) /*-{
+		$doc.getElementById(id).contentWindow.document.body.className="tt-rich-text-area";
+		
+		var element = $doc.getElementById('mainCss');
+		
+		var cssLink = document.createElement("link") 
+		cssLink.href = element.href; 
+		cssLink .rel = "stylesheet"; 
+		cssLink .type = "text/css";
+		
+		$doc.getElementById(id).contentWindow.document.getElementsByTagName("head")[0].appendChild(cssLink);
+
+		//alert(element.href);
+		
+	}-*/;
+	private final static int TEXTAREA_LINE_HEIGHT = 13;
+//	private void grow() {
+//		Element element = textArea.getElement();
+//		
+//		  int newHeight = element.getScrollHeight();
+//		  int currentHeight = element.getClientHeight();
+//		  if (newHeight > currentHeight + 10) {
+//			  //textArea.setHeight(newHeight + 5 * TEXTAREA_LINE_HEIGHT + "px");
+//			  textArea.setHeight(newHeight+"px");
+//		  }
+//	}
 	
 	@Override
 	public HasClickHandlers addTagClickHandler() {
@@ -231,8 +296,9 @@ public class NewCommentView implements NewCommentPresenter.View{
 	
 	@Override
 	public void close() {
-		main.clear();
+//		main.clear();
 		main.setVisible(false);
+		//main.removeFromParent();
 	}
 	
 }

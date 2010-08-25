@@ -67,7 +67,7 @@ public class CommentToolbar extends Composite implements EmbedContentPopupSource
 	private PushButton quote;
 	private PushButton offsite;
 	
-	private PushButton alignleft;
+	public PushButton alignleft;
 	private PushButton alignmiddle;
 	private PushButton alignright;
 	private PushButton orderlist;
@@ -290,6 +290,7 @@ public class CommentToolbar extends Composite implements EmbedContentPopupSource
 				String html = "<span "+TEMP_SPOILER_MARKUP+" class=\"spoiler\" onmouseover=\"this.className='reveal';\" onmouseout=\"this.className='spoiler';\">"
 					+getSelectedText()+"</span>";
 				styleTextFormatter.insertHTML(html);
+				styleTextFormatter.removeFormat();
 			}
 		}));
 		topPanel.add(strike = createPushButton(HTTP_STATIC_ICONS_GIF,0,120,20,20,styleStrikethrough));
