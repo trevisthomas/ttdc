@@ -73,6 +73,8 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 		HasWidgets tagsPanel();
 		HasWidgets tagSelectorPanel();
 		void close();
+		
+		void styleNeedsAKickStart();
 	}
 	
 	public enum Mode{EDIT,CREATE}
@@ -112,6 +114,10 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 		else{
 			view.setForPrivate(false);
 		}
+	}
+	
+	public void styleNeedsAKickStart(){
+		view.styleNeedsAKickStart();
 	}
 	
 	@Override
