@@ -34,7 +34,7 @@ public class NewCommentView implements NewCommentPresenter.View{
 	private final TextBox loginTextBox = new TextBox();
 	private final PasswordTextBox passwordTextBox = new PasswordTextBox();
 	private final Button addCommentButton = new Button("Add");
-	private final RichTextArea textArea = new RichTextArea();
+	private final MyRichTextArea textArea = new MyRichTextArea();
 	private final CommentToolbar toolbar = new CommentToolbar(textArea, embedTargetPlaceholder);
 	private final CheckBox deletedCheckbox = new CheckBox("Deleted");
 	private final CheckBox reviewCheckbox = new CheckBox("Review");
@@ -93,7 +93,9 @@ public class NewCommentView implements NewCommentPresenter.View{
 			public void onClick(ClickEvent event) {
 				show.clear();
 				//show.add(new HTML(textArea.getHTML()));
-				show.add(new HTML(toolbar.getHTML()));
+				HTML markup = new HTML(toolbar.getHTML());
+				markup.setStyleName("tt-post");
+				show.add(markup);
 				
 			}
 		});
@@ -109,15 +111,13 @@ public class NewCommentView implements NewCommentPresenter.View{
 		
 		myId = ID_PREFIX+idCounter++;
 		
-		textArea.getElement().setId(myId);
-		
-		
-		
+		//textArea.getElement().setId(myId);
 		
 		textArea.addFocusHandler(new FocusHandler() {
 			@Override
 			public void onFocus(FocusEvent event) {
-				applyCss(myId);
+				//applyCss(myId);
+				show.clear();
 			}
 		});
 		//textArea.setStyleName("tt-text-normal");
@@ -130,25 +130,65 @@ public class NewCommentView implements NewCommentPresenter.View{
 //		});
 	}
 	
+	
+	private class MyRichTextArea extends RichTextArea{
+		public MyRichTextArea() {
+			
+		}
+		@Override
+		protected void onLoad() {
+			getElement().setId(myId);
+			applyCss(myId);
+		}
+	}
+	
+	
 	@Override
 	public void styleNeedsAKickStart() {
 		applyCss(myId);
 	}
 	
-	public static native void applyCss(String id) /*-{
-		$doc.getElementById(id).contentWindow.document.body.className="tt-rich-text-area";
-		
-		var element = $doc.getElementById('mainCss');
-		
-		var cssLink = document.createElement("link") 
-		cssLink.href = element.href; 
-		cssLink .rel = "stylesheet"; 
-		cssLink .type = "text/css";
-		
-		$doc.getElementById(id).contentWindow.document.getElementsByTagName("head")[0].appendChild(cssLink);
 
-		//alert(element.href);
-		
+	
+//	public static native void applyCss(String id) /*-{
+//		$doc.getElementById(id).contentWindow.document.body.className="tt-rich-text-area";
+//		
+//		var element = $doc.getElementById('mainCss');
+//		
+//		var cssLink = document.createElement("link") 
+//		cssLink.href = element.href; 
+//		cssLink .rel = "stylesheet"; 
+//		cssLink .type = "text/css";
+//		
+//		$doc.getElementById(id).contentWindow.document.getElementsByTagName("head")[0].appendChild(cssLink);
+//
+//		//alert(element.href);
+//		
+//	}-*/;
+//	
+	/*
+	 * NOTE the timeout delay before completing execution.  I found a tip about this
+	 * in the gwt source code for RichTextAreaImplStandard
+	 */
+	public static native void applyCss(String id) /*-{
+		setTimeout($entry(function() {
+			$doc.getElementById(id).contentWindow.document.body.className="tt-rich-text-area";
+			
+			var element = $doc.getElementById('mainCss');
+			
+			var cssLink = document.createElement("link") 
+			cssLink.href = element.href; 
+			cssLink.rel = "stylesheet"; 
+			cssLink.type = "text/css";
+			
+			var cssShackagLink = document.createElement("link") 
+			cssShackagLink.href = "/css/shacktags.css"; 
+			cssShackagLink.rel = "stylesheet"; 
+			cssShackagLink.type = "text/css";
+			
+			$doc.getElementById(id).contentWindow.document.getElementsByTagName("head")[0].appendChild(cssLink);
+			$doc.getElementById(id).contentWindow.document.getElementsByTagName("head")[0].appendChild(cssShackagLink);
+    	}), 5);
 	}-*/;
 	private final static int TEXTAREA_LINE_HEIGHT = 13;
 //	private void grow() {

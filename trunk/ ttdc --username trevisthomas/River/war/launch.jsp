@@ -17,6 +17,7 @@
     <link type="text/css" rel="stylesheet" href="/css/shacktags.css"/>
     <link type="text/css" rel="stylesheet" href="/css/basic.css"/>
     <link type="text/css" rel="stylesheet" href="/css/standard.css"/>
+    <link type="text/css" rel="stylesheet" href="/css/corettdc.css"/>
     <%
     	Object obj = session.getAttribute(SessionProxy.SESSION_KEY_PERSON_ID);
     	Person person;
