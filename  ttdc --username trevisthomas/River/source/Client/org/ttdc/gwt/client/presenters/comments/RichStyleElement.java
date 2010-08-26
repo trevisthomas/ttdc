@@ -2,13 +2,11 @@ package org.ttdc.gwt.client.presenters.comments;
 
 public class RichStyleElement {
 	private final String name;
-	private final String style;
 	private final String styleClass;
 	private final String tag;
-	public RichStyleElement(String name, String tag, String styleClass, String style) {
+	public RichStyleElement(String name, String tag, String styleClass) {
 		this.name = name;
 		this.tag = tag;
-		this.style = style;
 		this.styleClass = styleClass;
 	}
 
@@ -17,7 +15,7 @@ public class RichStyleElement {
 	}
 
 	public String getOpenTag() {
-		return "<"+getTag()+" style=\""+getStyle()+"\">";
+		return "<"+getTag()+" class=\""+getStyleClass()+"\">";
 		//return String.format("<%1 style=\"%2\">", getTag(), getStyle());
 	}
 
@@ -31,10 +29,7 @@ public class RichStyleElement {
 		//return String.format("</%1>",getTag());
 	}
 
-	public String getStyle() {
-		return style;
-	}
-
+	
 	public String getStyleClass() {
 		return styleClass;
 	}
