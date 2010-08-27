@@ -100,10 +100,10 @@ public class NewCommentView implements NewCommentPresenter.View{
 		//you're gonna need to send it up stream.
 		main.add(new HTML("<center><span id=\""+embedTargetPlaceholder+"\"></span></center>"));
 		
-		tagGrid.setWidget(0, 0, tagsPanel);
-		tagGrid.setWidget(0, 1, tagSelectorPanel);
-		tagGrid.setWidget(0, 2, addTagButton);
-		main.add(tagGrid);
+//		tagGrid.setWidget(0, 0, tagsPanel);
+//		tagGrid.setWidget(0, 1, tagSelectorPanel);
+//		tagGrid.setWidget(0, 2, addTagButton);
+//		main.add(tagGrid);
 		
 		main.add(show);
 		previewButton.addClickHandler(new ClickHandler() {
@@ -151,7 +151,30 @@ public class NewCommentView implements NewCommentPresenter.View{
 		controlPanel.setStyleName("tt-comment-editor-buttons");
 	}
 	
-	
+//	@Override
+//	public void grow(){
+//		loginPanel.setVisible(true);
+//		ratingPanel.setVisible(true);
+//		replyToPanel.setVisible(true);
+//		toolbar.setVisible(true);
+//		//main.add(textArea);
+//		checkboxPanel.setVisible(true);
+//		controlPanel.setVisible(true);
+//		textArea.setHeight("400px");
+//	}
+//	
+//	@Override
+//	public void shrink(){
+//		loginPanel.setVisible(false);
+//		ratingPanel.setVisible(false);
+//		replyToPanel.setVisible(false);
+//		toolbar.setVisible(false);
+//		//main.add(textArea);
+//		checkboxPanel.setVisible(false);
+//		controlPanel.setVisible(false);
+//		textArea.setHeight("40px");
+//	}
+//	
 	private class MyRichTextArea extends RichTextArea{
 		public MyRichTextArea() {
 			
@@ -378,8 +401,9 @@ public class NewCommentView implements NewCommentPresenter.View{
 	@Override
 	public void close() {
 //		main.clear();
+		outer.setVisible(false);
 		//outer.setVisible(false);
-		outer.removeFromParent();		
+		//outer.removeFromParent();		
 		//main.removeFromParent();
 	}
 	
