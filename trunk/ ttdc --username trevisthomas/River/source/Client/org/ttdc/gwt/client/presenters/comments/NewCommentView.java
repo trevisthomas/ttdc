@@ -1,5 +1,7 @@
 package org.ttdc.gwt.client.presenters.comments;
 
+import org.ttdc.gwt.client.presenters.comments.NewCommentPresenter.Mode;
+
 import com.google.gwt.dom.client.Node;
 import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -19,6 +21,8 @@ import com.google.gwt.user.client.ui.HasHTML;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.RichTextArea;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -34,6 +38,7 @@ public class NewCommentView implements NewCommentPresenter.View{
 	private final TextBox loginTextBox = new TextBox();
 	private final PasswordTextBox passwordTextBox = new PasswordTextBox();
 	private final Button addCommentButton = new Button("Add");
+	private final Button editCommentButton = new Button("Edit");
 	private final MyRichTextArea textArea = new MyRichTextArea();
 	private final CommentToolbar toolbar = new CommentToolbar(textArea, embedTargetPlaceholder);
 	private final CheckBox deletedCheckbox = new CheckBox("Deleted");
@@ -48,6 +53,8 @@ public class NewCommentView implements NewCommentPresenter.View{
 	private final Button addTagButton = new Button("Add");
 	private final SimplePanel ratingPanel = new SimplePanel();
 	private final Button cancelButton = new Button("Cancel");
+	private final SimplePanel outer = new SimplePanel();
+	private final HorizontalPanel loginPanel = new HorizontalPanel();
 	
 	private final FlowPanel checkboxPanel = new FlowPanel();
 	
@@ -62,12 +69,16 @@ public class NewCommentView implements NewCommentPresenter.View{
 	private String myId;
 	
 	public NewCommentView() {
+		
+		outer.add(main);
 		main.add(messagePanel);
+		main.add(loginPanel);
 		main.add(ratingPanel);
 		main.add(replyToPanel);
 		main.add(toolbar);
 		main.add(textArea);
 		main.add(checkboxPanel);
+		controlPanel.add(editCommentButton);
 		controlPanel.add(addCommentButton);
 		controlPanel.add(previewButton);
 		controlPanel.add(cancelButton);
@@ -76,6 +87,13 @@ public class NewCommentView implements NewCommentPresenter.View{
 		checkboxPanel.add(infCheckbox);
 		checkboxPanel.add(nwsCheckbox);
 		
+		loginPanel.setVisible(false);
+		loginPanel.add(new Label("Login: "));
+		loginPanel.add(loginTextBox);
+		loginPanel.add(new Label("Password: "));
+		loginPanel.add(passwordTextBox);
+		
+		textArea.setStyleName("tt-rich-text-iframe");
 		
 		//The embed target may need to be dynamic.  Just remember that the back end wil need
 		//to know this value in order to swap it for the real one. So if placeholder becomes dynamic
@@ -100,7 +118,7 @@ public class NewCommentView implements NewCommentPresenter.View{
 			}
 		});
 		
-		main.setStyleName("tt-comment-editor");
+		outer.setStyleName("tt-comment-editor");
 		
 		cancelButton.addClickHandler(new ClickHandler() {
 			@Override
@@ -128,6 +146,9 @@ public class NewCommentView implements NewCommentPresenter.View{
 //				textArea.setHeight("400px");
 //			}
 //		});
+		
+		toolbar.setStyleName("tt-comment-toolbar");
+		controlPanel.setStyleName("tt-comment-editor-buttons");
 	}
 	
 	
@@ -142,12 +163,32 @@ public class NewCommentView implements NewCommentPresenter.View{
 		}
 	}
 	
-	
 	@Override
-	public void styleNeedsAKickStart() {
-		applyCss(myId);
+	public HasClickHandlers getEditCommentClickHandlers() {
+		return editCommentButton;
 	}
 	
+	@Override
+	public void setMode(Mode mode) {
+		switch(mode){
+			case CREATE:{
+				editCommentButton.setVisible(false);
+				addCommentButton.setVisible(true);
+				break;
+			}
+			case EDIT:{
+				addCommentButton.setVisible(false);
+				editCommentButton.setVisible(true);
+				break;
+			}
+		}
+		
+	}
+	
+	@Override
+	public void showLoginFields() {
+		loginPanel.setVisible(true);
+	}
 
 	
 //	public static native void applyCss(String id) /*-{
@@ -253,7 +294,7 @@ public class NewCommentView implements NewCommentPresenter.View{
 
 	@Override
 	public Widget getWidget() {
-		return main;
+		return outer;
 	}
 	
 	@Override
@@ -337,7 +378,8 @@ public class NewCommentView implements NewCommentPresenter.View{
 	@Override
 	public void close() {
 //		main.clear();
-		main.setVisible(false);
+		//outer.setVisible(false);
+		outer.removeFromParent();		
 		//main.removeFromParent();
 	}
 	
