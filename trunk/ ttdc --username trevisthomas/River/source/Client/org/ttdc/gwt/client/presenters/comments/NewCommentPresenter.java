@@ -77,7 +77,6 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 		void close();
 		
 		void showLoginFields();
-		
 	}
 	
 	public enum Mode{EDIT,CREATE}

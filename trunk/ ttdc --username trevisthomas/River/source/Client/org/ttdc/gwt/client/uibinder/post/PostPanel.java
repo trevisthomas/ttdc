@@ -12,6 +12,7 @@ import org.ttdc.gwt.client.messaging.EventBus;
 import org.ttdc.gwt.client.messaging.post.PostEvent;
 import org.ttdc.gwt.client.messaging.post.PostEventListener;
 import org.ttdc.gwt.client.messaging.post.PostEventType;
+import org.ttdc.gwt.client.presenters.comments.NewCommentPresenter;
 import org.ttdc.gwt.client.presenters.movies.MovieRatingPresenter;
 import org.ttdc.gwt.client.presenters.post.LikesPresenter;
 import org.ttdc.gwt.client.presenters.post.Mode;
@@ -35,6 +36,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Label;
@@ -71,7 +73,7 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
     @UiField(provided = true) Widget avatarElement;
     @UiField(provided = true) Hyperlink creatorLinkElement;
     @UiField(provided = true) Widget createDateElement;
-    @UiField (provided = true)ClickableHoverSyncPanel moreOptionsElement;
+    @UiField Anchor moreOptionsElement;
     @UiField Anchor fetchMoreElement;
     @UiField SpanElement embedTargetElement;
     @UiField(provided = true) SimplePanel commentElement = new SimplePanel();
@@ -115,8 +117,9 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
     	ratingElement = averageMovieRatingPresenter.getWidget();
     	tagsElement = tagListPanel;
     	
-    	moreOptionsElement = new ClickableHoverSyncPanel("tt-color-options-button","tt-color-options-button-hover");
+    	//moreOptionsElement = new ClickableHoverSyncPanel("tt-color-options-button","tt-color-options-button-hover");
     	
+    	//moreOptionsElement.setText("options");
     	//tagsElement
     	
     	initWidget(binder.createAndBindUi(this));
@@ -128,8 +131,8 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
     	replyCountElement.setStyleName("tt-reply-count");
     	conversationCountElement.setStyleName("tt-conversation-count");
     	
-    	moreOptionsElement.add(new Label("OPTIONS"));
-		moreOptionsElement.addStyleName("tt-options-button");
+//    	moreOptionsElement.add(new Label("OPTIONS"));
+//		moreOptionsElement.addStyleName("tt-options-button");
     }
     
     public void setPost(GPost post) {

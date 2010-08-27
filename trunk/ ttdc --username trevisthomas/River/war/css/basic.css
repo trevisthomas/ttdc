@@ -22,7 +22,7 @@
 .tt-text-small{font-size:10px;}
 .tt-options-button,
 .tt-post-expanded-creator,
-.tt-post-panel-head-creator,
+.tt-post-panel-head-detail,
 .tt-text-normal{font-size:12px;}
 .tt-text-normal-bold{font-size:12px; font-weight: bold;}
 .tt-post-panel-head-title,
@@ -40,9 +40,8 @@
 .tt-post-panel-content{ margin: 0 0 2px 0; width:100%;}
 .tt-post-panel-head{border-style: solid; border-width: 0 0 1px 0;}
 .tt-post-panel-head-date,
-.tt-post-panel-head-creator{padding: 0 0 0 2px;}
-
-.tt-post-panel-head-date{float: right;}
+.tt-post-panel-head-detail{vertical-align: middle;}
+	
 .tt-post-expanded{ border-width: 1px; border-style:solid; margin: 2px 0; padding:0px; width: 100%;}
 .tt-post-conversation{ margin: 0 0 20px 0;}
 .tt-options-button{border: 1px solid; padding:2px;}

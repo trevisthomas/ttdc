@@ -56,8 +56,8 @@
 						<td colspan="2">
 							<table class="tt-fill">
 								<tr>
-									<td class="tt-post-panel-head-creator t">by <g:Hyperlink ui:field="creatorLinkElement" /></td>
-									<td><g:Widget styleName="tt-post-panel-head-date" ui:field="createDateElement" /></td>
+									<td class="tt-post-panel-head-detail">by <g:Hyperlink ui:field="creatorLinkElement" /></td>
+									<td class="tt-text-right tt-post-panel-head-date"> <g:Widget styleName="tt-inline" ui:field="createDateElement" /></td>
 								</tr>
 							</table>
 						</td>
@@ -73,13 +73,15 @@
 						<td width="100%">
 							<div width="100%" style="clear:both;" >
 								<span class="tt-float-right">
-									<t:ClickableHoverSyncPanel ui:field="moreOptionsElement"/>
+									<g:Anchor ui:field="moreOptionsElement" >options</g:Anchor>
 								</span>
 								<div class="tt-float-right"  style="clear:both;">
 									<g:Widget ui:field="ratingElement" />
 									<g:Widget ui:field="postImageElement" />
 								</div>
 								<span class="tt-post-body tt-text-normal" ui:field="bodyElement" />
+								
+								
 							</div>
 						</td>
 					</tr>
