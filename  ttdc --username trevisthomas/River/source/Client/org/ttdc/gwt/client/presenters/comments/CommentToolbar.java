@@ -16,17 +16,13 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.RichTextArea;
-import com.google.gwt.user.client.ui.RichTextArea.Justification;
 import com.google.gwt.user.client.ui.ToggleButton;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -34,16 +30,11 @@ import com.google.gwt.user.client.ui.RichTextArea.Formatter;
 
 public class CommentToolbar extends Composite implements EmbedContentPopupSource, LinkDialogSource, HasHTML{
 	private static final String HTTP_STATIC_ICONS_GIF = "http://blog.elitecoderz.net/wp-includes/js/tinymce/themes/advanced/img/icons.gif";
-	//private final static String HTTP_STATIC_ICONS_2_GIF = "/images/";
-	//private final static String TEMP_SPOILER_BACKGROUND_URL = "http://localhost:8888/images/admin_MotherOfGodsnapshot20090122112439_stn.jpg";
-	
-	//public static final String TEMP_SPOILER_MARKUP = "style=\"background-image: url('http://localhost:8888/images/admin_MotherOfGodsnapshot20090122112439_stn.jpg');\"";
 	private RichTextArea richTextArea;
 	private Formatter styleTextFormatter;
 	private VerticalPanel outer = new VerticalPanel();
 	private final HorizontalPanel topPanel = new HorizontalPanel();
 	private final HorizontalPanel subPanel = new HorizontalPanel();
-	//private JsArrayString tx;
 	
 	//We use an internal class of the ClickHandler and the KeyUpHandler to be private to others with these events
 	private EventHandler evHandler;
@@ -58,8 +49,8 @@ public class CommentToolbar extends Composite implements EmbedContentPopupSource
 	private PushButton orange;
 	private PushButton green;
 	
-	private ToggleButton italic;
-	private ToggleButton bold;
+	private PushButton italic;
+	private PushButton bold;
 	private PushButton big;
 	private PushButton small;
 	private PushButton spoiler;
@@ -85,11 +76,6 @@ public class CommentToolbar extends Composite implements EmbedContentPopupSource
 	
 	private PushButton monospacedcode;
 	
-//	private PushButton generatelink;
-//	private PushButton breaklink;
-	
-	
-	
 	private static final Map<String, RichTextArea.FontSize> fontSizeList = new LinkedHashMap<String, RichTextArea.FontSize>();
 	static{
 		fontSizeList.put("Size",null);
@@ -104,21 +90,12 @@ public class CommentToolbar extends Composite implements EmbedContentPopupSource
 	
 	private List<RichStyleElement> colorStyleList = new ArrayList<RichStyleElement>();
 	
-//	private RichStyleElement styleItalic = new RichStyleElement("Italic","span","shackTag_i","font-style:italic;");
-//	private RichStyleElement styleBold = new RichStyleElement("Bold","span","shackTag_b","font-weight:bolder;");
-//	private RichStyleElement styleBig = new RichStyleElement("Huge","span","shackTag_BIG","font-family:Arial, Verdana;line-height: 100%;font-size: 18pt;font-weight:700;");
-//	private RichStyleElement styleSmall = new RichStyleElement("Small","span","shackTag_s","font-size: 75%;	font-weight:lighter;");
-	//private RichStyleElement styleSpoiler = new RichStyleElement("Spoiler","span","shackTag_i");
-	
 	private RichStyleElement styleStrikethrough = new RichStyleElement("Strike","span","shackTag_strike");
 	private RichStyleElement styleUnderline = new RichStyleElement("Underline","span","shackTag_u");
 	private RichStyleElement styleQuote = new RichStyleElement("Quote","div","shackTag_q");
 	private RichStyleElement styleOffsiteQuote = new RichStyleElement("Offsite","div","shackTag_o");
-	
 	//Beaware that code didnt exist pre v7
 	private RichStyleElement styleCode = new RichStyleElement("Code","div","shackTag_code");
-	//private RichStyleElement styleLink = new RichStyleElement("Link","div","shackTag_o","border:solid; border-width:1px;border-left-width:0px;border-right-width:0px;padding: 4px;margin:10px;font-size:100%;font-style:italic;");
-	
 	private RichStyleElement styleBlue = new RichStyleElement("Blue", "span", "shackTag_blue");
 	private RichStyleElement styleRed = new RichStyleElement("Red", "span", "shackTag_red");
 	private RichStyleElement styleOrange = new RichStyleElement("Orange", "span", "shackTag_orange");
@@ -137,21 +114,13 @@ public class CommentToolbar extends Composite implements EmbedContentPopupSource
 		outer.add(topPanel);
 		outer.add(subPanel);
 		
-//		outer.setStyleName("RichTextToolbar");
 		initWidget(outer);
 		
 
 		evHandler = new EventHandler();
 
-		//styleText.addKeyUpHandler(evHandler);
-		//styleText.addClickHandler(evHandler);
-
 		buildTools();
 		
-//		colorStyleList.add(new RichStyleElement("Blue", "<span class=\"shackTag_blue\">","<span style=\"color: blue\">", "</span>"));
-//		colorStyleList.add(new RichStyleElement("Red", "<span class=\"shackTag_red\">", "<span style=\"color: red\">", "</span>"));
-//		colorStyleList.add(new RichStyleElement("Orange", "<span class=\"shackTag_orange\">","<span style=\"color: orange\">", "</span>"));
-//		colorStyleList.add(new RichStyleElement("Green", "<span class=\"shackTag_green\">", "<span style=\"color: green\">","</span>"));
 	}
 
 	//So sloppy...
@@ -297,15 +266,15 @@ public class CommentToolbar extends Composite implements EmbedContentPopupSource
 
 	/** Private method to set the toggle buttons and disable/enable buttons which do not work in html-mode **/
 	private void updateStatus() {
-		if (styleTextFormatter != null) {
-			bold.setDown(styleTextFormatter.isBold());
-			italic.setDown(styleTextFormatter.isItalic());
-//			underline.setDown(styleTextFormatter.isUnderlined());
-//			subscript.setDown(styleTextFormatter.isSubscript());
-//			superscript.setDown(styleTextFormatter.isSuperscript());
-//			stroke.setDown(styleTextFormatter.isStrikethrough());
-		}
-//		
+//		if (styleTextFormatter != null) {
+//			bold.setDown(styleTextFormatter.isBold());
+//			italic.setDown(styleTextFormatter.isItalic());
+////			underline.setDown(styleTextFormatter.isUnderlined());
+////			subscript.setDown(styleTextFormatter.isSubscript());
+////			superscript.setDown(styleTextFormatter.isSuperscript());
+////			stroke.setDown(styleTextFormatter.isStrikethrough());
+//		}
+////		
 		if (isHTMLMode()) {
 			embed.setEnabled(false);
 		} else {
@@ -329,30 +298,12 @@ public class CommentToolbar extends Composite implements EmbedContentPopupSource
 		topPanel.add(green = createPushButton("icon_green",styleGreen));
 		
 		topPanel.add(new HTML("&nbsp;"));
-//		topPanel.add(italic = createPushButton(HTTP_STATIC_ICONS_GIF,0,60,20,20,styleItalic));
-//		topPanel.add(bold = createPushButton(HTTP_STATIC_ICONS_GIF,0,0,20,20,styleBold));
-		topPanel.add(bold = createToggleButton(HTTP_STATIC_ICONS_GIF,0,0,20,20,"Bold"));
-		topPanel.add(italic = createToggleButton(HTTP_STATIC_ICONS_GIF,0,60,20,20,"Italic"));
-//		topPanel.add(big = createPushButton(10,10,styleBig));
-//		topPanel.add(small = createPushButton(10,10,styleSmall));
-//		topPanel.add(spoiler = createPushButton(HTTP_STATIC_ICONS_GIF,0,320,20,20,styleSpoiler, new ClickHandler() {
-//			@Override
-//			public void onClick(ClickEvent event) {
-//				String html = "<span "+TEMP_SPOILER_MARKUP+" class=\"spoiler\" onmouseover=\"this.className='reveal';\" onmouseout=\"this.className='spoiler';\">"
-//					+getSelectedText()+"</span>";
-//				styleTextFormatter.insertHTML(html);
-//				styleTextFormatter.removeFormat();
-//			}
-//		}));
-//		topPanel.add(createPushButton(HTTP_STATIC_ICONS_GIF,0,320,20,20, "Spoiler", new ClickHandler() {
-//			@Override
-//			public void onClick(ClickEvent event) {
-//				String html = "<span class=\"spoiler\" onmouseover=\"this.className='reveal';\" onmouseout=\"this.className='spoiler';\">"
-//					+getSelectedText()+"</span>";
-//				styleTextFormatter.insertHTML(html);
-//				styleTextFormatter.removeFormat();
-//			}
-//		}));
+		topPanel.add(italic = createPushButton(HTTP_STATIC_ICONS_GIF,0,60,20,20,"Italic"));
+		topPanel.add(bold = createPushButton(HTTP_STATIC_ICONS_GIF,0,0,20,20,"Bold"));
+//		topPanel.add(bold = createToggleButton(HTTP_STATIC_ICONS_GIF,0,0,20,20,"Bold"));
+//		topPanel.add(italic = createToggleButton(HTTP_STATIC_ICONS_GIF,0,60,20,20,"Italic"));
+		
+
 		topPanel.add(spoiler = createPushButton(HTTP_STATIC_ICONS_GIF,0,320,20,20, "Spoiler"));
 		topPanel.add(strike = createPushButton(HTTP_STATIC_ICONS_GIF,0,120,20,20,styleStrikethrough));
 		topPanel.add(underline = createPushButton(HTTP_STATIC_ICONS_GIF,0,140,20,20,styleUnderline));
@@ -437,29 +388,6 @@ public class CommentToolbar extends Composite implements EmbedContentPopupSource
 		return tb;
 	}
 	
-	/** Method to create a Push button for the toolbar **/
-//	private PushButton createPushButton(String url, Integer top, Integer left, Integer width, Integer height, String tip, ClickHandler handler) {
-//		Image extract = new Image(url, left, top, width, height);
-//		PushButton tb = new PushButton(extract);
-//		tb.setHeight(height+"px");
-//		tb.setWidth(width+"px");
-//		tb.addClickHandler(handler);
-//		if (tip != null) {
-//			tb.setTitle(tip);
-//		}
-//		return tb;
-//	}
-	
-//	private PushButton createPushButton(String url, Integer top, Integer left,Integer width, Integer height, final RichStyleElement style, ClickHandler handler) {
-//		Image icon = new Image(url, left, top, width, height);
-//		PushButton tb = new PushButton(icon);
-//		tb.setHeight(height+"px");
-//		tb.setWidth(width+"px");
-//		tb.addClickHandler(handler);
-//		tb.setTitle(style.getName());
-//		return tb;
-//	}
-	
 	
 	private PushButton createPushButton(String url, Integer top, Integer left, Integer width, Integer height, final RichStyleElement style) {
 		//PushButton tb = new PushButton(style.getName().substring(0,3));
@@ -481,11 +409,7 @@ public class CommentToolbar extends Composite implements EmbedContentPopupSource
 	}
 	
 	private PushButton createPushButton(String styleName, final RichStyleElement style) {
-		//PushButton tb = new PushButton(style.getName().substring(0,3));
 		PushButton tb = new PushButton();
-//		tb.setHeight("20px");
-//		tb.setWidth("20px");
-		//tb.addStyleName("icon_toolbar_button");
 		tb.setStyleName("icon_toolbar_button");
 		tb.addStyleName(styleName);
 		tb.addClickHandler(new ClickHandler() {
@@ -507,33 +431,16 @@ public class CommentToolbar extends Composite implements EmbedContentPopupSource
 	@Override
 	public void performLinkEmbed(String selectedText, String directSource, String embedSource) {
 		embedSource = embedSource.replaceAll("\"", ""); //Hack because inserting the htmp performs some html encoding that complety messes up when there are qutation marks
-//		String s = "<a target=\"_blank\" href=\""+directSource+"\">"+selectedText+"</a><a href=\"javascript:tggle_embed('"+embedTarget+"','"+embedSource+"');\">[view]</a>";
-		//styleText.getFormatter().insertHTML(s);
 		
 		insertHtmlAt(selectedText,tmpSelectedText, tmpStartPos, "<a target=\"_blank\" href=\""+directSource+"\">",
 			"</a><a href=\"javascript:tggle_embed('"+embedTarget+"','"+embedSource+"');\">[view]</a>");
 		
-//		insertHtmlAt(tx, "<a target=\"_blank\" href=\""+directSource+"\">",
-//			"</a><a href=\"javascript:tggle_embed('"+embedTarget+"','"+embedSource+"');\">[view]</a>");
 	}
 	
 	@Override
 	public void performLink(String selectedText, String directSource) {
 		insertHtmlAt(selectedText,tmpSelectedText, tmpStartPos, "<a target=\"_blank\" href=\""+directSource+"\">","</a>");
 	}
-	
-//	private void insertHtmlAt(JsArrayString tx, String startTag, String stopTag) {
-//		String txbuffer = styleText.getHTML();
-//		Integer startpos = Integer.parseInt(tx.get(1));
-//		String selectedText = tx.get(0);
-//		styleText.setHTML(txbuffer.substring(0, startpos)+startTag+selectedText+stopTag+txbuffer.substring(startpos+selectedText.length()));
-//	}
-//	
-//	private int startPositionInHtml(String text){
-//		//If the text is duplicated, this wont work.
-//		int startpos = styleText.getHTML().indexOf(text);
-//		return startpos;
-//	}
 	
 	private int startPositionInHtml(){
 		String marker = "http://123TTDC";
@@ -571,33 +478,4 @@ public class CommentToolbar extends Composite implements EmbedContentPopupSource
 		
 	}
 
-//	private class RichStyleElementPopup extends PopupPanel{
-//		private VerticalPanel clickableItems = new VerticalPanel();
-//		public RichStyleElementPopup(List<RichStyleElement> list) {
-//			super(true);
-//			setAnimationEnabled(true);
-//			setWidget(clickableItems);
-//			JsArrayString tx = getSelection(styleText.getElement());
-//			for(RichStyleElement styleElement : list){
-//				HTML item = new HTML(styleElement.getName());
-//				item.addClickHandler(new RichStyleClickHandler(tx,styleElement));
-//				clickableItems.add(item);
-//			}
-//		}
-//	}
-//	
-//	private class RichStyleClickHandler implements ClickHandler{
-//		private JsArrayString tx;
-//		private final RichStyleElement element;
-//		public RichStyleClickHandler(JsArrayString tx, RichStyleElement element) {
-//			this.element = element;
-//			this.tx = tx;
-//		}
-//		
-//		@Override
-//		public void onClick(ClickEvent event) {
-//			insertHtmlAt(tmpSelectedText, tmpStartPos, element.getOpenTag(),element.getCloseTag());
-//			updateStatus();
-//		}
-//	}
 }

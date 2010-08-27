@@ -53,6 +53,7 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 		HasWidgets replyToPanel();
 		HasWidgets ratingPanel();
 		HasClickHandlers getAddCommentClickHandlers();
+		HasClickHandlers getEditCommentClickHandlers();
 		//HasClickHandlers getAddReviewClickHandlers();
 		
 		HasWidgets getMessagePanel();
@@ -72,9 +73,11 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 		HasClickHandlers addTagClickHandler();
 		HasWidgets tagsPanel();
 		HasWidgets tagSelectorPanel();
+		void setMode(Mode mode);
 		void close();
 		
-		void styleNeedsAKickStart();
+		void showLoginFields();
+		
 	}
 	
 	public enum Mode{EDIT,CREATE}
@@ -114,10 +117,10 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 		else{
 			view.setForPrivate(false);
 		}
-	}
-	
-	public void styleNeedsAKickStart(){
-		view.styleNeedsAKickStart();
+		
+		if(currentUser.isAnonymous()){
+			view.showLoginFields();
+		}
 	}
 	
 	@Override
@@ -156,7 +159,7 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 			throw new RuntimeException("Not sure what to do");
 		}
 		
-		
+		view.setMode(mode);
 		
 		view.getAddCommentClickHandlers().addClickHandler(
 			new ClickHandler() {
@@ -166,6 +169,14 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 				}
 			}
 		);
+		view.getEditCommentClickHandlers().addClickHandler(
+				new ClickHandler() {
+					@Override
+					public void onClick(ClickEvent event) {
+						editPost();
+					}
+				}
+			);
 		
 		tagSuggestionOracle = injector.getTagSugestionOracle();
 		tagSuggestionBox = tagSuggestionOracle.createSuggestBoxForPostView();
@@ -277,9 +288,9 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 		cmd.setReview(view.getReviewCheckbox().getValue());
 		cmd.setLocked(view.getLockedCheckbox().getValue());
 		
-		
-//		cmd.setLogin(login)
-//		cmd.setPassword(password)
+		//Should only be used for non-auth users
+		cmd.setLogin(view.getUserName().getText());
+		cmd.setPassword(view.getPassword().getText());
 		
 		for(RemovableTagPresenter tagPresenter : tagPresenterList){
 			GTag tag = tagPresenter.getTag();
@@ -302,6 +313,10 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 		CommandResultCallback<PostCommandResult> callback = buildCreatePostCallback();
 		
 		getService().execute(cmd,callback);
+		
+	}
+	
+	private void editPost(){
 		
 	}
 

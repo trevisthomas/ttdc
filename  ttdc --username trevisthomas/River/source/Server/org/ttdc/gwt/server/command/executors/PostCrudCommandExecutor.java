@@ -226,12 +226,21 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 		
 		creator = determinePerson(cmd);
 		
+		//if anon, check for login
+		if(creator.isAnonymous()){
+			creator = AccountDao.login(cmd.getLogin(), cmd.getPassword());
+		}
+		
 		if(!creator.hasPrivilege(Privilege.POST) && !creator.isAdministrator())
 			throw new RuntimeException("You dont have privledges to create new content.");
 		
 		Post parent = null;
-		if(!StringUtils.isEmpty(cmd.getParentId()))
+		if(!StringUtils.isEmpty(cmd.getParentId())){
 			parent = PostDao.loadPost(cmd.getParentId());
+			if(parent.isLocked() && !creator.isAdministrator()){
+				throw new RuntimeException("Cant reply to a locked post.");
+			}
+		}
 		
 		PostDao dao = new PostDao();
 		if(cmd.isDeleted())
