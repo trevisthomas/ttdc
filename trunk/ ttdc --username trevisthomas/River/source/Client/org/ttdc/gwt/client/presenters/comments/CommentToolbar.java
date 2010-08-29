@@ -21,6 +21,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.RichTextArea;
 import com.google.gwt.user.client.ui.ToggleButton;
@@ -126,6 +127,9 @@ public class CommentToolbar extends Composite implements EmbedContentPopupSource
 	//So sloppy...
 	private String tmpSelectedText;
 	private int tmpStartPos;
+	
+	private final static PopupPanel popup = new PopupPanel(false);
+	
 	private class EventHandler implements ClickHandler,KeyUpHandler, ChangeHandler {
 		public void onClick(ClickEvent event) {
 			if(event.getSource().equals(embed)){
@@ -133,19 +137,15 @@ public class CommentToolbar extends Composite implements EmbedContentPopupSource
 				tmpSelectedText = getSelectedText();
 				tmpStartPos = startPositionInHtml();
 				EmbedContentPopup popup = new EmbedContentPopup(CommentToolbar.this, tmpSelectedText);
-				popup.setGlassEnabled(true);
-				popup.setAnimationEnabled(true);
-				popup.center();
-				popup.show();
+				popup.showPositionRelativeTo(embed);
+				//popup.show();
 			}else if(event.getSource().equals(generatelink)){
 				styleTextFormatter.removeFormat();
 				tmpSelectedText = getSelectedText();
 				tmpStartPos = startPositionInHtml();
 				LinkDialog popup = new LinkDialog(CommentToolbar.this, tmpSelectedText);
-				popup.setGlassEnabled(true);
-				popup.setAnimationEnabled(true);
-				popup.center();
-				popup.show();	
+				popup.showPositionRelativeTo(generatelink);
+				//popup.show();	
 				
 			}else if (event.getSource().equals(bold)) {
 					styleTextFormatter.toggleBold();

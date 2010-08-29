@@ -150,16 +150,21 @@ public class ThreadDao extends FilteredPostPaginatedDaoBase{
 	}
 
 	private void loadRepliesFromPostList(Post thread, List<Post> posts) {
-		List<Post> flatReplyHierarchy = new ArrayList<Post>();
-		for(Post p : posts){
-			if(!p.isThreadPost() && p.getThread().getPostId().equals(thread.getPostId()))
-				flatReplyHierarchy.add(p);
-		}	
-		if(flatReplyHierarchy.size() > THREAD_REPLY_MAX_RESULTS){
-			thread.setPosts(flatReplyHierarchy.subList(flatReplyHierarchy.size()-THREAD_REPLY_MAX_RESULTS, flatReplyHierarchy.size()));
+		try{
+			List<Post> flatReplyHierarchy = new ArrayList<Post>();
+			for(Post p : posts){
+				if(!p.isThreadPost() && p.getThread().getPostId().equals(thread.getPostId()))
+					flatReplyHierarchy.add(p);
+			}	
+			if(flatReplyHierarchy.size() > THREAD_REPLY_MAX_RESULTS){
+				thread.setPosts(flatReplyHierarchy.subList(flatReplyHierarchy.size()-THREAD_REPLY_MAX_RESULTS, flatReplyHierarchy.size()));
+			}
+			else
+				thread.setPosts(flatReplyHierarchy);
 		}
-		else
-			thread.setPosts(flatReplyHierarchy);
+		catch (Exception e) {
+			String wtf = "wtf";
+		}
 		
 	}
 	
@@ -171,6 +176,7 @@ public class ThreadDao extends FilteredPostPaginatedDaoBase{
 		}	
 		if(flatReplyHierarchy.size() > THREAD_REPLY_MAX_RESULTS){
 			int start = flatReplyHierarchy.size()-(THREAD_REPLY_MAX_RESULTS * subPage);
+			start = start <= 0 ? 0 : start; //I think that what was happening is that if the post was on the first subpage and the results were not divisible by 5 that you'd get a negative start index. This clamps it at zero
 			int end = (start + THREAD_REPLY_MAX_RESULTS) <= flatReplyHierarchy.size() ? (start + THREAD_REPLY_MAX_RESULTS) : flatReplyHierarchy.size();
 			thread.setReplyStartIndex(start);
 			thread.setReplyPage(subPage);

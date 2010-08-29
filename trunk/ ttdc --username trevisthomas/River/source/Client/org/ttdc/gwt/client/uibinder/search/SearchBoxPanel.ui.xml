@@ -10,6 +10,9 @@
 	 				<g:FocusPanel ui:field="refineSearchElement"/>
 	 			</td>
 	 			<td>
+	 				<g:FocusPanel ui:field="clearCriteriaElement"/>	
+	 			</td>
+	 			<td>
 	 				<t:DefaultMessageTextBox ui:field="searchPhraseElement"/>	
 	 			</td>
 	 			<td>

@@ -12,7 +12,7 @@ import com.google.gwt.user.client.ui.TextBox;
 
 
 
-public class EmbedContentPopup extends DialogBox{
+public class EmbedContentPopup extends PopupRelative{
 	private final Grid main = new Grid(4,2);
 	private final TextBox name = new TextBox();
 	private final TextBox directLink = new TextBox();
@@ -26,7 +26,7 @@ public class EmbedContentPopup extends DialogBox{
 	
 	private final EmbedContentPopupSource source;
 	public EmbedContentPopup(EmbedContentPopupSource source, final String selectedText) {
-		setWidget(main);
+		add(main);
 		this.source = source;
 		
 		name.setText(selectedText);

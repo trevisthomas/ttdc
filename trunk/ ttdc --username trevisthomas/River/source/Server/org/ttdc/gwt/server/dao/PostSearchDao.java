@@ -3,15 +3,23 @@ package org.ttdc.gwt.server.dao;
 import static org.ttdc.persistence.Persistence.fullTextSession;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.StopWatch;
 import org.apache.log4j.Logger;
+import org.apache.lucene.analysis.SimpleAnalyzer;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.index.Term;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
+import org.apache.lucene.search.BooleanClause;
+import org.apache.lucene.search.PhraseQuery;
+import org.apache.lucene.search.Query;
 import org.apache.lucene.search.SortField;
 import org.hibernate.search.FullTextQuery;
 import org.hibernate.search.FullTextSession;
@@ -143,25 +151,31 @@ public final class PostSearchDao extends FilteredPostPaginatedDaoBase{
 				.setParameter("creator", getCreator());
 		}
 		
-		boolean reverse = sortDirection != SortDirection.ASC; 
-		SortField sortField = null;
-		switch(sortOrder){
-			case BY_DATE:
-				sortField = new SortField("date",reverse);
-				break;
-			case POPULARITY:
-				sortField = new SortField("mass",reverse);
-				break;
-			case ALPHABETICAL:
-				sortField = new SortField("title_sort",reverse);
-				break;
-		}
-		if(sortField != null){
-			ftquery.setSort(new org.apache.lucene.search.Sort(sortField));
-		}
 		
-		addTypeFilter(ftquery);
-		addDateFilter(ftquery); // Probably shouldnt do this if it's already a part of the query (which it is when it's searching for blank)
+		/*
+		 *  Trevis, you removed these because you wanted things sorted by relevance.
+		 *  Make sure this makes sense everywhere this is used/
+		 */
+		
+//		boolean reverse = sortDirection != SortDirection.ASC; 
+//		SortField sortField = null;
+//		switch(sortOrder){
+//			case BY_DATE:
+//				sortField = new SortField("date",reverse);
+//				break;
+//			case POPULARITY:
+//				sortField = new SortField("mass",reverse);
+//				break;
+//			case ALPHABETICAL:
+//				sortField = new SortField("title_sort",reverse);
+//				break;
+//		}
+//		if(sortField != null){
+//			ftquery.setSort(new org.apache.lucene.search.Sort(sortField));
+//		}
+		
+		//addTypeFilter(ftquery);
+		//addDateFilter(ftquery); // Probably shouldnt do this if it's already a part of the query (which it is when it's searching for blank)
 		
 		list = ftquery.list();
 		
@@ -241,34 +255,182 @@ public final class PostSearchDao extends FilteredPostPaginatedDaoBase{
 		}
 	}
 	
+//	private org.apache.lucene.search.Query createLuceneQuery() {
+//		log.debug("User query: "+getPhrase());
+//		String preparedPhrase = LuceneUtils.prepPhraseForLucene(getPhrase(),getDateRange());
+//		
+////		QueryParser parser = new QueryParser(lucineIndexName, new StandardAnalyzer());
+////		QueryParser parser = new QueryParser(lucineIndexName, new KeywordAnalyzer());
+////		QueryParser parser = new QueryParser(lucineIndexName, new EnglishAnalyzer());
+//		QueryParser parser;
+//		if(isSearchByTitle()){
+//			parser = new QueryParser("title", new EnglishAnalyzer());
+//		}
+//		else{
+//			parser = new MultiFieldQueryParser( new String[]{"body","title","creator","topic"}/*This is an array of which indexes to search*/, 
+//					  new EnglishAnalyzer());
+//		}
+//		
+//		//parser.setAllowLeadingWildcard(true);//Tried this for blanks but got a weird exception
+//		
+//		org.apache.lucene.search.Query luceneQuery;
+//		
+//		try {
+//			luceneQuery = parser.parse(preparedPhrase);
+//		} catch (ParseException e) {
+//			throw new RuntimeException(e);
+//		}
+//		
+//		log.debug("Lucene Query:"+luceneQuery.toString());
+//		return luceneQuery;
+//	}
+	
+//	private org.apache.lucene.search.Query createLuceneQuery() {
+//		log.debug("User query: "+getPhrase());
+////		String preparedPhrase = LuceneUtils.prepPhraseForLucene(getPhrase(),getDateRange());
+////		
+//////		QueryParser parser = new QueryParser(lucineIndexName, new StandardAnalyzer());
+//////		QueryParser parser = new QueryParser(lucineIndexName, new KeywordAnalyzer());
+//////		QueryParser parser = new QueryParser(lucineIndexName, new EnglishAnalyzer());
+////		QueryParser parser;
+////		if(isSearchByTitle()){
+////			parser = new QueryParser("title", new EnglishAnalyzer());
+////		}
+////		else{
+////			parser = new MultiFieldQueryParser( new String[]{"body","title","creator","topic"}/*This is an array of which indexes to search*/, 
+////					  new EnglishAnalyzer());
+////		}
+////		
+////		//parser.set
+////		//parser.setAllowLeadingWildcard(true);//Tried this for blanks but got a weird exception
+////		
+////		org.apache.lucene.search.Query luceneQuery;
+////		
+////		try {
+////			luceneQuery = parser.parse(preparedPhrase);
+////		} catch (ParseException e) {
+////			throw new RuntimeException(e);
+////		}
+//		////
+//		///
+//		///
+//		
+//		
+//		//MultiFieldQueryParser.
+//		
+////		MultiFieldQueryParser mfParser = new MultiFieldQueryParser(new String[]{"body","title","creator","topic"}/*This is an array of which indexes to search*/, 
+////					  new EnglishAnalyzer());
+//		
+//		StringTokenizer st = new StringTokenizer(getPhrase().toLowerCase().trim()," ");
+//		String newPhrase = "";
+//			while(st.hasMoreTokens()){
+//				String word = st.nextToken();
+//				if(isFilteredSearchWords(word))
+//					continue;
+//				newPhrase+=word;
+//				newPhrase+=" ";
+////				query.add(new Term("body",word));
+//	//			query.add(new Term("title",word));
+//	//			query.add(new Term("creator",word));
+//	//			query.add(new Term("topic",word));
+//			}
+//		
+//		
+//		org.apache.lucene.search.Query luceneQuery;
+//		try{
+//			luceneQuery = MultiFieldQueryParser.parse(newPhrase, new String[]{"body" /*,"title","creator","topic"*/}, 
+//					new BooleanClause.Occur[]{BooleanClause.Occur.MUST},  new SimpleAnalyzer());
+//		} catch (ParseException e) {
+//			throw new RuntimeException(e);
+//		}
+//		
+//		//luceneQuery = Query.mergeBooleanQueries(arg0);
+//		
+//		log.debug("Lucene Query: "+luceneQuery.toString());
+//		return luceneQuery;
+//		
+//		
+////		PhraseQuery query = new PhraseQuery();
+////		StringTokenizer st = new StringTokenizer(getPhrase().toLowerCase().trim()," ");
+////		while(st.hasMoreTokens()){
+////			String word = st.nextToken();
+////			if(isFilteredSearchWords(word))
+////				continue;
+////			query.add(new Term("body",word));
+//////			query.add(new Term("title",word));
+//////			query.add(new Term("creator",word));
+//////			query.add(new Term("topic",word));
+////		}
+////		query.setSlop(8);
+////		
+////		log.debug("Lucene Query: "+query.toString());
+////		return query;
+//		
+//		
+//	}
+	
 	private org.apache.lucene.search.Query createLuceneQuery() {
-		log.debug("User query: "+getPhrase());
-		String preparedPhrase = LuceneUtils.prepPhraseForLucene(getPhrase(),getDateRange());
-		
-//		QueryParser parser = new QueryParser(lucineIndexName, new StandardAnalyzer());
-//		QueryParser parser = new QueryParser(lucineIndexName, new KeywordAnalyzer());
-//		QueryParser parser = new QueryParser(lucineIndexName, new EnglishAnalyzer());
-		QueryParser parser;
-		if(isSearchByTitle()){
-			parser = new QueryParser("title", new EnglishAnalyzer());
-		}
-		else{
-			parser = new MultiFieldQueryParser( new String[]{"body","title","creator","topic"}/*This is an array of which indexes to search*/, 
-					  new EnglishAnalyzer());
-		}
-		
-		//parser.setAllowLeadingWildcard(true);//Tried this for blanks but got a weird exception
-		
-		org.apache.lucene.search.Query luceneQuery;
-		
-		try {
-			luceneQuery = parser.parse(preparedPhrase);
+		try{
+			
+			log.debug("User query: "+getPhrase());
+			List<PhraseQuery> phraseQueries = new ArrayList<PhraseQuery>();
+			
+			String phrase = getPhrase().toLowerCase().trim();
+			
+			if(!phrase.isEmpty()){
+				phraseQueries.add(buildPhraseQuery(phrase, "body", 8, 1));
+				phraseQueries.add(buildPhraseQuery(phrase, "title", 4, 4));
+				phraseQueries.add(buildPhraseQuery(phrase, "creator", 0, 8));
+				phraseQueries.add(buildPhraseQuery(phrase, "topic", 0, 1));
+				
+				StringBuilder sb = new StringBuilder();
+				sb.append("(");
+				for(PhraseQuery pq : phraseQueries){
+					sb.append(pq.toString());
+				}
+				sb.append(")");
+				phrase = sb.toString();
+			}
+			
+			QueryParser parser = new QueryParser("body", new StandardAnalyzer());//This default will always be overridden but it is required by the parser
+			String preparedPhrase = LuceneUtils.addDateRangeToLuceneQuery2(phrase,getDateRange());
+			
+			org.apache.lucene.search.Query luceneQuery = parser.parse(preparedPhrase);
+			
+			log.debug("Lucene Query: "+luceneQuery.toString());
+			return luceneQuery;
+			
 		} catch (ParseException e) {
 			throw new RuntimeException(e);
 		}
 		
-		log.debug("Lucene Query:"+luceneQuery.toString());
-		return luceneQuery;
+	}
+
+	private PhraseQuery buildPhraseQuery(String phrase, String field, int slop, float boost) {
+		PhraseQuery query = new PhraseQuery();
+		
+		StringTokenizer st = new StringTokenizer(phrase.toLowerCase()," ");
+		if(st.countTokens() == 0)
+			return null;
+		while(st.hasMoreTokens()){
+			String word = st.nextToken();
+			if(isFilteredSearchWords(word))
+				continue;
+			query.add(new Term(field,word));
+		}
+		query.setSlop(slop);
+		query.setBoost(boost);
+		return query;
+	}
+			
+	
+	private final static List<String> filterwords = Arrays.asList("a","all","am","an","and","any","are","as","at","be",
+			"but","can","did","do","does","for","from","had","has","have","here","how",
+		    "i","if","in","is","it","no","not","of","on","or","so","that","the","then",
+		    "there","this","to","too","up","use","what","when","where","who","why","you");
+	
+	private boolean isFilteredSearchWords(String word){
+		return filterwords.contains(word);
 	}
 
 	public void addTagId(String tagId){

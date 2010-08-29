@@ -19,7 +19,9 @@
 		 	<div class="tt-post-container-footer tt-center">
 		 		<g:Widget styleName="tt-center" ui:field="paginationElement"/>
 		 	</div>
+		 	<!-- 
 		 	<g:Hyperlink styleName="tt-fill tt-text-left" ui:field="expandSearchResultsElement"/>
+		 	 -->
 	 	</div>
 	 </g:HTMLPanel>
 </ui:UiBinder>

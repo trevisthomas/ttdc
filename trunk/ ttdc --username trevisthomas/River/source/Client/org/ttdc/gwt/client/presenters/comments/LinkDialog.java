@@ -9,7 +9,7 @@ import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 
-public class LinkDialog  extends DialogBox{
+public class LinkDialog  extends PopupRelative{
 	private final Grid main = new Grid(3,2);
 	private final TextBox name = new TextBox();
 	private final TextBox directLink = new TextBox();
@@ -21,7 +21,7 @@ public class LinkDialog  extends DialogBox{
 	
 	private final LinkDialogSource source;
 	public LinkDialog(LinkDialogSource source, final String selectedText) {
-		setWidget(main);
+		add(main);
 		this.source = source;
 		
 		name.setText(selectedText);

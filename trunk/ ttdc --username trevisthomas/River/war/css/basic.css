@@ -2,14 +2,14 @@
 @import "common/stars/stars-orange.css";
 @import "common/icons/icons-grey.css";
 
-.tt-view-container{width:1000px; text-align:center; margin: 0 auto;}
+.tt-view-container{width:1012px; text-align:center; margin: 0 auto;}
 
 .tt-border{ border:1px black solid;}
 .tt-border-bottom{ border-width: 0 0 1px 0; border-style: solid;}
 .tt-border-bottom-right{ border-width: 0 1px 1px 0; border-style: solid;}
 
 .tt-alert{color: red;}
-.tt-post{width: 500px; margin-bottom: 2px; border:1px solid; padding:1px;}
+.tt-post{width: 500px; margin-bottom: 2px; border:1px solid;}
 .tt-post-container-header{overflow: auto;}
 .tt-post-container-footer{}
 
@@ -48,6 +48,11 @@
 .tt-post-footer{text-align: right;}
 
 .tt-post-summary-body{padding:0px 2px;}
+.tt-topic-left,
+.tt-topic-right{
+	width:504px;
+	padding: 0 2px;	
+}
 
 /*
 .tt-post-expanded-content{width:100%; clear:both;}
@@ -84,6 +89,7 @@
 .tt-clickable-icon-prev{background-color: orange; width: 18px; height: 18px;}
 .tt-clickable-icon-next{background-color: orange; width: 18px; height: 18px;}
 .tt-clickable-icon-go{background-color: pink; width: 18px; height: 18px;}
+.tt-clickable-icon-reset{background-color: red; width: 18px; height: 18px;}
 
 .tt-clickable-icon-down{background-color: yellow; width: 18px; height: 18px;}
 .tt-clickable-icon-up{background-color: green; width: 18px; height: 18px;}

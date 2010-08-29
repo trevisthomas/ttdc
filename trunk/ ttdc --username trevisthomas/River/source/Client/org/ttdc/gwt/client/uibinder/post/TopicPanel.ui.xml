@@ -7,10 +7,10 @@
 		<g:Widget styleName="tt-fill" ui:field="pageHeaderElement"/>
 		<table>
 			<tr>
-				<td>
+				<td class="tt-topic-left">
 					<g:SimplePanel ui:field="rootPostElement"/>
 				</td>	
-				<td>
+				<td class="tt-topic-right">
 					<g:SimplePanel ui:field="threadsElement"/>
 				</td>
 			</tr>

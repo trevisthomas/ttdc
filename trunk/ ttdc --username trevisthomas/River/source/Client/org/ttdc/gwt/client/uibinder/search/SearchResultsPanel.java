@@ -62,7 +62,6 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
     //@UiField(provided = true) SimplePanel paginationElement = new SimplePanel();
     @UiField(provided = true) Widget paginationElement;
     @UiField Label searchSummaryDetailElement;
-    @UiField (provided = true) Hyperlink expandSearchResultsElement;
     @UiField Label pageResultMessageElement;
     @UiField (provided = true) Hyperlink prevElement;
     @UiField (provided = true) Hyperlink nextElement;
@@ -85,8 +84,7 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 		linkPresenter = injector.getHyperlinkPresenter();
 		prevLinkPresenter = injector.getHyperlinkPresenter();
 		nextLinkPresenter = injector.getHyperlinkPresenter();
-		expandSearchResultsElement = linkPresenter.getHyperlink();
-		
+				
 		paginationElement = paginationPresenter.getWidget();
 		
 		prevElement = prevLinkPresenter.getHyperlink();
@@ -175,10 +173,10 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 						linkMsg = "Browse " + result.getResults().getTotalResults() + " replies matching search. ";
 					}
 					linkPresenter.setToken(tokenToExpandResults, linkMsg);
-					expandSearchResultsElement.setVisible(true);
+					//expandSearchResultsElement.setVisible(true);
 				}
 				else{
-					expandSearchResultsElement.setVisible(false);
+					//expandSearchResultsElement.setVisible(false);
 				}
 			}
 		};
@@ -346,6 +344,7 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 		final String phrase = command.getPhrase(); 
 		
 	//	searchSummaryDetailElement.setText("TODO: fix this too, Searching comments for "+phrase+"...");
+		command.setPostSearchType(PostSearchType.ALL);// 8/28/2010 
 		
 		CommandResultCallback<SearchPostsCommandResult> callback = new CommandResultCallback<SearchPostsCommandResult>(){
 			public void onSuccess(SearchPostsCommandResult result) {
