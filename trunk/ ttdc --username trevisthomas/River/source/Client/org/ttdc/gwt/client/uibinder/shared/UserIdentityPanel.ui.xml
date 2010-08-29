@@ -6,10 +6,10 @@
     xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 	 <g:HTMLPanel>
 	 	
-	 	<g:FlowPanel styleName="tt-text-small" ui:field="userPanel">
+	 	<g:FlowPanel ui:field="userPanel">
 	 		<g:HTML ui:field="welcomeMessageElement" /> <g:Widget ui:field="userElement" /> <g:HTML styleName="tt-inline"> | </g:HTML> <g:Anchor ui:field="logoutElement" />
 	 	</g:FlowPanel>
-	 	<g:FlowPanel styleName="tt-text-small" ui:field="anonymousPanel">
+	 	<g:FlowPanel ui:field="anonymousPanel">
 	 		<g:Anchor ui:field="loginElement" /> <g:HTML styleName="tt-inline"> | </g:HTML> <g:Widget ui:field="createElement" />
 	 	</g:FlowPanel>
 	 </g:HTMLPanel>

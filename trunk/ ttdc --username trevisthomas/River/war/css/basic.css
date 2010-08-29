@@ -66,9 +66,10 @@
 	width: 100%;
 }
 
-.tt-center{text-align:center; margin: 0 auto;}
+.tt-center{text-align:center; }
 .tt-text-center{text-align:center;}
 
+.tt-searchBoxPanel{ margin: 3px auto;}
 /* tt-float-container is a trick to allow the container to have floating things 
 	inside of it but for it not to colapse. It's an alternative to having a clear:both element
 	*/
@@ -172,13 +173,15 @@
 .tt-post-summary{overflow: hidden; white-space:nowrap;}
 */
 
-
+.tt-welcome-login,
+.tt-welcome-calendar{	display: inline; white-space:nowrap; }
 
 
 .tt-cursor-move{cursor: move;}
 .tt-cursor-pointer{cursor: pointer;}
 
-.tt-textbox-search{width: 400px;}
+.tt-textbox-search{width: 400px; border: 0px;}
+.tt-searchBoxPanel{border: 1px black solid;}
 .tt-search-panel{height:30px; border: solid black 1px; background: gray;}
 .tt-search-panel-adv{}
 
@@ -204,14 +207,14 @@
 .tt-rich-text-area ul,
 .tt-rich-text-area ol{ margin-top: 0;  margin-bottom: 0; padding-top: 0; padding-bottom: 0;}
 
-
+.tt-refine-search-popup{padding: 4px; border: solid 1px; }
 
 
 /* 
  * Colors to be moved into color css
  */
 
-.tt-textbox-disabled{ color: #ddd;}
+.tt-message-textbox-disabled{ color: #ddd;}
 
 /*
 .tt-color-selected{border-color: yellow; background-color: #fc5}
@@ -272,6 +275,7 @@
 */
 .tt-post{ background-color: transparent; border-color:#eee;}
 
+
 .tt-post-panel-number,
 .tt-post-summary-body,
 .tt-color-search-results-header,
@@ -279,7 +283,8 @@
 
 .tt-post-panel-head{ background-color: #f5f5f5; border-color:#eee;}
 .tt-post-panel-content{ background-color: #fcfcfc; }
-	
+
+.tt-refine-search-popup{background-color: #fefefe; border-color: grey; color: black;}
 
 .tt-conversation-count{background-color: #F5F23B; border-color: white; color: grey;}
 .tt-reply-count{background-color: #cecece; border-color: white; color: #fefefe;}

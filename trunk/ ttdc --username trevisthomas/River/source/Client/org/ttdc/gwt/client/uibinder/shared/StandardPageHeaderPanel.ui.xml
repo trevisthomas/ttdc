@@ -15,10 +15,14 @@
 	 			<td>
 	 				<table>
 	 					<tr>
- 							<td><g:Widget styleName="tt-text-small tt-inline" ui:field="loginElement"></g:Widget></td>
- 							<td><g:Widget styleName="tt-text-small tt-inline" ui:field="popupCalendarDateElement" /></td>
+ 							<td><g:Widget styleName="tt-welcome-login" ui:field="loginElement"></g:Widget></td>
+ 							<td><g:Widget styleName="tt-welcome-calendar" ui:field="popupCalendarDateElement" /></td>
 	 					</tr>
 	 				</table>
+	 			</td>
+	 		</tr>
+	 		<tr>
+	 			<td colspan="2" class="tt-fill">
 	 				<g:Widget ui:field="searchElement" ></g:Widget>
 	 			</td>
 	 		</tr>
