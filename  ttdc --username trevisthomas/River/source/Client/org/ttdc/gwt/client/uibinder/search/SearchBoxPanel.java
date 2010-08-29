@@ -17,9 +17,11 @@ import org.ttdc.gwt.client.messaging.error.MessageEventListener;
 import org.ttdc.gwt.client.messaging.error.MessageEventType;
 import org.ttdc.gwt.client.messaging.history.HistoryConstants;
 import org.ttdc.gwt.client.messaging.history.HistoryToken;
+import org.ttdc.gwt.client.presenters.comments.NewCommentPresenter;
 import org.ttdc.gwt.client.presenters.search.DefaultMessageTextBox;
 import org.ttdc.gwt.client.presenters.util.ClickableIconPanel;
 import org.ttdc.gwt.client.services.BatchCommandTool;
+import org.ttdc.gwt.client.uibinder.post.NewMoviePanel;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
 import org.ttdc.gwt.shared.commands.PostCrudCommand;
 import org.ttdc.gwt.shared.commands.SearchTagsCommand;
@@ -28,6 +30,7 @@ import org.ttdc.gwt.shared.commands.results.SearchTagsCommandResult;
 import org.ttdc.gwt.shared.util.StringUtil;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.TableElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -35,6 +38,7 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -51,7 +55,10 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
     @UiField(provided = true) DefaultMessageTextBox searchPhraseElement = new DefaultMessageTextBox("initializing...");
     @UiField(provided = true) FocusPanel goElement = new ClickableIconPanel("tt-clickable-icon-go");
     @UiField(provided = true) FocusPanel clearCriteriaElement = new ClickableIconPanel("tt-clickable-icon-reset");
-    @UiField HTMLPanel parentElement; 
+    @UiField(provided = true) FocusPanel commentElement = new ClickableIconPanel("tt-clickable-icon-comment");
+    @UiField(provided = true) FocusPanel movieElement = new ClickableIconPanel("tt-clickable-icon-movie");
+        
+    @UiField TableElement parentElement; 
     
     private String rootId;
 	private String threadId;
@@ -85,8 +92,11 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 		
 		refineSearchPanel.setStyleName("tt-search-panel-adv");
 		
-		controlsPopup.clear();
-		controlsPopup.add(refineSearchPanel);
+		
+		controlsPopup.setStyleName("tt-refine-search-popup");
+		
+		commentElement.add(new Label("Comment"));
+		movieElement.add(new Label("Movie"));
 	}
     
     @Override
@@ -121,21 +131,7 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 		performSearch();
 	}
     
-    @UiHandler("refineSearchElement")
-    public void onClickRefineSearch(ClickEvent event) {
-		if(controlsPopup.isShowing()){
-			controlsPopup.hide();
-		}
-		else{
-			//Trevis, in the old one it set itself relative to the whole search box, but i didn't have it built yet 
-            int left = parentElement.getAbsoluteLeft();
-            int top = parentElement.getAbsoluteTop() + parentElement.getOffsetHeight() - 1;
-            controlsPopup.setPopupPosition(left, top);
-
-            // Show the popup
-			controlsPopup.show();	
-		}
-	}
+    
     
 	@Override
 	public void onMessageEvent(MessageEvent event) {
@@ -217,6 +213,56 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 	 */
 	public void init(){
 		init(new HistoryToken());
+	}
+	
+	@UiHandler("movieElement")
+	public void onClickMovieEditor(ClickEvent event){
+		if(controlsPopup.isShowing()){
+			controlsPopup.hide();
+		}
+		else{
+			NewMoviePanel newMoviePanel = injector.createNewMoviePanel();
+			newMoviePanel.init();
+			showPopup(newMoviePanel);	
+		}
+	}
+	
+	@UiHandler("commentElement")
+	public void onClickCommentEditor(ClickEvent event){
+		if(controlsPopup.isShowing()){
+			controlsPopup.hide();
+		}
+		else{
+			NewCommentPresenter commentPresneter = injector.getNewCommentPresenter();
+			commentPresneter.init();
+			showPopup(commentPresneter.getWidget());	
+		}
+	}
+	
+	@UiHandler("refineSearchElement")
+    public void onClickRefineSearch(ClickEvent event) {
+		if(controlsPopup.isShowing()){
+			controlsPopup.hide();
+		}
+		else{
+			
+			showPopup(refineSearchPanel);	
+		}
+	}
+
+	private void showPopup(Widget panel) {
+		controlsPopup.clear();
+		controlsPopup.add(panel);
+		//Trevis, in the old one it set itself relative to the whole search box, but i didn't have it built yet 
+		int left = parentElement.getAbsoluteLeft() + 1;
+		int top = parentElement.getAbsoluteTop() + parentElement.getOffsetHeight() - 1;
+		String width = parentElement.getWidth();
+		int w = parentElement.getOffsetWidth();
+		panel.setWidth(w+"px");
+		controlsPopup.setPopupPosition(left, top);
+
+		// Show the popup
+		controlsPopup.show();
 	}
 	
 	private CommandResultCallback<SearchTagsCommandResult> buildTagListCallback(){
@@ -302,6 +348,7 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 		
 		
 	}
+	
 	
 	private void performSearch(){
 		String phrase = searchPhraseElement.getActiveText();

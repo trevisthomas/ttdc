@@ -29,11 +29,12 @@ public class DefaultMessageTextBox extends TextBox{
 	public DefaultMessageTextBox(String defaultMessage) {
 		
 		this.defaultMessage = defaultMessage;
+		setStyleName("tt-message-textbox");
 		
 		addFocusHandler(new FocusHandler(){
 			@Override
 			public void onFocus(FocusEvent event) {
-				removeStyleName("tt-textbox-disabled");
+				removeStyleName("tt-message-textbox-disabled");
 				if(getText().equals(DefaultMessageTextBox.this.defaultMessage)){
 					if(StringUtil.notEmpty(DefaultMessageTextBox.this.message)){
 						setText(DefaultMessageTextBox.this.message);
@@ -111,7 +112,7 @@ public class DefaultMessageTextBox extends TextBox{
 	
 	private void loadDefaultTextIntoSearchBox() {
 		setText(defaultMessage);
-		addStyleName("tt-textbox-disabled");
+		addStyleName("tt-message-textbox-disabled");
 	}
 	
 	
