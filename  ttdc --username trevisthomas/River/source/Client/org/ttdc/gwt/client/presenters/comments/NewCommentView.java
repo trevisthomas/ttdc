@@ -112,7 +112,7 @@ public class NewCommentView implements NewCommentPresenter.View{
 				show.clear();
 				//show.add(new HTML(textArea.getHTML()));
 				HTML markup = new HTML(toolbar.getHTML());
-				markup.setStyleName("tt-post");
+				markup.setStyleName("tt-post tt-rich-text-iframe");
 				show.add(markup);
 				
 			}

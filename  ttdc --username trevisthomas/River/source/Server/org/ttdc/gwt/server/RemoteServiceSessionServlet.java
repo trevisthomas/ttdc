@@ -1,5 +1,8 @@
 package org.ttdc.gwt.server;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
@@ -100,11 +103,23 @@ public abstract class RemoteServiceSessionServlet extends RemoteServiceServlet{
 			return (RemoteServiceException)t;
 		
 		getLogger().error(t);
-		if(StringUtils.isNotEmpty(t.getMessage()))
-			return new RemoteServiceException(t.getMessage());
-		else
-			return new RemoteServiceException(t.toString());
+		
+		return new RemoteServiceException(getStackTrace(t));
+//		if(StringUtils.isNotEmpty(t.getMessage()))
+//			return new RemoteServiceException(t.getMessage());
+//		else
+//			return new RemoteServiceException(t.toString());
 	} 
+	
+	public static String getStackTrace(Throwable t)
+    {
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw, true);
+        t.printStackTrace(pw);
+        pw.flush();
+        sw.flush();
+        return sw.toString();
+    }
 	/**
 	 * Override this method to get context sensitive logging
 	 * 

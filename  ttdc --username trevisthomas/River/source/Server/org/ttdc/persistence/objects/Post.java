@@ -1,8 +1,6 @@
 package org.ttdc.persistence.objects;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -21,10 +19,8 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.hibernate.Hibernate;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.search.annotations.ClassBridge;
 import org.hibernate.search.annotations.ClassBridges;
@@ -39,21 +35,20 @@ import org.ttdc.gwt.shared.util.PostFlag;
 import org.ttdc.persistence.util.BridgeForBodyOnPost;
 import org.ttdc.persistence.util.BridgeForCreatorOnPost;
 import org.ttdc.persistence.util.BridgeForPostFlag;
-import org.ttdc.persistence.util.BridgeForTagOnPost;
 import org.ttdc.persistence.util.BridgeForPostType;
 import org.ttdc.persistence.util.BridgeForRootIdOnPost;
 import org.ttdc.persistence.util.BridgeForSortTitleOnPost;
 import org.ttdc.persistence.util.BridgeForTagIdsOnPost;
+import org.ttdc.persistence.util.BridgeForTagOnPost;
 import org.ttdc.persistence.util.BridgeForThreadIdOnPost;
 import org.ttdc.persistence.util.BridgeForTitleOnPost;
 import org.ttdc.persistence.util.FilterFactoryCreator;
-import org.ttdc.persistence.util.FilterFactoryForPostFlags;
 import org.ttdc.persistence.util.FilterFactoryForPostDateRange;
-import org.ttdc.persistence.util.FilterFactoryForType;
+import org.ttdc.persistence.util.FilterFactoryForPostFlags;
 import org.ttdc.persistence.util.FilterFactoryForRootId;
 import org.ttdc.persistence.util.FilterFactoryForThreadId;
 import org.ttdc.persistence.util.FilterFactoryForTokenizedTagIds;
-import org.ttdc.util.RatingUtility;
+import org.ttdc.persistence.util.FilterFactoryForType;
 
 @Table(name="POST")
 @Indexed

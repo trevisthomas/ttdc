@@ -49,7 +49,8 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
     
     @UiField(provided = true) FocusPanel refineSearchElement = new ClickableIconPanel("tt-clickable-icon-prev");
     @UiField(provided = true) DefaultMessageTextBox searchPhraseElement = new DefaultMessageTextBox("initializing...");
-    @UiField(provided = true) FocusPanel goElement = new ClickableIconPanel("tt-clickable-icon-go"); 
+    @UiField(provided = true) FocusPanel goElement = new ClickableIconPanel("tt-clickable-icon-go");
+    @UiField(provided = true) FocusPanel clearCriteriaElement = new ClickableIconPanel("tt-clickable-icon-reset");
     @UiField HTMLPanel parentElement; 
     
     private String rootId;
@@ -60,11 +61,12 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 	private final static PopupPanel controlsPopup = new PopupPanel(false);
 	private final RefineSearchPanel refineSearchPanel;
 	
+	
 	private String threadTitle;
 	private String tagTitles;
 	
 	private SearchDetailListenerSmartCollection searchDetailListenerCollection;
-    
+    private final static String DEFAULT_SEARCH_MSG = "Enter phrase to perform search";
     @Inject
     public SearchBoxPanel(Injector injector) { 
     	this.injector = injector;
@@ -75,7 +77,7 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
     	
     	initWidget(binder.createAndBindUi(this));
     	searchPhraseElement.setStyleName("tt-textbox-search");
-    	searchPhraseElement.setDefaultMessage("Enter phrase to perform search");
+    	searchPhraseElement.setDefaultMessage(DEFAULT_SEARCH_MSG);
     	searchPhraseElement.addEnterKeyPressedListener(this);
 		
 		EventBus.getInstance().addListener(this);
@@ -97,7 +99,24 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
     	onEnterKeyPressed();
     }
     
-    @Override
+    @UiHandler("clearCriteriaElement")
+    public void onClearCriteria(ClickEvent event){
+    	clearCriteria();
+    }
+    
+    private void clearCriteria() {
+    	postId = null;
+    	rootId = null;
+    	threadId = null;
+    	postId = null;
+    	threadTitle = null;
+    	tagTitles = null;
+    	tagIdList = new ArrayList<String>();
+    	searchPhraseElement.setDefaultMessage(DEFAULT_SEARCH_MSG);
+    	init(new HistoryToken());		
+	}
+
+	@Override
 	public void onEnterKeyPressed() {
 		performSearch();
 	}
@@ -152,8 +171,16 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 		searchDetailListenerCollection.setPhrase(phrase);
 		PostCrudCommand postCmd = new PostCrudCommand();
 		
-		if(postId == null && token.hasParameter(HistoryConstants.POST_ID_KEY)){
-			postId = token.getParameter(HistoryConstants.POST_ID_KEY);
+		if(postId == null){
+			if(token.hasParameter(HistoryConstants.ROOT_ID_KEY)){
+				postId = token.getParameter(HistoryConstants.ROOT_ID_KEY);
+			}
+			else if(token.hasParameter(HistoryConstants.THREAD_ID_KEY)){
+				postId = token.getParameter(HistoryConstants.THREAD_ID_KEY);
+			}
+			else if(token.hasParameter(HistoryConstants.POST_ID_KEY)){
+				postId = token.getParameter(HistoryConstants.POST_ID_KEY);
+			}
 		}
 		
 		if(postId != null){
@@ -227,16 +254,20 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 				threadTitle = post.getTitle();		
 				
 				searchDetailListenerCollection.setThreadTitle(threadTitle);
-				if(post.isRootPost()){
-					//Nothing to do
-					rootId = post.getPostId();
-				}
-				else if(post.isThreadPost()){
-					threadId = post.getPostId();
-				}
-				else{
-					threadId = post.getThread().getPostId();
-				}
+				
+				rootId = post.getRoot().getPostId();
+				
+//				This code was for allowing sub conversation searching which i am removing for now
+//				if(post.isRootPost()){
+//					//Nothing to do
+//					rootId = post.getPostId();
+//				}
+//				else if(post.isThreadPost()){
+//					threadId = post.getPostId();
+//				}
+//				else{
+//					threadId = post.getThread().getPostId();
+//				}
 				
 				setDefaultMessage();
 			}
@@ -249,17 +280,18 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 		String msg = "";
 		
 		if(StringUtil.notEmpty(searchPhraseElement.getActiveText())){
-			msg += searchPhraseElement.getActiveText();
+			msg += " for " + searchPhraseElement.getActiveText();
 		}
 		
 		if(tagTitles.length() > 0){
 			if(threadTitle.length() > 0)
-				msg += "Search in "+threadTitle+" for posts tagged "+tagTitles;
+				msg += "in "+threadTitle+" for posts tagged "+tagTitles;
 			else
-				msg += "Search in posts tagged "+tagTitles;
+				msg += "in posts tagged "+tagTitles;
+			
 		}
 		else if(StringUtil.notEmpty(threadTitle)){
-			msg += "Search in "+threadTitle+".";
+			msg += " in "+threadTitle+".";
 		}
 		
 		msg += refineSearchPanel.getDateRange().toString();
@@ -340,15 +372,6 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 		tagIdList.remove(tagId);
 	}
 	
-//	public List<GTag> getTagList() {
-//		return tagList;
-//	}
-//
-//	public void setTagList(List<GTag> tagList) {
-//		if(tagList != null)
-//			this.tagList = tagList;
-//	}
-
 	public void addSearchDetailListener(SearchDetailListener listener) {
 		searchDetailListenerCollection.addListener(listener);
 	}

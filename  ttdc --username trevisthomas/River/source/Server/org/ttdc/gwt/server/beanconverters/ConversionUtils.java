@@ -3,6 +3,8 @@ package org.ttdc.gwt.server.beanconverters;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.ttdc.util.StringTools;
+
 public class ConversionUtils {
 	private final static String markerOpen = "START123"+System.currentTimeMillis()+"";
 	private final static String markerEnd = "END123"+System.currentTimeMillis()+"";
@@ -10,14 +12,11 @@ public class ConversionUtils {
 	public static String preparePostSummaryForDisplay(final String value) {
 		if(value == null)
 			return null;
-			
+
 		//Removing any html from the summary.
-		String summary;
+		String summary = StringTools.escapeRexExSpecialCharacters(value);
 		if(value.length() > 60){
-			summary = value.substring(0, 60);
-		}
-		else{
-			summary = value;
+			summary = summary.substring(0, 60);
 		}
 		
 		Pattern p = Pattern.compile("<div class=shackTag_q>.*?\\>");
@@ -35,6 +34,9 @@ public class ConversionUtils {
 		
 		temp = temp.replaceAll(markerOpen, "<i>\"").replaceAll(markerEnd, "\"</i>");
 		
+		//Sigh, replace escaped characters for rendering. 
+		temp = StringTools.unescapeRexExSpecialCharacters(temp);
 		return temp;
 	}
+	
 }

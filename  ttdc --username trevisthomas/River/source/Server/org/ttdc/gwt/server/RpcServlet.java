@@ -41,14 +41,20 @@ public class RpcServlet extends RemoteServiceSessionServlet implements RpcServic
 	
 	public <T extends CommandResult> ArrayList<T> execute(ArrayList<Command<T>> actionList) throws RemoteServiceException{
 		log.debug("Executing batch : " + actionList);
-		ArrayList<CommandResult> results = new ArrayList<CommandResult>();
+		try{		
+			ArrayList<CommandResult> results = new ArrayList<CommandResult>();
+				
+			for(Command<T> command : actionList){
+				CommandExecutor cmdexec = CommandExecutorFactory.createExecutor(getPersonIdFromSession(), command);
+				CommandResult result = cmdexec.executeCommand();
+				results.add(result);
+			}
+			return (ArrayList<T>)results;
 			
-		for(Command<T> command : actionList){
-			CommandExecutor cmdexec = CommandExecutorFactory.createExecutor(getPersonIdFromSession(), command);
-			CommandResult result = cmdexec.executeCommand();
-			results.add(result);
 		}
-		return (ArrayList<T>)results;
+		catch (Exception e) {
+			throw buildRemoteServiceException(e);
+		}
 	}
 	
 	public <T extends CommandResult> T authenticate(String login, String password) throws RemoteServiceException {
