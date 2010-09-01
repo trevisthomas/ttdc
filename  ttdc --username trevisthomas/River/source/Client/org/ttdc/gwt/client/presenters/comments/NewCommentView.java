@@ -293,6 +293,11 @@ public class NewCommentView implements NewCommentPresenter.View{
 	public HasClickHandlers getAddCommentClickHandlers() {
 		return addCommentButton;
 	}
+	
+	@Override
+	public HasClickHandlers getCancelClickHandlers() {
+		return cancelButton;
+	}
 
 	@Override
 	public HasHTML getCommentBody() {

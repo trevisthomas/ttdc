@@ -1,14 +1,18 @@
 package org.ttdc.gwt.client.presenters.shared;
 
+import java.util.Date;
+
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.beans.GTag;
 import org.ttdc.gwt.client.messaging.history.HistoryConstants;
 import org.ttdc.gwt.client.messaging.history.HistoryToken;
+import org.ttdc.gwt.client.presenters.calendar.CalendarHelpers;
 
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.inject.Inject;
@@ -67,6 +71,11 @@ public class HyperlinkPresenter extends BasePresenter<HyperlinkPresenter.View> {
 		view.setCloudRank(tag.getCloudRank());
 		
 		//Finish setting up history for having a clickable tag
+	}
+	
+	public void setDate(Date date, DateTimeFormat formater){
+		HistoryToken token = CalendarHelpers.buildDayHistoryToken(date.getYear() + 1900, date.getMonth() + 1, date.getDate());
+		setToken(token, formater.format(date));
 	}
 	
 	public void setToken(HistoryToken token, String value){
