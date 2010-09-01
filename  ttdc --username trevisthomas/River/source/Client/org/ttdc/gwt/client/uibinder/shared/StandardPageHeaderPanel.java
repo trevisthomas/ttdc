@@ -6,8 +6,11 @@ import org.ttdc.gwt.client.uibinder.Navigation;
 import org.ttdc.gwt.client.uibinder.search.SearchBoxPanel;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
@@ -30,6 +33,7 @@ public class StandardPageHeaderPanel extends Composite{
     @UiField(provided = true) Widget searchElement;
 	@UiField(provided = true) Widget loginElement;
 	@UiField(provided = true) Widget popupCalendarDateElement;
+	
     
     @Inject
     public StandardPageHeaderPanel(Injector injector) { 
@@ -45,7 +49,9 @@ public class StandardPageHeaderPanel extends Composite{
     	popupCalendarDatePresenter = injector.getPopupCalendarDatePresenter();
     	popupCalendarDateElement = popupCalendarDatePresenter.getWidget();
     	
+    	    	
     	initWidget(binder.createAndBindUi(this)); 
+
 	}
     
     public void init(final String title, final String subtitle) {
@@ -61,5 +67,4 @@ public class StandardPageHeaderPanel extends Composite{
     public SearchBoxPanel getSearchBoxPresenter(){
     	return searchBoxPanel;
     }
-    
 }

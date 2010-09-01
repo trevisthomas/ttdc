@@ -35,6 +35,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -51,13 +52,14 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
     
     private Injector injector;
     
-    @UiField(provided = true) FocusPanel refineSearchElement = new ClickableIconPanel("tt-clickable-icon-prev");
+    @UiField(provided = true) FocusPanel refineSearchElement = new ClickableIconPanel("tt-graphic-button-normal","tt-graphic-button-down");
     @UiField(provided = true) DefaultMessageTextBox searchPhraseElement = new DefaultMessageTextBox("initializing...");
-    @UiField(provided = true) FocusPanel goElement = new ClickableIconPanel("tt-clickable-icon-go");
-    @UiField(provided = true) FocusPanel clearCriteriaElement = new ClickableIconPanel("tt-clickable-icon-reset");
-    @UiField(provided = true) FocusPanel commentElement = new ClickableIconPanel("tt-clickable-icon-comment");
-    @UiField(provided = true) FocusPanel movieElement = new ClickableIconPanel("tt-clickable-icon-movie");
-        
+    @UiField(provided = true) FocusPanel goElement = new ClickableIconPanel("tt-graphic-button-normal","tt-graphic-button-down");
+    @UiField(provided = true) FocusPanel clearCriteriaElement = new ClickableIconPanel("tt-graphic-button-normal","tt-graphic-button-down");
+//    @UiField(provided = true) FocusPanel commentElement = new ClickableIconPanel("tt-clickable-icon-comment");
+//    @UiField(provided = true) FocusPanel movieElement = new ClickableIconPanel("tt-clickable-icon-movie");
+    @UiField Anchor commentElement;
+	@UiField Anchor movieElement;    
     @UiField TableElement parentElement; 
     
     private String rootId;
@@ -95,8 +97,17 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 		
 		controlsPopup.setStyleName("tt-refine-search-popup");
 		
-		commentElement.add(new Label("Comment"));
-		movieElement.add(new Label("Movie"));
+		refineSearchElement.add(new Label("Advanced"));
+		clearCriteriaElement.add(new Label("Clear"));
+//		commentElement.add(new Label("Comment"));
+//		movieElement.add(new Label("Movie"));
+		goElement.add(new Label("Search"));
+		
+		commentElement.setText("comment");
+    	movieElement.setText("movie");
+    	//readElement.setText("mark read");
+    	commentElement.addStyleName("tt-cursor-pointer");
+    	movieElement.addStyleName("tt-cursor-pointer");
 	}
     
     @Override

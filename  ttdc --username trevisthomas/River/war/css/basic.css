@@ -8,6 +8,16 @@
 .tt-border-bottom{ border-width: 0 0 1px 0; border-style: solid;}
 .tt-border-bottom-right{ border-width: 0 1px 1px 0; border-style: solid;}
 
+.tt-graphic-button-normal{ background-image:url('common/images/gradient.png');background-position: 0 0; background-repeat:repeat-x;}
+.tt-graphic-button-down{ background-color: grey;}
+.tt-graphic-button{cursor: pointer; font-size:15px; height: 28px; padding: 2px 4px; border-width: 0 1px; border-style: solid; line-height: 28px;}
+.tt-textbox-search{font-size:18px; font-weight: 400; height: 28px;}
+
+
+.tt-graphic-button,
+.tt-textbox-search{font-family: arial, sans-serif;}
+
+
 .tt-alert{color: red;}
 .tt-post{width: 500px; margin-bottom: 2px; border:1px solid;}
 .tt-post-container-header{overflow: auto;}
@@ -29,6 +39,9 @@
 .tt-text-large{font-size:16px; font-weight: 500;}
 .tt-text-large-bold{font-size:16px; font-weight: 700;}
 .tt-text-huge{font-size:22px; font-weight: 700;}
+
+
+
 
 .tt-post-container{ width:100%; }
 .tt-post-fetch-more{ width:100%;}
@@ -66,7 +79,7 @@
 	width: 100%;
 }
 
-.tt-center{text-align:center; }
+.tt-center{text-align:center; margin: 0 auto;}
 .tt-text-center{text-align:center;}
 
 .tt-searchBoxPanel{ margin: 3px auto;}
@@ -181,7 +194,7 @@
 .tt-cursor-pointer{cursor: pointer;}
 
 .tt-textbox-search{width: 400px; border: 0px;}
-.tt-searchBoxPanel{border: 1px black solid;}
+.tt-searchBoxPanel{border: 1px solid;}
 .tt-search-panel{height:30px; border: solid black 1px; background: gray;}
 .tt-search-panel-adv{}
 
@@ -293,6 +306,7 @@
 .tt-color-post-summary{background-color:transparent;}
 .tt-color-post-summary-hover{background-color:#eee;}
 
+.tt-graphic-button{background-color: #cecece; border-color: #ccc;}
 
-
+.tt-searchBoxPanel{border-bottom-color: #999; border-left-color: #CCC; border-right-color: #999; border-top-color: #CCC;}
 
