@@ -4,29 +4,33 @@
     xmlns:g='urn:import:com.google.gwt.user.client.ui'
     xmlns:t='urn:import:org.ttdc.gwt.client.presenters.search'>
 	 <g:HTMLPanel>
-	 	<table class="tt-searchBoxPanel" ui:field="parentElement">
+	 	<table class="tt-center">
 	 		<tr>
 	 			<td>
-	 				<g:FocusPanel ui:field="refineSearchElement"/>
-	 			</td>
-	 			<td>
-	 				<g:FocusPanel ui:field="clearCriteriaElement"/>	
-	 			</td>
-	 			<td>
-	 				<t:DefaultMessageTextBox ui:field="searchPhraseElement"/>	
-	 			</td>
-	 			<td>
-	 				<g:FocusPanel ui:field="goElement"/>	
-	 			</td>
-	 			<td>
-	 				<g:FocusPanel ui:field="commentElement"/>
-	 			</td>
-	 			<td>
-	 				<g:FocusPanel ui:field="movieElement" />
-	 			</td>
+				 	<table class="tt-searchBoxPanel" ui:field="parentElement">
+				 		<tr>
+				 			<td>
+				 				<g:FocusPanel ui:field="refineSearchElement"/>
+				 			</td>
+				 			<td>
+				 				<g:FocusPanel ui:field="clearCriteriaElement"/>	
+				 			</td>
+				 			<td>
+				 				<t:DefaultMessageTextBox ui:field="searchPhraseElement"/>	
+				 			</td>
+				 			<td>
+				 				<g:FocusPanel ui:field="goElement"/>	
+				 			</td>
+				 		</tr>
+				 	</table>
+		 		</td>
+		 		<td class="tt-text-left">
+		 			&nbsp;&nbsp;&raquo;<g:Anchor ui:field="commentElement" /><br />
+	 				&nbsp;&nbsp;&raquo;<g:Anchor ui:field="movieElement"/>
+		 		</td>
 	 		</tr>
-	 		
 	 	</table>
+	 	
 	 </g:HTMLPanel>
 </ui:UiBinder>
 
