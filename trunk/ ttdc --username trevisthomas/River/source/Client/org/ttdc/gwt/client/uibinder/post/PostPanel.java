@@ -23,6 +23,7 @@ import org.ttdc.gwt.client.presenters.shared.HyperlinkPresenter;
 import org.ttdc.gwt.client.presenters.shared.ImagePresenter;
 import org.ttdc.gwt.client.presenters.topic.TopicHelpers;
 import org.ttdc.gwt.client.presenters.util.ClickableHoverSyncPanel;
+import org.ttdc.gwt.client.presenters.util.DateFormatUtil;
 import org.ttdc.gwt.client.services.RpcServiceAsync;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
 import org.ttdc.gwt.shared.commands.TopicCommand;
@@ -60,7 +61,8 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
     private ImagePresenter postImagePresenter;
     private HyperlinkPresenter creatorLinkPresenter;
     private HyperlinkPresenter postLinkPresenter;
-    private DatePresenter createDatePresenter;
+    //private DatePresenter createDatePresenter;
+    private HyperlinkPresenter createDatePresenter;
     private PostCollectionPresenter postCollectionPresenter;
     private MovieRatingPresenter averageMovieRatingPresenter;
     private TagListPanel tagListPanel;
@@ -99,7 +101,7 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
     	creatorAvatorImagePresenter = injector.getImagePresenter();
     	creatorLinkPresenter = injector.getHyperlinkPresenter();
     	postLinkPresenter = injector.getHyperlinkPresenter();
-    	createDatePresenter = injector.getDatePresenter();
+    	createDatePresenter = injector.getHyperlinkPresenter();
     	postCollectionPresenter = injector.getPostCollectionPresenter();
     	postImagePresenter  = injector.getImagePresenter();
     	averageMovieRatingPresenter = injector.getMovieRatingPresenter();
@@ -196,7 +198,8 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 		
 		creatorAvatorImagePresenter.useThumbnail(true);
 		creatorAvatorImagePresenter.init();
-		createDatePresenter.init(post.getDate());
+		//createDatePresenter.init(post.getDate());
+		createDatePresenter.setDate(post.getDate(), DateFormatUtil.longDateFormatter);
 		creatorLinkPresenter.setPerson(post.getCreator());
 		creatorLinkPresenter.init();
 		

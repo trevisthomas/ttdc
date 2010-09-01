@@ -25,8 +25,8 @@
 				 	</table>
 		 		</td>
 		 		<td class="tt-text-left">
-		 			&nbsp;&nbsp;&raquo;<g:Anchor ui:field="commentElement" /><br />
-	 				&nbsp;&nbsp;&raquo;<g:Anchor ui:field="movieElement"/>
+		 			&nbsp;&nbsp;<g:Anchor ui:field="commentElement" />&raquo;<br />
+	 				&nbsp;&nbsp;<g:Anchor ui:field="movieElement"/>&raquo;
 		 		</td>
 	 		</tr>
 	 	</table>

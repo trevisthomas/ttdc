@@ -32,6 +32,7 @@ import org.ttdc.gwt.shared.util.StringUtil;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.TableElement;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -73,6 +74,7 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 	
 	private String threadTitle;
 	private String tagTitles;
+	private Object activeWidget;
 	
 	private SearchDetailListenerSmartCollection searchDetailListenerCollection;
     private final static String DEFAULT_SEARCH_MSG = "Enter phrase to perform search";
@@ -95,7 +97,7 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 		refineSearchPanel.setStyleName("tt-search-panel-adv");
 		
 		
-		controlsPopup.setStyleName("tt-refine-search-popup");
+		controlsPopup.setStyleName("tt-search-popup");
 		
 		refineSearchElement.add(new Label("Advanced"));
 		clearCriteriaElement.add(new Label("Clear"));
@@ -216,8 +218,33 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 		injector.getService().execute(batcher.getActionList(), batcher);
 		
 		
+		setupPopups();
+		
 	}
+	private NewCommentPresenter commentPresneter;
+	private NewMoviePanel newMoviePanel;
 	
+	private void setupPopups() {
+		commentPresneter = injector.getNewCommentPresenter();
+		commentPresneter.addCancelClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				performCancel();
+			}
+		});
+		commentPresneter.init();
+		
+		newMoviePanel = injector.createNewMoviePanel();
+		newMoviePanel.addCancelClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				performCancel();
+			}
+		});
+		newMoviePanel.init();
+		
+	}
+
 	/**
 	 * After setting rootId, threadId's and Filters call init to prep the search box.
 	 * 
@@ -226,50 +253,54 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 		init(new HistoryToken());
 	}
 	
-	@UiHandler("movieElement")
-	public void onClickMovieEditor(ClickEvent event){
+	private void performCancel() {
 		if(controlsPopup.isShowing()){
 			controlsPopup.hide();
+			activeWidget = null;
+		}
+	}
+	
+	
+	@UiHandler("movieElement")
+	public void onClickMovieEditor(ClickEvent event){
+		if(activeWidget == newMoviePanel){
+			performCancel();
 		}
 		else{
-			NewMoviePanel newMoviePanel = injector.createNewMoviePanel();
-			newMoviePanel.init();
 			showPopup(newMoviePanel);	
 		}
 	}
 	
 	@UiHandler("commentElement")
 	public void onClickCommentEditor(ClickEvent event){
-		if(controlsPopup.isShowing()){
-			controlsPopup.hide();
+		if(activeWidget == commentPresneter.getWidget()){
+			performCancel();
 		}
 		else{
-			NewCommentPresenter commentPresneter = injector.getNewCommentPresenter();
-			commentPresneter.init();
 			showPopup(commentPresneter.getWidget());	
 		}
 	}
 	
 	@UiHandler("refineSearchElement")
     public void onClickRefineSearch(ClickEvent event) {
-		if(controlsPopup.isShowing()){
-			controlsPopup.hide();
+		if(activeWidget == refineSearchPanel){
+			performCancel();
 		}
 		else{
-			
 			showPopup(refineSearchPanel);	
 		}
 	}
 
 	private void showPopup(Widget panel) {
+		activeWidget = panel;
 		controlsPopup.clear();
 		controlsPopup.add(panel);
 		//Trevis, in the old one it set itself relative to the whole search box, but i didn't have it built yet 
-		int left = parentElement.getAbsoluteLeft() + 1;
+		int left = parentElement.getAbsoluteLeft();
 		int top = parentElement.getAbsoluteTop() + parentElement.getOffsetHeight() - 1;
 		String width = parentElement.getWidth();
 		int w = parentElement.getOffsetWidth();
-		panel.setWidth(w+"px");
+		panel.setWidth(w-32+"px");// the -32 is a hack to compensate for padding, borders and what not 
 		controlsPopup.setPopupPosition(left, top);
 
 		// Show the popup

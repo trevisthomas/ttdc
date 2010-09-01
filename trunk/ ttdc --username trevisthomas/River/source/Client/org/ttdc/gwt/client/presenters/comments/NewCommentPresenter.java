@@ -54,6 +54,7 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 		HasWidgets ratingPanel();
 		HasClickHandlers getAddCommentClickHandlers();
 		HasClickHandlers getEditCommentClickHandlers();
+		HasClickHandlers getCancelClickHandlers();
 		//HasClickHandlers getAddReviewClickHandlers();
 		
 		HasWidgets getMessagePanel();
@@ -336,6 +337,10 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 			}
 		};
 		return callback;
+	}
+	
+	public void addCancelClickHandler(ClickHandler handler){
+		view.getCancelClickHandlers().addClickHandler(handler);
 	}
 
 }

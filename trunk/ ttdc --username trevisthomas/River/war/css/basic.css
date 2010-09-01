@@ -45,6 +45,8 @@
 
 .tt-post-container{ width:100%; }
 .tt-post-fetch-more{ width:100%;}
+.tt-search-panel-adv,
+.tt-movie-editor,
 .tt-comment-editor{border: 1px solid; width:480px; padding: 2px 10px;}
 .tt-comment-toolbar{margin: 2px 0;}
 .tt-rich-text-iframe{width: 478px; margin: 4px 0;}
@@ -220,7 +222,7 @@
 .tt-rich-text-area ul,
 .tt-rich-text-area ol{ margin-top: 0;  margin-bottom: 0; padding-top: 0; padding-bottom: 0;}
 
-.tt-refine-search-popup{padding: 4px; border: solid 1px; }
+.tt-search-popup{padding: 4px; border: solid 1px; }
 
 
 /* 
@@ -297,7 +299,7 @@
 .tt-post-panel-head{ background-color: #f5f5f5; border-color:#eee;}
 .tt-post-panel-content{ background-color: #fcfcfc; }
 
-.tt-refine-search-popup{background-color: #fefefe; border-color: grey; color: black;}
+.tt-search-popup{background-color: #fefefe; border-color: grey; color: black;}
 
 .tt-conversation-count{background-color: #F5F23B; border-color: white; color: grey;}
 .tt-reply-count{background-color: #cecece; border-color: white; color: #fefefe;}
