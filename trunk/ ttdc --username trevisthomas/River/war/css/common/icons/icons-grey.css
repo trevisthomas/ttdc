@@ -1,6 +1,10 @@
 /* states and images */
 .ui-icon { width: 16px; height: 16px; background-image: url(ui-icons-grey_222222_256x240.png); }
 
+.tt-icon-tall{ width: 16px; height: 28px; background-image: url(tt-icons-grey.png); }
+
+.tt-icon-tall-expand-arrow{ background-position: 0 0; }
+
 /* positioning */
 .ui-icon-carat-1-n { background-position: 0 0; }
 .ui-icon-carat-1-ne { background-position: -16px 0; }

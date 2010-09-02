@@ -99,7 +99,11 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 		
 		controlsPopup.setStyleName("tt-search-popup");
 		
-		refineSearchElement.add(new Label("Advanced"));
+		//new Label("Advanced")
+		HTMLPanel downArrow = new HTMLPanel("&nbsp;");
+		downArrow.setStyleName("tt-icon-tall tt-icon-tall-expand-arrow");
+		refineSearchElement.add(downArrow);
+		
 		clearCriteriaElement.add(new Label("Clear"));
 //		commentElement.add(new Label("Comment"));
 //		movieElement.add(new Label("Movie"));

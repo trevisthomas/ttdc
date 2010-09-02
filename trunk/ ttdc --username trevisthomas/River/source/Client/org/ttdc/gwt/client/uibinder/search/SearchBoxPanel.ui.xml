@@ -3,7 +3,7 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
     xmlns:g='urn:import:com.google.gwt.user.client.ui'
     xmlns:t='urn:import:org.ttdc.gwt.client.presenters.search'>
-	 <g:HTMLPanel styleName="tt-center">
+	 <g:HTMLPanel styleName="tt-search-panel-outer tt-center">
 	 	<table class="tt-center" >
 	 		<tr>
 	 			<td>
