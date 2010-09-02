@@ -10,8 +10,12 @@
 
 .tt-graphic-button-normal{ background-image:url('common/images/gradient.png');background-position: 0 0; background-repeat:repeat-x;}
 .tt-graphic-button-down{ background-color: grey;}
+.tt-graphic-button{position: relative; min-width: 16px; height: 28px;}
 .tt-graphic-button{cursor: pointer; font-size:15px; height: 28px; padding: 2px 4px; border-width: 0 1px; border-style: solid; line-height: 28px;}
 .tt-textbox-search{font-size:18px; font-weight: 400; height: 28px;}
+
+
+
 
 
 .tt-graphic-button,
@@ -195,16 +199,19 @@
 .tt-cursor-move{cursor: move;}
 .tt-cursor-pointer{cursor: pointer;}
 
-.tt-textbox-search{width: 400px; border: 0px;}
+.tt-textbox-search{width: 600px; border: 0px;}
 .tt-searchBoxPanel{border: 1px solid;}
+/*
 .tt-search-panel{height:30px; border: solid black 1px; background: gray;}
+*/
 .tt-search-panel-adv{}
+.tt-search-panel-outer{margin-right:-40px;}
 
 /*
 .tt-calendar-small-month-dayHasContent{ font: bolder; background-color: #eee}
 .tt-calendar-small-month-daySelected{ border: solid yellow 1px; background-color: #fc5}
 */
-.tt-calendar-small-month-day{	margin:0 2px 2px 0;}
+.tt-calendar-small-month-day{margin:0 2px 2px 0;}
 
 .tt-special-border-bottom{border: white solid; border-width: 0 0 2px 0;}
 
