@@ -36,6 +36,8 @@ public class GPost extends GBase{
 	private boolean read = false;
 	private int replyStartIndex = 1;
 	private int replyPage = 1;
+	private int [] pathSegmentArray;
+	private int [] pathSegmentMax;
 	
 	@Override
 	public String toString() {
@@ -442,6 +444,20 @@ public class GPost extends GBase{
 		this.replyPage = replyPage;
 	}
 
-	
+	public int[] getPathSegmentArray() {
+		return pathSegmentArray;
+	}
+
+	public void setPathSegmentArray(int[] pathSegmentArray) {
+		this.pathSegmentArray = pathSegmentArray;
+	}
+
+	public int[] getPathSegmentMax() {
+		return pathSegmentMax;
+	}
+
+	public void setPathSegmentMax(int[] pathSegmentMax) {
+		this.pathSegmentMax = pathSegmentMax;
+	}
 	
 }

@@ -3,7 +3,13 @@
 
 .tt-icon-tall{ width: 16px; height: 28px; background-image: url(tt-icons-grey.png); }
 
+.tt-nested-spacer{ width: 16px; height: 16px; background-image: url(tt-icons-grey.png);}
+
 .tt-icon-tall-expand-arrow{ background-position: 0 0; }
+.tt-nested-spacer-blank{ background-position: 0 -32px; }
+.tt-nested-spacer-leaf{ background-position: -16px -32px; }
+.tt-nested-spacer-node{ background-position: -32px -32px; }
+.tt-nested-spacer-continue{ background-position: -48px -32px; }
 
 /* positioning */
 .ui-icon-carat-1-n { background-position: 0 0; }

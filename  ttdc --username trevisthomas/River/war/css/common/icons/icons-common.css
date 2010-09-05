@@ -1,0 +1,6 @@
+.tt-icon-common{ width: 16px; height: 16px; background-image: url(icons-common.png);}
+.tt-icon-common-inf{ background-position: 0 0; }
+.tt-icon-common-nws{ background-position: -16px 0; }
+.tt-icon-common-lock{ background-position: -32px 0; }
+.tt-icon-common-read{ background-position: -48 0; }
+.tt-icon-common-unread{ background-position: -64 0; }

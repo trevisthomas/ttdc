@@ -140,6 +140,27 @@ public class Post implements Comparable<Post>, HasGuid {
 	//the artifically inserted child posts in this post start at an index other 
 	//than Mass - NestedThreadPageSize
 	
+	private int [] pathSegmentMaximums; //I only put this in the underlying post object because the place where i calculate it is far from the place that i put it into the gpost
+	private int [] pathSegments;
+	
+	@Transient
+	public int[] getPathSegments() {
+		return pathSegments;
+	}
+
+	public void setPathSegments(int[] pathSegments) {
+		this.pathSegments = pathSegments;
+	}
+
+	@Transient
+	public int[] getPathSegmentMaximums() {
+		return pathSegmentMaximums;
+	}
+
+	public void setPathSegmentMaximums(int[] pathSegmentMaximums) {
+		this.pathSegmentMaximums = pathSegmentMaximums;
+	}
+
 	@Transient
 	public int getReplyPage() {
 		return replyPage;

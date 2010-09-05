@@ -5,7 +5,7 @@ import java.util.StringTokenizer;
 
 import org.ttdc.persistence.objects.Post;
 
-public class PathToTreeUtil {
+public class PathSegmentizer {
 
 	public int[] calculatePathSegmentMaximums(List<Post> posts) {
 		int maxSegments = depthTest(posts);
@@ -42,7 +42,7 @@ public class PathToTreeUtil {
 		return depth;
 	}
 
-	public int[] pathToArray(Post post) {
+	public int[] segmentizePath(Post post) {
 		StringTokenizer tokenizer = new StringTokenizer(post.getPath(),".");
 		int [] results = new int[tokenizer.countTokens()];
 		int ndx = 0;

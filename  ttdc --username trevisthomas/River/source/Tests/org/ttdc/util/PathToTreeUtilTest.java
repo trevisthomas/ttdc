@@ -29,7 +29,7 @@ public class PathToTreeUtilTest {
 		posts.add(p3);
 		posts.add(p4);
 		
-		PathToTreeUtil util = new PathToTreeUtil();
+		PathSegmentizer util = new PathSegmentizer();
 		
 		int[] values = util.calculatePathSegmentMaximums(posts);
 		
@@ -41,10 +41,10 @@ public class PathToTreeUtilTest {
 	
 	@Test
 	public void testArraizePath(){
-		PathToTreeUtil util = new PathToTreeUtil();
+		PathSegmentizer util = new PathSegmentizer();
 		Post p1 = new Post();
 		p1.setPath("00001.00003.00002");
-		int[] values = util.pathToArray(p1);
+		int[] values = util.segmentizePath(p1);
 		
 		assertEquals(3, values.length);
 		assertEquals(1, values[0]);

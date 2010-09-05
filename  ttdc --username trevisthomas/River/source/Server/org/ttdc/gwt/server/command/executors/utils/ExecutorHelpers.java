@@ -10,7 +10,7 @@ public class ExecutorHelpers {
 	public static Set<PostFlag> createFlagFilterListForPerson(Person person) {
 		Set<PostFlag> flagList = new HashSet<PostFlag>();
 		if(!person.isNwsEnabled()){
-			flagList.add(PostFlag.INF);
+			flagList.add(PostFlag.NWS);
 		}
 		if(!person.isPrivateAccessAccount()){
 			flagList.add(PostFlag.PRIVATE);

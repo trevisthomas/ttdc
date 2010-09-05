@@ -70,22 +70,14 @@ public class FastPostBeanConverter {
 	public static ArrayList<GPost> convertPosts(List<Post> persistentPostList, InboxDao inboxDao){
 		ArrayList<GPost> rpcPostList = new ArrayList<GPost>();
 		for(Post p : persistentPostList){
-			//if(!p.isHidden()){
 			GPost rpcPost;
 			try{
-				
-				if(p.getPostId().equals("0e603137-36d2-11df-899b-6068e957f7d4")){
-					Log.info("break");
-				}
-				
 				rpcPost = convertPost(p, inboxDao);
 				rpcPostList.add(rpcPost);
 			}
 			catch(NullPointerException e){
 				Log.info(e.getMessage());
 			}
-			//}
-		
 		}
 		
 		return rpcPostList;
@@ -230,6 +222,9 @@ public class FastPostBeanConverter {
 		if(inboxDao != null){
 			gPost.setRead(inboxDao.isRead(p));
 		}
+		
+		gPost.setPathSegmentArray(p.getPathSegments());
+		gPost.setPathSegmentMax(p.getPathSegmentMaximums());
 			
 		return gPost;
 	}

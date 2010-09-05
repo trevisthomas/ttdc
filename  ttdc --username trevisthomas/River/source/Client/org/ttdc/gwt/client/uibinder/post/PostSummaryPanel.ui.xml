@@ -6,7 +6,7 @@
 	<g:HTMLPanel ui:field="parentElement">
 		<table class="tt-fill">
 		<tr>
-			<td><span ui:field="spacerElement" /></td>
+			<td><g:SimplePanel ui:field="spacerElement" /></td>
 			<td class="tt-fill">
 				<g:SimplePanel ui:field="expandedElement"/>
 				<!--  
@@ -22,10 +22,24 @@
 						<table class="tt-text-normal">
 							<tr>
 								<td>
-									<g:Label styleName="tt-inline" ui:field="postUnReadElement" />
+									<table>
+										<tr>
+											<td><g:Label ui:field="postUnReadElement" /></td>
+											<td><g:Label ui:field="postReadElement" /></td>
+										</tr>
+									</table>
 								</td>
 								<td>
 									<t:ClickableHoverSyncPanel ui:field="hoverTargetElement"><g:HTML styleName="tt-post-summary-body" ui:field="bodySummaryElement" /></t:ClickableHoverSyncPanel>
+								</td>
+								<td>
+									<table>
+										<tr>
+											<td><g:Label ui:field="postPrivateElement" /></td>
+											<td><g:Label ui:field="postNwsElement" /></td>
+											<td><g:Label ui:field="postInfElement" /></td>
+										</tr>
+									</table>
 								</td>
 								<td>
 									<g:Hyperlink ui:field="creatorLinkElement" />

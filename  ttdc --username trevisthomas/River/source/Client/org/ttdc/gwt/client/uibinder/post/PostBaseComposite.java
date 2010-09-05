@@ -1,5 +1,7 @@
 package org.ttdc.gwt.client.uibinder.post;
 
+import java.util.List;
+
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GAssociationPostTag;
 import org.ttdc.gwt.client.beans.GPerson;
@@ -14,6 +16,7 @@ import org.ttdc.gwt.client.messaging.post.PostEvent;
 import org.ttdc.gwt.client.messaging.post.PostEventType;
 import org.ttdc.gwt.client.presenters.comments.NewCommentPresenter;
 import org.ttdc.gwt.client.presenters.movies.MovieRatingPresenter;
+import org.ttdc.gwt.client.presenters.post.LikesPresenter;
 import org.ttdc.gwt.client.presenters.post.PostPresenterCommon;
 import org.ttdc.gwt.client.services.RpcServiceAsync;
 import org.ttdc.gwt.shared.commands.AssociationPostTagCommand;
@@ -28,6 +31,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 abstract public class PostBaseComposite extends Composite{
@@ -313,6 +317,20 @@ abstract public class PostBaseComposite extends Composite{
 		initializeOptionsPopup(post,source);
         //optionsPanel.showRelativeTo(source);
 		injector.createSiteUpdatePanel();
+	}
+	
+	protected void setupLikesElement(GPost post, SimplePanel likesElement) {
+		List<GAssociationPostTag> likeList = post.readTagAssociations(TagConstants.TYPE_LIKE);
+		if(likeList.size() > 0){
+			likesElement.setVisible(true);
+			LikesPresenter likesPresenter = injector.getLikesPresenter();
+			likesPresenter.init(likeList);
+			likesElement.clear();
+			likesElement.add(likesPresenter.getWidget());
+		}
+		else{
+			likesElement.setVisible(false);
+		}
 	}
 	
 }
