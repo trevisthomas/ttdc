@@ -16,25 +16,7 @@
 								<span>
 									<g:Hyperlink ui:field="titleElement" />
 								</span>
-								<table class="tt-inline">
-									<tr>
-										<td>
-											<g:Label ui:field="postUnReadElement" styleName="tt-float-left" />
-										</td>
-										<td>
-											<g:Label ui:field="nwsElement" styleName="tt-color-nws">NWS</g:Label>
-										</td>
-										<td>
-											<g:Label ui:field="infElement" styleName="tt-inline tt-color-inf">INF</g:Label>
-										</td>
-										<td>
-											<g:Label ui:field="privateElement" styleName="ui-icon ui-icon-star"></g:Label>
-										</td>
-									</tr>
-								</table>
 							</div>
-							
-							
 						</td>
 						<td>
 							<table class="tt-inline tt-float-right">
@@ -56,7 +38,15 @@
 						<td colspan="2">
 							<table class="tt-fill">
 								<tr>
-									<td class="tt-post-panel-head-detail">by <g:Hyperlink ui:field="creatorLinkElement" /></td>
+									<td class="tt-post-panel-head-detail">by <g:Hyperlink ui:field="creatorLinkElement" />
+									<table class="tt-inline">
+										<tr>
+											<td><g:Label ui:field="postPrivateElement" /></td>
+											<td><g:Label ui:field="postNwsElement" /></td>
+											<td><g:Label ui:field="postInfElement" /></td>
+										</tr>
+									</table>
+									</td>
 									<td class="tt-text-right tt-post-panel-head-date"> <g:Widget styleName="tt-inline" ui:field="createDateElement" /></td>
 								</tr>
 							</table>
@@ -72,6 +62,7 @@
 					<tr>
 						<td width="100%">
 							<div width="100%" style="clear:both;" >
+								<g:Label ui:field="postUnReadElement" /><g:Label ui:field="postReadElement" />
 								<span class="tt-float-right">
 									<g:Anchor ui:field="moreOptionsElement" >options</g:Anchor>
 								</span>

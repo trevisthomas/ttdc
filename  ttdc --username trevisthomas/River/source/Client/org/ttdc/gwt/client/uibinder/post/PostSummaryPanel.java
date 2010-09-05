@@ -86,9 +86,7 @@ public class PostSummaryPanel extends Composite implements PostPresenterCommon{
     	//buildFancySpacer();
     	setSpacer(post.getPath().split("\\.").length - 2);
     	
-    	GPerson user = ConnectionId.getInstance().getCurrentUser();
-    	
-    	postIconTool.init(user,post);
+    	postIconTool.init(post);
     	    	
     	TopicHelpers.testPost(this);
     }

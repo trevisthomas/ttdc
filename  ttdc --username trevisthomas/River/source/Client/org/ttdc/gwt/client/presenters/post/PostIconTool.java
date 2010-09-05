@@ -3,6 +3,7 @@ package org.ttdc.gwt.client.presenters.post;
 import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.icons.IconsCommon;
+import org.ttdc.gwt.client.messaging.ConnectionId;
 
 import com.google.gwt.user.client.ui.Label;
 
@@ -13,7 +14,16 @@ public class PostIconTool {
     private final Label postNwsElement = IconsCommon.getIconNws();
     private final Label postInfElement = IconsCommon.getIconInf();
     
-    public void init(GPerson user, GPost post){
+    public PostIconTool() {
+    	postUnReadElement.setTitle("Unread");
+    	postReadElement.setTitle("Already read");
+    	postPrivateElement.setTitle("Private");
+    	postNwsElement.setTitle("Not Work Safe!");
+    	postInfElement.setTitle("Informative");
+	}
+    
+    public void init(final GPost post){
+    	GPerson user = ConnectionId.getInstance().getCurrentUser();
     	postUnReadElement.setVisible(false);
         postReadElement.setVisible(false);
         postPrivateElement.setVisible(false);

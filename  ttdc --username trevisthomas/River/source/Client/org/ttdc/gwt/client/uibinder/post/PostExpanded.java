@@ -5,6 +5,7 @@ import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.messaging.ConnectionId;
+import org.ttdc.gwt.client.presenters.post.PostIconTool;
 import org.ttdc.gwt.client.presenters.shared.DatePresenter;
 import org.ttdc.gwt.client.presenters.shared.HyperlinkPresenter;
 import org.ttdc.gwt.client.presenters.shared.ImagePresenter;
@@ -35,7 +36,6 @@ public class PostExpanded extends PostBaseComposite{
     @UiField(provided = true) Widget createDateElement;
     @UiField Anchor moreOptionsElement;
     @UiField(provided = true) Hyperlink creatorLinkElement;
-    @UiField Label postUnReadElement;
     @UiField SimplePanel likesElement;
     @UiField(provided = true) Widget tagsElement;
     
@@ -45,6 +45,14 @@ public class PostExpanded extends PostBaseComposite{
     private ImagePresenter imagePresenter;
     private DatePresenter createDatePresenter;
 //    private MoreOptionsPopupPanel optionsPanel;
+    
+    PostIconTool postIconTool = new PostIconTool();
+    
+    @UiField(provided = true) Label postUnReadElement = postIconTool.getIconUnread();
+    @UiField(provided = true) Label postReadElement = postIconTool.getIconRead();
+    @UiField(provided = true) Label postPrivateElement = postIconTool.getIconPrivate();
+    @UiField(provided = true) Label postNwsElement = postIconTool.getIconNws();
+    @UiField(provided = true) Label postInfElement = postIconTool.getIconInf();
     
     
 	@UiField SpanElement bodyElement;
@@ -69,10 +77,15 @@ public class PostExpanded extends PostBaseComposite{
     	creatorLinkElement = creatorLinkPresenter.getHyperlink();
     	
     	initWidget(binder.createAndBindUi(this));
+    	postUnReadElement.addStyleName("tt-float-left");
+    	postReadElement.addStyleName("tt-float-left");
+    	    	
+    	
 	}
 	
 	public void init(GPost post, HasWidgets commentElement){
 		super.init(post, commentElement, tagListPanel);
+		postIconTool.init(post);
 		tagListPanel.init(post, TagListPanel.Mode.EDITABLE);
 		
 		bodyElement.setInnerHTML(post.getEntry());
@@ -97,13 +110,6 @@ public class PostExpanded extends PostBaseComposite{
 		createDatePresenter.init(post.getDate());
 		creatorLinkPresenter.setPerson(post.getCreator());
 		creatorLinkPresenter.init();
-		
-		GPerson user = ConnectionId.getInstance().getCurrentUser();
-		if(!user.isAnonymous() && !post.isRead()){
-			postUnReadElement.setVisible(true);
-			postUnReadElement.setText("*");
-			postUnReadElement.addStyleName("tt-alert");
-		}
 		
 		setupLikesElement(post, likesElement);
 	}
