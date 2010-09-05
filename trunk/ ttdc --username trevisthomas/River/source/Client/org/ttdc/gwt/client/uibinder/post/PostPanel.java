@@ -17,6 +17,7 @@ import org.ttdc.gwt.client.presenters.movies.MovieRatingPresenter;
 import org.ttdc.gwt.client.presenters.post.LikesPresenter;
 import org.ttdc.gwt.client.presenters.post.Mode;
 import org.ttdc.gwt.client.presenters.post.PostCollectionPresenter;
+import org.ttdc.gwt.client.presenters.post.PostIconTool;
 import org.ttdc.gwt.client.presenters.post.PostPresenterCommon;
 import org.ttdc.gwt.client.presenters.shared.DatePresenter;
 import org.ttdc.gwt.client.presenters.shared.HyperlinkPresenter;
@@ -85,11 +86,14 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
     @UiField(provided = true) Widget tagsElement;
     @UiField Label postNumberElement;
     @UiField SimplePanel likesElement;
-    @UiField Label postUnReadElement;
     @UiField HTMLPanel postMainElement;
-    @UiField Widget nwsElement;
-    @UiField Widget infElement;
-    @UiField Widget privateElement;
+    private final PostIconTool postIconTool = new PostIconTool();
+    
+    @UiField(provided = true) Label postUnReadElement = postIconTool.getIconUnread();
+    @UiField(provided = true) Label postReadElement = postIconTool.getIconRead();
+    @UiField(provided = true) Label postPrivateElement = postIconTool.getIconPrivate();
+    @UiField(provided = true) Label postNwsElement = postIconTool.getIconNws();
+    @UiField(provided = true) Label postInfElement = postIconTool.getIconInf();
     
     private Mode mode;
     
@@ -127,14 +131,15 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
     	initWidget(binder.createAndBindUi(this));
     	EventBus.getInstance().addListener(this);
     	
-    	nwsElement.setVisible(false);
-    	infElement.setVisible(false);
-    	privateElement.setVisible(false);
+    	
     	replyCountElement.setStyleName("tt-reply-count");
     	conversationCountElement.setStyleName("tt-conversation-count");
     	
 //    	moreOptionsElement.add(new Label("OPTIONS"));
 //		moreOptionsElement.addStyleName("tt-options-button");
+    	
+    	postUnReadElement.addStyleName("tt-float-left");
+    	postReadElement.addStyleName("tt-float-left");
     }
     
     public void setPost(GPost post) {
@@ -146,9 +151,7 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 		this.mode = mode;
 		this.post = post;
 		
-		nwsElement.setVisible(post.isNWS());
-		infElement.setVisible(post.isINF());
-		privateElement.setVisible(post.isPrivate());
+		postIconTool.init(post);
 		
 		//postMainElement.getElement().setId(post.getPostId());
 		
@@ -229,12 +232,6 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 		}
 		
 		GPerson user = ConnectionId.getInstance().getCurrentUser();
-		if(!user.isAnonymous() && !post.isRead()){
-			postUnReadElement.setVisible(true);
-			postUnReadElement.setText("*");
-			postUnReadElement.addStyleName("tt-alert");
-		}
-		
 		setupLikesElement(post, likesElement);
 		
 		if(post.isThreadPost()){

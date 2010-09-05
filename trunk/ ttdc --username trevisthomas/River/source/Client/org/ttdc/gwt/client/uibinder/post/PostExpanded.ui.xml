@@ -9,13 +9,22 @@
 					<span class="tt-float-left tt-post-expanded-creator">
 						by <g:Hyperlink ui:field="creatorLinkElement" />
 					</span>
+					<table class="tt-inline">
+						<tr>
+							<td><g:Label ui:field="postPrivateElement" /></td>
+							<td><g:Label ui:field="postNwsElement" /></td>
+							<td><g:Label ui:field="postInfElement" /></td>
+						</tr>
+					</table>
 					<span class="tt-float-right tt-post-expanded-date">
 						<g:Widget ui:field="createDateElement" />
 					</span>
+					
 				</div>
 											
 				<div class="tt-post-expanded-content" >
-					<g:Label ui:field="postUnReadElement" styleName="tt-float-left" />
+					<g:Label ui:field="postUnReadElement" /><g:Label ui:field="postReadElement" />
+					
 					<span class="tt-float-right">
 						<g:Anchor ui:field="moreOptionsElement"/>
 					</span>

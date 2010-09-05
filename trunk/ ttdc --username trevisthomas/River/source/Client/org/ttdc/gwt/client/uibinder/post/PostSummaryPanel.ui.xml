@@ -33,6 +33,9 @@
 									<t:ClickableHoverSyncPanel ui:field="hoverTargetElement"><g:HTML styleName="tt-post-summary-body" ui:field="bodySummaryElement" /></t:ClickableHoverSyncPanel>
 								</td>
 								<td>
+									<g:Hyperlink ui:field="creatorLinkElement" />
+								</td>
+								<td>
 									<table>
 										<tr>
 											<td><g:Label ui:field="postPrivateElement" /></td>
@@ -40,9 +43,6 @@
 											<td><g:Label ui:field="postInfElement" /></td>
 										</tr>
 									</table>
-								</td>
-								<td>
-									<g:Hyperlink ui:field="creatorLinkElement" />
 								</td>
 							</tr>
 						</table>
