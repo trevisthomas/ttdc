@@ -235,17 +235,7 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 			postUnReadElement.addStyleName("tt-alert");
 		}
 		
-		List<GAssociationPostTag> likeList = post.readTagAssociations(TagConstants.TYPE_LIKE);
-		if(likeList.size() > 0){
-			likesElement.setVisible(true);
-			LikesPresenter likesPresenter = injector.getLikesPresenter();
-			likesPresenter.init(likeList);
-			likesElement.clear();
-			likesElement.add(likesPresenter.getWidget());
-		}
-		else{
-			likesElement.setVisible(false);
-		}
+		setupLikesElement(post, likesElement);
 		
 		if(post.isThreadPost()){
 			postNumberElement.setText("#"+(1+Integer.parseInt(post.getPath()))); //Path is the post number for these conversation staters!
@@ -262,6 +252,8 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 			TopicHelpers.testPost(this);
 		
 	}
+
+	
 	
 //	protected void showNewCommentEditor() {
 //		NewCommentPresenter commentPresneter = injector.getNewCommentPresenter();

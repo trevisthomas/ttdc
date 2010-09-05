@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.ttdc.gwt.shared.util.PaginatedList;
 import org.ttdc.persistence.objects.Post;
+import org.ttdc.util.PathSegmentizer;
 
 public class ThreadDao extends FilteredPostPaginatedDaoBase{
 	private String rootId;
@@ -150,30 +151,18 @@ public class ThreadDao extends FilteredPostPaginatedDaoBase{
 	}
 
 	private void loadRepliesFromPostList(Post thread, List<Post> posts) {
-		try{
-			List<Post> flatReplyHierarchy = new ArrayList<Post>();
-			for(Post p : posts){
-				if(!p.isThreadPost() && p.getThread().getPostId().equals(thread.getPostId()))
-					flatReplyHierarchy.add(p);
-			}	
-			if(flatReplyHierarchy.size() > THREAD_REPLY_MAX_RESULTS){
-				thread.setPosts(flatReplyHierarchy.subList(flatReplyHierarchy.size()-THREAD_REPLY_MAX_RESULTS, flatReplyHierarchy.size()));
-			}
-			else
-				thread.setPosts(flatReplyHierarchy);
+		List<Post> flatReplyHierarchy = flattenThread(thread, posts);	
+		if(flatReplyHierarchy.size() > THREAD_REPLY_MAX_RESULTS){
+			thread.setPosts(flatReplyHierarchy.subList(flatReplyHierarchy.size()-THREAD_REPLY_MAX_RESULTS, flatReplyHierarchy.size()));
 		}
-		catch (Exception e) {
-			String wtf = "wtf";
+		else{
+			thread.setPosts(flatReplyHierarchy);
 		}
-		
+		calculatePathSegments(thread);
 	}
-	
+
 	private void loadRepliesFromPostList(Post thread, List<Post> posts, int subPage) {
-		List<Post> flatReplyHierarchy = new ArrayList<Post>();
-		for(Post p : posts){
-			if(!p.isThreadPost() && p.getThread().getPostId().equals(thread.getPostId()))
-				flatReplyHierarchy.add(p);
-		}	
+		List<Post> flatReplyHierarchy = flattenThread(thread, posts);	
 		if(flatReplyHierarchy.size() > THREAD_REPLY_MAX_RESULTS){
 			int start = flatReplyHierarchy.size()-(THREAD_REPLY_MAX_RESULTS * subPage);
 			start = start <= 0 ? 0 : start; //I think that what was happening is that if the post was on the first subpage and the results were not divisible by 5 that you'd get a negative start index. This clamps it at zero
@@ -186,7 +175,28 @@ public class ThreadDao extends FilteredPostPaginatedDaoBase{
 			thread.setReplyStartIndex(1);
 			thread.setPosts(flatReplyHierarchy);
 		}
+		calculatePathSegments(thread);
+	}
+	
+	private void calculatePathSegments(Post thread) {
+		PathSegmentizer pathSegmentizer = new PathSegmentizer();
+		List<Post> flatPosts = thread.getPosts();
+		for(Post p : flatPosts){
+			p.setPathSegments(pathSegmentizer.segmentizePath(p));
+		}
+	}
+
+	private List<Post> flattenThread(Post thread, List<Post> posts) {
+		List<Post> flatReplyHierarchy = new ArrayList<Post>();
+		for(Post p : posts){
+			if(!p.isThreadPost() && p.getThread().getPostId().equals(thread.getPostId()))
+				flatReplyHierarchy.add(p);
+		}
 		
+		PathSegmentizer pathSegmentizer = new PathSegmentizer();
+		int [] pathSegmentMaximums = pathSegmentizer.calculatePathSegmentMaximums(flatReplyHierarchy);
+		thread.setPathSegmentMaximums(pathSegmentMaximums);
+		return flatReplyHierarchy;
 	}
 
 	private List<Post> loadAllPostsForThreads(List<Post> threadStarters){

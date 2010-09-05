@@ -24,6 +24,10 @@
 				<div class="tt-fill tt-text-right tt-text-mini">
 					
 				</div>
+				<div class="tt-post-footer">
+					<g:SimplePanel ui:field="likesElement"></g:SimplePanel>
+					<g:Widget ui:field="tagsElement"></g:Widget>
+				</div>
 			</div>
 	</g:HTMLPanel>
 </ui:UiBinder>

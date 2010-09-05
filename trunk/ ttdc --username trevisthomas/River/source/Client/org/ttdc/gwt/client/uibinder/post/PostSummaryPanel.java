@@ -1,12 +1,16 @@
 package org.ttdc.gwt.client.uibinder.post;
 
+import java.util.List;
+
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.beans.GPost;
+import org.ttdc.gwt.client.icons.IconsCommon;
 import org.ttdc.gwt.client.messaging.ConnectionId;
 import org.ttdc.gwt.client.messaging.EventBus;
 import org.ttdc.gwt.client.messaging.post.PostEvent;
 import org.ttdc.gwt.client.messaging.post.PostEventType;
+import org.ttdc.gwt.client.presenters.post.PostIconTool;
 import org.ttdc.gwt.client.presenters.post.PostPresenterCommon;
 import org.ttdc.gwt.client.presenters.shared.HyperlinkPresenter;
 import org.ttdc.gwt.client.presenters.topic.TopicHelpers;
@@ -24,6 +28,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
@@ -43,13 +48,21 @@ public class PostSummaryPanel extends Composite implements PostPresenterCommon{
     private CalendarPost cp;
     @UiField(provided = true) Hyperlink creatorLinkElement;
     @UiField HTML bodySummaryElement;
-    @UiField SpanElement spacerElement;
+    @UiField SimplePanel spacerElement;
     @UiField HTMLPanel summaryElement;
     @UiField(provided = true) SimplePanel expandedElement;
     @UiField(provided = true) SimplePanel commentElement = new SimplePanel();
-    @UiField Label postUnReadElement;
+    //@UiField Label postUnReadElement;
     @UiField HTMLPanel parentElement;
     @UiField(provided = true) ClickableHoverSyncPanel hoverTargetElement;
+    
+    PostIconTool postIconTool = new PostIconTool();
+    
+    @UiField(provided = true) Label postUnReadElement = postIconTool.getIconUnread();
+    @UiField(provided = true) Label postReadElement = postIconTool.getIconRead();
+    @UiField(provided = true) Label postPrivateElement = postIconTool.getIconPrivate();
+    @UiField(provided = true) Label postNwsElement = postIconTool.getIconNws();
+    @UiField(provided = true) Label postInfElement = postIconTool.getIconInf();
     
     @Inject
     public PostSummaryPanel(Injector injector) { 
@@ -61,6 +74,7 @@ public class PostSummaryPanel extends Composite implements PostPresenterCommon{
     	
     	hoverTargetElement = new ClickableHoverSyncPanel("tt-color-post-summary","tt-color-post-summary-hover");
 //    	hoverTargetElement.addStyleName("tt-inline");
+    	    
     	initWidget(binder.createAndBindUi(this)); 
 	}
     
@@ -68,19 +82,42 @@ public class PostSummaryPanel extends Composite implements PostPresenterCommon{
     	this.post = post;
     	bodySummaryElement.setHTML(post.getLatestEntry().getSummary());
     	creatorLinkPresenter.setPerson(post.getCreator());
+    	//setSpacer(post.getPath().split("\\.").length - 2);
+    	//buildFancySpacer();
     	setSpacer(post.getPath().split("\\.").length - 2);
     	
     	GPerson user = ConnectionId.getInstance().getCurrentUser();
-		if(!user.isAnonymous() && !post.isRead()){
-			postUnReadElement.setVisible(true);
-			postUnReadElement.setText("*");
-			postUnReadElement.addStyleName("tt-alert");
-		}
-		
-		TopicHelpers.testPost(this);
+    	
+    	postIconTool.init(user,post);
+    	    	
+    	TopicHelpers.testPost(this);
     }
     
-    public void init(CalendarPost cp) {
+    private void buildFancySpacer() {
+    	GPost threadPost = post.getThread();
+    	MagicNestedSpacer magic = new MagicNestedSpacer();
+    	List<String> styles = magic.decisionEngine(threadPost.getPathSegmentMax(), post.getPathSegmentArray());
+		Grid grid = new Grid(1,post.getPathSegmentArray().length - 1);
+		
+		int col = -1;
+    	for(String style : styles){
+    		Label label = new Label();
+    		label.setStyleName("tt-nested-spacer");
+    		label.addStyleName(style);
+    		if(col == -1){
+    			col++;
+    		}
+    		else{
+    			grid.setWidget(0, col++, label);
+    		}
+    	}
+    	grid.addStyleName("tt-fill-both");
+    	spacerElement.clear();
+    	spacerElement.add(grid);
+    	
+	}
+
+	public void init(CalendarPost cp) {
     	this.cp = cp;
     	bodySummaryElement.setHTML(cp.getSummary());
     	
@@ -108,7 +145,8 @@ public class PostSummaryPanel extends Composite implements PostPresenterCommon{
 			sb.append("&nbsp;");
 		}
 		if(sb.length() > 0){
-			spacerElement.setInnerHTML(sb.toString());
+			//spacerElement.setInnerHTML(sb.toString());
+			spacerElement.add(new HTML(sb.toString()));
 		}
 	}
     

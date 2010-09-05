@@ -17,6 +17,7 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
@@ -35,8 +36,12 @@ public class PostExpanded extends PostBaseComposite{
     @UiField Anchor moreOptionsElement;
     @UiField(provided = true) Hyperlink creatorLinkElement;
     @UiField Label postUnReadElement;
+    @UiField SimplePanel likesElement;
+    @UiField(provided = true) Widget tagsElement;
+    
     private HyperlinkPresenter creatorLinkPresenter;
     
+    private TagListPanel tagListPanel;
     private ImagePresenter imagePresenter;
     private DatePresenter createDatePresenter;
 //    private MoreOptionsPopupPanel optionsPanel;
@@ -55,19 +60,21 @@ public class PostExpanded extends PostBaseComposite{
     	imagePresenter = injector.getImagePresenter();
     	creatorLinkPresenter = injector.getHyperlinkPresenter();
     	createDatePresenter = injector.getDatePresenter();
+    	tagListPanel = injector.createTagListPanel();
+    	tagsElement = tagListPanel;
     	
     	avatarElement = imagePresenter.getWidget();
     	creatorLinkElement = creatorLinkPresenter.getHyperlink();
     	createDateElement = createDatePresenter.getWidget();
     	creatorLinkElement = creatorLinkPresenter.getHyperlink();
     	
-    	
-    	
-		initWidget(binder.createAndBindUi(this));
+    	initWidget(binder.createAndBindUi(this));
 	}
 	
 	public void init(GPost post, HasWidgets commentElement){
-		super.init(post, commentElement, null);
+		super.init(post, commentElement, tagListPanel);
+		tagListPanel.init(post, TagListPanel.Mode.EDITABLE);
+		
 		bodyElement.setInnerHTML(post.getEntry());
 //		this.post = post;
 		moreOptionsElement.setText("More Options");
@@ -97,6 +104,8 @@ public class PostExpanded extends PostBaseComposite{
 			postUnReadElement.setText("*");
 			postUnReadElement.addStyleName("tt-alert");
 		}
+		
+		setupLikesElement(post, likesElement);
 	}
 	
 //	public void addReplyClickHandler(ClickHandler handler){
