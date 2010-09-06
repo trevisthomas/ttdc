@@ -5,5 +5,6 @@ public enum MessageEventType {
 	CLEAR,
 	SYSTEM_ERROR,
 	ERROR,
-	INFO;
+	INFO, 
+	SEARCH_CRITERIA_UPDATED;
 }

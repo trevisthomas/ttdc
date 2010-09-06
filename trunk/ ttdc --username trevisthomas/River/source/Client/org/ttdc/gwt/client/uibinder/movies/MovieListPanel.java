@@ -68,7 +68,7 @@ public class MovieListPanel extends BasePageComposite{
 	private final ListBox reviewers = new ListBox(false);
 	private final Button goButton = new Button();
 	
-	private final Label ratingLabel = new Label("Average Rating");
+	private final Label ratingLabel = (Label)ratingHeaderPanel.getWidget();
 	private final Button speedRateButton = new Button("Speed Rate");
 	private final Button exitSpeedRateButton = new Button("End Speed Rate");
 	
@@ -104,6 +104,9 @@ public class MovieListPanel extends BasePageComposite{
 	@Override
 	protected void onShow(HistoryToken token) {
 		this.token = token;
+		
+		String subtitle = "";
+		
 		final int pageNumber = token.getParameterAsInt(HistoryConstants.PAGE_NUMBER_KEY,1);
 		final String sort = token.getParameter(HistoryConstants.SORT_KEY, HistoryConstants.MOVIES_SORT_BY_TITLE);
 		final String direction = token.getParameter(HistoryConstants.SORT_DIRECTION_KEY,HistoryConstants.SORT_ASC);
@@ -120,8 +123,9 @@ public class MovieListPanel extends BasePageComposite{
 		BatchCommandTool batcher = new BatchCommandTool();
 
 		MovieListCommand cmd = new MovieListCommand();
-		if(StringUtil.notEmpty(personId))
+		if(StringUtil.notEmpty(personId)){
 			cmd.setPersonId(personId);
+		}
 		
 		cmd.setPageNumber(pageNumber);
 		
@@ -131,6 +135,7 @@ public class MovieListPanel extends BasePageComposite{
 			cmd.setPersonId(personId);
 			cmd.setSpeedRate(true);
 			enableExitSpeedRateButton();
+			subtitle = "Unrated movies are ready to be rated!";
 		} else if(!user.isAnonymous()){
 			enableSpeedRateButton();
 		}
@@ -163,6 +168,13 @@ public class MovieListPanel extends BasePageComposite{
 		speedRateButton.addClickHandler(speedRateClickHandler());
 		exitSpeedRateButton.addClickHandler(exitSpeedRateClickHandler());
 		
+		pageHeaderPanel.init("Movies", subtitle);
+		pageHeaderPanel.getSearchBoxPresenter().init();
+				
+	}
+	
+	private void setPageSubTitle(String subtitle) {
+		pageHeaderPanel.init("Movies", subtitle);
 	}
 	
 	public void enableSpeedRateButton(){
@@ -202,6 +214,7 @@ public class MovieListPanel extends BasePageComposite{
 		for(int i = 0 ; i < reviewers.getItemCount() ; i++){
 			if(reviewers.getValue(i).equals(personId)){
 				ratingLabel.setText(extractUserName(i)+"'s Rating");
+				setPageSubTitle(extractUserName(i) + "'s movie ratings and reviews");
 				index = i;
 			}
 		}
@@ -242,7 +255,10 @@ public class MovieListPanel extends BasePageComposite{
 				HistoryToken newToken = new HistoryToken();
 				newToken.load(token);
 				newToken.removeParameter(HistoryConstants.PAGE_NUMBER_KEY);
-				newToken.setParameter(HistoryConstants.PERSON_ID, getSelectedPersonId());
+				if(getSelectedPersonId() != null)
+					newToken.setParameter(HistoryConstants.PERSON_ID, getSelectedPersonId());
+				else
+					newToken.removeParameter(HistoryConstants.PERSON_ID);
 				EventBus.fireHistoryToken(newToken);
 			}
 		};
@@ -320,9 +336,12 @@ public class MovieListPanel extends BasePageComposite{
 				for(GPerson person : result.getPersonList()){
 					addPerson(person.getLogin(), person.getPersonId(), Integer.parseInt(person.getValue()));
 				}
-				if(StringUtil.notEmpty(personId))
+				if(StringUtil.notEmpty(personId)){
 					setSelectedPersonId(personId);
+				}
 			}
+
+			
 		};
 		return replyListCallback;
 	}

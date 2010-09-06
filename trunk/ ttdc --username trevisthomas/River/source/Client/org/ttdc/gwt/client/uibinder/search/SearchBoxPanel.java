@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.ttdc.gwt.client.Injector;
+import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.beans.GTag;
 import org.ttdc.gwt.client.messaging.EventBus;
@@ -155,6 +156,9 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 		if(event.is(MessageEventType.VIEW_CHANGE)){
 			hidePopup();
 		}
+		else if(event.is(MessageEventType.SEARCH_CRITERIA_UPDATED)){
+			setDefaultMessage();
+		}
 	}
 	
 	public void hidePopup() {
@@ -255,6 +259,12 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 	 */
 	public void init(){
 		init(new HistoryToken());
+	}
+	
+	public void init(GPerson person){
+		HistoryToken token = new HistoryToken();
+		token.addParameter(HistoryConstants.SEARCH_CREATOR_ID_KEY, person.getPersonId());
+		init(token);
 	}
 	
 	private void performCancel() {
@@ -388,11 +398,16 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 		
 		msg += refineSearchPanel.getDateRange().toString();
 		
+		if(StringUtil.notEmpty(refineSearchPanel.getPersonName())){
+			if(threadTitle.length() == 0){
+				msg = "search for content";
+			}
+			msg += " by " + refineSearchPanel.getPersonName();
+		}
+		
 		if(StringUtil.notEmpty(msg)){
 			searchPhraseElement.setDefaultMessage(msg);
 		}
-		
-		
 	}
 	
 	

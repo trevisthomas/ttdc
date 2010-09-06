@@ -206,13 +206,13 @@ public class EventBus {
 
 	public static void fireReturnHomeEvent() {
 		HistoryToken token = new HistoryToken();
-		token.addParameter(HistoryConstants.VIEW, HistoryConstants.VIEW_MAIN);
+		token.addParameter(HistoryConstants.VIEW, HistoryConstants.VIEW_HOME);
 		EventBus.fireHistoryToken(token);
 	}
 	
 	public static void reloadHome() {
 		HistoryToken token = new HistoryToken();
-		token.addParameter(HistoryConstants.VIEW, HistoryConstants.VIEW_MAIN);
+		token.addParameter(HistoryConstants.VIEW, HistoryConstants.VIEW_HOME);
 		History.newItem(token.toString(),false);
 		reload();
 	}

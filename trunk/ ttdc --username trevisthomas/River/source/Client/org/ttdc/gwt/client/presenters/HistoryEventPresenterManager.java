@@ -89,7 +89,7 @@ public class HistoryEventPresenterManager implements HistoryEventListener{
 			}
 		}
 		else if(HistoryConstants.VIEW_USER_TOOLS.equals(view)){
-			injector.getUserToolsPresenter().show(event.getSource());
+			injector.createUserToolsPanel().show(event.getSource());
 		}
 		else if(HistoryConstants.VIEW_DEMO.equals(view)){
 			injector.getDemoPresenter().show(event.getSource());
@@ -99,18 +99,17 @@ public class HistoryEventPresenterManager implements HistoryEventListener{
 			injector.createUserListPanel().show(event.getSource());
 		}
 		else if(HistoryConstants.VIEW_USER_PROFILE.equals(view)){
-			injector.getPublicUserProfilePresenter().show(event.getSource());
+			injector.createPublicUserProfilePanel().show(event.getSource());
 		}
 		else if(HistoryConstants.VIEW_DASHBOARD.equals(view)){
 			if(person.isAnonymous()){
-				UserToolsPresenter userToolsPresenter = injector.getUserToolsPresenter();
-				userToolsPresenter.show(new HistoryToken());
+				injector.createUserToolsPanel().show(new HistoryToken());
 				EventBus.fireErrorMessage("Dashboard is for authenticated users.");
 			}
 			else{
 				HistoryToken token = event.getSource();
 				token.setParameter(HistoryConstants.PERSON_ID, person.getPersonId());
-				injector.getUserDashboardPresenter().show(token);
+				injector.createUserDashboardPanel().show(token);
 			}
 		}
 		else if(HistoryConstants.VIEW_HOME.equals(view)){

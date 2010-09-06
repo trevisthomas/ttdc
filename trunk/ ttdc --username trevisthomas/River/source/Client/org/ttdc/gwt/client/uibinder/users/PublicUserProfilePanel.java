@@ -1,4 +1,4 @@
-package org.ttdc.gwt.client.presenters.users;
+package org.ttdc.gwt.client.uibinder.users;
 
 import java.util.List;
 
@@ -8,15 +8,16 @@ import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.messaging.history.HistoryConstants;
 import org.ttdc.gwt.client.messaging.history.HistoryToken;
 import org.ttdc.gwt.client.presenters.dashboard.ProfilePresenter;
-import org.ttdc.gwt.client.presenters.home.MoreLatestPresenter;
 import org.ttdc.gwt.client.presenters.post.Mode;
 import org.ttdc.gwt.client.presenters.post.PostCollectionPresenter;
-import org.ttdc.gwt.client.presenters.shared.BasePagePresenter;
-import org.ttdc.gwt.client.presenters.shared.BasePageView;
 import org.ttdc.gwt.client.presenters.shared.GenericTabularFlowPresenter;
 import org.ttdc.gwt.client.presenters.shared.MovieCoverWithRatingPresenter;
 import org.ttdc.gwt.client.presenters.shared.TextPresenter;
+import org.ttdc.gwt.client.presenters.users.MoreSearchPresenter;
+import org.ttdc.gwt.client.presenters.util.HtmlLabel;
 import org.ttdc.gwt.client.presenters.util.PresenterHelpers;
+import org.ttdc.gwt.client.uibinder.common.BasePageComposite;
+import org.ttdc.gwt.client.uibinder.shared.StandardPageHeaderPanel;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
 import org.ttdc.gwt.shared.commands.MovieListCommand;
 import org.ttdc.gwt.shared.commands.PersonCommand;
@@ -29,95 +30,179 @@ import org.ttdc.gwt.shared.commands.types.SortBy;
 import org.ttdc.gwt.shared.commands.types.SortDirection;
 import org.ttdc.gwt.shared.util.StringUtil;
 
-import com.google.gwt.user.client.ui.HasText;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.TabPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
-@Deprecated
-public class PublicUserProfilePresenter extends BasePagePresenter<PublicUserProfilePresenter.View> {
+public class PublicUserProfilePanel  extends BasePageComposite {
+	interface MyUiBinder extends UiBinder<Widget, PublicUserProfilePanel> {}
+	private static final MyUiBinder binder = GWT.create(MyUiBinder.class);
 	
-	public interface View extends BasePageView{
-		HasWidgets profile();
-		
-		HasText bioText();
-		HasWidgets bestMoviesPanel();
-		HasWidgets worstMoviesPanel();
-		HasWidgets latestConversationsPanel();
-		HasWidgets latestPostsPanel();
-		HasWidgets latestReviewsPanel();
-		
-		HasWidgets latestConversationsFooterPanel();
-		HasWidgets latestPostsFooterPanel();
-		HasWidgets latestReviewsFooterPanel();
-		
-		void displayBioTab();
-		void displayBestMoviesTab();
-		void displayWorstMoviesTab();
-		void displayLatestConversationsTab();
-		void displayLatestPostsTab();
-		void displayLatestReviewsTab();
-		
-		void setPersonId(String personId);
-		
-		void clear();
-	}
+	private Injector injector;
 	
+	@UiField(provided = true) Widget pageHeaderElement;
+	@UiField TabPanel tabPanelElement;
+	@UiField SimplePanel profileElement;
+	
+	private final HtmlLabel bioHtml = new HtmlLabel();
+	private final SimplePanel bestMoviesPanel = new SimplePanel();
+	private final SimplePanel worstMoviesPanel = new SimplePanel();
+	private final VerticalPanel latestCoversationsTabPanel = new VerticalPanel();
+	private final VerticalPanel latestPostsTabPanel = new VerticalPanel();
+	private final VerticalPanel latestReviewsTabPanel = new VerticalPanel();
+	
+
+	private final SimplePanel latestConversationsPanel = new SimplePanel();
+	private final SimplePanel latestPostsPanel = new SimplePanel();
+	private final SimplePanel latestReviewsPanel = new SimplePanel();
+		
+	private final SimplePanel latestConversationsFooterPanel = new SimplePanel();
+	private final SimplePanel latestPostsFooterPanel = new SimplePanel();
+	private final SimplePanel latestReviewsFooterPanel = new SimplePanel();
+	
+	private final ProfilePresenter userProfilePresenter;
+	
+	//private String personId;
+	
+	private final StandardPageHeaderPanel pageHeaderPanel;
+	private HistoryToken token;
 	private GPerson person;
 	private HistoryToken lastToken = null;
 	
 	@Inject
-	public PublicUserProfilePresenter(Injector injector) {
-		super(injector,injector.getPublicUserProfileView());
+	public PublicUserProfilePanel(Injector injector) {
+		this.injector = injector;
+		
+		pageHeaderPanel = injector.createStandardPageHeaderPanel(); 
+		userProfilePresenter = injector.getUserProfilePresenter();
+    	pageHeaderElement = pageHeaderPanel.getWidget();
+    	
+		initWidget(binder.createAndBindUi(this));
+		
+		latestCoversationsTabPanel.add(latestConversationsPanel);
+		latestCoversationsTabPanel.add(latestConversationsFooterPanel);
+		
+		latestPostsTabPanel.add(latestPostsPanel);
+		latestPostsTabPanel.add(latestPostsFooterPanel);
+		
+		latestReviewsTabPanel.add(latestReviewsPanel);
+		latestReviewsTabPanel.add(latestReviewsFooterPanel);
+		
+		
+		tabPanelElement.add(bioHtml, "Bio");
+		tabPanelElement.add(bestMoviesPanel, "Best Movies");
+		tabPanelElement.add(worstMoviesPanel, "Worst Movies");
+		tabPanelElement.add(latestCoversationsTabPanel, "Conversations");
+		tabPanelElement.add(latestReviewsTabPanel, "Reviews");
+		tabPanelElement.add(latestPostsTabPanel, "Comments");
+		
+		tabPanelElement.addSelectionHandler(new SelectionHandler<Integer>() {
+			@Override
+			public void onSelection(SelectionEvent<Integer> event) {
+				if(!tabPanelElement.isAttached()) 
+					return;
+				int index = event.getSelectedItem();
+				
+				updateHistoryToReflectTabSelection(index);
+			}
+		});
+		
+		tabPanelElement.addStyleName("tt-TabPanel-fullpage");
 	}
-
+	
+	
+	/*
+	 * Trevis, be aware that calling History.newItem actually caues a history event to be
+	 * fired.  Think about what that means.  You may want to do other things to make better use 
+	 * history and ajax
+	 * 
+	 * (This functionality is now in more than one place, see also AdminToolsView)
+	 * 
+	 */
+	private void updateHistoryToReflectTabSelection(int index) {
+		HistoryToken token = new HistoryToken();
+		token.addParameter(HistoryConstants.VIEW, HistoryConstants.VIEW_USER_PROFILE);
+		token.addParameter(HistoryConstants.PERSON_ID, person.getPersonId());
+		switch (index){
+			case 0:
+				token.setParameter(HistoryConstants.TAB_KEY, HistoryConstants.PROFILE_BIO_TAB);
+				break;
+			case 1:
+				token.setParameter(HistoryConstants.TAB_KEY, HistoryConstants.PROFILE_BEST_MOVIES_TAB);
+				break; 
+			case 2:
+				token.setParameter(HistoryConstants.TAB_KEY, HistoryConstants.PROFILE_WORST_MOVIES_TAB);
+				break;
+			case 3:
+				token.setParameter(HistoryConstants.TAB_KEY, HistoryConstants.PROFILE_CONVERSATIONS_TAB);
+				break;	
+			case 4:
+				token.setParameter(HistoryConstants.TAB_KEY, HistoryConstants.PROFILE_REVIEWS_TAB);
+				break;	
+			case 5:
+				token.setParameter(HistoryConstants.TAB_KEY, HistoryConstants.PROFILE_POSTS_TAB);	
+				break;	
+		}
+		//History.newItem(token.toString(), false);
+		History.newItem(token.toString());
+	}
+	
 	@Override
-	public void show(HistoryToken token) {
+	protected void onShow(HistoryToken token) {
 		if(lastToken == null || !lastToken.isParameterEq(HistoryConstants.PERSON_ID, token.getParameter(HistoryConstants.PERSON_ID))){
-			view.clear();
+			clear();
 			String personId = token.getParameter(HistoryConstants.PERSON_ID);
 			PersonCommand cmd = new PersonCommand(personId,PersonStatusType.LOAD);
 			injector.getService().execute(cmd, buildCallback());
-			view.show();
 		}
 		else{
 			initializeTabs(token);
 		}
 		lastToken = token;
 	}
-
+	
 	private void initializeTabs(HistoryToken token) {
 		String tab = token.getParameter(HistoryConstants.TAB_KEY);
 		if(StringUtil.notEmpty(tab)){
 			if(HistoryConstants.PROFILE_BIO_TAB.equals(tab)){
-				view.displayBioTab();
+				displayBioTab();
 				buildBioTab();
 			}
 			else if(HistoryConstants.PROFILE_BEST_MOVIES_TAB.equals(tab)){
-				view.displayBestMoviesTab();
+				displayBestMoviesTab();
 				buildBestMoviesTab();
 			}
 			else if(HistoryConstants.PROFILE_WORST_MOVIES_TAB.equals(tab)){
-				view.displayWorstMoviesTab();
+				displayWorstMoviesTab();
 				buildWorstMoviesTab();
 			}
 			else if(HistoryConstants.PROFILE_CONVERSATIONS_TAB.equals(tab)){
-				view.displayLatestConversationsTab();
+				displayLatestConversationsTab();
 				buildLatestConversationsTab();
 			}
 			else if(HistoryConstants.PROFILE_POSTS_TAB.equals(tab)){
-				view.displayLatestPostsTab();
+				displayLatestPostsTab();
 				buildLatestPostsTab();
 			}
 			else if(HistoryConstants.PROFILE_REVIEWS_TAB.equals(tab)){
-				view.displayLatestReviewsTab();
+				displayLatestReviewsTab();
 				buildLatestReviewsTab();
 			}
 			else{
-				view.displayBioTab();
+				displayBioTab();
 			}
 		}
 		else{
-			view.displayBioTab();
+			displayBioTab();
 		}
 	}
 	
@@ -125,22 +210,26 @@ public class PublicUserProfilePresenter extends BasePagePresenter<PublicUserProf
 		return new CommandResultCallback<GenericCommandResult<GPerson>>(){
 			@Override
 			public void onSuccess(GenericCommandResult<GPerson> result) {
-				ProfilePresenter userProfilePresenter = injector.getUserProfilePresenter();
 				person = result.getObject();
 				userProfilePresenter.init(person);
-				view.profile().add(userProfilePresenter.getWidget());
-				view.setPersonId(person.getPersonId());
+				 	
+				Widget w = userProfilePresenter.getWidget();
+				w.addStyleName("tt-center");
+				profileElement.add(w);
 				initializeTabs(lastToken);
+				
+				pageHeaderPanel.init(person.getLogin(), "a profile of my history on ttdc");
+				pageHeaderPanel.getSearchBoxPresenter().init(person);
 			}
 		};
 	}
 	
 	public void buildBioTab() {
 		if(StringUtil.notEmpty(person.getBio().trim())){
-			view.bioText().setText(person.getBio());
+			bioHtml.setText(person.getBio());
 		}
 		else{
-			view.bioText().setText("&lt;missing bio&gt;");
+			bioHtml.setText("&lt;missing bio&gt;");
 		}
 		
 	}
@@ -150,8 +239,8 @@ public class PublicUserProfilePresenter extends BasePagePresenter<PublicUserProf
 		cmd.setPersonId(person.getPersonId());
 		cmd.setSortBy(SortBy.BY_RATING);
 		cmd.setSortDirection(SortDirection.ASC);
-		if(PresenterHelpers.isWidgetEmpty(view.bestMoviesPanel()))
-			injector.getService().execute(cmd, buildMovieListCallback(view.bestMoviesPanel(),person.getLogin()+ " hasn't rated any movies."));
+		if(PresenterHelpers.isWidgetEmpty(bestMoviesPanel))
+			injector.getService().execute(cmd, buildMovieListCallback(bestMoviesPanel,person.getLogin()+ " hasn't rated any movies."));
 	}
 
 
@@ -160,8 +249,8 @@ public class PublicUserProfilePresenter extends BasePagePresenter<PublicUserProf
 		cmd.setPersonId(person.getPersonId());
 		cmd.setSortBy(SortBy.BY_RATING);
 		cmd.setSortDirection(SortDirection.DESC);
-		if(PresenterHelpers.isWidgetEmpty(view.worstMoviesPanel()))
-			injector.getService().execute(cmd, buildMovieListCallback(view.worstMoviesPanel(),person.getLogin()+ " hasn't rated any movies."));
+		if(PresenterHelpers.isWidgetEmpty(worstMoviesPanel))
+			injector.getService().execute(cmd, buildMovieListCallback(worstMoviesPanel,person.getLogin()+ " hasn't rated any movies."));
 	}
 
 	public void buildLatestConversationsTab() {
@@ -170,9 +259,9 @@ public class PublicUserProfilePresenter extends BasePagePresenter<PublicUserProf
 		cmd.setPostSearchType(PostSearchType.CONVERSATIONS);
 		cmd.setPersonId(person.getPersonId());
 		cmd.setPageSize(10);
-		if(PresenterHelpers.isWidgetEmpty(view.latestConversationsPanel()))
-			injector.getService().execute(cmd, buildPostListCallback(cmd,view.latestConversationsPanel(), 
-					view.latestConversationsFooterPanel(),person.getLogin()+ " hasn't started any conversations."));
+		if(PresenterHelpers.isWidgetEmpty(latestConversationsPanel))
+			injector.getService().execute(cmd, buildPostListCallback(cmd,latestConversationsPanel, 
+					latestConversationsFooterPanel,person.getLogin()+ " hasn't started any conversations."));
 	}
 
 	public void buildLatestPostsTab() {
@@ -181,9 +270,9 @@ public class PublicUserProfilePresenter extends BasePagePresenter<PublicUserProf
 		cmd.setPersonId(person.getPersonId());
 		cmd.setNonReviewsOnly(true);
 		cmd.setPageSize(10);	
-		if(PresenterHelpers.isWidgetEmpty(view.latestPostsPanel()))
-			injector.getService().execute(cmd, buildPostListCallback(cmd,view.latestPostsPanel(), 
-					view.latestPostsFooterPanel(),person.getLogin()+ " hasn't made any comments."));
+		if(PresenterHelpers.isWidgetEmpty(latestPostsPanel))
+			injector.getService().execute(cmd, buildPostListCallback(cmd,latestPostsPanel, 
+					latestPostsFooterPanel,person.getLogin()+ " hasn't made any comments."));
 	}
 
 
@@ -193,9 +282,9 @@ public class PublicUserProfilePresenter extends BasePagePresenter<PublicUserProf
 		cmd.setPersonId(person.getPersonId());
 		cmd.setReviewsOnly(true);
 		cmd.setPageSize(10);	
-		if(PresenterHelpers.isWidgetEmpty(view.latestReviewsPanel()))
-			injector.getService().execute(cmd, buildPostListCallback(cmd,view.latestReviewsPanel(), 
-					view.latestReviewsFooterPanel(),person.getLogin()+ " hasn't left any reviews."));
+		if(PresenterHelpers.isWidgetEmpty(latestReviewsPanel))
+			injector.getService().execute(cmd, buildPostListCallback(cmd, latestReviewsPanel, 
+					latestReviewsFooterPanel,person.getLogin()+ " hasn't left any reviews."));
 	}
 
 	private CommandResultCallback<SearchPostsCommandResult> buildPostListCallback(final SearchPostsCommand cmd, 
@@ -276,4 +365,39 @@ public class PublicUserProfilePresenter extends BasePagePresenter<PublicUserProf
 		}
 	}
 
+
+	public void clear() {
+		profileElement.clear();
+		bioHtml.setText("");
+		bestMoviesPanel.clear();
+		worstMoviesPanel.clear();
+		latestConversationsPanel.clear();
+		latestPostsPanel.clear();
+		latestReviewsPanel.clear();
+	}
+	
+	public void displayBestMoviesTab() {
+		tabPanelElement.selectTab(1);
+	}
+
+	public void displayBioTab() {
+		tabPanelElement.selectTab(0);
+	}
+
+	public void displayLatestConversationsTab() {
+		tabPanelElement.selectTab(3);
+		
+	}
+
+	public void displayLatestPostsTab() {
+		tabPanelElement.selectTab(5);
+	}
+
+	public void displayLatestReviewsTab() {
+		tabPanelElement.selectTab(4);
+	}
+
+	public void displayWorstMoviesTab() {
+		tabPanelElement.selectTab(2);
+	}
 }

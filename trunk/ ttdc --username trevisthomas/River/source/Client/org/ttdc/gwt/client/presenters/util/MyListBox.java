@@ -26,6 +26,15 @@ public class MyListBox extends ListBox{
 		else
 			return "";
 	}
+	
+	public String getSelectedText(){
+		int index = this.getSelectedIndex();
+		if(index >= 0)
+			return this.getItemText(index);
+		else
+			return "";
+	}
+	
 	public void setSelectedValue(String value){
 		int index = 0;
 		for(int i = 0 ; i < this.getItemCount() ; i++){

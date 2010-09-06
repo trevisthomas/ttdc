@@ -2,7 +2,11 @@ package org.ttdc.gwt.client.uibinder;
 
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.messaging.ConnectionId;
+import org.ttdc.gwt.client.messaging.EventBus;
 import org.ttdc.gwt.client.messaging.history.HistoryConstants;
+import org.ttdc.gwt.client.messaging.person.PersonEvent;
+import org.ttdc.gwt.client.messaging.person.PersonEventListener;
+import org.ttdc.gwt.client.messaging.person.PersonEventType;
 import org.ttdc.gwt.client.presenters.shared.HyperlinkPresenter;
 
 import com.google.gwt.core.client.GWT;
@@ -13,7 +17,7 @@ import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
-public class Navigation extends Composite {
+public class Navigation extends Composite implements PersonEventListener{
 	interface MyUiBinder extends UiBinder<Widget, Navigation> {}
 	private static final MyUiBinder binder = GWT.create(MyUiBinder.class);
 	
@@ -71,22 +75,39 @@ public class Navigation extends Composite {
 		calendarLinkPresenter.setView("Calendar", HistoryConstants.VIEW_CALENDAR);
 		calendarElement = calendarLinkPresenter.getHyperlink();
 		
+		adminLinkPresenter.setView("Admin", HistoryConstants.VIEW_ADMIN_TOOLS);
+		adminElement = adminLinkPresenter.getHyperlink();
 		
+		applyUserSpecificSettings();
+		
+		initWidget(binder.createAndBindUi(this));
+		
+		EventBus.getInstance().addListener(this);
+	}
+
+	private void applyUserSpecificSettings() {
 		if(ConnectionId.isAnonymous()){
 			dashboardElement.setVisible(false);
 			usersElement.setVisible(false);
 		}
-		
-		
-		adminLinkPresenter.setView("Admin", HistoryConstants.VIEW_ADMIN_TOOLS);
-		adminElement = adminLinkPresenter.getHyperlink();
+		else{
+			dashboardElement.setVisible(true);
+			usersElement.setVisible(true);
+		}
 		
 		if(!ConnectionId.isAdministrator()){
 			adminElement.setVisible(false);		
 		}
-		
-		
-		initWidget(binder.createAndBindUi(this));
+		else{
+			adminElement.setVisible(true);
+		}
+	}
+	
+	@Override
+	public void onPersonEvent(PersonEvent event) {
+		if(event.is(PersonEventType.USER_CHANGED) || event.is(PersonEventType.USER_PROFILE_UPDATED)){
+			applyUserSpecificSettings();
+		}
 	}
 	
 }
