@@ -1,0 +1,17 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<!-- The above doctype is to allow for special html characters in this xml file -->
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+	
+	<g:HTMLPanel>
+		<g:Widget styleName="tt-fill" ui:field="pageHeaderElement"/>
+		<table class="tt-user-list">
+			<tr>
+				<td>
+					<g:FlexTable styleName="tt-user-list-table" ui:field="tableElement"></g:FlexTable>
+					<g:SimplePanel ui:field="paginatorElement"></g:SimplePanel>	
+				</td>
+			</tr>
+		</table>
+	</g:HTMLPanel>
+</ui:UiBinder>

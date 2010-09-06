@@ -105,6 +105,7 @@ import org.ttdc.gwt.client.uibinder.calendar.DayPanel;
 import org.ttdc.gwt.client.uibinder.calendar.InteractiveCalendarPanel;
 import org.ttdc.gwt.client.uibinder.calendar.SmallMonthPanel;
 import org.ttdc.gwt.client.uibinder.dashboard.FilteredPost;
+import org.ttdc.gwt.client.uibinder.movies.MovieListPanel;
 import org.ttdc.gwt.client.uibinder.post.MoreOptionsPopupPanel;
 import org.ttdc.gwt.client.uibinder.post.NewMoviePanel;
 import org.ttdc.gwt.client.uibinder.post.PostExpanded;
@@ -121,6 +122,7 @@ import org.ttdc.gwt.client.uibinder.search.SearchBoxPanel;
 import org.ttdc.gwt.client.uibinder.search.SearchResultsPanel;
 import org.ttdc.gwt.client.uibinder.shared.StandardPageHeaderPanel;
 import org.ttdc.gwt.client.uibinder.shared.UserIdentityPanel;
+import org.ttdc.gwt.client.uibinder.users.UserListPanel;
 
 import com.google.gwt.user.client.ui.HasWidgets;
 
@@ -1500,6 +1502,18 @@ public class MockInjector implements Injector{
 
 	@Override
 	public TopicPanel createTopicPanel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public UserListPanel createUserListPanel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public MovieListPanel createMovieListPanel() {
 		// TODO Auto-generated method stub
 		return null;
 	}

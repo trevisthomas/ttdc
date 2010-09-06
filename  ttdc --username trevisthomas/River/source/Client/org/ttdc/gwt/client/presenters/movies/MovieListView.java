@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+@Deprecated
 public class MovieListView implements MovieListPresenter.View {
 	private final VerticalPanel main = new VerticalPanel();
 	

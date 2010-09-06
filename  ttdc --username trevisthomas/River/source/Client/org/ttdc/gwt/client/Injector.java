@@ -97,6 +97,7 @@ import org.ttdc.gwt.client.uibinder.calendar.DayPanel;
 import org.ttdc.gwt.client.uibinder.calendar.InteractiveCalendarPanel;
 import org.ttdc.gwt.client.uibinder.calendar.SmallMonthPanel;
 import org.ttdc.gwt.client.uibinder.dashboard.FilteredPost;
+import org.ttdc.gwt.client.uibinder.movies.MovieListPanel;
 import org.ttdc.gwt.client.uibinder.post.MoreOptionsPopupPanel;
 import org.ttdc.gwt.client.uibinder.post.NewMoviePanel;
 import org.ttdc.gwt.client.uibinder.post.PostExpanded;
@@ -113,6 +114,7 @@ import org.ttdc.gwt.client.uibinder.search.SearchBoxPanel;
 import org.ttdc.gwt.client.uibinder.search.SearchResultsPanel;
 import org.ttdc.gwt.client.uibinder.shared.StandardPageHeaderPanel;
 import org.ttdc.gwt.client.uibinder.shared.UserIdentityPanel;
+import org.ttdc.gwt.client.uibinder.users.UserListPanel;
 
 import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;
@@ -406,6 +408,8 @@ public interface Injector extends Ginjector {
 	public TagListPanel createTagListPanel();
 	public NestedPostPanel createNestedPostPanel();
 	public TopicPanel createTopicPanel();
+	public UserListPanel createUserListPanel();
+	public MovieListPanel createMovieListPanel();
 
 
 }

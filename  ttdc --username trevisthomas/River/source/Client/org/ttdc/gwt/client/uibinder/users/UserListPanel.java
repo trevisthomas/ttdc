@@ -1,14 +1,16 @@
-package org.ttdc.gwt.client.presenters.users;
+package org.ttdc.gwt.client.uibinder.users;
 
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.messaging.EventBus;
 import org.ttdc.gwt.client.messaging.history.HistoryConstants;
 import org.ttdc.gwt.client.messaging.history.HistoryToken;
-import org.ttdc.gwt.client.presenters.shared.BasePagePresenter;
-import org.ttdc.gwt.client.presenters.shared.BasePageView;
 import org.ttdc.gwt.client.presenters.shared.PaginationPresenter;
+import org.ttdc.gwt.client.presenters.users.UserRowPresenter;
 import org.ttdc.gwt.client.presenters.util.PresenterHelpers;
+import org.ttdc.gwt.client.uibinder.common.BasePageComposite;
+import org.ttdc.gwt.client.uibinder.shared.StandardPageHeaderPanel;
+import org.ttdc.gwt.client.uibinder.shared.UiHelpers;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
 import org.ttdc.gwt.shared.commands.PersonListCommand;
 import org.ttdc.gwt.shared.commands.results.PersonListCommandResult;
@@ -16,36 +18,62 @@ import org.ttdc.gwt.shared.commands.types.PersonListType;
 import org.ttdc.gwt.shared.commands.types.SortBy;
 import org.ttdc.gwt.shared.commands.types.SortDirection;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FocusPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
-@Deprecated
-public class UserListPresenter extends BasePagePresenter<UserListPresenter.View>{
-	public interface View extends BasePageView{
-		void addRow(UserRowPresenter row);
-		HasWidgets paginatorPanel();
-		 
-		HasClickHandlers loginHeaderClickHandlers();
-		HasClickHandlers hitCountHeaderClickHandlers();
-		HasClickHandlers memberSinceHeaderClickHandlers();
-		HasClickHandlers emailHeaderClickHandlers();
-		HasClickHandlers nameHeaderClickHandlers();
+public class UserListPanel extends BasePageComposite{
+	interface MyUiBinder extends UiBinder<Widget, UserListPanel> {}
+	private static final MyUiBinder binder = GWT.create(MyUiBinder.class);
+	
+	private Injector injector;
+	
+	@UiField(provided = true) Widget pageHeaderElement;
+	@UiField FlexTable tableElement;
+	@UiField SimplePanel paginatorElement;
+	
+	private final StandardPageHeaderPanel pageHeaderPanel;
+	private HistoryToken token;
+	
+	private final FocusPanel loginHeader;
+	private final FocusPanel hitCountHeader;
+	private final FocusPanel memberSinceHeader;
+	private final FocusPanel emailHeader;
+	private final FocusPanel nameHeader;
+	
+	private int row = 0;
+	@Inject
+	public UserListPanel(Injector injector) {
+		this.injector = injector;
+		
+		pageHeaderPanel = injector.createStandardPageHeaderPanel(); 
+    	pageHeaderElement = pageHeaderPanel.getWidget();
+    	
+		loginHeader = UiHelpers.createTableHeaderPanel("Login");
+		hitCountHeader = UiHelpers.createTableHeaderPanel("Hit Count");
+		memberSinceHeader = UiHelpers.createTableHeaderPanel("Last Accessed");
+		emailHeader = UiHelpers.createTableHeaderPanel("Email");
+		nameHeader = UiHelpers.createTableHeaderPanel("Name");
+		
+    	
+		initWidget(binder.createAndBindUi(this));
+		
+		initHeader();
 	}
 	
-	@Inject
-	public UserListPresenter(Injector injector) {
-		super(injector,injector.getUserListView());
-	}
+	
 
 	@Override
-	public void show(HistoryToken token) {
-		
-
-		view.show();
-		
+	protected void onShow(HistoryToken token) {
+	
 		final String sort = token.getParameter(HistoryConstants.SORT_KEY, HistoryConstants.USERS_SORT_BY_LOGIN);
 		
 		PersonListCommand cmd = new PersonListCommand(PersonListType.ACTIVE);
@@ -73,71 +101,63 @@ public class UserListPresenter extends BasePagePresenter<UserListPresenter.View>
 		injector.getService().execute(cmd, buildCallback(token));
 	}
 
+	public void addRow(UserRowPresenter rowPresenter) {
+		row++;
+		
+		tableElement.setWidget(row, 0, rowPresenter.getLoginWidget());
+		tableElement.setWidget(row, 1, rowPresenter.getNameWidget());
+		tableElement.setWidget(row, 2, rowPresenter.getHitsWidget());
+		tableElement.setWidget(row, 3, rowPresenter.getMemberSinceWidget());
+		tableElement.setWidget(row, 4, rowPresenter.getEmailWidget());
+	}
+
+	private void initHeader() {
+		row = 0;
+		tableElement.clear();
+		tableElement.setWidget(0, 0, loginHeader);
+		tableElement.setWidget(0, 1, nameHeader);
+		tableElement.setWidget(0, 2, hitCountHeader);
+		tableElement.setWidget(0, 3, memberSinceHeader);
+		tableElement.setWidget(0, 4, emailHeader);
+	}
 	private void setupClickHandlers(final HistoryToken token) {
-		view.loginHeaderClickHandlers().addClickHandler(new ClickHandler() {
+		loginHeader.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				HistoryToken newToken = PresenterHelpers.cloneTokenForSort(HistoryConstants.USERS_SORT_BY_LOGIN, token);
-//				if(!isSortBy(token,HistoryConstants.USERS_SORT_BY_LOGIN)){
-//					newToken.removeParameter(HistoryConstants.SORT_DIRECTION_KEY);
-//					//newToken.setParameter(HistoryConstants.SORT_DIRECTION_KEY,HistoryConstants.SORT_DESC);
-//					
-//				}
-				
 				EventBus.fireHistoryToken(newToken);
 			}
 		});
-		view.hitCountHeaderClickHandlers().addClickHandler(new ClickHandler() {
+		hitCountHeader.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				HistoryToken newToken = PresenterHelpers.cloneTokenForSort(HistoryConstants.USERS_SORT_BY_HITS, token);
-//				if(!isSortBy(token,HistoryConstants.USERS_SORT_BY_HITS)){
-//					newToken.removeParameter(HistoryConstants.SORT_DIRECTION_KEY);
-//					//newToken.setParameter(HistoryConstants.SORT_DIRECTION_KEY,HistoryConstants.SORT_DESC);
-//				}
 				EventBus.fireHistoryToken(newToken);
 			}
 		});
-		view.memberSinceHeaderClickHandlers().addClickHandler(new ClickHandler() {
+		memberSinceHeader.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				HistoryToken newToken = PresenterHelpers.cloneTokenForSort(HistoryConstants.USERS_SORT_BY_LAST_ACCESSED, token);
-//				if(!isSortBy(token,HistoryConstants.USERS_SORT_BY_LAST_ACCESSED)){
-//					newToken.removeParameter(HistoryConstants.SORT_DIRECTION_KEY);
-//					//newToken.setParameter(HistoryConstants.SORT_DIRECTION_KEY,HistoryConstants.SORT_DESC);
-//				}
 				EventBus.fireHistoryToken(newToken);
 			}
 		});
-		view.emailHeaderClickHandlers().addClickHandler(new ClickHandler() {
+		emailHeader.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				HistoryToken newToken = PresenterHelpers.cloneTokenForSort(HistoryConstants.USERS_SORT_BY_EMAIL, token);
-//				if(!isSortBy(token,HistoryConstants.USERS_SORT_BY_EMAIL)){
-//					newToken.removeParameter(HistoryConstants.SORT_DIRECTION_KEY);
-//					//newToken.setParameter(HistoryConstants.SORT_DIRECTION_KEY,HistoryConstants.SORT_DESC);
-//				}
 				EventBus.fireHistoryToken(newToken);
 			}
 		});
-		view.nameHeaderClickHandlers().addClickHandler(new ClickHandler() {
+		nameHeader.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				HistoryToken newToken = PresenterHelpers.cloneTokenForSort(HistoryConstants.USERS_SORT_BY_NAME, token);
-//				if(!isSortBy(token,HistoryConstants.USERS_SORT_BY_NAME)){
-//					newToken.removeParameter(HistoryConstants.SORT_DIRECTION_KEY);
-//					//newToken.setParameter(HistoryConstants.SORT_DIRECTION_KEY,HistoryConstants.SORT_DESC);
-//				}
 				EventBus.fireHistoryToken(newToken);
 			}
 		});
 	}
 
-//	private boolean isSortBy(final HistoryToken token, String sortBy) {
-//		return token.getParameter(HistoryConstants.SORT_KEY,HistoryConstants.USERS_SORT_BY_LOGIN).equals(sortBy);
-//	}
-
-	
 	private CommandResultCallback<PersonListCommandResult> buildCallback(final HistoryToken token) {
 		CommandResultCallback<PersonListCommandResult> replyListCallback = new CommandResultCallback<PersonListCommandResult>(){
 			@Override
@@ -145,17 +165,16 @@ public class UserListPresenter extends BasePagePresenter<UserListPresenter.View>
 				for(GPerson person : result.getResults().getList()){
 					UserRowPresenter userRowPresenter = injector.getUserRowPresenter();
 					userRowPresenter.init(person);
-					view.addRow(userRowPresenter);
+					addRow(userRowPresenter);
 				}
 				
 				PaginationPresenter paginator = injector.getPaginationPresenter();
 				paginator.initialize(token, result.getResults());
-				view.paginatorPanel().add(paginator.getWidget());
+				paginatorElement.clear();
+				paginatorElement.add(paginator.getWidget());
 			}
 		};
 		return replyListCallback;
 	}
 
-	
-	
 }

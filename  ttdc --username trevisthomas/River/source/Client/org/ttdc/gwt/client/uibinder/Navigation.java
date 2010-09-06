@@ -74,6 +74,7 @@ public class Navigation extends Composite {
 		
 		if(ConnectionId.isAnonymous()){
 			dashboardElement.setVisible(false);
+			usersElement.setVisible(false);
 		}
 		
 		

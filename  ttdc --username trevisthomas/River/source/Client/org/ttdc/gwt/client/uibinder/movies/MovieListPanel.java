@@ -1,4 +1,4 @@
-package org.ttdc.gwt.client.presenters.movies;
+package org.ttdc.gwt.client.uibinder.movies;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,13 +10,15 @@ import org.ttdc.gwt.client.messaging.ConnectionId;
 import org.ttdc.gwt.client.messaging.EventBus;
 import org.ttdc.gwt.client.messaging.history.HistoryConstants;
 import org.ttdc.gwt.client.messaging.history.HistoryToken;
-import org.ttdc.gwt.client.presenters.shared.BasePagePresenter;
-import org.ttdc.gwt.client.presenters.shared.BasePageView;
+import org.ttdc.gwt.client.presenters.movies.MovieRatingPresenter;
 import org.ttdc.gwt.client.presenters.shared.HyperlinkPresenter;
 import org.ttdc.gwt.client.presenters.shared.PaginationPresenter;
 import org.ttdc.gwt.client.presenters.util.PresenterHelpers;
 import org.ttdc.gwt.client.services.BatchCommandTool;
 import org.ttdc.gwt.client.services.RpcServiceAsync;
+import org.ttdc.gwt.client.uibinder.common.BasePageComposite;
+import org.ttdc.gwt.client.uibinder.shared.StandardPageHeaderPanel;
+import org.ttdc.gwt.client.uibinder.shared.UiHelpers;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
 import org.ttdc.gwt.shared.commands.MovieListCommand;
 import org.ttdc.gwt.shared.commands.PersonListCommand;
@@ -27,51 +29,81 @@ import org.ttdc.gwt.shared.commands.types.SortBy;
 import org.ttdc.gwt.shared.commands.types.SortDirection;
 import org.ttdc.gwt.shared.util.StringUtil;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.FocusPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
-@Deprecated
-public class MovieListPresenter extends BasePagePresenter<MovieListPresenter.View>{
+public class MovieListPanel extends BasePageComposite{
+	interface MyUiBinder extends UiBinder<Widget, MovieListPanel> {}
+	private static final MyUiBinder binder = GWT.create(MyUiBinder.class);
+	
+	private Injector injector;
+	
+	@UiField(provided = true) Widget pageHeaderElement;
+	@UiField FlexTable tableElement;
+	@UiField SimplePanel paginatorElement;
+	@UiField FlowPanel personFilterElement;
+	
+	private final StandardPageHeaderPanel pageHeaderPanel;
 	private String personId = null; 
 	private boolean speedRate = false;
 	private final List<MovieRatingPresenter> ratingPresenterList = new ArrayList<MovieRatingPresenter>();
 	
+	private final SimplePanel imdb = new SimplePanel();
+	private final FocusPanel titleHeaderPanel = UiHelpers.createTableHeaderPanel("Title");
+	private final FocusPanel releaseYearHeaderPanel = UiHelpers.createTableHeaderPanel("Release Year");
+	private final FocusPanel ratingHeaderPanel = UiHelpers.createTableHeaderPanel("Average Rating");
+	
+	private final ListBox reviewers = new ListBox(false);
+	private final Button goButton = new Button();
+	
+	private final Label ratingLabel = new Label("Average Rating");
+	private final Button speedRateButton = new Button("Speed Rate");
+	private final Button exitSpeedRateButton = new Button("End Speed Rate");
+	
+	private HistoryToken token;
+	
+	int row = 0;
+	
 	@Inject
-	public MovieListPresenter(Injector injector) {
-		super(injector, injector.getMovieListView());
-	}
-
-	public interface View extends BasePageView{
-		HasWidgets paginator();
+	public MovieListPanel(Injector injector) {
+		this.injector = injector;
 		
-		HasWidgets releaseYearColumnHeader();
-		HasWidgets ratingColumnHeader();
-		HasWidgets titleColumnHeader();
+		pageHeaderPanel = injector.createStandardPageHeaderPanel(); 
+    	pageHeaderElement = pageHeaderPanel.getWidget();
+    	
+    	imdb.add(new Label("IMDB"));
+    	
+		initWidget(binder.createAndBindUi(this));
 		
-		HasClickHandlers releaseYearSortClickHandler();
-		HasClickHandlers ratingSortClickHandler();
-		HasClickHandlers titleSortClickHandler();
-		HasClickHandlers speedRateClickHandler();
-		HasClickHandlers exitSpeedRateClickHandler();
+		reviewers.addItem("-- Reviewers --","-1");
 		
-		void addMovie(String year, Widget titleLink, Widget imdbLink, Widget rating);
-		String getSelectedPersonId();
-		void setSelectedPersonId(String personId);
-		void addPerson(String login, String personId, int reviewCount);
-		HasClickHandlers goButton();
-
-		void enableExitSpeedRateButton();
-		void enableSpeedRateButton();
-
+		goButton.setText("Go");
+		personFilterElement.add(reviewers);
+		personFilterElement.add(goButton);
+		
+		
+		tableElement.setWidget(0, 0, releaseYearHeaderPanel);
+		tableElement.setWidget(0, 1, imdb);
+		tableElement.setWidget(0, 2, titleHeaderPanel);
+		tableElement.setWidget(0, 3, ratingHeaderPanel);
 		
 	}
-
+	
 	@Override
-	public void show(HistoryToken token) {
+	protected void onShow(HistoryToken token) {
+		this.token = token;
 		final int pageNumber = token.getParameterAsInt(HistoryConstants.PAGE_NUMBER_KEY,1);
 		final String sort = token.getParameter(HistoryConstants.SORT_KEY, HistoryConstants.MOVIES_SORT_BY_TITLE);
 		final String direction = token.getParameter(HistoryConstants.SORT_DIRECTION_KEY,HistoryConstants.SORT_ASC);
@@ -98,9 +130,9 @@ public class MovieListPresenter extends BasePagePresenter<MovieListPresenter.Vie
 			speedRate = true;
 			cmd.setPersonId(personId);
 			cmd.setSpeedRate(true);
-			view.enableExitSpeedRateButton();
+			enableExitSpeedRateButton();
 		} else if(!user.isAnonymous()){
-			view.enableSpeedRateButton();
+			enableSpeedRateButton();
 		}
 		
 		if(HistoryConstants.SORT_ASC.equals(direction))
@@ -120,7 +152,7 @@ public class MovieListPresenter extends BasePagePresenter<MovieListPresenter.Vie
 		PersonListCommand personListCmd = new PersonListCommand(PersonListType.MOVIE_REVIEWERS);
 		CommandResultCallback<PersonListCommandResult> personListCallback = buildReviewerListCallback();
 		batcher.add(personListCmd, personListCallback);
-		view.goButton().addClickHandler(personSelectedClickHandler(token));
+		goButton.addClickHandler(personSelectedClickHandler());
 		
 		CommandResultCallback<SearchPostsCommandResult> callback = buildMovieListCallback(token);
 		batcher.add(cmd, callback);
@@ -128,13 +160,66 @@ public class MovieListPresenter extends BasePagePresenter<MovieListPresenter.Vie
 		RpcServiceAsync service = injector.getService();
 		service.execute(batcher.getActionList(), batcher);
 		
-		view.speedRateClickHandler().addClickHandler(speedRateClickHandler(token));
-		view.exitSpeedRateClickHandler().addClickHandler(exitSpeedRateClickHandler(token));
+		speedRateButton.addClickHandler(speedRateClickHandler());
+		exitSpeedRateButton.addClickHandler(exitSpeedRateClickHandler());
 		
-		view.show();
+	}
+	
+	public void enableSpeedRateButton(){
+		personFilterElement.add(speedRateButton);
+		personFilterElement.remove(exitSpeedRateButton);
+	}
+	
+	public void enableExitSpeedRateButton() {
+		personFilterElement.add(exitSpeedRateButton);
+		personFilterElement.remove(speedRateButton);
+	}
+	
+	public void addMovie(String year, Widget titleLink, Widget imdbLink, Widget rating) {
+		//int row = movieTable.getRowCount() - 1;
+		row++;
+		
+		tableElement.setWidget(row, 0, new Label(year));
+		tableElement.setWidget(row, 1, imdbLink);
+		tableElement.setWidget(row, 2, titleLink);
+		tableElement.setWidget(row, 3, rating);
 	}
 
-	private ClickHandler speedRateClickHandler(final HistoryToken token){
+
+
+	public String getSelectedPersonId() {
+		int ndx = reviewers.getSelectedIndex();
+		String personId = null;
+		if(ndx >= 1)
+			personId = reviewers.getValue(ndx);
+			
+		return personId;
+	}
+	
+	
+	private void setSelectedPersonId(String personId) {
+		int index = 0;
+		for(int i = 0 ; i < reviewers.getItemCount() ; i++){
+			if(reviewers.getValue(i).equals(personId)){
+				ratingLabel.setText(extractUserName(i)+"'s Rating");
+				index = i;
+			}
+		}
+		reviewers.setSelectedIndex(index);
+	}
+
+	//This method strips off the review count from the dropdown text created in addPerson
+	private String extractUserName(int i) {
+		String str = reviewers.getItemText(i);
+		return str.substring(0,str.lastIndexOf('(')).trim();
+	}
+	
+	private void addPerson(String login, String personId, int reviewCount) {
+		reviewers.addItem(login + " ("+reviewCount+")",personId);
+		
+	}	
+	
+	private ClickHandler speedRateClickHandler(){
 		return new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -150,20 +235,20 @@ public class MovieListPresenter extends BasePagePresenter<MovieListPresenter.Vie
 			
 		};
 	}
-	private ClickHandler personSelectedClickHandler(final HistoryToken token) {
+	private ClickHandler personSelectedClickHandler() {
 		return new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				HistoryToken newToken = new HistoryToken();
 				newToken.load(token);
 				newToken.removeParameter(HistoryConstants.PAGE_NUMBER_KEY);
-				newToken.setParameter(HistoryConstants.PERSON_ID, view.getSelectedPersonId());
+				newToken.setParameter(HistoryConstants.PERSON_ID, getSelectedPersonId());
 				EventBus.fireHistoryToken(newToken);
 			}
 		};
 	}
 	
-	private ClickHandler exitSpeedRateClickHandler(final HistoryToken token){
+	private ClickHandler exitSpeedRateClickHandler(){
 		return new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -205,21 +290,21 @@ public class MovieListPresenter extends BasePagePresenter<MovieListPresenter.Vie
 //		view.ratingColumnHeader().add(ratingSortPresenter.getWidget());
 //		view.titleColumnHeader().add(titleSortPresenter.getWidget());
 		
-		view.ratingSortClickHandler().addClickHandler(new ClickHandler() {
+		ratingHeaderPanel.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				HistoryToken newToken = PresenterHelpers.cloneTokenForSort(HistoryConstants.MOVIES_SORT_BY_RATING, token);
 				EventBus.fireHistoryToken(newToken);
 			}
 		});
-		view.releaseYearSortClickHandler().addClickHandler(new ClickHandler() {
+		releaseYearHeaderPanel.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				HistoryToken newToken = PresenterHelpers.cloneTokenForSort(HistoryConstants.MOVIES_SORT_BY_RELEASE_YEAR, token);
 				EventBus.fireHistoryToken(newToken);
 			}
 		});
-		view.titleSortClickHandler().addClickHandler(new ClickHandler() {
+		titleHeaderPanel.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				HistoryToken newToken = PresenterHelpers.cloneTokenForSort(HistoryConstants.MOVIES_SORT_BY_TITLE, token);
@@ -233,10 +318,10 @@ public class MovieListPresenter extends BasePagePresenter<MovieListPresenter.Vie
 			@Override
 			public void onSuccess(PersonListCommandResult result) {
 				for(GPerson person : result.getPersonList()){
-					view.addPerson(person.getLogin(), person.getPersonId(), Integer.parseInt(person.getValue()));
+					addPerson(person.getLogin(), person.getPersonId(), Integer.parseInt(person.getValue()));
 				}
 				if(StringUtil.notEmpty(personId))
-					view.setSelectedPersonId(personId);
+					setSelectedPersonId(personId);
 			}
 		};
 		return replyListCallback;
@@ -263,12 +348,13 @@ public class MovieListPresenter extends BasePagePresenter<MovieListPresenter.Vie
 					HyperlinkPresenter titlePresenter = injector.getHyperlinkPresenter();
 					titlePresenter.setPost(post);
 					String year = ""+post.getPublishYear();
-					view.addMovie(year, titlePresenter.getWidget(), urlLinkPresenter.getWidget(), ratingPresenter.getWidget());
+					addMovie(year, titlePresenter.getWidget(), urlLinkPresenter.getWidget(), ratingPresenter.getWidget());
 				}
 				
 				PaginationPresenter paginationPresenter = injector.getPaginationPresenter();
 				paginationPresenter.initialize(token, result.getResults());
-				view.paginator().add(paginationPresenter.getWidget());
+				paginatorElement.clear();
+				paginatorElement.add(paginationPresenter.getWidget());
 			}
 		};
 		return replyListCallback;
@@ -284,6 +370,4 @@ public class MovieListPresenter extends BasePagePresenter<MovieListPresenter.Vie
 		return urlLinkPresenter;
 	}
 
-	
 }
-
