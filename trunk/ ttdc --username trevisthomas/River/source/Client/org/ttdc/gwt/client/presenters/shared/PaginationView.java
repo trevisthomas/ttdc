@@ -17,6 +17,7 @@ public class PaginationView implements PaginationPresenter.View{
 		main.add(nextTarget, DockPanel.EAST);
 		main.add(prevTarget, DockPanel.WEST);
 		main.add(pagesTarget, DockPanel.CENTER);
+		main.setStyleName("tt-paginator");
 	}
 	
 	@Override

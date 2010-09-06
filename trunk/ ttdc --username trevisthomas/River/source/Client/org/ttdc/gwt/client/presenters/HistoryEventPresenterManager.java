@@ -77,7 +77,8 @@ public class HistoryEventPresenterManager implements HistoryEventListener{
 			topicPanel.show(event.getSource());
 		}
 		else if(HistoryConstants.VIEW_MOVIE_LIST.equals(view)){
-			injector.getMovieListPresenter().show(event.getSource());
+			//injector.getMovieListPresenter().show(event.getSource());
+			injector.createMovieListPanel().show(event.getSource());
 		}
 		else if(HistoryConstants.VIEW_ADMIN_TOOLS.equals(view)){
 			if(person.isAdministrator()){
@@ -94,7 +95,8 @@ public class HistoryEventPresenterManager implements HistoryEventListener{
 			injector.getDemoPresenter().show(event.getSource());
 		}
 		else if(HistoryConstants.VIEW_USER_LIST.equals(view)){
-			injector.getUserListPresenter().show(event.getSource());
+			//injector.getUserListPresenter().show(event.getSource());
+			injector.createUserListPanel().show(event.getSource());
 		}
 		else if(HistoryConstants.VIEW_USER_PROFILE.equals(view)){
 			injector.getPublicUserProfilePresenter().show(event.getSource());

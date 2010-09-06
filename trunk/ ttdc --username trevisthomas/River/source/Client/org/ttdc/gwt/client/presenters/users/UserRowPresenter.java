@@ -44,7 +44,7 @@ public class UserRowPresenter extends BasePresenter<UserRowPresenter.View>{
 		view.loginPanel().add(personLinkPresenter.getWidget());
 		
 		DatePresenter datePresenter = injector.getDatePresenter();
-		datePresenter.init(person.getLastAccessDate());
+		datePresenter.init(person.getDate());
 		view.lastAccessedPanel().add(datePresenter.getWidget());
 		
 		datePresenter = injector.getDatePresenter();

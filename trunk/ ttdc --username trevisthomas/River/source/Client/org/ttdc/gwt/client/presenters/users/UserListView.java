@@ -10,6 +10,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+@Deprecated
 public class UserListView implements UserListPresenter.View{
 	private final VerticalPanel main = new VerticalPanel();
 	private final FlexTable table = new FlexTable();

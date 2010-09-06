@@ -95,7 +95,8 @@
 	*/
 .tt-float-container{ overflow: auto; width: 100%}
 
-
+.tt-movie-list-table,
+.tt-user-list-table,
 .tt-fill{ width: 100%; }
 .tt-fill-both{ height:100%; width:100%;}
 .tt-fill-height{ height:100%;}
@@ -232,6 +233,9 @@
 
 .tt-search-popup{padding: 4px; border: solid 1px; }
 
+.tt-movie-list,
+.tt-user-list{width: 900px; margin: 0 auto;}
+.tt-paginator{margin: 10px auto;}
 
 /* 
  * Colors to be moved into color css
