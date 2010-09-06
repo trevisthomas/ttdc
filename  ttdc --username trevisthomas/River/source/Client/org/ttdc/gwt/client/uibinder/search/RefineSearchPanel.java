@@ -6,6 +6,9 @@ import java.util.Date;
 
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GPerson;
+import org.ttdc.gwt.client.messaging.EventBus;
+import org.ttdc.gwt.client.messaging.error.MessageEvent;
+import org.ttdc.gwt.client.messaging.error.MessageEventType;
 import org.ttdc.gwt.client.messaging.history.HistoryConstants;
 import org.ttdc.gwt.client.messaging.history.HistoryToken;
 import org.ttdc.gwt.client.presenters.util.DateRangeLite;
@@ -19,6 +22,7 @@ import org.ttdc.gwt.shared.commands.results.PersonListCommandResult;
 import org.ttdc.gwt.shared.commands.types.PersonListType;
 import org.ttdc.gwt.shared.commands.types.SortBy;
 import org.ttdc.gwt.shared.commands.types.SortDirection;
+
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -129,6 +133,7 @@ public class RefineSearchPanel extends Composite{
 				searchDetailListenerCollection.setPerson(creatorLogin);
 				if(creatorId != null){
 					setSelectedCreatorId(creatorId);
+					EventBus.fireEvent(new MessageEvent(MessageEventType.SEARCH_CRITERIA_UPDATED, creatorLogin));
 				}
 			}
 		};
@@ -138,7 +143,6 @@ public class RefineSearchPanel extends Composite{
 	
 	private void addPerson(String personId, String login) {
 		userListBoxElement.addItem(login,personId);
-		
 	}
 	
 	private void setSelectedCreatorId(String personId) {
@@ -149,6 +153,9 @@ public class RefineSearchPanel extends Composite{
 		return ((MyListBox)userListBoxElement).getSelectedValue();
 	}
 	
+	public String getPersonName() {
+		return ((MyListBox)userListBoxElement).getSelectedText();
+	}
 	
 	public void addSelectedDateRangeToToken(HistoryToken token) {
 		startDay = startCalendarPresenter.getSelectedDay();
@@ -172,5 +179,7 @@ public class RefineSearchPanel extends Composite{
 		this.searchDetailListenerCollection = searchDetailListenerCollection;	
 		
 	}
+
+	
 
 }

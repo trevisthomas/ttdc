@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+@Deprecated
 public class PublicUserProfileView implements PublicUserProfilePresenter.View{
 	private final VerticalPanel main = new VerticalPanel();
 	private final SimplePanel profilePanel = new SimplePanel();

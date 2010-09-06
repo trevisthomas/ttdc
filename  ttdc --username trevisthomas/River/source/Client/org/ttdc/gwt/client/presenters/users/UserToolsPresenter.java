@@ -12,6 +12,7 @@ import org.ttdc.gwt.shared.util.StringUtil;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.inject.Inject;
 
+@Deprecated
 public class UserToolsPresenter extends BasePagePresenter<UserToolsPresenter.View>{
 	public interface View extends BasePageView{
 		void displayCreateAccountTab();

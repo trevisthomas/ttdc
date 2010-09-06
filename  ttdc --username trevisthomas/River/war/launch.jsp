@@ -40,7 +40,9 @@
 	    	
 	    	Persistence.commit();
     	}
-    	catch(Exception e){}
+    	catch(Exception e){
+    		System.err.println("Failed badly during launch.jsp "+e);
+    	}
     %>
     <link id="mainCss" href="<%=request.getContextPath()%>/css/<%=cssFileName%>" rel="stylesheet" type="text/css" />
     

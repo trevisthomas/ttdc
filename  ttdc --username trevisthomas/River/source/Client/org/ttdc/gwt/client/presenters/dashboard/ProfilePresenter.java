@@ -2,6 +2,7 @@ package org.ttdc.gwt.client.presenters.dashboard;
 
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GPerson;
+import org.ttdc.gwt.client.messaging.ConnectionId;
 import org.ttdc.gwt.client.presenters.shared.BasePresenter;
 import org.ttdc.gwt.client.presenters.shared.BaseView;
 import org.ttdc.gwt.client.presenters.shared.ImagePresenter;
@@ -38,10 +39,17 @@ public class ProfilePresenter extends BasePresenter<ProfilePresenter.View>{
 				
 		view.avatar().add(avatarPresenter.getWidget());
 		view.loginText().setText(person.getLogin());
-		view.nameText().setText(person.getName());
-		view.emailText().setText(person.getEmail());
 		view.bioText().setText(person.getBio());
-		view.webLinks().add(PresenterHelpers.buildWebLinksPresenter(injector, person).getWidget());
+		
+		if(!ConnectionId.isAnonymous()){
+			view.nameText().setText(person.getName());
+			view.emailText().setText(person.getEmail());
+			view.webLinks().add(PresenterHelpers.buildWebLinksPresenter(injector, person).getWidget());
+		}
+		else{
+			view.nameText().setText("...");
+			view.emailText().setText("...");
+		}
 	}
 
 	

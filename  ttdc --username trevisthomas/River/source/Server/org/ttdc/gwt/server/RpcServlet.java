@@ -21,6 +21,7 @@ import org.ttdc.gwt.shared.commands.results.PersonCommandResult;
 import org.ttdc.gwt.shared.util.StringUtil;
 import org.ttdc.persistence.Persistence;
 import org.ttdc.persistence.objects.Person;
+import org.ttdc.util.Cryptographer;
 
 public class RpcServlet extends RemoteServiceSessionServlet implements RpcService{
 	private static final long serialVersionUID = 1L;
@@ -62,6 +63,10 @@ public class RpcServlet extends RemoteServiceSessionServlet implements RpcServic
 			Persistence.beginSession();
 			Person person = AccountDao.login(login, password);
 			GPerson gPerson = processNewlyAuthenticatedUser(person);
+			
+			Cryptographer crypto = new Cryptographer(null);
+			gPerson.setPassword(crypto.encrypt(password));//I do this on authentication so that the user can save the cookie
+			
 			Persistence.commit();
 			
 			PersonCommandResult result = new PersonCommandResult(gPerson);

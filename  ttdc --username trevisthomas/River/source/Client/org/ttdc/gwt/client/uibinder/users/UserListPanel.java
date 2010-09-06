@@ -99,6 +99,9 @@ public class UserListPanel extends BasePageComposite{
 		setupClickHandlers(token);
 		
 		injector.getService().execute(cmd, buildCallback(token));
+		
+		pageHeaderPanel.init("Users", "list of active user accounts");
+		pageHeaderPanel.getSearchBoxPresenter().init();
 	}
 
 	public void addRow(UserRowPresenter rowPresenter) {

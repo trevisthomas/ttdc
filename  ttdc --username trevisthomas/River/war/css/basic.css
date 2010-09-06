@@ -40,8 +40,11 @@
 .tt-post-panel-head-detail,
 .tt-text-normal{font-size:12px;}
 .tt-text-normal-bold{font-size:12px; font-weight: bold;}
+
 .tt-post-panel-head-title,
 .tt-text-large{font-size:16px; font-weight: 500;}
+
+.gwt-TabBar .gwt-TabBarItem-selected,
 .tt-text-large-bold{font-size:16px; font-weight: 700;}
 .tt-text-huge{font-size:22px; font-weight: 700;}
 
@@ -237,6 +240,19 @@
 .tt-user-list{width: 900px; margin: 0 auto;}
 .tt-paginator{margin: 10px auto;}
 
+
+.tt-TabPanel-fullpage{width:85%; margin: 0 auto;}
+.gwt-TabPanel {  }
+.gwt-TabPanelBottom { border-style: solid; border-width: 2px 1px 1px; overflow: hidden; padding: 6px;}
+.gwt-TabBar {}
+.gwt-TabBar .gwt-TabBarFirst { width: 5px;  /* first tab distance from the left */ }
+.gwt-TabBar .gwt-TabBarRest {}
+.gwt-TabBar .gwt-TabBarItem { margin-left: 6px; padding: 3px 6px 3px 6px; cursor: pointer; cursor: hand; text-align: center;}
+.gwt-TabBar .gwt-TabBarItem-selected { cursor: default; } 
+.gwt-TabBar .gwt-TabBarItem-disabled { cursor: default; }
+
+
+
 /* 
  * Colors to be moved into color css
  */
@@ -309,7 +325,8 @@
 .tt-post-body{color: grey;}
 
 .tt-post-panel-head{ background-color: #f5f5f5; border-color:#eee;}
-.tt-post-panel-content{ background-color: #fcfcfc; }
+
+.tt-post-panel-content{color: black; background-color: #fcfcfc; }
 
 .tt-search-popup{background-color: #fefefe; border-color: grey; color: black;}
 
@@ -322,5 +339,15 @@
 
 .tt-graphic-button{background-color: #cecece; border-color: #ccc;}
 
+.gwt-TabPanelBottom,
 .tt-searchBoxPanel{border-bottom-color: #999; border-left-color: #CCC; border-right-color: #999; border-top-color: #CCC;}
+
+
+.gwt-TabBar .gwt-TabBarItem{background: #ececec;}
+.gwt-TabBar .gwt-TabBarItem-selected{background: #92c1f0;} 
+.gwt-TabBar .gwt-TabBarItem-disabled {color: #999999;}
+
+
+
+
 

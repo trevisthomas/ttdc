@@ -20,6 +20,7 @@ import org.ttdc.gwt.shared.util.StringUtil;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.inject.Inject;
 
+@Deprecated
 public class UserDashboardPresenter extends BasePagePresenter<UserDashboardPresenter.View> implements PersonEventListener{
 	
 	public interface View extends BasePageView{

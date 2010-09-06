@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+@Deprecated
 public class UserDashboardView implements UserDashboardPresenter.View{
 	private static final VerticalPanel main = new VerticalPanel();
 	private static final SimplePanel messagePanel = new SimplePanel();

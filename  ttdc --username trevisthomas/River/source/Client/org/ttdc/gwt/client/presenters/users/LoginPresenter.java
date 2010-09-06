@@ -99,12 +99,15 @@ public class LoginPresenter extends BasePresenter<LoginPresenter.View> {
 				
 				applyCss(person.getStyle().getCss());
 				
+				//EventBus.fireReturnHomeEvent();
+				
 				
 			}
 			@Override
 			public void onFailure(Throwable caught) {
 				//ConnectionId.getInstance().setCurrentUser(null);
-				EventBus.fireErrorMessage(caught.getMessage());
+				//EventBus.fireErrorMessage(caught.getMessage());
+				Window.alert("Login failed");
 				view.passwordTextBox().setText("");
 				CookieTool.clear();
 			}
