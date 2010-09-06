@@ -12,6 +12,7 @@ import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.beans.GTag;
+import org.ttdc.gwt.client.messaging.ConnectionId;
 import org.ttdc.gwt.client.messaging.EventBus;
 import org.ttdc.gwt.client.messaging.error.MessageEvent;
 import org.ttdc.gwt.client.messaging.error.MessageEventListener;
@@ -22,12 +23,16 @@ import org.ttdc.gwt.client.presenters.comments.NewCommentPresenter;
 import org.ttdc.gwt.client.presenters.search.DefaultMessageTextBox;
 import org.ttdc.gwt.client.presenters.util.ClickableIconPanel;
 import org.ttdc.gwt.client.services.BatchCommandTool;
+import org.ttdc.gwt.client.services.RpcServiceAsync;
 import org.ttdc.gwt.client.uibinder.post.NewMoviePanel;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
+import org.ttdc.gwt.shared.commands.PersonCommand;
 import org.ttdc.gwt.shared.commands.PostCrudCommand;
 import org.ttdc.gwt.shared.commands.SearchTagsCommand;
+import org.ttdc.gwt.shared.commands.results.GenericCommandResult;
 import org.ttdc.gwt.shared.commands.results.PostCommandResult;
 import org.ttdc.gwt.shared.commands.results.SearchTagsCommandResult;
+import org.ttdc.gwt.shared.commands.types.PersonStatusType;
 import org.ttdc.gwt.shared.util.StringUtil;
 
 import com.google.gwt.core.client.GWT;
@@ -62,6 +67,7 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 //    @UiField(provided = true) FocusPanel movieElement = new ClickableIconPanel("tt-clickable-icon-movie");
     @UiField Anchor commentElement;
 	@UiField Anchor movieElement;    
+	@UiField Anchor markReadElement;
     @UiField TableElement parentElement; 
     
     private String rootId;
@@ -112,9 +118,11 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 		
 		commentElement.setText("comment");
     	movieElement.setText("movie");
+    	markReadElement.setText("read");
     	//readElement.setText("mark read");
     	commentElement.addStyleName("tt-cursor-pointer");
     	movieElement.addStyleName("tt-cursor-pointer");
+    	markReadElement.addStyleName("tt-cursor-pointer");
 	}
     
     @Override
@@ -293,6 +301,23 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 		else{
 			showPopup(commentPresneter.getWidget());	
 		}
+	}
+	
+	@UiHandler("markReadElement")
+	public void onClickMarkRead(ClickEvent event){
+		PersonCommand cmd = new PersonCommand(ConnectionId.getInstance().getCurrentUser().getPersonId(),
+				PersonStatusType.MARK_SITE_READ);
+		RpcServiceAsync service = injector.getService();
+		service.execute(cmd, createStatusUpdateCallback());
+	}
+	//Duplicated in HomePanel
+	private CommandResultCallback<GenericCommandResult<GPerson>> createStatusUpdateCallback() {
+		return new CommandResultCallback<GenericCommandResult<GPerson>>(){
+			@Override
+			public void onSuccess(GenericCommandResult<GPerson> result) {
+				EventBus.reload();//TODO: probably should come up with a way to just refresh the parts i care about!
+			}
+		};
 	}
 	
 	@UiHandler("refineSearchElement")

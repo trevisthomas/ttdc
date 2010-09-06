@@ -113,7 +113,8 @@ public class HistoryEventPresenterManager implements HistoryEventListener{
 			}
 		}
 		else if(HistoryConstants.VIEW_HOME.equals(view)){
-			injector.getHome2Presenter().show(event.getSource());
+			injector.createHomePanel().show(event.getSource());
+			//injector.getHome2Presenter().show(event.getSource());
 			//injector.getHomePresenter().show(event.getSource());
 		}
 		else{

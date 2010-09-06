@@ -6,6 +6,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+@Deprecated
 public class TrafficPersonView implements TrafficPersonPresenter.View{
 	private final Grid main = new Grid(1,2);
 	private SimplePanel avatarPanel = new SimplePanel();
