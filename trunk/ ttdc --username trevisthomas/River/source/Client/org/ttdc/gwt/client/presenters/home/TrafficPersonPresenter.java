@@ -12,6 +12,7 @@ import org.ttdc.gwt.client.presenters.util.PresenterHelpers;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.inject.Inject;
 
+@Deprecated
 public class TrafficPersonPresenter extends BasePresenter<TrafficPersonPresenter.View>{
 	public interface View extends BaseView{
 		HasWidgets namePanel();

@@ -1,0 +1,21 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<!-- The above doctype is to allow for special html characters in this xml file -->
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+	
+	<g:HTMLPanel>
+		<table class="tt-traffic-person">
+			<tr>
+				<td>
+					<g:SimplePanel ui:field="avatarElement"/>
+				</td>
+				<td class="tt-fill">
+					<g:SimplePanel ui:field="loginElement"/>
+					<g:SimplePanel ui:field="dynamicDateElement"/>
+					<g:SimplePanel ui:field="linksElement"/>
+				</td>
+			</tr>
+		</table>
+		
+	</g:HTMLPanel>
+</ui:UiBinder>

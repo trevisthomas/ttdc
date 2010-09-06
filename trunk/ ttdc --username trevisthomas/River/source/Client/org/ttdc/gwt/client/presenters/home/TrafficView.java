@@ -3,12 +3,12 @@ package org.ttdc.gwt.client.presenters.home;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class TrafficView implements TrafficPresenter.View{
-	private final VerticalPanel personPanel = new VerticalPanel();
-	private final Map<String, Widget> map = new TrafficMap<String, Widget>(3);
+	private final HorizontalPanel personPanel = new HorizontalPanel();
+	private final Map<String, Widget> map = new TrafficMap<String, Widget>(5);
 	
 	@Override
 	public Widget getWidget() {

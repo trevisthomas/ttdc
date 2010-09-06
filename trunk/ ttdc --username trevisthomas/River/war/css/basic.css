@@ -32,6 +32,9 @@
 	
 .tt-text-nano{font-size:7px;}
 .tt-text-mini{font-size:9px;}
+
+.tt-traffic-date,
+.tt-traffic-login,
 .tt-post-expanded-date,
 .tt-post-panel-head-date,
 .tt-text-small{font-size:10px;}
@@ -251,6 +254,7 @@
 .gwt-TabBar .gwt-TabBarItem-selected { cursor: default; } 
 .gwt-TabBar .gwt-TabBarItem-disabled { cursor: default; }
 
+.tt-traffic-person{width: 200px;}
 
 
 /* 

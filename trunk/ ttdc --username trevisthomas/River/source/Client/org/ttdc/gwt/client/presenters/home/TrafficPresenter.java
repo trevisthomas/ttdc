@@ -8,6 +8,7 @@ import org.ttdc.gwt.client.messaging.person.PersonEventListener;
 import org.ttdc.gwt.client.messaging.person.PersonEventType;
 import org.ttdc.gwt.client.presenters.shared.BasePresenter;
 import org.ttdc.gwt.client.presenters.shared.BaseView;
+import org.ttdc.gwt.client.uibinder.home.TrafficPersonPanel;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
 import org.ttdc.gwt.shared.commands.PersonListCommand;
 import org.ttdc.gwt.shared.commands.results.PersonListCommandResult;
@@ -20,7 +21,7 @@ import com.google.inject.Inject;
 
 public class TrafficPresenter extends BasePresenter<TrafficPresenter.View> implements PersonEventListener{
 	public interface View extends BaseView{
-		public final int MAX_ENTRIES = 3;
+		public final int MAX_ENTRIES = 5;
 		void addPerson(String personId, Widget w);
 		void addOrUpdatePerson(String personId, Widget w);
 	}
@@ -42,9 +43,9 @@ public class TrafficPresenter extends BasePresenter<TrafficPresenter.View> imple
 	public void onPersonEvent(PersonEvent event) {
 		if(event.is(PersonEventType.TRAFFIC)){
 			GPerson person = event.getSource();
-			TrafficPersonPresenter trafficPersonPresenter = injector.getTrafficPersonPresenter();
-			trafficPersonPresenter.init(person);
-			view.addOrUpdatePerson(person.getPersonId(), trafficPersonPresenter.getWidget());
+			TrafficPersonPanel trafficPersonPanel = injector.createTrafficPersonPanel();
+			trafficPersonPanel.init(person);
+			view.addOrUpdatePerson(person.getPersonId(), trafficPersonPanel);
 		}
 			
 	}
@@ -54,9 +55,9 @@ public class TrafficPresenter extends BasePresenter<TrafficPresenter.View> imple
 			@Override
 			public void onSuccess(PersonListCommandResult result) {
 				for(GPerson person : result.getResults().getList()){ 
-					TrafficPersonPresenter trafficPersonPresenter = injector.getTrafficPersonPresenter();
-					trafficPersonPresenter.init(person);
-					view.addPerson(person.getPersonId(), trafficPersonPresenter.getWidget());
+					TrafficPersonPanel trafficPersonPanel = injector.createTrafficPersonPanel();
+					trafficPersonPanel.init(person);
+					view.addPerson(person.getPersonId(), trafficPersonPanel);
 				}
 				EventBus.getInstance().addListener(TrafficPresenter.this);
 			}

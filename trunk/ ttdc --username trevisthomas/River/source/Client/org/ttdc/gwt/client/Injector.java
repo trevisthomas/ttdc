@@ -98,6 +98,8 @@ import org.ttdc.gwt.client.uibinder.calendar.InteractiveCalendarPanel;
 import org.ttdc.gwt.client.uibinder.calendar.SmallMonthPanel;
 import org.ttdc.gwt.client.uibinder.dashboard.FilteredPost;
 import org.ttdc.gwt.client.uibinder.dashboard.UserDashboardPanel;
+import org.ttdc.gwt.client.uibinder.home.HomePanel;
+import org.ttdc.gwt.client.uibinder.home.TrafficPersonPanel;
 import org.ttdc.gwt.client.uibinder.movies.MovieListPanel;
 import org.ttdc.gwt.client.uibinder.post.MoreOptionsPopupPanel;
 import org.ttdc.gwt.client.uibinder.post.NewMoviePanel;
@@ -416,5 +418,7 @@ public interface Injector extends Ginjector {
 	public UserDashboardPanel createUserDashboardPanel();
 	public UserToolsPanel createUserToolsPanel();
 	public PublicUserProfilePanel createPublicUserProfilePanel();
+	public HomePanel createHomePanel();
+	public TrafficPersonPanel createTrafficPersonPanel();
 }
 
