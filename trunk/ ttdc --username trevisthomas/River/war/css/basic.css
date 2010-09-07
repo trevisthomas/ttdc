@@ -74,11 +74,13 @@
 .tt-post-footer{text-align: right;}
 
 .tt-post-summary-body{padding:0px 2px;}
+
+.tt-home-left,
+.tt-home-right,
 .tt-topic-left,
-.tt-topic-right{
-	width:504px;
-	padding: 0 2px;	
-}
+.tt-topic-right{width:504px; padding: 0 2px;}
+
+.tt-home-tabContainer{margin: 4px 0 10px 0;}
 
 /*
 .tt-post-expanded-content{width:100%; clear:both;}
@@ -246,7 +248,7 @@
 
 .tt-TabPanel-fullpage{width:85%; margin: 0 auto;}
 .gwt-TabPanel {  }
-.gwt-TabPanelBottom { border-style: solid; border-width: 2px 1px 1px; overflow: hidden; padding: 6px;}
+.gwt-TabPanelBottom { border-style: solid; border-width: 1px; overflow: hidden; padding: 1px; margin: 0 2px;}
 .gwt-TabBar {}
 .gwt-TabBar .gwt-TabBarFirst { width: 5px;  /* first tab distance from the left */ }
 .gwt-TabBar .gwt-TabBarRest {}
@@ -254,7 +256,7 @@
 .gwt-TabBar .gwt-TabBarItem-selected { cursor: default; } 
 .gwt-TabBar .gwt-TabBarItem-disabled { cursor: default; }
 
-.tt-traffic-person{width: 200px;}
+.tt-traffic-person{width: 199px; border: 1px solid; margin: 2px 2px;}
 
 
 /* 
@@ -346,7 +348,9 @@
 .gwt-TabPanelBottom,
 .tt-searchBoxPanel{border-bottom-color: #999; border-left-color: #CCC; border-right-color: #999; border-top-color: #CCC;}
 
-
+.tt-traffic-person{background-color: #f5f5f5; border-color:#eee;}
+	
+	
 .gwt-TabBar .gwt-TabBarItem{background: #ececec;}
 .gwt-TabBar .gwt-TabBarItem-selected{background: #92c1f0;} 
 .gwt-TabBar .gwt-TabBarItem-disabled {color: #999999;}

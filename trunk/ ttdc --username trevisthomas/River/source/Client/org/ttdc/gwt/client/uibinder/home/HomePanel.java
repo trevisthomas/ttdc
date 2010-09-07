@@ -34,11 +34,8 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
@@ -62,7 +59,7 @@ public class HomePanel extends BasePageComposite implements PersonEventListener,
 	private final SimplePanel threadPanel = new SimplePanel();
 	private final SimplePanel earmarksPanel = new SimplePanel();
 	
-	private final Button markReadButton = new Button("Read");
+//	private final Button markReadButton = new Button("Read");
 	
 	private HistoryToken token = new HistoryToken();
 		
@@ -86,9 +83,12 @@ public class HomePanel extends BasePageComposite implements PersonEventListener,
     	
     	centerTabPanelElement.add(nestedPanel, "Nested");
     	centerTabPanelElement.add(flatPanel, "Flat");
-    	centerTabPanelElement.add(conversationPanel,"Conversations");
+    	//centerTabPanelElement.add(conversationPanel,"Conversations");
     	rightTabPanelElement.add(threadPanel,"Threads");
 		
+    	centerTabPanelElement.setStyleName("tt-fill");
+    	rightTabPanelElement.setStyleName("tt-fill");
+    	
     	token.addParameter(HistoryConstants.VIEW, HistoryConstants.VIEW_HOME);
 		
     	centerTabPanelElement.addSelectionHandler(new SelectionHandler<Integer>() {
@@ -172,8 +172,8 @@ public class HomePanel extends BasePageComposite implements PersonEventListener,
 	final static int INDEX_FLAT = 1;
 	final static int INDEX_THREAD = 0;
 	final static int INDEX_NESTED = 0;
-	final static int INDEX_CONVERSATION = 2;
-	final static int INDEX_EARMARKS = 3;
+	final static int INDEX_CONVERSATION = 3;
+	final static int INDEX_EARMARKS = 2;
 
 	private void displayTab(TabType selected) {
 		fireHistoryEvent = false;
@@ -185,8 +185,11 @@ public class HomePanel extends BasePageComposite implements PersonEventListener,
 		else if(selected.equals(TabType.EARMARKS)){
 			centerTabPanelElement.selectTab(INDEX_EARMARKS);
 		}
-		else{
+		else if(selected.equals(TabType.CONVERSATION)){
 			centerTabPanelElement.selectTab(INDEX_CONVERSATION);
+		}
+		else{
+			centerTabPanelElement.selectTab(INDEX_NESTED);
 		}
 		
 		rightTabPanelElement.selectTab(INDEX_THREAD);
@@ -240,13 +243,17 @@ public class HomePanel extends BasePageComposite implements PersonEventListener,
 			selected = TabType.NESTED;
 			buildNestedTab();
 		}
+		else if(HistoryConstants.HOME_CONVERSATION_TAB.equals(tab)){
+			selected = TabType.CONVERSATION;
+			buildNestedTab();
+		}
 		else if(HistoryConstants.HOME_EARMARKS_TAB.equals(tab) && !user.isAnonymous()){
 			selected = TabType.EARMARKS;
 			buildEarmarksTab();
 		}
 		else{ // if(HistoryConstants.HOME_NESTED_TAB.equals(tab)){
-			selected = TabType.CONVERSATION;
-			buildConversationTab();
+			selected = TabType.NESTED;
+			buildNestedTab();
 		}
 		
 		buildThreadTab();

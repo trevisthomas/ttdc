@@ -118,11 +118,15 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 		
 		commentElement.setText("comment");
     	movieElement.setText("movie");
-    	markReadElement.setText("read");
+    	markReadElement.setText("mark read");
     	//readElement.setText("mark read");
     	commentElement.addStyleName("tt-cursor-pointer");
     	movieElement.addStyleName("tt-cursor-pointer");
     	markReadElement.addStyleName("tt-cursor-pointer");
+    	
+    	if(ConnectionId.isAnonymous()){
+    		markReadElement.setVisible(false);
+    	}
 	}
     
     @Override

@@ -12,7 +12,7 @@ public class DateFormatUtil {
 	
 	public static final DateTimeFormat shortTimeFormatter = DateTimeFormat.getFormat("h:mm:ss");
 	public static final DateTimeFormat longDayOfWeekFormatter = DateTimeFormat.getFormat("EEEE");
-	public static DateTimeFormat dateTimeFormatter = DateTimeFormat.getFormat("MM d, yyyy h:mm:ss");
+	public static DateTimeFormat dateTimeFormatter = DateTimeFormat.getFormat("MMM d, yyyy h:mm:ss");
 	
 	public static String formatLongDate(Date date){
 		return longDateFormatter.format(date);

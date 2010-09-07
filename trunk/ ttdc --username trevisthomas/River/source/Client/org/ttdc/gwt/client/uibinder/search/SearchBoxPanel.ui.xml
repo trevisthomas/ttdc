@@ -24,10 +24,9 @@
 				 		</tr>
 				 	</table>
 		 		</td>
-		 		<td class="tt-text-left">
-		 			&nbsp;&nbsp;<g:Anchor ui:field="commentElement" />&raquo;<br />
-	 				&nbsp;&nbsp;<g:Anchor ui:field="movieElement"/>&raquo;
-	 				&nbsp;<g:Anchor ui:field="markReadElement"/>&raquo;
+		 		<td class="tt-center">
+		 			&nbsp;&nbsp;<g:Anchor ui:field="commentElement" /> | <g:Anchor ui:field="movieElement"/><br />
+	 				&nbsp;&nbsp;<g:Anchor ui:field="markReadElement"/>
 		 		</td>
 	 		</tr>
 	 	</table>

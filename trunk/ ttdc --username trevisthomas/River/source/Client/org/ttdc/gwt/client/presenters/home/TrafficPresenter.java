@@ -24,12 +24,18 @@ public class TrafficPresenter extends BasePresenter<TrafficPresenter.View> imple
 		public final int MAX_ENTRIES = 5;
 		void addPerson(String personId, Widget w);
 		void addOrUpdatePerson(String personId, Widget w);
+		void clear();
 	}
-	
+	private Injector injector;
 	@Inject
 	protected TrafficPresenter(Injector injector) {
 		super(injector, injector.getTrafficView());
+		this.injector = injector;
 
+		refreshTraffic();
+	}
+
+	private void refreshTraffic() {
 		PersonListCommand personListCmd = new PersonListCommand(PersonListType.ACTIVE);
 		
 		personListCmd.setSortOrder(SortBy.BY_LAST_ACCESSED);
@@ -47,6 +53,9 @@ public class TrafficPresenter extends BasePresenter<TrafficPresenter.View> imple
 			trafficPersonPanel.init(person);
 			view.addOrUpdatePerson(person.getPersonId(), trafficPersonPanel);
 		}
+		else if(event.is(PersonEventType.USER_CHANGED)){
+			refreshTraffic();
+		}
 			
 	}
 	
@@ -54,6 +63,7 @@ public class TrafficPresenter extends BasePresenter<TrafficPresenter.View> imple
 		return new CommandResultCallback<PersonListCommandResult>(){
 			@Override
 			public void onSuccess(PersonListCommandResult result) {
+				view.clear();
 				for(GPerson person : result.getResults().getList()){ 
 					TrafficPersonPanel trafficPersonPanel = injector.createTrafficPersonPanel();
 					trafficPersonPanel.init(person);

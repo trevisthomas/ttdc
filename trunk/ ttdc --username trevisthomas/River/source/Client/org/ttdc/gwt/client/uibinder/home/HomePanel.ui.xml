@@ -7,12 +7,12 @@
 		<g:Widget styleName="tt-fill" ui:field="pageHeaderElement"/>
 		<g:SimplePanel ui:field="siteUpdateElement"/>
 		<g:SimplePanel styleName="tt-fill" ui:field="trafficElement"/>
-		<table>
+		<table class="tt-home-tabContainer">
 			<tr>
-				<td>
+				<td class="tt-home-left">
 					<g:TabPanel ui:field="centerTabPanelElement" />
 				</td>
-				<td>
+				<td class="tt-home-right">
 					<g:TabPanel ui:field="rightTabPanelElement" />
 				</td>
 			</tr>
