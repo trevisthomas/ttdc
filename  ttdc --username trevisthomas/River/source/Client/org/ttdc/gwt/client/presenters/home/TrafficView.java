@@ -8,7 +8,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class TrafficView implements TrafficPresenter.View{
 	private final HorizontalPanel personPanel = new HorizontalPanel();
-	private final Map<String, Widget> map = new TrafficMap<String, Widget>(5);
+	private final Map<String, Widget> map = new TrafficMap<String, Widget>(MAX_ENTRIES);
 	
 	@Override
 	public Widget getWidget() {
@@ -40,6 +40,11 @@ public class TrafficView implements TrafficPresenter.View{
 			return; //dont add any more
 	}
 	
+	@Override
+	public void clear(){
+		personPanel.clear();
+		map.clear();
+	}
 	/**
 	 * 
 	 * This custom LinkedHashMap caps the number of items that it will hold.

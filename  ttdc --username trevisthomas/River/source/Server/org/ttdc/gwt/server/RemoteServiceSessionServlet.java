@@ -8,7 +8,12 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 //import org.ttdc.biz.network.services.UserService;
+import org.ttdc.gwt.client.beans.GPerson;
+import org.ttdc.gwt.client.messaging.person.PersonEvent;
+import org.ttdc.gwt.client.messaging.person.PersonEventType;
 import org.ttdc.gwt.client.services.RemoteServiceException;
+import org.ttdc.gwt.server.activity.ServerEventBroadcaster;
+import org.ttdc.gwt.server.beanconverters.FastPostBeanConverter;
 import org.ttdc.gwt.server.dao.AccountDao;
 import org.ttdc.gwt.server.dao.InitConstants;
 import org.ttdc.gwt.server.dao.PersonDao;
@@ -74,6 +79,7 @@ public abstract class RemoteServiceSessionServlet extends RemoteServiceServlet{
 				String personId = readSessionString(SESSION_KEY_PERSON_ID);
 				person = PersonDao.loadPerson(personId);
 				AccountDao.userHit(person.getPersonId());
+				broadcastPerson(person);
 				Persistence.commit();
 			}
 			else{
@@ -88,6 +94,12 @@ public abstract class RemoteServiceSessionServlet extends RemoteServiceServlet{
 		}
 	}
 	
+	protected GPerson broadcastPerson(Person person){
+		GPerson gPerson = FastPostBeanConverter.convertPerson(person);
+		PersonEvent event = new PersonEvent(PersonEventType.TRAFFIC,gPerson);
+		ServerEventBroadcaster.getInstance().broadcastEvent(event);
+		return gPerson;
+	}
 	
 		
 	protected void rememberActiveUser(Person person){

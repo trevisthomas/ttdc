@@ -138,10 +138,7 @@ public class RpcServlet extends RemoteServiceSessionServlet implements RpcServic
 	private GPerson processNewlyAuthenticatedUser(Person person) {
 		rememberActiveUser(person);
 		AccountDao.userHit(person.getPersonId());
-		GPerson gPerson = FastPostBeanConverter.convertPerson(person);
-		PersonEvent event = new PersonEvent(PersonEventType.TRAFFIC,gPerson);
-		ServerEventBroadcaster.getInstance().broadcastEvent(event);
-		return gPerson;
+		return broadcastPerson(person);
 	}
 	
 	@Override
