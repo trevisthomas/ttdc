@@ -8,6 +8,11 @@ import org.hibernate.dialect.function.StandardSQLFunction;
 import org.hibernate.engine.SessionFactoryImplementor;
 import org.hibernate.type.Type;
 
+/**
+ * You should try to delete this some time.  I dont think that it is used.
+ *
+ */
+@Deprecated  
 public class MsSQLBitwiseFilterMaskSQLFunction extends StandardSQLFunction implements SQLFunction {
 
 	   public MsSQLBitwiseFilterMaskSQLFunction(String name) {
