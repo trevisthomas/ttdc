@@ -234,7 +234,8 @@ public class FastPostBeanConverter {
 		gEntry.setBody(e.getBody());
 		gEntry.setDate(e.getDate());
 		gEntry.setEntryId(e.getEntryId());
-		gEntry.setSummary(ConversionUtils.preparePostSummaryForDisplay(e.getSummary()));
+		//gEntry.setSummary(ConversionUtils.preparePostSummaryForDisplay(e.getSummary()));
+		gEntry.setSummary(e.getSummary());
 		return gEntry;
 	}
 	

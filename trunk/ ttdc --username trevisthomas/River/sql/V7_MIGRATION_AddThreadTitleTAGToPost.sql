@@ -19,7 +19,7 @@ BEGIN
 	-- if you later decide that you dont want titles on conversation starters here is where you make that change.
 	-- just remove the or parent_guid	
 	-- update post set TITLE_TAG_GUID=@tagId where (guid=@postId or parent_guid=@postId) AND (guid=root_guid OR guid=thread_guid)
-	update post set TITLE_TAG_GUID=@tagId where root_guid=@postId --Just put the title tag on every post.
+	update post set TAG_GUID_TITLE=@tagId where root_guid=@postId --Just put the title tag on every post.
 	
 
 	fetch next from myCursor into @tagId, @postId

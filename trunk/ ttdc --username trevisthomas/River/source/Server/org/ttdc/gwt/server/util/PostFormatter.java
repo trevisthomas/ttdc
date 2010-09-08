@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.ttdc.gwt.server.beanconverters.ConversionUtils;
 import org.ttdc.persistence.Persistence;
 import org.ttdc.persistence.objects.Shacktag;
 import org.ttdc.util.ShackTagger;
@@ -76,7 +77,9 @@ public class PostFormatter {
 		int length = 100;
 		String summary = msg.substring(0, length<=msg.length()? length : msg.length());
 		
-		return htmlEncode(ShackTagger.getInstance().shackTagThis(summary,ShackTagger.Style.REMOVE_CARRIGE_RETURNS));
+		//September 7th tried something different
+		return ConversionUtils.preparePostSummaryForDisplay(summary);
+		//return htmlEncode(ShackTagger.getInstance().shackTagThis(summary,ShackTagger.Style.REMOVE_CARRIGE_RETURNS));
 		
 		//return msg;
 	}

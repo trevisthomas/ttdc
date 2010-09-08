@@ -16,7 +16,7 @@ import org.ttdc.persistence.objects.Post;
 import org.ttdc.util.RatingUtility;
 
 public class CalculateAverageRating {
-	private final static Logger log = Logger.getLogger(TagDao.class);
+	private final static Logger log = Logger.getLogger(CalculateAverageRating.class);
 	
 	Session session;
 	public static void main(String[] args) {

@@ -38,8 +38,8 @@ public final class Persistence {
         try {
             Configuration configuration = new AnnotationConfiguration()
         	//.configure()
-        	.configure("hibernate.cfg.mysql.xml")
-            //.configure("hibernate.cfg.xml")
+        	//.configure("hibernate.cfg.mysql.xml")
+            .configure("hibernate.cfg.xml")
         	.addAnnotatedClass(Person.class)
         	.addAnnotatedClass(Tag.class)
         	.addAnnotatedClass(Image.class)

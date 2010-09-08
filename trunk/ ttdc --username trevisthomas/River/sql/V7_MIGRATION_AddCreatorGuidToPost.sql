@@ -16,7 +16,7 @@ BEGIN
 		inner join person p on p.guid=tag.creator_guid
 		where tag.type='CREATOR' and ass.post_guid=@postId
 
-		update post set CREATOR_GUID=@creatorId where guid=@postId
+		update post set PERSON_GUID_CREATOR=@creatorId where guid=@postId
 
 	fetch next from myCursor into @postId
 END
