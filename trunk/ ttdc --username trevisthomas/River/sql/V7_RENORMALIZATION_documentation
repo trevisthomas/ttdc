@@ -46,7 +46,7 @@
 	SortValueOnTag
 	EntrySummaryAndTagRemoveForV7.java 
 			
-	V7_RENORMALIZATION_UpdateNewPostColumns.sql - took over 4 hours (359,000 rows in the log)
+	V7_RENORMALIZATION_UpdateNewPostColumns.sql - took over 4 hours (359,000 rows in the log) (9/8/2010 over 6 hours)
 		
 	V7_MIGRATION_AddCountsToPosts.sql - (seconds) merge
 	V7_MIGRATION_AddThreadIdToPost.sql - 2min not mergable, works on a subset
@@ -56,6 +56,8 @@
 	
 		
 	V7_RENORMALIZATION_CleanupForAfterTheOtherTwo.sql - removes old associations and tags.
+	
+	V7_VERIFICATION.sql -- run some of these scripts to test if things are looking ok.  
 	
 	Rebuild indexs (Time taken: 1:18:07.175)
 	

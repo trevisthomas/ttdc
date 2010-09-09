@@ -516,7 +516,7 @@ import org.ttdc.gwt.shared.util.PostFlagBitmasks;
 	@NamedNativeQuery(
 		name="CalendarDao.fetchMonth", query=""+
 			"select count(p.guid) ct, Year(p.date) as yr, Month(p.date) as mo, Day(p.date) as dd, "+
-			"titleTag.value as title, p.root_guid as rootId, uuid() as uniqueId "+ //newid() as uniqueId
+			"titleTag.value as title, p.root_guid as rootId, newid() as uniqueId "+ // //uuid() as uniqueId
 			"from POST p "+
 			"inner join TAG as titleTag on titleTag.guid = tag_guid_title "+
 			"inner join ENTRY as e on e.guid = p.latest_entry_guid "+
@@ -553,7 +553,7 @@ import org.ttdc.gwt.shared.util.PostFlagBitmasks;
 	),
 	
 	@NamedNativeQuery(name="CalendarDao.fetchYear", query=
-		"select count(p.guid) ct, Year(p.date) as yr, Month(p.date) as mo, Day(p.date) as dd, uuid() as uniqueId "+ //newid() as uniqueId 
+		"select count(p.guid) ct, Year(p.date) as yr, Month(p.date) as mo, Day(p.date) as dd, newid() as uniqueId "+ //uuid() as uniqueId 
 		"from POST p "+
 		"where Year(p.date) = :year "+
 		"group by Year(p.date), Month(p.date), Day(p.date) "+
@@ -567,7 +567,7 @@ import org.ttdc.gwt.shared.util.PostFlagBitmasks;
 	 *  
 	 */
 	@NamedNativeQuery(name="CalendarDao.fetchSimpleMonth", query=
-		"select count(p.guid) ct, Year(p.date) as yr, Month(p.date) as mo, Day(p.date) as dd, uuid() as uniqueId "+ //newid() as uniqueId
+		"select count(p.guid) ct, Year(p.date) as yr, Month(p.date) as mo, Day(p.date) as dd, newid() as uniqueId "+ //uuid() as uniqueId
 		"from POST p "+
 		"where Year(p.date) = :year AND Month(p.date) = :month "+
 		"group by Year(p.date), Month(p.date), Day(p.date) "+
