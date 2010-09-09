@@ -26,8 +26,9 @@ BEGIN
 	select @avgRatingId=null
 
 	select @titleId=t.guid from association_post_tag a inner join tag t on a.tag_guid=t.guid  where a.title=1 AND t.type='TOPIC' and a.post_guid=@rootId
-	select @creatorId=a.creator_guid from association_post_tag a inner join tag t on a.tag_guid=t.guid where t.type='CREATOR' and a.post_guid=@postId	
-	select @avgRatingId=t.guid from association_post_tag a inner join tag t on a.tag_guid=t.guid where t.type='AVERAGE_RATING' and a.post_guid=@postId
+	select @creatorId=a.creator_guid from association_post_tag a inner join tag t on a.tag_guid=t.guid where t.type='CREATOR' and a.post_guid=@postId
+	-- Average rating is already set by the java code which never even bothers to create the AVERAGE_RATING association.  It just adds the tag directly to the post
+	--select @avgRatingId=t.guid from association_post_tag a inner join tag t on a.tag_guid=t.guid where t.type='AVERAGE_RATING' and a.post_guid=@postId
 	select @url=t.value from association_post_tag a inner join tag t on a.tag_guid=t.guid  where t.type='URL' and a.post_guid=@postId 
 	select @pubYear=convert(smallint,t.value) from association_post_tag a inner join tag t on a.tag_guid=t.guid  where t.type='RELEASE_YEAR' and a.post_guid=@postId 
 	select top 1  @entryId = guid, @editDate = date from Entry where post_guid=@postId order by date desc

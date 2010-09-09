@@ -49,7 +49,11 @@ public class InboxDao extends FilteredPostPaginatedDaoBase{
 	
 	@SuppressWarnings("unchecked")
 	private Date getLastReadDate(){
+		if(person.isAnonymous())
+			return defaultStartDate;
+		
 		if(lastReadDate == null){
+			//This query bombs on SqlServer 2008 if the personId is not a valid uniqueidentifier, so i check for anon and exit before doing it
 			List<InboxCache> list = session().createCriteria(InboxCache.class)
 			.add(Restrictions.isNull("post"))
 			.add(Restrictions.eq("person.personId", person.getPersonId()))

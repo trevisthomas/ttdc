@@ -31,7 +31,10 @@ public class FilteredPostPaginatedDaoBase extends PaginatedDaoBase{
 	}
 	
 	public FilteredPostPaginatedDaoBase() {
-		filterThreadIds.add("");
+		//Having a list with "" breaks SQLServer2008! So i return this fake guid all the time. 
+		//Research this, mabye i should just reformat the query to leave the filter value out when i dont have a real one?
+		//filterThreadIds.add("");
+		filterThreadIds.add("97605236-9CA3-4802-8C1E-C7435BC1BE27");
 	}
 	
 	public List<String> getFilterThreadIds() {
