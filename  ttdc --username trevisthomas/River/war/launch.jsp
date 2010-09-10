@@ -57,7 +57,10 @@
    <script language='JavaScript'> 
    		function tggle_video(target,embedurl) { var s=document.getElementById(target); if ( s.innerHTML.length==0 ) s.innerHTML='<object width="560" height="340"><param name="movie" value="'+embedurl+'"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="'+embedurl+'" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="560" height="340"></embed></object>'; else s.innerHTML=""; }
 		//Never got teh one below to work
-   		function tggle_embed(target,embedHtml) { var s=document.getElementById(target); if ( s.innerHTML.length==0 ) s.innerHTML=embedHtml; else s.innerHTML=""; }
+   		//function tggle_embed(target,embedHtml) { var s=document.getElementById(target); if ( s.innerHTML.length==0 ) s.innerHTML=embedHtml; else s.innerHTML=""; }
+		function tggle_embed(target,embedHtml) { var s=document.getElementById('11E63E28-0961-45B4-91B7-61DB70944ADE'); if ( s.innerHTML.length==0 ) s.innerHTML=embedHtml; else s.innerHTML=""; }
+		
+		function tggle_embed7(embedHtml) { var s=document.getElementById('11E63E28-0961-45B4-91B7-61DB70944ADE'); if ( s.innerHTML.length==0 ) s.innerHTML=embedHtml; else s.innerHTML=""; document.getElementById('11E63E28-0961-45B4-91B7-61DB70944ADE').scrollIntoView();}
 
    		function toggleTest(target) { var s=document.getElementById(target); if ( s.innerHTML.length==0 ) s.innerHTML=embedHtml; else s.innerHTML=""; }
    </script>

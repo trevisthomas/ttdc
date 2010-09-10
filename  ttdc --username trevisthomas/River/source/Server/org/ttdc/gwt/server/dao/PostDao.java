@@ -116,6 +116,7 @@ final public class PostDao {
 		post.addEntry(entry);
 		post.setLatestEntry(entry);
 		
+		
 		session().flush();
 		return post;
 	}
@@ -129,7 +130,7 @@ final public class PostDao {
 	private Entry buildEntry(Post post) {
 		Entry entry = new Entry();
 		if(StringUtils.isNotBlank(embedMarker)){
-			String fixedBody = body.replaceAll(embedMarker, post.getPostId());
+			String fixedBody = body.replaceAll(embedMarker, post.getThread().getPostId());
 			entry.setBody(fixedBody);
 		}
 		else{

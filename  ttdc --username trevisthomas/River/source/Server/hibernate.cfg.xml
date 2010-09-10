@@ -6,7 +6,7 @@
 	<property name="hibernate.connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
 	<!-- <property name="hibernate.connection.url">jdbc:sqlserver://localhost:1433;databaseName=TTDC_v7</property> -->
 	<!-- <property name="hibernate.connection.url">jdbc:sqlserver://localhost:1433;databaseName=TTDC_v7_Mar8</property> -->
-	<property name="hibernate.connection.url">jdbc:sqlserver://localhost:1433;databaseName=TTDC_v7</property>
+	<property name="hibernate.connection.url">jdbc:sqlserver://localhost:1433;databaseName=TTDC_v7_Sept7</property>
 	<property name="hibernate.connection.username">application</property>
 	<property name="hibernate.connection.password">password</property>
 	

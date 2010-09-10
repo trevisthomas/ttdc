@@ -74,11 +74,11 @@ public class PostFormatter {
 		return htmlEncode(ShackTagger.getInstance().shackTagThis(msg));
 	}
 	public String formatSummary(final String msg){
-		int length = 100;
-		String summary = msg.substring(0, length<=msg.length()? length : msg.length());
+//		int length = 100;
+//		String summary = msg.substring(0, length<=msg.length()? length : msg.length());
 		
 		//September 7th tried something different
-		return ConversionUtils.preparePostSummaryForDisplay(summary);
+		return ConversionUtils.preparePostSummaryForDisplay(msg);
 		//return htmlEncode(ShackTagger.getInstance().shackTagThis(summary,ShackTagger.Style.REMOVE_CARRIGE_RETURNS));
 		
 		//return msg;

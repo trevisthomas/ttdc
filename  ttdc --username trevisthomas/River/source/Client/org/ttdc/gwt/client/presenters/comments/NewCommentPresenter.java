@@ -58,7 +58,7 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 		//HasClickHandlers getAddReviewClickHandlers();
 		
 		HasWidgets getMessagePanel();
-		void setEmbedTargetPlaceholder(String embedTargetPlaceholder);
+		//void setEmbedTargetPlaceholder(String embedTargetPlaceholder);
 		
 		HasValue<Boolean> getDeletedCheckbox();
 		HasValue<Boolean> getReviewCheckbox();
@@ -82,7 +82,7 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 	
 	public enum Mode{EDIT,CREATE}
 	private GPost post = null;
-	private String embedTargetPlaceholder = "EmbedTarget_PLACEHOLDER";
+	//private String embedTargetPlaceholder = "EmbedTarget_PLACEHOLDER";
 	private SuggestBox parentSuggestionBox;
 	private SugestionOracle parentSuggestionOracle;
 	
@@ -96,7 +96,7 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 	@Inject
 	public NewCommentPresenter(Injector injector){
 		super(injector, injector.getNewCommentView());
-		view.setEmbedTargetPlaceholder(embedTargetPlaceholder);
+		//view.setEmbedTargetPlaceholder(embedTargetPlaceholder);
 		
 		EventBus.getInstance().addListener(this);
 		currentUser = ConnectionId.getInstance().getCurrentUser();
@@ -275,11 +275,16 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 	
 	
 	private void createPost() {
+		executeCommand(PostActionType.CREATE);
+		
+	}
+
+	private void executeCommand(PostActionType action) {
 		PostCrudCommand cmd = new PostCrudCommand();
-		cmd.setAction(PostActionType.CREATE);
+		cmd.setAction(action);
 		cmd.setBody(view.getCommentBody().getHTML());
 		cmd.setConnectionId(ConnectionId.getInstance().getConnectionId());
-		cmd.setEmbedMarker(embedTargetPlaceholder);
+		//cmd.setEmbedMarker(embedTargetPlaceholder);
 		
 		cmd.setPrivate(view.getPrivateCheckbox().getValue());
 		cmd.setDeleted(view.getDeletedCheckbox().getValue());
@@ -308,16 +313,16 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 			}
 		}
 		else{
-			cmd.setParentId(post.getPostId());
+			cmd.setParentId(post.getPostId());//For reply
+			cmd.setPostId(post.getPostId());//For edit
 		}
 		CommandResultCallback<PostCommandResult> callback = buildCreatePostCallback();
 		
 		getService().execute(cmd,callback);
-		
 	}
 	
 	private void editPost(){
-		
+		executeCommand(PostActionType.UPDATE);
 	}
 
 	private CommandResultCallback<PostCommandResult> buildCreatePostCallback() {

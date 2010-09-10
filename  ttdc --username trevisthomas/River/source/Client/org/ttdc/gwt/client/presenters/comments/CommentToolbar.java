@@ -102,9 +102,8 @@ public class CommentToolbar extends Composite implements EmbedContentPopupSource
 	private RichStyleElement styleOrange = new RichStyleElement("Orange", "span", "shackTag_orange");
 	private RichStyleElement styleGreen = new RichStyleElement("Green", "span", "shackTag_green");
 	
-	public CommentToolbar(RichTextArea richtext, String embedTarget) {
+	public CommentToolbar(RichTextArea richtext) {
 		this.richTextArea = richtext;
-		this.embedTarget = embedTarget;
 		
 		styleTextFormatter = richTextArea.getFormatter();
 		topPanel.setHorizontalAlignment(HorizontalPanel.ALIGN_LEFT);
@@ -433,7 +432,7 @@ public class CommentToolbar extends Composite implements EmbedContentPopupSource
 		embedSource = embedSource.replaceAll("\"", ""); //Hack because inserting the htmp performs some html encoding that complety messes up when there are qutation marks
 		
 		insertHtmlAt(selectedText,tmpSelectedText, tmpStartPos, "<a target=\"_blank\" href=\""+directSource+"\">",
-			"</a><a href=\"javascript:tggle_embed('"+embedTarget+"','"+embedSource+"');\">[view]</a>");
+			"</a><a href=\"javascript:tggle_embed7('"+embedSource+"');\">[view]</a>");
 		
 	}
 	
@@ -447,6 +446,8 @@ public class CommentToolbar extends Composite implements EmbedContentPopupSource
 		richTextArea.getFormatter().createLink(marker);
 		int startpos = richTextArea.getHTML().indexOf(marker) - 9; //"<a href="
 		richTextArea.getFormatter().removeLink();
+		if(startpos < 0) //Added Sept 9 because all of a sudden nothing fucking worked.  Adding the marker link doesnt do anything
+			startpos = 0;
 		return startpos;
 	}
 	

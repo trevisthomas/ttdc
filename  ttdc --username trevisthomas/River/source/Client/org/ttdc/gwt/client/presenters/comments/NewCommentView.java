@@ -31,7 +31,6 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class NewCommentView implements NewCommentPresenter.View{
-	private String embedTargetPlaceholder = "EmbedTarget_PLACEHOLDER";
 	private final VerticalPanel main = new VerticalPanel();
 	private final SimplePanel messagePanel = new SimplePanel();
 	private final SimplePanel replyToPanel = new SimplePanel();
@@ -40,7 +39,7 @@ public class NewCommentView implements NewCommentPresenter.View{
 	private final Button addCommentButton = new Button("Add");
 	private final Button editCommentButton = new Button("Edit");
 	private final MyRichTextArea textArea = new MyRichTextArea();
-	private final CommentToolbar toolbar = new CommentToolbar(textArea, embedTargetPlaceholder);
+	private final CommentToolbar toolbar = new CommentToolbar(textArea);
 	private final CheckBox deletedCheckbox = new CheckBox("Deleted");
 	private final CheckBox reviewCheckbox = new CheckBox("Review");
 	private final CheckBox infCheckbox = new CheckBox("Informative");
@@ -98,7 +97,7 @@ public class NewCommentView implements NewCommentPresenter.View{
 		//The embed target may need to be dynamic.  Just remember that the back end wil need
 		//to know this value in order to swap it for the real one. So if placeholder becomes dynamic
 		//you're gonna need to send it up stream.
-		main.add(new HTML("<center><span id=\""+embedTargetPlaceholder+"\"></span></center>"));
+		//main.add(new HTML("<center><span id=\""+embedTargetPlaceholder+"\"></span></center>"));
 		
 //		tagGrid.setWidget(0, 0, tagsPanel);
 //		tagGrid.setWidget(0, 1, tagSelectorPanel);
@@ -283,10 +282,10 @@ public class NewCommentView implements NewCommentPresenter.View{
 	
 	
 	
-	@Override
-	public void setEmbedTargetPlaceholder(String embedTargetPlaceholder) {
-		this.embedTargetPlaceholder = embedTargetPlaceholder;
-	}
+//	@Override
+//	public void setEmbedTargetPlaceholder(String embedTargetPlaceholder) {
+//		this.embedTargetPlaceholder = embedTargetPlaceholder;
+//	}
 
 
 	@Override
