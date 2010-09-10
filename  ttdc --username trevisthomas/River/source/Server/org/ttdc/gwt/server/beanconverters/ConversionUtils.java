@@ -21,26 +21,6 @@ public class ConversionUtils {
 	private final static String markerOpen = "START123"+System.currentTimeMillis()+"";
 	private final static String markerEnd = "END123"+System.currentTimeMillis()+"";
 	
-//	public static String preparePostSummaryForDisplay(final String value) {
-//		Reader r;
-//		try{
-//			r = new StringReader(value);
-//			HTMLEditorKit.Parser parser;
-//		    System.out.println("About to parse " + value);
-//		    parser = new ParserDelegator();
-//		    parser.parse(r, new HTMLParseLister(), true);
-//		    r.close();
-//		    String s = r.toString();
-//		    return s;
-//		    
-//		}
-//		catch(Exception e){
-//			return "error";
-//		}
-//	}
-	
-	
-	
 	public static String preparePostSummaryForDisplay(final String value) {
 		if(value == null)
 			return null;
@@ -76,7 +56,7 @@ public class ConversionUtils {
 	 * in v7 
 	 */
 	private final static String newEmbedHotness = "s=document.getElementById(\"11E63E28-0961-45B4-91B7-61DB70944ADE\");";
-	public static String fixV6Embed(final String body){
+	public static String fixV6Embed_(final String body){
 		if(body.indexOf("document.getElementById(") < 0){
 			return body;
 		}
@@ -90,60 +70,63 @@ public class ConversionUtils {
 		m.appendTail(sb);
 		return sb.toString();
 	}
+	
+	//tggle_embed7(embedHtml)
+	public static String fixV6Embed(final String body){
+		if(body.indexOf("document.getElementById(") < 0){
+			return body;
+		}
+		
+//		Pattern p = Pattern.compile("s=document\\.getElementById\\(\".*?\"\\);");
+//		Matcher m = p.matcher(body);
+//		StringBuffer sb = new StringBuffer();
+//		while(m.find()){
+//			m.appendReplacement(sb, newEmbedHotness);
+//		}
+		
+		Pattern p1 = Pattern.compile("<script language=\\'JavaScript\\'> function tggle_.*?>embedded</span></a>");
+		//Pattern p1 = Pattern.compile( StringTools.escapeRexExSpecialCharacters("<script language=")+".*?"+ StringTools.escapeRexExSpecialCharacters("embedded</span>"));
+		Matcher m1 = p1.matcher(body);
+		StringBuffer sb1 = new StringBuffer();
+		
+		while(m1.find()){
+			//m1.appendReplacement(sb1, newEmbedHotness);
+			String v7embed = "";
+			String subSection = body.substring(m1.start(),m1.end());
+			//subSection = subSection.replaceAll("\\<.*?\\>", "");
+			
+			Pattern p = Pattern.compile("s\\.innerHTML=\\'.*?\\'; else s\\.innerHTML");
+			Matcher m = p.matcher(subSection);
+			StringBuffer sb = new StringBuffer();
+			if(m.find()){
+				//m.appendReplacement(sb, newEmbedHotness);
+				String sub2 = subSection.substring(m.start(),m.end());
+				String embed = sub2.substring(sub2.indexOf('\'')+1, sub2.lastIndexOf('\''));
+				System.out.println(embed);
+				
+				embed = embed.replaceAll("\"", "");
+				
+				v7embed = "<a href=\"javascript:tggle_embed7('"+embed+"');\">[view]</a>";
+				
+				m1.appendReplacement(sb1, v7embed);
+			}
+		}
+		
+		
+		
+//		//Get the embeded script
+//		Pattern p = Pattern.compile("s\\.innerHTML=\\'.*?\"\\'; else s\\.innerHTML");
+//		Matcher m = p.matcher(body);
+//		StringBuffer sb = new StringBuffer();
+//		while(m.find()){
+//			m.appendReplacement(sb, newEmbedHotness);
+//		}
+		
+		//replace the javascript call
+		m1.appendTail(sb1);
+		return sb1.toString();
+	}
 }
 
-/**
- * HTML parsing proceeds by calling a callback for
- * each and every piece of the HTML do*****ent.  This
- * simple callback class simply prints an indented
- * structural listing of the HTML data.
- */
-class HTMLParseLister extends HTMLEditorKit.ParserCallback
-{
-    int indentSize = 0;
 
-    protected void indent() { 
-        indentSize += 3;
-    }
-    protected void unIndent() {
-        indentSize -= 3; if (indentSize < 0) indentSize = 0;
-    }
-
-    protected void pIndent() {
-        for(int i = 0; i < indentSize; i++) System.out.print(" ");
-    }
-
-    public void handleText(char[] data, int pos) {
-        pIndent();
-        System.out.println("Text(" + data.length + " chars)");
-    }
-
-    public void handleComment(char[] data, int pos) {
-        pIndent();
-        System.out.println("Comment(" + data.length + " chars)");
-    }
-
-    public void handleStartTag(HTML.Tag t, MutableAttributeSet a, int pos) {
-        pIndent();
-        System.out.println("Tag start(<" + t.toString() + ">, " +
-                           a.getAttributeCount() + " attrs)");
-        indent();
-    }
-
-    public void handleEndTag(HTML.Tag t, int pos) {
-        unIndent();
-        pIndent();
-        System.out.println("Tag end(</" + t.toString() + ">)");
-    }
-
-    public void handleSimpleTag(HTML.Tag t, MutableAttributeSet a, int pos) {
-        pIndent();
-        System.out.println("Tag(<" + t.toString() + ">, " +
-                           a.getAttributeCount() + " attrs)");
-    }
-
-    public void handleError(String errorMsg, int pos){
-        System.out.println("Parsing error: " + errorMsg + " at " + pos);
-    }
-}    
 

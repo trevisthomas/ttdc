@@ -111,6 +111,10 @@ final public class AssociationPostTagDao {
 			throw new RuntimeException("Post is required for for association");
 		if(tag == null)
 			throw new RuntimeException("Tag is required for for association");
+		
+		if(creator.isAnonymous()){
+			throw new RuntimeException("Anonymous users can't perform this action.");
+		}
 	}
 	
 	public boolean hasTitleAssociation(Post post){

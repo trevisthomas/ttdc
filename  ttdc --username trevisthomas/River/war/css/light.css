@@ -1,0 +1,109 @@
+@import "common/icons/richtext2-light.css";
+@import "common/stars/stars-orange.css";
+@import "common/icons/icons-grey.css";
+@import "common/icons/icons-common.css";
+@import "structure.css";
+
+/* 
+ * Colors to be moved into color css
+ */
+
+.tt-message-textbox-disabled{ color: #ddd;}
+
+/*
+.tt-color-selected{border-color: yellow; background-color: #fc5}
+.tt-color-selected-hover{border-color: yellow; background-color: white;}
+.tt-color-contrast1{ background: grey; color: white; border-color: #eee;}
+.tt-color-contrast1-hover{ background: #eee; color: black; border-color: grey;}
+.tt-color-contrast2-hover{ border-color: grey; background: #eee;}
+.tt-color-contrast2{ border-color: #eee;}
+.tt-color-contrast3-hover{ border-color: grey; background: #eee;}
+.tt-color-contrast3{ border-color: #ccc; background-color: #fcfcfc;}
+*/
+
+	
+.tt-color-month-week-header,	
+.tt-color-calendar-small-month-week{ background: grey; color: white; border-color: #eee;}
+
+.tt-color-month-week-header-hover,
+.tt-color-calendar-small-month-week-hover{ background: #eee; color: black; border-color: grey;}
+
+.tt-color-calendar-small-month-day-selected{border-color: yellow; background-color: #fc5}
+.tt-color-calendar-small-month-day-selected-hover{border-color: yellow; background-color: white;}
+
+.tt-color-calendar-nav
+.tt-color-calendar-small-month-day-content{ background: grey; color: white; border-color: #eee;}
+
+.tt-color-calendar-nav-hover,
+.tt-color-calendar-small-month-day-content-hover{ background: #eee; color: black; border-color: grey;}
+
+.tt-color-calendar-day-hour,
+.tt-color-calendar-hour,
+.tt-color-month-day-body{ border-color: #eee;}
+
+
+.tt-color-month-day-body-hover{ border-color: grey; background: #eee;}
+
+.tt-color-calendar-week-date-hover,
+.tt-color-calendar-hour-label,	
+.tt-color-month-day-header-hover,
+.tt-color-calendar-small-month-day{ border-color: grey; background: #eee;}
+
+.tt-color-calendar-week-date,
+.tt-color-calendar-hour-hover,
+.tt-color-month-day-header,
+.tt-color-calendar-small-month-day-hover{ border-color: #ccc; background-color: #fcfcfc;}
+
+
+.tt-color-nws{ color: red; }
+.tt-color-inf{ color: #F5F23B; }
+
+.tt-comment-editor,
+.tt-post-expanded{ border-color: #black;}
+
+.tt-post ul{list-style: disc; padding: 0 0 0 20px;}
+.tt-post ol{list-style: decimal; padding: 0 0 0 20px;}
+/*
+.tt-post-panel-root
+.tt-post{ background-color: #fefefe; border-color:#eee; color: white;}
+*/
+.tt-post{ background-color: transparent; border-color:#eee;}
+
+
+.tt-post-panel-number,
+.tt-post-summary-body,
+.tt-color-search-results-header,
+.tt-post-body{color: grey;}
+
+.tt-post-panel-head{ background-color: #f5f5f5; border-color:#eee;}
+
+.tt-post-panel-content{color: black; background-color: #fcfcfc; }
+
+.tt-search-popup{background-color: #fefefe; border-color: grey; color: black;}
+
+.tt-conversation-count{background-color: #F5F23B; border-color: white; color: grey;}
+.tt-reply-count{background-color: #cecece; border-color: white; color: #fefefe;}
+.tt-color-options-button{border-color: grey; color:grey;}
+.tt-color-options-button-hover{border-color: black; color:black;}
+.tt-color-post-summary{background-color:transparent;}
+.tt-color-post-summary-hover{background-color:#eee;}
+
+.tt-graphic-button{background-color: #cecece; border-color: #ccc;}
+
+.tt-fancy-image-border,
+.gwt-TabPanelBottom,
+.tt-searchBoxPanel{border-bottom-color: #999; border-left-color: #CCC; border-right-color: #999; border-top-color: #CCC;}
+
+.tt-traffic-person{background-color: #f5f5f5; border-color:#eee;}
+
+.tt-rich-text-area{background-color:#ddd; color:black;}
+	
+.gwt-TabBar .gwt-TabBarItem{background: #ececec;}
+.gwt-TabBar .gwt-TabBarItem-selected{background: #92c1f0;} 
+.gwt-TabBar .gwt-TabBarItem-disabled {color: #999999;}
+
+.tt-fancy-image-border{ background-color: #ddd;}
+
+
+
+

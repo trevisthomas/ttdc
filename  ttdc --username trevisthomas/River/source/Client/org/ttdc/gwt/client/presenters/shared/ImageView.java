@@ -7,6 +7,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class ImageView implements ImagePresenter.View{
@@ -20,6 +21,7 @@ public class ImageView implements ImagePresenter.View{
 	private final FocusPanel main = new FocusPanel(); 
 	private boolean showClickableCursor = false;
 	private String linkUrl = null;
+	private String borderCss = "";
 	
 		
 	@Override
@@ -101,7 +103,10 @@ public class ImageView implements ImagePresenter.View{
 		this.image = image;
 	}
 
-
+	@Override
+	public void setFancyBorder(String css) {
+		this.borderCss = css;
+	}
 
 	@Override
 	public void renderHtml() {
@@ -133,7 +138,18 @@ public class ImageView implements ImagePresenter.View{
 			html.setHTML(sb.toString());
 		
 		main.clear();
-		main.add(html);
+		if(StringUtil.notEmpty(borderCss)){
+			SimplePanel fancyBorder = new SimplePanel();
+			fancyBorder.setStyleName(borderCss);
+			fancyBorder.add(html);
+			main.add(fancyBorder);
+		}
+		else{
+			main.add(html);
+		}
+		
+		
+		
 	}
 
 	@Override

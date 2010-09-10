@@ -83,6 +83,7 @@ public class PostSummaryPanel extends Composite implements PostPresenterCommon{
     public void init(GPost post){
     	this.post = post;
     	String body = post.getLatestEntry().getBody();
+    	
     	if(body.indexOf("tggle_embed") > 0 || body.indexOf("javascript:tggle_") > 0){
     		//Build the summary on the fly for these ugly ones
     		String plain = HtmlToPlainTextHack.extractPlainText(post.getLatestEntry().getBody());

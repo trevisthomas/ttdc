@@ -157,7 +157,7 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 		
 		replyCountElement.setText(""+post.getMass());
 		
-		replyCountElement.setTitle( post.getMass() + " replies in this branch.");
+		replyCountElement.setTitle( post.getMass() + " replies in this conversation.");
 		if(post.isRootPost()){
 			conversationCountElement.setVisible(true);
 			conversationCountElement.setText(""+post.getReplyCount());
