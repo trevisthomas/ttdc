@@ -15,6 +15,7 @@ import org.ttdc.gwt.client.presenters.post.PostPresenterCommon;
 import org.ttdc.gwt.client.presenters.shared.HyperlinkPresenter;
 import org.ttdc.gwt.client.presenters.topic.TopicHelpers;
 import org.ttdc.gwt.client.presenters.util.ClickableHoverSyncPanel;
+import org.ttdc.gwt.client.presenters.util.HtmlToPlainTextHack;
 import org.ttdc.gwt.client.services.RpcServiceAsync;
 import org.ttdc.gwt.shared.calender.CalendarPost;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
@@ -33,6 +34,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.RichTextArea;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -80,7 +82,18 @@ public class PostSummaryPanel extends Composite implements PostPresenterCommon{
     
     public void init(GPost post){
     	this.post = post;
-    	bodySummaryElement.setHTML(post.getLatestEntry().getSummary());
+    	String body = post.getLatestEntry().getBody();
+    	if(body.indexOf("tggle_embed") > 0 || body.indexOf("javascript:tggle_") > 0){
+    		//Build the summary on the fly for these ugly ones
+    		String plain = HtmlToPlainTextHack.extractPlainText(post.getLatestEntry().getBody());
+    		int length = 60;
+    		String summary = plain.substring(0, length<=plain.length()? length : plain.length());
+    		bodySummaryElement.setHTML(summary);	
+    	}
+    	else{
+    		bodySummaryElement.setHTML(post.getLatestEntry().getSummary());
+    	}
+    	
     	creatorLinkPresenter.setPerson(post.getCreator());
     	//setSpacer(post.getPath().split("\\.").length - 2);
     	//buildFancySpacer();

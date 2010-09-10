@@ -1,15 +1,12 @@
 package org.ttdc.gwt.client;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import org.ttdc.gwt.client.autocomplete.SugestionOracle;
 import org.ttdc.gwt.client.components.views.FrontPageView;
 import org.ttdc.gwt.client.components.widgets.UserProfileWidget;
 import org.ttdc.gwt.client.messaging.EventBus;
 import org.ttdc.gwt.client.messaging.HistoryMonitor;
-import org.ttdc.gwt.client.messaging.ServerEventMonitor;
 import org.ttdc.gwt.client.messaging.error.MessageEvent;
 import org.ttdc.gwt.client.messaging.error.MessageEventListener;
 import org.ttdc.gwt.client.messaging.error.MessageEventType;

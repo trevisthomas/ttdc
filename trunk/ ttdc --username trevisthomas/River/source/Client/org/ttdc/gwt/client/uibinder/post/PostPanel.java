@@ -215,7 +215,7 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 		
 		
 		embedTargetElement.setId(post.getPostId());
-					
+							
 		if(post.getPosts().size() != 0){
 			//postCollectionPresenter = injector.getPostCollectionPresenter();
 			postCollectionPresenter.setPostList(post.getPosts(), Mode.FLAT);

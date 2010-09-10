@@ -15,7 +15,7 @@ public final class StringTools {
 	
 	
 	//private static List<Character> escapeCharacters = new ArrayList<Character>(Arrays.asList(new Character[]));
-	private static final char[] escapeCharacters  = {'[','\\','^','$',',','|','?','*','+','(',')'};
+	private static final char[] escapeCharacters  = {'[', '\\', '^', '$', ',', '|', '?', '*', '+', '(', ')'};
 	static{
 		Arrays.sort(escapeCharacters);
 	}
