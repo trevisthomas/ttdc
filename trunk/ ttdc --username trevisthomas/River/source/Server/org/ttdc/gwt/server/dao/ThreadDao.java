@@ -74,7 +74,7 @@ public class ThreadDao extends FilteredPostPaginatedDaoBase{
 	
 	
 	public PaginatedList<Post> loadByReplyDate() {
-		PaginatedList<Post> results;
+		PaginatedList<Post> resultsConversations;
 		//Grab the first page of starters requested by the user
 		int page = 1;
 		int subPage = 1;
@@ -87,16 +87,16 @@ public class ThreadDao extends FilteredPostPaginatedDaoBase{
 			setCurrentPage(page);
 		}
 		
-		results = DaoUtils.executeLoadFromPostId(this,"ThreadDao.StartersByReplyDate","ThreadDao.StartersCount",rootId, buildFilterMask(getFilterFlags()));
-		List<Post> posts = loadAllPostsForThreads(results.getList());
+		resultsConversations = DaoUtils.executeLoadFromPostId(this,"ThreadDao.StartersByReplyDate","ThreadDao.StartersCount",rootId, buildFilterMask(getFilterFlags()));
+		List<Post> replies = loadAllPostsForThreads(resultsConversations.getList());
 		
-		loadReplies(results, subPage, posts);
-		return results;
+		loadReplies(resultsConversations, subPage, replies);
+		return resultsConversations;
 	}
 
-	private void loadReplies(PaginatedList<Post> results, int subPage,
+	private void loadReplies(PaginatedList<Post> resultsConversations, int subPage,
 			List<Post> posts) {
-		for(Post p : results.getList()){
+		for(Post p : resultsConversations.getList()){
 			if(p.equals(sourcePost.getThread()) && subPage != 1)
 				loadRepliesFromPostList(p, posts, subPage);
 			else

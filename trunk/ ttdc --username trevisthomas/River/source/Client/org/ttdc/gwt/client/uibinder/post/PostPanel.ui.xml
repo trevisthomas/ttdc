@@ -4,7 +4,7 @@
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'
 	xmlns:t='urn:import:org.ttdc.gwt.client.presenters.util'>
 	<g:HTMLPanel styleName="tt-post-conversation" ui:field="postMainElement">
-		<div class="tt-post tt-color-post" >
+		<div class="tt-post" >
 			<div class="tt-post-panel-head">
 				<table class="tt-fill">
 					<tr>
@@ -38,7 +38,7 @@
 						<td colspan="2">
 							<table class="tt-fill">
 								<tr>
-									<td class="tt-post-panel-head-detail">by <g:Hyperlink ui:field="creatorLinkElement" />
+									<td class="tt-post-panel-head-detail">by <g:Hyperlink ui:field="creatorLinkElement" /> <g:Widget ui:field="ratingElement" />
 									<table class="tt-inline">
 										<tr>
 											<td><g:Label ui:field="postPrivateElement" /></td>
@@ -67,7 +67,6 @@
 									<g:Anchor ui:field="moreOptionsElement" >options</g:Anchor>
 								</span>
 								<div class="tt-float-right"  style="clear:both;">
-									<g:Widget ui:field="ratingElement" />
 									<g:Widget ui:field="postImageElement" />
 								</div>
 								<span class="tt-post-body tt-text-normal" ui:field="bodyElement" />

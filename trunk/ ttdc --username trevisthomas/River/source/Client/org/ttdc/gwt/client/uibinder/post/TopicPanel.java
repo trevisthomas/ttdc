@@ -12,7 +12,6 @@ import org.ttdc.gwt.client.uibinder.common.BasePageComposite;
 import org.ttdc.gwt.client.uibinder.shared.StandardPageHeaderPanel;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
 import org.ttdc.gwt.shared.commands.PostCrudCommand;
-import org.ttdc.gwt.shared.commands.results.CalendarCommandResult;
 import org.ttdc.gwt.shared.commands.results.PostCommandResult;
 
 import com.google.gwt.core.client.GWT;

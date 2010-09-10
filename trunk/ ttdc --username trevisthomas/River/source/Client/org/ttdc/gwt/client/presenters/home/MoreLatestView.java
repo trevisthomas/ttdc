@@ -5,7 +5,7 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Widget;
 
 public class MoreLatestView implements MoreLatestPresenter.View{
-	private final Anchor main = new Anchor("More");
+	private final Anchor main = new Anchor("older");
 
 	@Override
 	public Widget getWidget() {

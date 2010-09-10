@@ -23,6 +23,7 @@ public class ImagePresenter extends BasePresenter<ImagePresenter.View>{
 		void setClickableCursor(boolean clickable);
 		void setLinkUrl(String url);
 		void renderHtml();
+		void setFancyBorder(String css);
 	}
 	
 	@Inject
@@ -53,6 +54,7 @@ public class ImagePresenter extends BasePresenter<ImagePresenter.View>{
 	public void setImageAsMoviePoster(GPost post){
 		setImage(post.getImage(), post.getTitle(),100,-1);
 		setLinkUrl(post.getUrl());
+		view.setFancyBorder("tt-fancy-image-border");
 		//Hmm, maybe clicking should take you to ttdc?
 	}
 	

@@ -1,9 +1,7 @@
 package org.ttdc.gwt.client.presenters.movies;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -12,32 +10,31 @@ import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class MovieRatingView implements MovieRatingPresenter.View{
 	//private final HorizontalPanel main = new HorizontalPanel();
-	private final FlowPanel main = new FlowPanel();
-	private final Label temp = new Label();
+	private final FlowPanel starPanel = new FlowPanel();
+	
 	private final String CSS_STAR_RIGHT_PREFIX  = "tt-star-right-";
 	private final String CSS_STAR_LEFT_PREFIX  = "tt-star-left-";
 	private boolean interactiveMode = false;
 	private RatableContentProcessor rateMovie;
-	List<HalfStarPanel> starList = new ArrayList<HalfStarPanel>();
+	private final Grid grid = new Grid(1,1);
+	private List<HalfStarPanel> starList = new ArrayList<HalfStarPanel>();
 	
 	public MovieRatingView() {
-		main.add(temp);
-		main.setStyleName("tt-rating-widget");
-		
+		starPanel.setStyleName("tt-rating-widget");
+		grid.setStyleName("tt-inline");
+		grid.setWidget(0, 0, starPanel);
 	}
 	
 	@Override
 	public void setRating(String rating) {
-		main.clear();
+		starPanel.clear();
 		float r = Float.parseFloat(rating);
 		//HalfStarPanel hstar; 
 		createHalfStarPanel(r, 0.5f, CSS_STAR_LEFT_PREFIX);
@@ -69,7 +66,7 @@ public class MovieRatingView implements MovieRatingPresenter.View{
 	private HalfStarPanel createHalfStarPanel(float ratingValue, float halfStarValue, String cssPrefix) {
 		HalfStarPanel hstar;
 		hstar = new HalfStarPanel(halfStarValue, cssPrefix);
-		main.add(hstar);
+		starPanel.add(hstar);
 		if(ratingValue >= halfStarValue){
 			hstar.setFilled();
 		}
@@ -80,7 +77,7 @@ public class MovieRatingView implements MovieRatingPresenter.View{
 
 	@Override
 	public Widget getWidget() {
-		return main;
+		return grid;
 	}
 
 	private class HalfStarPanel extends Label{

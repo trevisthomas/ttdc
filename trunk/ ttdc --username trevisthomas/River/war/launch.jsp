@@ -15,7 +15,7 @@
     <title>TTDC v7 Alpha</title>
     
     <link type="text/css" rel="stylesheet" href="/css/shacktags.css"/>
-    <link type="text/css" rel="stylesheet" href="/css/basic.css"/>
+    <!-- <link type="text/css" rel="stylesheet" href="/css/basic.css"/>  -->
     <link type="text/css" rel="stylesheet" href="/css/standard.css"/>
     <link type="text/css" rel="stylesheet" href="/css/corettdc.css"/>
     <%
@@ -60,7 +60,7 @@
    		//function tggle_embed(target,embedHtml) { var s=document.getElementById(target); if ( s.innerHTML.length==0 ) s.innerHTML=embedHtml; else s.innerHTML=""; }
 		function tggle_embed(target,embedHtml) { var s=document.getElementById('11E63E28-0961-45B4-91B7-61DB70944ADE'); if ( s.innerHTML.length==0 ) s.innerHTML=embedHtml; else s.innerHTML=""; }
 		
-		function tggle_embed7(embedHtml) { var s=document.getElementById('11E63E28-0961-45B4-91B7-61DB70944ADE'); if ( s.innerHTML.length==0 ) s.innerHTML=embedHtml; else s.innerHTML=""; document.getElementById('11E63E28-0961-45B4-91B7-61DB70944ADE').scrollIntoView();}
+		function tggle_embed7(embedHtml) {s=document.getElementById('embededTargetContainer').style.display = 'block'; var s=document.getElementById('11E63E28-0961-45B4-91B7-61DB70944ADE'); s.innerHTML=embedHtml; document.getElementById('11E63E28-0961-45B4-91B7-61DB70944ADE').scrollIntoView();}
 
    		function toggleTest(target) { var s=document.getElementById(target); if ( s.innerHTML.length==0 ) s.innerHTML=embedHtml; else s.innerHTML=""; }
    </script>

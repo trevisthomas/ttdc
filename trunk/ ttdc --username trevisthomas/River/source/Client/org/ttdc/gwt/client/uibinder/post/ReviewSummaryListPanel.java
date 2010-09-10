@@ -23,6 +23,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Hyperlink;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -45,8 +46,10 @@ public class ReviewSummaryListPanel extends PostBaseComposite implements PostEve
     private MovieRatingPresenter averageMovieRatingPresenter;
     
     
+    
 	@UiField(provided = true) Hyperlink titleElement;
-    @UiField SpanElement replyCountElement;
+    @UiField Label replyCountElement;
+    @UiField  Label conversationCountElement;
     @UiField(provided = true) Widget posterElement;
 //    @UiField(provided = true) Hyperlink creatorLinkElement;
 //    @UiField(provided = true) Widget createDateElement;
@@ -67,6 +70,8 @@ public class ReviewSummaryListPanel extends PostBaseComposite implements PostEve
 		averageRatingElement = averageMovieRatingPresenter.getWidget();
 		
 		initWidget(binder.createAndBindUi(this)); 
+		
+		conversationCountElement.setStyleName("tt-conversation-count");
 		
 		EventBus.getInstance().addListener(this);
 	}
@@ -102,6 +107,10 @@ public class ReviewSummaryListPanel extends PostBaseComposite implements PostEve
 				reviewsElement.add(summaryPanel);
 			}
 		}
+		
+		conversationCountElement.setText(""+post.getReplyCount());
+		conversationCountElement.setTitle(post.getReplyCount() + " conversations on this topic.");
+	
 	}
 
 	@Override

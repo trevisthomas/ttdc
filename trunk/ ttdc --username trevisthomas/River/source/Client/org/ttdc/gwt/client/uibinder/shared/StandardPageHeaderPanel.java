@@ -6,12 +6,14 @@ import org.ttdc.gwt.client.uibinder.Navigation;
 import org.ttdc.gwt.client.uibinder.search.SearchBoxPanel;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -33,6 +35,8 @@ public class StandardPageHeaderPanel extends Composite{
     @UiField(provided = true) Widget searchElement;
 	@UiField(provided = true) Widget loginElement;
 	@UiField(provided = true) Widget popupCalendarDateElement;
+	@UiField HTMLPanel embededTargetContainer;
+	@UiField Anchor closeEmbedElement;
 	
     
     @Inject
@@ -51,6 +55,9 @@ public class StandardPageHeaderPanel extends Composite{
     	
     	    	
     	initWidget(binder.createAndBindUi(this)); 
+    	
+    	embededTargetContainer.getElement().setId("embededTargetContainer");
+    	embededTargetContainer.setVisible(false);
 
 	}
     
@@ -66,5 +73,10 @@ public class StandardPageHeaderPanel extends Composite{
     
     public SearchBoxPanel getSearchBoxPresenter(){
     	return searchBoxPanel;
+    }
+    
+    @UiHandler("closeEmbedElement")
+    public void onClickCloseEmbed(ClickEvent event){
+    	embededTargetContainer.setVisible(false);
     }
 }

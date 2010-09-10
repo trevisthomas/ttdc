@@ -64,10 +64,12 @@ public class MoreOptionsPopupPanel extends PopupPanel{
     			else
     				unRateElement.setVisible(true);
     		}
-    		if(post.getLikedByPerson(user.getPersonId()) == null)
-    			likeElement.setVisible(true);
-			else
-				unLikeElement.setVisible(true);
+    		if(!post.isMovie()){
+	    		if(post.getLikedByPerson(user.getPersonId()) == null)
+	    			likeElement.setVisible(true);
+				else
+					unLikeElement.setVisible(true);
+    		}
     		
     	}
     	
@@ -93,7 +95,7 @@ public class MoreOptionsPopupPanel extends PopupPanel{
     		editElement.setVisible(true);
     	}
     	
-    	if(!user.isAnonymous()){
+    	if(!user.isAnonymous() && !post.isMovie()){
     		tagElement.setVisible(true);
     	}
     }
