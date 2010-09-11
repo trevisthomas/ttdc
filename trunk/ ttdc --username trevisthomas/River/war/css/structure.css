@@ -177,10 +177,10 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 .tt-calendar-month-day{}
 
 .tt-calendar-year-day{}
-.tt-calendar-year-week-target{width:10px;background-color: #eee;}
+.tt-calendar-year-week-target{width:10px; background-color: cyan;}
 .tt-calendar-year-month{}
 .tt-calendar-year-month-cell{width:230px;}
-.tt-calendar-is-today{color:blue; background: #b0c4de}
+.tt-calendar-is-today{}
 .tt-calendar-is-future{}
 .tt-calendar-scale-button{width: 50px; float:right; padding:2px; margin:1px;}
 .tt-calendar-breadcrumb{overflow: auto; width: 100%; }
@@ -223,7 +223,7 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 .tt-calendar-small-month-dayHasContent{ font: bolder; background-color: #eee}
 .tt-calendar-small-month-daySelected{ border: solid yellow 1px; background-color: #fc5}
 */
-.tt-calendar-small-month-day{margin:0 2px 2px 0;}
+.tt-calendar-small-month-day{margin:0 2px 2px 0; border: solid 1px;}
 
 .tt-special-border-bottom{border: white solid; border-width: 0 0 2px 0;}
 
