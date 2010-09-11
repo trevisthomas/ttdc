@@ -141,7 +141,7 @@ public class SmallMonthPanel extends Composite implements DayClickHandler{
 	
 	/*
 	 * This version of the constructor is because of an idea i had to make this thing more self 
-	 * sufficent when operating as a stand alone calendar.  Basically It gets it's own data since it 
+	 * sufficient when operating as a stand alone calendar.  Basically It gets it's own data since it 
 	 * needs to have the know how to have a prev next... 
 	 */
 	private void init(int year,int monthOfYear, DayClickHandler handler){
@@ -209,6 +209,9 @@ public class SmallMonthPanel extends Composite implements DayClickHandler{
 			for(Day day : week.getDays()){
 				if(day.isVisable()){
 					insertDay(weekOfMonth, dayOfWeek, day.getDay(), day);
+				}
+				else{
+					clearDay(weekOfMonth, dayOfWeek, day.getDay());
 				}
 				dayOfWeek++;
 			}
@@ -299,6 +302,23 @@ public class SmallMonthPanel extends Composite implements DayClickHandler{
 		weekClicker.addSynchedHoverTarget(clickableDay);
 	}
 	
+	public void clearDay(int weekOfMonth, int dayOfWeek, int dayOfMonth) {
+		Label dayLabel = createFilledCenteredLabel("");
+
+//		dayLabel.setText(""+day.getDay());
+//		if(day.isToday())
+//			dayLabel.addStyleName("tt-calendar-is-today");
+//		else if(day.isFuture())
+//			dayLabel.addStyleName("tt-calendar-is-future");
+//
+//		ClickableDay clickableDay = new ClickableDay(day);
+		
+//		clickableDay.add(dayLabel);
+		daysGridElement.setWidget(weekOfMonth, dayOfWeek, new Label(""));
+//		ClickableHoverSyncPanel weekClicker = getWeekElementFromGrid(weekOfMonth);
+//		weekClicker.addSynchedHoverTarget(clickableDay);
+	}
+	
 	private Label createFilledCenteredLabel(String labelText){
 		Label label = new Label(labelText);
 		label.setStyleName("tt-fill-both tt-text-center");
@@ -313,7 +333,9 @@ public class SmallMonthPanel extends Composite implements DayClickHandler{
 		else{
 			ClickableHoverSyncPanel weekClicker = new ClickableHoverSyncPanel("tt-color-calendar-small-month-week","tt-color-calendar-small-month-week-hover");
 			weekClicker.setStyleName("tt-calendar-year-week-target tt-float-right");
-			weekClicker.add(new Label("+"));
+			Label l = new Label("");
+			l.getElement().setInnerHTML("&raquo;");
+			weekClicker.add(l);
 			daysGridElement.setWidget(weekOfMonth, 0, weekClicker);
 			return weekClicker;
 		}
@@ -342,7 +364,7 @@ public class SmallMonthPanel extends Composite implements DayClickHandler{
 			dayMap.put(day, this);
 			this.day = day;
 			
-			setStyleName("tt-border tt-calendar-small-month-day");
+			setStyleName("tt-calendar-small-month-day");
 			if(day.isContent()){
 				updatePrimary("tt-color-calendar-small-month-day-content","tt-color-calendar-small-month-day-content-hover");
 			}

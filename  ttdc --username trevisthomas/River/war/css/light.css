@@ -70,24 +70,21 @@ a:active {color: red;text-decoration: none}
 .tt-post-expanded a:hover {text-decoration: underline; color: #222;}
 
 .tt-welcome a:active,
-.tt-navigation a:active,	
+.tt-navigation a:active,		
 .tt-reviewSummaryList a:active,
 .tt-post-expanded a:active {color: #F5F23B;}
 
-.tt-color-month-week-header,	
-.tt-color-calendar-small-month-week{ background: grey; color: white; border-color: #eee;}
+.tt-color-month-week-header{ background: grey; color: white; border-color: #eee;}
 
-.tt-color-month-week-header-hover,
-.tt-color-calendar-small-month-week-hover{ background: #eee; color: black; border-color: grey;}
+.tt-color-month-week-header-hover{ background: #eee; color: black; border-color: grey;}
 
-.tt-color-calendar-small-month-day-selected{border-color: yellow; background-color: #fc5}
-.tt-color-calendar-small-month-day-selected-hover{border-color: yellow; background-color: white;}
 
-.tt-color-calendar-nav
-.tt-color-calendar-small-month-day-content{ background: grey; color: white; border-color: #eee;}
 
-.tt-color-calendar-nav-hover,
-.tt-color-calendar-small-month-day-content-hover{ background: #eee; color: black; border-color: grey;}
+.tt-color-calendar-nav,
+.tt-color-calendar-small-month-day,
+.tt-color-calendar-small-month-day-hover{border-color: transparent; color: color: #222;}
+
+.tt-color-calendar-nav-hover{ background: #eee; color: black; border-color: grey;}
 
 .tt-color-calendar-day-hour,
 .tt-color-calendar-hour,
@@ -99,18 +96,25 @@ a:active {color: red;text-decoration: none}
 .tt-color-calendar-week-date-hover,
 .tt-color-calendar-hour-label,	
 .tt-color-month-day-header-hover,
-.tt-color-calendar-small-month-day{ border-color: grey; background: #eee;}
+.tt-color-calendar-small-month-day-content-hover,	
+.tt-color-calendar-small-month-week-hover{ border-color: grey; background: #eee;}
 
 .tt-color-calendar-week-date,
 .tt-color-calendar-hour-hover,
 .tt-color-month-day-header,
-.tt-color-calendar-small-month-day-hover{ border-color: #ccc; background-color: #fcfcfc;}
+.tt-color-calendar-small-month-day-content,
+.tt-color-calendar-small-month-week{ border-color: #ccc; background-color: #fcfcfc;}
 
+.tt-calendar-is-today{}
+.tt-calendar-is-future{}
 
+/*
 .tt-color-nws{ color: red; }
 .tt-color-inf{ color: #F5F23B; }
 
 .tt-comment-editor,
+
+*/
 
 
 .tt-post ul{list-style: disc; padding: 0 0 0 20px;}
@@ -134,11 +138,21 @@ a:active {color: red;text-decoration: none}
 .tt-search-popup{background-color: #fefefe; border-color: grey; color: black;}
 
 .tt-more-options-button-hover{background-color: #e1de3b; color: #878207;}
+
+
 .tt-conversation-count{background-color: #F5F23B; color: #bfb800;}
 
+.tt-color-calendar-small-month-day-selected-hover{background-color: #F5F23B; color: black;}
+.tt-color-calendar-small-month-day-selected{background-color: #fcfbd1; color: black;}
+
+
+.tt-color-calendar-small-month-day-selected-hover,
 .tt-more-options-button-hover,
 .tt-post-expanded,
 .tt-conversation-count{border-bottom-color: #bfb800; border-left-color: #F5F23B; border-right-color: #bfb800; border-top-color: #F5F23B;}
+
+.tt-color-calendar-small-month-day-selected{color: black; border-bottom-color: #bfb800; border-left-color: #F5F23B; border-right-color: #bfb800; border-top-color: #F5F23B;}
+
 .tt-reply-count{background-color: #cecece; border-color: white; color: #fefefe;}
 .tt-color-post-summary{background-color:transparent;}
 
