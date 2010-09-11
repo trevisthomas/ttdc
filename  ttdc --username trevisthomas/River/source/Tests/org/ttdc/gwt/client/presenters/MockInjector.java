@@ -123,6 +123,7 @@ import org.ttdc.gwt.client.uibinder.post.TopicPanel;
 import org.ttdc.gwt.client.uibinder.search.RefineSearchPanel;
 import org.ttdc.gwt.client.uibinder.search.SearchBoxPanel;
 import org.ttdc.gwt.client.uibinder.search.SearchResultsPanel;
+import org.ttdc.gwt.client.uibinder.shared.StandardFooterPanel;
 import org.ttdc.gwt.client.uibinder.shared.StandardPageHeaderPanel;
 import org.ttdc.gwt.client.uibinder.shared.UserIdentityPanel;
 import org.ttdc.gwt.client.uibinder.users.PublicUserProfilePanel;
@@ -1549,6 +1550,12 @@ public class MockInjector implements Injector{
 
 	@Override
 	public TrafficPersonPanel createTrafficPersonPanel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public StandardFooterPanel createStandardFooter() {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -64,7 +64,7 @@
 							<div width="100%" style="clear:both;" >
 								<g:Label ui:field="postUnReadElement" /><g:Label ui:field="postReadElement" />
 								<span class="tt-float-right">
-									<g:Anchor ui:field="moreOptionsElement" >options</g:Anchor>
+									<t:ClickableHoverSyncPanel ui:field="moreOptionsElement"/>
 								</span>
 								<div class="tt-float-right"  style="clear:both;">
 									<g:Widget ui:field="postImageElement" />

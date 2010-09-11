@@ -76,7 +76,6 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
     @UiField(provided = true) Widget avatarElement;
     @UiField(provided = true) Hyperlink creatorLinkElement;
     @UiField(provided = true) Widget createDateElement;
-    @UiField Anchor moreOptionsElement;
     @UiField Anchor fetchMoreElement;
     @UiField SpanElement embedTargetElement;
     @UiField(provided = true) SimplePanel commentElement = new SimplePanel();
@@ -94,6 +93,8 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
     @UiField(provided = true) Label postPrivateElement = postIconTool.getIconPrivate();
     @UiField(provided = true) Label postNwsElement = postIconTool.getIconNws();
     @UiField(provided = true) Label postInfElement = postIconTool.getIconInf();
+    @UiField(provided = true) ClickableHoverSyncPanel moreOptionsElement = MoreOptionsButtonFactory.createMoreOptionsButton();  
+    
     
     private Mode mode;
     
@@ -122,8 +123,6 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
     	postImageElement = postImagePresenter.getWidget();
     	ratingElement = averageMovieRatingPresenter.getWidget();
     	tagsElement = tagListPanel;
-    	
-    	//moreOptionsElement = new ClickableHoverSyncPanel("tt-color-options-button","tt-color-options-button-hover");
     	
     	//moreOptionsElement.setText("options");
     	//tagsElement

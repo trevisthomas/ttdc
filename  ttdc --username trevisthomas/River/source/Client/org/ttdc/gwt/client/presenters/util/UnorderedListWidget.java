@@ -1,4 +1,4 @@
-package org.ttdc.gwt.client.uibinder.shared;
+package org.ttdc.gwt.client.presenters.util;
 
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.UListElement;

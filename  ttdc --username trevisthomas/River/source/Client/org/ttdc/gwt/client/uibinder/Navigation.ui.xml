@@ -2,14 +2,11 @@
 <!-- The above doctype is to allow for special html characters in this xml file -->
 
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
-    xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+    xmlns:g='urn:import:com.google.gwt.user.client.ui'
+    xmlns:t='urn:import:org.ttdc.gwt.client.presenters.util'>
 
 	<g:HTMLPanel>
-		<g:Hyperlink ui:field="homeElement" /> <g:Hyperlink ui:field="searchElement" />
-		<g:Hyperlink ui:field="movieElement" /> <g:Hyperlink ui:field="historyElement" /> 
-		<g:Hyperlink ui:field="usersElement" /> <g:Hyperlink ui:field="dashboardElement" />
-		<g:Hyperlink ui:field="calendarElement" />    
-		<g:Hyperlink ui:field="adminElement" /> 
+		<t:UnorderedListWidget ui:field="navList"></t:UnorderedListWidget>
 	</g:HTMLPanel>
 	
 </ui:UiBinder>

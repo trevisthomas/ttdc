@@ -4,7 +4,7 @@
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 	
 	<g:HTMLPanel>
-		<g:Widget styleName="tt-fill" ui:field="pageHeaderElement"/>
+		<g:Widget ui:field="pageHeaderElement"/>
 		<g:SimplePanel ui:field="siteUpdateElement"/>
 		<g:SimplePanel styleName="tt-fill" ui:field="trafficElement"/>
 		<table class="tt-home-tabContainer">
@@ -17,7 +17,7 @@
 				</td>
 			</tr>
 		</table>
-		
+		<g:Widget ui:field="pageFooterElement"/>
 	</g:HTMLPanel>
 </ui:UiBinder>
 

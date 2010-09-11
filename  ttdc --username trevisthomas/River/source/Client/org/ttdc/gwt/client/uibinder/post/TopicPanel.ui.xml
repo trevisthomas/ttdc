@@ -4,8 +4,8 @@
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 	
 	<g:HTMLPanel>
-		<g:Widget styleName="tt-fill" ui:field="pageHeaderElement"/>
-		<table>
+		<g:Widget ui:field="pageHeaderElement"/>
+		<table class="tt-center">
 			<tr>
 				<td class="tt-topic-left">
 					<g:SimplePanel ui:field="rootPostElement"/>
