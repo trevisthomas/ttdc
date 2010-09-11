@@ -79,4 +79,10 @@ public class StandardPageHeaderPanel extends Composite{
     public void onClickCloseEmbed(ClickEvent event){
     	embededTargetContainer.setVisible(false);
     }
+    
+    @Override
+    public void setStyleName(String style) {
+    	// TODO Auto-generated method stub
+    	super.setStyleName(style);
+    }
 }

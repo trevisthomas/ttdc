@@ -1,5 +1,8 @@
 package org.ttdc.gwt.client.uibinder;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.messaging.ConnectionId;
 import org.ttdc.gwt.client.messaging.EventBus;
@@ -8,12 +11,15 @@ import org.ttdc.gwt.client.messaging.person.PersonEvent;
 import org.ttdc.gwt.client.messaging.person.PersonEventListener;
 import org.ttdc.gwt.client.messaging.person.PersonEventType;
 import org.ttdc.gwt.client.presenters.shared.HyperlinkPresenter;
+import org.ttdc.gwt.client.presenters.util.ListItemWidget;
+import org.ttdc.gwt.client.presenters.util.UnorderedListWidget;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Hyperlink;
+import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
@@ -32,18 +38,21 @@ public class Navigation extends Composite implements PersonEventListener{
 	
 	private Injector injector;
 	
-	@UiField(provided = true) Hyperlink homeElement;
-	@UiField(provided = true) Hyperlink searchElement;
-	@UiField(provided = true) Hyperlink movieElement;
-	@UiField(provided = true) Hyperlink historyElement;
-	@UiField(provided = true) Hyperlink usersElement;
-	@UiField(provided = true) Hyperlink dashboardElement;
-	@UiField(provided = true) Hyperlink adminElement;
-	@UiField(provided = true) Hyperlink calendarElement;
+	private final Hyperlink homeElement;
+	private final Hyperlink searchElement;
+	private final Hyperlink movieElement;
+	private final Hyperlink historyElement;
+	private final Hyperlink usersElement;
+	private final Hyperlink dashboardElement;
+	private final Hyperlink adminElement;
+	private final Hyperlink calendarElement;
+	
+	@UiField(provided = true) UnorderedListWidget navList = new UnorderedListWidget();
 	
 	@Inject
 	public Navigation(Injector injector) {
 		this.injector = injector;
+		navList.setStyleName("tt-navigation");
 		
 		homeLinkPresenter = injector.getHyperlinkPresenter();
 		searchLinkPresenter = injector.getHyperlinkPresenter();
@@ -55,52 +64,69 @@ public class Navigation extends Composite implements PersonEventListener{
 		calendarLinkPresenter = injector.getHyperlinkPresenter();
 		
 		homeLinkPresenter.setView("Home", HistoryConstants.VIEW_HOME);
-		homeElement = homeLinkPresenter.getHyperlink();
-		
 		searchLinkPresenter.setView("Search", HistoryConstants.VIEW_SEARCH);
-		searchElement = searchLinkPresenter.getHyperlink();
-		
 		movieLinkPresenter.setView("Movie", HistoryConstants.VIEW_MOVIE_LIST);
-		movieElement = movieLinkPresenter.getHyperlink();
-		
 		historyLinkPresenter.setView("History", HistoryConstants.VIEW_CALENDAR);
-		historyElement = historyLinkPresenter.getHyperlink();
-		
 		usersLinkPresenter.setView("Users", HistoryConstants.VIEW_USER_LIST);
-		usersElement = usersLinkPresenter.getHyperlink();
-		
 		dashboardLinkPresenter.setView("Dashboard", HistoryConstants.VIEW_DASHBOARD);
-		dashboardElement = dashboardLinkPresenter.getHyperlink();
-		
 		calendarLinkPresenter.setView("Calendar", HistoryConstants.VIEW_CALENDAR);
-		calendarElement = calendarLinkPresenter.getHyperlink();
-		
 		adminLinkPresenter.setView("Admin", HistoryConstants.VIEW_ADMIN_TOOLS);
-		adminElement = adminLinkPresenter.getHyperlink();
+		homeLinkPresenter.setView("Home", HistoryConstants.VIEW_HOME);
+		searchLinkPresenter.setView("Search", HistoryConstants.VIEW_SEARCH);
 		
+		homeElement = homeLinkPresenter.getHyperlink();
+		searchElement = searchLinkPresenter.getHyperlink();
+		movieElement = movieLinkPresenter.getHyperlink();
+		historyElement = historyLinkPresenter.getHyperlink();
+		usersElement = usersLinkPresenter.getHyperlink();
+		dashboardElement = dashboardLinkPresenter.getHyperlink();
+		calendarElement = calendarLinkPresenter.getHyperlink();
+		adminElement = adminLinkPresenter.getHyperlink();
+				
 		applyUserSpecificSettings();
 		
 		initWidget(binder.createAndBindUi(this));
 		
 		EventBus.getInstance().addListener(this);
 	}
+	
+	
 
 	private void applyUserSpecificSettings() {
-		if(ConnectionId.isAnonymous()){
-			dashboardElement.setVisible(false);
-			usersElement.setVisible(false);
+//		if(ConnectionId.isAnonymous()){
+//			dashboardElement.setVisible(false);
+//			usersElement.setVisible(false);
+//		}
+//		else{
+//			dashboardElement.setVisible(true);
+//			usersElement.setVisible(true);
+//		}
+//		
+//		if(!ConnectionId.isAdministrator()){
+//			adminElement.setVisible(false);		
+//		}
+//		else{
+//			adminElement.setVisible(true);
+//		}
+		
+
+		List<Hyperlink> links = new ArrayList<Hyperlink>();
+		links.add(homeElement);
+		links.add(searchElement);
+		links.add(movieElement);
+		links.add(historyElement);
+		if(!ConnectionId.isAnonymous()){
+			links.add(usersElement);
+			links.add(dashboardElement);
 		}
-		else{
-			dashboardElement.setVisible(true);
-			usersElement.setVisible(true);
+		links.add(calendarElement);
+		
+		
+		if(ConnectionId.isAdministrator()){
+			links.add(adminElement);		
 		}
 		
-		if(!ConnectionId.isAdministrator()){
-			adminElement.setVisible(false);		
-		}
-		else{
-			adminElement.setVisible(true);
-		}
+		setMenu(links);
 	}
 	
 	@Override
@@ -109,5 +135,22 @@ public class Navigation extends Composite implements PersonEventListener{
 			applyUserSpecificSettings();
 		}
 	}
+	
+	public void setMenu(List<Hyperlink> links)
+	{
+		// userMenu is an UnorderedListWidget
+		navList.clear();
+		for (int i=0; i<links.size(); i++)
+		{
+			Hyperlink item = links.get(i);
+			if (i>0)
+			{
+				navList.add(new ListItemWidget("|"));
+			}
+			
+			navList.add(new ListItemWidget(item));
+		}
+	}
+
 	
 }

@@ -16,6 +16,7 @@ import org.ttdc.gwt.client.presenters.post.PostCollectionPresenter;
 import org.ttdc.gwt.client.presenters.shared.DatePresenter;
 import org.ttdc.gwt.client.presenters.shared.HyperlinkPresenter;
 import org.ttdc.gwt.client.presenters.shared.ImagePresenter;
+import org.ttdc.gwt.client.presenters.util.ClickableHoverSyncPanel;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.SpanElement;
@@ -55,8 +56,8 @@ public class ReviewSummaryListPanel extends PostBaseComposite implements PostEve
 //    @UiField(provided = true) Widget createDateElement;
     @UiField(provided = true) Widget averageRatingElement;
     @UiField VerticalPanel reviewsElement = new VerticalPanel();
-    @UiField Anchor moreOptionsElement;
     @UiField(provided = true) SimplePanel commentElement = new SimplePanel();
+    @UiField(provided = true) ClickableHoverSyncPanel moreOptionsElement = MoreOptionsButtonFactory.createMoreOptionsButton(); 
     
 	@Inject
     public ReviewSummaryListPanel(Injector injector) { 
@@ -86,9 +87,6 @@ public class ReviewSummaryListPanel extends PostBaseComposite implements PostEve
 		
 		postLinkPresenter.setPost(post);
 		postLinkPresenter.init();
-		
-		moreOptionsElement.setText("> More Options");
-		moreOptionsElement.setStyleName("tt-cursor-pointer");
 		
 		List<String> personIdsWithReviews = new ArrayList<String>();
 		reviewsElement.clear();

@@ -4,7 +4,7 @@
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 	
 	<g:HTMLPanel>
-		<g:Widget styleName="tt-fill" ui:field="pageHeaderElement"/>
+		<g:Widget ui:field="pageHeaderElement"/>
 		<g:TabPanel ui:field="tabPanelElement" />
 	</g:HTMLPanel>
 </ui:UiBinder>

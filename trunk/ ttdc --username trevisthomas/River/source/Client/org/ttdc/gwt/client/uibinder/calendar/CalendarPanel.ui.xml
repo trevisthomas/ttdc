@@ -3,7 +3,7 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
     xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 	 <g:HTMLPanel>
-	 	<g:Widget styleName="tt-fill" ui:field="pageHeaderElement"/>
+	 	<g:Widget ui:field="pageHeaderElement"/>
 	 	<g:SimplePanel ui:field="calendarBreadCrumbElement" />
 	 	
 		<div class="tt-fill">

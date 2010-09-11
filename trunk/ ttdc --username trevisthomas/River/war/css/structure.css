@@ -1,11 +1,12 @@
-.tt-view-container{width:1012px; text-align:center; margin: 0 auto;}
+.tt-view-container{width:1020px; text-align:center; margin: 0 auto; overflow: hidden;}
+
+body{font-family: Arial, Arial, Helvetica, sans-serif;}
 
 .tt-border{ border:1px black solid;}
 .tt-border-bottom{ border-width: 0 0 1px 0; border-style: solid;}
 .tt-border-bottom-right{ border-width: 0 1px 1px 0; border-style: solid;}
 
-.tt-graphic-button-normal{ background-image:url('common/images/gradient.png');background-position: 0 0; background-repeat:repeat-x;}
-.tt-graphic-button-down{ background-color: grey;}
+
 .tt-graphic-button{position: relative; min-width: 16px; height: 28px;}
 .tt-graphic-button{cursor: pointer; font-size:15px; height: 28px; padding: 2px 4px; border-width: 0 1px; border-style: solid; line-height: 28px;}
 .tt-textbox-search{font-size:18px; font-weight: 400; height: 28px;}
@@ -29,19 +30,26 @@
 .tt-post-expanded-date,
 .tt-post-panel-head-date,
 .tt-text-small{font-size:10px;}
+	
+.tt-traffic-login,
+.tt-reviewSummary,
 .tt-options-button,
 .tt-post-expanded-creator,
 .tt-post-panel-head-detail,
 .tt-text-normal{font-size:12px;}
 .tt-text-normal-bold{font-size:12px; font-weight: bold;}
 
-.tt-post-panel-head-title,
 .tt-text-large{font-size:16px; font-weight: 500;}
 
 .gwt-TabBar .gwt-TabBarItem-selected,
 .tt-text-large-bold{font-size:16px; font-weight: 700;}
 .tt-text-huge{font-size:22px; font-weight: 700;}
+.tt-post-panel-head-title{font-size: 16px;}
 
+
+
+.tt-more-options-button-hover,
+.tt-more-options-button{ border: 1px solid; font-size: 15px;}
 
 
 
@@ -59,7 +67,7 @@
 .tt-post-panel-head-date,
 .tt-post-panel-head-detail{vertical-align: middle;}
 	
-.tt-post-expanded{ border-width: 1px; border-style:solid; margin: 2px 0; padding:0px; width: 100%;}
+.tt-post-expanded{ border-width: 1px; border-style:solid; margin: 2px 0; padding:0px;}
 .tt-post-conversation{ margin: 0 0 20px 0;}
 .tt-options-button{border: 1px solid; padding:2px;}
 .tt-post-footer{text-align: right;}
@@ -81,10 +89,13 @@
 
 .tt-pageHeader-subtitle{font-size:12px; font-weight: bold; font-style: italic; margin-top: -7px; padding-left: 10px;}
 .tt-pageHeader-title{ margin: auto; overflow: hidden;}
-.tt-pageHeader{
-	width: 100%;
-}
+.tt-pageHeader{width: 1000px; text-align:center; margin: 0 auto;}
+.tt-pageFooter{width: 1000px; text-align:center; margin: 30px auto;}
 
+.tt-pageFooter hr{ height: 1px;}
+
+
+.tt-home-tabContainer,
 .tt-center{text-align:center; margin: 0 auto;}
 .tt-text-center{text-align:center;}
 
@@ -241,7 +252,7 @@
 
 .tt-TabPanel-fullpage{width:85%; margin: 0 auto;}
 .gwt-TabPanel {  }
-.gwt-TabPanelBottom { border-style: solid; border-width: 1px; overflow: hidden; padding: 1px; margin: 0 2px;}
+.gwt-TabPanelBottom { border-style: solid; border-width: 1px; overflow: hidden; padding: 1px; margin: 0;}
 .gwt-TabBar {}
 .gwt-TabBar .gwt-TabBarFirst { width: 5px;  /* first tab distance from the left */ }
 .gwt-TabBar .gwt-TabBarRest {}
@@ -249,4 +260,12 @@
 .gwt-TabBar .gwt-TabBarItem-selected { cursor: default; } 
 .gwt-TabBar .gwt-TabBarItem-disabled { cursor: default; }
 
-.tt-traffic-person{width: 199px; border: 1px solid; margin: 2px 2px;}
+.tt-traffic-person{width: 199px; height: 49px; border: 1px solid; margin: 2px 2px;}
+
+.tt-navigation{margin: 2px;}
+.tt-navigation ul{}
+.tt-navigation li{display: inline;margin: 0;padding: 0;}
+
+.tt-reviewSummaryList-header{font-size: 15px; font-weight: bolder;}
+
+

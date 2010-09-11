@@ -4,6 +4,10 @@
 @import "common/icons/icons-common.css";
 @import "structure.css";
 
+
+body{ color: #222; background-color: #eee;}
+.tt-view-container{ background-color:white;}
+
 /* 
  * Colors to be moved into color css
  */
@@ -21,7 +25,55 @@
 .tt-color-contrast3{ border-color: #ccc; background-color: #fcfcfc;}
 */
 
+
+
+/*
+a {font-family:Georgia,serif; font-size:large}
+a:link {color:blue;}
+a:visited {color: #660066;}
+a:hover {text-decoration: none; color: #ff9900; font-weight:bold;}
+a:active {color: red;text-decoration: none}
+*/
 	
+.tt-post-panel-head	a:link {text-decoration: none; color: #222;}
+.tt-post-panel-head a:visited {text-decoration: none; color: #222;}
+.tt-post-panel-head a:hover {text-decoration: underline; color: black;}
+.tt-post-panel-head a:active {color: #F5F23B;}
+
+.tt-post-panel-content a:link {text-decoration: none; color: black;}
+.tt-post-panel-content a:visited {text-decoration: none; color: black;}
+.tt-post-panel-content a:hover {text-decoration: underline; color: #222;}
+.tt-post-panel-content a:active {color: #F5F23B;}
+
+.tt-traffic-login a:link,
+.tt-post-summary a:link {text-decoration: none; color: #113aa4;}
+.tt-traffic-login a:visited,
+.tt-post-summary a:visited {text-decoration: none; color: #113aa4;}
+.tt-traffic-login a:hover,
+.tt-post-summary a:hover {text-decoration: underline; color: blue;}
+.tt-traffic-login a:active,
+.tt-post-summary a:active {color: #F5F23B;}
+
+.tt-welcome a:link,
+.tt-navigation a:link,	
+.tt-reviewSummaryList a:link,
+.tt-post-expanded a:link {text-decoration: none; color: black;}
+
+.tt-welcome a:visited,
+.tt-navigation a:visited,	
+.tt-reviewSummaryList a:visited,
+.tt-post-expanded a:visited {text-decoration: none; color: black;}
+
+.tt-welcome a:hover,
+.tt-navigation a:hover,	
+.tt-reviewSummaryList a:hover,
+.tt-post-expanded a:hover {text-decoration: underline; color: #222;}
+
+.tt-welcome a:active,
+.tt-navigation a:active,	
+.tt-reviewSummaryList a:active,
+.tt-post-expanded a:active {color: #F5F23B;}
+
 .tt-color-month-week-header,	
 .tt-color-calendar-small-month-week{ background: grey; color: white; border-color: #eee;}
 
@@ -59,7 +111,7 @@
 .tt-color-inf{ color: #F5F23B; }
 
 .tt-comment-editor,
-.tt-post-expanded{ border-color: #black;}
+
 
 .tt-post ul{list-style: disc; padding: 0 0 0 20px;}
 .tt-post ol{list-style: decimal; padding: 0 0 0 20px;}
@@ -68,7 +120,6 @@
 .tt-post{ background-color: #fefefe; border-color:#eee; color: white;}
 */
 .tt-post{ background-color: transparent; border-color:#eee;}
-
 
 .tt-post-panel-number,
 .tt-post-summary-body,
@@ -79,22 +130,32 @@
 
 .tt-post-panel-content{color: black; background-color: #fcfcfc; }
 
+
 .tt-search-popup{background-color: #fefefe; border-color: grey; color: black;}
 
-.tt-conversation-count{background-color: #F5F23B; border-color: white; color: grey;}
+.tt-more-options-button-hover{background-color: #e1de3b; color: #878207;}
+.tt-conversation-count{background-color: #F5F23B; color: #bfb800;}
+
+.tt-more-options-button-hover,
+.tt-post-expanded,
+.tt-conversation-count{border-bottom-color: #bfb800; border-left-color: #F5F23B; border-right-color: #bfb800; border-top-color: #F5F23B;}
 .tt-reply-count{background-color: #cecece; border-color: white; color: #fefefe;}
-.tt-color-options-button{border-color: grey; color:grey;}
-.tt-color-options-button-hover{border-color: black; color:black;}
 .tt-color-post-summary{background-color:transparent;}
-.tt-color-post-summary-hover{background-color:#eee;}
+
+.tt-color-post-summary-hover{background-color:#eee; color: black}
 
 .tt-graphic-button{background-color: #cecece; border-color: #ccc;}
 
+.tt-traffic-person,
 .tt-fancy-image-border,
-.gwt-TabPanelBottom,
 .tt-searchBoxPanel{border-bottom-color: #999; border-left-color: #CCC; border-right-color: #999; border-top-color: #CCC;}
 
-.tt-traffic-person{background-color: #f5f5f5; border-color:#eee;}
+/*
+.gwt-TabPanelBottom{border-bottom-color: #4f76d8; border-left-color: #4263b6; border-right-color: #4f76d8; border-top-color: #4263b6;}
+*/
+.gwt-TabPanelBottom{border-bottom-color: transparent; border-left-color: transparent; border-right-color: transparent; border-top-color: #4263b6;}
+
+.tt-traffic-person{background-color: #f5f5f5;}
 
 .tt-rich-text-area{background-color:#ddd; color:black;}
 	
@@ -104,6 +165,18 @@
 
 .tt-fancy-image-border{ background-color: #ddd;}
 
+.gwt-TabBar .gwt-TabBarItem-selected{ background-image:url('common/images/gradients.png');background-position: 0 0px; background-repeat:repeat-x;}
+
+.tt-graphic-button-normal{ background-image:url('common/images/gradient.png');background-position: 0 0; background-repeat:repeat-x;}
+.tt-graphic-button-down{ background-color: grey;}
+
+
+.tt-pageFooter hr{ color: #eee; background-color: #f00; }
+
+.tt-more-options-button{border-color: #aaa; color:#aaa; background-color: eee;}
+
+.tt-reviewSummaryList{color: #222;}
+.tt-reviewSummaryList-header{color: #777}
 
 
 

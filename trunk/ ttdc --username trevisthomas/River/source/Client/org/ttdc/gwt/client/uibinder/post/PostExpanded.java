@@ -9,6 +9,7 @@ import org.ttdc.gwt.client.presenters.post.PostIconTool;
 import org.ttdc.gwt.client.presenters.shared.DatePresenter;
 import org.ttdc.gwt.client.presenters.shared.HyperlinkPresenter;
 import org.ttdc.gwt.client.presenters.shared.ImagePresenter;
+import org.ttdc.gwt.client.presenters.util.ClickableHoverSyncPanel;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.SpanElement;
@@ -34,7 +35,6 @@ public class PostExpanded extends PostBaseComposite{
     
     @UiField(provided = true) Widget avatarElement;
     @UiField(provided = true) Widget createDateElement;
-    @UiField Anchor moreOptionsElement;
     @UiField(provided = true) Hyperlink creatorLinkElement;
     @UiField SimplePanel likesElement;
     @UiField(provided = true) Widget tagsElement;
@@ -53,6 +53,7 @@ public class PostExpanded extends PostBaseComposite{
     @UiField(provided = true) Label postPrivateElement = postIconTool.getIconPrivate();
     @UiField(provided = true) Label postNwsElement = postIconTool.getIconNws();
     @UiField(provided = true) Label postInfElement = postIconTool.getIconInf();
+    @UiField(provided = true) ClickableHoverSyncPanel moreOptionsElement = MoreOptionsButtonFactory.createMoreOptionsButton(); 
     
     
 	@UiField SpanElement bodyElement;
@@ -89,11 +90,6 @@ public class PostExpanded extends PostBaseComposite{
 		tagListPanel.init(post, TagListPanel.Mode.EDITABLE);
 		
 		bodyElement.setInnerHTML(post.getEntry());
-//		this.post = post;
-		moreOptionsElement.setText("More Options");
-		moreOptionsElement.setStyleName("tt-cursor-pointer tt-text-small");
-		
-		
 		
 		if(post.isRootPost() || post.isThreadPost()){
 			imagePresenter.setImage(post.getCreator().getImage(), post.getCreator().getLogin(), 50, 50);
