@@ -93,7 +93,7 @@ public class InteractiveCalendarPanel extends Composite{
 	}
 	
 	private void showSelector(int year, int monthOfYear){
-		changeViewElement.setStyleName("tt-clickable-icon-down tt-cursor-pointer");
+		changeViewElement.setStyleName("tt-center ui-icon ui-icon-carat-1-n tt-cursor-pointer tt-center;");
 		selectorPresenter = injector.getCalendarSelectorModulePresenter();
 		selectorPresenter.init(year, monthOfYear);
 		dateChoiceElement.clear();
@@ -102,7 +102,7 @@ public class InteractiveCalendarPanel extends Composite{
 	}
 	
 	private void showCalendar(int year, int monthOfYear) {
-		changeViewElement.setStyleName("tt-clickable-icon-up tt-cursor-pointer");
+		changeViewElement.setStyleName("tt-center ui-icon ui-icon-carat-1-s tt-cursor-pointer");
 		if(monthPresenter == null){
 			monthPresenter = injector.createSmallMonthPanel();
 			monthPresenter.initInteractive(year, monthOfYear);

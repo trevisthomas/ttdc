@@ -19,8 +19,8 @@ public class CalendarSelectorModuleView implements CalendarSelectorModulePresent
 	private final HorizontalPanel main = new HorizontalPanel();
 	private final Grid monthGrid = new Grid(6,2);
 	private final Grid yearGrid = new Grid(6,2);
-	private final ClickableIconPanel prevPage = new ClickableIconPanel("tt-clickable-icon-prev");
-	private final ClickableIconPanel nextPage = new ClickableIconPanel("tt-clickable-icon-prev");
+	private final ClickableIconPanel prevPage = new ClickableIconPanel("ui-icon ui-icon-triangle-1-w");
+	private final ClickableIconPanel nextPage = new ClickableIconPanel("tt-float-right ui-icon ui-icon-triangle-1-e");
 	
 	private int selectedYear;
 	private int selectedMonth;
