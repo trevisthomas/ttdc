@@ -52,10 +52,11 @@ public class ImageDao extends PaginatedDaoBase{
 	@SuppressWarnings("unchecked")
 	public PaginatedList<Image> loadAll(){
 		PaginatedList<Image> results = null;
+		//TODO add the ability to sort these either way.
+		//int count = session().getNamedQuery("image.getAllImages").list().size();
+		int count = session().getNamedQuery("image.getAllImagesByName").list().size();
 		
-		int count = session().getNamedQuery("image.getAllImages").list().size();
-		
-		List<Image> list = session().getNamedQuery("image.getAllImages")
+		List<Image> list = session().getNamedQuery("image.getAllImagesByName")
 			.setFirstResult(calculatePageStartIndex())
 			.setMaxResults(getPageSize()).list();
 		 

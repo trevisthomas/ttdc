@@ -71,6 +71,9 @@ public class SearchPostsCommandExecutor extends CommandExecutor<SearchPostsComma
 					filterList.add(PostFlag.REVIEW);
 					dao.setInvertFilterFuction(true);
 				}
+				
+				dao.setSortDirection(command.getSortDirection());
+				dao.setSortBy(command.getSortOrder());
 					
 				dao.setCurrentPage(command.getPageNumber());
 				dao.setFilterFlags(filterList);

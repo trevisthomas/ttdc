@@ -235,7 +235,7 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 			throw new RuntimeException("You dont have privledges to create new content.");
 		
 		Post parent = null;
-		if(!StringUtils.isEmpty(cmd.getParentId())){
+		if(!StringUtil.empty(cmd.getParentId())){
 			parent = PostDao.loadPost(cmd.getParentId());
 			if(parent.isLocked() && !creator.isAdministrator()){
 				throw new RuntimeException("Cant reply to a locked post.");

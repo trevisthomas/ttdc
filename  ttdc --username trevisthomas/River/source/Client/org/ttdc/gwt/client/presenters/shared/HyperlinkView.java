@@ -20,7 +20,7 @@ public class HyperlinkView implements HyperlinkPresenter.View {
 	public HyperlinkView() {
 		//link.setStylePrimaryName("tt-hyperLinkView");
 		//link.setStyleName("tt-hyperLinkView");
-		link.setStyleName("tt-inline");
+		link.setStyleName("tt-hyperLink");
 	}
 	
 	@Override

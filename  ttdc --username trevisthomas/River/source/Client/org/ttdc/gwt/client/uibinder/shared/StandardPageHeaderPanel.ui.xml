@@ -15,7 +15,7 @@
 	 			<td>
 	 				<table>
 	 					<tr>
- 							<td><g:Widget styleName="tt-welcome tt-welcome-login" ui:field="loginElement"></g:Widget></td>
+ 							<td class="tt-welcome tt-welcome-login"><g:Widget styleName="" ui:field="loginElement"></g:Widget></td>
  							<td class="tt-welcome tt-welcome-calendar"><g:Widget ui:field="popupCalendarDateElement" /></td>
 	 					</tr>
 	 				</table>

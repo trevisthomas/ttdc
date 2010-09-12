@@ -46,11 +46,12 @@ public class HomePanel extends BasePageComposite implements PersonEventListener,
 	private Injector injector;
 	
 	@UiField (provided = true) Widget pageHeaderElement;
+	@UiField (provided = true) Widget pageFooterElement;
 	@UiField TabPanel rightTabPanelElement;
 	@UiField TabPanel centerTabPanelElement;
 	@UiField SimplePanel trafficElement;
 	@UiField SimplePanel siteUpdateElement;
-	@UiField (provided = true) Widget pageFooterElement;
+	
 	
 	private final StandardPageHeaderPanel pageHeaderPanel;
 	
@@ -78,7 +79,6 @@ public class HomePanel extends BasePageComposite implements PersonEventListener,
 		
 		pageHeaderPanel = injector.createStandardPageHeaderPanel(); 
     	pageHeaderElement = pageHeaderPanel.getWidget();
-    	
     	pageFooterElement = injector.createStandardFooter().getWidget();
     	
     	initWidget(binder.createAndBindUi(this));

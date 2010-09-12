@@ -7,6 +7,8 @@ import org.ttdc.gwt.client.presenters.util.ClickableHoverSyncPanel;
 
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HasHTML;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
@@ -42,8 +44,8 @@ public class MonthDetailView implements MonthDetailPresenter.View{
 	}
 
 	@Override
-	public HasText weekTargetText(int weekOfMonth) {
-		return (Label)getWeekSyncPanel(weekOfMonth).getWidget();
+	public HasHTML weekTargetText(int weekOfMonth) {
+		return (HTML)getWeekSyncPanel(weekOfMonth).getWidget();
 	}
 	
 	
@@ -64,7 +66,10 @@ public class MonthDetailView implements MonthDetailPresenter.View{
 			table.getRowFormatter().addStyleName(0, "tt-calendar-month-day-header");
 			table.setWidget(1, 0, clickablePanel);
 			
-			Label label = new Label();
+			//Label label = new Label();
+			
+			HTML label = new HTML();
+			
 			clickablePanel.add(label);
 			mainPanel.setWidget(weekOfMonth, 0, table);
 			mainPanel.getCellFormatter().addStyleName(weekOfMonth, 0, "tt-fill-height");

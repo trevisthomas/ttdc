@@ -152,7 +152,7 @@ public class NewMoviePanel extends Composite{
 			@Override
 			public void onSuccess(PostCommandResult result) {
 				//Window.alert("Created");
-				close();
+				cancelButtonElement.click();
 				//Window.Location.reload();
 				PostEvent event = new PostEvent(PostEventType.NEW_FORCE_REFRESH, result.getPost());
 				EventBus.fireEvent(event);

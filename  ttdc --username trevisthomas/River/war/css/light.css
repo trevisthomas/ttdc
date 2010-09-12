@@ -45,40 +45,68 @@ a:active {color: red;text-decoration: none}
 .tt-post-panel-content a:hover {text-decoration: underline; color: #222;}
 .tt-post-panel-content a:active {color: #F5F23B;}
 
+.tt-more-comments a:link,
 .tt-traffic-login a:link,
 .tt-post-summary a:link {text-decoration: none; color: #113aa4;}
+
+.tt-more-comments a:visited,
 .tt-traffic-login a:visited,
 .tt-post-summary a:visited {text-decoration: none; color: #113aa4;}
+
+.tt-more-comments a:hover,
 .tt-traffic-login a:hover,
 .tt-post-summary a:hover {text-decoration: underline; color: blue;}
+
+.tt-more-comments a:active,
 .tt-traffic-login a:active,
 .tt-post-summary a:active {color: #F5F23B;}
 
+.tt-movie-list-table a:link,
+.tt-cloud-tag a:link,
+.tt-calendar-year-month-cell a:link,
+.tt-calendar-month-day-body a:link,
+.tt-calendar-week-hour a:link,
+.popupContent a:link,
 .tt-welcome a:link,
 .tt-navigation a:link,	
 .tt-reviewSummaryList a:link,
 .tt-post-expanded a:link {text-decoration: none; color: black;}
 
+.tt-movie-list-table a:visited,
+.tt-cloud-tag a:visited,
+.tt-calendar-year-month-cell a:visited,
+.tt-calendar-month-day-body a:visited,
+.tt-calendar-week-hour a:visited,
+.popupContent a:visited,
 .tt-welcome a:visited,
 .tt-navigation a:visited,	
 .tt-reviewSummaryList a:visited,
 .tt-post-expanded a:visited {text-decoration: none; color: black;}
 
+.tt-movie-list-table a:hover,
+.tt-cloud-tag a:hover,
+.tt-calendar-year-month-cell a:hover,
+.tt-calendar-month-day-body a:hover,
+.tt-calendar-week-hour a:hover,
+.popupContent a:hover,
 .tt-welcome a:hover,
 .tt-navigation a:hover,	
 .tt-reviewSummaryList a:hover,
 .tt-post-expanded a:hover {text-decoration: underline; color: #222;}
 
+.tt-movie-list-table a:active,
+.tt-cloud-tag a:active,
+.tt-calendar-year-month-cell a:active,
+.tt-calendar-month-day-body a:active,
+.tt-calendar-week-hour a:active,
+.popupContent a:active,
 .tt-welcome a:active,
 .tt-navigation a:active,		
 .tt-reviewSummaryList a:active,
 .tt-post-expanded a:active {color: #F5F23B;}
 
-.tt-color-month-week-header{ background: grey; color: white; border-color: #eee;}
-
-.tt-color-month-week-header-hover{ background: #eee; color: black; border-color: grey;}
-
-
+.tt-color-month-week-header{ background: #eee; color: black; border-color: grey;}
+.tt-color-month-week-header-hover{ background: grey; color: white; border-color: #eee;}
 
 .tt-color-calendar-nav,
 .tt-color-calendar-small-month-day,
@@ -92,18 +120,23 @@ a:active {color: red;text-decoration: none}
 
 
 .tt-color-month-day-body-hover{ border-color: grey; background: #eee;}
+.tt-color-month-day-header-hover{ background-color: grey; border-color: grey; color: white;}
 
-.tt-color-calendar-week-date-hover,
 .tt-color-calendar-hour-label,	
-.tt-color-month-day-header-hover,
-.tt-color-calendar-small-month-day-content-hover,	
-.tt-color-calendar-small-month-week-hover{ border-color: grey; background: #eee;}
+.tt-color-calendar-small-month-day-content-hover{ border-color: grey; background: #eee;}
 
-.tt-color-calendar-week-date,
+
+.tt-color-calendar-small-month-week-hover{color: white; background-color: grey;}
+.tt-color-calendar-week-date-hover{ border-color: white; background: #eee;}
+	
+.tt-color-calendar-hour-label{color: #888;}
+
 .tt-color-calendar-hour-hover,
 .tt-color-month-day-header,
 .tt-color-calendar-small-month-day-content,
 .tt-color-calendar-small-month-week{ border-color: #ccc; background-color: #fcfcfc;}
+
+.tt-color-calendar-week-date{ border-color: white; background: #fcfcfc;}
 
 .tt-calendar-is-today{}
 .tt-calendar-is-future{}
@@ -192,5 +225,18 @@ a:active {color: red;text-decoration: none}
 .tt-reviewSummaryList{color: #222;}
 .tt-reviewSummaryList-header{color: #777}
 
+.gwt-SuggestBoxPopup,
+.gwt-PopupPanel { border-color: grey; background: white; }
+
+
+.gwt-SuggestBoxPopup .item {
+  color: #424242;
+}
+.gwt-SuggestBoxPopup .item-selected {
+  background: #b7d6f6;
+}
+.gwt-SuggestBoxPopup .suggestPopupContent {
+  background: white;
+}
 
 

@@ -4,10 +4,14 @@
     xmlns:g='urn:import:com.google.gwt.user.client.ui' 
     xmlns:t='urn:import:org.ttdc.gwt.client.presenters.util'>
 	 <g:HTMLPanel styleName="tt-calendar-breadcrumb">
-	 	<t:ClickableHoverSyncPanel ui:field="nextElement"/>
-	 	<t:ClickableHoverSyncPanel ui:field="weekElement"/>
-	 	<t:ClickableHoverSyncPanel ui:field="monthElement"/> 
-	 	<t:ClickableHoverSyncPanel ui:field="yearElement"/>
-	 	<t:ClickableHoverSyncPanel ui:field="prevElement"/> 
+	 	<table class="tt-center">
+		 	<tr>
+			 	<td><t:ClickableHoverSyncPanel ui:field="prevElement"/></td>
+			 	<td><t:ClickableHoverSyncPanel ui:field="weekElement"/></td>
+			 	<td><t:ClickableHoverSyncPanel ui:field="monthElement"/></td>
+			 	<td><t:ClickableHoverSyncPanel ui:field="yearElement"/></td>
+			 	<td><t:ClickableHoverSyncPanel ui:field="nextElement"/></td>
+		 	</tr>
+	 	</table> 
 	 </g:HTMLPanel>
 </ui:UiBinder>

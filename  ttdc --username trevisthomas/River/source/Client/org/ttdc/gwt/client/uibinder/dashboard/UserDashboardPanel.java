@@ -39,11 +39,13 @@ public class UserDashboardPanel extends BasePageComposite implements PersonEvent
 	
 	@UiField(provided = true) Widget pageHeaderElement;
 	@UiField TabPanel tabPanelElement;
+	@UiField (provided = true) Widget pageFooterElement;
 	
 	private static final SimplePanel profilePanel = new SimplePanel();
 	private static final SimplePanel editProfilePanel = new SimplePanel();
 	private static final SimplePanel resetPasswordPanel = new SimplePanel();
 	private static final SimplePanel settingsPanel = new SimplePanel();
+	
 	private final StandardPageHeaderPanel pageHeaderPanel;
 	private ProfilePresenter userProfilePresenter;
 	private EditProfilePresenter editProfilePresenter;
@@ -57,6 +59,7 @@ public class UserDashboardPanel extends BasePageComposite implements PersonEvent
 		
 		pageHeaderPanel = injector.createStandardPageHeaderPanel(); 
     	pageHeaderElement = pageHeaderPanel.getWidget();
+    	pageFooterElement = injector.createStandardFooter().getWidget();
     	
     	initWidget(binder.createAndBindUi(this));
     	

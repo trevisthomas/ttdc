@@ -89,14 +89,24 @@ public class TagSuggestionCommandExecutor extends CommandExecutor<TagSuggestionC
 		PaginatedList<Post> results = dao.search();
 		List<SuggestionObject> suggestions = new ArrayList<SuggestionObject>();
 		for(Post post : results.getList() ){
+			GPost root = new GPost();
+			root.setMetaMask(post.getRoot().getMetaMask());
+			root.setPublishYear(post.getRoot().getPublishYear());
 			GPost gp = new GPost();
+			gp.setRoot(root);
 			addFakeTitleTag(post.getTitle(), gp);
 			gp.setPostId(post.getPostId());
 			String highlightedValue = highlightRequestedValue(request.getQuery(), post.getTitle());
+
+			String movieYear = "";
+			if(root.isMovie()){
+				movieYear = " - "+root.getPublishYear();
+			}
+			
 			if(post.getMass() > 1)
-				suggestions.add(new SuggestionObject(gp, highlightedValue + " (" + post.getMass()+")"));
+				suggestions.add(new SuggestionObject(gp, highlightedValue + movieYear+ " (" + post.getMass()+")"));
 			else
-				suggestions.add(new SuggestionObject(gp, highlightedValue));
+				suggestions.add(new SuggestionObject(gp, highlightedValue + movieYear));
 		}
 		
 		if(StringUtils.isNotEmpty(request.getQuery()))

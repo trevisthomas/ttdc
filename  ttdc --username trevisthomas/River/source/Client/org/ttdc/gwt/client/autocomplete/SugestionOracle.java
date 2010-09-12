@@ -108,10 +108,11 @@ public class SugestionOracle extends SuggestOracle implements SuggestionListener
 		this.commandMode = commandMode;
 	}
 	public SuggestionObject getCurrentSuggestion() {
-		if(currentTagSuggestion == null || currentTagSuggestion.isCreateNew())
-			return null;
-		else
-			return currentTagSuggestion;
+//		if(currentTagSuggestion == null || currentTagSuggestion.isCreateNew())
+//			return null;
+//		else
+//			return currentTagSuggestion;
+		return currentTagSuggestion;
 	}
 	
 	private class MySuggestBox extends SuggestBox{
@@ -120,6 +121,7 @@ public class SugestionOracle extends SuggestOracle implements SuggestionListener
 			setAutoSelectEnabled(true);
 		}
 	}
+	
 	
 	/**
 	 * 
