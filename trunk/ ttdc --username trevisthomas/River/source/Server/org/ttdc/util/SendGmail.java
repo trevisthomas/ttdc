@@ -33,8 +33,8 @@ import javax.mail.internet.MimeMessage;
 public class SendGmail {
 	private static final String SMTP_HOST_NAME = "smtp.gmail.com";
     private static final int SMTP_HOST_PORT = 465;
-    private static final String SMTP_AUTH_USER = "trevisthomas@gmail.com";
-    private static final String SMTP_AUTH_PWD  = "xgtjjtt";
+    private static String SMTP_AUTH_USER = "email";
+    private static String SMTP_AUTH_PWD  = "pwd";
 
 	public static enum ContentType {
 		HTML, URL, TEXT
@@ -47,7 +47,15 @@ public class SendGmail {
 	
 	public static SendGmail getInstance(){
 		if (me == null) {
-			me = new SendGmail();
+			try{
+				SMTP_AUTH_USER = ApplicationProperties.getAppProperties().getProperty("SMTP_AUTH_USER");
+				SMTP_AUTH_PWD = ApplicationProperties.getAppProperties().getProperty("SMTP_AUTH_PWD");
+	
+				me = new SendGmail();
+			}
+			catch(IOException e){
+				throw new RuntimeException(e);
+			}
 		}
 		return me;
 	}

@@ -39,6 +39,7 @@ public class UserListPanel extends BasePageComposite{
 	@UiField(provided = true) Widget pageHeaderElement;
 	@UiField FlexTable tableElement;
 	@UiField SimplePanel paginatorElement;
+	@UiField (provided = true) Widget pageFooterElement;
 	
 	private final StandardPageHeaderPanel pageHeaderPanel;
 	private HistoryToken token;
@@ -62,7 +63,7 @@ public class UserListPanel extends BasePageComposite{
 		memberSinceHeader = UiHelpers.createTableHeaderPanel("Last Accessed");
 		emailHeader = UiHelpers.createTableHeaderPanel("Email");
 		nameHeader = UiHelpers.createTableHeaderPanel("Name");
-		
+		pageFooterElement = injector.createStandardFooter().getWidget();
     	
 		initWidget(binder.createAndBindUi(this));
 		

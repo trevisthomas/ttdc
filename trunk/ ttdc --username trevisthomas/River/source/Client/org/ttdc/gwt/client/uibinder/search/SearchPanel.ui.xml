@@ -5,7 +5,8 @@
 	
 	<g:HTMLPanel>
 		<g:Widget ui:field="pageHeaderElement"/>
-		<g:TabPanel ui:field="tabPanelElement" />
+		<g:SimplePanel ui:field="tagCloudWidgetElement"/>
 		<g:Widget ui:field="pageFooterElement"/>
 	</g:HTMLPanel>
 </ui:UiBinder>
+

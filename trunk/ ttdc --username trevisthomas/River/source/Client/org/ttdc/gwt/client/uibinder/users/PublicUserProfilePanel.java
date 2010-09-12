@@ -51,6 +51,7 @@ public class PublicUserProfilePanel  extends BasePageComposite {
 	private Injector injector;
 	
 	@UiField(provided = true) Widget pageHeaderElement;
+	@UiField (provided = true) Widget pageFooterElement;
 	@UiField TabPanel tabPanelElement;
 	@UiField SimplePanel profileElement;
 	
@@ -83,6 +84,7 @@ public class PublicUserProfilePanel  extends BasePageComposite {
 	public PublicUserProfilePanel(Injector injector) {
 		this.injector = injector;
 		
+		pageFooterElement = injector.createStandardFooter().getWidget();
 		pageHeaderPanel = injector.createStandardPageHeaderPanel(); 
 		userProfilePresenter = injector.getUserProfilePresenter();
     	pageHeaderElement = pageHeaderPanel.getWidget();

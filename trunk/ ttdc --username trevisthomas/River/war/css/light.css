@@ -61,6 +61,7 @@ a:active {color: red;text-decoration: none}
 .tt-traffic-login a:active,
 .tt-post-summary a:active {color: #F5F23B;}
 
+.tt-user-list-table a:link,
 .tt-movie-list-table a:link,
 .tt-cloud-tag a:link,
 .tt-calendar-year-month-cell a:link,
@@ -72,6 +73,7 @@ a:active {color: red;text-decoration: none}
 .tt-reviewSummaryList a:link,
 .tt-post-expanded a:link {text-decoration: none; color: black;}
 
+.tt-user-list-table a:visited,
 .tt-movie-list-table a:visited,
 .tt-cloud-tag a:visited,
 .tt-calendar-year-month-cell a:visited,
@@ -83,6 +85,7 @@ a:active {color: red;text-decoration: none}
 .tt-reviewSummaryList a:visited,
 .tt-post-expanded a:visited {text-decoration: none; color: black;}
 
+.tt-user-list-table a:hover,
 .tt-movie-list-table a:hover,
 .tt-cloud-tag a:hover,
 .tt-calendar-year-month-cell a:hover,
@@ -94,6 +97,7 @@ a:active {color: red;text-decoration: none}
 .tt-reviewSummaryList a:hover,
 .tt-post-expanded a:hover {text-decoration: underline; color: #222;}
 
+.tt-user-list-table a:active,
 .tt-movie-list-table a:active,
 .tt-cloud-tag a:active,
 .tt-calendar-year-month-cell a:active,

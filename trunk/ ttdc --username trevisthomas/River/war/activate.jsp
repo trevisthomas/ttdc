@@ -2,7 +2,7 @@
 <%@page import="org.ttdc.persistence.Persistence"%>
 <%@page import="org.ttdc.gwt.server.dao.PersonDao"%>
 <%@page import="org.ttdc.gwt.server.dao.AccountDao"%>
-<%@page import="org.ttdc.persistence.objects.Personon"%>
+<%@page import="org.ttdc.persistence.objects.Person"%>
 <%@page import="org.ttdc.servlets.SessionProxy"%>
 <%
 	String guid = (String)request.getParameter("key");

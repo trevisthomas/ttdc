@@ -414,7 +414,7 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 			msg += " for " + searchPhraseElement.getActiveText();
 		}
 		
-		if(tagTitles.length() > 0){
+		if(tagTitles != null && tagTitles.length() > 0){
 			if(threadTitle.length() > 0)
 				msg += "in "+threadTitle+" for posts tagged "+tagTitles;
 			else

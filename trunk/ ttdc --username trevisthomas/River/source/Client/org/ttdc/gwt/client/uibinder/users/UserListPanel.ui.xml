@@ -13,5 +13,6 @@
 				</td>
 			</tr>
 		</table>
+		<g:Widget ui:field="pageFooterElement"/>
 	</g:HTMLPanel>
 </ui:UiBinder>

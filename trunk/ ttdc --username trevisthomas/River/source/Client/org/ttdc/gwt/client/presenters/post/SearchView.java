@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+@Deprecated
 public class SearchView extends Composite implements SearchPresenter.View{
 	private final Label summaryDetail = new Label();
 	private final VerticalPanel postListPanel = new VerticalPanel(); 

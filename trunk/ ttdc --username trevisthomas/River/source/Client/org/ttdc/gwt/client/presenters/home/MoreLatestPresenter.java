@@ -26,6 +26,7 @@ public class MoreLatestPresenter extends BasePresenter<MoreLatestPresenter.View>
 		HasClickHandlers moreButton();
 		//HasWidgets panel();
 		void setVisible(boolean visible);
+		void setMessage(String text);
 	}
 
 	private int pageNumber;
@@ -70,6 +71,9 @@ public class MoreLatestPresenter extends BasePresenter<MoreLatestPresenter.View>
 		if(results.calculateNumberOfPages() >= results.getCurrentPage() + 1){
 			pageNumber = results.getCurrentPage() + 1;
 			view.setVisible(true);
+			
+			view.setMessage("viewing " + results.getPageSize()*results.getCurrentPage() +" comments, with " 
+					+(results.getTotalResults() - results.getPageSize()*results.getCurrentPage())+" remaining");
 		}
 		else{
 			view.setVisible(false);

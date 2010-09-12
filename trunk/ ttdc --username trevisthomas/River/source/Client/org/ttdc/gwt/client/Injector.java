@@ -114,6 +114,7 @@ import org.ttdc.gwt.client.uibinder.post.TagListPanel;
 import org.ttdc.gwt.client.uibinder.post.TopicPanel;
 import org.ttdc.gwt.client.uibinder.search.RefineSearchPanel;
 import org.ttdc.gwt.client.uibinder.search.SearchBoxPanel;
+import org.ttdc.gwt.client.uibinder.search.SearchPanel;
 import org.ttdc.gwt.client.uibinder.search.SearchResultsPanel;
 import org.ttdc.gwt.client.uibinder.shared.StandardFooterPanel;
 import org.ttdc.gwt.client.uibinder.shared.StandardPageHeaderPanel;
@@ -422,5 +423,6 @@ public interface Injector extends Ginjector {
 	public HomePanel createHomePanel();
 	public TrafficPersonPanel createTrafficPersonPanel();
 	public StandardFooterPanel createStandardFooter();
+	public SearchPanel createSearchPanel();
 }
 
