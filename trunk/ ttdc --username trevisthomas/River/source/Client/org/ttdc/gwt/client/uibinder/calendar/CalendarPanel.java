@@ -57,10 +57,12 @@ public class CalendarPanel extends BasePageComposite{
     @UiField Label calendarTitleElement;
     @UiField(provided = true) SimplePanel calendarBodyElement = new SimplePanel();
     @UiField SimplePanel calendarBreadCrumbElement;    
+    @UiField (provided = true) Widget pageFooterElement;
     
     @Inject
     public CalendarPanel(Injector injector) { 
     	this.injector = injector;
+    	pageFooterElement = injector.createStandardFooter().getWidget();
     	pageHeaderPanel = injector.createStandardPageHeaderPanel(); 
     	pageHeaderElement = pageHeaderPanel.getWidget();
     	

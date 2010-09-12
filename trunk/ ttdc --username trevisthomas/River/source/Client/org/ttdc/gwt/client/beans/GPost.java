@@ -222,7 +222,10 @@ public class GPost extends GBase{
 	}
 
 	public String getTitle() {
-		return getTitleTag().getValue() + (getRoot().isMovie() ? " ("+getRoot().getPublishYear()+")" : "");
+		if(getRoot() != null)
+			return getTitleTag().getValue() + (getRoot().isMovie() ? " ("+getRoot().getPublishYear()+")" : "");
+		else
+			return getTitleTag().getValue();
 	}
 
 	public int getReplyCount() {

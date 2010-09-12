@@ -43,6 +43,10 @@ public class FastPostBeanConverter {
 	public static void inflateDay(Day day, InboxDao inboxDao){
 		
 		List<String> postIds = new ArrayList<String>();
+		
+		if(day.getHours() == null)
+			return;
+		
 		for(Hour hour : day.getHours()){
 			for(CalendarPost cp : hour.getCalendarPosts()){
 				postIds.add(cp.getPostId());

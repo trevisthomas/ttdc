@@ -25,7 +25,8 @@ import org.hibernate.annotations.GenericGenerator;
 	@NamedQuery(name="image.getAll", query="FROM Image"),
 	@NamedQuery(name="image.getByName", query="FROM Image as image WHERE image.name=:name"),
 	@NamedQuery(name="image.getById", query="FROM Image as image WHERE image.imageId=:imageId"),
-	@NamedQuery(name="image.getAllImages", query="FROM Image as image ORDER BY image.date DESC")
+	@NamedQuery(name="image.getAllImages", query="FROM Image as image ORDER BY image.date DESC"),
+	@NamedQuery(name="image.getAllImagesByName", query="FROM Image as image ORDER BY image.name")
 })
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Image {

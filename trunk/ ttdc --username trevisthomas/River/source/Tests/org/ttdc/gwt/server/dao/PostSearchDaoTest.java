@@ -10,6 +10,7 @@ import static org.ttdc.persistence.Persistence.rollback;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import org.apache.commons.lang.time.StopWatch;
 import org.apache.log4j.Logger;
@@ -19,6 +20,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.ttdc.gwt.shared.commands.types.PostSearchType;
 import org.ttdc.gwt.shared.commands.types.SearchSortBy;
+import org.ttdc.gwt.shared.commands.types.SortDirection;
 import org.ttdc.gwt.shared.util.PaginatedList;
 import org.ttdc.gwt.shared.util.PostFlag;
 import org.ttdc.persistence.objects.AssociationPostTag;
@@ -364,6 +366,43 @@ public class PostSearchDaoTest {
 			
 			//Phrase doesnt look like this anymore
 			//assertEquals(phrase, results.getPhrase());
+			
+			commit();
+		}
+		catch(Exception e){
+			rollback();
+			fail(e.getMessage());
+		}
+	}
+	
+	@Test
+	public void searchByTitle_Cars(){
+		try{
+			beginSession();
+			PostSearchDao dao = new PostSearchDao();
+			String phrase = "cars";
+			int currentPage = 1;
+			
+			dao.setCurrentPage(currentPage);
+			dao.setPhrase(phrase);
+			dao.setSearchByTitle(true);
+			
+			dao.setPostSearchType(PostSearchType.TOPICS);
+			dao.setCurrentPage(1);
+			dao.setPageSize(20);
+			dao.setSortBy(SearchSortBy.POPULARITY);
+			dao.setSortDirection(SortDirection.DESC);
+			
+			PaginatedList<Post> results = dao.search();
+			
+			assertTrue("found nothing, when i expected something",results.getList().size() > 0);
+			
+			List<Post> posts = results.getList();
+			for(Post p : posts ){
+				log.info(p.getPostId() + " - " + p.getTitle());
+				assertTrue("Found a non root post during a topic title search",p.isRootPost());
+			}
+			
 			
 			commit();
 		}

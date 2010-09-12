@@ -50,7 +50,6 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 		//HasWidgets getToolbarPanel();
 		//HasWidgets getTextArea();
 		HasHTML getCommentBody();
-		HasWidgets replyToPanel();
 		HasWidgets ratingPanel();
 		HasClickHandlers getAddCommentClickHandlers();
 		HasClickHandlers getEditCommentClickHandlers();
@@ -78,6 +77,10 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 		void close();
 		
 		void showLoginFields();
+		void configureForTopicCreation(boolean b);
+		boolean isEnableCloseHandler();
+		void setEnableCloseHandler(boolean enable);
+		void installParentSuggestionBox(SuggestBox parentSuggestionBox);
 	}
 	
 	public enum Mode{EDIT,CREATE}
@@ -200,6 +203,7 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 	}
 
 	private void initForRatableParent() {
+		view.configureForTopicCreation(false);
 		if(post.isMovie() && !post.isReviewedBy(currentUser.getPersonId())){
 			view.setReviewable(true);
 		}
@@ -214,7 +218,7 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 	private void initAsNewRootMode() {
 		parentSuggestionOracle = injector.getTagSugestionOracle();
 		parentSuggestionBox = parentSuggestionOracle.createSuggestBoxForTopics();
-		view.replyToPanel().add(parentSuggestionBox);
+		view.installParentSuggestionBox(parentSuggestionBox);
 		
 		parentSuggestionBox.addSelectionHandler(new SelectionHandler<Suggestion>() {
 			@Override
@@ -222,14 +226,18 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 				SuggestionObject suggestion = parentSuggestionOracle.getCurrentSuggestion();
 				if(suggestion != null){
 					GPost parent = suggestion.getPost();
-					if(parent != null){
+					if(!parent.getPostId().trim().isEmpty()){
 						PostCrudCommand cmd = new PostCrudCommand();
 						cmd.setPostId(parent.getPostId());
 						injector.getService().execute(cmd, callbackParentPostSelected());
 					}
 					else{
 						view.setReviewable(false);
+						view.configureForTopicCreation(true);
 					}
+				}
+				else{
+					throw new RuntimeException("Suggestion came back null. Bad juju, this shouldnt happen.");
 				}
 			}
 		});
@@ -268,6 +276,7 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 				else{
 					view.setReviewable(false);
 				}
+				view.configureForTopicCreation(false);
 			}
 		};
 		return rootPostCallback;
@@ -304,7 +313,7 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 		
 		//Determine if the user is creating a new topic or a new conversation in a topic
 		if(post == null){
-			if(parentSuggestionOracle.getCurrentSuggestion() != null){
+			if(parentSuggestionOracle.getCurrentSuggestion() != null && !parentSuggestionOracle.getCurrentSuggestion().isCreateNew()){
 				SuggestionObject suggestion = parentSuggestionOracle.getCurrentSuggestion();
 				cmd.setParentId(suggestion.getPost().getPostId());
 			}
@@ -345,6 +354,7 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 	}
 	
 	public void addCancelClickHandler(ClickHandler handler){
+		view.setEnableCloseHandler(false); //This is because the cloes button does different things depending on where it is being shown
 		view.getCancelClickHandlers().addClickHandler(handler);
 	}
 

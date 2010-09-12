@@ -50,7 +50,7 @@ public class WeekView implements WeekPresenter.View{
 		}
 		
 		for(int i = 1 ; i < 8 ; i++){ //Skip the first col
-			hours.getCellFormatter().addStyleName(0, i, "tt-border-bottom");
+			hours.getCellFormatter().addStyleName(0, i, "tt-calendar-week-day-header");
 		}
 	}
 	
@@ -66,7 +66,7 @@ public class WeekView implements WeekPresenter.View{
 		 * of the week it was off by 7 hours.  Very strange looking.
 		 */
 		hours.setWidget(hourOfDay+1,dayOfWeek,w);
-		w.addStyleName("tt-border-bottom-right");
+		w.addStyleName("tt-calendar-week-hour");
 	}
 	
 	@Override

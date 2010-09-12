@@ -6,5 +6,6 @@
 	<g:HTMLPanel>
 		<g:Widget ui:field="pageHeaderElement"/>
 		<g:TabPanel ui:field="tabPanelElement" />
+		<g:Widget ui:field="pageFooterElement"/>
 	</g:HTMLPanel>
 </ui:UiBinder>

@@ -26,6 +26,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.RichTextArea;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -34,6 +35,7 @@ public class NewCommentView implements NewCommentPresenter.View{
 	private final VerticalPanel main = new VerticalPanel();
 	private final SimplePanel messagePanel = new SimplePanel();
 	private final SimplePanel replyToPanel = new SimplePanel();
+	private final HorizontalPanel topicTitlePanel = new HorizontalPanel();
 	private final TextBox loginTextBox = new TextBox();
 	private final PasswordTextBox passwordTextBox = new PasswordTextBox();
 	private final Button addCommentButton = new Button("Add");
@@ -67,13 +69,19 @@ public class NewCommentView implements NewCommentPresenter.View{
 	
 	private String myId;
 	
+	private boolean enableCloseHandler = true;
 	public NewCommentView() {
 		
 		outer.add(main);
 		main.add(messagePanel);
 		main.add(loginPanel);
 		main.add(ratingPanel);
-		main.add(replyToPanel);
+		
+		topicTitlePanel.add(new Label("Topic: "));
+		topicTitlePanel.add(replyToPanel);
+		topicTitlePanel.setVisible(false);
+		main.add(topicTitlePanel);
+		
 		main.add(toolbar);
 		main.add(textArea);
 		main.add(checkboxPanel);
@@ -93,6 +101,7 @@ public class NewCommentView implements NewCommentPresenter.View{
 		loginPanel.add(passwordTextBox);
 		
 		textArea.setStyleName("tt-rich-text-iframe");
+		
 		
 		//The embed target may need to be dynamic.  Just remember that the back end wil need
 		//to know this value in order to swap it for the real one. So if placeholder becomes dynamic
@@ -122,7 +131,9 @@ public class NewCommentView implements NewCommentPresenter.View{
 		cancelButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				close();
+				if(enableCloseHandler){
+					outer.setVisible(false);
+				}
 			}
 		});
 		
@@ -148,6 +159,8 @@ public class NewCommentView implements NewCommentPresenter.View{
 		
 		toolbar.setStyleName("tt-comment-toolbar");
 		controlPanel.setStyleName("tt-comment-editor-buttons");
+		
+		configureForTopicCreation(true);
 	}
 	
 //	@Override
@@ -205,6 +218,20 @@ public class NewCommentView implements NewCommentPresenter.View{
 			}
 		}
 		
+	}
+	
+	@Override
+	public void configureForTopicCreation(boolean b) {
+		if(b){
+			//Creating a new topic
+			addCommentButton.setText("Create");
+			addCommentButton.setTitle("Create a new review or conversation");
+		}
+		else{
+			//Replying to an existing parent
+			addCommentButton.setText("Reply");
+			addCommentButton.setTitle("Reply to the selected topic");
+		}
 	}
 	
 	@Override
@@ -298,6 +325,8 @@ public class NewCommentView implements NewCommentPresenter.View{
 		return cancelButton;
 	}
 
+	
+	
 	@Override
 	public HasHTML getCommentBody() {
 		//return textArea;
@@ -315,10 +344,12 @@ public class NewCommentView implements NewCommentPresenter.View{
 	}
 
 	@Override
-	public HasWidgets replyToPanel() {
-		return replyToPanel;
+	public void installParentSuggestionBox(SuggestBox parentSuggestionBox) {
+		topicTitlePanel.setVisible(true);
+		replyToPanel.clear();
+		replyToPanel.add(parentSuggestionBox);
 	}
-
+	
 	@Override
 	public Widget getWidget() {
 		return outer;
@@ -404,11 +435,24 @@ public class NewCommentView implements NewCommentPresenter.View{
 	
 	@Override
 	public void close() {
+		
+		cancelButton.click();
 //		main.clear();
-		outer.setVisible(false);
 		//outer.setVisible(false);
 		//outer.removeFromParent();		
 		//main.removeFromParent();
 	}
+
+	@Override
+	public boolean isEnableCloseHandler() {
+		return enableCloseHandler;
+	}
+
+	@Override
+	public void setEnableCloseHandler(boolean enableCloseHandler) {
+		this.enableCloseHandler = enableCloseHandler;
+	}
+	
+	
 	
 }

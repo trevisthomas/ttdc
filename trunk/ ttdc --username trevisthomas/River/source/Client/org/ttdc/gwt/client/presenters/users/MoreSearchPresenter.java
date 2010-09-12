@@ -24,6 +24,7 @@ public class MoreSearchPresenter extends BasePresenter<MoreSearchPresenter.View>
 	public interface View extends BaseView{
 		HasClickHandlers moreButton();
 		void setVisible(boolean visible);
+		void setMessage(String text);
 	}
 
 	private int pageNumber;
@@ -70,6 +71,10 @@ public class MoreSearchPresenter extends BasePresenter<MoreSearchPresenter.View>
 	private void determineIfMoreAvailable(PaginatedList<GPost> results) {
 		if(results.calculateNumberOfPages() >= results.getCurrentPage() + 1){
 			pageNumber = results.getCurrentPage() + 1;
+			
+			view.setMessage("viewing " + results.getPageSize()*results.getCurrentPage() +" comments, with " 
+					+(results.getTotalResults() - results.getPageSize()*results.getCurrentPage())+" remaining");
+			
 			view.setVisible(true);
 		}
 		else{

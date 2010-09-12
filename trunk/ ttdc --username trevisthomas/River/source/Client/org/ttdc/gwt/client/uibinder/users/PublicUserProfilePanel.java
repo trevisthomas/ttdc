@@ -26,6 +26,7 @@ import org.ttdc.gwt.shared.commands.results.GenericCommandResult;
 import org.ttdc.gwt.shared.commands.results.SearchPostsCommandResult;
 import org.ttdc.gwt.shared.commands.types.PersonStatusType;
 import org.ttdc.gwt.shared.commands.types.PostSearchType;
+import org.ttdc.gwt.shared.commands.types.SearchSortBy;
 import org.ttdc.gwt.shared.commands.types.SortBy;
 import org.ttdc.gwt.shared.commands.types.SortDirection;
 import org.ttdc.gwt.shared.util.StringUtil;
@@ -269,7 +270,9 @@ public class PublicUserProfilePanel  extends BasePageComposite {
 		cmd.setPostSearchType(PostSearchType.REPLIES);
 		cmd.setPersonId(person.getPersonId());
 		cmd.setNonReviewsOnly(true);
-		cmd.setPageSize(10);	
+		cmd.setPageSize(20);	
+		cmd.setSortOrder(SearchSortBy.BY_DATE);
+		cmd.setSortDirection(SortDirection.DESC);
 		if(PresenterHelpers.isWidgetEmpty(latestPostsPanel))
 			injector.getService().execute(cmd, buildPostListCallback(cmd,latestPostsPanel, 
 					latestPostsFooterPanel,person.getLogin()+ " hasn't made any comments."));
@@ -281,7 +284,9 @@ public class PublicUserProfilePanel  extends BasePageComposite {
 		cmd.setPostSearchType(PostSearchType.CONVERSATIONS);
 		cmd.setPersonId(person.getPersonId());
 		cmd.setReviewsOnly(true);
-		cmd.setPageSize(10);	
+		cmd.setPageSize(20);
+		cmd.setSortOrder(SearchSortBy.BY_DATE);
+		cmd.setSortDirection(SortDirection.DESC);
 		if(PresenterHelpers.isWidgetEmpty(latestReviewsPanel))
 			injector.getService().execute(cmd, buildPostListCallback(cmd, latestReviewsPanel, 
 					latestReviewsFooterPanel,person.getLogin()+ " hasn't left any reviews."));

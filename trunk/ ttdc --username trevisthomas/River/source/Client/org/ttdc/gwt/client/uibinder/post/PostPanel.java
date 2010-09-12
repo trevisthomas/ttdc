@@ -234,7 +234,23 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 		setupLikesElement(post, likesElement);
 		
 		if(post.isThreadPost()){
-			postNumberElement.setText("#"+(1+Integer.parseInt(post.getPath()))); //Path is the post number for these conversation staters!
+			int conversationNumber = (1+Integer.parseInt(post.getPath()));
+			postNumberElement.setText("#"+conversationNumber); //Path is the post number for these conversation staters!
+			String suffix;
+			if(conversationNumber == 1){
+				suffix = "'st";
+			}
+			else if(conversationNumber == 2){
+				suffix = "'nd";
+			}
+			else if(conversationNumber == 3){
+				suffix = "'rd";				
+			}
+			else{
+				suffix="'th";
+			}
+			
+			postNumberElement.setTitle(conversationNumber+ suffix +" conversation in "+post.getTitle());
 		}
 		else{
 			postNumberElement.setText("");

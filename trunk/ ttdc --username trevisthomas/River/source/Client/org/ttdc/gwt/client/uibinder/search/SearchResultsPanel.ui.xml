@@ -23,6 +23,7 @@
 		 	<g:Hyperlink styleName="tt-fill tt-text-left" ui:field="expandSearchResultsElement"/>
 		 	 -->
 	 	</div>
+	 	<g:Widget ui:field="pageFooterElement"/>
 	 </g:HTMLPanel>
 </ui:UiBinder>
 

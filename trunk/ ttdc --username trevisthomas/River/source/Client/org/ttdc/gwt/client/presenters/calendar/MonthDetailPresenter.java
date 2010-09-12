@@ -12,6 +12,7 @@ import org.ttdc.gwt.shared.calender.Month;
 import org.ttdc.gwt.shared.calender.Week;
 
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.user.client.ui.HasHTML;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -25,7 +26,7 @@ public class MonthDetailPresenter extends BasePresenter<MonthDetailPresenter.Vie
 	public interface View extends BaseView{
 		void insertDay(int weekOfMonth, int dayOfWeek, int dayOfMonth, Widget widget, ClickableHoverSyncPanel synchPanel);
 		HasClickHandlers weekTargetClickHandlers(int weekOfMonth);
-		HasText weekTargetText(int weekOfMonth);
+		HasHTML weekTargetText(int weekOfMonth);
 		//ClickableHoverSyncPanel getWeekSyncPanel(int weekOfMonth); 
 	}
 	
@@ -34,7 +35,8 @@ public class MonthDetailPresenter extends BasePresenter<MonthDetailPresenter.Vie
 		int weekOfMonth = 1;
 		for(Week week : weeks){
 			//load week header
-			view.weekTargetText(weekOfMonth).setText("#"+week.getWeekOfYear());
+			//view.weekTargetText(weekOfMonth).setText("#"+week.getWeekOfYear());
+			view.weekTargetText(weekOfMonth).setHTML("&nbsp;&raquo;&nbsp;");
 			HistoryToken token = CalendarHelpers.buildWeekHistoryToken(month.getYearNumber(), week.getWeekOfYear());
 			view.weekTargetClickHandlers(weekOfMonth).addClickHandler(new WeekClickHandler(token));
 			int dayOfWeek = 1;

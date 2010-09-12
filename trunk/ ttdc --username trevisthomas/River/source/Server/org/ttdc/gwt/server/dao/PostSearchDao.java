@@ -42,7 +42,7 @@ public final class PostSearchDao extends FilteredPostPaginatedDaoBase{
 	private String rootId;
 	private String threadId;
 	private StopWatch stopwatch = new StopWatch();
-	private SearchSortBy sortOrder = SearchSortBy.BY_DATE; 
+	private SearchSortBy sortOrder = null; 
 	private SortDirection sortDirection = SortDirection.DESC;
 	private PostSearchType postSearchType;
 	private boolean searchByTitle = false;
@@ -157,24 +157,28 @@ public final class PostSearchDao extends FilteredPostPaginatedDaoBase{
 		 *  Make sure this makes sense everywhere this is used/
 		 */
 		
-//		boolean reverse = sortDirection != SortDirection.ASC; 
-//		SortField sortField = null;
-//		switch(sortOrder){
-//			case BY_DATE:
-//				sortField = new SortField("date",reverse);
-//				break;
-//			case POPULARITY:
-//				sortField = new SortField("mass",reverse);
-//				break;
-//			case ALPHABETICAL:
-//				sortField = new SortField("title_sort",reverse);
-//				break;
-//		}
-//		if(sortField != null){
-//			ftquery.setSort(new org.apache.lucene.search.Sort(sortField));
-//		}
+		// 9/12/2010 putting them back because some places need this (user history view) should fix them  
 		
-		//addTypeFilter(ftquery);
+		if(sortOrder != null){
+			boolean reverse = sortDirection != SortDirection.ASC; 
+			SortField sortField = null;
+			switch(sortOrder){
+				case BY_DATE:
+					sortField = new SortField("date",reverse);
+					break;
+				case POPULARITY:
+					sortField = new SortField("mass",reverse);
+					break;
+				case ALPHABETICAL:
+					sortField = new SortField("title_sort",reverse);
+					break;
+			}
+			if(sortField != null){
+				ftquery.setSort(new org.apache.lucene.search.Sort(sortField));
+			}
+		}
+		
+		addTypeFilter(ftquery);
 		//addDateFilter(ftquery); // Probably shouldnt do this if it's already a part of the query (which it is when it's searching for blank)
 		
 		list = ftquery.list();

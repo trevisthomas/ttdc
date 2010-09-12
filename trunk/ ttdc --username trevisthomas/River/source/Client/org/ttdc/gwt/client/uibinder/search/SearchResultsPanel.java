@@ -57,6 +57,7 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
     private Injector injector;
     
     @UiField(provided = true) Widget pageHeaderElement;
+    @UiField (provided = true) Widget pageFooterElement;
     @UiField(provided = true) SimplePanel postListElement = new SimplePanel();
     @UiField(provided = true) SimplePanel tagResultsElement = new SimplePanel();
     //@UiField(provided = true) SimplePanel paginationElement = new SimplePanel();
@@ -65,6 +66,7 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
     @UiField Label pageResultMessageElement;
     @UiField (provided = true) Hyperlink prevElement;
     @UiField (provided = true) Hyperlink nextElement;
+    
     
     @UiField Label tagLabelElement; 
     @UiField Label postLabelElement;
@@ -89,6 +91,7 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 		
 		prevElement = prevLinkPresenter.getHyperlink();
 		nextElement = nextLinkPresenter.getHyperlink();
+		pageFooterElement = injector.createStandardFooter().getWidget();
 		
     	initWidget(binder.createAndBindUi(this));
     	

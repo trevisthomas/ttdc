@@ -128,19 +128,21 @@ public class CalendarSelectorModuleView implements CalendarSelectorModulePresent
 		private int month;
 		
 		void setSelected(){
-			addStyleName("tt-selected");
+			addStyleName("tt-color-calendar-small-month-day-selected");
+			removeStyleName("tt-color-calendar-small-month-day");
 		}
 		
 		public Month(int month) {
 			this.month = month + 1;
-			addStyleName("tt-cursor-pointer");
+			addStyleName("tt-calendar-small-month-day tt-cursor-pointer tt-color-calendar-small-month-day");
 			monthMap.put(this.month,this);
 			add(new Label(CalendarHelpers.MONTH_ABBREVIATIONS[month]));
 			addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
 					for(Month m : monthMap.values()){
-						m.removeStyleName("tt-selected");
+						m.removeStyleName("tt-color-calendar-small-month-day-selected");
+						m.addStyleName("tt-color-calendar-small-month-day");
 					}
 					Month.this.setSelected();
 					selectedMonth = Month.this.month; //WOAH!!
@@ -153,19 +155,21 @@ public class CalendarSelectorModuleView implements CalendarSelectorModulePresent
 		private int year;
 		
 		void setSelected(){
-			addStyleName("tt-selected");
+			addStyleName("tt-color-calendar-small-month-day-selected");
+			removeStyleName("tt-color-calendar-small-month-day");
 		}
 		
 		public Year(int year) {
 			this.year = year;
 			add(new Label(year+""));
 			yearMap.put(year,this);
-			addStyleName("tt-cursor-pointer");
+			addStyleName("tt-calendar-small-month-day tt-cursor-pointer tt-color-calendar-small-month-day");
 			addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
 					for(Year y : yearMap.values()){
-						y.removeStyleName("tt-selected");
+						y.removeStyleName("tt-color-calendar-small-month-day-selected");
+						y.addStyleName("tt-color-calendar-small-month-day");
 					}
 					Year.this.setSelected();
 					selectedYear = Year.this.year; //WOAH!!
@@ -173,6 +177,5 @@ public class CalendarSelectorModuleView implements CalendarSelectorModulePresent
 			});
 		}
 	}
-
 	
 }

@@ -54,6 +54,7 @@ public class MovieListPanel extends BasePageComposite{
 	@UiField FlexTable tableElement;
 	@UiField SimplePanel paginatorElement;
 	@UiField FlowPanel personFilterElement;
+	@UiField (provided = true) Widget pageFooterElement;
 	
 	private final StandardPageHeaderPanel pageHeaderPanel;
 	private String personId = null; 
@@ -82,6 +83,7 @@ public class MovieListPanel extends BasePageComposite{
 		
 		pageHeaderPanel = injector.createStandardPageHeaderPanel(); 
     	pageHeaderElement = pageHeaderPanel.getWidget();
+    	pageFooterElement = injector.createStandardFooter().getWidget();
     	
     	imdb.add(new Label("IMDB"));
     	

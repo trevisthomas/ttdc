@@ -30,7 +30,6 @@ public class Navigation extends Composite implements PersonEventListener{
 	private HyperlinkPresenter homeLinkPresenter;
 	private HyperlinkPresenter searchLinkPresenter;
 	private HyperlinkPresenter movieLinkPresenter;
-	private HyperlinkPresenter historyLinkPresenter;
 	private HyperlinkPresenter usersLinkPresenter;
 	private HyperlinkPresenter dashboardLinkPresenter;
 	private HyperlinkPresenter adminLinkPresenter;
@@ -41,7 +40,6 @@ public class Navigation extends Composite implements PersonEventListener{
 	private final Hyperlink homeElement;
 	private final Hyperlink searchElement;
 	private final Hyperlink movieElement;
-	private final Hyperlink historyElement;
 	private final Hyperlink usersElement;
 	private final Hyperlink dashboardElement;
 	private final Hyperlink adminElement;
@@ -57,7 +55,6 @@ public class Navigation extends Composite implements PersonEventListener{
 		homeLinkPresenter = injector.getHyperlinkPresenter();
 		searchLinkPresenter = injector.getHyperlinkPresenter();
 		movieLinkPresenter = injector.getHyperlinkPresenter();
-		historyLinkPresenter = injector.getHyperlinkPresenter();
 		usersLinkPresenter = injector.getHyperlinkPresenter();
 		dashboardLinkPresenter = injector.getHyperlinkPresenter();
 		adminLinkPresenter = injector.getHyperlinkPresenter();
@@ -66,7 +63,6 @@ public class Navigation extends Composite implements PersonEventListener{
 		homeLinkPresenter.setView("Home", HistoryConstants.VIEW_HOME);
 		searchLinkPresenter.setView("Search", HistoryConstants.VIEW_SEARCH);
 		movieLinkPresenter.setView("Movie", HistoryConstants.VIEW_MOVIE_LIST);
-		historyLinkPresenter.setView("History", HistoryConstants.VIEW_CALENDAR);
 		usersLinkPresenter.setView("Users", HistoryConstants.VIEW_USER_LIST);
 		dashboardLinkPresenter.setView("Dashboard", HistoryConstants.VIEW_DASHBOARD);
 		calendarLinkPresenter.setView("Calendar", HistoryConstants.VIEW_CALENDAR);
@@ -77,7 +73,6 @@ public class Navigation extends Composite implements PersonEventListener{
 		homeElement = homeLinkPresenter.getHyperlink();
 		searchElement = searchLinkPresenter.getHyperlink();
 		movieElement = movieLinkPresenter.getHyperlink();
-		historyElement = historyLinkPresenter.getHyperlink();
 		usersElement = usersLinkPresenter.getHyperlink();
 		dashboardElement = dashboardLinkPresenter.getHyperlink();
 		calendarElement = calendarLinkPresenter.getHyperlink();
@@ -114,14 +109,11 @@ public class Navigation extends Composite implements PersonEventListener{
 		links.add(homeElement);
 		links.add(searchElement);
 		links.add(movieElement);
-		links.add(historyElement);
 		if(!ConnectionId.isAnonymous()){
 			links.add(usersElement);
 			links.add(dashboardElement);
 		}
 		links.add(calendarElement);
-		
-		
 		if(ConnectionId.isAdministrator()){
 			links.add(adminElement);		
 		}
