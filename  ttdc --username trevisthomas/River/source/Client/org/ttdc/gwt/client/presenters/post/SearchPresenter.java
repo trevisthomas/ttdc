@@ -11,6 +11,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
+@Deprecated
 public class SearchPresenter extends BasePagePresenter<SearchPresenter.View> /*implements HistoryEventListener*/{
 	public interface View extends BasePageView {
 		HasWidgets getSiteSearchTarget();

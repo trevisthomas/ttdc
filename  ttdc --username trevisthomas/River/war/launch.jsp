@@ -12,7 +12,7 @@
   <head>
   
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <title>TTDC v7 Alpha</title>
+    <title>TTDC v7 Beta</title>
     
     <link type="text/css" rel="stylesheet" href="/css/shacktags.css"/>
     <!-- <link type="text/css" rel="stylesheet" href="/css/basic.css"/>  -->

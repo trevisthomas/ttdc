@@ -33,6 +33,7 @@ public class UserToolsPanel extends BasePageComposite{
 	private final SimplePanel requestPasswordResetPanel = new SimplePanel();
 	private Injector injector;
 	
+	@UiField (provided = true) Widget pageFooterElement;
 	@UiField(provided = true) Widget pageHeaderElement;
 	@UiField TabPanel tabPanelElement;
 	
@@ -44,6 +45,7 @@ public class UserToolsPanel extends BasePageComposite{
 		this.injector = injector;
 		pageHeaderPanel = injector.createStandardPageHeaderPanel(); 
     	pageHeaderElement = pageHeaderPanel.getWidget();
+    	pageFooterElement = injector.createStandardFooter().getWidget();
     	
     	initWidget(binder.createAndBindUi(this));
     	

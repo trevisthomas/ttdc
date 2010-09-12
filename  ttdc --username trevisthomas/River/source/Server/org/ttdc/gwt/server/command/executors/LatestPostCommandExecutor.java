@@ -8,7 +8,6 @@ import org.ttdc.gwt.server.dao.EarmarkedPostDao;
 import org.ttdc.gwt.server.dao.LatestPostsDao;
 import org.ttdc.gwt.server.dao.TagDao;
 import org.ttdc.gwt.shared.commands.LatestPostsCommand;
-
 import org.ttdc.gwt.shared.commands.results.PaginatedListCommandResult;
 import org.ttdc.gwt.shared.util.PaginatedList;
 import org.ttdc.gwt.shared.util.PostFlag;
@@ -23,6 +22,7 @@ public class LatestPostCommandExecutor extends CommandExecutor<PaginatedListComm
 	protected CommandResult execute() {
 		LatestPostsCommand cmd = (LatestPostsCommand)getCommand();
 		PaginatedListCommandResult<GPost> result;
+		
 		try{
 			Persistence.beginSession();
 			switch (cmd.getAction()) {

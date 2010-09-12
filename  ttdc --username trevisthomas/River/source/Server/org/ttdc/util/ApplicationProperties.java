@@ -15,7 +15,7 @@ public class ApplicationProperties {
 	}
 	
 	public static Properties getAppProperties() throws IOException{
-		return getProperties("application.properties");
+		return getProperties("/application.properties");
 	}
 }
 
