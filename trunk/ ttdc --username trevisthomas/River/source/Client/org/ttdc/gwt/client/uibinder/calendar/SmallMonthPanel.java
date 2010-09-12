@@ -40,10 +40,10 @@ public class SmallMonthPanel extends Composite implements DayClickHandler{
     
     private Injector injector;
     
-    @UiField(provided = true) FocusPanel prevMonthElement = new ClickableIconPanel("tt-clickable-icon-prev");
+    @UiField(provided = true) FocusPanel prevMonthElement = new ClickableIconPanel("ui-icon ui-icon-circle-arrow-w");
     @UiField(provided = true) Hyperlink monthTitleElement;
     @UiField(provided = true) Hyperlink yearTitleElement;
-    @UiField(provided = true) FocusPanel nextMonthElement = new ClickableIconPanel("tt-clickable-icon-next");
+    @UiField(provided = true) FocusPanel nextMonthElement = new ClickableIconPanel("ui-icon ui-icon-circle-arrow-e");
     @UiField(provided = true) Grid daysGridElement = new Grid(7,8);
     @UiField Button clearButtonElement;
     @UiField Button nowButtonElement;
