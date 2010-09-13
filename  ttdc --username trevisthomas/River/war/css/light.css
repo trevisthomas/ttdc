@@ -8,32 +8,8 @@
 body{ color: #222; background-color: #eee;}
 .tt-view-container{ background-color:white;}
 
-/* 
- * Colors to be moved into color css
- */
-
 .tt-message-textbox-disabled{ color: #ddd;}
 
-/*
-.tt-color-selected{border-color: yellow; background-color: #fc5}
-.tt-color-selected-hover{border-color: yellow; background-color: white;}
-.tt-color-contrast1{ background: grey; color: white; border-color: #eee;}
-.tt-color-contrast1-hover{ background: #eee; color: black; border-color: grey;}
-.tt-color-contrast2-hover{ border-color: grey; background: #eee;}
-.tt-color-contrast2{ border-color: #eee;}
-.tt-color-contrast3-hover{ border-color: grey; background: #eee;}
-.tt-color-contrast3{ border-color: #ccc; background-color: #fcfcfc;}
-*/
-
-
-
-/*
-a {font-family:Georgia,serif; font-size:large}
-a:link {color:blue;}
-a:visited {color: #660066;}
-a:hover {text-decoration: none; color: #ff9900; font-weight:bold;}
-a:active {color: red;text-decoration: none}
-*/
 	
 .tt-post-panel-head	a:link {text-decoration: none; color: #222;}
 .tt-post-panel-head a:visited {text-decoration: none; color: #222;}
@@ -233,14 +209,8 @@ a:active {color: red;text-decoration: none}
 .gwt-PopupPanel { border-color: grey; background: white; }
 
 
-.gwt-SuggestBoxPopup .item {
-  color: #424242;
-}
-.gwt-SuggestBoxPopup .item-selected {
-  background: #b7d6f6;
-}
-.gwt-SuggestBoxPopup .suggestPopupContent {
-  background: white;
-}
+.gwt-SuggestBoxPopup .item { color: #424242;}
+.gwt-SuggestBoxPopup .item-selected { background: #b7d6f6; }
+.gwt-SuggestBoxPopup .suggestPopupContent { background: white;}
 
 

@@ -338,15 +338,14 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 		CommandResultCallback<PostCommandResult> callback = new CommandResultCallback<PostCommandResult>(){
 			@Override
 			public void onSuccess(PostCommandResult result) {
-				//Window.alert("Created");
-				view.close();
-				//Window.Location.reload();
-				PostEvent event = new PostEvent(PostEventType.NEW_FORCE_REFRESH, result.getPost());
-				EventBus.fireEvent(event);
+				//view.close();
+				Window.Location.reload();
+				//PostEvent event = new PostEvent(PostEventType.NEW_FORCE_REFRESH, result.getPost());
+				//EventBus.fireEvent(event);
+				EventBus.reload();
 			}
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
 				super.onFailure(caught);
 			}
 		};

@@ -89,7 +89,9 @@ public class TopicPanel extends BasePageComposite implements PostEventListener{
 			//if(postEvent.getSource().equals(post))
 			//Trevis, figure out a way to determine what post this thread is showing!!! 
 			//This implementation will refresh for any new post!
-			EventBus.reload();
+			
+			//Decided to disable this. I'm wondering if this is the smoking gun, making random error popups.
+			//EventBus.reload(); 
 		}
 	}
 	

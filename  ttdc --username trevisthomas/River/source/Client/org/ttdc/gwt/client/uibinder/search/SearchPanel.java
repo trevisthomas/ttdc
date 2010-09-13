@@ -33,6 +33,7 @@ public class SearchPanel extends BasePageComposite {
 		pageHeaderPanel = injector.createStandardPageHeaderPanel(); 
     	pageHeaderElement = pageHeaderPanel.getWidget();
     	pageFooterElement = injector.createStandardFooter().getWidget();
+    	pageHeaderPanel.getSearchBoxPresenter().init();
     	
     	initWidget(binder.createAndBindUi(this));
     	

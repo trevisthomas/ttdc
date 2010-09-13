@@ -9,6 +9,7 @@ import static org.ttdc.gwt.client.messaging.history.HistoryConstants.SEARCH_MODE
 import static org.ttdc.gwt.client.messaging.history.HistoryConstants.SEARCH_MODE_KEY;
 import static org.ttdc.gwt.client.messaging.history.HistoryConstants.SEARCH_MODE_VALUE_COMMENTS;
 import static org.ttdc.gwt.client.messaging.history.HistoryConstants.SEARCH_MODE_VALUE_TOPICS;
+import static org.ttdc.gwt.client.messaging.history.HistoryConstants.SEARCH_MODE_VALUE_ALL;
 import static org.ttdc.gwt.client.messaging.history.HistoryConstants.SEARCH_PHRASE_KEY;
 import static org.ttdc.gwt.client.messaging.history.HistoryConstants.SEARCH_START_DATE;
 import static org.ttdc.gwt.client.messaging.history.HistoryConstants.SEARCH_TAG_ID_KEY;
@@ -130,7 +131,16 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 			BatchCommandTool batcher = new BatchCommandTool();
 			performSearchForTags(batcher, token);
 			
-			performSearchForTopics(batcher, token);
+			performSearchForCommentsOfType(batcher, token, PostSearchType.TOPICS);
+			performSearchForReplySummary(batcher, token);
+			
+			injector.getService().execute(batcher.getActionList(), batcher);
+		}
+		else if(token.isParameterEq(SEARCH_MODE_KEY,SEARCH_MODE_VALUE_ALL)){
+			BatchCommandTool batcher = new BatchCommandTool();
+			performSearchForTags(batcher, token);
+			
+			performSearchForCommentsOfType(batcher, token, PostSearchType.ALL);
 			performSearchForReplySummary(batcher, token);
 			
 			injector.getService().execute(batcher.getActionList(), batcher);
@@ -254,7 +264,7 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 		};
 	}
 	
-	private void performSearchForTopics(BatchCommandTool batcher, HistoryToken token){
+	private void performSearchForCommentsOfType(BatchCommandTool batcher, HistoryToken token, PostSearchType type){
 		SearchPostsCommand command = createSearchPostsCommand(token);
 		final String phrase = command.getPhrase(); 
 
@@ -262,14 +272,14 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 		
 //		searchSummaryDetailElement.setText(createSearchMessage(command));
 		
-		command.setPostSearchType(PostSearchType.TOPICS); // NOT_REPLIES was broken, check PostSearchDao before using
+		command.setPostSearchType(type); // NOT_REPLIES was broken, check PostSearchDao before using
 
 		CommandResultCallback<SearchPostsCommandResult> callback = new CommandResultCallback<SearchPostsCommandResult>(){
 			public void onSuccess(SearchPostsCommandResult result) {
 				PaginatedList<GPost> results = result.getResults();
 				postCollection.setPostList(results.getList());
 				
-				addSearchResultsToView(phrase, result, "Topics");
+				addSearchResultsToView(phrase, result, "Comments");
 			}
 		};
 		batcher.add(command, callback);
