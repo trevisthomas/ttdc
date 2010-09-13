@@ -10,10 +10,10 @@
 		<table class="tt-home-tabContainer">
 			<tr>
 				<td class="tt-home-left">
-					<g:TabPanel ui:field="centerTabPanelElement" />
+					<g:TabPanel ui:field="rightTabPanelElement" />					
 				</td>
 				<td class="tt-home-right">
-					<g:TabPanel ui:field="rightTabPanelElement" />
+					<g:TabPanel ui:field="centerTabPanelElement" />
 				</td>
 			</tr>
 		</table>

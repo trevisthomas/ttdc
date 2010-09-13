@@ -8,6 +8,7 @@ public interface HistoryConstants {
 	public static final String SEARCH_PHRASE_KEY = "phrase";
 	public static final String SEARCH_MODE_VALUE_COMMENTS = "comments";
 	public static final String SEARCH_MODE_VALUE_TOPICS = "topics";
+	public static final String SEARCH_MODE_VALUE_ALL = "all";
 	public static final String SEARCH_TAG_ID_KEY = "tagId";
 	public static final String SEARCH_MODE_IN_ROOT = "inTopic";
 	public static final String SEARCH_MODE_IN_THREAD = "inThread";

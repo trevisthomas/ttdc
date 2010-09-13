@@ -86,7 +86,7 @@ public class HomePanel extends BasePageComposite implements PersonEventListener,
     	centerTabPanelElement.add(nestedPanel, "Nested");
     	centerTabPanelElement.add(flatPanel, "Flat");
     	//centerTabPanelElement.add(conversationPanel,"Conversations");
-    	rightTabPanelElement.add(threadPanel,"Threads");
+    	rightTabPanelElement.add(threadPanel,"Topics");
 		
     	centerTabPanelElement.setStyleName("tt-fill");
     	rightTabPanelElement.setStyleName("tt-fill");

@@ -468,7 +468,7 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 			token.addParameter(HistoryConstants.SEARCH_MODE_KEY, HistoryConstants.SEARCH_MODE_IN_THREAD);
 		}
 		else{
-			token.addParameter(HistoryConstants.SEARCH_MODE_KEY, HistoryConstants.SEARCH_MODE_VALUE_TOPICS);
+			token.addParameter(HistoryConstants.SEARCH_MODE_KEY, HistoryConstants.SEARCH_MODE_VALUE_ALL);
 		}
 		
 		if(StringUtil.notEmpty(phrase)){
