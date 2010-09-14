@@ -6,14 +6,13 @@
 	<g:HTMLPanel>
 		<g:Widget ui:field="pageHeaderElement"/>
 		<g:SimplePanel ui:field="siteUpdateElement"/>
-		<g:SimplePanel styleName="tt-fill" ui:field="trafficElement"/>
 		<table class="tt-home-tabContainer">
 			<tr>
 				<td class="tt-home-left">
-					<g:TabPanel ui:field="rightTabPanelElement" />					
+					<g:SimplePanel ui:field="trafficElement" />
 				</td>
-				<td class="tt-home-right">
-					<g:TabPanel ui:field="centerTabPanelElement" />
+				<td class="tt-home-main">
+					<g:TabPanel ui:field="postTabPanelElement" />					
 				</td>
 			</tr>
 		</table>

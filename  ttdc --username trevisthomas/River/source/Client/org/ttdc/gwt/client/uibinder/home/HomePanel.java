@@ -47,8 +47,7 @@ public class HomePanel extends BasePageComposite implements PersonEventListener,
 	
 	@UiField (provided = true) Widget pageHeaderElement;
 	@UiField (provided = true) Widget pageFooterElement;
-	@UiField TabPanel rightTabPanelElement;
-	@UiField TabPanel centerTabPanelElement;
+	@UiField TabPanel postTabPanelElement;
 	@UiField SimplePanel trafficElement;
 	@UiField SimplePanel siteUpdateElement;
 	
@@ -83,20 +82,20 @@ public class HomePanel extends BasePageComposite implements PersonEventListener,
     	
     	initWidget(binder.createAndBindUi(this));
     	
-    	centerTabPanelElement.add(nestedPanel, "Nested");
-    	centerTabPanelElement.add(flatPanel, "Flat");
+    	postTabPanelElement.add(nestedPanel, "Nested");
+    	postTabPanelElement.add(flatPanel, "Flat");
     	//centerTabPanelElement.add(conversationPanel,"Conversations");
-    	rightTabPanelElement.add(threadPanel,"Topics");
+    	//rightTabPanelElement.add(threadPanel,"Topics");
 		
-    	centerTabPanelElement.setStyleName("tt-fill");
-    	rightTabPanelElement.setStyleName("tt-fill");
+    	postTabPanelElement.setStyleName("tt-fill");
+    	//rightTabPanelElement.setStyleName("tt-fill");
     	
     	token.addParameter(HistoryConstants.VIEW, HistoryConstants.VIEW_HOME);
 		
-    	centerTabPanelElement.addSelectionHandler(new SelectionHandler<Integer>() {
+    	postTabPanelElement.addSelectionHandler(new SelectionHandler<Integer>() {
 			@Override
 			public void onSelection(SelectionEvent<Integer> event) {
-				if(!centerTabPanelElement.isAttached()) 
+				if(!postTabPanelElement.isAttached()) 
 					return;
 				int index = event.getSelectedItem();
 				
@@ -150,7 +149,7 @@ public class HomePanel extends BasePageComposite implements PersonEventListener,
 	
 	
 	public void enableEarmarkTab(){
-		centerTabPanelElement.add(earmarksPanel,"Earmarked");
+		postTabPanelElement.add(earmarksPanel,"Earmarked");
 	}
 	
 	private void updateHistoryToReflectCenterTabSelection(int index) {
@@ -180,21 +179,21 @@ public class HomePanel extends BasePageComposite implements PersonEventListener,
 	private void displayTab(TabType selected) {
 		fireHistoryEvent = false;
 		if(selected.equals(TabType.FLAT)){
-			centerTabPanelElement.selectTab(INDEX_FLAT);
+			postTabPanelElement.selectTab(INDEX_FLAT);
 		}else if(selected.equals(TabType.NESTED)){
-			centerTabPanelElement.selectTab(INDEX_NESTED);
+			postTabPanelElement.selectTab(INDEX_NESTED);
 		}
 		else if(selected.equals(TabType.EARMARKS)){
-			centerTabPanelElement.selectTab(INDEX_EARMARKS);
+			postTabPanelElement.selectTab(INDEX_EARMARKS);
 		}
 		else if(selected.equals(TabType.CONVERSATION)){
-			centerTabPanelElement.selectTab(INDEX_CONVERSATION);
+			postTabPanelElement.selectTab(INDEX_CONVERSATION);
 		}
 		else{
-			centerTabPanelElement.selectTab(INDEX_NESTED);
+			postTabPanelElement.selectTab(INDEX_NESTED);
 		}
 		
-		rightTabPanelElement.selectTab(INDEX_THREAD);
+		//rightTabPanelElement.selectTab(INDEX_THREAD);
 		fireHistoryEvent = true;
 	}
 	

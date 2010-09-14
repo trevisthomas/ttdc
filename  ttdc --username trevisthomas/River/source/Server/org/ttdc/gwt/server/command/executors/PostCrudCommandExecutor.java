@@ -50,6 +50,7 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 	protected CommandResult execute() {
 		PostCrudCommand cmd = (PostCrudCommand)getCommand();
 		Post post = null;
+		GPost gPost = null;
 		PostEventType broadcastType = null;
 		try{
 			beginSession();
@@ -81,16 +82,16 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 			PostCommandResult result = null;
 			if(post!= null){
 				InboxDao inboxDao = new InboxDao(getPerson());
-				GPost gPost = FastPostBeanConverter.convertPost(post, inboxDao); 
+				gPost = FastPostBeanConverter.convertPost(post, inboxDao); 
 				result = new PostCommandResult(gPost);
-				
-				if(broadcastType != null){
-					PostEvent event = new PostEvent(broadcastType,gPost);
-					ServerEventBroadcaster.getInstance().broadcastEvent(event,getCommand().getConnectionId());
-				}
 			}
 			
 			commit();
+			
+			if(broadcastType != null && gPost != null){
+				PostEvent event = new PostEvent(broadcastType,gPost);
+				ServerEventBroadcaster.getInstance().broadcastEvent(event,getCommand().getConnectionId());
+			}
 			
 			return result;
 		}

@@ -52,6 +52,16 @@ final public class PostDao {
 		if(isMovie()){
 			return createMoviePost();
 		}
+		else if(parent == null){
+			//Create this conversation in a new topic
+			String conversationBody =  getBody();
+			setBody("");
+			Post newTopic =  createTraditionalPost();
+			parent = newTopic;
+			setBody(conversationBody);
+			bodyValidation();
+			return createTraditionalPost();
+		}
 		else{
 			return createTraditionalPost();
 		}
@@ -109,8 +119,6 @@ final public class PostDao {
 	}
 
 	private Post createTraditionalPost() {
-		validateParams();
-		
 		Post post = buildPost();
 		Entry entry = buildEntry(post);
 		post.addEntry(entry);
@@ -121,7 +129,7 @@ final public class PostDao {
 		return post;
 	}
 
-	private void validateParams() {
+	private void bodyValidation() {
 		if(StringUtils.isEmpty(body)){
 			throw new RuntimeException("A Post cannot be created without content.");
 		}

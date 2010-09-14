@@ -15,7 +15,7 @@ public class ThreadDao extends FilteredPostPaginatedDaoBase{
 	private String threadId;
 	private Post sourcePost;
 	
-	public final static int THREAD_REPLY_MAX_RESULTS = 5; //TODO probably want to move this to being a user choice?
+	public final static int THREAD_REPLY_MAX_RESULTS = 20; //TODO probably want to move this to being a user choice?
 	
 	public void setRootId(String rootId) {
 		this.rootId = rootId; 
