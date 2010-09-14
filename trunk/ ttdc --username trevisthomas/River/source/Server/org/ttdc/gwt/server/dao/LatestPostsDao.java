@@ -10,7 +10,7 @@ import org.ttdc.persistence.objects.Post;
 
 public class LatestPostsDao extends FilteredPostPaginatedDaoBase{
 	
-	private static final int DEFAULT_REPLY_MAX_RESULTS = 5;
+	private static final int DEFAULT_REPLY_MAX_RESULTS = ThreadDao.THREAD_REPLY_MAX_RESULTS;
 	private int replyMaxResults = DEFAULT_REPLY_MAX_RESULTS;
 	
 	

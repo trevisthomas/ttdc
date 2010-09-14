@@ -67,7 +67,7 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 .tt-rich-text-iframe{width: 478px; margin: 4px 0;}
 .tt-comment-editor-buttons{float: right;}
 
-.tt-post-panel-content{ margin: 0 0 2px 0; width:100%;}
+.tt-post-panel-content{ width:100%;}
 .tt-post-panel-head{border-style: solid; border-width: 0 0 1px 0;}
 .tt-post-panel-head-date,
 .tt-post-panel-head-detail{vertical-align: middle;}
@@ -79,13 +79,15 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 
 .tt-post-summary-body{padding:0px 2px;}
 
-.tt-home-left,
-.tt-home-right,
 .tt-topic-left,
 .tt-topic-right{width:504px; padding: 0 2px;}
 
-.tt-home-tabContainer{margin: 4px 0 10px 0;}
+.tt-home-main{ width: 550px;}
+.tt-home-left{ width: 220px;}
 
+.tt-home-tabContainer{margin: 4px 0 10px 0; width: 800px;}
+
+.tt-avatar-large{margin: 4px;}
 /*
 .tt-post-expanded-content{width:100%; clear:both;}
 */

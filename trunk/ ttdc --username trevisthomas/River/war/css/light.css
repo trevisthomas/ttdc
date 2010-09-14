@@ -143,9 +143,9 @@ body{ color: #222; background-color: #eee;}
 .tt-color-search-results-header,
 .tt-post-body{color: grey;}
 
-.tt-post-panel-head{ background-color: #f5f5f5; border-color:#eee;}
+.tt-post-panel-head{ background-color: #f5f5f5; border-color:#f5f5f5;}
 
-.tt-post-panel-content{color: black; background-color: #fcfcfc; }
+.tt-post-panel-content{color: black; background-color: #F5F5F5; border: 0px; border-bottom-width: 1px; border-style: solid; border-color: #ddd;}
 
 
 .tt-search-popup{background-color: #fefefe; border-color: grey; color: black;}

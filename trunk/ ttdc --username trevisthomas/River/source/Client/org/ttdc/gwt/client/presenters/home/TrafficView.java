@@ -3,16 +3,25 @@ package org.ttdc.gwt.client.presenters.home;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.TabPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class TrafficView implements TrafficPresenter.View{
-	private final HorizontalPanel personPanel = new HorizontalPanel();
+	private final TabPanel tabPanel = new TabPanel();
+	private final VerticalPanel personPanel = new VerticalPanel();
 	private final Map<String, Widget> map = new TrafficMap<String, Widget>(MAX_ENTRIES);
 	
+	
+	public TrafficView() {
+		tabPanel.add(personPanel, "Traffic");
+		tabPanel.addStyleName("tt-fill");
+	}
 	@Override
 	public Widget getWidget() {
-		return personPanel;
+		
+		tabPanel.selectTab(0);
+		return tabPanel;
 	}
 
 	@Override

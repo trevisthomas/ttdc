@@ -27,8 +27,8 @@ public class ConversionUtils {
 
 		//Removing any html from the summary.
 		String summary = StringTools.escapeRexExSpecialCharacters(value);
-		if(value.length() > 1000){
-			summary = summary.substring(0, 1000);
+		if(value.length() > 60){
+			summary = summary.substring(0, 60) + "...";
 		}		
 		Pattern p = Pattern.compile("<div class=shackTag_q>.*?\\>");
 		summary = summary + "</div>";
