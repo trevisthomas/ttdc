@@ -1,5 +1,6 @@
 package org.ttdc.gwt.client.uibinder.post;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.ttdc.gwt.client.Injector;
@@ -141,13 +142,18 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
     	postReadElement.addStyleName("tt-float-left");
     }
     
+    @Override
+    public GPost getPost() {
+    	return post;
+    }
+    
     public void setPost(GPost post) {
 		setPost(post, Mode.FLAT);
 	}
 
 	public void setPost(GPost post, Mode mode) {
 		super.init(post, commentElement, tagListPanel);
-		postCollectionPresenter.setParentPost(post);
+		postCollectionPresenter.setConversationStarterPost(post);
 		this.mode = mode;
 		this.post = post;
 		
@@ -221,7 +227,9 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 							
 		if(post.getPosts().size() != 0){
 			//postCollectionPresenter = injector.getPostCollectionPresenter();
-			postCollectionPresenter.setPostList(post.getPosts(), Mode.FLAT);
+			//postCollectionPresenter.setPostList(post.getPosts(), Mode.FLAT);
+			postCollectionPresenter.setPostList(post.getPosts(), mode);
+			
 			//A post will have only one child widget that widget will be 
 			//a widget containing all of the children
 			//view.getChildWidgetBucket().add(postCollectionPresenter.getWidget());
@@ -232,6 +240,9 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 				//view.fetchMoreTarget().addClickHandler(buildFetchMoreResultsClickHandler(cmd));
 				setupFetchMoreClickHandlerTitle();
 			}
+		}
+		else{
+			postCollectionPresenter.setPostList(new ArrayList<GPost>(), mode);
 		}
 		
 		GPerson user = ConnectionId.getInstance().getCurrentUser();

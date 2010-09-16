@@ -257,7 +257,7 @@ public class HomePanel extends BasePageComposite implements PersonEventListener,
 			buildNestedTab();
 		}
 		
-		buildThreadTab();
+		//buildThreadTab();
 		
 		displayTab(selected);
 	}
