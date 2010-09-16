@@ -1,6 +1,7 @@
 package org.ttdc.gwt.client.presenters.post;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.ttdc.gwt.client.Injector;
@@ -21,10 +22,10 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.inject.Inject;
 
 public final class PostCollectionPresenter extends BasePresenter<PostCollectionPresenter.View> implements PostEventListener{
-	private final List<PostPresenterCommon> postPresenters = new ArrayList<PostPresenterCommon>();  //Trevis, you may not need to hold these.
+	private List<PostPresenterCommon> postPresenters = new ArrayList<PostPresenterCommon>();  //Trevis, you may not need to hold these.
 	private boolean expanded = true;
 	private Mode mode;
-	private GPost parentPost = null;
+	private GPost conversationStarterPost = null;
 
 	/**
 	 *  View for a PostCollectionPresenter 
@@ -76,12 +77,12 @@ public final class PostCollectionPresenter extends BasePresenter<PostCollectionP
 		addPostsToPostList(postList,mode);
 	}
 	
-	public GPost getParentPost() {
-		return parentPost;
+	public GPost getConversationStarterPost() {
+		return conversationStarterPost;
 	}
 
-	public void setParentPost(GPost parentPost) {
-		this.parentPost = parentPost;
+	public void setConversationStarterPost(GPost parentPost) {
+		this.conversationStarterPost = parentPost;
 	}
 
 	public void addPostsToPostList(List<GPost> postList, Mode mode) {
@@ -108,31 +109,61 @@ public final class PostCollectionPresenter extends BasePresenter<PostCollectionP
 	
 	public void insertPostsToPostList(List<GPost> postList, Mode mode) {
 		for(GPost post : postList){
-			if(post.isSuggestSummary()){
-//				PostSummaryPresenter postPresenter = injector.getPostSummaryPresenter();
-//				postPresenter.setPost(post);
-//				postPresenters.add(0,postPresenter);
-				
-				PostSummaryPanel postSummaryPanel = injector.createPostSummaryPanel();
-				postSummaryPanel.init(post);
-				getView().getPostWidgets().add(postSummaryPanel);
-				postPresenters.add(0,postSummaryPanel);
-			}
-			else{
-//				PostPresenter postPresenter = injector.getPostPresenter();
-//				postPresenter.setPost(post,mode);
-//				postPresenters.add(0,postPresenter);
-				PostPanel postPanel = injector.createPostPanel();
-				postPanel.setPost(post,mode);
-				//getView().getPostWidgets().add(postUiB);
-				postPresenters.add(0,postPanel);
-			}
+			PostPresenterCommon postPresenter = createPostPresenter(mode, post);
+			postPresenters.add(0,postPresenter);
 		}
+		resetPostPresentersInView();
+	}
+
+	private void resetPostPresentersInView() {
 		getView().getPostWidgets().clear();
 		for(PostPresenterCommon presenter : postPresenters){
 			getView().getPostWidgets().add(presenter.getWidget());
 		}
 	}
+
+	private PostPresenterCommon createPostPresenter(Mode mode, GPost post) {
+		PostPresenterCommon postPresenter;
+		if(post.isSuggestSummary()){
+			PostSummaryPanel postSummaryPanel = injector.createPostSummaryPanel();
+			postSummaryPanel.init(post);
+			postPresenter = postSummaryPanel;
+		}
+		else{
+			PostPanel postPanel = injector.createPostPanel();
+			postPanel.setPost(post,mode);
+			postPresenter = postPanel;
+		}
+		return postPresenter;
+	}
+	
+//	public void insertPostsToPostList(List<GPost> postList, Mode mode) {
+//		for(GPost post : postList){
+//			if(post.isSuggestSummary()){
+////				PostSummaryPresenter postPresenter = injector.getPostSummaryPresenter();
+////				postPresenter.setPost(post);
+////				postPresenters.add(0,postPresenter);
+//				
+//				PostSummaryPanel postSummaryPanel = injector.createPostSummaryPanel();
+//				postSummaryPanel.init(post);
+//				getView().getPostWidgets().add(postSummaryPanel);
+//				postPresenters.add(0,postSummaryPanel);
+//			}
+//			else{
+////				PostPresenter postPresenter = injector.getPostPresenter();
+////				postPresenter.setPost(post,mode);
+////				postPresenters.add(0,postPresenter);
+//				PostPanel postPanel = injector.createPostPanel();
+//				postPanel.setPost(post,mode);
+//				//getView().getPostWidgets().add(postUiB);
+//				postPresenters.add(0,postPanel);
+//			}
+//		}
+//		getView().getPostWidgets().clear();
+//		for(PostPresenterCommon presenter : postPresenters){
+//			getView().getPostWidgets().add(presenter.getWidget());
+//		}
+//	}
 	
 //	private SimplePanel createParentDelegateContainer(PostSummaryPanel postSummaryPanel) {
 //		SimplePanel parent = new SimplePanel();
@@ -160,10 +191,25 @@ public final class PostCollectionPresenter extends BasePresenter<PostCollectionP
 		}
 		GPost newPost = postEvent.getSource();
 		if(postEvent.getType().isLocalNew()){
-			if(parentPost == null && newPost.isThreadPost()){
+			if(Mode.NESTED_SUMMARY.equals(mode)){
+				if(conversationStarterPost == null && newPost.isThreadPost()){
+					List<GPost> list = new ArrayList<GPost>();
+					list.add(newPost);
+					insertPostsToPostList(list,mode);			
+				}
+				else if(conversationStarterPost != null && conversationStarterPost.equals(newPost.getThread())){
+					PostSummaryPanel postSummaryPanel = injector.createPostSummaryPanel();
+					postSummaryPanel.init(newPost);
+					postPresenters.add(postSummaryPanel);
+					Collections.sort(postPresenters,new PostPresenterCommon.PostPresenterComparitorByPath());
+					resetPostPresentersInView();
+					
+				}
+			}
+			else if(conversationStarterPost == null && Mode.FLAT.equals(mode)){ //Flat
 				List<GPost> list = new ArrayList<GPost>();
 				list.add(newPost);
-				insertPostsToPostList(list,mode);			
+				insertPostsToPostList(list,mode);	
 			}
 		}
 	}

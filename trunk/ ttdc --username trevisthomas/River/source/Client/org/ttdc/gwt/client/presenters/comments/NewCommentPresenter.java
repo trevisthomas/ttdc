@@ -346,7 +346,8 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 			@Override
 			public void onSuccess(PostCommandResult result) {
 				view.resetEditableFields();
-				parentSuggestionOracle.clear();
+				if(parentSuggestionOracle != null)
+					parentSuggestionOracle.clear();
 				view.close();
 				//Window.Location.reload();
 				//PostEvent event = new PostEvent(PostEventType.NEW_FORCE_REFRESH, result.getPost());

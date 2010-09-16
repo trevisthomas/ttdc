@@ -311,7 +311,8 @@ public class NewCommentView implements NewCommentPresenter.View{
 	@Override
 	public void resetEditableFields() {
 		textArea.setText("");
-		parentSuggestionBox.setText(""); //probably already cleared through the oracle
+//		if(parentSuggestionBox != null)
+//			parentSuggestionBox.setText(""); //probably already cleared through the oracle
 	}
 	
 	

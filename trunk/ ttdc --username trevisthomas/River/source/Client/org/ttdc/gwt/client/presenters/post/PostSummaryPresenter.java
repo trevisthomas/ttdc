@@ -78,6 +78,11 @@ public class PostSummaryPresenter extends BasePresenter<PostSummaryPresenter.Vie
 		});
 	}
 	
+	@Override
+    public GPost getPost() {
+    	return post;
+    }
+	
 	private void notifyListeners(){
 		PostEvent postEvent = new PostEvent(PostEventType.EXPAND_CONTRACT, post);
 		EventBus.getInstance().fireEvent(postEvent);

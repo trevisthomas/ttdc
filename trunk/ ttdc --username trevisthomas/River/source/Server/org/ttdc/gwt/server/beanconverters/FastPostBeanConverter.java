@@ -201,7 +201,6 @@ public class FastPostBeanConverter {
 				gPost.setRoot(gPost);
 			if(!p.isThreadPost() && !p.isRootPost())
 				gPost.setThread(convertPost(p.getThread(), inboxDao));
-			
 		}
 			
 		Image image = null;

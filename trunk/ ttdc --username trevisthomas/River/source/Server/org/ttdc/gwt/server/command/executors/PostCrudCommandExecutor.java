@@ -82,7 +82,14 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 			PostCommandResult result = null;
 			if(post!= null){
 				InboxDao inboxDao = new InboxDao(getPerson());
-				gPost = FastPostBeanConverter.convertPost(post, inboxDao); 
+				gPost = FastPostBeanConverter.convertPost(post, inboxDao);
+				
+				//The following code to inflate the parent was added for dynamic front page refresh
+				if(post.getParent() != null){
+					GPost gParent = FastPostBeanConverter.convertPost(post.getParent(), inboxDao);
+					gPost.setParent(gParent);
+				}
+				
 				result = new PostCommandResult(gPost);
 			}
 			

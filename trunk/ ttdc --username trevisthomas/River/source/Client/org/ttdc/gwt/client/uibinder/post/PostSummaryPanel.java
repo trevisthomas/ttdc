@@ -105,6 +105,11 @@ public class PostSummaryPanel extends Composite implements PostPresenterCommon{
     	TopicHelpers.testPost(this);
     }
     
+    @Override
+    public GPost getPost() {
+    	return post;
+    }
+    
     private void buildFancySpacer() {
     	GPost threadPost = post.getThread();
     	MagicNestedSpacer magic = new MagicNestedSpacer();
