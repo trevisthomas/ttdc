@@ -56,6 +56,7 @@ public class NewCommentView implements NewCommentPresenter.View{
 	private final Button cancelButton = new Button("Cancel");
 	private final SimplePanel outer = new SimplePanel();
 	private final HorizontalPanel loginPanel = new HorizontalPanel();
+	private SuggestBox parentSuggestionBox;
 	
 	private final FlowPanel checkboxPanel = new FlowPanel();
 	
@@ -307,6 +308,11 @@ public class NewCommentView implements NewCommentPresenter.View{
 		return tagsPanel;
 	}
 	
+	@Override
+	public void resetEditableFields() {
+		textArea.setText("");
+		parentSuggestionBox.setText(""); //probably already cleared through the oracle
+	}
 	
 	
 //	@Override
@@ -345,6 +351,7 @@ public class NewCommentView implements NewCommentPresenter.View{
 
 	@Override
 	public void installParentSuggestionBox(SuggestBox parentSuggestionBox) {
+		this.parentSuggestionBox = parentSuggestionBox;
 		topicTitlePanel.setVisible(true);
 		replyToPanel.clear();
 		replyToPanel.add(parentSuggestionBox);

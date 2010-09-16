@@ -23,7 +23,8 @@ import com.google.inject.Inject;
 public final class PostCollectionPresenter extends BasePresenter<PostCollectionPresenter.View> implements PostEventListener{
 	private final List<PostPresenterCommon> postPresenters = new ArrayList<PostPresenterCommon>();  //Trevis, you may not need to hold these.
 	private boolean expanded = true;
-	
+	private Mode mode;
+	private GPost parentPost = null;
 
 	/**
 	 *  View for a PostCollectionPresenter 
@@ -50,6 +51,7 @@ public final class PostCollectionPresenter extends BasePresenter<PostCollectionP
 			}
 		});
 	}
+	
 
 	public boolean isExpanded() {
 		return expanded;
@@ -68,9 +70,18 @@ public final class PostCollectionPresenter extends BasePresenter<PostCollectionP
 		setPostList(postList,Mode.FLAT);
 	}
 	public void setPostList(List<GPost> postList, Mode mode) {
+		this.mode = mode;
 		postPresenters.clear();
 		getView().getPostWidgets().clear();
 		addPostsToPostList(postList,mode);
+	}
+	
+	public GPost getParentPost() {
+		return parentPost;
+	}
+
+	public void setParentPost(GPost parentPost) {
+		this.parentPost = parentPost;
 	}
 
 	public void addPostsToPostList(List<GPost> postList, Mode mode) {
@@ -145,6 +156,14 @@ public final class PostCollectionPresenter extends BasePresenter<PostCollectionP
 //				if(postPresenter instanceof PostSummaryPresenter)
 //					((PostSummaryPresenter)postPresenter).contractPost();
 				postPresenter.contractPost();
+			}
+		}
+		GPost newPost = postEvent.getSource();
+		if(postEvent.getType().isLocalNew()){
+			if(parentPost == null && newPost.isThreadPost()){
+				List<GPost> list = new ArrayList<GPost>();
+				list.add(newPost);
+				insertPostsToPostList(list,mode);			
 			}
 		}
 	}

@@ -8,6 +8,7 @@ import org.ttdc.gwt.client.messaging.Event;
 import org.ttdc.gwt.client.messaging.post.PostEvent;
 import org.ttdc.gwt.server.dao.PersonDao;
 import org.ttdc.gwt.shared.util.StringUtil;
+import org.ttdc.persistence.Persistence;
 import org.ttdc.persistence.objects.Person;
 
 class BroadcastEventJob implements Runnable{
@@ -69,20 +70,29 @@ class BroadcastEventJob implements Runnable{
 	}
 	
 	private boolean applyFilterForPersonId(String personId, GPost gPost) {
-		boolean validForUser = true;
-		Person person = PersonDao.loadPerson(personId);
-		List<String> filteredTagIds = person.getFrontPageFilteredTagIds();
-		
-		if(gPost.isNWS() && !person.isNwsEnabled()){
-			validForUser = false;
+		try{
+			boolean validForUser = true;
+			Persistence.beginSession();
+			Person person = PersonDao.loadPerson(personId);
+			List<String> filteredTagIds = person.getFrontPageFilteredTagIds();
+			
+			if(gPost.isNWS() && !person.isNwsEnabled()){
+				validForUser = false;
+			}
+			if(gPost.isPrivate() && !person.isPrivateAccessAccount()){
+				validForUser = false;
+			}
+			//TODO: Trevis. you dont have things in place to test this one yet...
+			if(filteredTagIds.contains(gPost.getPostId())){
+				validForUser = false;
+			}
+			Persistence.commit();
+			return validForUser;
 		}
-		if(gPost.isPrivate() && !person.isPrivateAccessAccount()){
-			validForUser = false;
+		catch(RuntimeException e){
+			//This is a hack, it shouldnt happen i;m diagnosing it.
+			return false;
+			
 		}
-		//TODO: Trevis. you dont have things in place to test this one yet...
-		if(filteredTagIds.contains(gPost.getPostId())){
-			validForUser = false;
-		}
-		return validForUser;
 	}
 }

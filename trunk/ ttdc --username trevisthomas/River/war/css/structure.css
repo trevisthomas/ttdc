@@ -1,4 +1,4 @@
-.tt-view-container{width:1020px; text-align:center; margin: 0 auto; overflow: hidden;}
+.tt-view-container{width:940px; text-align:center; margin: 0 auto; overflow: hidden;}
 
 body{font-family: Arial, Arial, Helvetica, sans-serif;}
 
@@ -78,14 +78,21 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 .tt-post-footer{text-align: right;}
 
 .tt-post-summary-body{padding:0px 2px;}
+.tt-header-left{width:650px;}
+.tt-header-right{}
 
-.tt-topic-left,
-.tt-topic-right{width:504px; padding: 0 2px;}
-
+.tt-topic-root,
+.tt-topic-topics,
 .tt-home-main{ width: 550px;}
 .tt-home-left{ width: 220px;}
 
+.tt-topic-root,
+.tt-topic-topics{}
+
 .tt-home-tabContainer{margin: 4px 0 10px 0; width: 800px;}
+
+.tt-topic-root,
+.tt-topic-topics{text-align:center; margin: 0 auto;}
 
 .tt-avatar-large{margin: 4px;}
 /*
@@ -96,8 +103,8 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 
 .tt-pageHeader-subtitle{font-size:12px; font-weight: bold; font-style: italic; margin-top: -7px; padding-left: 10px;}
 .tt-pageHeader-title{ margin: auto; overflow: hidden;}
-.tt-pageHeader{width: 1000px; text-align:center; margin: 0 auto;}
-.tt-pageFooter{width: 1000px; text-align:center; margin: 30px auto;}
+.tt-pageHeader{width: 900px; text-align:center; margin: 0 auto;}
+.tt-pageFooter{width: 900px; text-align:center; margin: 30px auto;}
 
 .tt-pageFooter hr{ height: 1px;}
 

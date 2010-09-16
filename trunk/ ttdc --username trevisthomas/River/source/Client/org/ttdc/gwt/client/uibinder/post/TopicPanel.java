@@ -28,8 +28,10 @@ public class TopicPanel extends BasePageComposite implements PostEventListener{
 	private Injector injector;
 	
 	@UiField(provided = true) Widget pageHeaderElement;
+	@UiField (provided = true) Widget pageFooterElement;
 	@UiField SimplePanel rootPostElement;
 	@UiField SimplePanel threadsElement;
+	
 	
 	private NestedPostPanel nestedPanel;
 	private final StandardPageHeaderPanel pageHeaderPanel;
@@ -38,7 +40,7 @@ public class TopicPanel extends BasePageComposite implements PostEventListener{
 	@Inject
 	public TopicPanel(Injector injector) {
 		this.injector = injector;
-		
+		pageFooterElement = injector.createStandardFooter().getWidget();
 		pageHeaderPanel = injector.createStandardPageHeaderPanel(); 
     	pageHeaderElement = pageHeaderPanel.getWidget();
     	
