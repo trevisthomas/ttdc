@@ -8,11 +8,11 @@
 	 	<g:Widget styleName="tt-text-center tt-text-small" ui:field="navigationElement" ></g:Widget>
 	 	<table class="tt-fill">
 	 		<tr>
-	 			<td class="tt-fill">
+	 			<td class="tt-header-left">
 		 			<g:Label styleName="tt-pageHeader-title tt-text-huge" ui:field="titleElement"></g:Label>
 	 				<g:Label styleName="tt-pageHeader-subtitle" ui:field="subTitleElement"></g:Label>
 	 			</td>
-	 			<td>
+	 			<td class="tt-header-right">
 	 				<table>
 	 					<tr>
  							<td class="tt-welcome tt-welcome-login"><g:Widget styleName="" ui:field="loginElement"></g:Widget></td>

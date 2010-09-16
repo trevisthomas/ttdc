@@ -133,7 +133,8 @@ public class EventBus {
 	
 	
 	private void notifyListeners(PostEvent event) {
-		for(PostEventListener listener : postListeners){
+		List<PostEventListener> list = new ArrayList(postListeners);
+		for(PostEventListener listener : list){
 			listener.onPostEvent(event);
 		}
 	}

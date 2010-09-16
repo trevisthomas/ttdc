@@ -147,6 +147,7 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 
 	public void setPost(GPost post, Mode mode) {
 		super.init(post, commentElement, tagListPanel);
+		postCollectionPresenter.setParentPost(post);
 		this.mode = mode;
 		this.post = post;
 		
@@ -186,9 +187,11 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 		if(post.isReview()){
 			postImagePresenter.setImageAsMoviePoster(post);
 			postImagePresenter.init();
+			postImageElement.setVisible(true);
 			GAssociationPostTag ratingAss = post.getParent().getRatingByPerson(post.getCreator().getPersonId());
 			if(ratingAss != null){
 				averageMovieRatingPresenter.setRating(ratingAss);
+				ratingElement.setVisible(true);
 			}
 			else{
 				ratingElement.setVisible(false);
@@ -196,6 +199,7 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 		}
 		else{
 			postImageElement.setVisible(false);
+			ratingElement.setVisible(false);
 		}
 		
 		creatorAvatorImagePresenter.useThumbnail(true);

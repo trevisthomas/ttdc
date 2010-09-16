@@ -110,7 +110,8 @@ public class InboxDao extends FilteredPostPaginatedDaoBase{
 	}
 
 	public void markSiteRead() {
-		session().createQuery("DELETE FROM InboxCache i WHERE i.person.personId=:personId").setString("personId", person.getPersonId());
+		session().createQuery("DELETE FROM InboxCache i WHERE i.person.personId=:personId").setString("personId", person.getPersonId()).executeUpdate();
+		
 		
 		InboxCache cache = new InboxCache();
 		cache.setPerson(person);

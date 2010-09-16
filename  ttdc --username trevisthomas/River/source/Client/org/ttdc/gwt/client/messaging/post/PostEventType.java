@@ -5,7 +5,8 @@ public enum PostEventType {
 	EDIT,
 	DELETE,
 	NEW_FORCE_REFRESH,
-	EXPAND_CONTRACT;
+	EXPAND_CONTRACT, 
+	LOCAL_NEW;
 	
 	public boolean isNew(){
 		return this == NEW;
@@ -19,4 +20,7 @@ public enum PostEventType {
 	public boolean isExpandContract(){
 		return this == EXPAND_CONTRACT;
 	}
+	public boolean isLocalNew(){
+		return this == LOCAL_NEW;
+	}	
 }

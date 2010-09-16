@@ -75,6 +75,7 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 		HasWidgets tagSelectorPanel();
 		void setMode(Mode mode);
 		void close();
+		void resetEditableFields();
 		
 		void showLoginFields();
 		void configureForTopicCreation(boolean b);
@@ -325,8 +326,14 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 			cmd.setParentId(post.getPostId());//For reply
 			cmd.setPostId(post.getPostId());//For edit
 		}
-		CommandResultCallback<PostCommandResult> callback = buildCreatePostCallback();
-		
+		CommandResultCallback<PostCommandResult> callback;
+		if(PostActionType.UPDATE.equals(action)){
+			callback = buildEditPostCallback();
+		}
+		else{
+			callback = buildCreatePostCallback();
+		}
+			
 		getService().execute(cmd,callback);
 	}
 	
@@ -335,6 +342,29 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 	}
 
 	private CommandResultCallback<PostCommandResult> buildCreatePostCallback() {
+		CommandResultCallback<PostCommandResult> callback = new CommandResultCallback<PostCommandResult>(){
+			@Override
+			public void onSuccess(PostCommandResult result) {
+				view.resetEditableFields();
+				parentSuggestionOracle.clear();
+				view.close();
+				//Window.Location.reload();
+				//PostEvent event = new PostEvent(PostEventType.NEW_FORCE_REFRESH, result.getPost());
+				//EventBus.fireEvent(event);
+				PostEvent event = new PostEvent(PostEventType.LOCAL_NEW, result.getPost());
+				EventBus.fireEvent(event);
+				
+				//EventBus.reload();
+			}
+			@Override
+			public void onFailure(Throwable caught) {
+				super.onFailure(caught);
+			}
+		};
+		return callback;
+	}
+	
+	private CommandResultCallback<PostCommandResult> buildEditPostCallback() {
 		CommandResultCallback<PostCommandResult> callback = new CommandResultCallback<PostCommandResult>(){
 			@Override
 			public void onSuccess(PostCommandResult result) {

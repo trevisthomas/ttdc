@@ -5,16 +5,10 @@
 	
 	<g:HTMLPanel>
 		<g:Widget ui:field="pageHeaderElement"/>
-		<table class="tt-center">
-			<tr>
-				<td class="tt-topic-left">
-					<g:SimplePanel ui:field="rootPostElement"/>
-				</td>	
-				<td class="tt-topic-right">
-					<g:SimplePanel ui:field="threadsElement"/>
-				</td>
-			</tr>
-			
-		</table>		
+		<div>
+			<g:SimplePanel styleName="tt-topic-root" ui:field="rootPostElement"/>
+			<g:SimplePanel styleName="tt-topic-topics" ui:field="threadsElement"/>
+		</div>
+		<g:Widget ui:field="pageFooterElement" />		
 	</g:HTMLPanel>
 </ui:UiBinder>
