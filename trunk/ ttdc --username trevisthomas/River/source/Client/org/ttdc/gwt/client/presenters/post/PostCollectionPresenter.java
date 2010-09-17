@@ -11,6 +11,7 @@ import org.ttdc.gwt.client.messaging.post.PostEvent;
 import org.ttdc.gwt.client.messaging.post.PostEventListener;
 import org.ttdc.gwt.client.presenters.shared.BasePresenter;
 import org.ttdc.gwt.client.presenters.shared.BaseView;
+import org.ttdc.gwt.client.uibinder.post.NestedPostSpacerPanel;
 import org.ttdc.gwt.client.uibinder.post.PostPanel;
 import org.ttdc.gwt.client.uibinder.post.PostSummaryPanel;
 import org.ttdc.gwt.client.uibinder.post.ReviewSummaryListPanel;
@@ -19,6 +20,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
 public final class PostCollectionPresenter extends BasePresenter<PostCollectionPresenter.View> implements PostEventListener{
@@ -92,17 +94,22 @@ public final class PostCollectionPresenter extends BasePresenter<PostCollectionP
 				reviewSummaryListPanel.init(post);
 				getView().getPostWidgets().add(reviewSummaryListPanel);
 			}
-			else if(post.isSuggestSummary()){
-				PostSummaryPanel postSummaryPanel = injector.createPostSummaryPanel();
-				postSummaryPanel.init(post);
-				getView().getPostWidgets().add(postSummaryPanel);
-				postPresenters.add(postSummaryPanel);
-			}
+//			else if(post.isSuggestSummary()){
+//				PostSummaryPanel postSummaryPanel = injector.createPostSummaryPanel();
+//				postSummaryPanel.init(post);
+//				getView().getPostWidgets().add(postSummaryPanel);
+//				postPresenters.add(postSummaryPanel);
+//			}
+//			else{
+//				PostPanel postPanel = injector.createPostPanel();
+//				postPanel.setPost(post,mode);
+//				getView().getPostWidgets().add(postPanel);
+//				postPresenters.add(postPanel);
+//			}
 			else{
-				PostPanel postPanel = injector.createPostPanel();
-				postPanel.setPost(post,mode);
-				getView().getPostWidgets().add(postPanel);
-				postPresenters.add(postPanel);
+				PostPresenterCommon postPresenter = createPostPresenter(mode, post);
+				getView().getPostWidgets().add((Widget)postPresenter);
+				postPresenters.add(postPresenter);
 			}
 		}
 	}
@@ -127,7 +134,11 @@ public final class PostCollectionPresenter extends BasePresenter<PostCollectionP
 		if(post.isSuggestSummary()){
 			PostSummaryPanel postSummaryPanel = injector.createPostSummaryPanel();
 			postSummaryPanel.init(post);
-			postPresenter = postSummaryPanel;
+			
+			NestedPostSpacerPanel spacer = injector.createNestedPostSpacerPanel();
+			spacer.initialize(post, postSummaryPanel);
+			
+			postPresenter = spacer;
 		}
 		else{
 			PostPanel postPanel = injector.createPostPanel();

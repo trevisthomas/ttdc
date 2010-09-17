@@ -9,14 +9,15 @@ public class MagicNestedSpacer {
 	static final String NODE = "tt-nested-spacer-node";
 	static final String CONTINUE = "tt-nested-spacer-continue";
 	
-	List<String> decisionEngine(int [] maxSegmentValues, int [] mySegmentValues){
+	List<String> decisionEngine(boolean lastIsEnd, int [] maxSegmentValues, int [] mySegmentValues){
 		List<String> styles = new ArrayList<String>();
 		
 		for(int i=0; i < mySegmentValues.length ; i++ ){
 			boolean endOfBranch = maxSegmentValues[i] <= mySegmentValues[i];
 			if(i == mySegmentValues.length-1){
 				//End of segment
-				if(endOfBranch){
+				//if(endOfBranch){
+				if(lastIsEnd || endOfBranch){
 					styles.add(LEAF);
 				}
 				else{
@@ -36,4 +37,22 @@ public class MagicNestedSpacer {
 		return styles;
 	}
 	
+	public String getBackgroundRepeaterForStyle(String style){
+		if(LEAF.equals(style)){
+			return BLANK;
+		}
+		else if(BLANK.equals(style)){
+			return BLANK;
+		}
+		else if(NODE.equals(style)){
+			return CONTINUE;
+		}
+		else if(CONTINUE.equals(style)){
+			return CONTINUE;
+		}
+		else{
+			throw new RuntimeException("Epic failure during tree branc construction. No clue what you're asking for.");
+		}
+		
+	}
 }

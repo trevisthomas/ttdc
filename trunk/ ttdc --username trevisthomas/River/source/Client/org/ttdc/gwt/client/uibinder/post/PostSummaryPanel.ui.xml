@@ -6,7 +6,14 @@
 	<g:HTMLPanel ui:field="parentElement">
 		<table class="tt-fill">
 		<tr>
-			<td><g:SimplePanel ui:field="spacerElement" /></td>
+			<td>
+				<table>
+					<tr>
+						<td><g:Label ui:field="postUnReadElement" /></td>
+						<td><g:Label ui:field="postReadElement" /></td>
+					</tr>
+				</table>
+			</td>
 			<td class="tt-fill">
 				<g:SimplePanel ui:field="expandedElement"/>
 				<!--  
@@ -22,12 +29,7 @@
 						<table class="tt-text-normal">
 							<tr>
 								<td>
-									<table>
-										<tr>
-											<td><g:Label ui:field="postUnReadElement" /></td>
-											<td><g:Label ui:field="postReadElement" /></td>
-										</tr>
-									</table>
+									
 								</td>
 								<td>
 									<t:ClickableHoverSyncPanel ui:field="hoverTargetElement"><g:HTML styleName="tt-post-summary-body" ui:field="bodySummaryElement" /></t:ClickableHoverSyncPanel>

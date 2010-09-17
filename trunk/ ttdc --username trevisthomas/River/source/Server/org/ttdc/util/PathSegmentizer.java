@@ -7,7 +7,7 @@ import org.ttdc.persistence.objects.Post;
 
 public class PathSegmentizer {
 
-	public int[] calculatePathSegmentMaximums(List<Post> posts) {
+	public static int[] calculatePathSegmentMaximums(List<Post> posts) {
 		int maxSegments = depthTest(posts);
 		
 		int [] results = new int[maxSegments];
@@ -29,7 +29,7 @@ public class PathSegmentizer {
 		return results;
 	}
 
-	private int depthTest(List<Post> posts) {
+	private static int depthTest(List<Post> posts) {
 		int depth = 0;
 		String grandpath = "";
 		for(Post post : posts){
@@ -42,7 +42,7 @@ public class PathSegmentizer {
 		return depth;
 	}
 
-	public int[] segmentizePath(Post post) {
+	public static int[] segmentizePath(Post post) {
 		StringTokenizer tokenizer = new StringTokenizer(post.getPath(),".");
 		int [] results = new int[tokenizer.countTokens()];
 		int ndx = 0;
@@ -53,5 +53,12 @@ public class PathSegmentizer {
 		}
 		
 		return results;
+	}
+	
+	public static void segmentizeChildPaths(Post thread) {
+		List<Post> flatPosts = thread.getPosts();
+		for(Post p : flatPosts){
+			p.setPathSegments(segmentizePath(p));
+		}
 	}
 }

@@ -158,7 +158,7 @@ public class ThreadDao extends FilteredPostPaginatedDaoBase{
 		else{
 			thread.setPosts(flatReplyHierarchy);
 		}
-		calculatePathSegments(thread);
+		PathSegmentizer.segmentizeChildPaths(thread);
 	}
 
 	private void loadRepliesFromPostList(Post thread, List<Post> posts, int subPage) {
@@ -175,28 +175,57 @@ public class ThreadDao extends FilteredPostPaginatedDaoBase{
 			thread.setReplyStartIndex(1);
 			thread.setPosts(flatReplyHierarchy);
 		}
-		calculatePathSegments(thread);
+		PathSegmentizer.segmentizeChildPaths(thread);
 	}
 	
-	private void calculatePathSegments(Post thread) {
-		PathSegmentizer pathSegmentizer = new PathSegmentizer();
-		List<Post> flatPosts = thread.getPosts();
-		for(Post p : flatPosts){
-			p.setPathSegments(pathSegmentizer.segmentizePath(p));
-		}
-	}
-
+	
+//	private List<Post> flattenThread(Post thread, List<Post> posts) {
+//		List<Post> flatReplyHierarchy = new ArrayList<Post>();
+//		for(Post p : posts){
+//			if(!p.isThreadPost() && p.getThread().getPostId().equals(thread.getPostId()))
+//				flatReplyHierarchy.add(p);
+//		}
+//		
+//		int [] pathSegmentMaximums = PathSegmentizer.calculatePathSegmentMaximums(flatReplyHierarchy);
+//		thread.setPathSegmentMaximums(pathSegmentMaximums);
+//		return flatReplyHierarchy;
+//	}
+	
+	//Some of this logic is duplicated in LatestPostsDao... take a look into consolidating it
 	private List<Post> flattenThread(Post thread, List<Post> posts) {
+		Post prevPost = null;
 		List<Post> flatReplyHierarchy = new ArrayList<Post>();
 		for(Post p : posts){
-			if(!p.isThreadPost() && p.getThread().getPostId().equals(thread.getPostId()))
+			if(!p.isThreadPost() && p.getThread().getPostId().equals(thread.getPostId())){
 				flatReplyHierarchy.add(p);
+				if(prevPost != null){
+					if(p.getPath().length() < prevPost.getPath().length()){
+						prevPost.setEndOfBranch(true);
+					}
+				}
+				prevPost = p;
+			}
+		}	
+		if(prevPost != null){
+			prevPost.setEndOfBranch(true);
 		}
 		
-		PathSegmentizer pathSegmentizer = new PathSegmentizer();
-		int [] pathSegmentMaximums = pathSegmentizer.calculatePathSegmentMaximums(flatReplyHierarchy);
+		thread.setPosts(flatReplyHierarchy);
+		
+//		if(flatReplyHierarchy.size() > THREAD_REPLY_MAX_RESULTS){
+//			thread.setPosts(flatReplyHierarchy.subList(flatReplyHierarchy.size()-THREAD_REPLY_MAX_RESULTS, flatReplyHierarchy.size()));
+//		}
+//		else
+//			thread.setPosts(flatReplyHierarchy);
+		
+		
+		int [] pathSegmentMaximums = PathSegmentizer.calculatePathSegmentMaximums(flatReplyHierarchy);
 		thread.setPathSegmentMaximums(pathSegmentMaximums);
+		
+		PathSegmentizer.segmentizeChildPaths(thread);
+		
 		return flatReplyHierarchy;
+		
 	}
 
 	private List<Post> loadAllPostsForThreads(List<Post> threadStarters){
@@ -226,6 +255,10 @@ public class ThreadDao extends FilteredPostPaginatedDaoBase{
 			setPageSize(THREAD_REPLY_MAX_RESULTS);
 			PaginatedList<Post> results;
 			results = DaoUtils.executeLoadFromPostId(this, "ThreadDao.Thread", "ThreadDao.ThreadCount", threadId, buildFilterMask(getFilterFlags()));
+			
+			//Only called to populate tree drawing hints
+			flattenThread(results.getList().get(0).getThread(),results.getList());
+			
 			Collections.reverse(results.getList());
 			return results;
 		}
@@ -234,6 +267,10 @@ public class ThreadDao extends FilteredPostPaginatedDaoBase{
 			setCurrentPage(1);
 			PaginatedList<Post> results;
 			results = DaoUtils.executeLoadFromPostId(this, "ThreadDao.Thread", "ThreadDao.ThreadCount", threadId, buildFilterMask(getFilterFlags()));
+			
+			//Only called to populate tree drawing hints
+			flattenThread(results.getList().get(0).getThread(),results.getList());
+			
 			Collections.reverse(results.getList());
 			return results;
 		}

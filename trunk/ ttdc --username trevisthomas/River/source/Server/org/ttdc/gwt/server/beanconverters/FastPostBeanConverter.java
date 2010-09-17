@@ -228,6 +228,7 @@ public class FastPostBeanConverter {
 		
 		gPost.setPathSegmentArray(p.getPathSegments());
 		gPost.setPathSegmentMax(p.getPathSegmentMaximums());
+		gPost.setEndOfBranch(p.isEndOfBranch());
 			
 		return gPost;
 	}
