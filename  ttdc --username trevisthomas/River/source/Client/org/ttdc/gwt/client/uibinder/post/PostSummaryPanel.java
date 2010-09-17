@@ -50,7 +50,6 @@ public class PostSummaryPanel extends Composite implements PostPresenterCommon{
     private CalendarPost cp;
     @UiField(provided = true) Hyperlink creatorLinkElement;
     @UiField HTML bodySummaryElement;
-    @UiField SimplePanel spacerElement;
     @UiField HTMLPanel summaryElement;
     @UiField(provided = true) SimplePanel expandedElement;
     @UiField(provided = true) SimplePanel commentElement = new SimplePanel();
@@ -98,7 +97,8 @@ public class PostSummaryPanel extends Composite implements PostPresenterCommon{
     	creatorLinkPresenter.setPerson(post.getCreator());
     	//setSpacer(post.getPath().split("\\.").length - 2);
     	//buildFancySpacer();
-    	setSpacer(post.getPath().split("\\.").length - 2);
+    	
+    	//setSpacer(post.getPath().split("\\.").length - 2);
     	
     	postIconTool.init(post);
     	    	
@@ -110,30 +110,32 @@ public class PostSummaryPanel extends Composite implements PostPresenterCommon{
     	return post;
     }
     
-    private void buildFancySpacer() {
-    	GPost threadPost = post.getThread();
-    	MagicNestedSpacer magic = new MagicNestedSpacer();
-    	List<String> styles = magic.decisionEngine(threadPost.getPathSegmentMax(), post.getPathSegmentArray());
-		Grid grid = new Grid(1,post.getPathSegmentArray().length - 1);
-		
-		int col = -1;
-    	for(String style : styles){
-    		Label label = new Label();
-    		label.setStyleName("tt-nested-spacer");
-    		label.addStyleName(style);
-    		if(col == -1){
-    			col++;
-    		}
-    		else{
-    			grid.setWidget(0, col++, label);
-    		}
-    	}
-    	grid.addStyleName("tt-fill-both");
-    	spacerElement.clear();
-    	spacerElement.add(grid);
-    	
-	}
+//    private void buildFancySpacer() {
+//    	GPost threadPost = post.getThread();
+//    	MagicNestedSpacer magic = new MagicNestedSpacer();
+//    	List<String> styles = magic.decisionEngine(threadPost.getPathSegmentMax(), post.getPathSegmentArray());
+//		Grid grid = new Grid(1,post.getPathSegmentArray().length - 1);
+//		
+//		int col = -1;
+//    	for(String style : styles){
+//    		Label label = new Label();
+//    		label.setStyleName("tt-nested-spacer");
+//    		label.addStyleName(style);
+//    		if(col == -1){
+//    			col++;
+//    		}
+//    		else{
+//    			grid.setWidget(0, col++, label);
+//    		}
+//    	}
+//    	grid.addStyleName("tt-fill-both");
+//    	spacerElement.clear();
+//    	spacerElement.add(grid);
+//    	
+//	}
 
+    //This method may not be in use
+    @Deprecated
 	public void init(CalendarPost cp) {
     	this.cp = cp;
     	bodySummaryElement.setHTML(cp.getSummary());
@@ -142,7 +144,7 @@ public class PostSummaryPanel extends Composite implements PostPresenterCommon{
     	liteCreator.setLogin(cp.getCreatorLogin());
     	liteCreator.setPersonId(cp.getCreatorId());
     	creatorLinkPresenter.setPerson(liteCreator);
-    	setSpacer(-1);
+    	//setSpacer(-1);
     	
     	GPerson user = ConnectionId.getInstance().getCurrentUser();
 //    	Figure out how to make the calender post have the read/unread info!
@@ -155,17 +157,17 @@ public class PostSummaryPanel extends Composite implements PostPresenterCommon{
     	TopicHelpers.testPost(this);
 	}
     
-    public void setSpacer(int tabCount) {
-    	StringBuilder sb = new StringBuilder();
-		
-		for(int i = 0 ; i <= tabCount ; i++){
-			sb.append("&nbsp;");
-		}
-		if(sb.length() > 0){
-			//spacerElement.setInnerHTML(sb.toString());
-			spacerElement.add(new HTML(sb.toString()));
-		}
-	}
+//    public void setSpacer(int tabCount) {
+//    	StringBuilder sb = new StringBuilder();
+//		
+//		for(int i = 0 ; i <= tabCount ; i++){
+//			sb.append("&nbsp;");
+//		}
+//		if(sb.length() > 0){
+//			//spacerElement.setInnerHTML(sb.toString());
+//			spacerElement.add(new HTML(sb.toString()));
+//		}
+//	}
     
     //@UiHandler("bodySummaryElement")
     @UiHandler("hoverTargetElement")

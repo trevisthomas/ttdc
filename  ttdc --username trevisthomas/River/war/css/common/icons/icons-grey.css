@@ -3,7 +3,7 @@
 
 .tt-icon-tall{ width: 16px; height: 28px; background-image: url(tt-icons-grey.png); }
 
-.tt-nested-spacer{ width: 16px; height: 16px; background-image: url(tt-icons-grey.png);}
+.tt-nested-spacer{ width: 16px; height: 16px; background-image: url(tt-icons-grey-tree.png); background-repeat:repeat-y;}
 
 .tt-icon-tall-expand-arrow{ background-position: 0 0; }
 .tt-nested-spacer-blank{ background-position: 0 -32px; }

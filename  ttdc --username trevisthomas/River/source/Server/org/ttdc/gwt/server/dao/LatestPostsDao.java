@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.ttdc.gwt.shared.util.PaginatedList;
 import org.ttdc.persistence.objects.Post;
+import org.ttdc.util.PathSegmentizer;
 
 public class LatestPostsDao extends FilteredPostPaginatedDaoBase{
 	
@@ -49,16 +50,34 @@ public class LatestPostsDao extends FilteredPostPaginatedDaoBase{
 	}
 
 	private void loadRepliesFromPostList(Post thread, List<Post> posts) {
+		Post prevPost = null;
 		List<Post> flatReplyHierarchy = new ArrayList<Post>();
 		for(Post p : posts){
-			if(!p.isThreadPost() && p.getThread().getPostId().equals(thread.getPostId()))
+			if(!p.isThreadPost() && p.getThread().getPostId().equals(thread.getPostId())){
 				flatReplyHierarchy.add(p);
+				if(prevPost != null){
+					if(p.getPath().length() < prevPost.getPath().length()){
+						prevPost.setEndOfBranch(true);
+					}
+				}
+				prevPost = p;
+			}
 		}	
+		if(prevPost != null){
+			prevPost.setEndOfBranch(true);
+		}
+		
 		if(flatReplyHierarchy.size() > replyMaxResults){
 			thread.setPosts(flatReplyHierarchy.subList(flatReplyHierarchy.size()-replyMaxResults, flatReplyHierarchy.size()));
 		}
 		else
 			thread.setPosts(flatReplyHierarchy);
+		
+		
+		int [] pathSegmentMaximums = PathSegmentizer.calculatePathSegmentMaximums(flatReplyHierarchy);
+		thread.setPathSegmentMaximums(pathSegmentMaximums);
+		
+		PathSegmentizer.segmentizeChildPaths(thread);
 		
 	}
 

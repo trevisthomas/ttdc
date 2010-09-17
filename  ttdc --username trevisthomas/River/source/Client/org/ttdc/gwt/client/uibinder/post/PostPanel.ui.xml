@@ -7,7 +7,8 @@
 	<g:HTMLPanel styleName="tt-post-conversation" ui:field="postMainElement">
 		<table>
 		<tr>
-			<td><g:Widget styleName="tt-avatar-large" ui:field="avatarElement"/></td>
+			<td><g:Widget styleName="tt-avatar-large" ui:field="avatarElement"/>
+			</td>
 			<td>
 				<div class="tt-post" >
 					<div class="tt-post-panel-head">
@@ -43,7 +44,10 @@
 								<td colspan="2">
 									<table class="tt-fill">
 										<tr>
-											<td class="tt-post-panel-head-detail">by <g:Hyperlink ui:field="creatorLinkElement" /> <g:Widget ui:field="ratingElement" />
+											
+											<td class="tt-post-panel-head-detail">
+											<g:Label ui:field="postUnReadElement" /><g:Label ui:field="postReadElement" />
+											by <g:Hyperlink ui:field="creatorLinkElement" /> <g:Widget ui:field="ratingElement" />
 											<table class="tt-inline">
 												<tr>
 													<td><g:Label ui:field="postPrivateElement" /></td>
@@ -67,7 +71,6 @@
 							<tr>
 								<td width="100%">
 									<div width="100%" style="clear:both;" >
-										<g:Label ui:field="postUnReadElement" /><g:Label ui:field="postReadElement" />
 										<span class="tt-float-right">
 											<t:ClickableHoverSyncPanel ui:field="moreOptionsElement"/>
 										</span>

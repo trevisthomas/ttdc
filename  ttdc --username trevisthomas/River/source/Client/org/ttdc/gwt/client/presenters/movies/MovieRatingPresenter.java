@@ -30,7 +30,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 
 public class MovieRatingPresenter extends BasePresenter<MovieRatingPresenter.View> implements RatableContentProcessor{
-	private Map<Float,GTag> ratingTagMap = new HashMap<Float,GTag>(); 
+	private static final Map<Float,GTag> ratingTagMap = new HashMap<Float,GTag>(); 
 	private GPost post;
 	
 	boolean autohide = true;
@@ -48,10 +48,14 @@ public class MovieRatingPresenter extends BasePresenter<MovieRatingPresenter.Vie
 		loadTags();
 	}
 
+	private static CommandResultCallback<GenericListCommandResult<GTag>> callback = null; 
 	private void loadTags(){
-		TagCommand cmd = new TagCommand();
-		cmd.setAction(TagActionType.LOAD_RATINGS);
-		injector.getService().execute(cmd, createTagRatingListCallback());
+		if(callback == null){
+			TagCommand cmd = new TagCommand();
+			cmd.setAction(TagActionType.LOAD_RATINGS);
+			callback = createTagRatingListCallback();
+			injector.getService().execute(cmd, callback);
+		}
 	}
 	
 	public void setRating(String rating){
@@ -99,7 +103,7 @@ public class MovieRatingPresenter extends BasePresenter<MovieRatingPresenter.Vie
 	@Override
 	public void processRatingRequest(float rating) {
 		//This cant work before the list comes back. it's asynch so check first, i guess.
-		if(ratingTagMap.size() == 0)
+		if(ratingTagMap == null)
 			throw new RuntimeException("Rating tag list hasn't been populated. This should not happen.");
 		
 		GTag tag = ratingTagMap.get(rating);

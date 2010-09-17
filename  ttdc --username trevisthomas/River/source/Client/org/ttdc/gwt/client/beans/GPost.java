@@ -38,7 +38,10 @@ public class GPost extends GBase{
 	private int replyPage = 1;
 	private int [] pathSegmentArray;
 	private int [] pathSegmentMax;
+	private boolean endOfBranch;
 	
+	
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -461,6 +464,14 @@ public class GPost extends GBase{
 
 	public void setPathSegmentMax(int[] pathSegmentMax) {
 		this.pathSegmentMax = pathSegmentMax;
+	}
+
+	public boolean isEndOfBranch() {
+		return endOfBranch;
+	}
+
+	public void setEndOfBranch(boolean endOfBranch) {
+		this.endOfBranch = endOfBranch;
 	}
 	
 }

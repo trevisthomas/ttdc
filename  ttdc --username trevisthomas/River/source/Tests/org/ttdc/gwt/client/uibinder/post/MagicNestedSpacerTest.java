@@ -9,7 +9,7 @@ public class MagicNestedSpacerTest {
 	@Test
 	public void testMagic(){
 		MagicNestedSpacer magic = new MagicNestedSpacer();
-		List<String> results = magic.decisionEngine(new int[]{3,4,1,5}, new int[]{2,4,0});
+		List<String> results = magic.decisionEngine(false, new int[]{3,4,1,5}, new int[]{2,4,0});
 		
 		assertEquals(MagicNestedSpacer.CONTINUE, results.get(0));
 		assertEquals(MagicNestedSpacer.BLANK, results.get(1));
@@ -20,7 +20,7 @@ public class MagicNestedSpacerTest {
 	@Test
 	public void testMagic2(){
 		MagicNestedSpacer magic = new MagicNestedSpacer();
-		List<String> results = magic.decisionEngine(new int[]{3,4,1,5}, new int[]{3,4,0});
+		List<String> results = magic.decisionEngine(false, new int[]{3,4,1,5}, new int[]{3,4,0});
 		
 		assertEquals(MagicNestedSpacer.BLANK, results.get(0));
 		assertEquals(MagicNestedSpacer.BLANK, results.get(1));

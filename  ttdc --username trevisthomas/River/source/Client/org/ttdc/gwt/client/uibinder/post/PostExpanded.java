@@ -48,8 +48,6 @@ public class PostExpanded extends PostBaseComposite{
     
     PostIconTool postIconTool = new PostIconTool();
     
-    @UiField(provided = true) Label postUnReadElement = postIconTool.getIconUnread();
-    @UiField(provided = true) Label postReadElement = postIconTool.getIconRead();
     @UiField(provided = true) Label postPrivateElement = postIconTool.getIconPrivate();
     @UiField(provided = true) Label postNwsElement = postIconTool.getIconNws();
     @UiField(provided = true) Label postInfElement = postIconTool.getIconInf();
@@ -78,10 +76,6 @@ public class PostExpanded extends PostBaseComposite{
     	creatorLinkElement = creatorLinkPresenter.getHyperlink();
     	
     	initWidget(binder.createAndBindUi(this));
-    	postUnReadElement.addStyleName("tt-float-left");
-    	postReadElement.addStyleName("tt-float-left");
-    	    	
-    	
 	}
 	
 	public void init(GPost post, HasWidgets commentElement){

@@ -24,7 +24,7 @@
 				</div>
 											
 				<div class="tt-post-expanded-content" >
-					<g:Label ui:field="postUnReadElement" /><g:Label ui:field="postReadElement" />
+					
 					
 					<span class="tt-float-right">
 						<t:ClickableHoverSyncPanel ui:field="moreOptionsElement"/>

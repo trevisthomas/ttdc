@@ -142,7 +142,17 @@ public class Post implements Comparable<Post>, HasGuid {
 	
 	private int [] pathSegmentMaximums; //I only put this in the underlying post object because the place where i calculate it is far from the place that i put it into the gpost
 	private int [] pathSegments;
+	private boolean endOfBranch = false;
 	
+	@Transient
+	public boolean isEndOfBranch() {
+		return endOfBranch;
+	}
+
+	public void setEndOfBranch(boolean endOfBranch) {
+		this.endOfBranch = endOfBranch;
+	}
+
 	@Transient
 	public int[] getPathSegments() {
 		return pathSegments;
