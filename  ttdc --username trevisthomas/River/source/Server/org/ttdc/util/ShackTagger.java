@@ -58,10 +58,10 @@ public class ShackTagger {
 			//str = htmlEncode(str);//Once again. >:-|
 
 			//URL's
-			str = fixURL(str, "https://", " ");
-			str = fixURL(str, "http://", " ");
+			str = fixURL(str, " https://", " ");
+			str = fixURL(str, " http://", " ");
 			//str = fixURL(str, " www", " ");//These dont work right anyway.  they go to http://www.trevisthomas.com/www.yourlink.com
-			str = fixURL(str, "link:", " ");
+			str = fixURL(str, " link:", " ");
 
 			//I am god of all things cool.
 			

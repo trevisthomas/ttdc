@@ -1,8 +1,6 @@
-package org.ttdc.util;
+package org.ttdc.gwt.shared.util;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public final class StringTools {
 	public static String safeSQLString(String src){

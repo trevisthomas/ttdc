@@ -7,7 +7,7 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 .tt-border-bottom-right{ border-width: 0 1px 1px 0; border-style: solid;}
 
 
-.tt-graphic-button{position: relative; min-width: 16px; height: 28px;}
+.tt-graphic-button{position: relative; min-width: 16px; height: 28px; text-align: center;}
 .tt-graphic-button{cursor: pointer; font-size:15px; height: 28px; padding: 2px 4px; border-width: 0 1px; border-style: solid; line-height: 28px;}
 .tt-textbox-search{font-size:18px; font-weight: 400; height: 28px;}
 
@@ -118,6 +118,7 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 	inside of it but for it not to colapse. It's an alternative to having a clear:both element
 	*/
 .tt-float-container{ overflow: auto; width: 100%}
+
 
 .tt-movie-list-table,
 .tt-user-list-table,
@@ -281,9 +282,14 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 
 .tt-traffic-person{width: 199px; height: 49px; border: 1px solid; margin: 2px 2px;}
 
+.tt-comment-button{min-width: 40px;}
 .tt-navigation{margin: 2px;}
-.tt-navigation ul{}
-.tt-navigation li{display: inline;margin: 0;padding: 0;}
+
+.tt-comment-editor-checkboxes,
+.tt-navigation ul{ padding:0px;}
+
+.tt-comment-editor-checkboxes li,
+.tt-navigation li{display: inline; margin: 0;padding: 0;}
 
 .tt-reviewSummaryList-header{font-size: 15px; font-weight: bolder;}
 
@@ -359,3 +365,7 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
   -background: url(images/corner_ie6.png) no-repeat -5px -28px;
 }
 
+
+.tt-comment-editor{}
+.tt-comment-textarea{width: 100%;}
+.tt-comment-toolbar{width: 100%;}
