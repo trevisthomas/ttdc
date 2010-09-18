@@ -1,0 +1,38 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<!-- The above doctype is to allow for special html characters in this xml file -->
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+    xmlns:g='urn:import:com.google.gwt.user.client.ui'
+    xmlns:t='urn:import:org.ttdc.gwt.client.presenters.util'>
+
+	<g:HTMLPanel styleName="tt-comment-editor">
+		<div class="tt-comment-toolbar tt-float-container">
+			<t:ClickableIconPanel ui:field="embedButtonElement"/>	
+			<t:ClickableIconPanel ui:field="quoteButtonElement"/>
+		</div>
+		<g:SimplePanel ui:field="topicSuggestionHolderElement" />
+		<g:TextArea styleName="tt-comment-textarea" ui:field="textAreaElement" />
+		<div class="tt-float-container">
+			<table class="tt-comment-editor-buttons">
+				<tr>
+				<td><t:ClickableIconPanel ui:field="editButtonElement" /></td>
+				<td><t:ClickableIconPanel ui:field="postButtonElement" /></td>
+				<td><t:ClickableIconPanel ui:field="previewButtonElement" /></td>
+				<td><t:ClickableIconPanel ui:field="cancelButtonElement" /></td>
+				</tr>
+			</table>
+		</div>
+		
+		<div class="tt-comment-editor-checkboxes">	
+			<ul>
+				<li><g:CheckBox ui:field="deletedCheckBoxElement">deleted</g:CheckBox></li>
+				<li><g:CheckBox ui:field="reviewCheckBoxElement">review</g:CheckBox></li>
+				<li><g:CheckBox ui:field="infCheckBoxElement">informative</g:CheckBox></li>
+				<li><g:CheckBox ui:field="nwsCheckBoxElement">not work safe</g:CheckBox></li>
+				<li><g:CheckBox ui:field="privateCheckBoxElement">private</g:CheckBox></li>
+				<li><g:CheckBox ui:field="lockedCheckBoxElement">locked</g:CheckBox></li>
+			</ul>
+		</div>
+	</g:HTMLPanel>
+	
+</ui:UiBinder>

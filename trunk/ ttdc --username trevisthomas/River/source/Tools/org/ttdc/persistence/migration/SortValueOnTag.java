@@ -5,11 +5,11 @@ import java.util.List;
 
 import org.apache.commons.lang.time.StopWatch;
 import org.apache.log4j.Logger;
+import org.ttdc.gwt.shared.util.StringTools;
 import org.ttdc.persistence.Persistence;
 import org.ttdc.persistence.objects.AssociationPostTag;
 import org.ttdc.persistence.objects.Post;
 import org.ttdc.persistence.objects.Tag;
-import org.ttdc.util.StringTools;
 
 /**
  * 

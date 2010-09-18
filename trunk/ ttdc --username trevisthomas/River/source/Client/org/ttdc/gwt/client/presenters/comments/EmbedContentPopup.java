@@ -54,9 +54,12 @@ public class EmbedContentPopup extends PopupRelative{
 		okButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				EmbedContentPopup.this.source.performLinkEmbed(name.getText(), directLink.getText(),embededLink.getText());
+				EmbedContentPopup.this.source.performLinkEmbed(name.getText(), directLink.getText(),removeQuotes(embededLink.getText()));
 				EmbedContentPopup.this.hide();
 			}
 		});
+	}
+	private String removeQuotes(String text) {
+		return text.replaceAll("\"", "");
 	}
 }

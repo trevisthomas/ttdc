@@ -20,6 +20,7 @@ import org.ttdc.gwt.client.beans.GUserObjectTemplate;
 import org.ttdc.gwt.server.dao.InboxDao;
 import org.ttdc.gwt.server.dao.InitConstants;
 import org.ttdc.gwt.server.dao.PostDao;
+import org.ttdc.gwt.server.util.PostFormatter;
 import org.ttdc.gwt.shared.calender.CalendarPost;
 import org.ttdc.gwt.shared.calender.Day;
 import org.ttdc.gwt.shared.calender.Hour;
@@ -35,6 +36,7 @@ import org.ttdc.persistence.objects.Style;
 import org.ttdc.persistence.objects.Tag;
 import org.ttdc.persistence.objects.UserObject;
 import org.ttdc.persistence.objects.UserObjectTemplate;
+import org.ttdc.util.PathSegmentizer;
 
 
 public class FastPostBeanConverter {
@@ -229,20 +231,31 @@ public class FastPostBeanConverter {
 		gPost.setPathSegmentArray(p.getPathSegments());
 		gPost.setPathSegmentMax(p.getPathSegmentMaximums());
 		gPost.setEndOfBranch(p.isEndOfBranch());
-			
+		
+		//TODO: probably dont need to do this else where now?
+		gPost.setPathSegmentArray(PathSegmentizer.segmentizePath(p));
+		
+		
+		
 		return gPost;
 	}
 	
 	public static GEntry convertEntry(Entry e) {
 		GEntry gEntry = new GEntry();
 		//gEntry.setBody(e.getBody());
-		gEntry.setBody(ConversionUtils.fixV6Embed(e.getBody()));
+		
+		//TODO: once you're good to go, you should probably do this on import and never again
+		String tmp = ConversionUtils.fixV6Embed(e.getBody());
+		tmp = PostFormatter.getInstance().format(tmp);
+		gEntry.setBody(tmp);
+
 		
 		gEntry.setDate(e.getDate());
 		gEntry.setEntryId(e.getEntryId());
-		//gEntry.setSummary(ConversionUtils.preparePostSummaryForDisplay(e.getSummary()));
 		
-		gEntry.setSummary(e.getSummary());
+		gEntry.setSummary(ConversionUtils.preparePostSummaryForDisplay(tmp));
+		
+		//gEntry.setSummary(e.getSummary());
 		return gEntry;
 	}
 	

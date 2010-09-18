@@ -81,6 +81,9 @@
 										
 										
 									</div>
+									<div>
+										<g:Anchor ui:field="replyLinkElement">reply</g:Anchor>
+									</div>
 								</td>
 							</tr>
 							<tr>

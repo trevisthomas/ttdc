@@ -25,7 +25,7 @@ import org.ttdc.persistence.objects.PostCounter;
 import org.ttdc.persistence.objects.Tag;
 import org.ttdc.persistence.objects.TagLite;
 import org.ttdc.util.ServiceException;
-import org.ttdc.util.StringTools;
+import org.ttdc.gwt.shared.util.StringTools;
 import org.ttdc.util.web.HTMLCalendar;
 
 public final class CommentService {

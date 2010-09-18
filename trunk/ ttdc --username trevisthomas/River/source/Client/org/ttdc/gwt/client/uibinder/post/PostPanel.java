@@ -95,7 +95,7 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
     @UiField(provided = true) Label postNwsElement = postIconTool.getIconNws();
     @UiField(provided = true) Label postInfElement = postIconTool.getIconInf();
     @UiField(provided = true) ClickableHoverSyncPanel moreOptionsElement = MoreOptionsButtonFactory.createMoreOptionsButton();  
-    
+    @UiField Anchor replyLinkElement;
     
     private Mode mode;
     
@@ -349,7 +349,10 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 		service.execute(cmd,fetchMorePostsCallback);
 		
 	}
-	
+	@UiHandler("replyLinkElement")
+	void onClickReplyLink(ClickEvent event){
+		showCommentEditor();
+	}
 	@Override
 	public Widget getWidget() {
 		return this;

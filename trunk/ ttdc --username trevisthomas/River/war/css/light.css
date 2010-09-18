@@ -3,7 +3,7 @@
 @import "common/icons/icons-grey.css";
 @import "common/icons/icons-common.css";
 @import "structure.css";
-
+@import "common/icons/toolbar-icons.css";
 
 body{ color: #222; background-color: #eee;}
 .tt-view-container{ background-color:white;}

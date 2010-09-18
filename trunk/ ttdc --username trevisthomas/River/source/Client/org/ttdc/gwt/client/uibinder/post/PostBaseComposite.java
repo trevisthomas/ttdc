@@ -19,6 +19,7 @@ import org.ttdc.gwt.client.presenters.movies.MovieRatingPresenter;
 import org.ttdc.gwt.client.presenters.post.LikesPresenter;
 import org.ttdc.gwt.client.presenters.post.PostPresenterCommon;
 import org.ttdc.gwt.client.services.RpcServiceAsync;
+import org.ttdc.gwt.client.uibinder.comment.CommentEditorPanel;
 import org.ttdc.gwt.shared.commands.AssociationPostTagCommand;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
 import org.ttdc.gwt.shared.commands.UserObjectCrudCommand;
@@ -294,6 +295,13 @@ abstract public class PostBaseComposite extends Composite{
 		commentPresneter.init(NewCommentPresenter.Mode.CREATE, post);
 		commentElement.clear();
 		commentElement.add(commentPresneter.getWidget());
+	}
+	
+	protected void showCommentEditor(){
+		CommentEditorPanel commentEditor = injector.createCommentEditorPanel();
+		commentEditor.init(CommentEditorPanel.Mode.CREATE, post);
+		commentElement.clear();
+		commentElement.add(commentEditor);
 	}
 	
 	protected void showMovieEditor() {

@@ -11,7 +11,7 @@ import javax.swing.text.html.HTML;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.parser.ParserDelegator;
 
-import org.ttdc.util.StringTools;
+import org.ttdc.gwt.shared.util.StringTools;
 
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -27,9 +27,7 @@ public class ConversionUtils {
 
 		//Removing any html from the summary.
 		String summary = StringTools.escapeRexExSpecialCharacters(value);
-		if(value.length() > 60){
-			summary = summary.substring(0, 60) + "...";
-		}		
+	
 		Pattern p = Pattern.compile("<div class=shackTag_q>.*?\\>");
 		summary = summary + "</div>";
 		Matcher m = p.matcher(summary);
@@ -47,6 +45,10 @@ public class ConversionUtils {
 		
 		//Sigh, replace escaped characters for rendering. 
 		temp = StringTools.unescapeRexExSpecialCharacters(temp);
+		
+		if(value.length() > 100){
+			summary = summary.substring(0, 100) + "...";
+		}	
 		
 		return temp;
 	}

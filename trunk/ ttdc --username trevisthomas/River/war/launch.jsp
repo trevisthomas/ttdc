@@ -49,7 +49,10 @@
     <script type="text/javascript" language="javascript" src="client/client.nocache.js"></script>
     
      <!-- GWTEXT2 -->
+      <!--
+      Trevis, consider just dumping this ext library.  You're not using it for anything important. 
 	<link rel="stylesheet" type="text/css" href="js/ext/resources/css/ext-all.css"/>
+	-->
     <script type="text/javascript" src="js/ext/adapter/ext/ext-base.js"></script>
     <script type="text/javascript" src="js/ext/ext-all.js"></script>
     <!-- GWTEXT2 -->

@@ -8,9 +8,9 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.ttdc.gwt.shared.util.StringTools;
 import org.ttdc.gwt.shared.util.StringUtil;
 import org.ttdc.persistence.objects.Tag;
-import org.ttdc.util.StringTools;
 
 public class TagDao {
 	private final static Logger log = Logger.getLogger(TagDao.class);

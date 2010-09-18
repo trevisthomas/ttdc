@@ -104,6 +104,7 @@ import org.ttdc.gwt.client.uibinder.calendar.CalendarPanel;
 import org.ttdc.gwt.client.uibinder.calendar.DayPanel;
 import org.ttdc.gwt.client.uibinder.calendar.InteractiveCalendarPanel;
 import org.ttdc.gwt.client.uibinder.calendar.SmallMonthPanel;
+import org.ttdc.gwt.client.uibinder.comment.CommentEditorPanel;
 import org.ttdc.gwt.client.uibinder.dashboard.FilteredPost;
 import org.ttdc.gwt.client.uibinder.dashboard.UserDashboardPanel;
 import org.ttdc.gwt.client.uibinder.home.HomePanel;
@@ -1570,6 +1571,12 @@ public class MockInjector implements Injector{
 
 	@Override
 	public NestedPostSpacerPanel createNestedPostSpacerPanel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CommentEditorPanel createCommentEditorPanel() {
 		// TODO Auto-generated method stub
 		return null;
 	}
