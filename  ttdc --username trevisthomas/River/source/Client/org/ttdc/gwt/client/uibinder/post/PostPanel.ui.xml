@@ -10,94 +10,108 @@
 			<td><g:Widget styleName="tt-avatar-large" ui:field="avatarElement"/>
 			</td>
 			<td>
-				<div class="tt-post" >
-					<div class="tt-post-panel-head">
-						<table class="tt-fill">
-							<tr>
-								<td rowspan="2">
-									
-								</td>
-								<td class="tt-fill">
-									<div class="tt-post-panel-head-title">
-										<span>
-											<g:Hyperlink ui:field="titleElement" />
-										</span>
-									</div>
-								</td>
-								<td>
-									<table class="tt-inline tt-float-right">
-										<tr>
-											<td>
-												<g:Label styleName="tt-post-panel-number" ui:field="postNumberElement"></g:Label>
-											</td>
-											<td>
-												<g:Label ui:field="replyCountElement"></g:Label>
-											</td>
-											<td>
-												<g:Label ui:field="conversationCountElement"></g:Label>
-											</td>
-										</tr>
-									</table>
-								</td>
-							</tr>
-							<tr>
-								<td colspan="2">
-									<table class="tt-fill">
-										<tr>
-											
-											<td class="tt-post-panel-head-detail">
-											<g:Label ui:field="postUnReadElement" /><g:Label ui:field="postReadElement" />
-											by <g:Hyperlink ui:field="creatorLinkElement" /> <g:Widget ui:field="ratingElement" />
-											<table class="tt-inline">
-												<tr>
-													<td><g:Label ui:field="postPrivateElement" /></td>
-													<td><g:Label ui:field="postNwsElement" /></td>
-													<td><g:Label ui:field="postInfElement" /></td>
-												</tr>
-											</table>
-											</td>
-											<td class="tt-text-right tt-post-panel-head-date"> <g:Widget styleName="tt-inline" ui:field="createDateElement" /></td>
-										</tr>
-									</table>
-								</td>
-							</tr>
-						</table>
-					</div>
-					
-					
-					
-					<div class="tt-post-panel-content" style="clear:both;">
-						<table class="tt-fill">
-							<tr>
-								<td width="100%">
-									<div width="100%" style="clear:both;" >
-										<span class="tt-float-right">
-											<t:ClickableHoverSyncPanel ui:field="moreOptionsElement"/>
-										</span>
-										<div class="tt-float-right"  style="clear:both;">
-											<g:Widget ui:field="postImageElement" />
+				<g:FocusPanel ui:field="hoverDivElement">
+				<g:HTMLPanel>	
+					<div class="tt-post" >
+						<div class="tt-post-panel-head">
+							<table class="tt-fill">
+								<tr>
+									<td rowspan="2">
+										
+									</td>
+									<td class="tt-fill">
+										<div class="tt-post-panel-head-title">
+											<span>
+												<g:Hyperlink ui:field="titleElement" />
+											</span>
 										</div>
-										<span class="tt-post-body tt-text-normal" ui:field="bodyElement" />
+									</td>
+									<td>
+										<table class="tt-inline tt-float-right">
+											<tr>
+												<td>
+													<g:Label styleName="tt-post-panel-number" ui:field="postNumberElement"></g:Label>
+												</td>
+												<td>
+													<g:Label ui:field="replyCountElement"></g:Label>
+												</td>
+												<td>
+													<g:Label ui:field="conversationCountElement"></g:Label>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="2">
+										<table class="tt-fill">
+											<tr>
+												
+												<td class="tt-post-panel-head-detail">
+												<g:Label ui:field="postUnReadElement" /><g:Label ui:field="postReadElement" />
+												by <g:Hyperlink ui:field="creatorLinkElement" /> <g:Widget ui:field="ratingElement" />
+												<table class="tt-inline">
+													<tr>
+														<td><g:Label ui:field="postPrivateElement" /></td>
+														<td><g:Label ui:field="postNwsElement" /></td>
+														<td><g:Label ui:field="postInfElement" /></td>
+													</tr>
+												</table>
+												</td>
+												<td class="tt-text-right tt-post-panel-head-date"> <g:Widget styleName="tt-inline" ui:field="createDateElement" /></td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+							</table>
+						</div>
+						
+						
+						
+						<div class="tt-post-panel-content" style="clear:both;">
+							<table class="tt-fill">
+								<tr>
+									<td width="100%">
+										<div width="100%" style="clear:both;" >
+											<span class="tt-float-right">
+												<t:ClickableHoverSyncPanel ui:field="moreOptionsElement"/>
+											</span>
+											<div class="tt-float-right"  style="clear:both;">
+												<g:Widget ui:field="postImageElement" />
+											</div>
+											<span class="tt-post-body tt-text-normal" ui:field="bodyElement" />
+											
+											
+										</div>
+										<g:SimplePanel ui:field="actionLinks" />
 										
-										
-									</div>
-									<div>
-										<g:Anchor ui:field="replyLinkElement">reply</g:Anchor>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td class="tt-post-footer">
-									<g:SimplePanel ui:field="likesElement"></g:SimplePanel>
-									<g:Widget ui:field="tagsElement"></g:Widget>
-								</td>
-							</tr>
-						</table>
-						<center><span ui:field="embedTargetElement"/></center>
+										<!-- 
+										<g:HTMLPanel ui:field="actionLinks">
+											<ul>
+												<li><g:Anchor ui:field="replyLinkElement">reply</g:Anchor></li>
+												<li>|</li>
+												<li><g:Anchor ui:field="editLinkElement">like</g:Anchor></li>
+												<li>|</li>
+												<li><g:Anchor ui:field="moreLinkElement">more</g:Anchor></li>
+											</ul>										
+										</g:HTMLPanel>
+										 -->
+									</td>
+								</tr>
+								<tr>
+									<td class="tt-post-footer">
+										<g:SimplePanel ui:field="likesElement"></g:SimplePanel>
+										<g:Widget ui:field="tagsElement"></g:Widget>
+									</td>
+								</tr>
+							</table>
+							<center><span ui:field="embedTargetElement"/></center>
+						</div>
 					</div>
-				</div>
-				<div class="tt-post-fetch-more"><g:Anchor ui:field="fetchMoreElement"/></div>
+				</g:HTMLPanel>
+				</g:FocusPanel>
 				<g:SimplePanel ui:field="commentElement" />
+				<div class="tt-post-fetch-more"><g:Anchor ui:field="fetchMoreElement"/></div>
 				<g:Widget ui:field="repliesElement" />
 			</td>
 		</tr>

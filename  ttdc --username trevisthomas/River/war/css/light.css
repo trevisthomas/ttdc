@@ -10,33 +10,56 @@ body{ color: #222; background-color: #eee;}
 
 .tt-message-textbox-disabled{ color: #ddd;}
 
-	
+/*	
 .tt-post-panel-head	a:link {text-decoration: none; color: #222;}
 .tt-post-panel-head a:visited {text-decoration: none; color: #222;}
 .tt-post-panel-head a:hover {text-decoration: underline; color: black;}
 .tt-post-panel-head a:active {color: #F5F23B;}
 
-.tt-post-panel-content a:link {text-decoration: none; color: black;}
-.tt-post-panel-content a:visited {text-decoration: none; color: black;}
-.tt-post-panel-content a:hover {text-decoration: underline; color: #222;}
+.tt-post-panel-content a:link {text-decoration: none; color: #222;}
+.tt-post-panel-content a:visited {text-decoration: none; color: #222;}
+.tt-post-panel-content a:hover {text-decoration: underline; color: black;}
 .tt-post-panel-content a:active {color: #F5F23B;}
+*/
 
+.tt-post-panel-content a:link,
+.tt-post-panel-head	a:link,
+.tt-active-post-links-hover a:link,
 .tt-more-comments a:link,
 .tt-traffic-login a:link,
 .tt-post-summary a:link {text-decoration: none; color: #113aa4;}
 
+.tt-post-panel-content a:visited, 
+.tt-post-panel-head	a:visited,
+.tt-active-post-links-hover a:visited,
 .tt-more-comments a:visited,
 .tt-traffic-login a:visited,
 .tt-post-summary a:visited {text-decoration: none; color: #113aa4;}
 
+
+.tt-post-panel-content a:hover,
+.tt-post-panel-head	a:hover,
+.tt-active-post-links-hover a:hover,
 .tt-more-comments a:hover,
 .tt-traffic-login a:hover,
 .tt-post-summary a:hover {text-decoration: underline; color: blue;}
 
+.tt-post-panel-content a:active,
+.tt-post-panel-head	a:active,
+.tt-active-post-links-hover a:active,
 .tt-more-comments a:active,
 .tt-traffic-login a:active,
 .tt-post-summary a:active {color: #F5F23B;}
 
+.tt-active-post-links a:link{text-decoration: none; color: #ECECEC;}
+.tt-active-post-links a:visited{text-decoration: none; color: #ECECEC;}
+.tt-active-post-links a:hover{text-decoration: underline; color: #ECECEC;}
+.tt-active-post-links a:active{color: #ECECEC;}
+
+.tt-active-post-links-hover{color:#113aa4;}
+.tt-active-post-links{color:#ECECEC;}
+
+.tt-post-panel-head-title a:link,
 .tt-user-list-table a:link,
 .tt-movie-list-table a:link,
 .tt-cloud-tag a:link,
@@ -49,6 +72,7 @@ body{ color: #222; background-color: #eee;}
 .tt-reviewSummaryList a:link,
 .tt-post-expanded a:link {text-decoration: none; color: black;}
 
+.tt-post-panel-head-title a:visited,
 .tt-user-list-table a:visited,
 .tt-movie-list-table a:visited,
 .tt-cloud-tag a:visited,
@@ -61,6 +85,7 @@ body{ color: #222; background-color: #eee;}
 .tt-reviewSummaryList a:visited,
 .tt-post-expanded a:visited {text-decoration: none; color: black;}
 
+.tt-post-panel-head-title a:hover,
 .tt-user-list-table a:hover,
 .tt-movie-list-table a:hover,
 .tt-cloud-tag a:hover,
@@ -73,6 +98,7 @@ body{ color: #222; background-color: #eee;}
 .tt-reviewSummaryList a:hover,
 .tt-post-expanded a:hover {text-decoration: underline; color: #222;}
 
+.tt-post-panel-head-title a:active,
 .tt-user-list-table a:active,
 .tt-movie-list-table a:active,
 .tt-cloud-tag a:active,
@@ -84,6 +110,8 @@ body{ color: #222; background-color: #eee;}
 .tt-navigation a:active,		
 .tt-reviewSummaryList a:active,
 .tt-post-expanded a:active {color: #F5F23B;}
+
+
 
 .tt-color-month-week-header{ background: #eee; color: black; border-color: grey;}
 .tt-color-month-week-header-hover{ background: grey; color: white; border-color: #eee;}

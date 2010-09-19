@@ -67,7 +67,7 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 .tt-rich-text-iframe{width: 478px; margin: 4px 0;}
 .tt-comment-editor-buttons{float: right;}
 
-.tt-post-panel-content{ width:100%;}
+.tt-post-panel-content{ width:100%; clear:both;}
 .tt-post-panel-head{border-style: solid; border-width: 0 0 1px 0;}
 .tt-post-panel-head-date,
 .tt-post-panel-head-detail{vertical-align: middle;}
@@ -285,11 +285,17 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 .tt-comment-button{min-width: 40px;}
 .tt-navigation{margin: 2px;}
 
-.tt-comment-editor-checkboxes,
+.tt-active-post-box ul,
+.tt-comment-editor-checkboxes ul,
 .tt-navigation ul{ padding:0px;}
 
+.tt-active-post-box ul{ margin: 2px;}
+
+.tt-active-post-box li,
 .tt-comment-editor-checkboxes li,
 .tt-navigation li{display: inline; margin: 0;padding: 0;}
+
+.tt-active-post-box{text-align:center; margin: 0 auto;}
 
 .tt-reviewSummaryList-header{font-size: 15px; font-weight: bolder;}
 

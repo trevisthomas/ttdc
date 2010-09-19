@@ -15,8 +15,11 @@ import org.ttdc.gwt.client.messaging.person.PersonEvent;
 import org.ttdc.gwt.client.messaging.person.PersonEventListener;
 import org.ttdc.gwt.client.messaging.post.PostEvent;
 import org.ttdc.gwt.client.messaging.post.PostEventType;
+import org.ttdc.gwt.client.presenters.comments.CommentToolbar;
 import org.ttdc.gwt.client.presenters.comments.EmbedContentPopup;
 import org.ttdc.gwt.client.presenters.comments.EmbedContentPopupSource;
+import org.ttdc.gwt.client.presenters.comments.LinkDialog;
+import org.ttdc.gwt.client.presenters.comments.LinkDialogSource;
 import org.ttdc.gwt.client.presenters.comments.RemovableTagPresenter;
 import org.ttdc.gwt.client.presenters.util.ClickableIconPanel;
 import org.ttdc.gwt.client.uibinder.comment.InsertTrevTagPopup.InsertTrevTagPopupSource;
@@ -29,6 +32,7 @@ import org.ttdc.gwt.shared.util.StringTools;
 import com.google.gwt.core.client.GWT;
 
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -42,7 +46,7 @@ import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
-public class CommentEditorPanel extends Composite implements PersonEventListener, EmbedContentPopupSource, InsertTrevTagPopupSource{
+public class CommentEditorPanel extends Composite implements PersonEventListener, EmbedContentPopupSource, InsertTrevTagPopupSource, LinkDialogSource{
 	interface MyUiBinder extends UiBinder<Widget, CommentEditorPanel> {}
 	private static final MyUiBinder binder = GWT.create(MyUiBinder.class);
 	
@@ -51,8 +55,44 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 	private Injector injector;	
 	private Map<String,String> embedMap = new HashMap<String,String>();
 	
-	@UiField(provided = true) ClickableIconPanel embedButtonElement = new ClickableIconPanel("tt-toolbar-icon tt-toolbar-icon-embed");
-	@UiField(provided = true) ClickableIconPanel quoteButtonElement = new ClickableIconPanel("tt-toolbar-icon tt-toolbar-icon-quote");
+	@UiField(provided = true) ClickableIconPanel embedButtonElement = createToolbarButton("tt-toolbar-icon-embed", "Embed Image or Video");
+	@UiField(provided = true) ClickableIconPanel quoteButtonElement = createToolbarButtonEx("tt-toolbar-icon-quote", "Quote", "q[", "]q", true);
+	@UiField(provided = true) ClickableIconPanel linkButtonElement = createToolbarButton("tt-toolbar-icon-link", "Generate Link");
+	@UiField(provided = true) ClickableIconPanel blueButtonElement = createToolbarButtonEx("tt-toolbar-icon-blue", "Blue", "b{", "}b", false);
+	@UiField(provided = true) ClickableIconPanel redButtonElement = createToolbarButtonEx("tt-toolbar-icon-red", "Red", "r{", "}r", false);
+	@UiField(provided = true) ClickableIconPanel orangeButtonElement = createToolbarButtonEx("tt-toolbar-icon-orange", "Orange", "o{", "}o", false);
+	@UiField(provided = true) ClickableIconPanel greenButtonElement = createToolbarButtonEx("tt-toolbar-icon-green", "Green", "g{", "}g", false);
+	
+	@UiField(provided = true) ClickableIconPanel offsiteButtonElement = createToolbarButtonEx("tt-toolbar-icon-offsite", "Offsite Quote", "o[", "]o", true);
+	@UiField(provided = true) ClickableIconPanel italicButtonElement = createToolbarButtonEx("tt-toolbar-icon-italic", "Italic", "i[", "]i", false);
+	@UiField(provided = true) ClickableIconPanel bigButtonElement = createToolbarButtonEx("tt-toolbar-icon-big", "Big", "B[", "]S", false);
+	@UiField(provided = true) ClickableIconPanel smallButtonElement = createToolbarButtonEx("tt-toolbar-icon-small", "Small", "s[", "]s", false);
+	
+	@UiField(provided = true) ClickableIconPanel boldButtonElement = createToolbarButtonEx("tt-toolbar-icon-bold", "Bold", "b[", "]b", false);
+	@UiField(provided = true) ClickableIconPanel strikeButtonElement = createToolbarButtonEx("tt-toolbar-icon-strike", "Strikethrough", "-[", "]-", false);
+	@UiField(provided = true) ClickableIconPanel hiddenButtonElement = createToolbarButtonEx("tt-toolbar-icon-hidden", "Hidden Spoiler", "h{", "}h", false);
+	@UiField(provided = true) ClickableIconPanel underlineButtonElement = createToolbarButtonEx("tt-toolbar-icon-underline", "Underline", "u[", "]u", false);
+	@UiField(provided = true) ClickableIconPanel codeButtonElement = createToolbarButtonEx("tt-toolbar-icon-code", "Code - monospaced", "c[", "]c", true);
+	@UiField(provided = true) ClickableIconPanel indentButtonElement = createToolbarButtonEx("tt-toolbar-icon-indent", "Indented", "p[", "]p", true);
+	
+	private ClickableIconPanel createToolbarButton(String iconStyle, String toolTip) {
+		ClickableIconPanel button = new ClickableIconPanel("tt-toolbar-icon "+iconStyle);
+		button.setTitle(toolTip);
+		return button;
+	}
+	
+	ClickableIconPanel createToolbarButtonEx(final String iconStyle,final String toolTip,
+			final String open, final String close, final boolean multiLine) {
+		ClickableIconPanel button = new ClickableIconPanel("tt-toolbar-icon "+iconStyle);
+		button.setTitle(toolTip);
+		button.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				performSimpleStyleMarkup(open, close, multiLine);
+			}
+		});
+		return button;
+	}
 	
 	@UiField(provided = true) TextArea textAreaElement = new TextArea();
 	@UiField SimplePanel topicSuggestionHolderElement;
@@ -245,19 +285,28 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 		popup.showPositionRelativeTo(embedButtonElement);
 	}
 	
-	@UiHandler("quoteButtonElement")
-	public void onClickQuoteButton(ClickEvent e){
+	@UiHandler("linkButtonElement")
+	public void onLinkButton(ClickEvent e){
+		LinkDialog popup = new LinkDialog(this, textAreaElement.getSelectedText());
+		popup.showPositionRelativeTo(linkButtonElement);
+	}
+	
+	private void performSimpleStyleMarkup(final String open, final String close, boolean multiLineInput) {
 		String selected = textAreaElement.getSelectedText().trim();
-		String open = "q[";
-		String close = "]q";
 		if(selected.length() == 0){
-			InsertTrevTagPopup popup = new InsertTrevTagPopup(this, open, close, true);
+			InsertTrevTagPopup popup = new InsertTrevTagPopup(this, open, close, multiLineInput);
 			popup.showPositionRelativeTo(quoteButtonElement);
 		}
 		else{
 			wrapSelection(open,close);
 		}
 	}
+	
+	@Override
+	public void performLink(String selectedText, String directSource) {
+		String text = "<a target=\"_blank\" href=\""+directSource+"\">"+selectedText+"</a>";
+		performInsert(text);
+	}	
 	 
 	@Override
 	public void performLinkEmbed(String selectedText, String directSource, String embedSource) {
