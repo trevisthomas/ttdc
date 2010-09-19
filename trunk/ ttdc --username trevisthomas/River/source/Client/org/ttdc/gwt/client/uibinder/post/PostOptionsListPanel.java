@@ -94,11 +94,15 @@ public class PostOptionsListPanel extends Composite implements PersonEventListen
 		GPerson user = ConnectionId.getInstance().getCurrentUser();
 		
 		links.add(replyElement);
-		if(!user.isAnonymous()){
-			links.add(likeElement);
-			links.add(moreElement);
+		
+		if(!user.isAnonymous() && !post.isMovie()){
+    		if(post.getLikedByPerson(user.getPersonId()) == null)
+    			links.add(likeElement);
+			else
+				links.add(unLikeElement);
 		}
 		
+		links.add(moreElement);
 		
 		optionsList.loadAnchors(links);
 	}
@@ -108,8 +112,7 @@ public class PostOptionsListPanel extends Composite implements PersonEventListen
     	List<Anchor> links = new ArrayList<Anchor>();
     	
     	links.add(replyElement);
-    	links.add(likeElement);
-    	    	
+    	    	    	
     	if(user.hasPrivilege(PrivilegeConstants.VOTER) || user.isAdministrator()){
     		
     		if(post.isRatable()){
