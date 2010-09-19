@@ -1,5 +1,10 @@
 package org.ttdc.gwt.client.presenters.comments;
 
+import java.util.Arrays;
+import java.util.List;
+
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
@@ -25,6 +30,8 @@ public class EmbedContentPopup extends PopupRelative{
 	private final FlowPanel buttonPanel = new FlowPanel();
 	
 	private final EmbedContentPopupSource source;
+	
+	private final List<String> imageExtentions = Arrays.asList(".png",".jpg",".jpeg",".gif");
 	public EmbedContentPopup(EmbedContentPopupSource source, final String selectedText) {
 		add(main);
 		this.source = source;
@@ -48,6 +55,19 @@ public class EmbedContentPopup extends PopupRelative{
 			@Override
 			public void onClick(ClickEvent event) {
 				EmbedContentPopup.this.hide();
+			}
+		});
+		
+		directLink.addChangeHandler(new ChangeHandler() {
+			@Override
+			public void onChange(ChangeEvent event) {
+				String direct = directLink.getText();
+				for(String ext : imageExtentions){
+					if(direct.trim().endsWith(ext)){
+						embededLink.setText("<img src=\""+directLink.getText()+"\" />");
+					}
+				}
+				
 			}
 		});
 		

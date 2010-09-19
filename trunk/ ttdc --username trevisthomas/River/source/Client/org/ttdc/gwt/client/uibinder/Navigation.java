@@ -88,23 +88,6 @@ public class Navigation extends Composite implements PersonEventListener{
 	
 
 	private void applyUserSpecificSettings() {
-//		if(ConnectionId.isAnonymous()){
-//			dashboardElement.setVisible(false);
-//			usersElement.setVisible(false);
-//		}
-//		else{
-//			dashboardElement.setVisible(true);
-//			usersElement.setVisible(true);
-//		}
-//		
-//		if(!ConnectionId.isAdministrator()){
-//			adminElement.setVisible(false);		
-//		}
-//		else{
-//			adminElement.setVisible(true);
-//		}
-		
-
 		List<Hyperlink> links = new ArrayList<Hyperlink>();
 		links.add(homeElement);
 		links.add(searchElement);
@@ -118,7 +101,8 @@ public class Navigation extends Composite implements PersonEventListener{
 			links.add(adminElement);		
 		}
 		
-		setMenu(links);
+		//setMenu(links);
+		navList.loadHyperlinks(links);
 	}
 	
 	@Override
@@ -128,21 +112,17 @@ public class Navigation extends Composite implements PersonEventListener{
 		}
 	}
 	
-	public void setMenu(List<Hyperlink> links)
-	{
-		// userMenu is an UnorderedListWidget
-		navList.clear();
-		for (int i=0; i<links.size(); i++)
-		{
-			Hyperlink item = links.get(i);
-			if (i>0)
-			{
-				navList.add(new ListItemWidget("|"));
-			}
-			
-			navList.add(new ListItemWidget(item));
-		}
-	}
-
-	
+//	public void setMenu(List<Hyperlink> links)
+//	{
+//		navList.clear();
+//		for (int i=0; i<links.size(); i++)
+//		{
+//			Hyperlink item = links.get(i);
+//			if (i>0)
+//			{
+//				navList.add(new ListItemWidget("|"));
+//			}
+//			navList.add(new ListItemWidget(item));
+//		}
+//	}
 }

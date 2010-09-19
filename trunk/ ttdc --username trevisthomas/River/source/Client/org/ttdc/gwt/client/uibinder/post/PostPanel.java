@@ -33,12 +33,18 @@ import org.ttdc.gwt.shared.commands.TopicCommandType;
 import org.ttdc.gwt.shared.commands.results.TopicCommandResult;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.event.dom.client.MouseOutHandler;
+import com.google.gwt.event.dom.client.MouseOverEvent;
+import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
@@ -95,7 +101,13 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
     @UiField(provided = true) Label postNwsElement = postIconTool.getIconNws();
     @UiField(provided = true) Label postInfElement = postIconTool.getIconInf();
     @UiField(provided = true) ClickableHoverSyncPanel moreOptionsElement = MoreOptionsButtonFactory.createMoreOptionsButton();  
-    @UiField Anchor replyLinkElement;
+    
+//    @UiField Anchor replyLinkElement;
+//    @UiField Anchor editLinkElement;
+//    @UiField Anchor moreLinkElement;
+    
+    @UiField SimplePanel actionLinks;    
+    @UiField FocusPanel hoverDivElement;
     
     private Mode mode;
     
@@ -140,6 +152,25 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
     	
     	postUnReadElement.addStyleName("tt-float-left");
     	postReadElement.addStyleName("tt-float-left");
+    	
+    	
+    	actionLinks.addStyleName("tt-active-post-box");
+    	actionLinks.addStyleName("tt-active-post-links");
+    	hoverDivElement.addMouseOverHandler(new MouseOverHandler() {
+			@Override
+			public void onMouseOver(MouseOverEvent event) {
+				actionLinks.addStyleName("tt-active-post-links-hover");
+				actionLinks.removeStyleName("tt-active-post-links");
+			}
+		});
+    	
+    	hoverDivElement.addMouseOutHandler(new MouseOutHandler() {
+			@Override
+			public void onMouseOut(MouseOutEvent event) {
+				actionLinks.removeStyleName("tt-active-post-links-hover");
+				actionLinks.addStyleName("tt-active-post-links");
+			}
+		});
     }
     
     @Override
@@ -278,6 +309,9 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 		if(!post.isRootPost())
 			TopicHelpers.testPost(this);
 		
+		
+		actionLinks.clear();
+		actionLinks.add(buildBoundOptionsListPanel(post));
 	}
 
 	
@@ -349,10 +383,10 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 		service.execute(cmd,fetchMorePostsCallback);
 		
 	}
-	@UiHandler("replyLinkElement")
-	void onClickReplyLink(ClickEvent event){
-		showCommentEditor();
-	}
+//	@UiHandler("replyLinkElement")
+//	void onClickReplyLink(ClickEvent event){
+//		showCommentEditor();
+//	}
 	@Override
 	public Widget getWidget() {
 		return this;
@@ -381,5 +415,10 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 	public String getPostId() {
 		return post.getPostId();
 	}
+	
+//	@UiHandler("moreLinkElement")
+//	public void onClickMoreLink(ClickEvent e){
+//		onClickMoreOptions(e);	
+//	}
 	
 }

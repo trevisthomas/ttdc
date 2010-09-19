@@ -7,8 +7,30 @@
 
 	<g:HTMLPanel styleName="tt-comment-editor">
 		<div class="tt-comment-toolbar tt-float-container">
-			<t:ClickableIconPanel ui:field="embedButtonElement"/>	
+			<t:ClickableIconPanel ui:field="redButtonElement"/>
+			<t:ClickableIconPanel ui:field="blueButtonElement"/>
+			<t:ClickableIconPanel ui:field="greenButtonElement"/>
+			<t:ClickableIconPanel ui:field="orangeButtonElement"/>
+			
+			<t:ClickableIconPanel ui:field="italicButtonElement"/>
+			<t:ClickableIconPanel ui:field="boldButtonElement"/>
+			<t:ClickableIconPanel ui:field="strikeButtonElement"/>
+			<t:ClickableIconPanel ui:field="underlineButtonElement"/>
+			<t:ClickableIconPanel ui:field="hiddenButtonElement"/>
+			
+			<t:ClickableIconPanel ui:field="bigButtonElement"/>
+			<t:ClickableIconPanel ui:field="smallButtonElement"/>
+			
+			<t:ClickableIconPanel ui:field="codeButtonElement"/>
+			<t:ClickableIconPanel ui:field="indentButtonElement"/>
+			
 			<t:ClickableIconPanel ui:field="quoteButtonElement"/>
+			<t:ClickableIconPanel ui:field="offsiteButtonElement"/>
+			
+			<t:ClickableIconPanel ui:field="linkButtonElement"/>
+			<t:ClickableIconPanel ui:field="embedButtonElement"/>
+			
+			
 		</div>
 		<g:SimplePanel ui:field="topicSuggestionHolderElement" />
 		<g:TextArea styleName="tt-comment-textarea" ui:field="textAreaElement" />
