@@ -25,6 +25,7 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 .tt-text-nano{font-size:7px;}
 .tt-text-mini{font-size:9px;}
 
+.tt-comment-editor-info,
 .tt-traffic-date,
 .tt-traffic-login,
 .tt-post-expanded-date,
@@ -42,7 +43,7 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 
 .tt-text-normal-bold{font-size:12px; font-weight: bold;}
 
-
+.tt-comment-editor-info{font-style: italic;}
 
 .tt-text-large{font-size:16px; font-weight: 500;}
 
@@ -56,7 +57,7 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 .tt-more-options-button-hover,
 .tt-more-options-button{ border: 1px solid; font-size: 15px;}
 
-
+.tt-comment-editor-info{margin: 1px 6px;}
 
 .tt-post-container{ width:100%; }
 .tt-post-fetch-more{ width:100%;}
@@ -290,8 +291,8 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 .tt-navigation ul{ padding:0px;}
 
 .tt-active-post-box ul{ margin: 2px;}
+.tt-active-post-box li{display: inline; padding: 1px 3px; }
 
-.tt-active-post-box li,
 .tt-comment-editor-checkboxes li,
 .tt-navigation li{display: inline; margin: 0;padding: 0;}
 
@@ -302,18 +303,9 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 .gwt-PopupPanel { border: 3px solid; padding: 3px; }
 
 
-.gwt-SuggestBox {
-  padding: 2px;
-  width: 300px;
-}
-.gwt-SuggestBoxPopup {
-  margin-left: 3px;
-  border: 3px solid;
-}
-.gwt-SuggestBoxPopup .item {
-  padding: 2px 6px;
-  cursor: default;
-}
+.gwt-SuggestBox {  padding: 2px;   width: 100%;}
+.gwt-SuggestBoxPopup {  margin-left: 3px;   border: 3px solid;}
+.gwt-SuggestBoxPopup .item {  padding: 2px 6px;  cursor: default;}
 .gwt-SuggestBoxPopup .item-selected {
   
 }

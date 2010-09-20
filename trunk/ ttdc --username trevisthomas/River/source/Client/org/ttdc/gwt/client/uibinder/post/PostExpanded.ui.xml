@@ -4,6 +4,8 @@
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'
 	xmlns:t='urn:import:org.ttdc.gwt.client.presenters.util'>
 	<g:HTMLPanel>
+		<g:FocusPanel ui:field="hoverDivElement">
+		<g:HTMLPanel>
 			<div class="tt-post-expanded">
 				<div class="tt-post-expanded-header">
 					<g:Widget styleName="tt-float-left" ui:field="avatarElement" />
@@ -24,11 +26,6 @@
 				</div>
 											
 				<div class="tt-post-expanded-content" >
-					
-					
-					<span class="tt-float-right">
-						<t:ClickableHoverSyncPanel ui:field="moreOptionsElement"/>
-					</span>
 					<span class="tt-post-body tt-text-normal" ui:field="bodyElement" />
 				</div>
 				<div class="tt-fill tt-text-right tt-text-mini">
@@ -38,6 +35,9 @@
 					<g:SimplePanel ui:field="likesElement"></g:SimplePanel>
 					<g:Widget ui:field="tagsElement"></g:Widget>
 				</div>
+				<g:SimplePanel ui:field="actionLinks" />
 			</div>
+		</g:HTMLPanel>
+		</g:FocusPanel>
 	</g:HTMLPanel>
 </ui:UiBinder>

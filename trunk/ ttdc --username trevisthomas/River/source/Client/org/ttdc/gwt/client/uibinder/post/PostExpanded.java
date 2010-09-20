@@ -16,6 +16,7 @@ import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Label;
@@ -51,8 +52,9 @@ public class PostExpanded extends PostBaseComposite{
     @UiField(provided = true) Label postPrivateElement = postIconTool.getIconPrivate();
     @UiField(provided = true) Label postNwsElement = postIconTool.getIconNws();
     @UiField(provided = true) Label postInfElement = postIconTool.getIconInf();
-    @UiField(provided = true) ClickableHoverSyncPanel moreOptionsElement = MoreOptionsButtonFactory.createMoreOptionsButton(); 
     
+    @UiField(provided = true) FocusPanel hoverDivElement = new FocusPanel();
+    @UiField(provided = true) SimplePanel actionLinks = createPostActionLinks(hoverDivElement);    
     
 	@UiField SpanElement bodyElement;
 //	private GPost post;
@@ -102,6 +104,9 @@ public class PostExpanded extends PostBaseComposite{
 		creatorLinkPresenter.init();
 		
 		setupLikesElement(post, likesElement);
+		
+		actionLinks.clear();
+		actionLinks.add(buildBoundOptionsListPanel(post));
 	}
 	
 //	public void addReplyClickHandler(ClickHandler handler){

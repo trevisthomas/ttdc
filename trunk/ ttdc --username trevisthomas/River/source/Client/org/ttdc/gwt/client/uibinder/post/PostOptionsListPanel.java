@@ -36,14 +36,14 @@ public class PostOptionsListPanel extends Composite implements PersonEventListen
 	private Anchor unLikeElement = new Anchor("un-like");
     private Anchor ratingElement = new Anchor("rate");
     private Anchor unRateElement = new Anchor("un-rate");
-    private Anchor editElement = new Anchor("like");
+    private Anchor editElement = new Anchor("edit");
     private Anchor muteThreadElement = new Anchor("mute");
     private Anchor unMuteThreadElement = new Anchor("un-mute");
     private Anchor earmarkElement = new Anchor("earmark");
     private Anchor unEarmarkElement = new Anchor("un-earmark");
     private Anchor tagElement = new Anchor("tag");
-    private Anchor moreElement = new Anchor("more");
-    private Anchor lessElement = new Anchor("less");
+    private Anchor moreElement = new Anchor();
+    private Anchor lessElement = new Anchor();
     
 	@UiField(provided = true) UnorderedListWidget optionsList = new UnorderedListWidget();
 	
@@ -56,6 +56,7 @@ public class PostOptionsListPanel extends Composite implements PersonEventListen
 		
 		EventBus.getInstance().addListener(this);
 		
+		moreElement.setHTML("&raquo;more");
 		moreElement.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -63,6 +64,7 @@ public class PostOptionsListPanel extends Composite implements PersonEventListen
 			}
 		});
 		
+		lessElement.setHTML("&laquo;less");
 		lessElement.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {

@@ -24,6 +24,7 @@ import org.ttdc.gwt.client.presenters.search.DefaultMessageTextBox;
 import org.ttdc.gwt.client.presenters.util.ClickableIconPanel;
 import org.ttdc.gwt.client.services.BatchCommandTool;
 import org.ttdc.gwt.client.services.RpcServiceAsync;
+import org.ttdc.gwt.client.uibinder.comment.CommentEditorPanel;
 import org.ttdc.gwt.client.uibinder.post.NewMoviePanel;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
 import org.ttdc.gwt.shared.commands.PersonCommand;
@@ -241,18 +242,19 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 		setupPopups();
 		
 	}
-	private NewCommentPresenter commentPresneter;
+	private CommentEditorPanel commentEditorPanel;
 	private NewMoviePanel newMoviePanel;
 	
 	private void setupPopups() {
-		commentPresneter = injector.getNewCommentPresenter();
-		commentPresneter.addCancelClickHandler(new ClickHandler() {
+		commentEditorPanel = injector.createCommentEditorPanel();
+		commentEditorPanel.addCancelClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				performCancel();
 			}
 		});
-		commentPresneter.init();
+		
+		commentEditorPanel.init(CommentEditorPanel.Mode.CREATE, null);
 		
 		newMoviePanel = injector.createNewMoviePanel();
 		newMoviePanel.addCancelClickHandler(new ClickHandler() {
@@ -284,6 +286,7 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 			controlsPopup.hide();
 			activeWidget = null;
 		}
+		setupPopups();
 	}
 	
 	
@@ -299,11 +302,11 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 	
 	@UiHandler("commentElement")
 	public void onClickCommentEditor(ClickEvent event){
-		if(activeWidget == commentPresneter.getWidget()){
+		if(activeWidget == commentEditorPanel){
 			performCancel();
 		}
 		else{
-			showPopup(commentPresneter.getWidget());	
+			showPopup(commentEditorPanel);	
 		}
 	}
 	

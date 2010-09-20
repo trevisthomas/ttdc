@@ -29,6 +29,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.RichTextArea.Formatter;
 
+@Deprecated
 public class CommentToolbar extends Composite implements EmbedContentPopupSource, LinkDialogSource, HasHTML{
 	private static final String HTTP_STATIC_ICONS_GIF = "http://blog.elitecoderz.net/wp-includes/js/tinymce/themes/advanced/img/icons.gif";
 	private RichTextArea richTextArea;

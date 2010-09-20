@@ -150,6 +150,7 @@ public class FastPostBeanConverter {
 		gPost.setPath(p.getPath());
 		gPost.setMass(p.getMass());
 		gPost.setReplyCount(p.getReplyCount());
+		gPost.setMetaMask(p.getMetaMask());//Added this so that i can detect that a movie was already reviewd in the comment editor!
 		gPost.setCreator(convertPerson(p.getCreator()));
 		return gPost;
 	}
