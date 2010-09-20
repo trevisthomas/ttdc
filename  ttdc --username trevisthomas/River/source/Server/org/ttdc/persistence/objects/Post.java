@@ -1188,7 +1188,7 @@ public class Post implements Comparable<Post>, HasGuid {
 	 * @param person
 	 * @return
 	 */
-	private boolean hasTagAssociation(String type, String personId) {
+	public boolean hasTagAssociation(String type, String personId) {
 		if(type == null) return false;
 		List<AssociationPostTag> tagasses = getTagAssociations();
 		boolean retval = false;

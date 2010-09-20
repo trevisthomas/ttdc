@@ -6,6 +6,19 @@
     xmlns:t='urn:import:org.ttdc.gwt.client.presenters.util'>
 
 	<g:HTMLPanel styleName="tt-comment-editor">
+		<g:HTMLPanel ui:field="loginElement">
+			<table>
+				<tr>
+					<td>
+						Login: <g:TextBox ui:field="loginTextElement"/>
+					</td>
+					<td>
+						Password: <g:PasswordTextBox ui:field="passwordTextElement"/>
+					</td>
+				</tr>
+			</table>
+		</g:HTMLPanel>
+	
 		<div class="tt-comment-toolbar tt-float-container">
 			<t:ClickableIconPanel ui:field="redButtonElement"/>
 			<t:ClickableIconPanel ui:field="blueButtonElement"/>
@@ -32,8 +45,29 @@
 			
 			
 		</div>
-		<g:SimplePanel ui:field="topicSuggestionHolderElement" />
+		
+		<table class="tt-fill">
+			<tr>
+				<td><g:Label width="20px" ui:field="ratingLabelElement">Rating:</g:Label></td>
+				<td><g:SimplePanel ui:field="ratingElement" /></td>
+			</tr>
+			<tr>
+				<td><g:Label width="20px" ui:field="topicLabelElement">Topic:</g:Label></td>
+				<td><g:SimplePanel ui:field="topicSuggestionHolderElement" /></td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<g:Label styleName="tt-comment-editor-info" ui:field="parentInfoElement" />
+				</td>
+			</tr>
+		</table>
+		
+		
+		
 		<g:TextArea styleName="tt-comment-textarea" ui:field="textAreaElement" />
+		
+		<g:SimplePanel styleName="tt-comment-textarea" ui:field="previewElement" />
+		
 		<div class="tt-float-container">
 			<table class="tt-comment-editor-buttons">
 				<tr>

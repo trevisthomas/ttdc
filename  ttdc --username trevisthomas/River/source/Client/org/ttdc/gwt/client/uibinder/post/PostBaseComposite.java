@@ -29,8 +29,13 @@ import org.ttdc.gwt.shared.commands.types.ActionType;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.event.dom.client.MouseOutHandler;
+import com.google.gwt.event.dom.client.MouseOverEvent;
+import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -54,6 +59,28 @@ abstract public class PostBaseComposite extends Composite{
 		this.commentElement = commentElement;
 		this.tagListPanel = tagListPanel;
 	}	
+	
+	protected SimplePanel createPostActionLinks(FocusPanel hoverDivElement) {
+		final SimplePanel actionLinks = new SimplePanel();
+		actionLinks.addStyleName("tt-active-post-box");
+    	actionLinks.addStyleName("tt-active-post-links");
+    	hoverDivElement.addMouseOverHandler(new MouseOverHandler() {
+			@Override
+			public void onMouseOver(MouseOverEvent event) {
+				actionLinks.addStyleName("tt-active-post-links-hover");
+				actionLinks.removeStyleName("tt-active-post-links");
+			}
+		});
+    	
+    	hoverDivElement.addMouseOutHandler(new MouseOutHandler() {
+			@Override
+			public void onMouseOut(MouseOutEvent event) {
+				actionLinks.removeStyleName("tt-active-post-links-hover");
+				actionLinks.addStyleName("tt-active-post-links");
+			}
+		});
+    	return actionLinks;
+	}
 	
 	public PostOptionsListPanel buildBoundOptionsListPanel(final GPost post) {
 		PostOptionsListPanel optionsListPanel = injector.createPostOptionsListPanel();
@@ -408,13 +435,18 @@ abstract public class PostBaseComposite extends Composite{
 
 	
 	private void showEditCommentEditor() {
-		NewCommentPresenter commentPresneter = injector.getNewCommentPresenter();
-		commentPresneter.init(NewCommentPresenter.Mode.EDIT, post);
+//		NewCommentPresenter commentPresneter = injector.getNewCommentPresenter();
+//		commentPresneter.init(NewCommentPresenter.Mode.EDIT, post);
+//		commentElement.clear();
+//		commentElement.add(commentPresneter.getWidget());
+		
+		CommentEditorPanel commentEditor = injector.createCommentEditorPanel();
+		commentEditor.init(CommentEditorPanel.Mode.EDIT, post);
 		commentElement.clear();
-		commentElement.add(commentPresneter.getWidget());
+		commentElement.add(commentEditor);
 	}
 	
-	@UiHandler("moreOptionsElement")
+	//@UiHandler("moreOptionsElement")
 	void onClickMoreOptions(ClickEvent event){
 		Widget source = (Widget) event.getSource();
 		initializeOptionsPopup(post,source);

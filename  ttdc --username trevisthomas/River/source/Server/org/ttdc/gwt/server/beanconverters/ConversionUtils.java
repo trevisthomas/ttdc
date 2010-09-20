@@ -46,8 +46,8 @@ public class ConversionUtils {
 		//Sigh, replace escaped characters for rendering. 
 		temp = StringTools.unescapeRexExSpecialCharacters(temp);
 		
-		if(value.length() > 100){
-			summary = summary.substring(0, 100) + "...";
+		if(temp.length() > 60){
+			temp = temp.substring(0, 60) + "...";
 		}	
 		
 		return temp;

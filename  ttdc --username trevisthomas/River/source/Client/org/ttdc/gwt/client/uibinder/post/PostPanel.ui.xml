@@ -73,9 +73,6 @@
 								<tr>
 									<td width="100%">
 										<div width="100%" style="clear:both;" >
-											<span class="tt-float-right">
-												<t:ClickableHoverSyncPanel ui:field="moreOptionsElement"/>
-											</span>
 											<div class="tt-float-right"  style="clear:both;">
 												<g:Widget ui:field="postImageElement" />
 											</div>

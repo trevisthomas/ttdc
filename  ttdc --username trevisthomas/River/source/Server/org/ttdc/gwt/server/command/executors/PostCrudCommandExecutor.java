@@ -11,6 +11,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.ttdc.gwt.client.beans.GEntry;
 import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.beans.GTag;
 import org.ttdc.gwt.client.messaging.person.PersonEvent;
@@ -34,6 +35,7 @@ import org.ttdc.gwt.server.util.CalendarBuilder;
 import org.ttdc.gwt.server.util.PostFormatter;
 import org.ttdc.gwt.shared.commands.PostCrudCommand;
 import org.ttdc.gwt.shared.commands.results.PostCommandResult;
+import org.ttdc.gwt.shared.commands.types.PostActionType;
 import org.ttdc.gwt.shared.util.StringUtil;
 import org.ttdc.persistence.Persistence;
 import org.ttdc.persistence.objects.AssociationPostTag;
@@ -43,6 +45,7 @@ import org.ttdc.persistence.objects.Person;
 import org.ttdc.persistence.objects.Post;
 import org.ttdc.persistence.objects.Privilege;
 import org.ttdc.persistence.objects.Tag;
+import org.ttdc.util.ShackTagger;
 
 public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 	
@@ -52,6 +55,11 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 		Post post = null;
 		GPost gPost = null;
 		PostEventType broadcastType = null;
+		
+		if(PostActionType.PREVIEW.equals(cmd.getAction())){
+			return formatBodyForPreview(cmd);
+		}
+		
 		try{
 			beginSession();
 			switch(cmd.getAction()){
@@ -75,6 +83,7 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 			case REPARENT:
 				post = reparent(cmd);
 				break;
+			
 			default:
 				throw new RuntimeException("I cant do that action. Feel free to teach me though.");
 			}
@@ -108,6 +117,15 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 		}
 	}
 	
+	private CommandResult formatBodyForPreview(PostCrudCommand cmd) {
+		GPost gPost = new GPost();
+		GEntry gEntry = new GEntry();
+		gEntry.setBody(PostFormatter.getInstance().format(cmd.getBody()));
+		gPost.setLatestEntry(gEntry);
+		PostCommandResult result = new PostCommandResult(gPost);
+		return result;
+	}
+
 	protected Post updateMeta(PostCrudCommand cmd){
 		Person creator = determinePerson(cmd);
 		if(!creator.hasPrivilege(Privilege.POST) && !creator.isAdministrator()){

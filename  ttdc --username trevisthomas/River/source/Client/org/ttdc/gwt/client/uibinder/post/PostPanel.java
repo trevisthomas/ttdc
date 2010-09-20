@@ -100,14 +100,15 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
     @UiField(provided = true) Label postPrivateElement = postIconTool.getIconPrivate();
     @UiField(provided = true) Label postNwsElement = postIconTool.getIconNws();
     @UiField(provided = true) Label postInfElement = postIconTool.getIconInf();
-    @UiField(provided = true) ClickableHoverSyncPanel moreOptionsElement = MoreOptionsButtonFactory.createMoreOptionsButton();  
+//    @UiField(provided = true) ClickableHoverSyncPanel moreOptionsElement = MoreOptionsButtonFactory.createMoreOptionsButton();  
     
 //    @UiField Anchor replyLinkElement;
 //    @UiField Anchor editLinkElement;
 //    @UiField Anchor moreLinkElement;
     
-    @UiField SimplePanel actionLinks;    
-    @UiField FocusPanel hoverDivElement;
+    @UiField(provided = true) FocusPanel hoverDivElement = new FocusPanel();
+    @UiField(provided = true) SimplePanel actionLinks = createPostActionLinks(hoverDivElement);    
+    
     
     private Mode mode;
     
@@ -153,25 +154,9 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
     	postUnReadElement.addStyleName("tt-float-left");
     	postReadElement.addStyleName("tt-float-left");
     	
-    	
-    	actionLinks.addStyleName("tt-active-post-box");
-    	actionLinks.addStyleName("tt-active-post-links");
-    	hoverDivElement.addMouseOverHandler(new MouseOverHandler() {
-			@Override
-			public void onMouseOver(MouseOverEvent event) {
-				actionLinks.addStyleName("tt-active-post-links-hover");
-				actionLinks.removeStyleName("tt-active-post-links");
-			}
-		});
-    	
-    	hoverDivElement.addMouseOutHandler(new MouseOutHandler() {
-			@Override
-			public void onMouseOut(MouseOutEvent event) {
-				actionLinks.removeStyleName("tt-active-post-links-hover");
-				actionLinks.addStyleName("tt-active-post-links");
-			}
-		});
     }
+
+	
     
     @Override
     public GPost getPost() {

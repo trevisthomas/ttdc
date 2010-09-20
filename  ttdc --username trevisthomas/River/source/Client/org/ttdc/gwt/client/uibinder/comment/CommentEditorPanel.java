@@ -8,19 +8,18 @@ import org.ttdc.gwt.client.autocomplete.SugestionOracle;
 import org.ttdc.gwt.client.autocomplete.SuggestionObject;
 import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.beans.GPost;
-import org.ttdc.gwt.client.beans.GTag;
 import org.ttdc.gwt.client.messaging.ConnectionId;
 import org.ttdc.gwt.client.messaging.EventBus;
 import org.ttdc.gwt.client.messaging.person.PersonEvent;
 import org.ttdc.gwt.client.messaging.person.PersonEventListener;
+import org.ttdc.gwt.client.messaging.person.PersonEventType;
 import org.ttdc.gwt.client.messaging.post.PostEvent;
 import org.ttdc.gwt.client.messaging.post.PostEventType;
-import org.ttdc.gwt.client.presenters.comments.CommentToolbar;
 import org.ttdc.gwt.client.presenters.comments.EmbedContentPopup;
 import org.ttdc.gwt.client.presenters.comments.EmbedContentPopupSource;
 import org.ttdc.gwt.client.presenters.comments.LinkDialog;
 import org.ttdc.gwt.client.presenters.comments.LinkDialogSource;
-import org.ttdc.gwt.client.presenters.comments.RemovableTagPresenter;
+import org.ttdc.gwt.client.presenters.movies.MovieRatingPresenter;
 import org.ttdc.gwt.client.presenters.util.ClickableIconPanel;
 import org.ttdc.gwt.client.uibinder.comment.InsertTrevTagPopup.InsertTrevTagPopupSource;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
@@ -30,19 +29,24 @@ import org.ttdc.gwt.shared.commands.types.PostActionType;
 import org.ttdc.gwt.shared.util.StringTools;
 
 import com.google.gwt.core.client.GWT;
-
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.SuggestBox;
+import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
 import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
@@ -100,7 +104,7 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 	@UiField(provided = true) ClickableIconPanel postButtonElement = createGraphicButton("Post");
 	@UiField(provided = true) ClickableIconPanel previewButtonElement = createGraphicButton("Preview");
 	@UiField(provided = true) ClickableIconPanel cancelButtonElement = createGraphicButton("Cancel");
-	@UiField(provided = true) ClickableIconPanel editButtonElement = createGraphicButton("Edit");
+	@UiField(provided = true) ClickableIconPanel editButtonElement = createGraphicButton("Update");
 	
 	@UiField CheckBox deletedCheckBoxElement;
 	@UiField CheckBox reviewCheckBoxElement;
@@ -108,6 +112,16 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 	@UiField CheckBox nwsCheckBoxElement;
 	@UiField CheckBox privateCheckBoxElement;
 	@UiField CheckBox lockedCheckBoxElement;
+	
+	@UiField SimplePanel ratingElement;
+	@UiField Label ratingLabelElement;
+	@UiField Label topicLabelElement;
+	@UiField Label parentInfoElement;
+	
+	@UiField PasswordTextBox passwordTextElement;
+	@UiField TextBox loginTextElement;
+	@UiField HTMLPanel loginElement;
+	@UiField SimplePanel previewElement;
 	
 	private GPost post = null;
 	private SuggestBox parentSuggestionBox;
@@ -121,12 +135,16 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 		initWidget(binder.createAndBindUi(this));
 		
 		EventBus.getInstance().addListener(this);
+		
+		topicLabelElement.setVisible(false);
+		topicSuggestionHolderElement.setVisible(false);
 	}
 	
 	@Override
 	public void onPersonEvent(PersonEvent event) {
-		// TODO Auto-generated method stub
-		
+		if(event.is(PersonEventType.USER_CHANGED)){
+			init(mode,post);
+		}
 	}
 	
 	private ClickableIconPanel createGraphicButton(String text) {
@@ -137,10 +155,19 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 	}
 
 	public void init(Mode mode, GPost post) {
+		ratingElement.setVisible(false);
+		ratingLabelElement.setVisible(false);
+		parentInfoElement.setVisible(false);
+		previewElement.setVisible(false);
+		//topicSuggestionHolderElement.setVisible(false);
+		
 		this.mode = mode;
 		this.post = post;
 		
 		GPerson person = ConnectionId.getInstance().getCurrentUser();
+		
+		loginElement.setVisible(person.isAnonymous());
+		
 		
 		if(Mode.EDIT.equals(mode)){
 			editButtonElement.setVisible(true);
@@ -155,7 +182,127 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 		configureDeleted(person, post);
 		configureReviewCheckbox(person, post);
 		configurePrivateCheckbox(person, post);
+		
+		init();
 	}
+	
+	private void init(){
+		switch (mode) {
+			case CREATE:
+				parentInfoElement.setVisible(true);
+				if(post == null){
+					initAsNewRootMode();
+					parentInfoElement.setText("Note: No topic with this title exists, a new topic will be created.");
+				}
+				else{
+					if(!post.isRootPost()){
+						parentInfoElement.setVisible(false);
+					}
+					else{
+						parentInfoElement.setText("Note: " + post.getMass()+ " comments in " + post.getReplyCount() + " conversations already exit on this topic.");
+					}
+					if(post.isRatable()){
+						initForRatableParent();
+					}
+				}
+				
+				break;
+			case EDIT:
+				if(post == null){
+					throw new RuntimeException("No post to edit! Cant edit null post.");
+				}
+				textAreaElement.setText(post.getEntry());
+				break;
+			default:
+				throw new RuntimeException("Not sure what to do");
+		}
+	}
+	
+	private void configureForTopicCreation(GPost parent){
+		if(parent != null){
+			//Do stuff to show the user that they are creating a new topic?
+		}
+		else{
+			//do stuff to show that it's just conversation or reply post
+		}
+	}
+
+	private void initForRatableParent() {
+		//view.configureForTopicCreation(false);
+		GPerson currentUser = ConnectionId.getInstance().getCurrentUser();
+		
+//		if(post.isMovie() && !post.isReviewedBy(currentUser.getPersonId())){
+//			view.setReviewable(true);
+//		}
+		
+		ratingLabelElement.setVisible(true);
+		ratingElement.setVisible(true);
+		if(post.getRatingByPerson(currentUser.getPersonId()) == null){
+			MovieRatingPresenter movieRatingPresenter = injector.getMovieRatingPresenter();
+			ratingElement.clear();
+			ratingElement.add(movieRatingPresenter.getWidget());
+			movieRatingPresenter.setRatablePost(post);
+		}else{
+//			ratingElement.clear();
+//			ratingElement.setVisible(false);
+			MovieRatingPresenter movieRatingPresenter = injector.getMovieRatingPresenter();
+			ratingElement.clear();
+			ratingElement.add(movieRatingPresenter.getWidget());
+			movieRatingPresenter.setRating(post.getRatingByPerson(currentUser.getPersonId()));
+		}
+	}
+
+	private void initAsNewRootMode() {
+		parentSuggestionOracle = injector.getTagSugestionOracle();
+		parentSuggestionBox = parentSuggestionOracle.createSuggestBoxForTopics();
+		topicLabelElement.setVisible(true);
+		topicSuggestionHolderElement.setVisible(true);
+		topicSuggestionHolderElement.clear();
+		topicSuggestionHolderElement.add(parentSuggestionBox);
+	
+		
+		parentSuggestionBox.addSelectionHandler(new SelectionHandler<Suggestion>() {
+			@Override
+			public void onSelection(SelectionEvent<Suggestion> event) {
+				SuggestionObject suggestion = parentSuggestionOracle.getCurrentSuggestion();
+				if(suggestion != null){
+					GPost parent = suggestion.getPost();
+					if(!parent.getPostId().trim().isEmpty()){
+						PostCrudCommand cmd = new PostCrudCommand();
+						cmd.setPostId(parent.getPostId());
+						injector.getService().execute(cmd, callbackParentPostSelected());
+					}
+					else{
+						//view.setReviewable(false);
+						init(Mode.CREATE, null); //To reset display for no parent
+						configureForTopicCreation(parent);
+					}
+				}
+				else{
+					throw new RuntimeException("Suggestion came back null. Bad juju, this shouldnt happen.");
+				}
+			}
+		});
+	}
+	
+	private CommandResultCallback<PostCommandResult> callbackParentPostSelected() {
+		CommandResultCallback<PostCommandResult> rootPostCallback = new CommandResultCallback<PostCommandResult>(){
+			@Override
+			public void onSuccess(PostCommandResult result) {
+				GPost parent = result.getPost();
+				init(mode, parent);
+//				if(parent.isMovie()){
+//					view.setReviewable(true);
+//				}
+//				else{
+//					view.setReviewable(false);
+//				}
+//				view.configureForTopicCreation(false);
+			}
+		};
+		return rootPostCallback;
+	}
+	
 
 	private void configureReviewCheckbox(GPerson person, GPost post) {
 		if(post != null){
@@ -164,14 +311,15 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 			boolean checked = false;
 			
 			if(Mode.EDIT.equals(mode)){
-				visible = post.getParent().isMovie();
+				//visible = post.getParent() != null ? post.getParent().isMovie() : false;
+				visible = post.isThreadPost() && post.getRoot().isMovie(); //A hack to determine if it is possible for me to be a movie
 				enabled = true;
 				checked = post.isReview();
 			}
 			else{
 				visible = post.isMovie();
 				enabled = !post.isReviewedBy(person.getPersonId());
-				checked = post.isMovie();
+				checked = post.isMovie() && !post.isReviewedBy(person.getPersonId());
 			}
 			configureCheckBox(reviewCheckBoxElement, visible, enabled, checked);
 		}
@@ -209,7 +357,7 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 	}
 	
 	private void configureDeleted(GPerson person, GPost post){
-		if(person.isAdministrator()){
+		if(person.isAdministrator() && Mode.EDIT.equals(mode)){
 			boolean visible = true;
 			boolean enabled = true;
 			boolean checked;
@@ -264,6 +412,11 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 		executeCommand(PostActionType.CREATE);
 	}
 	
+	@UiHandler("editButtonElement")
+	public void onClickEditButton(ClickEvent e){
+		executeCommand(PostActionType.UPDATE);
+	}
+	
 	private String applyRealEmbeding(String text) {
 		String body = text;
 		for(String key : embedMap.keySet()){
@@ -274,6 +427,11 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 		return body;
 	}
 
+	@UiHandler("previewButtonElement")
+	public void onClickPreview(ClickEvent e){
+		performPreview();
+	}
+	
 	@UiHandler("cancelButtonElement")
 	public void onClickCancelButton(ClickEvent e){
 		close();
@@ -333,14 +491,6 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 	private void wrapSelection(String open, String close){
 		performInsert(open + textAreaElement.getSelectedText() + close);
 	}
-	
-//	private void createPost() {
-//		executeCommand(PostActionType.CREATE);
-//	}
-	
-	private void editPost(){
-		executeCommand(PostActionType.UPDATE);
-	}
 
 	private void executeCommand(PostActionType action) {
 		PostCrudCommand cmd = new PostCrudCommand();
@@ -357,8 +507,8 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 		cmd.setLocked(lockedCheckBoxElement.getValue());
 		
 		//Should only be used for non-auth users
-//		cmd.setLogin(view.getUserName().getText());
-//		cmd.setPassword(view.getPassword().getText());
+		cmd.setLogin(loginTextElement.getText());
+		cmd.setPassword(passwordTextElement.getText());
 		
 		//Do i dump tagging completly?
 //		for(RemovableTagPresenter tagPresenter : tagPresenterList){
@@ -401,13 +551,8 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 				if(parentSuggestionOracle != null)
 					parentSuggestionOracle.clear();
 				close();
-				//Window.Location.reload();
-				//PostEvent event = new PostEvent(PostEventType.NEW_FORCE_REFRESH, result.getPost());
-				//EventBus.fireEvent(event);
 				PostEvent event = new PostEvent(PostEventType.LOCAL_NEW, result.getPost());
 				EventBus.fireEvent(event);
-				
-				//EventBus.reload();
 			}
 			@Override
 			public void onFailure(Throwable caught) {
@@ -421,11 +566,9 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 		CommandResultCallback<PostCommandResult> callback = new CommandResultCallback<PostCommandResult>(){
 			@Override
 			public void onSuccess(PostCommandResult result) {
-				//view.close();
-				Window.Location.reload();
-				//PostEvent event = new PostEvent(PostEventType.NEW_FORCE_REFRESH, result.getPost());
-				//EventBus.fireEvent(event);
-				EventBus.reload();
+				close();
+				PostEvent event = new PostEvent(PostEventType.EDIT, result.getPost());
+				EventBus.fireEvent(event);
 			}
 			@Override
 			public void onFailure(Throwable caught) {
@@ -434,6 +577,41 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 		};
 		return callback;
 	}
+
+	/* This is here because the standard header puts the post editor into another
+	 * component and that component has other things to do when it is closed 
+	 */
+	public void addCancelClickHandler(ClickHandler clickHandler) {
+		cancelButtonElement.addClickHandler(clickHandler);
+	}
 	
+	private CommandResultCallback<PostCommandResult> buildPreviewPostCallback() {
+		CommandResultCallback<PostCommandResult> callback = new CommandResultCallback<PostCommandResult>(){
+			@Override
+			public void onSuccess(PostCommandResult result) {
+				previewElement.setVisible(true);
+				previewElement.clear();
+				previewElement.add(new HTML(result.getPost().getLatestEntry().getBody()));
+				
+			}
+			@Override
+			public void onFailure(Throwable caught) {
+				super.onFailure(caught);
+			}
+		};
+		return callback;
+	}
+
+	private void performPreview(){
+		PostCrudCommand cmd = new PostCrudCommand();
+		cmd.setAction(PostActionType.PREVIEW);
+		String body = applyRealEmbeding(textAreaElement.getText());
+		cmd.setBody(body);
+		cmd.setConnectionId(ConnectionId.getInstance().getConnectionId());
+		
+		CommandResultCallback<PostCommandResult> callback = buildPreviewPostCallback();
+			
+		injector.getService().execute(cmd,callback);
+	}
 
 }

@@ -42,6 +42,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
 import com.google.inject.Inject;
 
+@Deprecated
 public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View> implements PersonEventListener{
 	public interface View extends BaseView{
 		HasText getUserName();

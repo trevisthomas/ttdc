@@ -31,6 +31,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+@Deprecated
 public class NewCommentView implements NewCommentPresenter.View{
 	private final VerticalPanel main = new VerticalPanel();
 	private final SimplePanel messagePanel = new SimplePanel();

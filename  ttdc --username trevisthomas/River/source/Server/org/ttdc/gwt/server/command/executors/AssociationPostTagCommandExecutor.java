@@ -63,6 +63,10 @@ public class AssociationPostTagCommandExecutor extends CommandExecutor<Associati
 		dao.setPost(post);
 		dao.setCreator(getPerson());
 		
+		if(post.hasTagAssociation(tag.getType(), getPerson().getPersonId())){
+			throw new RuntimeException("Person already has the requested tag association.");
+		}
+		
 		AssociationPostTag ass = dao.create();
 		if(Tag.TYPE_RATING.equals(tag.getType())){
 			RatingUtility.updateAverageRating(post);
@@ -76,9 +80,9 @@ public class AssociationPostTagCommandExecutor extends CommandExecutor<Associati
 		broadcastPostEvent(post, PostEventType.EDIT);
 		broadcastTagAssociation(ass, TagEventType.NEW);
 		
-		reIndexTagsOnPost(post);
-		
 		Persistence.commit();
+		
+		reIndexTagsOnPost(post);
 		
 		
 		return result;
@@ -87,7 +91,10 @@ public class AssociationPostTagCommandExecutor extends CommandExecutor<Associati
 	//Hm, should i refactor and move this to the ass DAO?
 	private void reIndexTagsOnPost(Post post){
 		FullTextSession fullTextSession = Persistence.fullTextSession();
-		for (AssociationPostTag ass : post.getTagAssociations()) {
+		
+		Post localPost = PostDao.loadPost(post.getPostId());
+		
+		for (AssociationPostTag ass : localPost.getTagAssociations()) {
 		    fullTextSession.index(ass.getTag());
 		}
 	}
@@ -115,13 +122,6 @@ public class AssociationPostTagCommandExecutor extends CommandExecutor<Associati
 		
 		broadcastPostEvent(post, PostEventType.EDIT);
 		
-		Tag tag = ass.getTag();
-		FullTextSession fullTextSession = Persistence.fullTextSession();
-		fullTextSession.index(tag);
-		
-		reIndexTagsOnPost(post);
-		
-		
 //		AssociationPostTag ass = AssociationPostTagDao.remove(command.getAssociationId());
 //		
 //		GAssociationPostTag gAss = GenericBeanConverter.convertAssociationPostTag(ass);
@@ -133,7 +133,17 @@ public class AssociationPostTagCommandExecutor extends CommandExecutor<Associati
 		broadcastTagAssociation(ass, TagEventType.REMOVED);
 		
 		Persistence.commit();
+		
+		reIndexTag(ass.getTag());
+		reIndexTagsOnPost(post);
+		
 		return result;
+	}
+
+	private void reIndexTag(Tag tag) {
+		FullTextSession fullTextSession = Persistence.fullTextSession();
+		Tag localTag = TagDao.loadTag(tag.getTagId());
+		fullTextSession.index(localTag);
 	}
 
 	private void broadcastTagAssociation(AssociationPostTag ass, TagEventType eventType) {
