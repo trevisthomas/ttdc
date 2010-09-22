@@ -11,6 +11,7 @@ import org.ttdc.gwt.client.messaging.post.PostEvent;
 import org.ttdc.gwt.client.messaging.post.PostEventListener;
 import org.ttdc.gwt.client.presenters.shared.BasePresenter;
 import org.ttdc.gwt.client.presenters.shared.BaseView;
+import org.ttdc.gwt.client.uibinder.post.ChildPostPanel;
 import org.ttdc.gwt.client.uibinder.post.NestedPostSpacerPanel;
 import org.ttdc.gwt.client.uibinder.post.PostPanel;
 import org.ttdc.gwt.client.uibinder.post.PostSummaryPanel;
@@ -128,18 +129,13 @@ public final class PostCollectionPresenter extends BasePresenter<PostCollectionP
 			getView().getPostWidgets().add(presenter.getWidget());
 		}
 	}
-
+	
 	private PostPresenterCommon createPostPresenter(Mode mode, GPost post) {
 		PostPresenterCommon postPresenter;
 		if(post.isSuggestSummary()){
-			PostSummaryPanel postSummaryPanel = injector.createPostSummaryPanel();
-			postSummaryPanel.init(post);
-			postPresenter = postSummaryPanel;
-			if(Mode.NESTED_SUMMARY.equals(mode)){
-				NestedPostSpacerPanel spacer = injector.createNestedPostSpacerPanel();
-				spacer.initialize(post, postSummaryPanel);
-				postPresenter = spacer;
-			}
+			ChildPostPanel childPostPanel = injector.createChildPostPanel();
+			childPostPanel.init(post);
+			postPresenter = childPostPanel;
 		}
 		else{
 			PostPanel postPanel = injector.createPostPanel();
@@ -225,9 +221,9 @@ public final class PostCollectionPresenter extends BasePresenter<PostCollectionP
 					insertPostsToPostList(list,mode);			
 				}
 				else if(conversationStarterPost != null && conversationStarterPost.equals(newPost.getThread())){
-					PostSummaryPanel postSummaryPanel = injector.createPostSummaryPanel();
-					postSummaryPanel.init(newPost);
-					postPresenters.add(0, postSummaryPanel);
+					ChildPostPanel childPostPanel = injector.createChildPostPanel();
+					childPostPanel.init(newPost);
+					postPresenters.add(0, childPostPanel);
 					//Collections.sort(postPresenters,new PostPresenterCommon.PostPresenterComparitorByPath());
 					resetPostPresentersInView();
 					

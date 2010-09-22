@@ -102,6 +102,7 @@ import org.ttdc.gwt.client.uibinder.dashboard.UserDashboardPanel;
 import org.ttdc.gwt.client.uibinder.home.HomePanel;
 import org.ttdc.gwt.client.uibinder.home.TrafficPersonPanel;
 import org.ttdc.gwt.client.uibinder.movies.MovieListPanel;
+import org.ttdc.gwt.client.uibinder.post.ChildPostPanel;
 import org.ttdc.gwt.client.uibinder.post.MoreOptionsPopupPanel;
 import org.ttdc.gwt.client.uibinder.post.NestedPostPanel;
 import org.ttdc.gwt.client.uibinder.post.NestedPostSpacerPanel;
@@ -432,5 +433,6 @@ public interface Injector extends Ginjector {
 	public CommentEditorPanel createCommentEditorPanel();
 	public PostOptionsListPanel createPostOptionsListPanel();
 	public PlainPostPanel createPlainPostPanel();
+	public ChildPostPanel createChildPostPanel();
 }
 

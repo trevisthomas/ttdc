@@ -6,9 +6,10 @@
 	<g:HTMLPanel styleName="tt-plain-post" ui:field="containerElement">
 		<div class="tt-plain-post-header">
 			<g:Label styleName="tt-inline" ui:field="headerLabelElement" />
-			<g:Hyperlink ui:field="creatorElement" />
-			<g:Hyperlink ui:field="dateElement"/>
+			<g:Hyperlink styleName="tt-plain-post-creator" ui:field="creatorElement" /> from 
+			<g:Hyperlink styleName="tt-plain-post-date" ui:field="dateElement"/>
 		</div>
 		<span class="tt-post-body tt-text-normal" ui:field="bodyElement" />
+		<g:Anchor styleName="tt-plain-post-close" ui:field="closeElement">[close]</g:Anchor>
 	</g:HTMLPanel>
 </ui:UiBinder>
