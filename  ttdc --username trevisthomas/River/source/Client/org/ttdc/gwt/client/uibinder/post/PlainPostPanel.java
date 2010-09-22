@@ -8,8 +8,11 @@ import org.ttdc.gwt.client.presenters.util.DateFormatUtil;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.SpanElement;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
@@ -29,6 +32,7 @@ public class PlainPostPanel extends Composite{
     @UiField SpanElement bodyElement;
     @UiField Label headerLabelElement;
     @UiField HTMLPanel containerElement;
+    @UiField Anchor closeElement;
     
     
     @UiField (provided = true) Hyperlink creatorElement;
@@ -50,7 +54,7 @@ public class PlainPostPanel extends Composite{
 	}
     
     public void init(GPost post){
-    	headerLabelElement.setText("reply to: ");
+    	headerLabelElement.setText("in reply to: ");
     	
     	createDatePresenter.setDate(post.getDate(), DateFormatUtil.longDateFormatter);
     	creatorPresenter.setPerson(post.getCreator());
@@ -58,4 +62,8 @@ public class PlainPostPanel extends Composite{
     	bodyElement.setInnerHTML(post.getEntry());
     }
 
+    @UiHandler("closeElement")
+    public void onClickClose(ClickEvent event){
+    	removeFromParent();
+    }
 }

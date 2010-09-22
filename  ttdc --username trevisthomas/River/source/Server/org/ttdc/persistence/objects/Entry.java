@@ -384,7 +384,7 @@ import org.ttdc.gwt.shared.util.PostFlagBitmasks;
 			"SELECT post FROM Post post WHERE post.thread.postId IN(:postIds) " +
 			"AND postId <> post.thread.postId " +
 			"AND bitwise_and( post.metaMask, :filterMask ) = 0 "+
-			"ORDER BY post.date DESC"),		
+			"ORDER BY post.date"),		
 		
 		
 

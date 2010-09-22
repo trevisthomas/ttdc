@@ -1,0 +1,47 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<!-- The above doctype is to allow for special html characters in this xml file -->
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	xmlns:t='urn:import:org.ttdc.gwt.client.presenters.util'>
+	<g:HTMLPanel>
+		<g:FocusPanel ui:field="hoverDivElement">
+		<g:HTMLPanel>
+			<div class="tt-post-child">
+				<div class="tt-child-post-header tt-float-container">
+					<g:Widget styleName="tt-float-left" ui:field="avatarElement" />
+					<g:Label ui:field="postUnReadElement" />
+					<g:Label ui:field="postReadElement" />
+					<span class="tt-float-left tt-post-child-creator">
+						by <g:Hyperlink ui:field="creatorLinkElement" /> &rArr;<g:Anchor styleName="tt-child-post-inReplyAnchor" ui:field="inReplyToElement"/>
+					</span>
+					<table class="tt-inline">
+						<tr>
+							<td><g:Label ui:field="postPrivateElement" /></td>
+							<td><g:Label ui:field="postNwsElement" /></td>
+							<td><g:Label ui:field="postInfElement" /></td>
+						</tr>
+					</table>
+					<span class="tt-float-right tt-post-child-date">
+						<g:Widget ui:field="createDateElement" />
+					</span>
+					
+				</div>
+											
+				<div class="tt-child-post-content" >
+					<g:SimplePanel ui:field="inReplyPostElement"/>
+					<span class="tt-post-body tt-text-normal" ui:field="bodyElement" />
+				</div>
+				<div class="tt-fill tt-text-right tt-text-mini">
+					
+				</div>
+				<div class="tt-post-footer">
+					<g:SimplePanel ui:field="likesElement"></g:SimplePanel>
+					<g:Widget ui:field="tagsElement"></g:Widget>
+				</div>
+				<g:SimplePanel ui:field="actionLinks" />
+			</div>
+		</g:HTMLPanel>
+		</g:FocusPanel>
+		<g:SimplePanel ui:field="commentElement" />
+	</g:HTMLPanel>
+</ui:UiBinder>

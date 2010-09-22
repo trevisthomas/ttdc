@@ -16,15 +16,23 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 
 
 .tt-alert{color: red;}
-.tt-post{width: 500px; margin-bottom: 2px; border:1px solid;}
+.tt-post{width: 100%; margin-bottom: 2px; border:1px solid;}
 .tt-post-container-header{overflow: auto;}
 .tt-post-container-footer{}
 
 .tt-search-results{width: 500px; text-align:center; margin: 0 auto;}
 	
 .tt-text-nano{font-size:7px;}
+
+.tt-plain-post-date,
+.tt-post-child-date,
 .tt-text-mini{font-size:9px;}
 
+.tt-plain-post-date{margin-top: -1px;}
+
+.tt-child-post-inReplyAnchor{font-size:11px;}
+
+.tt-plain-post-creator,
 .tt-comment-editor-info,
 .tt-traffic-date,
 .tt-traffic-login,
@@ -36,6 +44,7 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 .tt-traffic-login,
 .tt-reviewSummary,
 .tt-options-button,
+.tt-post-child-creator,
 .tt-post-expanded-creator,
 .tt-post-panel-head-detail,
 .tt-text-normal{font-size:12px;}
@@ -75,6 +84,7 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 .tt-post-panel-head-detail{vertical-align: middle;}
 	
 .tt-post-expanded{ border-width: 1px; border-style:solid; margin: 2px 0; padding:0px;}
+
 .tt-post-conversation{ margin: 0 0 20px 0;}
 .tt-options-button{border: 1px solid; padding:2px;}
 .tt-post-footer{text-align: right;}
@@ -102,6 +112,9 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 */
 .tt-post-expanded-header{width:100%;}
 .tt-post-expanded-content{padding:2px 4px; clear:both;}
+
+.tt-post-child-header{width:100%;}
+.tt-post-child-content{padding:2px 4px; clear:both;}
 
 .tt-pageHeader-subtitle{font-size:12px; font-weight: bold; font-style: italic; margin-top: -7px; padding-left: 10px;}
 .tt-pageHeader-title{ margin: auto; overflow: hidden;}
@@ -165,6 +178,8 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 
 .tt-calendar-scale-button{padding:2px; margin:1px;}
 
+.tt-plain-post-date,
+.tt-plain-post-creator,
 .tt-inline{ display:inline; }
 
 .tt-border{	border: 1px solid black;}
@@ -371,3 +386,5 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 .tt-comment-toolbar{width: 100%;}
 
 .tt-plain-post{border: 1px solid; margin: 4px; padding: 2px;}
+
+.tt-post-child{margin: 3px 0 0 10px; border-width: 1px; border-style:solid; padding:0px;}

@@ -5,9 +5,9 @@
 	xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:t='urn:import:org.ttdc.gwt.client.presenters.util'>
 
 	<g:HTMLPanel styleName="tt-post-conversation" ui:field="postMainElement">
-		<table>
+		<table class="tt-fill">
 			<tr>
-				<td>
+				<td width="40px">
 					<g:Widget styleName="tt-avatar-large" ui:field="avatarElement" />
 				</td>
 				<td>
@@ -52,7 +52,6 @@
 														<td class="tt-post-panel-head-detail">
 															<g:Label ui:field="postUnReadElement" />
 															<g:Label ui:field="postReadElement" />
-															by
 															<g:Hyperlink ui:field="creatorLinkElement" />
 															<g:Widget ui:field="ratingElement" />
 															<table class="tt-inline">
