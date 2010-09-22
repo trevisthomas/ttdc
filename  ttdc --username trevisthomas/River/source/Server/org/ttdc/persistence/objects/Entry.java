@@ -336,13 +336,26 @@ import org.ttdc.gwt.shared.util.PostFlagBitmasks;
 			"AND bitwise_and( post.metaMask, :filterMask ) = 0 "+
 			"ORDER BY post.path"),	
 			
+	@NamedQuery(name="ThreadDao.RepliesInThreadsByDate", query="" +
+			"SELECT post FROM Post post WHERE post.thread.postId IN(:postIds) " +
+			"AND postId <> post.thread.postId " +
+			"AND bitwise_and( post.metaMask, :filterMask ) = 0 "+
+			"ORDER BY post.date DESC"),	
+			
 
 	//Remember! TopicDao.Thread sorts the posts backwards to give you the bottom of the list. Remember to reverse the results
 	@NamedQuery(name="ThreadDao.Thread", query="" +
 			"SELECT post FROM Post post WHERE post.thread.postId=:postId " +
 			"AND postId <> post.thread.postId " +
 			"AND bitwise_and( post.metaMask, :filterMask ) = 0 "+
-			"ORDER BY post.path desc"),	
+			"ORDER BY post.path desc"),
+	
+	@NamedQuery(name="ThreadDao.ThreadByDate", query="" +
+			"SELECT post FROM Post post WHERE post.thread.postId=:postId " +
+			"AND postId <> post.thread.postId " +
+			"AND bitwise_and( post.metaMask, :filterMask ) = 0 "+
+			"ORDER BY post.date DESC"),
+			
 			
 	@NamedQuery(name="ThreadDao.ThreadCount", query="" +
 			"SELECT count(post.postId) FROM Post post WHERE post.thread.postId=:postId " +
@@ -365,7 +378,15 @@ import org.ttdc.gwt.shared.util.PostFlagBitmasks;
 		"SELECT post FROM Post post WHERE post.thread.postId IN(:postIds) " +
 		"AND postId <> post.thread.postId " +
 		"AND bitwise_and( post.metaMask, :filterMask ) = 0 "+
-		"ORDER BY post.path"),		
+		"ORDER BY post.path"),	
+	
+	@NamedQuery(name="LatestPostsDao.RepliesInThreadsByDate", query="" +
+			"SELECT post FROM Post post WHERE post.thread.postId IN(:postIds) " +
+			"AND postId <> post.thread.postId " +
+			"AND bitwise_and( post.metaMask, :filterMask ) = 0 "+
+			"ORDER BY post.date DESC"),		
+		
+		
 
 	@NamedQuery(name="LatestPostsDao.Flat", query="" +
 		"SELECT post FROM Post post " +

@@ -18,6 +18,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
@@ -30,8 +31,9 @@ public class TopicPanel extends BasePageComposite implements PostEventListener{
 	@UiField(provided = true) Widget pageHeaderElement;
 	@UiField (provided = true) Widget pageFooterElement;
 	@UiField SimplePanel rootPostElement;
-	@UiField SimplePanel threadsElement;
+	@UiField TabPanel postTabPanelElement;
 	
+	private SimplePanel threadsElement = new SimplePanel();
 	
 	private NestedPostPanel nestedPanel;
 	private final StandardPageHeaderPanel pageHeaderPanel;
@@ -47,6 +49,8 @@ public class TopicPanel extends BasePageComposite implements PostEventListener{
 		initWidget(binder.createAndBindUi(this));
 		
 		EventBus.getInstance().addListener(this);
+		postTabPanelElement.add(threadsElement, "Comments");
+		postTabPanelElement.selectTab(0);
 	}
 	
 	
@@ -74,6 +78,7 @@ public class TopicPanel extends BasePageComposite implements PostEventListener{
 	private void createTopicNestedPresenter(HistoryToken token) {
 		nestedPanel = injector.createNestedPostPanel();
 		nestedPanel.init(token);
+		
 		threadsElement.clear();
 		threadsElement.add(nestedPanel);
 	}

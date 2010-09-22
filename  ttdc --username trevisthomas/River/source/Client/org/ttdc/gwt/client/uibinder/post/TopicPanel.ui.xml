@@ -7,7 +7,7 @@
 		<g:Widget ui:field="pageHeaderElement"/>
 		<div>
 			<g:SimplePanel styleName="tt-topic-root" ui:field="rootPostElement"/>
-			<g:SimplePanel styleName="tt-topic-topics" ui:field="threadsElement"/>
+			<g:TabPanel styleName="tt-topic-topics" ui:field="postTabPanelElement" />
 		</div>
 		<g:Widget ui:field="pageFooterElement" />		
 	</g:HTMLPanel>

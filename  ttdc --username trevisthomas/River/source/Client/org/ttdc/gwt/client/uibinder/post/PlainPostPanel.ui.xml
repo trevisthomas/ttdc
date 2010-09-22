@@ -1,0 +1,14 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<!-- The above doctype is to allow for special html characters in this xml file -->
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	xmlns:t='urn:import:org.ttdc.gwt.client.presenters.util'>
+	<g:HTMLPanel styleName="tt-plain-post" ui:field="containerElement">
+		<div class="tt-plain-post-header">
+			<g:Label styleName="tt-inline" ui:field="headerLabelElement" />
+			<g:Hyperlink ui:field="creatorElement" />
+			<g:Hyperlink ui:field="dateElement"/>
+		</div>
+		<span class="tt-post-body tt-text-normal" ui:field="bodyElement" />
+	</g:HTMLPanel>
+</ui:UiBinder>

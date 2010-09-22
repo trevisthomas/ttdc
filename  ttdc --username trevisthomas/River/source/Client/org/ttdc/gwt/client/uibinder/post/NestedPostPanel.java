@@ -111,7 +111,7 @@ public class NestedPostPanel extends Composite{
 			@Override
 			public void onSuccess(TopicCommandResult result) {
 				PostCollectionPresenter postCollectionPresenter = injector.getPostCollectionPresenter();
-				postCollectionPresenter.setPostList(result.getResults().getList(),Mode.NESTED_SUMMARY);
+				postCollectionPresenter.setPostList(result.getResults().getList(),Mode.GROUPED);
 				
 				postContainerElement.add(postCollectionPresenter.getWidget());
 				

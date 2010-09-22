@@ -40,6 +40,9 @@ public class GPost extends GBase{
 	private int [] pathSegmentMax;
 	private boolean endOfBranch;
 	
+	private String parentPostId;
+	private String parentPostCreator;
+	private String parentPostCreatorId;
 	
 
 	@Override
@@ -473,5 +476,30 @@ public class GPost extends GBase{
 	public void setEndOfBranch(boolean endOfBranch) {
 		this.endOfBranch = endOfBranch;
 	}
+
+	public String getParentPostId() {
+		return parentPostId;
+	}
+
+	public void setParentPostId(String parentPostId) {
+		this.parentPostId = parentPostId;
+	}
+
+	public String getParentPostCreator() {
+		return parentPostCreator;
+	}
+
+	public void setParentPostCreator(String parentPostCreator) {
+		this.parentPostCreator = parentPostCreator;
+	}
+
+	public String getParentPostCreatorId() {
+		return parentPostCreatorId;
+	}
+
+	public void setParentPostCreatorId(String parentPostCreatorId) {
+		this.parentPostCreatorId = parentPostCreatorId;
+	}
+	
 	
 }

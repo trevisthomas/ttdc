@@ -10,7 +10,7 @@
 				<div class="tt-post-expanded-header">
 					<g:Widget styleName="tt-float-left" ui:field="avatarElement" />
 					<span class="tt-float-left tt-post-expanded-creator">
-						by <g:Hyperlink ui:field="creatorLinkElement" />
+						by <g:Hyperlink ui:field="creatorLinkElement" /> <g:Anchor ui:field="inReplyToElement"/>
 					</span>
 					<table class="tt-inline">
 						<tr>
@@ -26,6 +26,7 @@
 				</div>
 											
 				<div class="tt-post-expanded-content" >
+					<g:SimplePanel ui:field="inReplyPostElement"/>
 					<span class="tt-post-body tt-text-normal" ui:field="bodyElement" />
 				</div>
 				<div class="tt-fill tt-text-right tt-text-mini">

@@ -44,7 +44,8 @@ public class NestedPresenter extends BasePresenter<NestedPresenter.View> impleme
 	
 	public void refresh() {
 		LatestPostsCommand cmd = new LatestPostsCommand();
-		cmd.setAction(PostListType.LATEST_NESTED);
+		//cmd.setAction(PostListType.LATEST_NESTED);
+		cmd.setAction(PostListType.LATEST_GROUPED);
 		CommandResultCallback<PaginatedListCommandResult<GPost>> callback = buildCallback();
 		getService().execute(cmd, callback);
 	}
@@ -62,7 +63,8 @@ public class NestedPresenter extends BasePresenter<NestedPresenter.View> impleme
 	
 	private void addResults(PaginatedListCommandResult<GPost> result) {
 		PaginatedList<GPost> results = result.getResults();
-		postCollection.setPostList(results.getList(), Mode.NESTED_SUMMARY);
+		//postCollection.setPostList(results.getList(), Mode.NESTED_SUMMARY);
+		postCollection.setPostList(results.getList(), Mode.GROUPED);
 		view.postPanel().clear();
 		view.postPanel().add(postCollection.getWidget());
 		setupMorePresenter(result);
@@ -70,13 +72,13 @@ public class NestedPresenter extends BasePresenter<NestedPresenter.View> impleme
 	
 	private void setupMorePresenter(PaginatedListCommandResult<GPost> result) {
 		MoreLatestPresenter morePresenter = injector.getMoreLatestPresenter();
-		morePresenter.init(NestedPresenter.this, PostListType.LATEST_NESTED, result.getResults());
+		morePresenter.init(NestedPresenter.this, PostListType.LATEST_GROUPED, result.getResults());
 		view.postFooterPanel().clear();
 		view.postFooterPanel().add(morePresenter.getWidget());
 	}
 
 	@Override
 	public void onMorePosts(List<GPost> posts) {
-		postCollection.addPostsToPostList(posts, Mode.NESTED_SUMMARY);
+		postCollection.addPostsToPostList(posts, Mode.GROUPED);
 	}
 }

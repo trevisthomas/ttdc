@@ -3,7 +3,6 @@ package org.ttdc.gwt.server.dao;
 import static org.ttdc.persistence.Persistence.session;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.ttdc.gwt.shared.util.PaginatedList;
@@ -153,7 +152,7 @@ public class ThreadDao extends FilteredPostPaginatedDaoBase{
 	private void loadRepliesFromPostList(Post thread, List<Post> posts) {
 		List<Post> flatReplyHierarchy = flattenThread(thread, posts);	
 		if(flatReplyHierarchy.size() > THREAD_REPLY_MAX_RESULTS){
-			thread.setPosts(flatReplyHierarchy.subList(flatReplyHierarchy.size()-THREAD_REPLY_MAX_RESULTS, flatReplyHierarchy.size()));
+			thread.setPosts(flatReplyHierarchy.subList(0, THREAD_REPLY_MAX_RESULTS));
 		}
 		else{
 			thread.setPosts(flatReplyHierarchy);
@@ -164,8 +163,7 @@ public class ThreadDao extends FilteredPostPaginatedDaoBase{
 	private void loadRepliesFromPostList(Post thread, List<Post> posts, int subPage) {
 		List<Post> flatReplyHierarchy = flattenThread(thread, posts);	
 		if(flatReplyHierarchy.size() > THREAD_REPLY_MAX_RESULTS){
-			int start = flatReplyHierarchy.size()-(THREAD_REPLY_MAX_RESULTS * subPage);
-			start = start <= 0 ? 0 : start; //I think that what was happening is that if the post was on the first subpage and the results were not divisible by 5 that you'd get a negative start index. This clamps it at zero
+			int start = THREAD_REPLY_MAX_RESULTS * subPage;
 			int end = (start + THREAD_REPLY_MAX_RESULTS) <= flatReplyHierarchy.size() ? (start + THREAD_REPLY_MAX_RESULTS) : flatReplyHierarchy.size();
 			thread.setReplyStartIndex(start);
 			thread.setReplyPage(subPage);
@@ -235,7 +233,7 @@ public class ThreadDao extends FilteredPostPaginatedDaoBase{
 		}
 		List<Post> posts = new ArrayList<Post>();
 		if(postIds.size() > 0)
-			posts = DaoUtils.executeLoadFromPostIds("ThreadDao.RepliesInThreads", postIds, buildFilterMask(getFilterFlags()));
+			posts = DaoUtils.executeLoadFromPostIds("ThreadDao.RepliesInThreadsByDate", postIds, buildFilterMask(getFilterFlags()));
 		
 		return posts;
 	}
@@ -254,24 +252,25 @@ public class ThreadDao extends FilteredPostPaginatedDaoBase{
 		if(getCurrentPage() > -1){
 			setPageSize(THREAD_REPLY_MAX_RESULTS);
 			PaginatedList<Post> results;
-			results = DaoUtils.executeLoadFromPostId(this, "ThreadDao.Thread", "ThreadDao.ThreadCount", threadId, buildFilterMask(getFilterFlags()));
+			//results = DaoUtils.executeLoadFromPostId(this, "ThreadDao.Thread", "ThreadDao.ThreadCount", threadId, buildFilterMask(getFilterFlags()));
+			results = DaoUtils.executeLoadFromPostId(this, "ThreadDao.ThreadByDate", "ThreadDao.ThreadCount", threadId, buildFilterMask(getFilterFlags()));
 			
 			//Only called to populate tree drawing hints
-			flattenThread(results.getList().get(0).getThread(),results.getList());
+			//flattenThread(results.getList().get(0).getThread(),results.getList());
 			
-			Collections.reverse(results.getList());
+			//Collections.reverse(results.getList());
 			return results;
 		}
 		else{
 			setPageSize(100);//Silly right? (ok, 10k was crazy, now it's smaller... a choice needs to happen here)
 			setCurrentPage(1);
 			PaginatedList<Post> results;
-			results = DaoUtils.executeLoadFromPostId(this, "ThreadDao.Thread", "ThreadDao.ThreadCount", threadId, buildFilterMask(getFilterFlags()));
+			results = DaoUtils.executeLoadFromPostId(this, "ThreadDao.ThreadByDate", "ThreadDao.ThreadCount", threadId, buildFilterMask(getFilterFlags()));
 			
 			//Only called to populate tree drawing hints
-			flattenThread(results.getList().get(0).getThread(),results.getList());
+			//flattenThread(results.getList().get(0).getThread(),results.getList());
 			
-			Collections.reverse(results.getList());
+			//Collections.reverse(results.getList());
 			return results;
 		}
 	}

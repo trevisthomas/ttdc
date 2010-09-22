@@ -198,12 +198,23 @@ public class FastPostBeanConverter {
 			gPost.setRoot(gPost);
 		}
 		else{
-			if(!p.isRootPost())
+			if(!p.isRootPost()){
 				gPost.setRoot(convertPost(p.getRoot(), inboxDao));
-			else
+			}
+			else{
 				gPost.setRoot(gPost);
-			if(!p.isThreadPost() && !p.isRootPost())
+			}
+			
+			if(!p.isThreadPost() && !p.isRootPost()){
 				gPost.setThread(convertPost(p.getThread(), inboxDao));
+			}
+			
+			if(!p.isRootPost()){
+				gPost.setParentPostId(p.getParent().getPostId());
+				gPost.setParentPostCreator(p.getParent().getCreator().getLogin());
+				gPost.setParentPostCreatorId(p.getParent().getCreator().getPersonId());
+				gPost.setParent(convertPost(p.getParent(), inboxDao));
+			}
 		}
 			
 		Image image = null;
@@ -229,12 +240,12 @@ public class FastPostBeanConverter {
 			gPost.setRead(inboxDao.isRead(p));
 		}
 		
-		gPost.setPathSegmentArray(p.getPathSegments());
-		gPost.setPathSegmentMax(p.getPathSegmentMaximums());
-		gPost.setEndOfBranch(p.isEndOfBranch());
-		
-		//TODO: probably dont need to do this else where now?
-		gPost.setPathSegmentArray(PathSegmentizer.segmentizePath(p));
+//		gPost.setPathSegmentArray(p.getPathSegments());
+//		gPost.setPathSegmentMax(p.getPathSegmentMaximums());
+//		gPost.setEndOfBranch(p.isEndOfBranch());
+//		
+//		//TODO: probably dont need to do this else where now?
+//		gPost.setPathSegmentArray(PathSegmentizer.segmentizePath(p));
 		
 		
 		

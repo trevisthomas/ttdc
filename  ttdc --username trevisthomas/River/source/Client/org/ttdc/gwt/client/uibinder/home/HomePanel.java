@@ -82,8 +82,8 @@ public class HomePanel extends BasePageComposite implements PersonEventListener,
     	
     	initWidget(binder.createAndBindUi(this));
     	
-    	postTabPanelElement.add(nestedPanel, "Nested");
-    	postTabPanelElement.add(flatPanel, "Flat");
+    	postTabPanelElement.add(nestedPanel, "Latest");
+    	//postTabPanelElement.add(flatPanel, "Flat");
     	//centerTabPanelElement.add(conversationPanel,"Conversations");
     	//rightTabPanelElement.add(threadPanel,"Topics");
 		
@@ -158,7 +158,8 @@ public class HomePanel extends BasePageComposite implements PersonEventListener,
 				token.setParameter(HistoryConstants.TAB_KEY, HistoryConstants.HOME_NESTED_TAB);
 				break;
 			case INDEX_FLAT:
-				token.setParameter(HistoryConstants.TAB_KEY, HistoryConstants.HOME_FLAT_TAB);
+				//token.setParameter(HistoryConstants.TAB_KEY, HistoryConstants.HOME_FLAT_TAB);
+				token.setParameter(HistoryConstants.TAB_KEY, HistoryConstants.HOME_NESTED_TAB);
 				break;
 			case INDEX_CONVERSATION:
 				token.setParameter(HistoryConstants.TAB_KEY, HistoryConstants.HOME_CONVERSATION_TAB);

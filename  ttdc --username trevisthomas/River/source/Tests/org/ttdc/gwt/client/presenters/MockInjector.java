@@ -113,6 +113,7 @@ import org.ttdc.gwt.client.uibinder.movies.MovieListPanel;
 import org.ttdc.gwt.client.uibinder.post.MoreOptionsPopupPanel;
 import org.ttdc.gwt.client.uibinder.post.NestedPostSpacerPanel;
 import org.ttdc.gwt.client.uibinder.post.NewMoviePanel;
+import org.ttdc.gwt.client.uibinder.post.PlainPostPanel;
 import org.ttdc.gwt.client.uibinder.post.PostExpanded;
 import org.ttdc.gwt.client.uibinder.post.PostOptionsListPanel;
 import org.ttdc.gwt.client.uibinder.post.PostPanel;
@@ -1584,6 +1585,12 @@ public class MockInjector implements Injector{
 
 	@Override
 	public PostOptionsListPanel createPostOptionsListPanel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public PlainPostPanel createPlainPostPanel() {
 		// TODO Auto-generated method stub
 		return null;
 	}

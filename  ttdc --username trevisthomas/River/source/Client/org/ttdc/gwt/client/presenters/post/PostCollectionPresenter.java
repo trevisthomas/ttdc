@@ -134,11 +134,12 @@ public final class PostCollectionPresenter extends BasePresenter<PostCollectionP
 		if(post.isSuggestSummary()){
 			PostSummaryPanel postSummaryPanel = injector.createPostSummaryPanel();
 			postSummaryPanel.init(post);
-			
-			NestedPostSpacerPanel spacer = injector.createNestedPostSpacerPanel();
-			spacer.initialize(post, postSummaryPanel);
-			
-			postPresenter = spacer;
+			postPresenter = postSummaryPanel;
+			if(Mode.NESTED_SUMMARY.equals(mode)){
+				NestedPostSpacerPanel spacer = injector.createNestedPostSpacerPanel();
+				spacer.initialize(post, postSummaryPanel);
+				postPresenter = spacer;
+			}
 		}
 		else{
 			PostPanel postPanel = injector.createPostPanel();
@@ -213,6 +214,21 @@ public final class PostCollectionPresenter extends BasePresenter<PostCollectionP
 					postSummaryPanel.init(newPost);
 					postPresenters.add(postSummaryPanel);
 					Collections.sort(postPresenters,new PostPresenterCommon.PostPresenterComparitorByPath());
+					resetPostPresentersInView();
+					
+				}
+			}
+			else if(Mode.GROUPED.equals(mode)){
+				if(conversationStarterPost == null && newPost.isThreadPost()){
+					List<GPost> list = new ArrayList<GPost>();
+					list.add(newPost);
+					insertPostsToPostList(list,mode);			
+				}
+				else if(conversationStarterPost != null && conversationStarterPost.equals(newPost.getThread())){
+					PostSummaryPanel postSummaryPanel = injector.createPostSummaryPanel();
+					postSummaryPanel.init(newPost);
+					postPresenters.add(0, postSummaryPanel);
+					//Collections.sort(postPresenters,new PostPresenterCommon.PostPresenterComparitorByPath());
 					resetPostPresentersInView();
 					
 				}

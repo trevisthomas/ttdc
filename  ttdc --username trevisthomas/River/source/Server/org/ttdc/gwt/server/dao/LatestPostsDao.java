@@ -48,6 +48,18 @@ public class LatestPostsDao extends FilteredPostPaginatedDaoBase{
 		}
 		return results;
 	}
+	
+	public PaginatedList<Post> loadGrouped() {
+		PaginatedList<Post> results = new PaginatedList<Post>();
+		results = executeLoadQuery("LatestPostsDao.Nested");
+		
+		//The replies are loaded by date instead of by path.
+		List<Post> posts = loadAllPostsForThreadsByDate(results.getList());
+		for(Post p : results.getList()){
+			loadRepliesFromPostList(p, posts);
+		}
+		return results;
+	}
 
 	private void loadRepliesFromPostList(Post thread, List<Post> posts) {
 		Post prevPost = null;
@@ -68,16 +80,16 @@ public class LatestPostsDao extends FilteredPostPaginatedDaoBase{
 		}
 		
 		if(flatReplyHierarchy.size() > replyMaxResults){
-			thread.setPosts(flatReplyHierarchy.subList(flatReplyHierarchy.size()-replyMaxResults, flatReplyHierarchy.size()));
+			thread.setPosts(flatReplyHierarchy.subList(0, replyMaxResults));
 		}
 		else
 			thread.setPosts(flatReplyHierarchy);
 		
 		
-		int [] pathSegmentMaximums = PathSegmentizer.calculatePathSegmentMaximums(flatReplyHierarchy);
-		thread.setPathSegmentMaximums(pathSegmentMaximums);
-		
-		PathSegmentizer.segmentizeChildPaths(thread);
+//		int [] pathSegmentMaximums = PathSegmentizer.calculatePathSegmentMaximums(flatReplyHierarchy);
+//		thread.setPathSegmentMaximums(pathSegmentMaximums);
+//		
+//		PathSegmentizer.segmentizeChildPaths(thread);
 		
 	}
 
@@ -91,6 +103,20 @@ public class LatestPostsDao extends FilteredPostPaginatedDaoBase{
 			System.err.println("Smelly badness");
 		}
 		posts = DaoUtils.executeLoadFromPostIds("LatestPostsDao.RepliesInThreads", postIds, buildFilterMask(getFilterFlags()));
+		
+		return posts;
+	}
+	
+	private List<Post> loadAllPostsForThreadsByDate(List<Post> threadStarters){
+		List<String> postIds = new ArrayList<String>();
+		for(Post post : threadStarters){
+			postIds.add(post.getPostId());
+		}
+		List<Post> posts;
+		if(threadStarters.size() == 0){
+			System.err.println("Smelly badness");
+		}
+		posts = DaoUtils.executeLoadFromPostIds("LatestPostsDao.RepliesInThreadsByDate", postIds, buildFilterMask(getFilterFlags()));
 		
 		return posts;
 	}

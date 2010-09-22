@@ -41,6 +41,9 @@ public class LatestPostCommandExecutor extends CommandExecutor<PaginatedListComm
 			case LATEST_EARMARKS:
 				result = loadEarmarks(cmd);
 				break;
+			case LATEST_GROUPED:
+				result = loadGrouped(cmd);	
+				break;
 			default:
 				throw new RuntimeException("LatestPostCommandExecutor doesnt understand that action type");
 			}
@@ -110,7 +113,14 @@ public class LatestPostCommandExecutor extends CommandExecutor<PaginatedListComm
 		PaginatedList<GPost> gResults = PaginatedResultConverters.convertSearchResultsNested(results, getPerson());
 		return new PaginatedListCommandResult<GPost>(gResults);
 	}
-
+	
+	private PaginatedListCommandResult<GPost> loadGrouped(LatestPostsCommand cmd) {
+		LatestPostsDao dao = getLatestPostDaoWithPersonalFilter(cmd);
+		PaginatedList<Post> results = dao.loadGrouped();
+		PaginatedList<GPost> gResults = PaginatedResultConverters.convertSearchResultsNested(results, getPerson());
+		return new PaginatedListCommandResult<GPost>(gResults);
+	}
+	
 	private PaginatedListCommandResult<GPost> loadFlat(LatestPostsCommand cmd) {
 		LatestPostsDao dao = getLatestPostDaoWithPersonalFilter(cmd);
 		PaginatedList<Post> results = dao.loadFlat();
