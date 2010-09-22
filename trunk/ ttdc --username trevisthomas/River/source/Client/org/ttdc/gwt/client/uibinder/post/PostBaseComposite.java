@@ -468,5 +468,15 @@ abstract public class PostBaseComposite extends Composite{
 			likesElement.setVisible(false);
 		}
 	}
+
+	public GPost getPost() {
+		return post;
+	}
+
+	public void setPost(GPost post) {
+		this.post = post;
+	}
+	
+	
 	
 }

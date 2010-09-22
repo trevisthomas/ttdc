@@ -36,6 +36,7 @@ import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
@@ -127,6 +128,9 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 	private SuggestBox parentSuggestionBox;
 	private SugestionOracle parentSuggestionOracle;
 	
+	boolean operationInProgress = false;
+	
+	
 	@Inject
 	public CommentEditorPanel(Injector injector) {
 		this.injector = injector;
@@ -184,6 +188,8 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 		configurePrivateCheckbox(person, post);
 		
 		init();
+		
+		textAreaElement.setFocus(true);
 	}
 	
 	private void init(){
@@ -191,7 +197,9 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 			case CREATE:
 				parentInfoElement.setVisible(true);
 				if(post == null){
-					initAsNewRootMode();
+					if(parentSuggestionOracle == null){
+						setupParentSuggestionOracle();
+					}
 					parentInfoElement.setText("Note: No topic with this title exists, a new topic will be created.");
 				}
 				else{
@@ -252,14 +260,13 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 		}
 	}
 
-	private void initAsNewRootMode() {
+	private void setupParentSuggestionOracle() {
 		parentSuggestionOracle = injector.getTagSugestionOracle();
 		parentSuggestionBox = parentSuggestionOracle.createSuggestBoxForTopics();
 		topicLabelElement.setVisible(true);
 		topicSuggestionHolderElement.setVisible(true);
 		topicSuggestionHolderElement.clear();
 		topicSuggestionHolderElement.add(parentSuggestionBox);
-	
 		
 		parentSuggestionBox.addSelectionHandler(new SelectionHandler<Suggestion>() {
 			@Override
@@ -493,6 +500,12 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 	}
 
 	private void executeCommand(PostActionType action) {
+		
+		if(isOperationInProgress()){
+			Window.alert("Operation in progress");
+			return;
+		}
+		
 		PostCrudCommand cmd = new PostCrudCommand();
 		cmd.setAction(action);
 		String body = applyRealEmbeding(textAreaElement.getText());
@@ -537,8 +550,9 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 		else{
 			callback = buildCreatePostCallback();
 		}
-			
+		
 		injector.getService().execute(cmd,callback);
+		setOperationInProgress(true);
 	}
 	
 	
@@ -566,12 +580,14 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 		CommandResultCallback<PostCommandResult> callback = new CommandResultCallback<PostCommandResult>(){
 			@Override
 			public void onSuccess(PostCommandResult result) {
+				setOperationInProgress(false);
 				close();
 				PostEvent event = new PostEvent(PostEventType.EDIT, result.getPost());
 				EventBus.fireEvent(event);
 			}
 			@Override
 			public void onFailure(Throwable caught) {
+				setOperationInProgress(false);
 				super.onFailure(caught);
 			}
 		};
@@ -589,13 +605,14 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 		CommandResultCallback<PostCommandResult> callback = new CommandResultCallback<PostCommandResult>(){
 			@Override
 			public void onSuccess(PostCommandResult result) {
+				setOperationInProgress(false);
 				previewElement.setVisible(true);
 				previewElement.clear();
 				previewElement.add(new HTML(result.getPost().getLatestEntry().getBody()));
-				
 			}
 			@Override
 			public void onFailure(Throwable caught) {
+				setOperationInProgress(false);
 				super.onFailure(caught);
 			}
 		};
@@ -612,6 +629,14 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 		CommandResultCallback<PostCommandResult> callback = buildPreviewPostCallback();
 			
 		injector.getService().execute(cmd,callback);
+	}
+
+	public boolean isOperationInProgress() {
+		return operationInProgress;
+	}
+
+	public void setOperationInProgress(boolean operationInProgress) {
+		this.operationInProgress = operationInProgress;
 	}
 
 }

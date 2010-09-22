@@ -64,7 +64,7 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
     private static final MyUiBinder binder = GWT.create(MyUiBinder.class);
     
     private final Injector injector;
-    private GPost post;
+    //private GPost post;
     private ImagePresenter creatorAvatorImagePresenter;
     private ImagePresenter postImagePresenter;
     private HyperlinkPresenter creatorLinkPresenter;
@@ -160,7 +160,7 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
     
     @Override
     public GPost getPost() {
-    	return post;
+    	return super.getPost();
     }
     
     public void setPost(GPost post) {
@@ -171,7 +171,8 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 		super.init(post, commentElement, tagListPanel);
 		postCollectionPresenter.setConversationStarterPost(post);
 		this.mode = mode;
-		this.post = post;
+		//this.post = post;
+		super.setPost(post);
 		
 		postIconTool.init(post);
 		
@@ -189,22 +190,7 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 			conversationCountElement.setVisible(false);
 		}
 		
-		bodyElement.setInnerHTML(post.getEntry());
-		
-//		if(post.isRootPost() || post.isThreadPost()){
-//			creatorAvatorImagePresenter.setImage(post.getCreator().getImage(), post.getCreator().getLogin(), 50, 50);
-//			avatarElement.setWidth("50px");
-//			avatarElement.setHeight("50px");
-//		}
-//		else{
-//			creatorAvatorImagePresenter.setImage(post.getCreator().getImage(), post.getCreator().getLogin(), 20, 20);
-//			avatarElement.setWidth("20px");
-//			avatarElement.setHeight("20px");
-//		}
-		
-		creatorAvatorImagePresenter.setImage(post.getCreator().getImage(), post.getCreator().getLogin(), 40, 40);
-//		avatarElement.setWidth("40px");
-//		avatarElement.setHeight("40px");
+		refreshPost(post);
 		
 		if(post.isReview()){
 			postImagePresenter.setImageAsMoviePoster(post);
@@ -256,14 +242,36 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 				//view.fetchMoreTarget().addClickHandler(buildFetchMoreResultsClickHandler(cmd));
 				setupFetchMoreClickHandlerTitle();
 			}
+			
+			if(Mode.GROUPED.equals(mode) && postCollectionPresenter.size() < post.getMass()){
+				
+				//setupFetchMoreClickHandlerTitle();
+				//view.fetchMoreTarget().addClickHandler(buildFetchMoreResultsClickHandler(cmd));
+				setupFetchMoreClickHandlerTitle();
+			}
 		}
 		else{
 			postCollectionPresenter.setPostList(new ArrayList<GPost>(), mode);
 		}
 		
-		GPerson user = ConnectionId.getInstance().getCurrentUser();
-		setupLikesElement(post, likesElement);
 		
+		//TODO secure
+		tagListPanel.init(post, TagListPanel.Mode.EDITABLE);
+		
+		//Dont scroll to root posts. It's crazy making!
+		if(!post.isRootPost())
+			TopicHelpers.testPost(this);
+		
+		
+		
+	}
+
+
+
+	private void refreshPost(GPost post) {
+		bodyElement.setInnerHTML(post.getEntry());
+		setupLikesElement(post, likesElement);
+		creatorAvatorImagePresenter.setImage(post.getCreator().getImage(), post.getCreator().getLogin(), 40, 40);
 		if(post.isThreadPost()){
 			int conversationNumber = (1+Integer.parseInt(post.getPath()));
 			postNumberElement.setText("#"+conversationNumber); //Path is the post number for these conversation staters!
@@ -286,15 +294,6 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 		else{
 			postNumberElement.setText("");
 		}
-		
-		//TODO secure
-		tagListPanel.init(post, TagListPanel.Mode.EDITABLE);
-		
-		//Dont scroll to root posts. It's crazy making!
-		if(!post.isRootPost())
-			TopicHelpers.testPost(this);
-		
-		
 		actionLinks.clear();
 		actionLinks.add(buildBoundOptionsListPanel(post));
 	}
@@ -310,18 +309,20 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 //	}
 
 	private void setupFetchMoreClickHandlerTitle() {
-		if(postCollectionPresenter.size() < post.getMass()){
+		if(postCollectionPresenter.size() < getPost().getMass()){
 			fetchMoreElement.setVisible(true);
 //			fetchMoreElement.setText("Now showing "+postCollectionPresenter.size()+ " of "+post.getMass() +" comments. Click for more." );
 			
-				if(post.getReplyStartIndex() > 1){
-					fetchMoreElement.setText("Now showing "+post.getReplyStartIndex()+" to "+(post.getReplyStartIndex()+postCollectionPresenter.size())
-							+ " of "+post.getMass() +" comments. Click to expand." );
+				if(getPost().getReplyStartIndex() > 1){
+					fetchMoreElement.setText("Now showing "+getPost().getReplyStartIndex()+" to "+(getPost().getReplyStartIndex()+postCollectionPresenter.size())
+							+ " of "+getPost().getMass() +" comments. Click to expand." );
 					if(childPostPage == 1)
-						childPostPage = post.getReplyPage();
+						childPostPage = getPost().getReplyPage();
 				}
 				else{
-					fetchMoreElement.setText("Now showing "+postCollectionPresenter.size()+ " of "+post.getMass() +" comments. Click to expand." );
+					//fetchMoreElement.setText("Now showing "+postCollectionPresenter.size()+ " of "+getPost().getMass() +" comments. Click to expand." );
+					fetchMoreElement.setTitle("Showing "+postCollectionPresenter.size()+ " of "+getPost().getMass() + " click for more");
+					fetchMoreElement.setText("older...");
 				}
 			
 		}
@@ -354,14 +355,14 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 			@Override
 			public void onSuccess(TopicCommandResult result) {
 				//postCollectionPresenter.insertPostsToPostList(result.getResults().getList(), Mode.NESTED_SUMMARY);
-				postCollectionPresenter.setPostList(result.getResults().getList(), Mode.NESTED_SUMMARY);
+				postCollectionPresenter.setPostList(result.getResults().getList(), Mode.GROUPED);
 				//setupFetchMoreClickHandlerTitle();
 				fetchMoreElement.setText("");
 				fetchMoreElement.setVisible(false);
 			}
 		};
 		TopicCommand cmd = new TopicCommand();
-		cmd.setPostId(post.getPostId());
+		cmd.setPostId(getPost().getPostId());
 		cmd.setType(TopicCommandType.NESTED_THREAD_SUMMARY_FETCH_MORE);
 		cmd.setPageNumber(-1);
 		RpcServiceAsync service = injector.getService();
@@ -391,14 +392,14 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 	//Trevis This hasnt really been tested!!
 	@Override
 	public void onPostEvent(PostEvent postEvent) {
-		if(postEvent.is(PostEventType.EDIT) && postEvent.getSource().getPostId().equals(post.getPostId())){
-			setPost(postEvent.getSource(),mode);
+		if(postEvent.is(PostEventType.EDIT) && postEvent.getSource().getPostId().equals(getPost().getPostId())){
+			refreshPost(postEvent.getSource());
 		}
 	}
 	
 	@Override
 	public String getPostId() {
-		return post.getPostId();
+		return getPost().getPostId();
 	}
 	
 //	@UiHandler("moreLinkElement")

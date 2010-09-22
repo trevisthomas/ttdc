@@ -3,4 +3,4 @@
  */
 package org.ttdc.gwt.client.presenters.post;
 
-public enum Mode {NESTED_SUMMARY,FLAT}
+public enum Mode {NESTED_SUMMARY,FLAT,GROUPED}
