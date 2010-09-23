@@ -18,6 +18,7 @@ import org.ttdc.gwt.shared.util.PaginatedList;
 import org.ttdc.gwt.client.constants.TagConstants;
 
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.Label;
 import com.google.inject.Inject;
 
 public class EarmarkedPresenter extends BasePresenter<EarmarkedPresenter.View> implements TagEventListener{
@@ -64,16 +65,22 @@ public class EarmarkedPresenter extends BasePresenter<EarmarkedPresenter.View> i
 	}
 	
 	private void showResult(PaginatedListCommandResult<GPost> result) {
-		PaginatedList<GPost> results = result.getResults();
-		postCollection.setPostList(results.getList(), Mode.FLAT);
 		view.postPanel().clear();
-		view.postPanel().add(postCollection.getWidget());
+		if(result.getResults().getTotalResults() > 0){
+			PaginatedList<GPost> results = result.getResults();
+			postCollection.setPostList(results.getList(), Mode.FLAT);
+			view.postPanel().add(postCollection.getWidget());
+		}
+		else{
+			view.postPanel().add(new Label("You have no earmked posts."));
+		}
 	}
 
 	@Override
 	public void onTagEvent(TagEvent event) {
 		if(event.getSource().getTag().getType().equals(TagConstants.TYPE_EARMARK)){
-			refresh();
+			//refresh();
+			resultCache = null;
 		}
 	}
 }

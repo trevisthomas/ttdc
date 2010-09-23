@@ -3,8 +3,11 @@ package org.ttdc.gwt.server.command.executors;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.search.FullTextSession;
 import org.ttdc.gwt.client.beans.GAssociationPostTag;
+import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.beans.GTag;
+import org.ttdc.gwt.client.messaging.person.PersonEvent;
+import org.ttdc.gwt.client.messaging.person.PersonEventType;
 import org.ttdc.gwt.client.messaging.post.PostEvent;
 import org.ttdc.gwt.client.messaging.post.PostEventType;
 import org.ttdc.gwt.client.messaging.tag.TagEvent;
@@ -22,9 +25,12 @@ import org.ttdc.gwt.shared.commands.AssociationPostTagCommand;
 import org.ttdc.gwt.shared.commands.results.AssociationPostTagResult;
 import org.ttdc.persistence.Persistence;
 import org.ttdc.persistence.objects.AssociationPostTag;
+import org.ttdc.persistence.objects.Person;
 import org.ttdc.persistence.objects.Post;
 import org.ttdc.persistence.objects.Tag;
 import org.ttdc.util.RatingUtility;
+
+import com.google.gwt.dev.ModuleTabPanel.Session;
 
 public class AssociationPostTagCommandExecutor extends CommandExecutor<AssociationPostTagResult>{
 	@Override
@@ -59,9 +65,11 @@ public class AssociationPostTagCommandExecutor extends CommandExecutor<Associati
 		Tag tag;
 		tag = getTagObject(gTag);
 		
+		Person creator = getPerson();
+		
 		dao.setTag(tag);
 		dao.setPost(post);
-		dao.setCreator(getPerson());
+		dao.setCreator(creator);
 		
 		if(post.hasTagAssociation(tag.getType(), getPerson().getPersonId())){
 			throw new RuntimeException("Person already has the requested tag association.");
@@ -70,6 +78,11 @@ public class AssociationPostTagCommandExecutor extends CommandExecutor<Associati
 		AssociationPostTag ass = dao.create();
 		if(Tag.TYPE_RATING.equals(tag.getType())){
 			RatingUtility.updateAverageRating(post);
+		}
+		if(Tag.TYPE_EARMARK.equals(tag.getType())){
+			creator.setEarmarks(creator.getEarmarks() + 1);
+			Persistence.session().save(creator);
+			broadcastPersonEvent(creator, PersonEventType.USER_EARMKARK_COUNT_CHANGED);
 		}
 		//GAssociationPostTag gAss = GenericBeanConverter.convertAssociationPostTag(ass);
 		GAssociationPostTag gAss = FastPostBeanConverter.convertAssociationPostTagWithPost(ass);
@@ -112,6 +125,12 @@ public class AssociationPostTagCommandExecutor extends CommandExecutor<Associati
 		AssociationPostTagDao.remove(command.getAssociationId());
 		if(isRatingTagAss){
 			RatingUtility.updateAverageRating(post);
+		}
+		Person creator = getPerson();
+		if(Tag.TYPE_EARMARK.equals(ass.getTag().getType())){
+			creator.setEarmarks(creator.getEarmarks() - 1);
+			Persistence.session().save(creator);
+			broadcastPersonEvent(creator, PersonEventType.USER_EARMKARK_COUNT_CHANGED);
 		}
 		result = new AssociationPostTagResult(AssociationPostTagResult.Status.REMOVE);
 		result.setAssociationId(ass.getGuid());
@@ -159,6 +178,13 @@ public class AssociationPostTagCommandExecutor extends CommandExecutor<Associati
 		GPost gPost = FastPostBeanConverter.convertPost(post, inboxDao);
 		PostEvent postEvent = new PostEvent(eventType,gPost);
 		broadcaster.broadcastEvent(postEvent, getCommand().getConnectionId());
+	}
+	
+	private void broadcastPersonEvent(Person person, PersonEventType eventType){
+		ServerEventBroadcaster broadcaster = ServerEventBroadcaster.getInstance();
+		GPerson gPerson = FastPostBeanConverter.convertPerson(person);
+		PersonEvent event = new PersonEvent(eventType, gPerson);
+		broadcaster.broadcastEvent(event, getCommand().getConnectionId());
 	}
 
 	private Tag getTagObject(GTag gTag) {

@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+@Deprecated
 public class TopicView implements TopicPresenter.View{
 	private final Label title = new Label();
 	private final VerticalPanel mainPanel = new VerticalPanel();
@@ -47,12 +48,12 @@ public class TopicView implements TopicPresenter.View{
 	@Override
 	public void displayTab(TabType selected) {
 		switch(selected){
-			case FLAT:
-				replyTabPanel.selectTab(INDEX_FLAT);
-				break;
-			case NESTED:
-				replyTabPanel.selectTab(INDEX_NESTED);
-				break;
+//			case FLAT:
+//				replyTabPanel.selectTab(INDEX_FLAT);
+//				break;
+//			case NESTED:
+//				replyTabPanel.selectTab(INDEX_NESTED);
+//				break;
 		}
 		
 	}

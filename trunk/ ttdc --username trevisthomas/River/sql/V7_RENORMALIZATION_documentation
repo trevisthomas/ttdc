@@ -27,6 +27,8 @@
 	Entry:
 	SUMMARY as text
 	
+	Person:
+	EARMARKS int (not null, default 0) default 0
 	
 	
 	

@@ -331,6 +331,7 @@ public class FastPostBeanConverter {
 		gPerson.setPersonId(p.getPersonId());
 		gPerson.setStatus(p.getStatus());
 		gPerson.setAnonymous(p.isAnonymous());
+		gPerson.setEarmarks(p.getEarmarks());
 		return gPerson;
 	}
 	

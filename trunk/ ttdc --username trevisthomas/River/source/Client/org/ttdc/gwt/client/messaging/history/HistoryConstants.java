@@ -114,7 +114,7 @@ public interface HistoryConstants {
 
 	public static final String TAB2_KEY = "tab2";
 	public static final String HOME_FLAT_TAB = "flat";
-	public static final String HOME_NESTED_TAB = "nested";
+	public static final String HOME_LATEST_TAB = "nested";
 	public static final String HOME_CONVERSATION_TAB = "conversation";
 	public static final String HOME_THREAD_TAB = "thread";
 	public static final String HOME_EARMARKS_TAB = "earmarks";
