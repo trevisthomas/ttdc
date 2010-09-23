@@ -30,7 +30,7 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 
 .tt-plain-post-date{margin-top: -1px;}
 
-.tt-child-post-inReplyAnchor{font-size:11px;}
+
 
 .tt-plain-post-creator,
 .tt-comment-editor-info,
@@ -40,6 +40,7 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 .tt-post-panel-head-date,
 .tt-text-small{font-size:10px;}
 	
+.tt-child-post-inReplyAnchor,
 .tt-plain-post-header,
 .tt-traffic-login,
 .tt-reviewSummary,
@@ -69,8 +70,8 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 
 .tt-comment-editor-info{margin: 1px 6px;}
 
-.tt-post-container{ width:100%; }
-.tt-post-fetch-more{ width:100%;}
+
+
 .tt-search-panel-adv,
 .tt-movie-editor,
 .tt-comment-editor{border: 1px solid; width:480px; padding: 2px 10px;}
@@ -123,6 +124,7 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 
 .tt-pageFooter hr{ height: 1px;}
 
+.tt-plain-post-close,
 .tt-color-calendar-nav,
 .tt-home-tabContainer,
 .tt-center{text-align:center; margin: 0 auto;}
@@ -135,9 +137,13 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 .tt-float-container{ overflow: auto; width: 100%}
 
 
+.tt-plain-post-close,
+.tt-post-container,
+.tt-post-fetch-more,
 .tt-movie-list-table,
 .tt-user-list-table,
 .tt-fill{ width: 100%; }
+
 .tt-fill-both{ height:100%; width:100%;}
 .tt-fill-height{ height:100%;}
 .tt-text-left{text-align: left;}

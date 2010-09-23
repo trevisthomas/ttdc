@@ -223,7 +223,7 @@ public final class PostCollectionPresenter extends BasePresenter<PostCollectionP
 				else if(conversationStarterPost != null && conversationStarterPost.equals(newPost.getThread())){
 					ChildPostPanel childPostPanel = injector.createChildPostPanel();
 					childPostPanel.init(newPost);
-					postPresenters.add(0, childPostPanel);
+					postPresenters.add(childPostPanel);
 					//Collections.sort(postPresenters,new PostPresenterCommon.PostPresenterComparitorByPath());
 					resetPostPresentersInView();
 					

@@ -10,6 +10,6 @@
 			<g:Hyperlink styleName="tt-plain-post-date" ui:field="dateElement"/>
 		</div>
 		<span class="tt-post-body tt-text-normal" ui:field="bodyElement" />
-		<g:Anchor styleName="tt-plain-post-close" ui:field="closeElement">[close]</g:Anchor>
+		<div class="tt-plain-post-close"><g:Anchor ui:field="closeElement">[close]</g:Anchor></div>
 	</g:HTMLPanel>
 </ui:UiBinder>

@@ -18,12 +18,19 @@ import org.ttdc.gwt.shared.commands.types.PostActionType;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.SpanElement;
+import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.event.dom.client.MouseOutHandler;
+import com.google.gwt.event.dom.client.MouseOverEvent;
+import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FocusPanel;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -46,6 +53,7 @@ public class ChildPostPanel extends PostBaseComposite implements PostEventListen
     @UiField Anchor inReplyToElement;
     @UiField SimplePanel inReplyPostElement;
     @UiField (provided = true) Widget tagsElement;
+    @UiField HTMLPanel outerElement;
     
     
     private HyperlinkPresenter creatorLinkPresenter;
@@ -91,8 +99,27 @@ public class ChildPostPanel extends PostBaseComposite implements PostEventListen
     	postUnReadElement.addStyleName("tt-float-left");
     	postReadElement.addStyleName("tt-float-left");
     	
-    	commentElement.setVisible(false);
+    	//commentElement.setVisible(false);
     	inReplyPostElement.setVisible(false);
+    	
+    	outerElement.addStyleName("tt-post-child-noHover");
+    	hoverDivElement.addMouseOverHandler(new MouseOverHandler() {
+			@Override
+			public void onMouseOver(MouseOverEvent event) {
+				outerElement.addStyleName("tt-post-child-hover");
+				outerElement.removeStyleName("tt-post-child-noHover");
+			}
+		});
+    	
+    	hoverDivElement.addMouseOutHandler(new MouseOutHandler() {
+			@Override
+			public void onMouseOut(MouseOutEvent event) {
+				outerElement.addStyleName("tt-post-child-noHover");
+				outerElement.removeStyleName("tt-post-child-hover");
+			}
+		});
+    	
+    	
 	}
 	
 	public void init(GPost post){
@@ -142,6 +169,7 @@ public class ChildPostPanel extends PostBaseComposite implements PostEventListen
 		tagListPanel.init(post, TagListPanel.Mode.EDITABLE);
 		
 		inReplyToElement.setHTML("@"+post.getParentPostCreator());
+		inReplyToElement.setTitle("Click to view in reply to");
 		
 		postIconTool.init(post);
 		

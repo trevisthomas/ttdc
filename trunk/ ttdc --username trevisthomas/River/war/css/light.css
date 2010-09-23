@@ -258,7 +258,7 @@ body{ color: #222; background-color: #eee;}
 
 .tt-plain-post{border-color: grey; background: #f5f5f5;}
 
-.tt-post-child{border-color: #f5f5f5;}
-
+.tt-post-child-noHover{border-color: #f5f5f5;}
+.tt-post-child-hover{border-color: #4b75e1;}
 
 

@@ -80,7 +80,7 @@ public class LatestPostsDao extends FilteredPostPaginatedDaoBase{
 		}
 		
 		if(flatReplyHierarchy.size() > replyMaxResults){
-			thread.setPosts(flatReplyHierarchy.subList(0, replyMaxResults));
+			thread.setPosts(flatReplyHierarchy.subList(flatReplyHierarchy.size() - replyMaxResults, flatReplyHierarchy.size()));
 		}
 		else
 			thread.setPosts(flatReplyHierarchy);

@@ -322,7 +322,12 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 				else{
 					//fetchMoreElement.setText("Now showing "+postCollectionPresenter.size()+ " of "+getPost().getMass() +" comments. Click to expand." );
 					fetchMoreElement.setTitle("Showing "+postCollectionPresenter.size()+ " of "+getPost().getMass() + " click for more");
-					fetchMoreElement.setText("older...");
+					if(getPost().getMass() < 100){
+						fetchMoreElement.setText("show all "+getPost().getMass());
+					}
+					else{
+						fetchMoreElement.setText("show 100 of "+getPost().getMass());
+					}
 				}
 			
 		}
