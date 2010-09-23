@@ -12,6 +12,8 @@ import org.ttdc.gwt.client.constants.TagConstants;
 import org.ttdc.gwt.client.constants.UserObjectConstants;
 import org.ttdc.gwt.client.messaging.ConnectionId;
 import org.ttdc.gwt.client.messaging.EventBus;
+import org.ttdc.gwt.client.messaging.person.PersonEvent;
+import org.ttdc.gwt.client.messaging.person.PersonEventType;
 import org.ttdc.gwt.client.messaging.post.PostEvent;
 import org.ttdc.gwt.client.messaging.post.PostEventType;
 import org.ttdc.gwt.client.presenters.comments.NewCommentPresenter;
@@ -281,12 +283,22 @@ abstract public class PostBaseComposite extends Composite{
 //	
 	private void processUnEarmarkPostRequest() {
 		GPerson user = ConnectionId.getInstance().getCurrentUser();
+		user.setEarmarks(user.getEarmarks()-1);
 		GAssociationPostTag association = post.getEarmarkByPerson(user.getPersonId());
+		
+		PersonEvent event = new PersonEvent(PersonEventType.USER_EARMKARK_COUNT_CHANGED, user);
+		EventBus.fireEvent(event);
+		
 		removeAssociation(association);
 	}
 	
 	private void processEarmarkPostRequest() {
 		GPerson user = ConnectionId.getInstance().getCurrentUser();
+		user.setEarmarks(user.getEarmarks()+1);
+		
+		PersonEvent event = new PersonEvent(PersonEventType.USER_EARMKARK_COUNT_CHANGED, user);
+		EventBus.fireEvent(event);
+		
 		createAssociation(TagConstants.TYPE_EARMARK, user.getPersonId());
 	}
 	

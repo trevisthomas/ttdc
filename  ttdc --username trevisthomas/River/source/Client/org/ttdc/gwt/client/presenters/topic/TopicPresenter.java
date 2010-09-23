@@ -58,56 +58,16 @@ public class TopicPresenter extends BasePagePresenter<TopicPresenter.View> imple
 		this.token = token;
 		showTopic(token);
 
-		//If there is a specific one on the history list use it, 
-		//If not use the for the specific user
-		//Else, use a canned default
-		String topicView = token.getParameter(HistoryConstants.TAB_KEY);
-		if(HistoryConstants.TOPIC_FLAT_TAB.equals(topicView)){
-			processDisplayTab(TabType.FLAT);
-			processRequestForFlatTab();
-		}
-		else if(HistoryConstants.TOPIC_NESTED_TAB.equals(topicView)){
-			processDisplayTab(TabType.NESTED);
-			processRequestForNestedTab();
-		}
-		else{
-			processDisplayTab(TabType.NESTED);// Default. (TODO: Should probably get this from user profile)
-			processRequestForNestedTab();
-		}
+		processDisplayTab(TabType.NESTED);
+		processRequestForGroupedTab();
+		
 		view.show();
 		
-		view.addTabSelectionHandler(new SelectionHandler<Integer>() {
-			@Override
-			public void onSelection(SelectionEvent<Integer> event) {
-				int index = event.getSelectedItem();
-				updateHistoryToReflectTabSelection(index);
-			}
-		});
 	}
 	
-	private void updateHistoryToReflectTabSelection(int index) {
-		token.setParameter(HistoryConstants.PAGE_NUMBER_KEY, 1); 
-		switch (index){
-			case TopicView.INDEX_NESTED:
-				token.setParameter(HistoryConstants.TAB_KEY, HistoryConstants.TOPIC_NESTED_TAB);
-				processRequestForNestedTab();
-				break;
-			case TopicView.INDEX_FLAT:
-				token.setParameter(HistoryConstants.TAB_KEY, HistoryConstants.TOPIC_FLAT_TAB);
-				processRequestForFlatTab();
-				break;
-		}
-		History.newItem(token.toString(), fireHistoryEvent);
-	}
-
-	private void processRequestForFlatTab() {
-		if(flatPresenter == null)
-			createTopicFlatPresenter(token);
-	}
-
-	private void processRequestForNestedTab() {
+	private void processRequestForGroupedTab() {
 		if(nestedPresenter == null)
-			createTopicNestedPresenter(token);
+			creteTopicGroupedPresenter(token);
 	}
 
 	private void showTopic(HistoryToken token) {
@@ -123,7 +83,7 @@ public class TopicPresenter extends BasePagePresenter<TopicPresenter.View> imple
 
 	
 	
-	private void createTopicNestedPresenter(HistoryToken token) {
+	private void creteTopicGroupedPresenter(HistoryToken token) {
 		nestedPresenter = injector.getTopicNestedPresenter();
 		nestedPresenter.init(token);
 		view.nestedPanel().clear();
@@ -131,13 +91,6 @@ public class TopicPresenter extends BasePagePresenter<TopicPresenter.View> imple
 	}
 
 	
-	private void createTopicFlatPresenter(HistoryToken token) {
-		flatPresenter = injector.getTopicFlatPreseter();
-		flatPresenter.init(token);
-		view.flatPanel().clear();
-		view.flatPanel().add(flatPresenter.getWidget());
-	}
-
 	private void processDisplayTab(TabType type){
 		view.displayTab(type);
 	}
@@ -153,7 +106,8 @@ public class TopicPresenter extends BasePagePresenter<TopicPresenter.View> imple
 			//if(postEvent.getSource().equals(post))
 			//Trevis, figure out a way to determine what post this thread is showing!!! 
 			//This implementation will refresh for any new post!
-			EventBus.reload();
+			
+			//EventBus.reload();
 		}
 	}
 	

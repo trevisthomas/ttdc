@@ -28,6 +28,7 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.inject.Inject;
 
+@Deprecated
 public class Home2Presenter extends BasePagePresenter<Home2Presenter.View> implements PostEventListener{
 	public interface View extends BasePageView{
 		HasWidgets nestedPanel();
@@ -158,30 +159,30 @@ public class Home2Presenter extends BasePagePresenter<Home2Presenter.View> imple
 	}
 
 	private void initializeTabs(HistoryToken token) {
-		GPerson user = ConnectionId.getInstance().getCurrentUser();
-		String tab = token.getParameter(HistoryConstants.TAB_KEY);
-		TabType selected;
-		
-		if(HistoryConstants.HOME_FLAT_TAB.equals(tab)){
-			selected = TabType.FLAT; 
-			buildFlatTab();
-		}
-		else if(HistoryConstants.HOME_NESTED_TAB.equals(tab)){
-			selected = TabType.NESTED;
-			buildNestedTab();
-		}
-		else if(HistoryConstants.HOME_EARMARKS_TAB.equals(tab) && !user.isAnonymous()){
-			selected = TabType.EARMARKS;
-			buildEarmarksTab();
-		}
-		else{ // if(HistoryConstants.HOME_NESTED_TAB.equals(tab)){
-			selected = TabType.CONVERSATION;
-			buildConversationTab();
-		}
-		
-		buildThreadTab();
-		
-		view.displayTab(selected);
+//		GPerson user = ConnectionId.getInstance().getCurrentUser();
+//		String tab = token.getParameter(HistoryConstants.TAB_KEY);
+//		TabType selected;
+//		
+//		if(HistoryConstants.HOME_FLAT_TAB.equals(tab)){
+//			selected = TabType.FLAT; 
+//			buildFlatTab();
+//		}
+//		else if(HistoryConstants.HOME_LATEST_TAB.equals(tab)){
+//			selected = TabType.NESTED;
+//			buildNestedTab();
+//		}
+//		else if(HistoryConstants.HOME_EARMARKS_TAB.equals(tab) && !user.isAnonymous()){
+//			selected = TabType.EARMARKS;
+//			buildEarmarksTab();
+//		}
+//		else{ // if(HistoryConstants.HOME_NESTED_TAB.equals(tab)){
+//			selected = TabType.CONVERSATION;
+//			buildConversationTab();
+//		}
+//		
+//		buildThreadTab();
+//		
+//		view.displayTab(selected);
 
 	}
 

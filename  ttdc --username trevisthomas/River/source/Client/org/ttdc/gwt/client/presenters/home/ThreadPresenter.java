@@ -17,6 +17,7 @@ import org.ttdc.gwt.shared.util.PaginatedList;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.inject.Inject;
 
+@Deprecated
 public class ThreadPresenter extends BasePresenter<ThreadPresenter.View> implements MoreLatestPresenter.MoreLatestObserver{
 	public interface View extends BaseView{
 		HasWidgets postPanel();

@@ -22,6 +22,7 @@ import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+@Deprecated
 public class Home2View implements Home2Presenter.View{
 	private final VerticalPanel main = new VerticalPanel();
 	private final Grid bodyTable = new Grid(1,3);
@@ -119,7 +120,7 @@ public class Home2View implements Home2Presenter.View{
 	private void updateHistoryToReflectCenterTabSelection(int index) {
 		switch (index){
 			case INDEX_NESTED:
-				token.setParameter(HistoryConstants.TAB_KEY, HistoryConstants.HOME_NESTED_TAB);
+				token.setParameter(HistoryConstants.TAB_KEY, HistoryConstants.HOME_LATEST_TAB);
 				break;
 			case INDEX_FLAT:
 				token.setParameter(HistoryConstants.TAB_KEY, HistoryConstants.HOME_FLAT_TAB);
@@ -143,17 +144,17 @@ public class Home2View implements Home2Presenter.View{
 	@Override
 	public void displayTab(TabType selected) {
 		fireHistoryEvent = false;
-		if(selected.equals(TabType.FLAT)){
-			centerTabPanel.selectTab(INDEX_FLAT);
-		}else if(selected.equals(TabType.NESTED)){
-			centerTabPanel.selectTab(INDEX_NESTED);
-		}
-		else if(selected.equals(TabType.EARMARKS)){
-			centerTabPanel.selectTab(INDEX_EARMARKS);
-		}
-		else{
-			centerTabPanel.selectTab(INDEX_CONVERSATION);
-		}
+//		if(selected.equals(TabType.FLAT)){
+//			centerTabPanel.selectTab(INDEX_FLAT);
+//		}else if(selected.equals(TabType.NESTED)){
+//			centerTabPanel.selectTab(INDEX_NESTED);
+//		}
+//		else if(selected.equals(TabType.EARMARKS)){
+//			centerTabPanel.selectTab(INDEX_EARMARKS);
+//		}
+//		else{
+//			centerTabPanel.selectTab(INDEX_CONVERSATION);
+//		}
 		
 		rightTabPanel.selectTab(INDEX_THREAD);
 		fireHistoryEvent = true;

@@ -5,6 +5,7 @@ import java.util.List;
 import org.ttdc.gwt.client.constants.AppConstants;
 import org.ttdc.gwt.client.messaging.person.PersonEvent;
 import org.ttdc.gwt.client.messaging.person.PersonEventListener;
+import org.ttdc.gwt.client.messaging.person.PersonEventType;
 import org.ttdc.gwt.client.services.RpcService;
 import org.ttdc.gwt.client.services.RpcServiceAsync;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
@@ -79,6 +80,11 @@ public class ServerEventMonitor extends Timer implements PersonEventListener{
 		if(event.getType().isUserChanged()){
 			ConnectionId.getInstance().setCurrentUser(event.getSource());
 			reinitialize();
+		}
+		else if(event.is(PersonEventType.USER_EARMKARK_COUNT_CHANGED) 
+				&& event.getSource().getPersonId()
+				.equals(ConnectionId.getInstance().getCurrentUser().getPersonId())){
+			ConnectionId.getInstance().setCurrentUser(event.getSource());			
 		}
 		
 	}

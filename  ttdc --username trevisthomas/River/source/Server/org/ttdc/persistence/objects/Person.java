@@ -84,6 +84,7 @@ public class Person implements HasGuid{
 	private Style style; //I might remove this and just use a UserObj to represent it
 	private Image image;
 	private List<Privilege> privileges = new ArrayList<Privilege>();
+	private int earmarks;
 	
 	@Override
 	public boolean equals(Object obj) {
@@ -381,7 +382,14 @@ public class Person implements HasGuid{
 		this.privileges = privileges;
 	}
 	
-	
+	public int getEarmarks() {
+		return earmarks;
+	}
+
+	public void setEarmarks(int earmarks) {
+		this.earmarks = earmarks;
+	}
+
 
 	/**
 	 * 
