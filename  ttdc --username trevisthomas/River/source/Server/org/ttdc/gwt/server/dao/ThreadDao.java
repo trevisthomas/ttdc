@@ -152,7 +152,7 @@ public class ThreadDao extends FilteredPostPaginatedDaoBase{
 	private void loadRepliesFromPostList(Post thread, List<Post> posts) {
 		List<Post> flatReplyHierarchy = flattenThread(thread, posts);	
 		if(flatReplyHierarchy.size() > THREAD_REPLY_MAX_RESULTS){
-			thread.setPosts(flatReplyHierarchy.subList(0, THREAD_REPLY_MAX_RESULTS));
+			thread.setPosts(flatReplyHierarchy.subList(flatReplyHierarchy.size() - THREAD_REPLY_MAX_RESULTS, flatReplyHierarchy.size()));
 		}
 		else{
 			thread.setPosts(flatReplyHierarchy);

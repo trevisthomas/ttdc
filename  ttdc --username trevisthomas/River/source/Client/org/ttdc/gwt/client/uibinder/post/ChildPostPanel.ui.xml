@@ -5,14 +5,13 @@
 	xmlns:t='urn:import:org.ttdc.gwt.client.presenters.util'>
 	<g:HTMLPanel>
 		<g:FocusPanel ui:field="hoverDivElement">
-		<g:HTMLPanel>
-			<div class="tt-post-child">
+		<g:HTMLPanel styleName="tt-post-child" ui:field="outerElement">
 				<div class="tt-child-post-header tt-float-container">
 					<g:Widget styleName="tt-float-left" ui:field="avatarElement" />
 					<g:Label ui:field="postUnReadElement" />
 					<g:Label ui:field="postReadElement" />
 					<span class="tt-float-left tt-post-child-creator">
-						by <g:Hyperlink ui:field="creatorLinkElement" /> &rArr;<g:Anchor styleName="tt-child-post-inReplyAnchor" ui:field="inReplyToElement"/>
+						by <g:Hyperlink ui:field="creatorLinkElement" /> &rang;&rang;&rang; <g:Anchor styleName="tt-child-post-inReplyAnchor" ui:field="inReplyToElement"/>
 					</span>
 					<table class="tt-inline">
 						<tr>
@@ -39,7 +38,7 @@
 					<g:Widget ui:field="tagsElement"></g:Widget>
 				</div>
 				<g:SimplePanel ui:field="actionLinks" />
-			</div>
+			
 		</g:HTMLPanel>
 		</g:FocusPanel>
 		<g:SimplePanel ui:field="commentElement" />
