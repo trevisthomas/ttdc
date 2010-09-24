@@ -13,6 +13,7 @@ import org.ttdc.gwt.client.messaging.post.PostEventListener;
 import org.ttdc.gwt.client.messaging.post.PostEventType;
 import org.ttdc.gwt.client.presenters.movies.MovieRatingPresenter;
 import org.ttdc.gwt.client.presenters.post.PostCollectionPresenter;
+import org.ttdc.gwt.client.presenters.post.PostPresenterCommon;
 import org.ttdc.gwt.client.presenters.shared.DatePresenter;
 import org.ttdc.gwt.client.presenters.shared.HyperlinkPresenter;
 import org.ttdc.gwt.client.presenters.shared.ImagePresenter;
@@ -34,7 +35,7 @@ import com.google.inject.Inject;
  * I think that this class encapsulates a movie.  It shows the review summaries and average rating.
  *
  */
-public class ReviewSummaryListPanel extends PostBaseComposite implements PostEventListener{
+public class ReviewSummaryListPanel extends PostBaseComposite implements PostEventListener, PostPresenterCommon{
 	interface MyUiBinder extends UiBinder<Widget, ReviewSummaryListPanel> {}
     private static final MyUiBinder binder = GWT.create(MyUiBinder.class);
     
@@ -116,5 +117,25 @@ public class ReviewSummaryListPanel extends PostBaseComposite implements PostEve
 		if(postEvent.is(PostEventType.EDIT) && postEvent.getSource().getPostId().equals(post.getPostId())){
 			init(postEvent.getSource());
 		}
+	}
+
+	@Override
+	public void contractPost() {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public String getPostId() {
+		return post.getPostId();
+	}
+
+	@Override
+	public void expandPost() {
+		// TODO Auto-generated method stub
+	}
+	
+	@Override
+	public Widget getWidget() {
+		return super.getWidget();
 	}
 }

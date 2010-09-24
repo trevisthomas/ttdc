@@ -296,6 +296,14 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 .tt-TabPanel-fullpage{width:85%; margin: 0 auto;}
 .gwt-TabPanel {  }
 .gwt-TabPanelBottom { border-style: solid; border-width: 1px; overflow: hidden; padding: 1px; margin: 0;}
+
+/*
+TODO fix better
+This was an attempt to fix the fact that if none of hte post are very long that the table in the tab collapses but it caused some weird
+side effects in non mozilla browsers in the comment creator
+.gwt-TabPanelBottom table {width: 100%;}
+*/
+
 .gwt-TabBar {}
 .gwt-TabBar .gwt-TabBarFirst { width: 5px;  /* first tab distance from the left */ }
 .gwt-TabBar .gwt-TabBarRest {}

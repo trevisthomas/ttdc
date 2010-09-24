@@ -2,6 +2,8 @@ package org.ttdc.gwt.client.uibinder.home;
 
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GPerson;
+import org.ttdc.gwt.client.beans.GTag;
+import org.ttdc.gwt.client.constants.TagConstants;
 import org.ttdc.gwt.client.messaging.ConnectionId;
 import org.ttdc.gwt.client.messaging.EventBus;
 import org.ttdc.gwt.client.messaging.history.HistoryConstants;
@@ -12,7 +14,10 @@ import org.ttdc.gwt.client.messaging.person.PersonEventType;
 import org.ttdc.gwt.client.messaging.post.PostEvent;
 import org.ttdc.gwt.client.messaging.post.PostEventListener;
 import org.ttdc.gwt.client.messaging.post.PostEventType;
+import org.ttdc.gwt.client.messaging.tag.TagEvent;
+import org.ttdc.gwt.client.messaging.tag.TagEventListener;
 import org.ttdc.gwt.client.presenters.home.EarmarkedPresenter;
+import org.ttdc.gwt.client.presenters.home.FlatPresenter;
 import org.ttdc.gwt.client.presenters.home.NestedPresenter;
 import org.ttdc.gwt.client.presenters.home.TabType;
 import org.ttdc.gwt.client.presenters.home.TrafficPresenter;
@@ -32,7 +37,7 @@ import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
-public class HomePanel extends BasePageComposite implements PersonEventListener, PostEventListener {
+public class HomePanel extends BasePageComposite implements PersonEventListener, PostEventListener, TagEventListener {
 	interface MyUiBinder extends UiBinder<Widget, HomePanel> {}
 	private static final MyUiBinder binder = GWT.create(MyUiBinder.class);
 	
@@ -47,15 +52,16 @@ public class HomePanel extends BasePageComposite implements PersonEventListener,
 	
 	private final StandardPageHeaderPanel pageHeaderPanel;
 	
+	private final SimplePanel flatPanel = new SimplePanel();
 	private final SimplePanel nestedPanel = new SimplePanel();
 	private final SimplePanel earmarksPanel = new SimplePanel();
 	
 	private HistoryToken token = new HistoryToken();
 		
-	private boolean fireHistoryEvent = true;
 	
 	private EarmarkedPresenter earmarksPresenter = null;
 	private NestedPresenter latestPresenter = null;
+	private FlatPresenter flatPresenter = null;
 	private static TrafficPresenter trafficPresenter = null;
 	
 	
@@ -76,7 +82,8 @@ public class HomePanel extends BasePageComposite implements PersonEventListener,
     	
     	trafficElement.add(trafficPresenter.getWidget());
     	
-    	postTabPanelElement.add(nestedPanel, "Latest");
+    	postTabPanelElement.add(nestedPanel, "Grouped");
+    	postTabPanelElement.add(flatPanel, "Flat");
 		
     	postTabPanelElement.setStyleName("tt-fill");
     	
@@ -104,6 +111,7 @@ public class HomePanel extends BasePageComposite implements PersonEventListener,
 		
 		EventBus.getInstance().addListener((PostEventListener)this);
 		EventBus.getInstance().addListener((PersonEventListener)this);
+		EventBus.getInstance().addListener((TagEventListener)this);
 	}
 	
 
@@ -121,6 +129,7 @@ public class HomePanel extends BasePageComposite implements PersonEventListener,
 		if(event.is(PersonEventType.USER_EARMKARK_COUNT_CHANGED) 
 				&& event.getSource().getPersonId().equals(user.getPersonId())){
 			postTabPanelElement.getTabBar().setTabText(INDEX_EARMARKS, "Earmarked ("+user.getEarmarks()+")");
+//			earmarksPresenter.clearCache();
 		}
 	}
 	
@@ -131,28 +140,38 @@ public class HomePanel extends BasePageComposite implements PersonEventListener,
 	private void updateHistoryToReflectCenterTabSelection(int index) {
 		switch (index){
 			case INDEX_NESTED:
-				token.setParameter(HistoryConstants.TAB_KEY, HistoryConstants.HOME_LATEST_TAB);
+				token.setParameter(HistoryConstants.TAB_KEY, HistoryConstants.HOME_GROUPED_TAB);
+				buildGroupedTab();
 				break;
 			case INDEX_EARMARKS:
-				token.setParameter(HistoryConstants.TAB_KEY, HistoryConstants.HOME_EARMARKS_TAB);	
-				break;				
+				token.setParameter(HistoryConstants.TAB_KEY, HistoryConstants.HOME_EARMARKS_TAB);
+				buildEarmarksTab();
+				break;		
+			case INDEX_FLAT:
+				token.setParameter(HistoryConstants.TAB_KEY, HistoryConstants.HOME_FLAT_TAB);	
+				buildFlatTab();
+				break;	
+			default:
+				throw new RuntimeException("Invalid tab index on HomePanel");
 		}
-		History.newItem(token.toString(),fireHistoryEvent);
+		//History.newItem(token.toString(),fireHistoryEvent);
+		History.newItem(token.toString(), false);
 	}
 	
 	final static int INDEX_NESTED = 0;
-	final static int INDEX_EARMARKS = 1;
+	final static int INDEX_FLAT = 1;
+	final static int INDEX_EARMARKS = 2;
 
 	private void displayTab(TabType selected) {
-		fireHistoryEvent = false;
 		if(selected.equals(TabType.EARMARKS)){
 			postTabPanelElement.selectTab(INDEX_EARMARKS);
+		}
+		else if(selected.equals(TabType.FLAT)){
+			postTabPanelElement.selectTab(INDEX_FLAT);
 		}
 		else{
 			postTabPanelElement.selectTab(INDEX_NESTED);
 		}
-		
-		fireHistoryEvent = true;
 	}
 	
 	@Override
@@ -162,6 +181,8 @@ public class HomePanel extends BasePageComposite implements PersonEventListener,
 				latestPresenter.refresh();
 			if(earmarksPresenter != null)
 				earmarksPresenter.refresh();
+			if(flatPresenter != null)
+				flatPresenter.refresh();
 		}
 	}
 
@@ -174,15 +195,27 @@ public class HomePanel extends BasePageComposite implements PersonEventListener,
 			selected = TabType.EARMARKS;
 			buildEarmarksTab();
 		}
+		else if(HistoryConstants.HOME_FLAT_TAB.equals(tab)){
+			selected = TabType.FLAT;
+			buildFlatTab();
+		}
 		else{ 
 			selected = TabType.NESTED;
-			buildLatestTab();
+			buildGroupedTab();
 		}
 		
 		displayTab(selected);
 	}
 
-	private void buildLatestTab() {
+	private void buildFlatTab(){
+		if(PresenterHelpers.isWidgetEmpty(flatPanel)){
+			flatPresenter = injector.getFlatPresenter();
+			flatPresenter.init();
+			flatPanel.add(flatPresenter.getWidget());
+		}
+	}
+	
+	private void buildGroupedTab() {
 		if(PresenterHelpers.isWidgetEmpty(nestedPanel)){
 			latestPresenter = injector.getNestedPresenter();
 			latestPresenter.init();
@@ -196,5 +229,16 @@ public class HomePanel extends BasePageComposite implements PersonEventListener,
 			earmarksPresenter.init();
 			earmarksPanel.add(earmarksPresenter.getWidget());
 		}
+		else{
+			earmarksPresenter.init();
+		}
+	}
+	
+	@Override
+	public void onTagEvent(TagEvent event) {
+//		if(event.isByPerson(ConnectionId.getInstance().getCurrentUser(), TagConstants.TYPE_EARMARK)){
+//			earmarksPresenter.clearCache();
+//		}
+		
 	}
 }

@@ -56,6 +56,9 @@ public final class PostCollectionPresenter extends BasePresenter<PostCollectionP
 		});
 	}
 	
+	public void disableUpdates(){
+		EventBus.getInstance().remove(this);
+	}
 
 	public boolean isExpanded() {
 		return expanded;
@@ -90,28 +93,31 @@ public final class PostCollectionPresenter extends BasePresenter<PostCollectionP
 
 	public void addPostsToPostList(List<GPost> postList, Mode mode) {
 		for(GPost post : postList){
-			if(post.isMovie()){
-				ReviewSummaryListPanel reviewSummaryListPanel = injector.createReviewSummaryListPanel();
-				reviewSummaryListPanel.init(post);
-				getView().getPostWidgets().add(reviewSummaryListPanel);
-			}
-//			else if(post.isSuggestSummary()){
-//				PostSummaryPanel postSummaryPanel = injector.createPostSummaryPanel();
-//				postSummaryPanel.init(post);
-//				getView().getPostWidgets().add(postSummaryPanel);
-//				postPresenters.add(postSummaryPanel);
+			PostPresenterCommon postPresenter = createPostPresenter(mode, post);
+			getView().getPostWidgets().add((Widget)postPresenter);
+			postPresenters.add(postPresenter);
+//			if(post.isMovie()){
+//				ReviewSummaryListPanel reviewSummaryListPanel = injector.createReviewSummaryListPanel();
+//				reviewSummaryListPanel.init(post);
+//				getView().getPostWidgets().add(reviewSummaryListPanel);
 //			}
+////			else if(post.isSuggestSummary()){
+////				PostSummaryPanel postSummaryPanel = injector.createPostSummaryPanel();
+////				postSummaryPanel.init(post);
+////				getView().getPostWidgets().add(postSummaryPanel);
+////				postPresenters.add(postSummaryPanel);
+////			}
+////			else{
+////				PostPanel postPanel = injector.createPostPanel();
+////				postPanel.setPost(post,mode);
+////				getView().getPostWidgets().add(postPanel);
+////				postPresenters.add(postPanel);
+////			}
 //			else{
-//				PostPanel postPanel = injector.createPostPanel();
-//				postPanel.setPost(post,mode);
-//				getView().getPostWidgets().add(postPanel);
-//				postPresenters.add(postPanel);
+//				PostPresenterCommon postPresenter = createPostPresenter(mode, post);
+//				getView().getPostWidgets().add((Widget)postPresenter);
+//				postPresenters.add(postPresenter);
 //			}
-			else{
-				PostPresenterCommon postPresenter = createPostPresenter(mode, post);
-				getView().getPostWidgets().add((Widget)postPresenter);
-				postPresenters.add(postPresenter);
-			}
 		}
 	}
 	
@@ -132,7 +138,12 @@ public final class PostCollectionPresenter extends BasePresenter<PostCollectionP
 	
 	private PostPresenterCommon createPostPresenter(Mode mode, GPost post) {
 		PostPresenterCommon postPresenter;
-		if(post.isSuggestSummary()){
+		if(post.isMovie()){
+			ReviewSummaryListPanel reviewSummaryListPanel = injector.createReviewSummaryListPanel();
+			reviewSummaryListPanel.init(post);
+			postPresenter = reviewSummaryListPanel;
+		}
+		else if(post.isSuggestSummary()){
 			ChildPostPanel childPostPanel = injector.createChildPostPanel();
 			childPostPanel.init(post);
 			postPresenter = childPostPanel;
@@ -189,32 +200,9 @@ public final class PostCollectionPresenter extends BasePresenter<PostCollectionP
 
 	@Override
 	public void onPostEvent(PostEvent postEvent) {
-		if(postEvent.getType().isExpandContract()){
-			for(PostPresenterCommon postPresenter : postPresenters){
-				//TODO think about adding a useful method to the PostPresenterCommon interface for this?
-//				if(postPresenter instanceof PostSummaryPresenter)
-//					((PostSummaryPresenter)postPresenter).contractPost();
-				postPresenter.contractPost();
-			}
-		}
 		GPost newPost = postEvent.getSource();
 		if(postEvent.getType().isLocalNew()){
-			if(Mode.NESTED_SUMMARY.equals(mode)){
-				if(conversationStarterPost == null && newPost.isThreadPost()){
-					List<GPost> list = new ArrayList<GPost>();
-					list.add(newPost);
-					insertPostsToPostList(list,mode);			
-				}
-				else if(conversationStarterPost != null && conversationStarterPost.equals(newPost.getThread())){
-					PostSummaryPanel postSummaryPanel = injector.createPostSummaryPanel();
-					postSummaryPanel.init(newPost);
-					postPresenters.add(postSummaryPanel);
-					Collections.sort(postPresenters,new PostPresenterCommon.PostPresenterComparitorByPath());
-					resetPostPresentersInView();
-					
-				}
-			}
-			else if(Mode.GROUPED.equals(mode)){
+			if(Mode.GROUPED.equals(mode)){
 				if(conversationStarterPost == null && newPost.isThreadPost()){
 					List<GPost> list = new ArrayList<GPost>();
 					list.add(newPost);
@@ -235,5 +223,32 @@ public final class PostCollectionPresenter extends BasePresenter<PostCollectionP
 				insertPostsToPostList(list,mode);	
 			}
 		}
+	}
+	
+	private PostPresenterCommon findPostPresenter(String postId){
+		for(PostPresenterCommon presenter : postPresenters){
+			if(presenter.getPostId().equals(postId)){
+				return presenter;
+			}
+		}
+		return null;
+	}
+
+	public void removePost(String postId) {
+		PostPresenterCommon postPresenter = findPostPresenter(postId);
+		postPresenter.getWidget().removeFromParent();
+		postPresenters.remove(postPresenter);
+	}
+	
+	public void addPost(GPost post){
+		List<GPost> list = new ArrayList<GPost>();
+		list.add(post);
+		addPostsToPostList(list, mode);
+	}
+	
+	public void insertPost(GPost post){
+		List<GPost> list = new ArrayList<GPost>();
+		list.add(post);
+		insertPostsToPostList(list, mode);
 	}
 }

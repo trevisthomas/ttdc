@@ -228,30 +228,34 @@ public class PostPanel extends PostBaseComposite implements PostPresenterCommon,
 		embedTargetElement.setId(post.getPostId());
 							
 		if(post.getPosts().size() != 0){
-			//postCollectionPresenter = injector.getPostCollectionPresenter();
-			//postCollectionPresenter.setPostList(post.getPosts(), Mode.FLAT);
 			postCollectionPresenter.setPostList(post.getPosts(), mode);
+			setupFetchMoreClickHandlerTitle();
 			
-			//A post will have only one child widget that widget will be 
-			//a widget containing all of the children
-			//view.getChildWidgetBucket().add(postCollectionPresenter.getWidget());
-			
-			if(Mode.NESTED_SUMMARY.equals(mode) && postCollectionPresenter.size() < post.getMass()){
-				
-				//setupFetchMoreClickHandlerTitle();
-				//view.fetchMoreTarget().addClickHandler(buildFetchMoreResultsClickHandler(cmd));
-				setupFetchMoreClickHandlerTitle();
-			}
-			
-			if(Mode.GROUPED.equals(mode) && postCollectionPresenter.size() < post.getMass()){
-				
-				//setupFetchMoreClickHandlerTitle();
-				//view.fetchMoreTarget().addClickHandler(buildFetchMoreResultsClickHandler(cmd));
-				setupFetchMoreClickHandlerTitle();
-			}
+//			//postCollectionPresenter = injector.getPostCollectionPresenter();
+//			//postCollectionPresenter.setPostList(post.getPosts(), Mode.FLAT);
+//			postCollectionPresenter.setPostList(post.getPosts(), mode);
+//			
+//			//A post will have only one child widget that widget will be 
+//			//a widget containing all of the children
+//			//view.getChildWidgetBucket().add(postCollectionPresenter.getWidget());
+//			
+//			if(Mode.NESTED_SUMMARY.equals(mode) && postCollectionPresenter.size() < post.getMass()){
+//				
+//				//setupFetchMoreClickHandlerTitle();
+//				//view.fetchMoreTarget().addClickHandler(buildFetchMoreResultsClickHandler(cmd));
+//				setupFetchMoreClickHandlerTitle();
+//			}
+//			
+//			if(Mode.GROUPED.equals(mode) && postCollectionPresenter.size() < post.getMass()){
+//				
+//				//setupFetchMoreClickHandlerTitle();
+//				//view.fetchMoreTarget().addClickHandler(buildFetchMoreResultsClickHandler(cmd));
+//				setupFetchMoreClickHandlerTitle();
+//			}
 		}
 		else{
-			postCollectionPresenter.setPostList(new ArrayList<GPost>(), mode);
+			//Is this why i had those extra listeners?!
+		//	postCollectionPresenter.setPostList(new ArrayList<GPost>(), mode);
 		}
 		
 		
