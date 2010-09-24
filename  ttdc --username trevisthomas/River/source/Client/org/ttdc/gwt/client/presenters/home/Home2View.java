@@ -120,7 +120,7 @@ public class Home2View implements Home2Presenter.View{
 	private void updateHistoryToReflectCenterTabSelection(int index) {
 		switch (index){
 			case INDEX_NESTED:
-				token.setParameter(HistoryConstants.TAB_KEY, HistoryConstants.HOME_LATEST_TAB);
+				token.setParameter(HistoryConstants.TAB_KEY, HistoryConstants.HOME_GROUPED_TAB);
 				break;
 			case INDEX_FLAT:
 				token.setParameter(HistoryConstants.TAB_KEY, HistoryConstants.HOME_FLAT_TAB);

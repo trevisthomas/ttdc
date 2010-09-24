@@ -3,9 +3,12 @@ package org.ttdc.gwt.client.presenters.home;
 
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GPost;
+import org.ttdc.gwt.client.beans.GTag;
+import org.ttdc.gwt.client.messaging.ConnectionId;
 import org.ttdc.gwt.client.messaging.EventBus;
 import org.ttdc.gwt.client.messaging.tag.TagEvent;
 import org.ttdc.gwt.client.messaging.tag.TagEventListener;
+import org.ttdc.gwt.client.messaging.tag.TagEventType;
 import org.ttdc.gwt.client.presenters.post.Mode;
 import org.ttdc.gwt.client.presenters.post.PostCollectionPresenter;
 import org.ttdc.gwt.client.presenters.shared.BasePresenter;
@@ -37,13 +40,15 @@ public class EarmarkedPresenter extends BasePresenter<EarmarkedPresenter.View> i
 	}
 
 	public void init(){
-		view.postPanel().add(injector.getWaitPresenter().getWidget());
-		postCollection = injector.getPostCollectionPresenter();
 		if(resultCache == null){
+			view.postPanel().clear();
+			view.postPanel().add(injector.getWaitPresenter().getWidget());
+			postCollection = injector.getPostCollectionPresenter();
+			postCollection.disableUpdates();
 			refresh();
 		}
 		else{
-			showResult(resultCache);
+			//showResult(resultCache);
 		}
 	}
 	
@@ -78,9 +83,15 @@ public class EarmarkedPresenter extends BasePresenter<EarmarkedPresenter.View> i
 
 	@Override
 	public void onTagEvent(TagEvent event) {
-		if(event.getSource().getTag().getType().equals(TagConstants.TYPE_EARMARK)){
-			//refresh();
-			resultCache = null;
-		}
+		if(event.isByPerson(ConnectionId.getInstance().getCurrentUser(), TagConstants.TYPE_EARMARK)){
+			//resultCache = null;
+			GPost post = event.getSource().getPost();
+			if(event.is(TagEventType.NEW)){
+				postCollection.insertPost(post);
+			}
+			else{
+				postCollection.removePost(post.getPostId());
+			}
+		}		
 	}
 }

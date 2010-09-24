@@ -91,7 +91,7 @@ public class AssociationPostTagCommandExecutor extends CommandExecutor<Associati
 		result.setAssociationId(ass.getGuid());
 		
 		broadcastPostEvent(post, PostEventType.EDIT);
-		broadcastTagAssociation(ass, TagEventType.NEW);
+		broadcastTagAssociation(gAss, TagEventType.NEW);
 		
 		Persistence.commit();
 		
@@ -149,7 +149,7 @@ public class AssociationPostTagCommandExecutor extends CommandExecutor<Associati
 //		result.setAssociationPostTag(gAss);
 //		
 		//Should probably instead be broadcasting a post update...
-		broadcastTagAssociation(ass, TagEventType.REMOVED);
+		broadcastTagAssociation(gAss, TagEventType.REMOVED);
 		
 		Persistence.commit();
 		
@@ -165,9 +165,8 @@ public class AssociationPostTagCommandExecutor extends CommandExecutor<Associati
 		fullTextSession.index(localTag);
 	}
 
-	private void broadcastTagAssociation(AssociationPostTag ass, TagEventType eventType) {
+	private void broadcastTagAssociation(GAssociationPostTag gAss, TagEventType eventType) {
 		ServerEventBroadcaster broadcaster = ServerEventBroadcaster.getInstance();
-		GAssociationPostTag gAss = GenericBeanConverter.convertAssociationPostTag(ass);
 		TagEvent tagEvent = new TagEvent(eventType,gAss);
 		broadcaster.broadcastEvent(tagEvent, getCommand().getConnectionId());
 	}

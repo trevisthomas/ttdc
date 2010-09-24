@@ -49,6 +49,16 @@ public class EventBus {
 		historyNotificationListener.clear();
 	}
 	
+	public void remove(Object listener){
+		postListeners.remove(listener);
+		tagListeners.remove(listener);
+		calListeners.remove(listener);
+		historyListeners.remove(listener);
+		personListeners.remove(listener);
+		errorListeners.remove(listener);
+		historyNotificationListener.remove(listener);
+	}
+	
 	private static class SingletonHolder {
 		private final static EventBus INSTANCE = new EventBus();
 	}
