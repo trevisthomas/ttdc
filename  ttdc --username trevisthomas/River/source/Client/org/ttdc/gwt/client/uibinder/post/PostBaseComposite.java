@@ -84,6 +84,100 @@ abstract public class PostBaseComposite extends Composite{
     	return actionLinks;
 	}
 	
+	public IconOptionsPanel buildBoundOptionsIconPanel(final GPost post){
+		IconOptionsPanel optionsListPanel = injector.createIconOptionPanel();
+		optionsListPanel.init(post);
+		
+		optionsListPanel.addReplyClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				showCommentEditor();
+			}
+		});
+		
+		optionsListPanel.addRatingClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				MovieRatingPresenter movieRatingPresenter = injector.getMovieRatingPresenter();
+				movieRatingPresenter.setRatablePost(post);
+				commentElement.clear();
+				commentElement.add(movieRatingPresenter.getWidget());
+			}
+		});
+		
+		optionsListPanel.addUnRateClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				//Window.alert("Unrate "+post.getTitle());
+				processRemoveRatingRequest();
+			}
+		});
+		
+		optionsListPanel.addEditClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				if(post.isMovie()){
+					showMovieEditor();
+				}
+				else{
+					showEditCommentEditor();
+				}
+			}
+		});
+		
+		optionsListPanel.addMuteThreadClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				processMuteThreadRequest();
+			}
+		});
+		
+		optionsListPanel.addUnMuteThreadClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				processUnMuteThreadRequest();
+			}
+		});
+		
+		optionsListPanel.addLikePostClickHandler(new ClickHandler(){
+			@Override
+			public void onClick(ClickEvent event) {
+				processLikePostRequest();
+			}
+		});
+		
+		optionsListPanel.addUnLikePostClickHandler(new ClickHandler(){
+			@Override
+			public void onClick(ClickEvent event) {
+				processUnLikePostRequest();
+			}
+		});
+		
+		optionsListPanel.addEarmarkClickHandler(new ClickHandler(){
+			@Override
+			public void onClick(ClickEvent event) {
+				processEarmarkPostRequest();
+			}
+		});
+		
+		optionsListPanel.addUnEarmarkClickHandler(new ClickHandler(){
+			@Override
+			public void onClick(ClickEvent event) {
+				processUnEarmarkPostRequest();
+			}
+		});
+		
+		optionsListPanel.addTagClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				//processMuteThreadRequest();
+				processTagPostRequest();
+			}
+		});
+		
+		return optionsListPanel;
+	}
+	
 	public PostOptionsListPanel buildBoundOptionsListPanel(final GPost post) {
 		PostOptionsListPanel optionsListPanel = injector.createPostOptionsListPanel();
 		optionsListPanel.init(post);
@@ -178,100 +272,100 @@ abstract public class PostBaseComposite extends Composite{
 		return optionsListPanel;
 	}
 	
-	private void initializeOptionsPopup(final GPost post, Widget showRelativeTo) {
-		optionsPanel = injector.createOptionsPanel();
-		optionsPanel.setAutoHideEnabled(true);
-		optionsPanel.init(post);
-		optionsPanel.showRelativeTo(showRelativeTo);
-		
-		optionsPanel.addReplyClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				showNewCommentEditor();
-			}
-		});
-		
-		optionsPanel.addRatingClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				MovieRatingPresenter movieRatingPresenter = injector.getMovieRatingPresenter();
-				movieRatingPresenter.setRatablePost(post);
-				commentElement.clear();
-				commentElement.add(movieRatingPresenter.getWidget());
-			}
-		});
-		
-		optionsPanel.addUnRateClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				//Window.alert("Unrate "+post.getTitle());
-				processRemoveRatingRequest();
-			}
-		});
-		
-		optionsPanel.addEditClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				if(post.isMovie()){
-					showMovieEditor();
-				}
-				else{
-					showEditCommentEditor();
-				}
-			}
-		});
-		
-		optionsPanel.addMuteThreadClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				processMuteThreadRequest();
-			}
-		});
-		
-		optionsPanel.addUnMuteThreadClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				processUnMuteThreadRequest();
-			}
-		});
-		
-		optionsPanel.addLikePostClickHandler(new ClickHandler(){
-			@Override
-			public void onClick(ClickEvent event) {
-				processLikePostRequest();
-			}
-		});
-		
-		optionsPanel.addUnLikePostClickHandler(new ClickHandler(){
-			@Override
-			public void onClick(ClickEvent event) {
-				processUnLikePostRequest();
-			}
-		});
-		
-		optionsPanel.addEarmarkClickHandler(new ClickHandler(){
-			@Override
-			public void onClick(ClickEvent event) {
-				processEarmarkPostRequest();
-			}
-		});
-		
-		optionsPanel.addUnEarmarkClickHandler(new ClickHandler(){
-			@Override
-			public void onClick(ClickEvent event) {
-				processUnEarmarkPostRequest();
-			}
-		});
-		
-		optionsPanel.addTagClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				//processMuteThreadRequest();
-				processTagPostRequest();
-			}
-		});
-		
-	}
+//	private void initializeOptionsPopup(final GPost post, Widget showRelativeTo) {
+//		optionsPanel = injector.createOptionsPanel();
+//		optionsPanel.setAutoHideEnabled(true);
+//		optionsPanel.init(post);
+//		optionsPanel.showRelativeTo(showRelativeTo);
+//		
+//		optionsPanel.addReplyClickHandler(new ClickHandler() {
+//			@Override
+//			public void onClick(ClickEvent event) {
+//				showNewCommentEditor();
+//			}
+//		});
+//		
+//		optionsPanel.addRatingClickHandler(new ClickHandler() {
+//			@Override
+//			public void onClick(ClickEvent event) {
+//				MovieRatingPresenter movieRatingPresenter = injector.getMovieRatingPresenter();
+//				movieRatingPresenter.setRatablePost(post);
+//				commentElement.clear();
+//				commentElement.add(movieRatingPresenter.getWidget());
+//			}
+//		});
+//		
+//		optionsPanel.addUnRateClickHandler(new ClickHandler() {
+//			@Override
+//			public void onClick(ClickEvent event) {
+//				//Window.alert("Unrate "+post.getTitle());
+//				processRemoveRatingRequest();
+//			}
+//		});
+//		
+//		optionsPanel.addEditClickHandler(new ClickHandler() {
+//			@Override
+//			public void onClick(ClickEvent event) {
+//				if(post.isMovie()){
+//					showMovieEditor();
+//				}
+//				else{
+//					showEditCommentEditor();
+//				}
+//			}
+//		});
+//		
+//		optionsPanel.addMuteThreadClickHandler(new ClickHandler() {
+//			@Override
+//			public void onClick(ClickEvent event) {
+//				processMuteThreadRequest();
+//			}
+//		});
+//		
+//		optionsPanel.addUnMuteThreadClickHandler(new ClickHandler() {
+//			@Override
+//			public void onClick(ClickEvent event) {
+//				processUnMuteThreadRequest();
+//			}
+//		});
+//		
+//		optionsPanel.addLikePostClickHandler(new ClickHandler(){
+//			@Override
+//			public void onClick(ClickEvent event) {
+//				processLikePostRequest();
+//			}
+//		});
+//		
+//		optionsPanel.addUnLikePostClickHandler(new ClickHandler(){
+//			@Override
+//			public void onClick(ClickEvent event) {
+//				processUnLikePostRequest();
+//			}
+//		});
+//		
+//		optionsPanel.addEarmarkClickHandler(new ClickHandler(){
+//			@Override
+//			public void onClick(ClickEvent event) {
+//				processEarmarkPostRequest();
+//			}
+//		});
+//		
+//		optionsPanel.addUnEarmarkClickHandler(new ClickHandler(){
+//			@Override
+//			public void onClick(ClickEvent event) {
+//				processUnEarmarkPostRequest();
+//			}
+//		});
+//		
+//		optionsPanel.addTagClickHandler(new ClickHandler() {
+//			@Override
+//			public void onClick(ClickEvent event) {
+//				//processMuteThreadRequest();
+//				processTagPostRequest();
+//			}
+//		});
+//		
+//	}
 	
 //	public TagListPanel getTagListPanel() {
 //		return tagListPanel;
@@ -459,12 +553,12 @@ abstract public class PostBaseComposite extends Composite{
 	}
 	
 	//@UiHandler("moreOptionsElement")
-	void onClickMoreOptions(ClickEvent event){
-		Widget source = (Widget) event.getSource();
-		initializeOptionsPopup(post,source);
-        //optionsPanel.showRelativeTo(source);
-		//injector.createSiteUpdatePanel();
-	}
+//	void onClickMoreOptions(ClickEvent event){
+//		Widget source = (Widget) event.getSource();
+//		initializeOptionsPopup(post,source);
+//        //optionsPanel.showRelativeTo(source);
+//		//injector.createSiteUpdatePanel();
+//	}
 	
 		
 	protected void setupLikesElement(GPost post, SimplePanel likesElement) {

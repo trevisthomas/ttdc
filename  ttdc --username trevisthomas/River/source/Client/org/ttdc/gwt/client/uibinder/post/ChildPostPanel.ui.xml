@@ -6,22 +6,20 @@
 	<g:HTMLPanel>
 		<g:FocusPanel ui:field="hoverDivElement">
 		<g:HTMLPanel styleName="tt-post-child" ui:field="outerElement">
-				<div class="tt-child-post-header tt-float-container">
+				<div class="tt-child-post-header">
 					<g:Widget styleName="tt-float-left" ui:field="avatarElement" />
-					<g:Label ui:field="postUnReadElement" />
-					<g:Label ui:field="postReadElement" />
-					<span class="tt-float-left tt-post-child-creator">
-						by <g:Hyperlink ui:field="creatorLinkElement" /> &rang;&rang;&rang; <g:Anchor styleName="tt-child-post-inReplyAnchor" ui:field="inReplyToElement"/>
-					</span>
-					<table class="tt-inline">
+					<table class="tt-inline tt-post-detail">
 						<tr>
+							<td><g:Label ui:field="postUnReadElement" /><g:Label ui:field="postReadElement" /></td>
 							<td><g:Label ui:field="postPrivateElement" /></td>
 							<td><g:Label ui:field="postNwsElement" /></td>
 							<td><g:Label ui:field="postInfElement" /></td>
+							<td>by <g:Hyperlink ui:field="creatorLinkElement" /> on <g:Widget styleName="tt-post-child-date" ui:field="createDateElement" /> in <g:Anchor styleName="tt-child-post-inReplyAnchor" ui:field="inReplyToElement"/> to <g:Hyperlink ui:field="inReplyToCreatorElement" /></td>
 						</tr>
 					</table>
-					<span class="tt-float-right tt-post-child-date">
-						<g:Widget ui:field="createDateElement" />
+					
+					<span class="tt-float-right">
+						<g:SimplePanel ui:field="actionLinks" />
 					</span>
 					
 				</div>
@@ -37,7 +35,6 @@
 					<g:SimplePanel ui:field="likesElement"></g:SimplePanel>
 					<g:Widget ui:field="tagsElement"></g:Widget>
 				</div>
-				<g:SimplePanel ui:field="actionLinks" />
 			
 		</g:HTMLPanel>
 		</g:FocusPanel>
