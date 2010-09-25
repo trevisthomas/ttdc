@@ -1,6 +1,7 @@
 package org.ttdc.gwt.client.uibinder.post;
 
 import org.ttdc.gwt.client.Injector;
+import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.messaging.EventBus;
 import org.ttdc.gwt.client.messaging.post.PostEvent;
@@ -49,6 +50,8 @@ public class ChildPostPanel extends PostBaseComposite implements PostEventListen
     @UiField (provided = true) Widget avatarElement;
     @UiField (provided = true) Widget createDateElement;
     @UiField (provided = true) Hyperlink creatorLinkElement;
+    @UiField (provided = true) Hyperlink inReplyToCreatorElement;
+    
     @UiField SimplePanel likesElement;
     @UiField Anchor inReplyToElement;
     @UiField SimplePanel inReplyPostElement;
@@ -57,7 +60,7 @@ public class ChildPostPanel extends PostBaseComposite implements PostEventListen
     
     
     private HyperlinkPresenter creatorLinkPresenter;
-    
+    private HyperlinkPresenter replyTocreatorLinkPresenter;
     private ImagePresenter imagePresenter;
     private HyperlinkPresenter createDatePresenter;
     private TagListPanel tagListPanel;
@@ -85,6 +88,7 @@ public class ChildPostPanel extends PostBaseComposite implements PostEventListen
     	creatorLinkPresenter = injector.getHyperlinkPresenter();
     	createDatePresenter = injector.getHyperlinkPresenter();
     	tagListPanel = injector.createTagListPanel();
+    	replyTocreatorLinkPresenter = injector.getHyperlinkPresenter();
     	
     	tagsElement = tagListPanel;
     	
@@ -92,7 +96,7 @@ public class ChildPostPanel extends PostBaseComposite implements PostEventListen
     	avatarElement = imagePresenter.getWidget();
     	creatorLinkElement = creatorLinkPresenter.getHyperlink();
     	createDateElement = createDatePresenter.getWidget();
-    	creatorLinkElement = creatorLinkPresenter.getHyperlink();
+    	inReplyToCreatorElement = replyTocreatorLinkPresenter.getHyperlink();
     	
     	initWidget(binder.createAndBindUi(this));
     	
@@ -168,8 +172,13 @@ public class ChildPostPanel extends PostBaseComposite implements PostEventListen
 		setPost(post);
 		tagListPanel.init(post, TagListPanel.Mode.EDITABLE);
 		
-		inReplyToElement.setHTML("@"+post.getParentPostCreator());
+		inReplyToElement.setHTML("response");
 		inReplyToElement.setTitle("Click to view in reply to");
+		
+		GPerson replyToCreator = new GPerson();
+		replyToCreator.setLogin(post.getParentPostCreator());
+		replyToCreator.setPersonId(post.getParentPostCreatorId());
+		replyTocreatorLinkPresenter.setPerson(replyToCreator);
 		
 		postIconTool.init(post);
 		
@@ -194,7 +203,7 @@ public class ChildPostPanel extends PostBaseComposite implements PostEventListen
 		setupLikesElement(post, likesElement);
 		
 		actionLinks.clear();
-		actionLinks.add(buildBoundOptionsListPanel(post));
+		actionLinks.add(buildBoundOptionsIconPanel(post));
 	}
 
 	@Override

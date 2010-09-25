@@ -1,0 +1,18 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<!-- The above doctype is to allow for special html characters in this xml file -->
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+    xmlns:g='urn:import:com.google.gwt.user.client.ui'
+    xmlns:t='urn:import:org.ttdc.gwt.client.presenters.util'>
+
+	<g:HTMLPanel>
+		<table>
+			<tr>
+				<td><t:ClickableIconPanel ui:field="replyElement" /></td>
+				<td><t:ClickableIconPanel ui:field="likeElement" /><t:ClickableIconPanel ui:field="unLikeElement" /></td>
+				<td><t:ClickableIconPanel ui:field="moreOptionsElement" /></td>
+			</tr>
+		</table>
+	</g:HTMLPanel>
+	
+</ui:UiBinder>

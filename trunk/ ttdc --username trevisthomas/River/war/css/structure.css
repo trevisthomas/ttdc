@@ -25,13 +25,12 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 .tt-text-nano{font-size:7px;}
 
 .tt-plain-post-date,
-.tt-post-child-date,
 .tt-text-mini{font-size:9px;}
 
 .tt-plain-post-date{margin-top: -1px;}
 
 
-
+.tt-post-detail,
 .tt-plain-post-creator,
 .tt-comment-editor-info,
 .tt-traffic-date,
@@ -40,7 +39,6 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 .tt-post-panel-head-date,
 .tt-text-small{font-size:10px;}
 	
-.tt-child-post-inReplyAnchor,
 .tt-plain-post-header,
 .tt-traffic-login,
 .tt-reviewSummary,
@@ -184,6 +182,7 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 
 .tt-calendar-scale-button{padding:2px; margin:1px;}
 
+.tt-post-child-date,
 .tt-plain-post-date,
 .tt-plain-post-creator,
 .tt-inline{ display:inline; }
@@ -323,6 +322,9 @@ side effects in non mozilla browsers in the comment creator
 .tt-active-post-box ul{ margin: 2px;}
 .tt-active-post-box li{display: inline; padding: 1px 3px; }
 
+.tt-more-options-popup { margin: 0; padding: 0; text-align: left; list-style-type: none;}
+.tt-more-options-popup li{ padding: 1px 3px; }
+
 .tt-comment-editor-checkboxes li,
 .tt-navigation li{display: inline; margin: 0;padding: 0;}
 
@@ -330,7 +332,7 @@ side effects in non mozilla browsers in the comment creator
 
 .tt-reviewSummaryList-header{font-size: 15px; font-weight: bolder;}
 
-.gwt-PopupPanel { border: 3px solid; padding: 3px; }
+.gwt-PopupPanel { border: 1px solid; padding: 2px; }
 
 
 .gwt-SuggestBox {  padding: 2px;   width: 100%;}

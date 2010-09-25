@@ -34,6 +34,9 @@ public class UnorderedListWidget extends ComplexPanel
 		super.add(w, getElement());
 	}
 	
+	public void addItem(Widget widget){
+		add(new ListItemWidget(widget));
+	}
 	public void loadHyperlinks(List<Hyperlink> links)
 	{
 		clear();
