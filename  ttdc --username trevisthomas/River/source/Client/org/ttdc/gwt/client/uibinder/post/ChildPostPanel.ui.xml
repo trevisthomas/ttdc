@@ -2,39 +2,26 @@
 <!-- The above doctype is to allow for special html characters in this xml file -->
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'
-	xmlns:t='urn:import:org.ttdc.gwt.client.presenters.util'>
+	xmlns:t='urn:import:org.ttdc.gwt.client.presenters.util'
+	xmlns:u='urn:import:org.ttdc.gwt.client.uibinder.post'>
 	<g:HTMLPanel>
 		<g:FocusPanel ui:field="hoverDivElement">
 		<g:HTMLPanel styleName="tt-post-child" ui:field="outerElement">
-				<div class="tt-child-post-header">
-					<g:Widget styleName="tt-float-left" ui:field="avatarElement" />
-					<table class="tt-inline tt-post-detail">
-						<tr>
-							<td><g:Label ui:field="postUnReadElement" /><g:Label ui:field="postReadElement" /></td>
-							<td><g:Label ui:field="postPrivateElement" /></td>
-							<td><g:Label ui:field="postNwsElement" /></td>
-							<td><g:Label ui:field="postInfElement" /></td>
-							<td>by <g:Hyperlink ui:field="creatorLinkElement" /> on <g:Widget styleName="tt-post-child-date" ui:field="createDateElement" /> in <g:Anchor styleName="tt-child-post-inReplyAnchor" ui:field="inReplyToElement"/> to <g:Hyperlink ui:field="inReplyToCreatorElement" /></td>
-						</tr>
-					</table>
-					
-					<span class="tt-float-right">
-						<g:SimplePanel ui:field="actionLinks" />
-					</span>
-					
-				</div>
-											
-				<div class="tt-child-post-content" >
-					<g:SimplePanel ui:field="inReplyPostElement"/>
-					<span class="tt-post-body tt-text-normal" ui:field="bodyElement" />
-				</div>
-				<div class="tt-fill tt-text-right tt-text-mini">
-					
-				</div>
-				<div class="tt-post-footer">
-					<g:SimplePanel ui:field="likesElement"></g:SimplePanel>
-					<g:Widget ui:field="tagsElement"></g:Widget>
-				</div>
+		
+			<div class="tt-child-post-header">
+				<u:PostDetailPanel ui:field="postDetailPanelElement" />
+			</div>
+			<div class="tt-child-post-content" >
+				<g:SimplePanel ui:field="inReplyPostElement"/>
+				<span class="tt-post-body tt-text-normal" ui:field="bodyElement" />
+			</div>
+			<div class="tt-fill tt-text-right tt-text-mini">
+				
+			</div>
+			<div class="tt-post-footer">
+				<g:SimplePanel ui:field="likesElement"></g:SimplePanel>
+				<g:Widget ui:field="tagsElement"></g:Widget>
+			</div>
 			
 		</g:HTMLPanel>
 		</g:FocusPanel>

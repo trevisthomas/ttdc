@@ -1,7 +1,5 @@
 package org.ttdc.gwt.client.uibinder.post;
 
-import java.util.List;
-
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GAssociationPostTag;
 import org.ttdc.gwt.client.beans.GPerson;
@@ -16,16 +14,13 @@ import org.ttdc.gwt.client.messaging.person.PersonEvent;
 import org.ttdc.gwt.client.messaging.person.PersonEventType;
 import org.ttdc.gwt.client.messaging.post.PostEvent;
 import org.ttdc.gwt.client.messaging.post.PostEventType;
-import org.ttdc.gwt.client.presenters.comments.NewCommentPresenter;
 import org.ttdc.gwt.client.presenters.movies.MovieRatingPresenter;
-import org.ttdc.gwt.client.presenters.post.LikesPresenter;
-import org.ttdc.gwt.client.presenters.post.PostPresenterCommon;
 import org.ttdc.gwt.client.services.RpcServiceAsync;
 import org.ttdc.gwt.client.uibinder.comment.CommentEditorPanel;
 import org.ttdc.gwt.shared.commands.AssociationPostTagCommand;
+import org.ttdc.gwt.shared.commands.AssociationPostTagCommand.Mode;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
 import org.ttdc.gwt.shared.commands.UserObjectCrudCommand;
-import org.ttdc.gwt.shared.commands.AssociationPostTagCommand.Mode;
 import org.ttdc.gwt.shared.commands.results.GenericCommandResult;
 import org.ttdc.gwt.shared.commands.types.ActionType;
 
@@ -35,16 +30,13 @@ import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
-import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.Widget;
 
 abstract public class PostBaseComposite extends Composite{
-	private MoreOptionsPopupPanel optionsPanel;
-	
+		
 	protected Injector injector;
 	private HasWidgets commentElement;
 	private TagListPanel tagListPanel;
@@ -518,13 +510,6 @@ abstract public class PostBaseComposite extends Composite{
 		tagListPanel.showEditor();
 	}
 	
-	protected void showNewCommentEditor() {
-		NewCommentPresenter commentPresneter = injector.getNewCommentPresenter();
-		commentPresneter.init(NewCommentPresenter.Mode.CREATE, post);
-		commentElement.clear();
-		commentElement.add(commentPresneter.getWidget());
-	}
-	
 	protected void showCommentEditor(){
 		CommentEditorPanel commentEditor = injector.createCommentEditorPanel();
 		commentEditor.init(CommentEditorPanel.Mode.CREATE, post);
@@ -561,19 +546,19 @@ abstract public class PostBaseComposite extends Composite{
 //	}
 	
 		
-	protected void setupLikesElement(GPost post, SimplePanel likesElement) {
-		List<GAssociationPostTag> likeList = post.readTagAssociations(TagConstants.TYPE_LIKE);
-		if(likeList.size() > 0){
-			likesElement.setVisible(true);
-			LikesPresenter likesPresenter = injector.getLikesPresenter();
-			likesPresenter.init(likeList);
-			likesElement.clear();
-			likesElement.add(likesPresenter.getWidget());
-		}
-		else{
-			likesElement.setVisible(false);
-		}
-	}
+//	protected void setupLikesElement(GPost post, SimplePanel likesElement) {
+//		List<GAssociationPostTag> likeList = post.readTagAssociations(TagConstants.TYPE_LIKE);
+//		if(likeList.size() > 0){
+//			likesElement.setVisible(true);
+//			LikesPresenter likesPresenter = injector.getLikesPresenter();
+//			likesPresenter.init(likeList);
+//			likesElement.clear();
+//			likesElement.add(likesPresenter.getWidget());
+//		}
+//		else{
+//			likesElement.setVisible(false);
+//		}
+//	}
 
 	public GPost getPost() {
 		return post;

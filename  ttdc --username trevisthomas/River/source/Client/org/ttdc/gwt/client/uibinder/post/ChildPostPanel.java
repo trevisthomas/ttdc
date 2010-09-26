@@ -12,28 +12,18 @@ import org.ttdc.gwt.client.presenters.post.PostPresenterCommon;
 import org.ttdc.gwt.client.presenters.shared.HyperlinkPresenter;
 import org.ttdc.gwt.client.presenters.shared.ImagePresenter;
 import org.ttdc.gwt.client.presenters.util.DateFormatUtil;
-import org.ttdc.gwt.shared.commands.CommandResultCallback;
-import org.ttdc.gwt.shared.commands.PostCrudCommand;
-import org.ttdc.gwt.shared.commands.results.PostCommandResult;
-import org.ttdc.gwt.shared.commands.types.PostActionType;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.SpanElement;
-import com.google.gwt.event.dom.client.BlurEvent;
-import com.google.gwt.event.dom.client.BlurHandler;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.Hyperlink;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -43,21 +33,15 @@ import com.google.inject.Inject;
  * @author Trevis
  *
  */
-public class ChildPostPanel extends PostBaseComposite implements PostEventListener, PostPresenterCommon{
+public class ChildPostPanel extends Composite implements PostEventListener, PostPresenterCommon{
 	interface MyUiBinder extends UiBinder<Widget, ChildPostPanel> {}
     private static final MyUiBinder binder = GWT.create(MyUiBinder.class);
     
-    @UiField (provided = true) Widget avatarElement;
-    @UiField (provided = true) Widget createDateElement;
-    @UiField (provided = true) Hyperlink creatorLinkElement;
-    @UiField (provided = true) Hyperlink inReplyToCreatorElement;
+//    @UiField (provided = true) Widget avatarElement;
+    @UiField (provided = true) PostDetailPanel postDetailPanelElement;
     
-    @UiField SimplePanel likesElement;
-    @UiField Anchor inReplyToElement;
-    @UiField SimplePanel inReplyPostElement;
-    @UiField (provided = true) Widget tagsElement;
+    
     @UiField HTMLPanel outerElement;
-    
     
     private HyperlinkPresenter creatorLinkPresenter;
     private HyperlinkPresenter replyTocreatorLinkPresenter;
@@ -67,21 +51,19 @@ public class ChildPostPanel extends PostBaseComposite implements PostEventListen
     
     PostIconTool postIconTool = new PostIconTool();
     
-    @UiField(provided = true) Label postPrivateElement = postIconTool.getIconPrivate();
-    @UiField(provided = true) Label postNwsElement = postIconTool.getIconNws();
-    @UiField(provided = true) Label postInfElement = postIconTool.getIconInf();
-    @UiField(provided = true) Label postUnReadElement = postIconTool.getIconUnread();
-    @UiField(provided = true) Label postReadElement = postIconTool.getIconRead();
-    
     @UiField(provided = true) FocusPanel hoverDivElement = new FocusPanel();
-    @UiField(provided = true) SimplePanel actionLinks = createPostActionLinks(hoverDivElement);    
+    @UiField SimplePanel likesElement;
+    @UiField (provided = true) Widget tagsElement ;
+    @UiField SimplePanel inReplyPostElement;
     
 	@UiField SpanElement bodyElement;
 	@UiField SimplePanel commentElement;
+	private Injector injector;
+	private GPost post;
 	
 	@Inject
 	public ChildPostPanel(Injector injector) {
-		super(injector);
+		this.injector = injector;
 		imagePresenter = injector.getImagePresenter();
     	
     	imagePresenter = injector.getImagePresenter();
@@ -90,21 +72,15 @@ public class ChildPostPanel extends PostBaseComposite implements PostEventListen
     	tagListPanel = injector.createTagListPanel();
     	replyTocreatorLinkPresenter = injector.getHyperlinkPresenter();
     	
+//    	avatarElement = imagePresenter.getWidget();
     	tagsElement = tagListPanel;
-    	
-    	
-    	avatarElement = imagePresenter.getWidget();
-    	creatorLinkElement = creatorLinkPresenter.getHyperlink();
-    	createDateElement = createDatePresenter.getWidget();
-    	inReplyToCreatorElement = replyTocreatorLinkPresenter.getHyperlink();
+    	postDetailPanelElement = injector.createPostDetailPanel();
     	
     	initWidget(binder.createAndBindUi(this));
     	
-    	postUnReadElement.addStyleName("tt-float-left");
-    	postReadElement.addStyleName("tt-float-left");
     	
     	//commentElement.setVisible(false);
-    	inReplyPostElement.setVisible(false);
+    	
     	
     	outerElement.addStyleName("tt-post-child-noHover");
     	hoverDivElement.addMouseOverHandler(new MouseOverHandler() {
@@ -127,9 +103,11 @@ public class ChildPostPanel extends PostBaseComposite implements PostEventListen
 	}
 	
 	public void init(GPost post){
-		super.init(post, commentElement, tagListPanel);
+		this.post = post;
+		postDetailPanelElement.init(post, commentElement, tagListPanel, inReplyPostElement);
 		refreshPost(post);
 		EventBus.getInstance().addListener(this);
+		inReplyPostElement.setVisible(false);
 	}
 	
 	@Override
@@ -139,41 +117,9 @@ public class ChildPostPanel extends PostBaseComposite implements PostEventListen
 		}
 	}
 
-	@UiHandler("inReplyToElement")
-	public void onClickInReplyTo(ClickEvent e){
-		PostCrudCommand cmd = new PostCrudCommand();
-		cmd.setAction(PostActionType.READ);
-		cmd.setPostId(getPost().getParentPostId());
-		
-		CommandResultCallback<PostCommandResult> callback = buildEditPostCallback();
-		injector.getService().execute(cmd,callback);
-	}
-	
-	private CommandResultCallback<PostCommandResult> buildEditPostCallback() {
-		CommandResultCallback<PostCommandResult> callback = new CommandResultCallback<PostCommandResult>(){
-			@Override
-			public void onSuccess(PostCommandResult result) {
-				// create the inreply dealy and show it
-				PlainPostPanel panel = injector.createPlainPostPanel();
-				panel.init(result.getPost());
-				inReplyPostElement.setVisible(true);
-				inReplyPostElement.clear();
-				inReplyPostElement.add(panel);
-			}
-			@Override
-			public void onFailure(Throwable caught) {
-				super.onFailure(caught);
-			}
-		};
-		return callback;
-	}
 	
 	private void refreshPost(GPost post) {
-		setPost(post);
 		tagListPanel.init(post, TagListPanel.Mode.EDITABLE);
-		
-		inReplyToElement.setHTML("response");
-		inReplyToElement.setTitle("Click to view in reply to");
 		
 		GPerson replyToCreator = new GPerson();
 		replyToCreator.setLogin(post.getParentPostCreator());
@@ -184,31 +130,29 @@ public class ChildPostPanel extends PostBaseComposite implements PostEventListen
 		
 		bodyElement.setInnerHTML(post.getEntry());
 		
-		if(post.isRootPost() || post.isThreadPost()){
-			imagePresenter.setImage(post.getCreator().getImage(), post.getCreator().getLogin(), 50, 50);
-			avatarElement.setWidth("50px");
-			avatarElement.setHeight("50px");
-		}
-		else{
-			imagePresenter.setImage(post.getCreator().getImage(), post.getCreator().getLogin(), 20, 20);
-			avatarElement.setWidth("20px");
-			avatarElement.setHeight("20px");
-		}
+//		imagePresenter.setImage(post.getCreator().getImage(), post.getCreator().getLogin(), 20, 20);
+//		avatarElement.setWidth("20px");
+//		avatarElement.setHeight("20px");
+		
 		imagePresenter.useThumbnail(true);
 		imagePresenter.init();
 		createDatePresenter.setDate(post.getDate(), DateFormatUtil.longDateFormatter);
 		creatorLinkPresenter.setPerson(post.getCreator());
 		creatorLinkPresenter.init();
 		
-		setupLikesElement(post, likesElement);
+		PostPanelHelper.setupLikesElement(post, likesElement, injector);
 		
-		actionLinks.clear();
-		actionLinks.add(buildBoundOptionsIconPanel(post));
+	}
+	
+	@Override
+	public Widget getWidget() {
+		return this;
 	}
 
 	@Override
 	public void contractPost() {
-		//Deprecated?
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
@@ -218,11 +162,12 @@ public class ChildPostPanel extends PostBaseComposite implements PostEventListen
 
 	@Override
 	public void expandPost() {
-		//Deprecated?
+		// TODO Auto-generated method stub
+		
 	}
-	
+
 	@Override
-	public Widget getWidget() {
-		return this;
+	public GPost getPost() {
+		return post;
 	}
 }
