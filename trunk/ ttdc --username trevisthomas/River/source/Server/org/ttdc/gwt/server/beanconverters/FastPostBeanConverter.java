@@ -9,6 +9,7 @@ import org.hibernate.Hibernate;
 import org.mortbay.log.Log;
 import org.ttdc.gwt.client.beans.GAssociationPostTag;
 import org.ttdc.gwt.client.beans.GEntry;
+import org.ttdc.gwt.client.beans.GForum;
 import org.ttdc.gwt.client.beans.GImage;
 import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.beans.GPost;
@@ -27,6 +28,7 @@ import org.ttdc.gwt.shared.calender.Hour;
 import org.ttdc.gwt.shared.util.StringUtil;
 import org.ttdc.persistence.objects.AssociationPostTag;
 import org.ttdc.persistence.objects.Entry;
+import org.ttdc.persistence.objects.Forum;
 import org.ttdc.persistence.objects.Image;
 import org.ttdc.persistence.objects.ImageFull;
 import org.ttdc.persistence.objects.Person;
@@ -345,8 +347,18 @@ public class FastPostBeanConverter {
 		rpcTag.setTagId(t.getTagId());
 		rpcTag.setType(t.getType());
 		rpcTag.setValue(t.getValue());
-		rpcTag.setMass(t.getMass());
+		//rpcTag.setMass(t.getMass());
 		return rpcTag;
+	}
+	
+	public static GForum convertForum(Forum t){
+		GForum gForum = new GForum();
+		gForum.setDate(t.getDate());
+		gForum.setTagId(t.getTagId());
+		gForum.setType(t.getType());
+		gForum.setValue(t.getValue());
+		gForum.setMass(t.getMass());
+		return gForum;
 	}
 	
 	public static GAssociationPostTag convertAssociationPostTag(AssociationPostTag ass){
@@ -501,6 +513,16 @@ public class FastPostBeanConverter {
 		for(Tag t : list){
 			gTag = convertTag(t);
 			gList.add(gTag);
+		}
+		return gList;
+	}
+
+	public static List<GForum> convertForums(List<Forum> list) {
+		List<GForum> gList = new ArrayList<GForum>();
+		GForum gForum;
+		for(Forum f : list){
+			gForum = convertForum(f);
+			gList.add(gForum);
 		}
 		return gList;
 	}

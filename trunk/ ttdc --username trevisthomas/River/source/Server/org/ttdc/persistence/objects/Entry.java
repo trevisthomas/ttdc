@@ -528,8 +528,19 @@ import org.ttdc.gwt.shared.util.PostFlagBitmasks;
 			"AND bitwise_and( ass.post.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE + 
 			"ORDER BY ass.post.publishYear DESC, ass.post.titleTag.sortValue"),
 			
-	@NamedQuery(name="PersonDao.loadPersonList", query="SELECT person FROM Person person WHERE person.personId IN (:personIds) ORDER BY person.login")
+	@NamedQuery(name="PersonDao.loadPersonList", query="SELECT person FROM Person person WHERE person.personId IN (:personIds) ORDER BY person.login"),
 			
+	//Forum
+	
+	@NamedQuery(name="ForumDao.topicsList", query="SELECT ass.post " +
+			"FROM AssociationPostTag ass INNER JOIN ass.post INNER JOIN ass.tag "+
+			"WHERE ass.tag.tagId = :forumId " + 
+			"ORDER BY ass.post.titleTag.sortValue"),
+			
+	@NamedQuery(name="ForumDao.topicsListCount", query="SELECT count(ass.post.postId) " +
+			"FROM AssociationPostTag ass INNER JOIN ass.post INNER JOIN ass.tag "+
+			"WHERE ass.tag.tagId = :forumId ")		
+	
 })
 
 @NamedNativeQueries({
@@ -593,7 +604,17 @@ import org.ttdc.gwt.shared.util.PostFlagBitmasks;
 		"where Year(p.date) = :year AND Month(p.date) = :month "+
 		"group by Year(p.date), Month(p.date), Day(p.date) "+
 		"order by Year(p.date), Month(p.date), Day(p.date)",
-		resultSetMapping="daySummaryMapping")		
+		resultSetMapping="daySummaryMapping"),
+		
+		
+	@NamedNativeQuery(name="ForumDao.fetchForumListByMass", query="select t.VALUE as value, t.GUID as tagId, t.DATE as date, t.TYPE as type, " +
+			"t.SORT_VALUE as sortValue, COUNT(t.GUID) as mass " +
+			"from TAG as t inner join ASSOCIATION_POST_TAG as a " +
+			"on a.TAG_GUID = t.GUID where t.TYPE='TOPIC' " +
+			"group by t.GUID, t.VALUE, t.TYPE, t.DATE, t.SORT_VALUE order by mass desc",
+			resultSetMapping="forumMapping"
+		)	
+		
 	
 })
 
@@ -633,7 +654,20 @@ import org.ttdc.gwt.shared.util.PostFlagBitmasks;
     		@FieldResult(name="date", column="date"),
             @FieldResult(name="count", column="ct"),
             @FieldResult(name="uniqueId", column="uniqueId")
-        }))      
+        })),      
+    
+        
+        
+    @SqlResultSetMapping(name="forumMapping", entities=
+    	@EntityResult(entityClass=org.ttdc.persistence.objects.Forum.class, fields = {
+            @FieldResult(name="tagId", column="tagId"),
+            @FieldResult(name="type", column="type"),
+            @FieldResult(name="value", column="value"),
+            @FieldResult(name="date", column="date"),
+            @FieldResult(name="mass", column="mass"),
+            @FieldResult(name="sortValue", column="sortValue")
+        }))    
+        
 })
 
 public class Entry implements HasGuid{

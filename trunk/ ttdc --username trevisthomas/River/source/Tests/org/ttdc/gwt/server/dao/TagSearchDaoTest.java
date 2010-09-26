@@ -275,36 +275,36 @@ public class TagSearchDaoTest {
 	}
 	
 	
-	@Test
-	public void browseTagsByMostPopular(){
-		try{
-			beginSession();
-			TagSearchDao dao = new TagSearchDao();
-			
-			String type=Tag.TYPE_TOPIC;
-			dao.addFilterForTagType(type);
-			
-			PaginatedList<Tag> result = dao.search();
-			
-			assertTrue("Didnt find anything and i expected to", result.getList().size()>0);
-			
-			int mass = -1;
-			for(Tag t : result.getList()){
-				assertEqualsOneOfExpected(dao.getTagTypeFilterList(), t.getType());
-				if(mass == -1) mass = t.getMass();
-				log.debug(mass);
-				assertTrue("Doah, results are not sorted" ,mass >= t.getMass());
-				mass = t.getMass();
-				
-			}
-			commit();
-			
-		}
-		catch(Exception e){
-			rollback();
-			fail(e.getMessage());
-		}
-	}
+//	@Test
+//	public void browseTagsByMostPopular(){
+//		try{
+//			beginSession();
+//			TagSearchDao dao = new TagSearchDao();
+//			
+//			String type=Tag.TYPE_TOPIC;
+//			dao.addFilterForTagType(type);
+//			
+//			PaginatedList<Tag> result = dao.search();
+//			
+//			assertTrue("Didnt find anything and i expected to", result.getList().size()>0);
+//			
+//			int mass = -1;
+//			for(Tag t : result.getList()){
+//				assertEqualsOneOfExpected(dao.getTagTypeFilterList(), t.getType());
+//				if(mass == -1) mass = t.getMass();
+//				log.debug(mass);
+//				assertTrue("Doah, results are not sorted" ,mass >= t.getMass());
+//				mass = t.getMass();
+//				
+//			}
+//			commit();
+//			
+//		}
+//		catch(Exception e){
+//			rollback();
+//			fail(e.getMessage());
+//		}
+//	}
 	
 	/**
 	 * This functionality is for showing the tags that match a search phrase that are not
@@ -385,39 +385,39 @@ public class TagSearchDaoTest {
 		}
 	}
 	
-	@Test
-	public void browseTagsByMostPopularWithDateRange(){
-		try{
-			beginSession();
-			TagSearchDao dao = new TagSearchDao();
-			
-			String type=Tag.TYPE_TOPIC;
-			dao.addFilterForTagType(type);
-			Calendar cal = GregorianCalendar.getInstance();
-			cal.set(2009, 8, 1);
-			dao.setDateRange(new DateRange(cal.getTime(),null)); //Newer than 2006
-			
-			PaginatedList<Tag> result = dao.search();
-			
-			assertTrue("Didnt find anything and i expected to", result.getList().size()>0);
-			
-			int mass = -1;
-			for(Tag t : result.getList()){
-				assertEqualsOneOfExpected(dao.getTagTypeFilterList(), t.getType());
-				if(mass == -1) mass = t.getMass();
-				log.debug(mass);
-				assertTrue("Doah, results are not sorted" ,mass >= t.getMass());
-				mass = t.getMass();
-				assertTrue("Date is out of the requested range", cal.getTime().before(t.getDate()) );
-				
-			}
-			commit();
-			
-		}
-		catch(Exception e){
-			rollback();
-			fail(e.getMessage());
-		}
-	}
+//	@Test
+//	public void browseTagsByMostPopularWithDateRange(){
+//		try{
+//			beginSession();
+//			TagSearchDao dao = new TagSearchDao();
+//			
+//			String type=Tag.TYPE_TOPIC;
+//			dao.addFilterForTagType(type);
+//			Calendar cal = GregorianCalendar.getInstance();
+//			cal.set(2009, 8, 1);
+//			dao.setDateRange(new DateRange(cal.getTime(),null)); //Newer than 2006
+//			
+//			PaginatedList<Tag> result = dao.search();
+//			
+//			assertTrue("Didnt find anything and i expected to", result.getList().size()>0);
+//			
+//			int mass = -1;
+//			for(Tag t : result.getList()){
+//				assertEqualsOneOfExpected(dao.getTagTypeFilterList(), t.getType());
+//				if(mass == -1) mass = t.getMass();
+//				log.debug(mass);
+//				assertTrue("Doah, results are not sorted" ,mass >= t.getMass());
+//				mass = t.getMass();
+//				assertTrue("Date is out of the requested range", cal.getTime().before(t.getDate()) );
+//				
+//			}
+//			commit();
+//			
+//		}
+//		catch(Exception e){
+//			rollback();
+//			fail(e.getMessage());
+//		}
+//	}
 	
 }

@@ -10,6 +10,8 @@ import org.ttdc.gwt.server.command.executors.AccountCommandExecutor;
 import org.ttdc.gwt.server.command.executors.AssociationPostTagCommandExecutor;
 import org.ttdc.gwt.server.command.executors.BrowsePopularTagsCommandExecutor;
 import org.ttdc.gwt.server.command.executors.CalendarCommandExecutor;
+import org.ttdc.gwt.server.command.executors.ForumCommandExecutor;
+import org.ttdc.gwt.server.command.executors.ForumTopicListCommandExecutor;
 import org.ttdc.gwt.server.command.executors.ImageCrudCommandExecutor;
 import org.ttdc.gwt.server.command.executors.ImageListCommandExecutor;
 import org.ttdc.gwt.server.command.executors.LatestPostCommandExecutor;
@@ -34,6 +36,8 @@ import org.ttdc.gwt.shared.commands.AccountCommand;
 import org.ttdc.gwt.shared.commands.AssociationPostTagCommand;
 import org.ttdc.gwt.shared.commands.BrowsePopularTagsCommand;
 import org.ttdc.gwt.shared.commands.CalendarCommand;
+import org.ttdc.gwt.shared.commands.ForumCommand;
+import org.ttdc.gwt.shared.commands.ForumTopicListCommand;
 import org.ttdc.gwt.shared.commands.ImageCrudCommand;
 import org.ttdc.gwt.shared.commands.ImageListCommand;
 import org.ttdc.gwt.shared.commands.LatestPostsCommand;
@@ -92,6 +96,9 @@ public class CommandExecutorFactory {
 		CommandExecutorFactory.registerExecutorForCommand(UserObjectCrudCommand.class, UserObjectCrudCommandExecutor.class);
 		CommandExecutorFactory.registerExecutorForCommand(LatestPostsCommand.class, LatestPostCommandExecutor.class);
 		CommandExecutorFactory.registerExecutorForCommand(TagCommand.class, TagCommandExecutor.class);
+		CommandExecutorFactory.registerExecutorForCommand(ForumCommand.class, ForumCommandExecutor.class);
+		CommandExecutorFactory.registerExecutorForCommand(ForumTopicListCommand.class, ForumTopicListCommandExecutor.class);
+		
 	}
 	
 	private final static Logger log = Logger.getLogger(CommandExecutorFactory.class);

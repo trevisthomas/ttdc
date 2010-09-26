@@ -150,7 +150,7 @@ public class Tag implements HasGuid{
 //	private Person creator;
 //	private String description; //I only added this field to capture the 'subject' from old ttdc forums, which are now tags
 	//private int count; //Transient except in special cases (used by named native query for v7) 
-	private int mass;
+//	private int mass;
 	private String sortValue;
 	
 	
@@ -250,14 +250,14 @@ public class Tag implements HasGuid{
 //		this.creator = creator;
 //	}
 	
-	@Field(index=Index.UN_TOKENIZED, name="mass_tag" )
-	@Formula(" (SELECT count(ass.guid) FROM ASSOCIATION_POST_TAG ass WHERE ass.tag_guid=GUID) ")
-	public int getMass() {
-		return mass;
-	}
-	public void setMass(int mass) {
-		this.mass = mass;
-	}
+//	@Field(index=Index.UN_TOKENIZED, name="mass_tag" )
+//	@Formula(" (SELECT count(ass.guid) FROM ASSOCIATION_POST_TAG ass WHERE ass.tag_guid=GUID) ")
+//	public int getMass() {
+//		return mass;
+//	}
+//	public void setMass(int mass) {
+//		this.mass = mass;
+//	}
 	
 	@Field(index=Index.UN_TOKENIZED, store=Store.NO, name="sort_topic")
 	@Column(name="SORT_VALUE")

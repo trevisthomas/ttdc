@@ -39,7 +39,7 @@ final public class AssociationPostTagDao {
 		ass.setTag(tag);
 		ass.setPost(post);
 
-		increaseMass(tag);
+//		increaseMass(tag);
 		session().save(ass);
 		session().flush();
 		session().refresh(post);
@@ -52,21 +52,21 @@ final public class AssociationPostTagDao {
 		
 		AssociationPostTag ass = load(associationId);
 		Tag oldTag = ass.getTag();
-		decreaseMass(oldTag);
-		increaseMass(tag);
+//		decreaseMass(oldTag);
+//		increaseMass(tag);
 		ass.setTag(tag);
 		session().save(ass);
 	}
 
-	private static void increaseMass(Tag tag) {
-		tag.setMass(tag.getMass()+1);
-		session().save(tag);
-	}
-
-	private static void decreaseMass(Tag tag) {
-		tag.setMass(tag.getMass()-1);
-		session().save(tag);
-	}
+//	private static void increaseMass(Tag tag) {
+//		tag.setMass(tag.getMass()+1);
+//		session().save(tag);
+//	}
+//
+//	private static void decreaseMass(Tag tag) {
+//		tag.setMass(tag.getMass()-1);
+//		session().save(tag);
+//	}
 	
 	/*
 	 * Disabled L2 cache to get this working for movie ratings. Worked fine in unit
@@ -98,7 +98,7 @@ final public class AssociationPostTagDao {
 		AssociationPostTag ass = load(associationId);
 		ass.getPost().getTagAssociations().remove(ass);
 		
-		decreaseMass(ass.getTag());
+//		decreaseMass(ass.getTag());
 		session().delete(ass);
 		session().flush();
 		return ass;

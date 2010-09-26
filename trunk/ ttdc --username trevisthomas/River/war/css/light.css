@@ -22,6 +22,7 @@ body{ color: #222; background-color: #eee;}
 .tt-post-panel-content a:active {color: #F5F23B;}
 */
 
+.tt-forum-names a:link,
 .tt-child-post-header a:link,
 .tt-post-panel-content a:link,
 .tt-post-panel-head	a:link,
@@ -31,6 +32,7 @@ body{ color: #222; background-color: #eee;}
 .tt-post-summary a:link,
 .tt-post-expanded-content a:link  {text-decoration: none; color: #113aa4;}
 
+.tt-forum-names a:visited,
 .tt-child-post-header a:visited,
 .tt-post-panel-content a:visited, 
 .tt-post-panel-head	a:visited,
@@ -41,6 +43,7 @@ body{ color: #222; background-color: #eee;}
 .tt-post-expanded-content a:visited  {text-decoration: none; color: #113aa4;}
 
 
+.tt-forum-names a:hover,
 .tt-child-post-header a:hover,
 .tt-post-panel-content a:hover,
 .tt-post-panel-head	a:hover,
@@ -50,6 +53,7 @@ body{ color: #222; background-color: #eee;}
 .tt-post-summary a:hover,
 .tt-post-expanded-content a:hover  {text-decoration: underline; color: blue;}
 
+.tt-forum-names a:active,
 .tt-child-post-header a:active,
 .tt-post-panel-content a:active,
 .tt-post-panel-head	a:active,

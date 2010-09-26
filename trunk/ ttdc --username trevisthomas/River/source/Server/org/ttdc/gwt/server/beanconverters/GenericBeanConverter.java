@@ -121,7 +121,7 @@ public class GenericBeanConverter {
 		rpcTag.setTagId(t.getTagId());
 		rpcTag.setType(t.getType());
 		rpcTag.setValue(t.getValue());
-		rpcTag.setMass(t.getMass());
+//		rpcTag.setMass(t.getMass());
 		return rpcTag;
 	}
 	

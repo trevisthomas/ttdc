@@ -20,7 +20,8 @@ public class TagDao {
 	private String description;
 	private Date date;
 	
-	private String orderBy = "mass";
+//	private String orderBy = "mass";
+	private String orderBy = "sortValue";
 	private boolean sortAscending = false; 
 		
 	public static Tag loadTag(String tagId){
