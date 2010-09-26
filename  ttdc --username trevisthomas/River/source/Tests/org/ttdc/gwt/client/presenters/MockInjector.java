@@ -107,6 +107,7 @@ import org.ttdc.gwt.client.uibinder.calendar.SmallMonthPanel;
 import org.ttdc.gwt.client.uibinder.comment.CommentEditorPanel;
 import org.ttdc.gwt.client.uibinder.dashboard.FilteredPost;
 import org.ttdc.gwt.client.uibinder.dashboard.UserDashboardPanel;
+import org.ttdc.gwt.client.uibinder.forum.ForumPanel;
 import org.ttdc.gwt.client.uibinder.home.HomePanel;
 import org.ttdc.gwt.client.uibinder.home.TrafficPersonPanel;
 import org.ttdc.gwt.client.uibinder.movies.MovieListPanel;
@@ -1612,6 +1613,12 @@ public class MockInjector implements Injector{
 
 	@Override
 	public PostDetailPanel createPostDetailPanel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ForumPanel createForumPanel() {
 		// TODO Auto-generated method stub
 		return null;
 	}

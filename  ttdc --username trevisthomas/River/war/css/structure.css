@@ -41,6 +41,7 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 
 .tt-post-detail{width: 100%;}
 	
+.tt-forum-names,
 .tt-plain-post-header,
 .tt-traffic-login,
 .tt-reviewSummary,
@@ -94,6 +95,7 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 .tt-header-left{width:650px;}
 .tt-header-right{}
 
+.tt-forum-topics,
 .tt-topic-root,
 .tt-topic-topics,
 .tt-home-main{ width: 550px;}
@@ -105,6 +107,7 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 .tt-home-tabContainer{margin: 4px 0 10px 0; width: 800px;}
 
 .tt-topic-root,
+.tt-forum-topics,
 .tt-topic-topics{text-align:center; margin: 0 auto;}
 
 .tt-avatar-large{margin: 4px;}
@@ -319,6 +322,7 @@ side effects in non mozilla browsers in the comment creator
 
 .tt-active-post-box ul,
 .tt-comment-editor-checkboxes ul,
+.tt-forum-names ul,
 .tt-navigation ul{ padding:0px;}
 
 .tt-active-post-box ul{ margin: 2px;}
@@ -327,6 +331,7 @@ side effects in non mozilla browsers in the comment creator
 .tt-more-options-popup { margin: 0; padding: 0; text-align: left; list-style-type: none;}
 .tt-more-options-popup li{ padding: 1px 3px; }
 
+.tt-forum-names li,
 .tt-comment-editor-checkboxes li,
 .tt-navigation li{display: inline; margin: 0;padding: 0;}
 

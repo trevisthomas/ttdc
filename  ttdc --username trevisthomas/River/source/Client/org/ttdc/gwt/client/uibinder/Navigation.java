@@ -34,9 +34,11 @@ public class Navigation extends Composite implements PersonEventListener{
 	private HyperlinkPresenter dashboardLinkPresenter;
 	private HyperlinkPresenter adminLinkPresenter;
 	private HyperlinkPresenter calendarLinkPresenter;
+	private HyperlinkPresenter forumLinkPresenter;
 	
 	private Injector injector;
 	
+	private final Hyperlink forumsElement;
 	private final Hyperlink homeElement;
 	private final Hyperlink searchElement;
 	private final Hyperlink movieElement;
@@ -45,13 +47,14 @@ public class Navigation extends Composite implements PersonEventListener{
 	private final Hyperlink adminElement;
 	private final Hyperlink calendarElement;
 	
+	
 	@UiField(provided = true) UnorderedListWidget navList = new UnorderedListWidget();
 	
 	@Inject
 	public Navigation(Injector injector) {
 		this.injector = injector;
 		navList.setStyleName("tt-navigation");
-		
+		forumLinkPresenter = injector.getHyperlinkPresenter();
 		homeLinkPresenter = injector.getHyperlinkPresenter();
 		searchLinkPresenter = injector.getHyperlinkPresenter();
 		movieLinkPresenter = injector.getHyperlinkPresenter();
@@ -60,6 +63,8 @@ public class Navigation extends Composite implements PersonEventListener{
 		adminLinkPresenter = injector.getHyperlinkPresenter();
 		calendarLinkPresenter = injector.getHyperlinkPresenter();
 		
+		
+		forumLinkPresenter.setView("Forums", HistoryConstants.VIEW_FORUMS);		
 		homeLinkPresenter.setView("Home", HistoryConstants.VIEW_HOME);
 		searchLinkPresenter.setView("Search", HistoryConstants.VIEW_SEARCH);
 		movieLinkPresenter.setView("Movie", HistoryConstants.VIEW_MOVIE_LIST);
@@ -70,6 +75,7 @@ public class Navigation extends Composite implements PersonEventListener{
 		homeLinkPresenter.setView("Home", HistoryConstants.VIEW_HOME);
 		searchLinkPresenter.setView("Search", HistoryConstants.VIEW_SEARCH);
 		
+		forumsElement = forumLinkPresenter.getHyperlink();
 		homeElement = homeLinkPresenter.getHyperlink();
 		searchElement = searchLinkPresenter.getHyperlink();
 		movieElement = movieLinkPresenter.getHyperlink();
@@ -90,6 +96,7 @@ public class Navigation extends Composite implements PersonEventListener{
 	private void applyUserSpecificSettings() {
 		List<Hyperlink> links = new ArrayList<Hyperlink>();
 		links.add(homeElement);
+		links.add(forumsElement);
 		links.add(searchElement);
 		links.add(movieElement);
 		if(!ConnectionId.isAnonymous()){

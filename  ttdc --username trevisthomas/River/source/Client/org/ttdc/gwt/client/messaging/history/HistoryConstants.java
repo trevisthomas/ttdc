@@ -31,14 +31,18 @@ public interface HistoryConstants {
 
 	public static final String PERSON_ID = "personId";
 
+	public static final String VIEW_FORUMS = "forums";
 	public static final String VIEW_TOPIC = "topic";
 	public static final String VIEW_TOPIC_FLAT = "topicFlat";
 	public static final String VIEW_TOPIC_HIERARCHY = "topicHierarchy";
 	public static final String VIEW_TOPIC_CONVERSATION = "topicConversation";
 	public static final String VIEW_TOPIC_SUMMARY = "topicSummary";
 	
+	
+	
 	public static final String ROOT_ID_KEY = "rootId";
 	public static final String THREAD_ID_KEY = "threadId";
+	public static final String FORUM_ID_KEY = "forumId";
 
 	public static final String TOPIC_MODE_SHOW_ALL = "showAllReplies";
 	public static final String TOPIC_MODE_KEY = "topicDisplayMode";

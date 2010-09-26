@@ -395,7 +395,7 @@ public final class Inflatinator {
 		gTag.setTagId(t.getTagId());
 		gTag.setType(t.getType());
 		gTag.setValue(t.getValue());
-		gTag.setMass(t.getMass());
+//		gTag.setMass(t.getMass());
 		
 		return gTag;
 	}

@@ -2,8 +2,6 @@ package org.ttdc.gwt.client.beans;
 
 import java.util.Date;
 
-import org.ttdc.gwt.client.constants.TagConstants;
-
 public class GTag extends GBase{
 	private String tagId;
 	private String type; 

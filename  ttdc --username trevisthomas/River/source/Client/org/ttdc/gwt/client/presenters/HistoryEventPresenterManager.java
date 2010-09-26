@@ -118,6 +118,9 @@ public class HistoryEventPresenterManager implements HistoryEventListener{
 			//injector.getHome2Presenter().show(event.getSource());
 			//injector.getHomePresenter().show(event.getSource());
 		}
+		else if(HistoryConstants.VIEW_FORUMS.equals(view)){
+			injector.createForumPanel().show(event.getSource());
+		}
 		else{
 			/*Just let it go neo*/
 			//throw new RuntimeException("No clue what you're trying to do.");
