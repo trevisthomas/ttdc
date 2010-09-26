@@ -2,9 +2,11 @@
 <!-- The above doctype is to allow for special html characters in this xml 
 	file -->
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
-	xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:t='urn:import:org.ttdc.gwt.client.presenters.util'>
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' 
+	xmlns:t='urn:import:org.ttdc.gwt.client.presenters.util'
+	xmlns:u='urn:import:org.ttdc.gwt.client.uibinder.post'>
 
-	<g:HTMLPanel styleName="tt-post-conversation" ui:field="postMainElement">
+	<g:HTMLPanel ui:field="postMainElement">
 		<table class="tt-fill">
 			<tr>
 				<td width="40px">
@@ -46,33 +48,9 @@
 										</tr>
 										<tr>
 											<td colspan="2">
-												<table class="tt-fill">
-													<tr>
-
-														<td class="tt-post-panel-head-detail">
-															<g:Label ui:field="postUnReadElement" />
-															<g:Label ui:field="postReadElement" />
-															<g:Hyperlink ui:field="creatorLinkElement" />
-															<g:Widget ui:field="ratingElement" />
-															<table class="tt-inline">
-																<tr>
-																	<td>
-																		<g:Label ui:field="postPrivateElement" />
-																	</td>
-																	<td>
-																		<g:Label ui:field="postNwsElement" />
-																	</td>
-																	<td>
-																		<g:Label ui:field="postInfElement" />
-																	</td>
-																</tr>
-															</table>
-														</td>
-														<td class="tt-text-right tt-post-panel-head-date">
-															<g:Widget styleName="tt-inline" ui:field="createDateElement" />
-														</td>
-													</tr>
-												</table>
+												<u:PostDetailPanel ui:field="postDetailPanelElement" />
+												<g:Widget ui:field="ratingElement" />
+												
 											</td>
 										</tr>
 									</table>
@@ -88,16 +66,9 @@
 													<div class="tt-float-right" style="clear:both;">
 														<g:Widget ui:field="postImageElement" />
 													</div>
+													<g:SimplePanel ui:field="inReplyPostElement"/>
 													<span class="tt-post-body tt-text-normal" ui:field="bodyElement" />
-
-
 												</div>
-												<g:SimplePanel ui:field="actionLinks" />
-
-												<!-- <g:HTMLPanel ui:field="actionLinks"> <ul> <li><g:Anchor 
-													ui:field="replyLinkElement">reply</g:Anchor></li> <li>|</li> <li><g:Anchor 
-													ui:field="editLinkElement">like</g:Anchor></li> <li>|</li> <li><g:Anchor 
-													ui:field="moreLinkElement">more</g:Anchor></li> </ul> </g:HTMLPanel> -->
 											</td>
 										</tr>
 										<tr>

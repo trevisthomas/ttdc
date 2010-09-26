@@ -1,8 +1,5 @@
 package org.ttdc.gwt.client.uibinder.post;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.beans.GPost;
@@ -23,7 +20,6 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -35,9 +31,6 @@ public class IconOptionsPanel extends Composite implements PersonEventListener{
 	private final Injector injector;
 	private GPost post;
     
-//	private Anchor replyElement = new Anchor("reply");
-//	private Anchor likeElement = new Anchor("like");
-//	private Anchor unLikeElement = new Anchor("un-like");
     private Anchor ratingElement = createAnchor("rate");
     private Anchor unRateElement = createAnchor("un-rate");
     private Anchor editElement = createAnchor("edit");
@@ -46,9 +39,6 @@ public class IconOptionsPanel extends Composite implements PersonEventListener{
     private Anchor earmarkElement = createAnchor("earmark");
     private Anchor unEarmarkElement = createAnchor("un-earmark");
     private Anchor tagElement = createAnchor("tag");
-    //private Anchor moreElement = createAnchor();
-    //private Anchor lessElement = createAnchor();
-    
     
 	@UiField(provided = true) ClickableIconPanel replyElement = new ClickableIconPanel("ui-icon ui-icon-arrowrefresh-1-n");
 	@UiField(provided = true) ClickableIconPanel likeElement = new ClickableIconPanel("tt-icon-common tt-icon-thumbsup");
@@ -65,21 +55,10 @@ public class IconOptionsPanel extends Composite implements PersonEventListener{
 		
 		EventBus.getInstance().addListener(this);
 		
-//		moreElement.setHTML("&raquo;more");
-//		moreElement.addClickHandler(new ClickHandler() {
-//			@Override
-//			public void onClick(ClickEvent event) {
-//				showMore();
-//			}
-//		});
-//		
-//		lessElement.setHTML("&laquo;less");
-//		lessElement.addClickHandler(new ClickHandler() {
-//			@Override
-//			public void onClick(ClickEvent event) {
-//				showLess();
-//			}
-//		});
+		replyElement.setTitle("Respond to this post");
+		likeElement.setTitle("Like this post");
+		unLikeElement.setTitle("Remove like for this post");
+		moreOptionsElement.setTitle("Click to view more options");
 	}
 	
 	@Override
@@ -228,6 +207,7 @@ public class IconOptionsPanel extends Composite implements PersonEventListener{
     		UnorderedListWidget main = new UnorderedListWidget();
     		main.setStyleName("tt-more-options-popup");
     		add(main);
+    		setAutoHideEnabled(true);
     		
     		if(ratingElement.isVisible())
     			main.addItem(ratingElement);

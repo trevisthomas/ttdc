@@ -1,0 +1,20 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<!-- The above doctype is to allow for special html characters in this xml file -->
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+    xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+
+	<g:HTMLPanel>
+		<table class="tt-post-detail">
+			<tr>
+				<td><g:Label ui:field="postUnReadElement" /><g:Label ui:field="postReadElement" /></td>
+				<td><g:Label ui:field="postPrivateElement" /></td>
+				<td><g:Label ui:field="postNwsElement" /></td>
+				<td><g:Label ui:field="postInfElement" /></td>
+				<td width="100%">by <g:Hyperlink ui:field="creatorLinkElement" /> on <g:Widget styleName="tt-post-child-date" ui:field="createDateElement" /> <span ui:field="inResposeWrapperElement"> in <g:Anchor styleName="tt-child-post-inReplyAnchor" ui:field="inReplyToElement"/> to <g:Hyperlink ui:field="inReplyToCreatorElement" /></span></td>
+				<td><g:SimplePanel ui:field="actionLinks" /></td>
+			</tr>
+		</table>
+	</g:HTMLPanel>
+	
+</ui:UiBinder>

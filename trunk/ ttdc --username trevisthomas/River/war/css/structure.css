@@ -16,7 +16,7 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 
 
 .tt-alert{color: red;}
-.tt-post{width: 100%; margin-bottom: 2px; border:1px solid;}
+.tt-post{width: 550px; margin-bottom: 2px; border:1px solid; overflow: auto;}
 .tt-post-container-header{overflow: auto;}
 .tt-post-container-footer{}
 
@@ -38,6 +38,8 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 .tt-post-expanded-date,
 .tt-post-panel-head-date,
 .tt-text-small{font-size:10px;}
+
+.tt-post-detail{width: 100%;}
 	
 .tt-plain-post-header,
 .tt-traffic-login,
@@ -403,4 +405,4 @@ side effects in non mozilla browsers in the comment creator
 
 .tt-plain-post{border: 1px solid; margin: 4px; padding: 2px;}
 
-.tt-post-child{margin: 3px 0 0 10px; border-width: 1px; border-style:solid; padding:0px;}
+.tt-post-child{margin: 1px 1px 1px 10px; border-width: 1px; border-style:solid; width:540px;}

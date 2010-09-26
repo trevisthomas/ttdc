@@ -55,6 +55,8 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 	interface MyUiBinder extends UiBinder<Widget, CommentEditorPanel> {}
 	private static final MyUiBinder binder = GWT.create(MyUiBinder.class);
 	
+	private static CommentEditorPanel oldInstance;
+	
 	public enum Mode{EDIT,CREATE}
 	private Mode mode = Mode.CREATE;
 	private Injector injector;	
@@ -142,6 +144,11 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 		
 		topicLabelElement.setVisible(false);
 		topicSuggestionHolderElement.setVisible(false);
+		
+		if(oldInstance != null){
+			oldInstance.removeFromParent();
+		}
+		oldInstance = this;
 	}
 	
 	@Override
