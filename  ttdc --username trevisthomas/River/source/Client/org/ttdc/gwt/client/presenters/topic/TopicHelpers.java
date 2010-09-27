@@ -15,6 +15,13 @@ public class TopicHelpers {
 		return token;
 	}
 	
+	public static HistoryToken buildForumPageToken(String forumId){
+		HistoryToken token = new HistoryToken();
+		token.setParameter(HistoryConstants.VIEW, HistoryConstants.VIEW_FORUMS);
+		token.setParameter(HistoryConstants.FORUM_ID_KEY, forumId);
+		return token;
+	}
+	
 	public static HistoryToken buildHierarchyPageToken(String postId){
 		HistoryToken token = new HistoryToken();
 		token.setParameter(HistoryConstants.VIEW, HistoryConstants.VIEW_TOPIC_HIERARCHY);

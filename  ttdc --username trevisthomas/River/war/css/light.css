@@ -68,6 +68,7 @@ body{ color: #222; background-color: #eee;}
 .tt-active-post-links a:hover{text-decoration: underline; color: #ECECEC;}
 .tt-active-post-links a:active{color: #ECECEC;}
 
+.tt-forum-names,
 .tt-plain-post-close,
 .tt-child-post-inReplyAnchor,
 .tt-post-fetch-more,

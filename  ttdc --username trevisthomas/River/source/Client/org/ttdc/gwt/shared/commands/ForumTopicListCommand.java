@@ -24,4 +24,14 @@ public class ForumTopicListCommand extends Command<PaginatedListCommandResult<GP
 	public void setForumId(String forumId) {
 		this.forumId = forumId;
 	}
+	
+	private int currentPage = 1;
+
+	public int getCurrentPage() {
+		return currentPage;
+	}
+
+	public void setCurrentPage(int currentPage) {
+		this.currentPage = currentPage;
+	}
 }
