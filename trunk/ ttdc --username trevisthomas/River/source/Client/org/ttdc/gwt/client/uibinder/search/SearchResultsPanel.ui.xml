@@ -6,8 +6,6 @@
 	 	<g:Widget ui:field="pageHeaderElement"/>
 	 	<div class="tt-search-results">
 		 	<g:Label ui:field="searchSummaryDetailElement" styleName="tt-text-large-bold tt-text-center"/>
-		 	<g:Label styleName="tt-fill tt-text-large-bold tt-text-left tt-color-search-results-header" ui:field="tagLabelElement"/>
-		 	<g:SimplePanel styleName="tt-fill" ui:field="tagResultsElement"/>
 		 	<g:Label styleName="tt-fill tt-text-large-bold tt-text-left tt-color-search-results-header" ui:field="postLabelElement"/>
 		 	<div class="tt-post-container-header tt-center">
 		 		<g:Label styleName="tt-float-left" ui:field="pageResultMessageElement"/>

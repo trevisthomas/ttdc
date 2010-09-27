@@ -5,6 +5,10 @@ package org.ttdc.gwt.client.beans;
  * that contains info about a tag and info about how many times it is used.
  */
 public class GForum extends GTag{
+
+	public String getDisplayValue() {
+		return  getValue()+ " (" + getMass() + ")";
+	}
 	
 	
 	

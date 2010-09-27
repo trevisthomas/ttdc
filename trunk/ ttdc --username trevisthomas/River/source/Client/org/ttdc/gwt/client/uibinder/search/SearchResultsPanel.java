@@ -60,7 +60,6 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
     @UiField(provided = true) Widget pageHeaderElement;
     @UiField (provided = true) Widget pageFooterElement;
     @UiField(provided = true) SimplePanel postListElement = new SimplePanel();
-    @UiField(provided = true) SimplePanel tagResultsElement = new SimplePanel();
     //@UiField(provided = true) SimplePanel paginationElement = new SimplePanel();
     @UiField(provided = true) Widget paginationElement;
     @UiField Label searchSummaryDetailElement;
@@ -69,7 +68,6 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
     @UiField (provided = true) Hyperlink nextElement;
     
     
-    @UiField Label tagLabelElement; 
     @UiField Label postLabelElement;
     
     private final PostCollectionPresenter postCollection;
@@ -98,10 +96,8 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
     	
     	searchSummaryDetailElement.setText("Loading...");
     	
-    	tagLabelElement.setText("Tags");
     	postLabelElement.setText("Conversations");
     	
-    	tagLabelElement.setVisible(false);
     	postLabelElement.setVisible(false);
     	
     	pageHeaderPanel.init("Search","By keyword, by tag, by date, by person");
@@ -129,8 +125,7 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 		}
 		else if(token.isParameterEq(SEARCH_MODE_KEY,SEARCH_MODE_VALUE_TOPICS)){
 			BatchCommandTool batcher = new BatchCommandTool();
-			performSearchForTags(batcher, token);
-			
+
 			performSearchForCommentsOfType(batcher, token, PostSearchType.TOPICS);
 			performSearchForReplySummary(batcher, token);
 			
@@ -138,7 +133,6 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 		}
 		else if(token.isParameterEq(SEARCH_MODE_KEY,SEARCH_MODE_VALUE_ALL)){
 			BatchCommandTool batcher = new BatchCommandTool();
-			performSearchForTags(batcher, token);
 			
 			performSearchForCommentsOfType(batcher, token, PostSearchType.ALL);
 			performSearchForReplySummary(batcher, token);
@@ -153,7 +147,6 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 		}
 		else if(token.isParameterEq(SEARCH_MODE_KEY,SEARCH_MODE_TAG)){
 			BatchCommandTool batcher = new BatchCommandTool();
-			performSearchForTags(batcher, token);
 			performSearchAllComments(token);
 			
 			injector.getService().execute(batcher.getActionList(), batcher);
@@ -223,45 +216,6 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 		command.setPersonId(creatorId);
 		
 		return command;
-	}
-	
-	private void performSearchForTags(BatchCommandTool batcher, HistoryToken token){
-		tagResultsElement.clear();
-		String phrase = token.getParameter(SEARCH_PHRASE_KEY);
-		List<String> tagIds = token.getParameterList(SEARCH_TAG_ID_KEY);
-		
-		SearchTagsCommand command = new SearchTagsCommand(tagIds);
-		DateRangeLite dateRange = new DateRangeLite(token);
-		command.setStartDate(dateRange.getStartDate());
-		command.setEndDate(dateRange.getEndDate());
-		command.setPhrase(phrase);
-		if(token.isParameterEq(SEARCH_MODE_KEY,SEARCH_MODE_TAG)){
-			command.setMode(SearchTagsCommand.TagSearchMode.UNION);
-		}
-		else
-			command.setMode(SearchTagsCommand.TagSearchMode.SEARCH);
-		
-		CommandResultCallback<SearchTagsCommandResult> callback = createTagListCallback();
-				
-		batcher.add(command, callback);
-	}
-
-	private CommandResultCallback<SearchTagsCommandResult> createTagListCallback() {
-		return new CommandResultCallback<SearchTagsCommandResult>(){
-			@Override
-			public void onSuccess(SearchTagsCommandResult result) {
-				PaginatedList<GTag> results = result.getResults();
-				TagCloudPresenter tagResultPresenter = injector.getTagCloudPresenter();
-				if(results.getList().size() > 0){
-					tagLabelElement.setVisible(true);
-					tagResultPresenter.setTagList(results.getList());
-					tagResultsElement.add(tagResultPresenter.getWidget());
-				}
-				else{
-					/*shrug*/
-				}
-			}
-		};
 	}
 	
 	private void performSearchForCommentsOfType(BatchCommandTool batcher, HistoryToken token, PostSearchType type){

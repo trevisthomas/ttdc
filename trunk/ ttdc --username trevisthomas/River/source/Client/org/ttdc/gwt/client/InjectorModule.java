@@ -169,6 +169,7 @@ import org.ttdc.gwt.client.presenters.users.UserRowView;
 import org.ttdc.gwt.client.presenters.users.UserToolsPresenter;
 import org.ttdc.gwt.client.presenters.users.UserToolsView;
 import org.ttdc.gwt.client.services.RpcServiceAsync;
+import org.ttdc.gwt.client.uibinder.forum.ForumPanel;
 import org.ttdc.gwt.client.uibinder.home.HomePanel;
 
 import com.google.gwt.inject.client.AbstractGinModule;
@@ -184,6 +185,7 @@ public class InjectorModule extends AbstractGinModule {
 		bind(CalendarPresenter.class).in(Singleton.class);
 		
 		bind(HomePanel.class).in(Singleton.class);
+		bind(ForumPanel.class).in(Singleton.class);
 		
 		//bind .to .in
 		bind(DemoPresenter.View.class).to(DemoView.class);

@@ -62,6 +62,27 @@
 			</tr>
 		</table>
 		
+		<g:HTMLPanel ui:field="topicFieldsElement">
+			<table>
+				<tr>
+					<td>
+						Forum
+					</td>
+					<td>
+						<g:ListBox ui:field="forumListBoxElement"></g:ListBox>		
+					</td>
+				</tr>
+				<tr>
+					<td>	
+						Description
+					</td>
+					<td>
+						<g:TextArea styleName="tt-description-textarea" ui:field="descriptionTextAreaElement" />
+					</td>
+				</tr>
+			</table>
+				
+		</g:HTMLPanel>
 		
 		
 		<g:TextArea styleName="tt-comment-textarea" ui:field="textAreaElement" />

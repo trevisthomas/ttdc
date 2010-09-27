@@ -20,7 +20,8 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 .tt-post-container-header{overflow: auto;}
 .tt-post-container-footer{}
 
-.tt-search-results{width: 500px; text-align:center; margin: 0 auto;}
+.tt-forum-names,
+.tt-search-results{width: 600px; text-align:center; margin: 0 auto;}
 	
 .tt-text-nano{font-size:7px;}
 
@@ -334,6 +335,8 @@ side effects in non mozilla browsers in the comment creator
 .tt-forum-names li,
 .tt-comment-editor-checkboxes li,
 .tt-navigation li{display: inline; margin: 0;padding: 0;}
+
+.tt-forum-names li{ margin: 0 3px;}
 
 .tt-active-post-box{text-align:center; margin: 0 auto;}
 

@@ -119,7 +119,7 @@ public class IconOptionsPanel extends Composite implements PersonEventListener{
     		editElement.setVisible(true);
     	}
     	
-    	if(!user.isAnonymous() && !post.isMovie()){
+    	if(user.isAdministrator()){
     		tagElement.setVisible(true);
     	}
     }

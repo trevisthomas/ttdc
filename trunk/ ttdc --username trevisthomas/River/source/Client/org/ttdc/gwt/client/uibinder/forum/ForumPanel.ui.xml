@@ -8,6 +8,7 @@
 		<g:Widget ui:field="pageHeaderElement"/>
 		<div>
 			<div class="tt-forum-names">
+				<g:Label styleName="tt-fill tt-text-large-bold tt-text-left tt-color-search-results-header" ui:field="postLabelElement"/>
 				<t:UnorderedListWidget ui:field="forumsElement"/>
 			</div>
 			<g:TabPanel styleName="tt-forum-topics" ui:field="topicTabPanelElement" />

@@ -6,6 +6,7 @@ import java.util.Map;
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.autocomplete.SugestionOracle;
 import org.ttdc.gwt.client.autocomplete.SuggestionObject;
+import org.ttdc.gwt.client.beans.GForum;
 import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.messaging.ConnectionId;
@@ -21,9 +22,13 @@ import org.ttdc.gwt.client.presenters.comments.LinkDialog;
 import org.ttdc.gwt.client.presenters.comments.LinkDialogSource;
 import org.ttdc.gwt.client.presenters.movies.MovieRatingPresenter;
 import org.ttdc.gwt.client.presenters.util.ClickableIconPanel;
+import org.ttdc.gwt.client.presenters.util.MyListBox;
+import org.ttdc.gwt.client.presenters.util.PresenterHelpers;
 import org.ttdc.gwt.client.uibinder.comment.InsertTrevTagPopup.InsertTrevTagPopupSource;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
+import org.ttdc.gwt.shared.commands.ForumCommand;
 import org.ttdc.gwt.shared.commands.PostCrudCommand;
+import org.ttdc.gwt.shared.commands.results.GenericListCommandResult;
 import org.ttdc.gwt.shared.commands.results.PostCommandResult;
 import org.ttdc.gwt.shared.commands.types.PostActionType;
 import org.ttdc.gwt.shared.util.StringTools;
@@ -42,6 +47,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.SuggestBox;
@@ -81,6 +87,10 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 	@UiField(provided = true) ClickableIconPanel underlineButtonElement = createToolbarButtonEx("tt-toolbar-icon-underline", "Underline", "u[", "]u", false);
 	@UiField(provided = true) ClickableIconPanel codeButtonElement = createToolbarButtonEx("tt-toolbar-icon-code", "Code - monospaced", "c[", "]c", true);
 	@UiField(provided = true) ClickableIconPanel indentButtonElement = createToolbarButtonEx("tt-toolbar-icon-indent", "Indented", "p[", "]p", true);
+	
+	@UiField TextArea descriptionTextAreaElement;
+	@UiField HTMLPanel topicFieldsElement;
+	@UiField (provided = true) ListBox forumListBoxElement;
 	
 	private ClickableIconPanel createToolbarButton(String iconStyle, String toolTip) {
 		ClickableIconPanel button = new ClickableIconPanel("tt-toolbar-icon "+iconStyle);
@@ -137,9 +147,11 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 	public CommentEditorPanel(Injector injector) {
 		this.injector = injector;
 		//Pre realization stuff
+		forumListBoxElement = new MyListBox(false);
 				
 		initWidget(binder.createAndBindUi(this));
 		
+		topicFieldsElement.setVisible(false);
 		EventBus.getInstance().addListener(this);
 		
 		topicLabelElement.setVisible(false);
@@ -236,10 +248,34 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 	private void configureForTopicCreation(GPost parent){
 		if(parent != null){
 			//Do stuff to show the user that they are creating a new topic?
+			topicFieldsElement.setVisible(true);
+			createForumList();
 		}
 		else{
 			//do stuff to show that it's just conversation or reply post
+			topicFieldsElement.setVisible(false);
 		}
+	}
+	
+	private void createForumList() {
+		if(forumListBoxElement.getItemCount() != 0)
+			return;
+		
+		ForumCommand cmd = new ForumCommand();
+		CommandResultCallback<GenericListCommandResult<GForum>> callback = buildForumListCallback();
+		injector.getService().execute(cmd, callback);
+		
+	}
+
+	private CommandResultCallback<GenericListCommandResult<GForum>> buildForumListCallback() {
+		return new CommandResultCallback<GenericListCommandResult<GForum>>(){
+			@Override
+			public void onSuccess(GenericListCommandResult<GForum> result) {
+				for(GForum forum : result.getList()){
+					((MyListBox)forumListBoxElement).addItem(forum.getDisplayValue(), forum.getTagId());
+				}
+			}
+		};
 	}
 
 	private void initForRatableParent() {
