@@ -39,11 +39,16 @@ public class UnorderedListWidget extends ComplexPanel
 	}
 	public void loadHyperlinks(List<Hyperlink> links)
 	{
+		loadHyperlinks(links, false);
+	}
+	
+	public void loadHyperlinks(List<Hyperlink> links, boolean enableSpacers)
+	{
 		clear();
 		for (int i=0; i<links.size(); i++)
 		{
 			Hyperlink item = links.get(i);
-			if (i>0)
+			if (i>0 && enableSpacers)
 			{
 				add(new ListItemWidget("|"));
 			}
@@ -53,15 +58,21 @@ public class UnorderedListWidget extends ComplexPanel
 	
 	public void loadAnchors(List<Anchor> links)
 	{
+		loadAnchors(links, false);
+	}
+	
+	public void loadAnchors(List<Anchor> links, boolean enableSpacers)
+	{
 		clear();
 		for (int i=0; i<links.size(); i++)
 		{
 			Anchor item = links.get(i);
-			if (i>0)
-			{
+			if (i>0 && enableSpacers){
 				add(new ListItemWidget("|"));
 			}
 			add(new ListItemWidget(item));
 		}
 	}
+	
+	
 }

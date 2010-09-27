@@ -11,17 +11,24 @@ import org.ttdc.gwt.client.messaging.history.HistoryToken;
 import org.ttdc.gwt.client.messaging.post.PostEvent;
 import org.ttdc.gwt.client.messaging.post.PostEventListener;
 import org.ttdc.gwt.client.messaging.post.PostEventType;
+import org.ttdc.gwt.client.presenters.home.FlatPresenter;
 import org.ttdc.gwt.client.presenters.shared.HyperlinkPresenter;
+import org.ttdc.gwt.client.presenters.util.PresenterHelpers;
 import org.ttdc.gwt.client.presenters.util.UnorderedListWidget;
 import org.ttdc.gwt.client.uibinder.common.BasePageComposite;
 import org.ttdc.gwt.client.uibinder.shared.StandardPageHeaderPanel;
+import org.ttdc.gwt.server.dao.Helpers;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
 import org.ttdc.gwt.shared.commands.ForumCommand;
 import org.ttdc.gwt.shared.commands.results.GenericListCommandResult;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabPanel;
@@ -43,7 +50,8 @@ public class ForumPanel extends BasePageComposite implements PostEventListener{
 	
 	
 	private final StandardPageHeaderPanel pageHeaderPanel;
-	HistoryToken token;
+	private HistoryToken token;
+	private FlatPresenter flatPresenter;
 	
 	@Inject
 	public ForumPanel(Injector injector) {
@@ -51,6 +59,7 @@ public class ForumPanel extends BasePageComposite implements PostEventListener{
 		pageFooterElement = injector.createStandardFooter().getWidget();
 		pageHeaderPanel = injector.createStandardPageHeaderPanel(); 
     	pageHeaderElement = pageHeaderPanel.getWidget();
+    	flatPresenter = injector.getFlatPresenter();
     	
 		initWidget(binder.createAndBindUi(this));
 		
@@ -63,17 +72,25 @@ public class ForumPanel extends BasePageComposite implements PostEventListener{
 	
 	@Override
 	public void onShow(HistoryToken token) {
+		createForumList();
+		createTopicList(token);
+	}
+
+	private void createTopicList(HistoryToken token) {
+		//Load the flat posts.
 		this.token = token;
 		
 		pageHeaderPanel.init("Forums", "choose a forum to view its topics");
 		pageHeaderPanel.getSearchBoxPresenter().init(token);
 		
-		createForumList();
-		createTopicList();
-	}
-
-	private void createTopicList() {
-		//Load the flat posts.
+//		if(PresenterHelpers.isWidgetEmpty(topicsTargetPanel)){
+//			topicsTargetPanel.add(flatPresenter.getWidget());
+//		}
+		flatPresenter.init(token);
+		topicsTargetPanel.clear();
+		topicsTargetPanel.add(flatPresenter.getWidget());
+		
+		
 	}
 
 
@@ -95,21 +112,36 @@ public class ForumPanel extends BasePageComposite implements PostEventListener{
 	}
 
 	private void loadForumList(List<GForum> list) {
-		List<Hyperlink> links = new ArrayList<Hyperlink>();
+		List<Anchor> links = new ArrayList<Anchor>();
 		for(GForum forum : list){
-			HyperlinkPresenter linkPresenter = injector.getHyperlinkPresenter();
-			HistoryToken token = new HistoryToken();
+			ForumLink link = new ForumLink(forum);
+			links.add(link);
+		}
+		forumsElement.loadAnchors(links, false);
+	}
+	
+	
+	private class ForumLink extends Anchor{
+		private final GForum forum;
+		private final HistoryToken token;
+		public ForumLink(final GForum forum) {
+			this.forum = forum;
+			
+			token = new HistoryToken();
 			token.addParameter(HistoryConstants.VIEW, HistoryConstants.VIEW_FORUMS);
 			token.addParameter(HistoryConstants.FORUM_ID_KEY, forum.getTagId());
 			
-			linkPresenter.setToken(token, forum.getValue() + " (" + forum.getMass() + ")");
+			setText(forum.getValue() + " (" + forum.getMass() + ")");
 			
-			links.add(linkPresenter.getHyperlink());
+			addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					History.newItem(token.toString(), false);	
+					createTopicList(token);
+				}
+			});
 		}
-		forumsElement.loadHyperlinks(links);
 	}
-	
-
 
 
 	@Override
