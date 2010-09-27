@@ -2,6 +2,8 @@ package org.ttdc.gwt.client.uibinder.forum;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GForum;
@@ -29,7 +31,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.Hyperlink;
+
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -48,7 +50,7 @@ public class ForumPanel extends BasePageComposite implements PostEventListener{
 	
 	private SimplePanel topicsTargetPanel = new SimplePanel();
 	
-	
+	private Map<String,GForum> forumMap = new HashMap<String,GForum>();
 	private final StandardPageHeaderPanel pageHeaderPanel;
 	private HistoryToken token;
 	private FlatPresenter flatPresenter;
@@ -80,22 +82,39 @@ public class ForumPanel extends BasePageComposite implements PostEventListener{
 		//Load the flat posts.
 		this.token = token;
 		
-		pageHeaderPanel.init("Forums", "choose a forum to view its topics");
+		updatePageTitle(token);
+			
+		
+		
 		pageHeaderPanel.getSearchBoxPresenter().init(token);
 		
-//		if(PresenterHelpers.isWidgetEmpty(topicsTargetPanel)){
-//			topicsTargetPanel.add(flatPresenter.getWidget());
-//		}
 		flatPresenter.init(token);
 		topicsTargetPanel.clear();
 		topicsTargetPanel.add(flatPresenter.getWidget());
-		
-		
 	}
 
 
 
+	private void updatePageTitle(HistoryToken token) {
+		if(token.hasParameter(HistoryConstants.FORUM_ID_KEY)){
+			String forumId = token.getParameter(HistoryConstants.FORUM_ID_KEY);
+			GForum forum = forumMap.get(forumId);
+			if(forum != null){
+				pageHeaderPanel.init("Forum: " + forum.getValue(), "browse the "+forum.getMass() + " topics contained within");
+			}
+			else{
+				pageHeaderPanel.init("Forums", "choose a forum to view its topics");
+			}
+		}
+		else{
+			pageHeaderPanel.init("Forums", "choose a forum to view its topics");
+		}
+	}
+
 	private void createForumList() {
+		if(!PresenterHelpers.isWidgetEmpty(forumsElement)){
+			return;
+		}
 		ForumCommand cmd = new ForumCommand();
 		CommandResultCallback<GenericListCommandResult<GForum>> callback = buildForumListCallback();
 		injector.getService().execute(cmd, callback);
@@ -107,6 +126,7 @@ public class ForumPanel extends BasePageComposite implements PostEventListener{
 			@Override
 			public void onSuccess(GenericListCommandResult<GForum> result) {
 				loadForumList(result.getList());
+				updatePageTitle(token);
 			}
 		};
 	}
@@ -116,6 +136,7 @@ public class ForumPanel extends BasePageComposite implements PostEventListener{
 		for(GForum forum : list){
 			ForumLink link = new ForumLink(forum);
 			links.add(link);
+			forumMap.put(forum.getTagId(),forum);
 		}
 		forumsElement.loadAnchors(links, false);
 	}
@@ -131,7 +152,7 @@ public class ForumPanel extends BasePageComposite implements PostEventListener{
 			token.addParameter(HistoryConstants.VIEW, HistoryConstants.VIEW_FORUMS);
 			token.addParameter(HistoryConstants.FORUM_ID_KEY, forum.getTagId());
 			
-			setText(forum.getValue() + " (" + forum.getMass() + ")");
+			setText(forum.getDisplayValue());
 			
 			addClickHandler(new ClickHandler() {
 				@Override
