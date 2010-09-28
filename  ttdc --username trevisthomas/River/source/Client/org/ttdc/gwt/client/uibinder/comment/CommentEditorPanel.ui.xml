@@ -48,11 +48,11 @@
 		
 		<table class="tt-fill">
 			<tr>
-				<td><g:Label width="20px" ui:field="ratingLabelElement">Rating:</g:Label></td>
+				<td class="tt-comment-editor-th"><g:Label ui:field="ratingLabelElement">Rating:</g:Label></td>
 				<td><g:SimplePanel ui:field="ratingElement" /></td>
 			</tr>
 			<tr>
-				<td><g:Label width="20px" ui:field="topicLabelElement">Topic:</g:Label></td>
+				<td class="tt-comment-editor-th"><g:Label ui:field="topicLabelElement">Topic:</g:Label></td>
 				<td><g:SimplePanel ui:field="topicSuggestionHolderElement" /></td>
 			</tr>
 			<tr>
@@ -63,9 +63,9 @@
 		</table>
 		
 		<g:HTMLPanel ui:field="topicFieldsElement">
-			<table>
+			<table class="tt-fill">
 				<tr>
-					<td>
+					<td class="tt-comment-editor-th">
 						Forum
 					</td>
 					<td>
@@ -73,7 +73,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td>	
+					<td class="tt-comment-editor-th">	
 						Description
 					</td>
 					<td>
@@ -84,10 +84,27 @@
 				
 		</g:HTMLPanel>
 		
+		<table class="tt-fill">
+			<tr>
+				<td class="tt-comment-editor-th">
+					Comment
+				</td>
+				<td>
+					<g:TextArea styleName="tt-comment-textarea" ui:field="textAreaElement" />		
+				</td>
+			</tr>
+			<tr>
+				<td>
+					&nbsp;
+				</td>
+				<td>
+					<g:SimplePanel styleName="tt-comment-preview" ui:field="previewElement" />		
+				</td>
+			</tr>
+		</table>
 		
-		<g:TextArea styleName="tt-comment-textarea" ui:field="textAreaElement" />
 		
-		<g:SimplePanel styleName="tt-comment-preview" ui:field="previewElement" />
+		
 		
 		<div class="tt-float-container">
 			<table class="tt-comment-editor-buttons">

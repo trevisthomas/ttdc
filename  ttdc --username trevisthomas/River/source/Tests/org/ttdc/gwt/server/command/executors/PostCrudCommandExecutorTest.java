@@ -16,6 +16,7 @@ import org.hibernate.HibernateException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.ttdc.gwt.client.beans.GAssociationPostTag;
 import org.ttdc.gwt.client.beans.GTag;
 import org.ttdc.gwt.server.command.CommandExecutorFactory;
 import org.ttdc.gwt.server.dao.Helpers;
@@ -258,7 +259,7 @@ public class PostCrudCommandExecutorTest {
 	}
 	
 	@Test
-	public void testCreateNewTopic(){
+	public void testCreateNewTopicFailTest(){
 		try{
 			final PostCrudCommand cmd = UniqueCrudPostCommandObjectMother.createNewTopic();
 			cmd.setAction(PostActionType.CREATE);
@@ -269,14 +270,48 @@ public class PostCrudCommandExecutorTest {
 			beginSession();
 			Post post = cmdexec.create(cmd);
 			
-			assertTrue("Root post has a parent! WTF!",post.getParent() == null);
-			assertTrue("Thread_guid must be null for root posts",post.getThread() == null);
-			assertTrue("Root post is not root!!!",post.isRootPost());
+			fail("Cant create a post without a forum");
 			
-			assertEquals("Path should be blank for roots","",post.getPath()); 
+		}
+		catch(Exception e){
+			rollback();
+			//Success
+		}	
+		finally{
+			rollback();
+		}
+	}
+	
+	@Test
+	public void testCreateNewTopicWithForum(){
+		try{
+			final PostCrudCommand cmd = UniqueCrudPostCommandObjectMother.createNewTopic();
+			cmd.setAction(PostActionType.CREATE);
+			String title = cmd.getTitle();
+			cmd.setForumId(Helpers.tagGeneralStuff);
+			String desc = "This is the body of the topic";
+			cmd.setTopicDescription(desc);
+			PostCrudCommandExecutor cmdexec = (PostCrudCommandExecutor)CommandExecutorFactory.createExecutor(Helpers.personIdTrevis,cmd);
+			//cmdexec.execute();
+			
+			beginSession();
+			Post post = cmdexec.create(cmd);
+			
+//			assertTrue("Root post has a parent! WTF!",post.getParent().getParent() == null);
+//			assertTrue("Thread_guid must be null for root posts",post.getParent().getThread() == null);
+//			assertTrue("Root post is not root!!!",post.getParent().isRootPost());
+//			
+//			assertEquals("Path should be blank for roots","",post.getPath()); 
 			
 			assertNotNull("Creator is null on the post object",post.getCreator());
 			assertEquals(Helpers.personIdTrevis,post.getCreator().getPersonId());
+			
+			assertEquals(desc, post.getParent().getEntry().getBody());
+			
+			//GAssociationPostTag ass = new GAssociationPostTag();
+			
+			assertTrue("Topic didnt get it's forum tag",post.getParent().getTagAssociations().size() == 1);
+			assertEquals("Topic didnt the correct forum",cmd.getForumId(),post.getParent().getTagAssociations().get(0).getTag().getTagId());
 			
 			Tag titleTag = post.getTitleTag();
 			assertEquals(title,titleTag.getValue());
@@ -293,7 +328,6 @@ public class PostCrudCommandExecutorTest {
 			rollback();
 		}
 	}
-	
 	
 	
 	@Test

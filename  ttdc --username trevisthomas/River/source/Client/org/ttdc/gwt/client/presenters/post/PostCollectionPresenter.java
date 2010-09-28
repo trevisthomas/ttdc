@@ -29,6 +29,9 @@ public final class PostCollectionPresenter extends BasePresenter<PostCollectionP
 	private boolean expanded = true;
 	private Mode mode;
 	private GPost conversationStarterPost = null;
+	private boolean listenForNewLocalNew = true;
+
+	
 
 	/**
 	 *  View for a PostCollectionPresenter 
@@ -197,11 +200,19 @@ public final class PostCollectionPresenter extends BasePresenter<PostCollectionP
 	public List<PostPresenterCommon> getPostPresenterList(){
 		return postPresenters;
 	}
+	
+	public boolean isListenForLocalNew() {
+		return listenForNewLocalNew;
+	}
+
+	public void setListenForLocalNew(boolean listenForNewLocalNew) {
+		this.listenForNewLocalNew = listenForNewLocalNew;
+	}
 
 	@Override
 	public void onPostEvent(PostEvent postEvent) {
 		GPost newPost = postEvent.getSource();
-		if(postEvent.getType().isLocalNew()){
+		if(postEvent.getType().isLocalNew() && listenForNewLocalNew){
 			if(Mode.GROUPED.equals(mode)){
 				if(conversationStarterPost == null && newPost.isThreadPost()){
 					List<GPost> list = new ArrayList<GPost>();

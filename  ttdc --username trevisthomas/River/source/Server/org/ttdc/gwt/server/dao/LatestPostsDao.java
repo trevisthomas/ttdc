@@ -7,13 +7,16 @@ import java.util.List;
 
 import org.ttdc.gwt.shared.util.PaginatedList;
 import org.ttdc.persistence.objects.Post;
-import org.ttdc.util.PathSegmentizer;
 
 public class LatestPostsDao extends FilteredPostPaginatedDaoBase{
 	
 	private static final int DEFAULT_REPLY_MAX_RESULTS = ThreadDao.THREAD_REPLY_MAX_RESULTS;
 	private int replyMaxResults = DEFAULT_REPLY_MAX_RESULTS;
+	private int MAX_CONVERSATIONS = 10;
 	
+	public LatestPostsDao() {
+		setPageSize(MAX_CONVERSATIONS);
+	}
 	
 	public PaginatedList<Post> loadConversations(){
 		PaginatedList<Post> results = new PaginatedList<Post>();
