@@ -97,7 +97,7 @@ public class Navigation extends Composite implements PersonEventListener{
 		List<Hyperlink> links = new ArrayList<Hyperlink>();
 		links.add(homeElement);
 		links.add(forumsElement);
-		links.add(searchElement);
+		//links.add(searchElement);
 		links.add(movieElement);
 		if(!ConnectionId.isAnonymous()){
 			links.add(usersElement);

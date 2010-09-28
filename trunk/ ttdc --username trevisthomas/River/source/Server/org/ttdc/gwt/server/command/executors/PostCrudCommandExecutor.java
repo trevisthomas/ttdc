@@ -268,6 +268,10 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 			}
 		}
 		
+		if(parent == null && StringUtils.isEmpty(cmd.getForumId())){
+			throw new RuntimeException("Forum is required for new Topics.");
+		}
+		
 		PostDao dao = new PostDao();
 		if(cmd.isDeleted())
 			dao.setDeleted();
@@ -296,6 +300,8 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 		dao.setBody(cmd.getBody());
 		dao.setCreator(creator);
 		dao.setImageUrl(cmd.getImageUrl());
+		dao.setDescription(cmd.getTopicDescription());
+		
 		Tag titleTag = loadOrCreateTitleTag(cmd);
 		dao.setTitle(titleTag);
 		dao.setUrl(cmd.getUrl());
@@ -303,17 +309,23 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 			dao.setPublishYear(Integer.parseInt(cmd.getYear()));
 		}
 		
-		dao.setEmbedMarker(cmd.getEmbedMarker());
 		Post post = dao.create();
 		
-		for (GTag gTag : cmd.getTags()){
-			Tag tag;
-			if(StringUtil.notEmpty(gTag.getTagId()))
-				tag = TagDao.loadTag(gTag.getTagId());
-			else
-				tag = findOrCreateTag(gTag.getValue(), Tag.TYPE_TOPIC);
-			createTagAssociation(creator,post,tag);
+		if(StringUtils.isNotEmpty(cmd.getForumId())){
+			Tag tag = TagDao.loadTag(cmd.getForumId());
+			createTagAssociation(creator,post.getParent(),tag);
 		}
+		
+//		for (GTag gTag : cmd.getTags()){
+//			Tag tag;
+//			if(StringUtil.notEmpty(gTag.getTagId()))
+//				tag = TagDao.loadTag(gTag.getTagId());
+//			else
+//				tag = findOrCreateTag(gTag.getValue(), Tag.TYPE_TOPIC);
+//			createTagAssociation(creator,post,tag);
+//		}
+		
+		
 		
 		return post;
 	}

@@ -23,7 +23,6 @@ final public class PostDao {
 	private String body;
 	private Image image;
 	private Post parent;
-	private String embedMarker;
 	private Person creator;
 	private Tag titleTag;
 	private String url;
@@ -31,6 +30,8 @@ final public class PostDao {
 	private long metaMask = 0;
 	private String postId;
 	private String imageUrl;
+	private String description;
+	private String forumId;
 	
 	public PostDao(){}
 
@@ -54,16 +55,14 @@ final public class PostDao {
 		}
 		else if(parent == null){
 			//Create this conversation in a new topic
-			String conversationBody =  getBody();
-			setBody("");
-			Post newTopic =  createTraditionalPost();
+			validation();
+			Post newTopic =  createTraditionalPost(getDescription());
 			parent = newTopic;
-			setBody(conversationBody);
-			bodyValidation();
-			return createTraditionalPost();
+			
+			return createTraditionalPost(getBody());
 		}
 		else{
-			return createTraditionalPost();
+			return createTraditionalPost(getBody());
 		}
 	}
 
@@ -78,8 +77,7 @@ final public class PostDao {
 		
 		Post post = buildPost();
 		
-		setBody("");
-		Entry entry = buildEntry(post);
+		Entry entry = buildEntry(post, "");
 		post.addEntry(entry);
 		post.setLatestEntry(entry);
 		session().flush();
@@ -118,9 +116,9 @@ final public class PostDao {
 		}
 	}
 
-	private Post createTraditionalPost() {
+	private Post createTraditionalPost(String entryText) {
 		Post post = buildPost();
-		Entry entry = buildEntry(post);
+		Entry entry = buildEntry(post, entryText);
 		post.addEntry(entry);
 		post.setLatestEntry(entry);
 		
@@ -129,21 +127,18 @@ final public class PostDao {
 		return post;
 	}
 
-	private void bodyValidation() {
+	private void validation() {
 		if(StringUtils.isEmpty(body)){
 			throw new RuntimeException("A Post cannot be created without content.");
 		}
+		if(StringUtils.isEmpty(description) && parent == null){
+			throw new RuntimeException("A Topic cannot be created without a description.");
+		}
 	}
 
-	private Entry buildEntry(Post post) {
+	private Entry buildEntry(Post post, String entryText) {
 		Entry entry = new Entry();
-		if(StringUtils.isNotBlank(embedMarker)){
-			String fixedBody = body.replaceAll(embedMarker, post.getThread().getPostId());
-			entry.setBody(fixedBody);
-		}
-		else{
-			entry.setBody(body);
-		}
+		entry.setBody(entryText);
 		entry.setSummary(PostFormatter.getInstance().formatSummary(entry.getBody()));		
 		entry.setPost(post);
 		session().save(entry);
@@ -154,7 +149,7 @@ final public class PostDao {
 	public Post update(){
 		Post post = loadPost(getPostId());
 		if(StringUtil.notEmpty(getBody())){
-			Entry entry = buildEntry(post);
+			Entry entry = buildEntry(post, getBody());
 			post.addEntry(entry);
 			post.setLatestEntry(entry);
 			post.setEditDate(entry.getDate());
@@ -466,14 +461,6 @@ final public class PostDao {
 		this.parent = parent;
 	}
 
-	public String getEmbedMarker() {
-		return embedMarker;
-	}
-
-	public void setEmbedMarker(String embedMarker) {
-		this.embedMarker = embedMarker;
-	}
-
 	public String getUrl() {
 		return url;
 	}
@@ -516,6 +503,22 @@ final public class PostDao {
 
 	public void setMetaMask(long metaMask) {
 		this.metaMask = metaMask;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getForumId() {
+		return forumId;
+	}
+
+	public void setForumId(String forumId) {
+		this.forumId = forumId;
 	}
 
 	public void setDeleted(){

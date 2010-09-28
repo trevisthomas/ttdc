@@ -12,6 +12,7 @@ public class FlatView implements FlatPresenter.View{
 	
 	
 	public FlatView() {
+		main.addStyleName("tt-fill");
 		main.add(posts);
 		main.add(footer);
 	}

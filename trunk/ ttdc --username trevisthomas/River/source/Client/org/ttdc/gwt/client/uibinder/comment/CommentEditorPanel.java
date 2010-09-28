@@ -206,12 +206,12 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 		configureReviewCheckbox(person, post);
 		configurePrivateCheckbox(person, post);
 		
-		init();
+		configure();
 		
 		textAreaElement.setFocus(true);
 	}
 	
-	private void init(){
+	private void configure(){
 		switch (mode) {
 			case CREATE:
 				parentInfoElement.setVisible(true);
@@ -553,6 +553,8 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 		cmd.setAction(action);
 		String body = applyRealEmbeding(textAreaElement.getText());
 		cmd.setBody(body);
+		cmd.setTopicDescription(descriptionTextAreaElement.getText());
+		cmd.setForumId(((MyListBox)forumListBoxElement).getSelectedValue());
 		cmd.setConnectionId(ConnectionId.getInstance().getConnectionId());
 		
 		cmd.setPrivate(privateCheckBoxElement.getValue());

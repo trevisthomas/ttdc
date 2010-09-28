@@ -11,6 +11,8 @@ public class FilteredPostPaginatedDaoBase extends PaginatedDaoBase{
 	private Set<PostFlag> filterFlags = new HashSet<PostFlag>();
 	private List<String> filterThreadIds = new ArrayList<String>(); 
 	
+	
+	
 	public void addFlagFilter(PostFlag flag){
 		filterFlags.add(flag);
 	}

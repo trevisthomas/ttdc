@@ -34,6 +34,8 @@ public class PostCrudCommand extends Command<PostCommandResult>{
 	private boolean locked;
 //	private List<String> tagIds = new ArrayList<String>();
 	private List<GTag> tags = new ArrayList<GTag>();
+	private String topicDescription;
+	private String forumId;
 	
 	private Long metaMask = null;
 	
@@ -209,5 +211,18 @@ public class PostCrudCommand extends Command<PostCommandResult>{
 	public void setMetaMask(long mask){
 		metaMask = mask;
 	}
+	public String getTopicDescription() {
+		return topicDescription;
+	}
+	public void setTopicDescription(String topicDescription) {
+		this.topicDescription = topicDescription;
+	}
+	public String getForumId() {
+		return forumId;
+	}
+	public void setForumId(String forumId) {
+		this.forumId = forumId;
+	}
+	
 	
 }

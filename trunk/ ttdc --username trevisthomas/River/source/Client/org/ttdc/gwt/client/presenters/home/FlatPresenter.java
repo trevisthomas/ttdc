@@ -45,6 +45,7 @@ public class FlatPresenter extends BasePresenter<FlatPresenter.View> implements 
 		this.forumId = token.getParameter(HistoryConstants.FORUM_ID_KEY);
 		if(forumId != null){
 			init();
+			postCollection.setListenForLocalNew(false);
 		}
 	}
 	
