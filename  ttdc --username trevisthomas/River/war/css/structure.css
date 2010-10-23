@@ -257,7 +257,9 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 
 .gwt-Anchor{cursor: pointer;}
 .tt-cursor-move{cursor: move;}
-.tt-cursor-pointer{cursor: pointer;}
+.tt-cursor-pointer{cursor: pointer; outline: none;}
+
+a{outline: none;}
 
 .tt-textbox-search{width: 600px; border: 0px;}
 .tt-searchBoxPanel{border: 1px solid;}

@@ -223,6 +223,8 @@ public class IconOptionsPanel extends Composite implements PersonEventListener{
     			main.addItem(unEarmarkElement);
     		if(tagElement.isVisible())
     			main.addItem(tagElement);
+    		if(editElement.isVisible())
+    			main.addItem(editElement);
     		
 		}
 		
