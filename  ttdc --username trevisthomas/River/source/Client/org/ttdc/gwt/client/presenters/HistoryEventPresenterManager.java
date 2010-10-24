@@ -10,6 +10,7 @@ import org.ttdc.gwt.client.messaging.history.HistoryConstants;
 import org.ttdc.gwt.client.messaging.history.HistoryEvent;
 import org.ttdc.gwt.client.messaging.history.HistoryEventListener;
 import org.ttdc.gwt.client.messaging.history.HistoryToken;
+import org.ttdc.gwt.client.presenters.home.FlatPresenter;
 import org.ttdc.gwt.client.presenters.search.SearchBoxView;
 import org.ttdc.gwt.client.presenters.topic.TopicPresenter;
 import org.ttdc.gwt.client.presenters.users.UserToolsPresenter;
@@ -114,6 +115,8 @@ public class HistoryEventPresenterManager implements HistoryEventListener{
 			}
 		}
 		else if(HistoryConstants.VIEW_HOME.equals(view)){
+			//FlatPresenter.flushCache();
+			
 			injector.createHomePanel().show(event.getSource());
 			//injector.getHome2Presenter().show(event.getSource());
 			//injector.getHomePresenter().show(event.getSource());

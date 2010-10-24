@@ -24,7 +24,7 @@ public class NestedPresenter extends BasePresenter<NestedPresenter.View> impleme
 	}
 	
 	private PostCollectionPresenter postCollection;
-	private static PaginatedListCommandResult<GPost> resultCache;
+	//private static PaginatedListCommandResult<GPost> resultCache;
 	@Inject
 	public NestedPresenter(Injector injector){
 		super(injector,injector.getNestedView());
@@ -33,13 +33,13 @@ public class NestedPresenter extends BasePresenter<NestedPresenter.View> impleme
 	public void init(){
 		view.postPanel().add(injector.getWaitPresenter().getWidget());
 		postCollection = injector.getPostCollectionPresenter();
-		
-		if(resultCache == null){
-			refresh();
-		}
-		else{
-			addResults(resultCache);
-		}
+		refresh();
+//		if(resultCache == null){
+//			refresh();
+//		}
+//		else{
+//			addResults(resultCache);
+//		}
 	}
 	
 	public void refresh() {
@@ -53,7 +53,7 @@ public class NestedPresenter extends BasePresenter<NestedPresenter.View> impleme
 	private CommandResultCallback<PaginatedListCommandResult<GPost>> buildCallback() {
 		CommandResultCallback<PaginatedListCommandResult<GPost>> callback = new CommandResultCallback<PaginatedListCommandResult<GPost>>(){
 			public void onSuccess(PaginatedListCommandResult<GPost> result) {
-				resultCache = result;
+				//resultCache = result;
 				addResults(result);
 				setupMorePresenter(result);
 			}

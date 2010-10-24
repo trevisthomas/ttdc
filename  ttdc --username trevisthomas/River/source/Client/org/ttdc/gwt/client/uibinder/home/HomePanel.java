@@ -100,9 +100,7 @@ public class HomePanel extends BasePageComposite implements PersonEventListener,
 			}
 		});
 		
-		SiteUpdatePanel siteUpdatePanel = injector.createSiteUpdatePanel();
-		siteUpdateElement.clear();
-		siteUpdateElement.add(siteUpdatePanel);
+		resetSiteUpdateArea();
 		
 		GPerson user = ConnectionId.getInstance().getCurrentUser();
 		if(!user.isAnonymous()){
@@ -113,12 +111,25 @@ public class HomePanel extends BasePageComposite implements PersonEventListener,
 		EventBus.getInstance().addListener((PersonEventListener)this);
 		EventBus.getInstance().addListener((TagEventListener)this);
 	}
+
+
+	private void resetSiteUpdateArea() {
+		SiteUpdatePanel siteUpdatePanel = this.injector.createSiteUpdatePanel();
+		siteUpdateElement.clear();
+		siteUpdateElement.add(siteUpdatePanel);
+	}
 	
 
 	@Override
 	protected void onShow(HistoryToken token) {
 		pageHeaderPanel.init("TTDC", "feeling the love since 1999");
 		pageHeaderPanel.getSearchBoxPresenter().init(token);
+		
+		resetSiteUpdateArea();
+		
+		earmarksPanel.clear();
+		flatPanel.clear();
+		nestedPanel.clear();
 		
 		initializeTabs(token);
 	}

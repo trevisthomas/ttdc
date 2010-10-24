@@ -260,6 +260,8 @@ public class PublicUserProfilePanel  extends BasePageComposite {
 		SearchPostsCommand cmd = new SearchPostsCommand();
 		//cmd.setConversationsOnly(true);
 		cmd.setPostSearchType(PostSearchType.CONVERSATIONS);
+		cmd.setSortOrder(SearchSortBy.BY_DATE);
+		cmd.setSortDirection(SortDirection.DESC);
 		cmd.setPersonId(person.getPersonId());
 		cmd.setPageSize(10);
 		if(PresenterHelpers.isWidgetEmpty(latestConversationsPanel))

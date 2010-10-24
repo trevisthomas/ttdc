@@ -268,7 +268,7 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 			}
 		}
 		
-		if(parent == null && StringUtils.isEmpty(cmd.getForumId())){
+		if(!cmd.isMovie() && parent == null && StringUtils.isEmpty(cmd.getForumId())){
 			throw new RuntimeException("Forum is required for new Topics.");
 		}
 		
