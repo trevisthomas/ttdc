@@ -22,9 +22,9 @@ public class SiteUpdatePanel extends Composite implements PostEventListener{
 
 	private static final MyUiBinder binder = GWT.create(MyUiBinder.class);
 	private final Injector injector;
-	@UiField Label siteRefresh;
+	@UiField Label siteRefresh; 
 	
-	private static int postCount = 0;
+	private int postCount = 0;
 
 	@Inject
 	public SiteUpdatePanel(Injector injector) {

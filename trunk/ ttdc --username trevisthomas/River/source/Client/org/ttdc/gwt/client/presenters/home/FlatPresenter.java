@@ -31,10 +31,10 @@ public class FlatPresenter extends BasePresenter<FlatPresenter.View> implements 
 	}
 	
 	private PostCollectionPresenter postCollection;
-	private static PaginatedListCommandResult<GPost> resultCache = null;
+	//private static PaginatedListCommandResult<GPost> resultCache = null;
 	private String forumId = null;
 	private HistoryToken token;
-
+	
 	@Inject
 	public FlatPresenter(Injector injector){
 		super(injector,injector.getFlatView());
@@ -53,12 +53,13 @@ public class FlatPresenter extends BasePresenter<FlatPresenter.View> implements 
 		view.postPanel().clear();
 		view.postPanel().add(injector.getWaitPresenter().getWidget());
 		postCollection = injector.getPostCollectionPresenter();
-		if(resultCache == null){
-			refresh();
-		}
-		else{
-			showResult(resultCache);
-		}
+//		if(resultCache == null){
+//			refresh();
+//		}
+//		else{
+//			showResult(resultCache);
+//		}
+		refresh();
 	}
 	
 	public void refresh(){
@@ -80,12 +81,12 @@ public class FlatPresenter extends BasePresenter<FlatPresenter.View> implements 
 	private CommandResultCallback<PaginatedListCommandResult<GPost>> buildCallback() {
 		CommandResultCallback<PaginatedListCommandResult<GPost>> callback = new CommandResultCallback<PaginatedListCommandResult<GPost>>(){
 			public void onSuccess(PaginatedListCommandResult<GPost> result) {
-				if(forumId == null){
-					resultCache = result;
-				}
-				else{
-					resultCache = null;
-				}
+//				if(forumId == null){
+//					resultCache = result;
+//				}
+//				else{
+//					resultCache = null;
+//				}
 				showResult(result);
 			}
 		};

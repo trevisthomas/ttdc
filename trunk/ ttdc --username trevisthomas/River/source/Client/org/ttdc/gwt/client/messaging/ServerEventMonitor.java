@@ -45,8 +45,9 @@ public class ServerEventMonitor extends Timer implements PersonEventListener{
 		service.execute(new ServerEventListCommand(ConnectionId.getInstance().getConnectionId()), new CommandResultCallback<ServerEventCommandResult>(){
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("ServerEventMonitor caught an exception when receiving new server events: "+caught + " Server may be down.  Refresh your browser manually to attempt to reconnect.");
-				cancel();
+//				Window.alert("ServerEventMonitor caught an exception when receiving new server events: "+caught + " Server may be down.  Refresh your browser manually to attempt to reconnect.");
+//				cancel();
+				//Just ignore this and try again.
 			}
 			public void onSuccess(ServerEventCommandResult result) {
 				fireEvents(result.getEvents());
