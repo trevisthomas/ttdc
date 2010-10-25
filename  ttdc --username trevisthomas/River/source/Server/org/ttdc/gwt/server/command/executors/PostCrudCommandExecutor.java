@@ -272,6 +272,10 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 			throw new RuntimeException("Forum is required for new Topics.");
 		}
 		
+		if(cmd.isMovie() && movieExists(cmd)){
+			throw new RuntimeException("Movie: \""+ cmd.getTitle() + " ("+cmd.getYear()+")\" already exists.");
+		}
+		
 		PostDao dao = new PostDao();
 		if(cmd.isDeleted())
 			dao.setDeleted();
@@ -294,7 +298,6 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 		}
 		if(cmd.isLocked())
 			dao.setLocked();
-		
 		
 		dao.setParent(parent);
 		dao.setBody(cmd.getBody());
@@ -328,6 +331,29 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 		
 		
 		return post;
+	}
+
+	private boolean movieExists(PostCrudCommand cmd) {
+		TagDao dao;
+		dao = new TagDao();
+		dao.setValue(cmd.getTitle());
+		dao.setType(Tag.TYPE_TOPIC);
+		dao.setDate(new Date());
+		Tag tag = dao.load();
+		
+		if(tag != null){
+			try{
+				List<Post> list = PostDao.loadPostByTitleTag(tag.getTagId());
+				//This is a list because a single title can be reused multiple times.
+				for(Post exists : list){
+					if(exists.isMovie() && exists.getPublishYear() == Integer.parseInt(cmd.getYear())){
+						return true;
+					}
+				}
+			}
+			catch(Exception e){}
+		}
+		return false;
 	}
 
 	private Tag findOrCreateTag(String value, String type) {

@@ -36,6 +36,7 @@ final public class PostDao {
 	public PostDao(){}
 
 	final static String postListQuery = "SELECT p FROM Post p WHERE p.postId IN (:postIds)";
+	final static String postByTitleQuery = "SELECT p FROM Post p WHERE p.titleTag.tagId = (:titleTagId) AND p.parent.postId IS NULL";
 	@SuppressWarnings("unchecked")
 	public static List<Post> loadPosts(List<String> postIds){
 		List<Post> list = session().createQuery(postListQuery)
@@ -47,6 +48,13 @@ final public class PostDao {
 	public static Post loadPost(String postId){
 		Post p = (Post)session().load(Post.class, postId);
 		return p;
+	}
+	
+	public static List<Post> loadPostByTitleTag(String titleTagId){
+		List<Post> list = session().createQuery(postByTitleQuery)
+			.setParameter("titleTagId", titleTagId)
+			.list();
+		return list;
 	}
 	
 	public Post create(){
