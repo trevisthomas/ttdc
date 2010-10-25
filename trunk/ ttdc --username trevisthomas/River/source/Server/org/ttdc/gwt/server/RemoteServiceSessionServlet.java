@@ -116,11 +116,15 @@ public abstract class RemoteServiceSessionServlet extends RemoteServiceServlet{
 		
 		getLogger().error(t);
 		
-		return new RemoteServiceException(getStackTrace(t));
+		//return new RemoteServiceException(getStackTrace(t));
 //		if(StringUtils.isNotEmpty(t.getMessage()))
 //			return new RemoteServiceException(t.getMessage());
 //		else
 //			return new RemoteServiceException(t.toString());
+		if(StringUtils.isNotEmpty(t.getMessage()))
+			return new RemoteServiceException(t.getMessage());
+		else
+			return new RemoteServiceException(getStackTrace(t));
 	} 
 	
 	public static String getStackTrace(Throwable t)
