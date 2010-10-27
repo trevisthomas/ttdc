@@ -15,6 +15,11 @@ public class EntrySummaryAndTagRemoveForV7 {
 	private static Logger log = Logger.getLogger(SortValueOnTag.class);
 	private StopWatch stopwatch = new StopWatch();
 	
+	
+	// Disabling this migration step on Oct 25.  I dont want to shacktag in the DB anymore.  
+	// V7 has lost rich text so we're back to pre v7 formatting
+	// also, summaries are no longer needed.
+	
 	public void doit(){
 		try{
 			start();

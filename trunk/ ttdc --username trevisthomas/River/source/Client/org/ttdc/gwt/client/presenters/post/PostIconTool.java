@@ -52,6 +52,11 @@ public class PostIconTool {
     	}
     }
     
+    public void showPostAsRead(){
+    	postUnReadElement.setVisible(false);
+    	postReadElement.setVisible(true);
+    }
+    
     public  Label getIconInf(){
 		return postInfElement;
 	}

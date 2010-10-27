@@ -23,9 +23,10 @@ public class Version7AggrogatedMigrator {
 			SortValueOnTag thing = new SortValueOnTag();
 			thing.doit();
 			
-			Thread.sleep(4000);
-			EntrySummaryAndTagRemoveForV7 entryThing = new EntrySummaryAndTagRemoveForV7();
-			entryThing.doit();
+//          I dont think that this post formatting is needed with v7 anymore. Summaries are history i think and so is rich text editing.
+//			Thread.sleep(4000);
+//			EntrySummaryAndTagRemoveForV7 entryThing = new EntrySummaryAndTagRemoveForV7();
+//			entryThing.doit();
 		}
 		catch (Exception e) {
 			e.printStackTrace();
