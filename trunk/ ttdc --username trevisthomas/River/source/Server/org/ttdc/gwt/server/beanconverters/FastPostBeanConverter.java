@@ -158,6 +158,9 @@ public class FastPostBeanConverter {
 	}
 	
 	public static GPost convertPost(Post p, InboxDao inboxDao) {
+		return convertPost(p,inboxDao,true);
+	}
+	public static GPost convertPost(Post p, InboxDao inboxDao, boolean formatted) {
 		GPost gPost = new GPost();
 		gPost.setDate(p.getDate());
 		//gPost.setEntries(convertEntries(p.getEntries()));
@@ -167,8 +170,14 @@ public class FastPostBeanConverter {
 //		singleEntry.add(p.getEntry());
 //		gPost.setEntries(convertEntries(singleEntry));
 		
-		if(p.getEntry() != null) //Because movies dont have a latest entry.  Oddly, didnt see this until doing create new movie.
-			gPost.setLatestEntry(convertEntry(p.getEntry()));
+		if(p.getEntry() != null){ //Because movies dont have a latest entry.  Oddly, didnt see this until doing create new movie.
+			if(formatted){
+				gPost.setLatestEntry(convertEntry(p.getEntry()));
+			}
+			else{
+				gPost.setLatestEntry(convertEntryUnFormatted(p.getEntry()));
+			}
+		}
 		gPost.setPostId(p.getPostId());
 		//gPost.setPosts(convertPosts(p.getPosts()));
 		gPost.setTagAssociations(convertAssociationsPostTag(p.getTagAssociations()));
@@ -252,6 +261,14 @@ public class FastPostBeanConverter {
 		
 		
 		return gPost;
+	}
+	
+	private static GEntry convertEntryUnFormatted(Entry e){
+		GEntry gEntry = new GEntry();
+		gEntry.setBody(e.getBody());
+		gEntry.setDate(e.getDate());
+		gEntry.setEntryId(e.getEntryId());
+		return gEntry;
 	}
 	
 	public static GEntry convertEntry(Entry e) {

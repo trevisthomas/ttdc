@@ -20,9 +20,12 @@ import org.ttdc.gwt.client.uibinder.comment.CommentEditorPanel;
 import org.ttdc.gwt.shared.commands.AssociationPostTagCommand;
 import org.ttdc.gwt.shared.commands.AssociationPostTagCommand.Mode;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
+import org.ttdc.gwt.shared.commands.PostCrudCommand;
 import org.ttdc.gwt.shared.commands.UserObjectCrudCommand;
 import org.ttdc.gwt.shared.commands.results.GenericCommandResult;
+import org.ttdc.gwt.shared.commands.results.PostCommandResult;
 import org.ttdc.gwt.shared.commands.types.ActionType;
+import org.ttdc.gwt.shared.commands.types.PostActionType;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -530,12 +533,33 @@ abstract public class PostBaseComposite extends Composite{
 //		commentPresneter.init(NewCommentPresenter.Mode.EDIT, post);
 //		commentElement.clear();
 //		commentElement.add(commentPresneter.getWidget());
+		PostCrudCommand cmd = new PostCrudCommand();
+		cmd.setAction(PostActionType.READ);
+		cmd.setPostId(post.getPostId());
+		cmd.setUnformatted(true);
 		
-		CommentEditorPanel commentEditor = injector.createCommentEditorPanel();
-		commentEditor.init(CommentEditorPanel.Mode.EDIT, post);
-		commentElement.clear();
-		commentElement.add(commentEditor);
+		CommandResultCallback<PostCommandResult> callback = buildEditPostCallback();
+		injector.getService().execute(cmd,callback);
+		
 	}
+	
+	private CommandResultCallback<PostCommandResult> buildEditPostCallback() {
+		CommandResultCallback<PostCommandResult> callback = new CommandResultCallback<PostCommandResult>(){
+			@Override
+			public void onSuccess(PostCommandResult result) {
+				CommentEditorPanel commentEditor = injector.createCommentEditorPanel();
+				commentEditor.init(CommentEditorPanel.Mode.EDIT, result.getPost());
+				commentElement.clear();
+				commentElement.add(commentEditor);
+			}
+			@Override
+			public void onFailure(Throwable caught) {
+				super.onFailure(caught);
+			}
+		};
+		return callback;
+	}
+	
 	
 	//@UiHandler("moreOptionsElement")
 //	void onClickMoreOptions(ClickEvent event){
