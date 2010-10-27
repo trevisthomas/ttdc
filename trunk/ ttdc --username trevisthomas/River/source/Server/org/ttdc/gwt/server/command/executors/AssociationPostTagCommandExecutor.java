@@ -84,8 +84,9 @@ public class AssociationPostTagCommandExecutor extends CommandExecutor<Associati
 			Persistence.session().save(creator);
 			broadcastPersonEvent(creator, PersonEventType.USER_EARMKARK_COUNT_CHANGED);
 		}
+		InboxDao inboxDao = new InboxDao(getPerson());
 		//GAssociationPostTag gAss = GenericBeanConverter.convertAssociationPostTag(ass);
-		GAssociationPostTag gAss = FastPostBeanConverter.convertAssociationPostTagWithPost(ass);
+		GAssociationPostTag gAss = FastPostBeanConverter.convertAssociationPostTagWithPost(ass, inboxDao);
 		result = new AssociationPostTagResult(AssociationPostTagResult.Status.CREATE);
 		result.setAssociationPostTag(gAss);
 		result.setAssociationId(ass.getGuid());
@@ -120,7 +121,8 @@ public class AssociationPostTagCommandExecutor extends CommandExecutor<Associati
 		Post post = ass.getPost();
 		
 		boolean isRatingTagAss = ass.getTag().getType().equals(Tag.TYPE_RATING);
-		GAssociationPostTag gAss = FastPostBeanConverter.convertAssociationPostTagWithPost(ass);
+		InboxDao inboxDao = new InboxDao(getPerson());
+		GAssociationPostTag gAss = FastPostBeanConverter.convertAssociationPostTagWithPost(ass,inboxDao);
 		
 		AssociationPostTagDao.remove(command.getAssociationId());
 		if(isRatingTagAss){
@@ -135,7 +137,7 @@ public class AssociationPostTagCommandExecutor extends CommandExecutor<Associati
 		result = new AssociationPostTagResult(AssociationPostTagResult.Status.REMOVE);
 		result.setAssociationId(ass.getGuid());
 		result.setAssociationPostTag(gAss);
-		InboxDao inboxDao = new InboxDao(getPerson());
+		
 		GPost gPost = FastPostBeanConverter.convertPost(post, inboxDao);
 		result.setPost(gPost);
 		
