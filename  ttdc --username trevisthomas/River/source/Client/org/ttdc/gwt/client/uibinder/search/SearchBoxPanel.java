@@ -322,7 +322,8 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 		return new CommandResultCallback<GenericCommandResult<GPerson>>(){
 			@Override
 			public void onSuccess(GenericCommandResult<GPerson> result) {
-				EventBus.reload();//TODO: probably should come up with a way to just refresh the parts i care about!
+				//EventBus.reload();//TODO: probably should come up with a way to just refresh the parts i care about!
+				EventBus.fireEvent(new MessageEvent(MessageEventType.MARK_SITE_READ, "Nothing"));
 			}
 		};
 	}

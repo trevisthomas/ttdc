@@ -4,6 +4,9 @@ import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.messaging.EventBus;
+import org.ttdc.gwt.client.messaging.error.MessageEvent;
+import org.ttdc.gwt.client.messaging.error.MessageEventListener;
+import org.ttdc.gwt.client.messaging.error.MessageEventType;
 import org.ttdc.gwt.client.messaging.post.PostEvent;
 import org.ttdc.gwt.client.messaging.post.PostEventListener;
 import org.ttdc.gwt.client.messaging.post.PostEventType;
@@ -31,7 +34,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
-public class PostDetailPanel extends PostBaseComposite implements PostEventListener, PostPresenterCommon{
+public class PostDetailPanel extends PostBaseComposite implements PostEventListener, PostPresenterCommon, MessageEventListener{
 	interface MyUiBinder extends UiBinder<Widget, PostDetailPanel> {}
     private static final MyUiBinder binder = GWT.create(MyUiBinder.class);
     
@@ -81,13 +84,22 @@ public class PostDetailPanel extends PostBaseComposite implements PostEventListe
 	public void init(GPost post, HasWidgets commentElement, TagListPanel tagListPanel, SimplePanel inReplyPostTarget){
 		super.init(post, commentElement, tagListPanel);
 		refreshPost(post);
-		EventBus.getInstance().addListener(this);
+		EventBus.getInstance().addListener((PostEventListener)this);
+		EventBus.getInstance().addListener((MessageEventListener )this);
 		this.inReplyPostTarget = inReplyPostTarget;
 		//inReplyPostTarget.setVisible(false);
 		
 		if(!isInResponseToAvailable(post)){
 			inResposeWrapperElement.removeFromParent();
 		}
+	}
+	
+	@Override
+	public void onMessageEvent(MessageEvent event) {
+		if(event.is(MessageEventType.MARK_SITE_READ)){
+			postIconTool.showPostAsRead();
+		}
+		
 	}
 	
 	@Override

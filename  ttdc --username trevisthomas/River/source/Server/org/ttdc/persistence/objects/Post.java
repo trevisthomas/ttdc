@@ -1539,7 +1539,7 @@ public class Post implements Comparable<Post>, HasGuid {
 	@JoinColumn(name="TAG_GUID_TITLE")
 	public Tag getTitleTag() {
 		if(titleTag == null){
-			System.err.println("fail");
+			//System.err.println("fail");
 		}
 		return titleTag;
 	}
