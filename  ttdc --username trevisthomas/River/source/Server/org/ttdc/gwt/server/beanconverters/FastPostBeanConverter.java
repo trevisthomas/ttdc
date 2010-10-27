@@ -371,9 +371,9 @@ public class FastPostBeanConverter {
 		return gAss;
 	}
 	
-	public static GAssociationPostTag convertAssociationPostTagWithPost(AssociationPostTag ass){
+	public static GAssociationPostTag convertAssociationPostTagWithPost(AssociationPostTag ass, InboxDao inboxDao){
 		GAssociationPostTag gAss = convertAssociationPostTag(ass);
-		gAss.setPost(convertPost(ass.getPost(), null));
+		gAss.setPost(convertPost(ass.getPost(), inboxDao));
 		gAss.setTag(convertTag(ass.getTag()));
 		return gAss;
 	}
