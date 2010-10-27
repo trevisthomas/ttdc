@@ -115,11 +115,11 @@ public class PostDetailPanel extends PostBaseComposite implements PostEventListe
 		cmd.setAction(PostActionType.READ);
 		cmd.setPostId(getPost().getParentPostId());
 		
-		CommandResultCallback<PostCommandResult> callback = buildEditPostCallback();
+		CommandResultCallback<PostCommandResult> callback = buildInReplyPostCallback();
 		injector.getService().execute(cmd,callback);
 	}
 	
-	private CommandResultCallback<PostCommandResult> buildEditPostCallback() {
+	private CommandResultCallback<PostCommandResult> buildInReplyPostCallback() {
 		CommandResultCallback<PostCommandResult> callback = new CommandResultCallback<PostCommandResult>(){
 			@Override
 			public void onSuccess(PostCommandResult result) {

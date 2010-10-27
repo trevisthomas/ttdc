@@ -36,6 +36,7 @@ public class PostCrudCommand extends Command<PostCommandResult>{
 	private List<GTag> tags = new ArrayList<GTag>();
 	private String topicDescription;
 	private String forumId;
+	private boolean unformatted = false; //For editing
 	
 	private Long metaMask = null;
 	
@@ -222,6 +223,12 @@ public class PostCrudCommand extends Command<PostCommandResult>{
 	}
 	public void setForumId(String forumId) {
 		this.forumId = forumId;
+	}
+	public boolean isUnformatted() {
+		return unformatted;
+	}
+	public void setUnformatted(boolean unformatted) {
+		this.unformatted = unformatted;
 	}
 	
 	
