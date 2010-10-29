@@ -66,7 +66,7 @@
 	
 	
 	-- you might want to delete the already generated index files because they're probably garbage
-	Rebuild indexs (Time taken: 1:18:07.175) (9/9/2010 0:43:37.080)
+	Rebuild indexs (Time taken: 1:18:07.175) (9/9/2010 0:43:37.080 / 10/25/2010 47:51.801)
 	
 	--remember to set one style default (required for launch)
 	update style set default_style=1 where guid='A50C080A-8696-485C-B4F0-C1291962E0D8'
