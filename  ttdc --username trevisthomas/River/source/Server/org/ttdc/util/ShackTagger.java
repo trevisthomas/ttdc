@@ -58,10 +58,10 @@ public class ShackTagger {
 			//str = htmlEncode(str);//Once again. >:-|
 
 			//URL's
-			str = fixURL(str, " https://", " ");
-			str = fixURL(str, " http://", " ");
+			str = fixURL(str, "https://", " ");
+			str = fixURL(str, "http://", " ");
 			//str = fixURL(str, " www", " ");//These dont work right anyway.  they go to http://www.trevisthomas.com/www.yourlink.com
-			str = fixURL(str, " link:", " ");
+			//str = fixURL(str, " link:", " ");
 
 			//I am god of all things cool.
 			
@@ -168,7 +168,8 @@ public class ShackTagger {
 			dispUrlStr = dispUrlStr.trim();
 			if (dispUrlStr.length() > 50)
 				dispUrlStr = dispUrlStr.substring(0, 50) + "...";
-			String str = " <a href=\"" + urlStr + "\">" + dispUrlStr + "</a>";
+			//Removed the space from in front of the link on Oct 28
+			String str = "<a target=\"_blank\" href=\"" + urlStr + "\">" + dispUrlStr + "</a>";
 			return str;
 		}
 		return "";
@@ -190,6 +191,12 @@ public class ShackTagger {
 					break;
 				}
 				buffer.append(text.substring(ndx, start));
+				
+				if(buffer.toString().endsWith("=\"") || buffer.toString().endsWith("='")){
+					//This http is an embeded link or a fully formatted anchor
+					return text;
+				}
+				
 				//Check for carrage return first!
 				end2 = text.indexOf("\r", start + startTag.length());
 				end = text.indexOf(endTag, start + startTag.length());
@@ -301,6 +308,11 @@ public class ShackTagger {
 			buffer.append(newS);
 			replacements++;
 			ndx = start + oldLength;
+		}
+		
+		//This is a bug fix added on Oct 27 for v7 to fix a problem that showed up with mismatched tags
+		if(replacements == 0){
+			return text;
 		}
 		text = buffer.toString();
 		//Ok now do the closing tags

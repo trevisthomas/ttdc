@@ -74,7 +74,7 @@ public class ConversionUtils {
 	}
 	
 	//tggle_embed7(embedHtml)
-	public static String fixV6Embed(final String body){
+	public static String fixV6Embed(String body){
 		if(body.indexOf("document.getElementById(") < 0){
 			return body;
 		}
@@ -86,7 +86,11 @@ public class ConversionUtils {
 //			m.appendReplacement(sb, newEmbedHotness);
 //		}
 		
-		Pattern p1 = Pattern.compile("<script language=\\'JavaScript\\'> function tggle_.*?>embedded</span></a>");
+		//Oct 28, making root pop up new tab
+		body = body.replaceAll("<a href", "<a target=\"_blank\" href");
+		
+		Pattern p1 = Pattern.compile("<script language=\\'JavaScript\\'> function tggle_.*?s\\[embedded]s</a>"); 
+		//Pattern p1 = Pattern.compile("<script language=\\'JavaScript\\'> function tggle_.*?>embedded</span></a>"); //This worked on versions of the data that had the shacktags converted to html (pre Oct25)
 		//Pattern p1 = Pattern.compile( StringTools.escapeRexExSpecialCharacters("<script language=")+".*?"+ StringTools.escapeRexExSpecialCharacters("embedded</span>"));
 		Matcher m1 = p1.matcher(body);
 		StringBuffer sb1 = new StringBuffer();
