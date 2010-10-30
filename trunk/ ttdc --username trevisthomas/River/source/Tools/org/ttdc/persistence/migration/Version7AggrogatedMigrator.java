@@ -27,6 +27,11 @@ public class Version7AggrogatedMigrator {
 //			Thread.sleep(4000);
 //			EntrySummaryAndTagRemoveForV7 entryThing = new EntrySummaryAndTagRemoveForV7();
 //			entryThing.doit();
+			
+			Thread.sleep(4000);
+			EntryBodyConvertEmbedLinks embedds = new EntryBodyConvertEmbedLinks();
+			embedds.doit();
+			
 		}
 		catch (Exception e) {
 			e.printStackTrace();

@@ -93,7 +93,7 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 .tt-post-footer{text-align: right;}
 
 .tt-post-summary-body{padding:0px 2px;}
-.tt-header-left{width:650px;}
+.tt-header-left{}
 .tt-header-right{}
 
 .tt-forum-topics,
@@ -123,8 +123,8 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 
 .tt-pageHeader-subtitle{font-size:12px; font-weight: bold; font-style: italic; margin-top: -7px; padding-left: 10px;}
 .tt-pageHeader-title{ margin: auto; overflow: hidden;}
-.tt-pageHeader{width: 900px; text-align:center; margin: 0 auto;}
-.tt-pageFooter{width: 900px; text-align:center; margin: 30px auto;}
+.tt-pageFooter{text-align:center; margin: 30px auto;}
+.tt-pageHeader{text-align:center; margin: 0px auto; padding: 0 10px;}
 
 .tt-pageFooter hr{ height: 1px;}
 

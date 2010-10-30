@@ -276,7 +276,8 @@ public class FastPostBeanConverter {
 		//gEntry.setBody(e.getBody());
 		
 		//TODO: once you're good to go, you should probably do this on import and never again
-		String tmp = ConversionUtils.fixV6Embed(e.getBody());
+		//String tmp = ConversionUtils.fixV6Embed(e.getBody());
+		String tmp = e.getBody();
 		tmp = PostFormatter.getInstance().format(tmp);
 		gEntry.setBody(tmp);
 

@@ -42,13 +42,16 @@
 	//open Persistence.java and update config refrence to point to sql server
 	//make sure you remember to fix the application account.
 	
-	Java Prgrams (*** Version7AggrogatedMigrator run's all Time taken: 4519.294)3694.211(June 10) 
+	Java Prgrams: 
+	Version7AggrogatedMigrator!!!
+	(*** Version7AggrogatedMigrator run's all Time taken: 4519.294)3694.211(June 10) 
 	(Sept 7th, I forgot to delete the creator tag so i ran the components first two as standalone)
 	(3462.898 Oct 25)
-	-CalculateAverageRating  (repaired)  CalculateAverageRating 124.912s
-	-MaterializedPathConversion (maybe an hour?)
-	-SortValueOnTag
-	-EntrySummaryAndTagRemoveForV7.java -- TODO: If the Oct 25 db goes well, then this summary/shacktag removal is not needed. (removing it from Version7AggrogatedMigrator for this build)
+	-CalculateAverageRating.java  (repaired)  CalculateAverageRating 124.912s
+	-MaterializedPathConversion.java (maybe an hour?)
+	-SortValueOnTag.java
+	-EntryBodyConvertEmbedLinks.java (56 sec) -- Added on 10/30/2010
+	
 			
 	V7_RENORMALIZATION_UpdateNewPostColumns.sql - took over 4 hours (359,000 rows in the log) (9/8/2010 over 6 hours) (10/25/2010 5:58min)
 																					
