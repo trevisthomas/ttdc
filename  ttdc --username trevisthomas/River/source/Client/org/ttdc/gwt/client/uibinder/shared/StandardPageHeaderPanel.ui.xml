@@ -13,7 +13,7 @@
 	 				<g:Label styleName="tt-pageHeader-subtitle" ui:field="subTitleElement"></g:Label>
 	 			</td>
 	 			<td class="tt-header-right">
-	 				<table>
+	 				<table class="tt-float-right">
 	 					<tr>
  							<td class="tt-welcome tt-welcome-login"><g:Widget styleName="" ui:field="loginElement"></g:Widget></td>
  							<td class="tt-welcome tt-welcome-calendar"><g:Widget ui:field="popupCalendarDateElement" /></td>
