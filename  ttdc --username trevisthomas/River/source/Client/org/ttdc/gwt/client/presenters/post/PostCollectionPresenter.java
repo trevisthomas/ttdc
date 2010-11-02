@@ -90,8 +90,9 @@ public final class PostCollectionPresenter extends BasePresenter<PostCollectionP
 		return conversationStarterPost;
 	}
 
-	public void setConversationStarterPost(GPost parentPost) {
+	public void setConversationStarterPost(GPost parentPost, Mode mode) {
 		this.conversationStarterPost = parentPost;
+		this.mode = mode;
 	}
 
 	public void addPostsToPostList(List<GPost> postList, Mode mode) {
