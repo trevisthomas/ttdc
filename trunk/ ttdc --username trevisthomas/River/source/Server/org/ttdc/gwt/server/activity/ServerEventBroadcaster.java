@@ -49,7 +49,7 @@ public class ServerEventBroadcaster {
 		try{
 			ServerEventQueue queue = getQueueForConnectionId(connectionId);
 			if(queue == null){
-				throw new RuntimeException("ServerEventBroadcaster not initalized for connection!");			
+				throw new RuntimeException("ServerEventBroadcaster not initalized for connection: " + connectionId);			
 			}
 			//log.debug("Loaded "+queue.getPersonId()+" at connectionId:"+connectionId);
 			queue.setLastAccessed(new Date());

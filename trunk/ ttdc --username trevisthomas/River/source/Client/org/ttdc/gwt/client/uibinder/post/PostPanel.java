@@ -135,8 +135,9 @@ public class PostPanel extends Composite implements PostPresenterCommon, PostEve
 
 	public void setPost(GPost post, Mode mode) {
 		postDetailPanelElement.init(post, commentElement, tagListPanel, inReplyPostElement);
-		postCollectionPresenter.setConversationStarterPost(post);
 		this.mode = mode;
+		postCollectionPresenter.setConversationStarterPost(post, mode);
+		
 		if(!mode.equals(Mode.FLAT)){
 			addStyleName("tt-post-conversation");
 		}
