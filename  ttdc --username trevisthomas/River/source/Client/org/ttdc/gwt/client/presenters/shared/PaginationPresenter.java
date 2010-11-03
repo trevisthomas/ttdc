@@ -71,8 +71,8 @@ public class PaginationPresenter extends BasePresenter<PaginationPresenter.View>
 	private int calculateStartPage(int currentPage, int maxPages, final int pageLinksToShow) {
 		int startPage;
 		if(currentPage > 1 && maxPages > pageLinksToShow){
-			if(currentPage <= (maxPages - pageLinksToShow))
-				startPage = currentPage;
+			if(currentPage <= (maxPages - (pageLinksToShow/2)))
+				startPage = currentPage - (pageLinksToShow/2);
 			else
 				startPage = 1 + maxPages - pageLinksToShow; 
 		}

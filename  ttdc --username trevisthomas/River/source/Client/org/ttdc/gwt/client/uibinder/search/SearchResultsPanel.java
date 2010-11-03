@@ -262,7 +262,7 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 				buff.append("Searching for replies containing \'").append(phrase).append("\'");
 			}
 			else{
-				buff.append("Searcing for stuff \'").append(phrase).append("\'");
+				buff.append("Searching for \'").append(phrase).append("\'");
 			}
 		}
 		else{
@@ -363,7 +363,7 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 			HistoryToken nextToken = paginationPresenter.getNextToken();
 			
 			if(prevToken != null){
-				prevLinkPresenter.setToken(nextToken, "prev");
+				prevLinkPresenter.setToken(prevToken, "prev");
 			}
 			else{
 				prevElement.setVisible(false); 
