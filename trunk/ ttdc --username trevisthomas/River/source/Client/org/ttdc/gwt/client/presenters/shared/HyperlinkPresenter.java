@@ -13,6 +13,7 @@ import org.ttdc.gwt.client.presenters.calendar.CalendarHelpers;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.user.client.ui.HasHTML;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.inject.Inject;
@@ -40,7 +41,7 @@ public class HyperlinkPresenter extends BasePresenter<HyperlinkPresenter.View> {
 	 */
 	public static interface View extends BaseView{
 		public HistoryToken getHistoryToken();
-		public HasText getDisplayName();
+		public HasHTML getDisplayName();
 		public HasClickHandlers getLinkHandlers();
 		public void setHighlighted(boolean enabled);
 		public boolean isHighlighted(); 
@@ -105,7 +106,7 @@ public class HyperlinkPresenter extends BasePresenter<HyperlinkPresenter.View> {
 		this.post = post;
 		view.getHistoryToken().setParameter(HistoryConstants.VIEW, HistoryConstants.VIEW_TOPIC); 
 		view.getHistoryToken().setParameter(HistoryConstants.POST_ID_KEY,post.getPostId());
-		view.getDisplayName().setText(title);
+		view.getDisplayName().setHTML(title);
 	}
 	
 	public void setUrl(String url){

@@ -3,6 +3,8 @@ package org.ttdc.gwt.client.messaging;
 import java.util.List;
 
 import org.ttdc.gwt.client.constants.AppConstants;
+import org.ttdc.gwt.client.messaging.error.MessageEvent;
+import org.ttdc.gwt.client.messaging.error.MessageEventType;
 import org.ttdc.gwt.client.messaging.person.PersonEvent;
 import org.ttdc.gwt.client.messaging.person.PersonEventListener;
 import org.ttdc.gwt.client.messaging.person.PersonEventType;
@@ -50,6 +52,14 @@ public class ServerEventMonitor extends Timer implements PersonEventListener{
 				//Just ignore this and try again.
 			}
 			public void onSuccess(ServerEventCommandResult result) {
+				if(result.getEvents().size() == 1 && (result.getEvents().get(0) instanceof MessageEvent)){
+					MessageEvent event = (MessageEvent)result.getEvents().get(0);
+					if(event.is(MessageEventType.RESET_SERVER_BROADCAST)){
+						reinitialize();
+						return;
+					}
+				}
+				
 				fireEvents(result.getEvents());
 				
 				//Check to see if the the server session user id changed. if it did, refresh this browser!
