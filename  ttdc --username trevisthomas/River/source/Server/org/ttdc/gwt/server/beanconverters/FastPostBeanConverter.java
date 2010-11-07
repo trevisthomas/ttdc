@@ -364,7 +364,7 @@ public class FastPostBeanConverter {
 //		rpcTag.setDescription(t.getDescription());
 		rpcTag.setTagId(t.getTagId());
 		rpcTag.setType(t.getType());
-		rpcTag.setValue(t.getValue());
+		rpcTag.setValue(PostFormatter.getInstance().format(t.getValue()));
 		//rpcTag.setMass(t.getMass());
 		return rpcTag;
 	}

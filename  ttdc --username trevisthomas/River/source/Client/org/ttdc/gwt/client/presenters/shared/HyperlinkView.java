@@ -5,6 +5,7 @@ import org.ttdc.gwt.client.presenters.shared.HyperlinkPresenter.StyleType;
 import org.ttdc.gwt.shared.util.StringUtil;
 
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.user.client.ui.HasHTML;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Widget;
@@ -30,7 +31,7 @@ public class HyperlinkView implements HyperlinkPresenter.View {
 	}
 	
 	@Override
-	public HasText getDisplayName() {
+	public HasHTML getDisplayName() {
 		return link;
 	}
 

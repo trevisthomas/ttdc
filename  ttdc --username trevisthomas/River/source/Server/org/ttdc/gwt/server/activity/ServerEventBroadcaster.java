@@ -1,5 +1,6 @@
 package org.ttdc.gwt.server.activity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -12,6 +13,8 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 import org.ttdc.gwt.client.messaging.Event;
+import org.ttdc.gwt.client.messaging.error.MessageEvent;
+import org.ttdc.gwt.client.messaging.error.MessageEventType;
 
 /**
  * Singleton class which manages server events for active users.  The sever broadcasts messages
@@ -49,7 +52,10 @@ public class ServerEventBroadcaster {
 		try{
 			ServerEventQueue queue = getQueueForConnectionId(connectionId);
 			if(queue == null){
-				throw new RuntimeException("ServerEventBroadcaster not initalized for connection: " + connectionId);			
+				//throw new RuntimeException("ServerEventBroadcaster not initalized for connection: " + connectionId);
+				List<Event<?,?>> list = new ArrayList<Event<?,?>>();
+				list.add(new MessageEvent(MessageEventType.RESET_SERVER_BROADCAST, "Connection is dead"));
+				return list;
 			}
 			//log.debug("Loaded "+queue.getPersonId()+" at connectionId:"+connectionId);
 			queue.setLastAccessed(new Date());
