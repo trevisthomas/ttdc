@@ -181,7 +181,13 @@ public class FastPostBeanConverter {
 		gPost.setPostId(p.getPostId());
 		//gPost.setPosts(convertPosts(p.getPosts()));
 		gPost.setTagAssociations(convertAssociationsPostTag(p.getTagAssociations()));
-		gPost.setTitleTag(convertTag(p.getTitleTag()));
+		
+		if(formatted){
+			gPost.setTitleTag(convertTag(p.getTitleTag()));
+		}
+		else{
+			gPost.setTitleTag(convertTagUnFormatted(p.getTitleTag()));
+		}
 		gPost.setCreator(convertPerson(p.getCreator()));
 		gPost.setAvgRatingTag(convertTag(p.getAvgRatingTag()));
 		gPost.setPublishYear(p.getPublishYear());
@@ -355,7 +361,16 @@ public class FastPostBeanConverter {
 		return gPerson;
 	}
 	
+	
+	public static GTag convertTagUnFormatted(Tag t){
+		return convertTag(t,false);
+	}
+	
 	public static GTag convertTag(Tag t){
+		return convertTag(t,true);
+	}
+	
+	public static GTag convertTag(Tag t, boolean formatted){
 		if(t == null) return null;  // Some tags are optional now
 		GTag rpcTag = new GTag();
 		//rpcTag.setCreator(convertPerson(t.getCreator()));
@@ -364,7 +379,12 @@ public class FastPostBeanConverter {
 //		rpcTag.setDescription(t.getDescription());
 		rpcTag.setTagId(t.getTagId());
 		rpcTag.setType(t.getType());
-		rpcTag.setValue(PostFormatter.getInstance().format(t.getValue()));
+		if(formatted){
+			rpcTag.setValue(PostFormatter.getInstance().format(t.getValue()));
+		}
+		else{
+			rpcTag.setValue(t.getValue());
+		}
 		//rpcTag.setMass(t.getMass());
 		return rpcTag;
 	}

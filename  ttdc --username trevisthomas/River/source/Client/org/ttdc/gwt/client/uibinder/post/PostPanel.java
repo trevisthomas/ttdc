@@ -246,6 +246,10 @@ public class PostPanel extends Composite implements PostPresenterCommon, PostEve
 		bodyElement.setInnerHTML(post.getEntry());
 		PostPanelHelper.setupLikesElement(post, likesElement, injector);
 		creatorAvatorImagePresenter.setImage(post.getCreator().getImage(), post.getCreator().getLogin(), 40, 40);
+		
+		postLinkPresenter.setPost(post);
+		postLinkPresenter.init();
+		
 		if(post.isThreadPost()){
 			int conversationNumber = (1+Integer.parseInt(post.getPath()));
 			postNumberElement.setText("#"+conversationNumber); //Path is the post number for these conversation staters!

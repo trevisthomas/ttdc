@@ -8,6 +8,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.hibernate.criterion.Restrictions;
+import org.ttdc.gwt.server.command.executors.utils.ExecutorHelpers;
 import org.ttdc.gwt.shared.util.PaginatedList;
 import org.ttdc.gwt.shared.util.PostFlag;
 import org.ttdc.persistence.objects.InboxCache;
@@ -29,13 +30,15 @@ public class InboxDao extends FilteredPostPaginatedDaoBase{
 		addFilterThreadIds(person.getFrontPageFilteredThreadIds());
 		//TREVIS this logic is also in LatestPostCommandExecutor.  I think that this should be moved to 
 		//a shared location and implemented by the DAO like it is here for Inbox
-		if(!person.isNwsEnabled()){
-			addFlagFilter(PostFlag.NWS);
-		}
+//		if(!person.isNwsEnabled()){
+//			addFlagFilter(PostFlag.NWS);
+//		}
+//		
+//		if(!person.isPrivateAccessAccount()){
+//			addFlagFilter(PostFlag.PRIVATE);
+//		}
 		
-		if(!person.isPrivateAccessAccount()){
-			addFlagFilter(PostFlag.PRIVATE);
-		}
+		setFilterFlags(ExecutorHelpers.createFlagFilterListForPerson(person));
 		
 		getLastReadDate();
 	}

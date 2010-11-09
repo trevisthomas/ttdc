@@ -3,6 +3,7 @@ package org.ttdc.gwt.server.command.executors;
 import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.services.CommandResult;
 import org.ttdc.gwt.server.command.CommandExecutor;
+import org.ttdc.gwt.server.command.executors.utils.ExecutorHelpers;
 import org.ttdc.gwt.server.command.executors.utils.PaginatedResultConverters;
 import org.ttdc.gwt.server.dao.EarmarkedPostDao;
 import org.ttdc.gwt.server.dao.LatestPostsDao;
@@ -69,13 +70,17 @@ public class LatestPostCommandExecutor extends CommandExecutor<PaginatedListComm
 		LatestPostsDao dao = new LatestPostsDao();
 		dao.setCurrentPage(cmd.getPageNumber());
 		Person p = getPerson();
-		if(!p.isNwsEnabled()){
-			dao.addFlagFilter(PostFlag.NWS);
-		}
+//		if(!p.isNwsEnabled()){
+//			dao.addFlagFilter(PostFlag.NWS);
+//		}
+//		
+//		if(!p.isPrivateAccessAccount()){
+//			dao.addFlagFilter(PostFlag.PRIVATE);
+//		}
 		
-		if(!p.isPrivateAccessAccount()){
-			dao.addFlagFilter(PostFlag.PRIVATE);
-		}
+		dao.setFilterFlags(ExecutorHelpers.createFlagFilterListForPerson(p));
+
+		
 		
 		dao.addFilterThreadIds(p.getFrontPageFilteredThreadIds());
 		return dao;

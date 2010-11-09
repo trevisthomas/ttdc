@@ -90,8 +90,7 @@ public class AccountCommandExecutor extends CommandExecutor<GenericCommandResult
 		}
 		
 		try{
-			String url = ApplicationProperties.getAppProperties().getProperty("URL");
-			
+			String url = ApplicationProperties.getProperty("URL");
 			AccountDao.sendPasswordResetEmail(p,url+"/reset.jsp");
 		}
 		catch(Exception e){

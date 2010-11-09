@@ -197,6 +197,27 @@ public class TagDaoTest {
 		}
 	}
 	
+	@Test
+	public void testUpdate(){
+		try{
+			beginSession();
+			
+			TagDao dao = new TagDao();
+			dao.setType("test");
+			dao.setValue("New Val");
+			dao.setTagId(Helpers.tagComputersNTech);
+			Tag tag = dao.update();
+			
+			assertEquals(tag.getValue(), "New Val");
+			assertEquals(tag.getType(), "test");
+			
+			rollback();
+		}
+		catch(Exception e){
+			rollback();
+			fail(e.getMessage());
+		}
+	}
 	
 }
 

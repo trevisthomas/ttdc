@@ -56,6 +56,7 @@ public class PostDetailPanel extends PostBaseComposite implements PostEventListe
     
     @UiField(provided = true) Label postPrivateElement = postIconTool.getIconPrivate();
     @UiField(provided = true) Label postNwsElement = postIconTool.getIconNws();
+    @UiField(provided = true) Label postDeletedElement = postIconTool.getIconDeleted();
     @UiField(provided = true) Label postInfElement = postIconTool.getIconInf();
     @UiField(provided = true) Label postUnReadElement = postIconTool.getIconUnread();
     @UiField(provided = true) Label postReadElement = postIconTool.getIconRead();

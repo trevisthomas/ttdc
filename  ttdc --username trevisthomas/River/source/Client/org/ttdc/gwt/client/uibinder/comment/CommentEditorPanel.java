@@ -139,6 +139,7 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 	private GPost post = null;
 	private SuggestBox parentSuggestionBox;
 	private SugestionOracle parentSuggestionOracle;
+	private final TextBox titleEditTextBox = new TextBox();;
 	
 	boolean operationInProgress = false;
 	
@@ -156,6 +157,8 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 		
 		topicLabelElement.setVisible(false);
 		topicSuggestionHolderElement.setVisible(false);
+		
+		
 		
 		if(oldInstance != null){
 			oldInstance.removeFromParent();
@@ -238,6 +241,16 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 				if(post == null){
 					throw new RuntimeException("No post to edit! Cant edit null post.");
 				}
+				
+				if(post.isRootPost()){
+					topicSuggestionHolderElement.setVisible(true);
+					topicSuggestionHolderElement.clear();
+					
+					titleEditTextBox.setText(post.getTitle());
+					topicSuggestionHolderElement.add(titleEditTextBox);
+				}
+				parentInfoElement.setText("Note: No topic with this title exists, a new topic will be created.");
+				
 				textAreaElement.setText(post.getEntry());
 				break;
 			default:
@@ -587,6 +600,9 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 		else{
 			cmd.setParentId(post.getPostId());//For reply
 			cmd.setPostId(post.getPostId());//For edit
+			if(post.isRootPost()){
+				cmd.setTitle(titleEditTextBox.getText());
+			}
 		}
 		CommandResultCallback<PostCommandResult> callback;
 		if(PostActionType.UPDATE.equals(action)){
@@ -629,6 +645,7 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 				close();
 				PostEvent event = new PostEvent(PostEventType.EDIT, result.getPost());
 				EventBus.fireEvent(event);
+				//TODO: somehow refresh titles when the root is edited.
 			}
 			@Override
 			public void onFailure(Throwable caught) {

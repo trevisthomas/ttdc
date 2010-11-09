@@ -15,6 +15,9 @@ public class ExecutorHelpers {
 		if(!person.isPrivateAccessAccount()){
 			flagList.add(PostFlag.PRIVATE);
 		}
+		if(!person.isAdministrator()){
+			flagList.add(PostFlag.DELETED);
+		}
 		return flagList;
 	}
 }

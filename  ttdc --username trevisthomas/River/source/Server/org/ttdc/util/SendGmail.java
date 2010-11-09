@@ -47,15 +47,10 @@ public class SendGmail {
 	
 	public static SendGmail getInstance(){
 		if (me == null) {
-			try{
-				SMTP_AUTH_USER = ApplicationProperties.getAppProperties().getProperty("SMTP_AUTH_USER");
-				SMTP_AUTH_PWD = ApplicationProperties.getAppProperties().getProperty("SMTP_AUTH_PWD");
-	
-				me = new SendGmail();
-			}
-			catch(IOException e){
-				throw new RuntimeException(e);
-			}
+			SMTP_AUTH_USER = ApplicationProperties.getProperty("SMTP_AUTH_USER");
+			SMTP_AUTH_PWD = ApplicationProperties.getProperty("SMTP_AUTH_PWD");
+			
+			me = new SendGmail();
 		}
 		return me;
 	}

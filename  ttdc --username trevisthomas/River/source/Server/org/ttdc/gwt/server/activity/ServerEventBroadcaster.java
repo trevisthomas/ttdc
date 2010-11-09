@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 import org.ttdc.gwt.client.messaging.Event;
 import org.ttdc.gwt.client.messaging.error.MessageEvent;
 import org.ttdc.gwt.client.messaging.error.MessageEventType;
+import org.ttdc.util.ApplicationProperties;
 
 /**
  * Singleton class which manages server events for active users.  The sever broadcasts messages
@@ -33,7 +34,7 @@ public class ServerEventBroadcaster {
 	private ServerEventBroadcaster(){
 		scheduler = Executors.newScheduledThreadPool(1);
 		userQueues = new ConcurrentHashMap<String,ServerEventQueue>();
-		scheduler.scheduleAtFixedRate(new CleanupJob(this), 10, 60, TimeUnit.SECONDS);
+		scheduler.scheduleAtFixedRate(new CleanupJob(this), 10, ApplicationProperties.getPropertyAsInt("SERVER_POLL_RATE_SEC"), TimeUnit.SECONDS);
 	}
 	private static class ServerEventBroadcasterHolder{
 		private final static ServerEventBroadcaster INSTANCE = new ServerEventBroadcaster();

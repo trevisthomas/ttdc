@@ -164,7 +164,7 @@ public class PostExpanded extends PostBaseComposite implements PostEventListener
 		PostPanelHelper.setupLikesElement(post, likesElement, injector);
 		
 		actionLinks.clear();
-		actionLinks.add(buildBoundOptionsListPanel(post));
+		//actionLinks.add(buildBoundOptionsListPanel(post));
 		
 	}
 	
