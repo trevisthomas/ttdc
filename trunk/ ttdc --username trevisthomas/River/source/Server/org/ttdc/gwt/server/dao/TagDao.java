@@ -19,6 +19,7 @@ public class TagDao {
 	private String value;
 	private String description;
 	private Date date;
+	private String tagId;
 	
 //	private String orderBy = "mass";
 	private String orderBy = "sortValue";
@@ -106,6 +107,16 @@ public class TagDao {
 		session().flush();
 		return tag;
 	}
+	
+	public Tag update() {
+		Tag tag = loadTag(getTagId());
+		tag.setType(getType());
+		tag.setValue(getValue());
+		
+		session().update(tag);
+		session().flush();
+		return tag;
+	}
 
 	private void validateForCreation() {
 		if(StringUtil.empty(type) || StringUtil.empty(value) || StringUtil.empty(value))
@@ -159,4 +170,13 @@ public class TagDao {
 	public void setDate(Date date) {
 		this.date = date;
 	}
+
+	public void setTagId(String tagId) {
+		this.tagId = tagId; 
+	}
+	
+	public String getTagId(){
+		return tagId;
+	}
+
 }

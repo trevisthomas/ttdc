@@ -13,6 +13,8 @@ public class PostIconTool {
     private final Label postPrivateElement = IconsCommon.getIconLock();
     private final Label postNwsElement = IconsCommon.getIconNws();
     private final Label postInfElement = IconsCommon.getIconInf();
+    private final Label postDeletedElement = IconsCommon.getIconDeleted();
+    
     
     public PostIconTool() {
     	postUnReadElement.setTitle("Unread");
@@ -20,6 +22,7 @@ public class PostIconTool {
     	postPrivateElement.setTitle("Private");
     	postNwsElement.setTitle("Not Work Safe!");
     	postInfElement.setTitle("Informative");
+    	postDeletedElement.setTitle("Deleted");
 	}
     
     public void init(final GPost post){
@@ -29,6 +32,7 @@ public class PostIconTool {
         postPrivateElement.setVisible(false);
         postNwsElement.setVisible(false);
         postInfElement.setVisible(false);
+        postDeletedElement.setVisible(false);
         
     	if(!user.isAnonymous()){
 			if(!post.isRead()){
@@ -50,6 +54,9 @@ public class PostIconTool {
     	if(post.isINF()){
     		postInfElement.setVisible(true);
     	}
+    	if(post.isDeleted()){
+    		postDeletedElement.setVisible(true);
+    	}
     }
     
     public void showPostAsRead(){
@@ -63,6 +70,10 @@ public class PostIconTool {
 	
 	public  Label getIconNws(){
 		return postNwsElement;
+	}
+	
+	public Label getIconDeleted(){
+		return postDeletedElement;
 	}
 	
 	public  Label getIconPrivate(){

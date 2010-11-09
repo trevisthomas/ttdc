@@ -158,9 +158,18 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 		dao.setCreator(creator);
 		dao.setBody(cmd.getBody());
 		dao.setPostId(cmd.getPostId());
-		if(StringUtil.notEmpty(cmd.getTitle())){
-			Tag titleTag = loadOrCreateTitleTag(cmd);
+		if(StringUtil.notEmpty(cmd.getTitle()) && post.isRootPost()){
+			Tag titleTag = post.getTitleTag();
+			TagDao tagDao = new TagDao();
+			tagDao.setTagId(titleTag.getTagId());
+			tagDao.setValue(cmd.getTitle());
+			tagDao.setType(Tag.TYPE_TOPIC);
+			titleTag = tagDao.update();
 			dao.setTitle(titleTag);
+			
+			//Tag titleTag = findOrCreateTag(cmd.getTitle(),Tag.TYPE_TOPIC);
+			//Tag titleTag = loadOrCreateTitleTag(cmd);
+			//dao.setTitle(titleTag);
 		}
 		dao.setUrl(cmd.getUrl());
 		if(StringUtil.notEmpty(cmd.getYear())){
@@ -172,6 +181,9 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 		
 		if(cmd.getMetaMask() != null)
 			dao.setMetaMask(cmd.getMetaMask());
+		else if(post.getMetaMask() != null){
+			dao.setMetaMask(post.getMetaMask());
+		}
 		
 		post = dao.update();
 		return post;

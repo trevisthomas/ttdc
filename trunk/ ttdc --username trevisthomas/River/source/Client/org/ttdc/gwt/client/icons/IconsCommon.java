@@ -30,4 +30,9 @@ public class IconsCommon {
 	public static Label getIconRead(){
 		return createIcon("tt-icon-common-read");
 	}
+	
+	public static Label getIconDeleted(){
+		return createIcon("tt-icon-common-deleted");
+	}
+	
 }

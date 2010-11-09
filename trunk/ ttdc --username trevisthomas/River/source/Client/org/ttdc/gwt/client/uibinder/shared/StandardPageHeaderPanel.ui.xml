@@ -9,7 +9,7 @@
 	 	<table class="tt-fill">
 	 		<tr>
 	 			<td class="tt-header-left">
-		 			<g:Label styleName="tt-pageHeader-title tt-text-huge" ui:field="titleElement"></g:Label>
+		 			<g:HTMLPanel styleName="tt-pageHeader-title tt-text-huge" ui:field="titleElement"></g:HTMLPanel>
 	 				<g:Label styleName="tt-pageHeader-subtitle" ui:field="subTitleElement"></g:Label>
 	 			</td>
 	 			<td class="tt-header-right">

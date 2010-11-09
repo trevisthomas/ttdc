@@ -29,7 +29,7 @@ public class StandardPageHeaderPanel extends Composite{
     private Navigation navigation;
         
     @UiField(provided = true) Widget navigationElement;
-    @UiField Label titleElement;
+    @UiField HTMLPanel titleElement;
     @UiField Label subTitleElement;
     
     @UiField(provided = true) Widget searchElement;
@@ -62,7 +62,7 @@ public class StandardPageHeaderPanel extends Composite{
 	}
     
     public void init(final String title, final String subtitle) {
-    	titleElement.setText(title);
+    	titleElement.getElement().setInnerHTML(title);
     	subTitleElement.setText(subtitle);
 	}
     
