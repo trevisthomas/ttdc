@@ -68,7 +68,7 @@ public class NewMoviePanel extends Composite{
     	createButtonElement.setVisible(false);
     	originalImageName = post.getImage().getName();
     	
-    	titleElement.setText(post.getTitle());
+    	titleElement.setText(post.getTitleTag().getValue()); //Raw title value without the date
     	releaseYearElement.setText(post.getPublishYear().toString());
     	imdbUrlElement.setText(post.getUrl());
     	if(post.getImage() != null)

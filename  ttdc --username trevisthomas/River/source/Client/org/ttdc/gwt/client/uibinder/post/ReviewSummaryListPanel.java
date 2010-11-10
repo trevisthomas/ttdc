@@ -58,7 +58,9 @@ public class ReviewSummaryListPanel extends PostBaseComposite implements PostEve
     @UiField(provided = true) Widget averageRatingElement;
     @UiField VerticalPanel reviewsElement = new VerticalPanel();
     @UiField(provided = true) SimplePanel commentElement = new SimplePanel();
-    @UiField(provided = true) ClickableHoverSyncPanel moreOptionsElement = MoreOptionsButtonFactory.createMoreOptionsButton(); 
+    //@UiField(provided = true) ClickableHoverSyncPanel moreOptionsElement = MoreOptionsButtonFactory.createMoreOptionsButton();
+    @UiField (provided = true) PostDetailPanel postDetailPanelElement;    
+    //@UiField SimplePanel inReplyPostElement;
     
 	@Inject
     public ReviewSummaryListPanel(Injector injector) { 
@@ -66,6 +68,7 @@ public class ReviewSummaryListPanel extends PostBaseComposite implements PostEve
 		imagePresenter = injector.getImagePresenter();
 		averageMovieRatingPresenter = injector.getMovieRatingPresenter();
 		postLinkPresenter = injector.getHyperlinkPresenter();
+		postDetailPanelElement = injector.createPostDetailPanel();
 		
 		titleElement = postLinkPresenter.getHyperlink();
 		posterElement = imagePresenter.getWidget();
@@ -75,11 +78,17 @@ public class ReviewSummaryListPanel extends PostBaseComposite implements PostEve
 		
 		conversationCountElement.setStyleName("tt-conversation-count");
 		
+		
+		
 		EventBus.getInstance().addListener(this);
 	}
 	
 	public void init(GPost post){
 		super.init(post, commentElement, null);
+		
+		//postDetailPanelElement.init(post, commentElement, tagListPanel, inReplyPostElement);
+		postDetailPanelElement.init(post, commentElement, null, null);
+		
 		this.post = post;
 		imagePresenter.setImageAsMoviePoster(post);
 		imagePresenter.init();
