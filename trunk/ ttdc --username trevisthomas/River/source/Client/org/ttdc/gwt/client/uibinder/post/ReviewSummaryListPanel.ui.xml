@@ -2,7 +2,8 @@
 <!-- The above doctype is to allow for special html characters in this xml file -->
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'
-	xmlns:t='urn:import:org.ttdc.gwt.client.presenters.util'>
+	xmlns:t='urn:import:org.ttdc.gwt.client.presenters.util'
+	xmlns:u='urn:import:org.ttdc.gwt.client.uibinder.post'>
 	<g:HTMLPanel styleName="tt-post-conversation" >
 		<div class="tt-post">
 			<div class="tt-post-panel-head">
@@ -32,6 +33,11 @@
 						</td>
 					</tr>
 					<tr>
+						<div width="100%" class="tt-text-mini">
+							<u:PostDetailPanel ui:field="postDetailPanelElement" />
+						</div>
+					</tr>
+					<tr>
 						<td colspan="2">
 							<table class="tt-fill">
 								<tr>
@@ -51,11 +57,7 @@
 			
 			<div class="tt-post-panel-content" style="clear:both;">
 			
-				<div width="100%" class="tt-text-mini">
-					<span class="tt-float-right">
-						<t:ClickableHoverSyncPanel ui:field="moreOptionsElement"/>
-					</span>
-				</div>
+				
 				
 				<table>
 					<tr>
