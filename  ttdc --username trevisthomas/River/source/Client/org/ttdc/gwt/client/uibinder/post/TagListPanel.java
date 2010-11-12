@@ -59,6 +59,7 @@ public class TagListPanel extends Composite implements PersonEventListener, Post
 	
 	@UiField HTMLPanel tagListElement;
 	@UiField HTMLPanel editableTagListElement;
+	@UiField HTMLPanel forumListElement;
 	@UiField FlowPanel tagsElement;
 	@UiField FlowPanel editableTagsElement;
 	@UiField SimplePanel tagSelectorElement;
@@ -106,7 +107,7 @@ public class TagListPanel extends Composite implements PersonEventListener, Post
 	public void init(GPost post, Mode mode){
 		this.post = post;
 		this.mode = mode;
-		
+		setEnabled(true);
 		applyUserPrivilege();
 		changeToMode(mode);
 	}
@@ -148,10 +149,12 @@ public class TagListPanel extends Composite implements PersonEventListener, Post
 		if(person.isAdministrator()){
 			deletedCheckBoxElement.setVisible(true);
 			lockedCheckBoxElement.setVisible(true);
+			forumListElement.setVisible(true);
 		}
 		else{
 			deletedCheckBoxElement.setVisible(false);
 			lockedCheckBoxElement.setVisible(false);
+			forumListElement.setVisible(false);
 		}
 		
 		if((post.getParent() != null && post.getParent().isMovie()) && (person.isAdministrator() || person.equals(post.getCreator()))){
@@ -272,6 +275,19 @@ public class TagListPanel extends Composite implements PersonEventListener, Post
 		updateMetaMask(post);
 	}
 	
+	
+	private void setEnabled(boolean enabled){
+		nwsCheckBoxElement.setEnabled(enabled);
+		infCheckBoxElement.setEnabled(enabled);
+		privateCheckBoxElement.setEnabled(enabled);
+		lockedCheckBoxElement.setEnabled(enabled);
+		deletedCheckBoxElement.setEnabled(enabled);
+		reviewCheckBoxElement.setEnabled(enabled);
+		addButtonElement.setEnabled(enabled);
+		cancelButtonElement.setEnabled(enabled);
+		tagSuggestionBox.getTextBox().setEnabled(enabled);
+	}
+	
 	private void updateMetaMask(GPost p) {
 		PostCrudCommand cmd = new PostCrudCommand();
 		cmd.setAction(PostActionType.UPDATE_META);
@@ -279,18 +295,22 @@ public class TagListPanel extends Composite implements PersonEventListener, Post
 		cmd.setPostId(p.getPostId());
 		
 		cmd.setConnectionId(ConnectionId.getInstance().getConnectionId());
+		setEnabled(false);
 		injector.getService().execute(cmd, buildCreatePostCallback());
 	}
 	
 	private CommandResultCallback<PostCommandResult> buildCreatePostCallback() {
+		
 		CommandResultCallback<PostCommandResult> callback = new CommandResultCallback<PostCommandResult>(){
 			@Override
 			public void onSuccess(PostCommandResult result) {
+				setEnabled(true);
 				PostEvent event = new PostEvent(PostEventType.EDIT, result.getPost());
 				EventBus.fireEvent(event);
 			}
 			@Override
 			public void onFailure(Throwable caught) {
+				setEnabled(true);
 				EventBus.fireErrorMessage(caught.getMessage());
 			}
 		};

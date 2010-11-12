@@ -363,8 +363,10 @@ public class MovieListPanel extends BasePageComposite{
 					if(speedRate && !user.isAnonymous()){
 						ratingPresenter.initializeMovieRatingPresenter(post, user.getPersonId());
 					}
-					else
+					else{
 						ratingPresenter.initializeMovieRatingPresenter(post, personId);
+					}
+					
 					HyperlinkPresenter urlLinkPresenter = createPostUrlPresenter(post);
 					HyperlinkPresenter titlePresenter = injector.getHyperlinkPresenter();
 					titlePresenter.setPost(post);

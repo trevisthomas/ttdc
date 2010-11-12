@@ -33,9 +33,11 @@
 						</td>
 					</tr>
 					<tr>
+						<td colspan="2">
 						<div width="100%" class="tt-text-mini">
 							<u:PostDetailPanel ui:field="postDetailPanelElement" />
 						</div>
+						</td>
 					</tr>
 					<tr>
 						<td colspan="2">
