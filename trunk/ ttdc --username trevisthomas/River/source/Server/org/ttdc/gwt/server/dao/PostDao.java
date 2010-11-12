@@ -132,6 +132,9 @@ final public class PostDao {
 		
 		
 		session().flush();
+		//This refresh was added so that movie root's would be updated when reviews were added
+		if(post.getParent() != null)
+			session().refresh(post.getParent());
 		return post;
 	}
 

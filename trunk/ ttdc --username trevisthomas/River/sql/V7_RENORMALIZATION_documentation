@@ -52,6 +52,8 @@
 	-SortValueOnTag.java
 	-EntryBodyConvertEmbedLinks.java (56 sec) -- Added on 10/30/2010
 	
+	(Warning. On Nov 9, you discovered that the average ratings were missing, i think that they were missing in the prior build too. Aggrogator may not be working)
+	
 			
 	V7_RENORMALIZATION_UpdateNewPostColumns.sql - took over 4 hours (359,000 rows in the log) (9/8/2010 over 6 hours) (10/25/2010 5:58min)
 																					

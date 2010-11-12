@@ -38,7 +38,7 @@ public class IconOptionsPanel extends Composite implements PersonEventListener{
     private Anchor unMuteThreadElement = createAnchor("un-mute");
     private Anchor earmarkElement = createAnchor("earmark");
     private Anchor unEarmarkElement = createAnchor("un-earmark");
-    private Anchor tagElement = createAnchor("tag");
+    private Anchor tagElement = createAnchor("flag");
     
 	@UiField(provided = true) ClickableIconPanel replyElement = new ClickableIconPanel("ui-icon ui-icon-arrowrefresh-1-n");
 	@UiField(provided = true) ClickableIconPanel likeElement = new ClickableIconPanel("tt-icon-common tt-icon-thumbsup");
@@ -113,15 +113,17 @@ public class IconOptionsPanel extends Composite implements PersonEventListener{
     		else{
     			unEarmarkElement.setVisible(true);
     		}
+    		tagElement.setVisible(true);
     	}
     	
     	if(user.isAdministrator() || (user.equals(post.getCreator()) && post.isInEditWindow())){
     		editElement.setVisible(true);
     	}
     	
-    	if(user.isAdministrator()){
-    		tagElement.setVisible(true);
-    	}
+//    	if(user.isAdministrator()){
+//    		tagElement.setVisible(true);
+//    	}
+    	
     }
     
 	public void addReplyClickHandler(ClickHandler handler){
