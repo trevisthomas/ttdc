@@ -14,9 +14,9 @@ public class MoreLatestView implements MoreLatestPresenter.View{
 
 	public MoreLatestView() {
 		main.setStyleName("tt-more-comments");
-		main.add(message);
+		//main.add(message);
 		main.add(more);
-		more.setHTML("&raquo; load more...");
+		more.setHTML("older &raquo;&raquo;");
 	}
 	@Override
 	public Widget getWidget() {
@@ -35,7 +35,8 @@ public class MoreLatestView implements MoreLatestPresenter.View{
 	
 	@Override
 	public void setMessage(String text){
-		message.setText(text);
+		//message.setText(text);
+		more.setTitle(text);
 	}
 	
 	

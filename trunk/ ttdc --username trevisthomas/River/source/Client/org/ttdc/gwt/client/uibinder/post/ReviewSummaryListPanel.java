@@ -46,6 +46,7 @@ public class ReviewSummaryListPanel extends PostBaseComposite implements PostEve
     private DatePresenter createDatePresenter;
     private PostCollectionPresenter postCollectionPresenter;
     private MovieRatingPresenter averageMovieRatingPresenter;
+    private TagListPanel tagListPanel;
     
     
     
@@ -61,7 +62,8 @@ public class ReviewSummaryListPanel extends PostBaseComposite implements PostEve
     //@UiField(provided = true) ClickableHoverSyncPanel moreOptionsElement = MoreOptionsButtonFactory.createMoreOptionsButton();
     @UiField (provided = true) PostDetailPanel postDetailPanelElement;    
     //@UiField SimplePanel inReplyPostElement;
-    
+    @UiField(provided = true) Widget tagsElement;
+        
 	@Inject
     public ReviewSummaryListPanel(Injector injector) { 
 		super(injector);
@@ -69,10 +71,12 @@ public class ReviewSummaryListPanel extends PostBaseComposite implements PostEve
 		averageMovieRatingPresenter = injector.getMovieRatingPresenter();
 		postLinkPresenter = injector.getHyperlinkPresenter();
 		postDetailPanelElement = injector.createPostDetailPanel();
+		tagListPanel = injector.createTagListPanel();
 		
 		titleElement = postLinkPresenter.getHyperlink();
 		posterElement = imagePresenter.getWidget();
 		averageRatingElement = averageMovieRatingPresenter.getWidget();
+		tagsElement = tagListPanel;
 		
 		initWidget(binder.createAndBindUi(this)); 
 		
@@ -84,10 +88,9 @@ public class ReviewSummaryListPanel extends PostBaseComposite implements PostEve
 	}
 	
 	public void init(GPost post){
-		super.init(post, commentElement, null);
-		
+		super.init(post, commentElement, tagListPanel);
 		//postDetailPanelElement.init(post, commentElement, tagListPanel, inReplyPostElement);
-		postDetailPanelElement.init(post, commentElement, null, null);
+		postDetailPanelElement.init(post, commentElement, tagListPanel, null);
 		
 		this.post = post;
 		imagePresenter.setImageAsMoviePoster(post);
@@ -118,6 +121,8 @@ public class ReviewSummaryListPanel extends PostBaseComposite implements PostEve
 		
 		conversationCountElement.setText(""+post.getReplyCount());
 		conversationCountElement.setTitle(post.getReplyCount() + " conversations on this topic.");
+		
+		tagListPanel.init(post, TagListPanel.Mode.EDITABLE);
 	
 	}
 

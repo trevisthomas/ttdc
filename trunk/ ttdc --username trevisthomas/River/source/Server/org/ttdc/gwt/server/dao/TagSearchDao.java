@@ -116,7 +116,8 @@ final public class TagSearchDao {
 				.setParameter("title", false);
 		}
 		
-		ftquery.setSort(new org.apache.lucene.search.Sort(new SortField("mass_tag",true)));//todo consider renaming this to just mass?
+		//11.12.2010 this line was throwing exceptions because this index doesnt exist?
+		//ftquery.setSort(new org.apache.lucene.search.Sort(new SortField("mass_tag",true)));//todo consider renaming this to just mass?
 		
 		addDateFilter(ftquery);
 		

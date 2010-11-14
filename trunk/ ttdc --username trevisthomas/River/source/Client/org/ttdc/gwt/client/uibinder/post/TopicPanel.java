@@ -8,6 +8,8 @@ import org.ttdc.gwt.client.messaging.history.HistoryToken;
 import org.ttdc.gwt.client.messaging.post.PostEvent;
 import org.ttdc.gwt.client.messaging.post.PostEventListener;
 import org.ttdc.gwt.client.messaging.post.PostEventType;
+import org.ttdc.gwt.client.services.BatchCommandTool;
+import org.ttdc.gwt.client.services.RpcServiceAsync;
 import org.ttdc.gwt.client.uibinder.common.BasePageComposite;
 import org.ttdc.gwt.client.uibinder.shared.StandardPageHeaderPanel;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
@@ -57,11 +59,17 @@ public class TopicPanel extends BasePageComposite implements PostEventListener{
 	
 	@Override
 	public void onShow(HistoryToken token) {
-		showTopic(token);
-		createTopicNestedPresenter(token);
+		BatchCommandTool batcher = new BatchCommandTool();
+		
+		
+		showTopic(token, batcher);
+		createTopicNestedPresenter(token, batcher);
+		
+		RpcServiceAsync service = injector.getService();
+		service.execute(batcher.getActionList(), batcher);
 	}
 
-	private void showTopic(HistoryToken token) {
+	private void showTopic(HistoryToken token, BatchCommandTool batcher) {
 		this.token = token;
 		final String postId = token.getParameter(HistoryConstants.POST_ID_KEY);
 		
@@ -69,15 +77,15 @@ public class TopicPanel extends BasePageComposite implements PostEventListener{
 		postCmd.setPostId(postId);
 		postCmd.setLoadRootAncestor(true);
 		CommandResultCallback<PostCommandResult> rootReplyCallback = buildTopicRootCallback();
-		injector.getService().execute(postCmd, rootReplyCallback);
-		
+		//injector.getService().execute(postCmd, rootReplyCallback);
+		batcher.add(postCmd, rootReplyCallback);
 	}
 
 	
 	
-	private void createTopicNestedPresenter(HistoryToken token) {
+	private void createTopicNestedPresenter(HistoryToken token, BatchCommandTool batcher) {
 		nestedPanel = injector.createNestedPostPanel();
-		nestedPanel.init(token);
+		nestedPanel.init(token, batcher);
 		
 		threadsElement.clear();
 		threadsElement.add(nestedPanel);

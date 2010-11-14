@@ -29,9 +29,8 @@
 							<g:CheckBox ui:field="reviewCheckBoxElement">Review</g:CheckBox>
 						</td>
 					</tr>
-				</table>
-				<g:HTMLPanel ui:field="forumListElement">
-					<table>
+				
+					<g:HTMLPanel ui:field="forumListElement">
 						<tr>
 							<td><div class="tt-text-normal-bold">Forums:</div></td>
 						</tr>
@@ -39,10 +38,15 @@
 							<td style="padding: 0 0 0 5px;"><g:FlowPanel ui:field="editableTagsElement"/></td>
 						</tr>
 						<tr>
-							<td><g:SimplePanel styleName="tt-inline" ui:field="tagSelectorElement"/><g:Button ui:field="addButtonElement"/><g:Button ui:field="cancelButtonElement"/></td>
+							<td><g:SimplePanel styleName="tt-inline" ui:field="tagSelectorElement"/><g:Button ui:field="addButtonElement"/></td>
 						</tr>
-					</table>
-				</g:HTMLPanel>
+					</g:HTMLPanel>
+					<tr>
+						<td>
+						<g:Button ui:field="cancelButtonElement"/>
+						</td>
+					</tr>
+				</table>
 			</g:HTMLPanel>
 			
 	</g:HTMLPanel>

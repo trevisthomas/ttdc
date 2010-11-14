@@ -75,10 +75,14 @@ public class NestedPostPanel extends Composite{
 		History.newItem(token.toString(), false);
 	}
 	public void init(HistoryToken token){
+		BatchCommandTool batcher = new BatchCommandTool();
+		init(token, batcher);
+		RpcServiceAsync service = injector.getService();
+		service.execute(batcher.getActionList(), batcher);
+	}
+	public void init(HistoryToken token, BatchCommandTool batcher){
 		final int pageNumber = token.getParameterAsInt(HistoryConstants.PAGE_NUMBER_KEY,-1);
 		final String postId = token.getParameter(HistoryConstants.POST_ID_KEY);
-		
-		BatchCommandTool batcher = new BatchCommandTool();
 		
 		TopicCommand starterCmd = new TopicCommand();
 		starterCmd.setPostId(postId);
@@ -93,23 +97,22 @@ public class NestedPostPanel extends Composite{
 		CommandResultCallback<TopicCommandResult> starterListCallback = buildNestedListCallback(postId);
 		batcher.add(starterCmd, starterListCallback);
 		
-		RpcServiceAsync service = injector.getService();
-		service.execute(batcher.getActionList(), batcher);
-		
 		lastToken = token;
 		
 		TopicHelpers.setSourcePostId(postId);
 	}
 	
 	
-	
 	private CommandResultCallback<TopicCommandResult> buildNestedListCallback(final String postId) {
 		paginationElement.clear();
 		postContainerElement.clear();
 		
+		postContainerElement.add(injector.getWaitPresenter().getWidget());
+		
 		CommandResultCallback<TopicCommandResult> replyListCallback = new CommandResultCallback<TopicCommandResult>(){
 			@Override
 			public void onSuccess(TopicCommandResult result) {
+				postContainerElement.clear();
 				PostCollectionPresenter postCollectionPresenter = injector.getPostCollectionPresenter();
 				postCollectionPresenter.setPostList(result.getResults().getList(),Mode.GROUPED);
 				
