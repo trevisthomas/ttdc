@@ -10,6 +10,7 @@ import org.ttdc.gwt.client.beans.GAssociationPostTag;
 import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.beans.GTag;
+import org.ttdc.gwt.client.constants.TagConstants;
 import org.ttdc.gwt.client.messaging.ConnectionId;
 import org.ttdc.gwt.client.messaging.EventBus;
 import org.ttdc.gwt.client.messaging.person.PersonEvent;
@@ -114,6 +115,10 @@ public class TagListPanel extends Composite implements PersonEventListener, Post
 
 	private void applyUserPrivilege() {
 		GPerson person = ConnectionId.getInstance().getCurrentUser();
+		
+		if(post == null){
+			return;
+		}
 		
 		tagsElement.clear();
 		editableTagsElement.clear();
@@ -223,6 +228,7 @@ public class TagListPanel extends Composite implements PersonEventListener, Post
 		else{
 			tag = new GTag();
 			tag.setValue(tagSuggestionBox.getValue());
+			tag.setType(TagConstants.TYPE_TOPIC);
 		}
 		tagSuggestionOracle.clear();
 		

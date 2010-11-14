@@ -72,8 +72,18 @@ public class MoreLatestPresenter extends BasePresenter<MoreLatestPresenter.View>
 			pageNumber = results.getCurrentPage() + 1;
 			view.setVisible(true);
 			
-			view.setMessage("viewing " + results.getPageSize()*results.getCurrentPage() +" comments, with " 
-					+(results.getTotalResults() - results.getPageSize()*results.getCurrentPage())+" remaining");
+			if(listType.equals(PostListType.LATEST_GROUPED)){
+				view.setMessage("viewing " + results.getPageSize()*results.getCurrentPage() +" of " 
+						+(results.getTotalResults() - results.getPageSize()*results.getCurrentPage())+" conversations .");	
+			}
+			else if(listType.equals(PostListType.LATEST_FLAT)){
+				view.setMessage("viewing " + results.getPageSize()*results.getCurrentPage() +" of " 
+						+(results.getTotalResults() - results.getPageSize()*results.getCurrentPage())+" posts.");	
+			}
+			else{
+				view.setMessage("viewing " + results.getPageSize()*results.getCurrentPage() +" posts, with " 
+						+(results.getTotalResults() - results.getPageSize()*results.getCurrentPage())+" remaining");	
+			}
 		}
 		else{
 			view.setVisible(false);

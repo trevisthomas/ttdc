@@ -73,6 +73,7 @@ public class IconOptionsPanel extends Composite implements PersonEventListener{
     	this.post = post;
     	
     	GPerson user = ConnectionId.getInstance().getCurrentUser();
+    	moreOptionsElement.setVisible(false);
     	ratingElement.setVisible(false);
     	unRateElement.setVisible(false);
     	unLikeElement.setVisible(false);
@@ -100,6 +101,7 @@ public class IconOptionsPanel extends Composite implements PersonEventListener{
     	}
     	
     	if(!user.isAnonymous()){
+    		moreOptionsElement.setVisible(true);
     		if(user.isThreadFiltered(post.getRoot().getPostId())){
         		unMuteThreadElement.setVisible(true);
         	}
@@ -113,7 +115,9 @@ public class IconOptionsPanel extends Composite implements PersonEventListener{
     		else{
     			unEarmarkElement.setVisible(true);
     		}
-    		tagElement.setVisible(true);
+    		if(!post.isMovie() || user.isAdministrator()){
+    			tagElement.setVisible(true);
+    		}
     	}
     	
     	if(user.isAdministrator() || (user.equals(post.getCreator()) && post.isInEditWindow())){

@@ -63,14 +63,21 @@ public class MovieRatingPresenter extends BasePresenter<MovieRatingPresenter.Vie
 	}
 	
 	public void setRating(GTag ratingTag){
-		if(ratingTag == null)
-			return;
-		view.setRating(ratingTag.getValue()); //TODO make awesomer
+		if(ratingTag == null){
+			view.getWidget().setVisible(false);
+		}
+		else{
+			view.setRating(ratingTag.getValue()); //TODO make awesomer
+		}
 	}
 
 	public void setRating(GAssociationPostTag ratingByPerson) {
-		if(ratingByPerson != null)
+		if(ratingByPerson == null){
+			view.getWidget().setVisible(false);
+		}
+		else{
 			setRating(ratingByPerson.getTag());
+		}
 		
 	}
 
