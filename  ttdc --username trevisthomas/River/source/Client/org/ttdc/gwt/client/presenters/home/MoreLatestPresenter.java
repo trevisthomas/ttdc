@@ -73,12 +73,12 @@ public class MoreLatestPresenter extends BasePresenter<MoreLatestPresenter.View>
 			view.setVisible(true);
 			
 			if(listType.equals(PostListType.LATEST_GROUPED)){
-				view.setMessage("viewing " + results.getPageSize()*results.getCurrentPage() +" of " 
-						+(results.getTotalResults() - results.getPageSize()*results.getCurrentPage())+" conversations .");	
+				view.setMessage("Showing " + results.getPageSize()*results.getCurrentPage() +" of " 
+						+(results.getTotalResults() - results.getPageSize()*results.getCurrentPage())+" conversations. Click for more.");	
 			}
 			else if(listType.equals(PostListType.LATEST_FLAT)){
-				view.setMessage("viewing " + results.getPageSize()*results.getCurrentPage() +" of " 
-						+(results.getTotalResults() - results.getPageSize()*results.getCurrentPage())+" posts.");	
+				view.setMessage("Showing " + results.getPageSize()*results.getCurrentPage() +" of " 
+						+(results.getTotalResults() - results.getPageSize()*results.getCurrentPage())+" posts. Click for more.");	
 			}
 			else{
 				view.setMessage("viewing " + results.getPageSize()*results.getCurrentPage() +" posts, with " 

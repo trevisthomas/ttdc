@@ -1,9 +1,13 @@
 package org.ttdc.gwt.client.uibinder.home;
 
+import java.util.List;
+
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.beans.GTag;
+import org.ttdc.gwt.client.beans.GUserObject;
 import org.ttdc.gwt.client.constants.TagConstants;
+import org.ttdc.gwt.client.constants.UserObjectConstants;
 import org.ttdc.gwt.client.messaging.ConnectionId;
 import org.ttdc.gwt.client.messaging.EventBus;
 import org.ttdc.gwt.client.messaging.history.HistoryConstants;
@@ -25,6 +29,11 @@ import org.ttdc.gwt.client.presenters.util.PresenterHelpers;
 import org.ttdc.gwt.client.uibinder.SiteUpdatePanel;
 import org.ttdc.gwt.client.uibinder.common.BasePageComposite;
 import org.ttdc.gwt.client.uibinder.shared.StandardPageHeaderPanel;
+import org.ttdc.gwt.shared.commands.CommandResultCallback;
+import org.ttdc.gwt.shared.commands.UserObjectCrudCommand;
+import org.ttdc.gwt.shared.commands.results.GenericCommandResult;
+import org.ttdc.gwt.shared.commands.types.ActionType;
+import org.ttdc.gwt.shared.util.StringUtil;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.SelectionEvent;
@@ -151,6 +160,7 @@ public class HomePanel extends BasePageComposite implements PersonEventListener,
 	private void updateHistoryToReflectCenterTabSelection(int index) {
 		switch (index){
 			case INDEX_NESTED:
+				persistTabPreference(UserObjectConstants.VALUE_HIERARCHY);
 				token.setParameter(HistoryConstants.TAB_KEY, HistoryConstants.HOME_GROUPED_TAB);
 				buildGroupedTab();
 				break;
@@ -159,6 +169,7 @@ public class HomePanel extends BasePageComposite implements PersonEventListener,
 				buildEarmarksTab();
 				break;		
 			case INDEX_FLAT:
+				persistTabPreference(UserObjectConstants.VALUE_FLAT);
 				token.setParameter(HistoryConstants.TAB_KEY, HistoryConstants.HOME_FLAT_TAB);	
 				buildFlatTab();
 				break;	
@@ -185,6 +196,27 @@ public class HomePanel extends BasePageComposite implements PersonEventListener,
 		}
 	}
 	
+	private void persistTabPreference(String value){
+		if(ConnectionId.isAnonymous()){
+			//Abort
+			return;
+		}
+		UserObjectCrudCommand cmd = new UserObjectCrudCommand();
+		cmd.setAction(ActionType.CREATE);
+		cmd.setType(UserObjectConstants.TYPE_FRONTPAGE_MODE);
+		cmd.setValue(value);
+		injector.getService().execute(cmd, buildAddWebLinkCallback());
+	}
+	
+	private CommandResultCallback<GenericCommandResult<GUserObject>> buildAddWebLinkCallback() {
+		return new CommandResultCallback<GenericCommandResult<GUserObject>>(){
+			@Override
+			public void onSuccess(GenericCommandResult<GUserObject> result) {
+				//Great, thanks.
+			}
+		};
+	}
+	
 	@Override
 	public void onPostEvent(PostEvent postEvent) {
 		if(postEvent.is(PostEventType.NEW_FORCE_REFRESH)){
@@ -199,8 +231,23 @@ public class HomePanel extends BasePageComposite implements PersonEventListener,
 
 	private void initializeTabs(HistoryToken token) {
 		GPerson user = ConnectionId.getInstance().getCurrentUser();
-		String tab = token.getParameter(HistoryConstants.TAB_KEY);
+		String tabFromRequest = token.getParameter(HistoryConstants.TAB_KEY);
 		TabType selected;
+		
+		String tab = tabFromRequest;
+		if(StringUtil.empty(tabFromRequest) && !user.isAnonymous()){
+			List<GUserObject> list = user.getUserObjects(UserObjectConstants.TYPE_FRONTPAGE_MODE);
+			
+			if(list.size() > 0){
+				GUserObject frontPageMode = list.get(0);
+				if(frontPageMode.getValue().equals(UserObjectConstants.VALUE_FLAT)){
+					tab = HistoryConstants.HOME_FLAT_TAB;	
+				}
+				else{
+					tab = HistoryConstants.HOME_GROUPED_TAB;
+				}
+			}
+		}
 		
 		if(HistoryConstants.HOME_EARMARKS_TAB.equals(tab) && !user.isAnonymous()){
 			selected = TabType.EARMARKS;
@@ -210,7 +257,7 @@ public class HomePanel extends BasePageComposite implements PersonEventListener,
 			selected = TabType.FLAT;
 			buildFlatTab();
 		}
-		else{ 
+		else { 
 			selected = TabType.NESTED;
 			buildGroupedTab();
 		}
