@@ -50,6 +50,8 @@ public class UserObjectCrudCommandExecutor extends CommandExecutor<GenericComman
 	}
 
 	private GenericCommandResult<GUserObject> removeUserObject(UserObjectCrudCommand cmd) {
+		validateNonAnonUser();
+		
 		if(UserObjectConstants.TYPE_WEBPAGE.equals(cmd.getType())){
 			UserObjectDao.delete(cmd.getObjectId());
 		}
@@ -62,6 +64,12 @@ public class UserObjectCrudCommandExecutor extends CommandExecutor<GenericComman
 			throw new RuntimeException("Command is not properly formed.");
 		}
 		return new GenericCommandResult<GUserObject>(null,"User object deleted.");
+	}
+
+	private void validateNonAnonUser() {
+		if(getPerson().isAnonymous()){
+			throw new RuntimeException("You are not logged in.");
+		}
 	}
 
 	private GenericCommandResult<GUserObject> readUserObject(UserObjectCrudCommand cmd) {
@@ -80,6 +88,7 @@ public class UserObjectCrudCommandExecutor extends CommandExecutor<GenericComman
 	 * @return
 	 */
 	private GenericCommandResult<GUserObject> createUserObject(UserObjectCrudCommand cmd, Person person) {
+		validateNonAnonUser();
 		UserObject uo = null;
 		if(UserObjectConstants.TYPE_WEBPAGE.equals(cmd.getType())){
 			UserObjectTemplate template = UserObjectTemplateDao.load(cmd.getTemplateId());
@@ -91,6 +100,10 @@ public class UserObjectCrudCommandExecutor extends CommandExecutor<GenericComman
 				uo = UserObjectDao.createThreadFilter(person, cmd.getValue());
 			else
 				uo = null;
+		}
+		else if(UserObjectConstants.TYPE_FRONTPAGE_MODE.equals(cmd.getType())){
+			//If this works, rename this method to create/update
+			uo = UserObjectDao.updateUserSetting(person, cmd.getType(), cmd.getValue());
 		}
 		if(uo == null)
 			throw new RuntimeException("User object was not created.  Code may not be prepared to handle requested type.");
