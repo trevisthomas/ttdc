@@ -24,6 +24,11 @@ public class DateRange {
 	 */
 	public DateRange(Date startDate, Date endDate) {
 		init(startDate,endDate);
+		//Below is for a bug fix caused when searches were defaulting to today without being converted to GMT
+		//The problem was first noticed in the user profile post pages.
+		if(!isValidDateRange()){
+			init(new Date(0),new Date());
+		}
 	}
 	
 	/*

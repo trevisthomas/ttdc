@@ -50,7 +50,7 @@ public class SearchPostsCommandExecutor extends CommandExecutor<SearchPostsComma
 				dao.setPostSearchType(type);
 				
 				Set<PostFlag> filterList = ExecutorHelpers.createFlagFilterListForPerson(getPerson());
-				dao.setCreator(dao.getCreator());
+				//dao.setCreator(dao.getCreator());
 				dao.setNotTagIdList(command.getNotTagIdList());
 				dao.setTagIdList(command.getTagIdList());
 				dao.setRootId(command.getRootId());
