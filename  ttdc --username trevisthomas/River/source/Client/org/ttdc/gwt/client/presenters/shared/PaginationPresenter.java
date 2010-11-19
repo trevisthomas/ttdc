@@ -79,6 +79,9 @@ public class PaginationPresenter extends BasePresenter<PaginationPresenter.View>
 		else{
 			startPage = 1;
 		}
+		if(startPage < 1){
+			startPage = 1;
+		}
 		return startPage;
 	}
 	

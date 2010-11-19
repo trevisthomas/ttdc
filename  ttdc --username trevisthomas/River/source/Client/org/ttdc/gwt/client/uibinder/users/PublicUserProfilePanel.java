@@ -215,10 +215,12 @@ public class PublicUserProfilePanel  extends BasePageComposite {
 			}
 			else{
 				displayBioTab();
+				buildBioTab();
 			}
 		}
 		else{
 			displayBioTab();
+			buildBioTab();
 		}
 	}
 	
