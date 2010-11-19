@@ -114,7 +114,7 @@ public class PublicUserProfileView implements PublicUserProfilePresenter.View{
 				token.setParameter(HistoryConstants.TAB_KEY, HistoryConstants.PROFILE_POSTS_TAB);	
 				break;	
 		}
-		History.newItem(token.toString());
+		History.newItem(token.toString(), false);
 	}
 	
 	@Override

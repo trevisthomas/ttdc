@@ -72,6 +72,7 @@ public class HomePanel extends BasePageComposite implements PersonEventListener,
 	private NestedPresenter latestPresenter = null;
 	private FlatPresenter flatPresenter = null;
 	private static TrafficPresenter trafficPresenter = null;
+	private TabType tabTypeNowShowing = null;
 	
 	
 	@Inject
@@ -151,6 +152,12 @@ public class HomePanel extends BasePageComposite implements PersonEventListener,
 			postTabPanelElement.getTabBar().setTabText(INDEX_EARMARKS, "Earmarked ("+user.getEarmarks()+")");
 //			earmarksPresenter.clearCache();
 		}
+		else if(event.is(PersonEventType.USER_CHANGED)){
+			//Check the tab.
+			String tab = getTabFromUserObject(user);
+			buildAndDisplaySelectedTab(user, tab);
+			
+		}
 	}
 	
 	public void enableEarmarkTab(GPerson person){
@@ -185,14 +192,17 @@ public class HomePanel extends BasePageComposite implements PersonEventListener,
 	final static int INDEX_EARMARKS = 2;
 
 	private void displayTab(TabType selected) {
-		if(selected.equals(TabType.EARMARKS)){
-			postTabPanelElement.selectTab(INDEX_EARMARKS);
-		}
-		else if(selected.equals(TabType.FLAT)){
-			postTabPanelElement.selectTab(INDEX_FLAT);
-		}
-		else{
-			postTabPanelElement.selectTab(INDEX_NESTED);
+		if(tabTypeNowShowing != selected){
+			tabTypeNowShowing = selected;
+			if(selected.equals(TabType.EARMARKS)){
+				postTabPanelElement.selectTab(INDEX_EARMARKS);
+			}
+			else if(selected.equals(TabType.FLAT)){
+				postTabPanelElement.selectTab(INDEX_FLAT);
+			}
+			else{
+				postTabPanelElement.selectTab(INDEX_NESTED);
+			}
 		}
 	}
 	
@@ -232,23 +242,18 @@ public class HomePanel extends BasePageComposite implements PersonEventListener,
 	private void initializeTabs(HistoryToken token) {
 		GPerson user = ConnectionId.getInstance().getCurrentUser();
 		String tabFromRequest = token.getParameter(HistoryConstants.TAB_KEY);
-		TabType selected;
 		
 		String tab = tabFromRequest;
 		if(StringUtil.empty(tabFromRequest) && !user.isAnonymous()){
-			List<GUserObject> list = user.getUserObjects(UserObjectConstants.TYPE_FRONTPAGE_MODE);
-			
-			if(list.size() > 0){
-				GUserObject frontPageMode = list.get(0);
-				if(frontPageMode.getValue().equals(UserObjectConstants.VALUE_FLAT)){
-					tab = HistoryConstants.HOME_FLAT_TAB;	
-				}
-				else{
-					tab = HistoryConstants.HOME_GROUPED_TAB;
-				}
-			}
+			tab = getTabFromUserObject(user);
 		}
 		
+		buildAndDisplaySelectedTab(user, tab);
+	}
+
+
+	private void buildAndDisplaySelectedTab(GPerson user, String tab) {
+		TabType selected;
 		if(HistoryConstants.HOME_EARMARKS_TAB.equals(tab) && !user.isAnonymous()){
 			selected = TabType.EARMARKS;
 			buildEarmarksTab();
@@ -263,6 +268,22 @@ public class HomePanel extends BasePageComposite implements PersonEventListener,
 		}
 		
 		displayTab(selected);
+	}
+
+	private String getTabFromUserObject(GPerson user) {
+		String tab = "";
+		List<GUserObject> list = user.getUserObjects(UserObjectConstants.TYPE_FRONTPAGE_MODE);
+		
+		if(list.size() > 0){
+			GUserObject frontPageMode = list.get(0);
+			if(frontPageMode.getValue().equals(UserObjectConstants.VALUE_FLAT)){
+				tab = HistoryConstants.HOME_FLAT_TAB;	
+			}
+			else{
+				tab = HistoryConstants.HOME_GROUPED_TAB;
+			}
+		}
+		return tab;
 	}
 
 	private void buildFlatTab(){
