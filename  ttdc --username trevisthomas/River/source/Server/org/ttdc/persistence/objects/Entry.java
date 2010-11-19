@@ -441,8 +441,7 @@ import org.ttdc.gwt.shared.util.PostFlagBitmasks;
 				"SELECT count(post.postId) FROM Post post " +
 				"WHERE post.root.postId NOT IN (:threadIds) " +
 				"AND post.date > :startDate " +
-				"AND bitwise_and( post.metaMask, :filterMask ) = 0 "+
-				"ORDER BY post.date DESC"),
+				"AND bitwise_and( post.metaMask, :filterMask ) = 0 "),
 
 	//Movies	 
 	@NamedQuery(name="MovieDao.peopleWithMovieRatings", query="SELECT distinct ass.creator.personId, count(ass.creator.personId) " +

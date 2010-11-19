@@ -12,6 +12,7 @@ import org.ttdc.gwt.client.presenters.post.Mode;
 import org.ttdc.gwt.client.presenters.post.PostCollectionPresenter;
 import org.ttdc.gwt.client.presenters.shared.GenericTabularFlowPresenter;
 import org.ttdc.gwt.client.presenters.shared.MovieCoverWithRatingPresenter;
+import org.ttdc.gwt.client.presenters.shared.PaginationPresenter;
 import org.ttdc.gwt.client.presenters.shared.TextPresenter;
 import org.ttdc.gwt.client.presenters.users.MoreSearchPresenter;
 import org.ttdc.gwt.client.presenters.util.HtmlLabel;
@@ -79,6 +80,7 @@ public class PublicUserProfilePanel  extends BasePageComposite {
 	private HistoryToken token;
 	private GPerson person;
 	private HistoryToken lastToken = null;
+	private Integer currentTabIndex = -1;
 	
 	@Inject
 	public PublicUserProfilePanel(Injector injector) {
@@ -135,6 +137,12 @@ public class PublicUserProfilePanel  extends BasePageComposite {
 		HistoryToken token = new HistoryToken();
 		token.addParameter(HistoryConstants.VIEW, HistoryConstants.VIEW_USER_PROFILE);
 		token.addParameter(HistoryConstants.PERSON_ID, person.getPersonId());
+		
+		if(currentTabIndex == index){
+			if(this.token.hasParameter(HistoryConstants.PAGE_NUMBER_KEY)){
+				token.addParameter(HistoryConstants.PAGE_NUMBER_KEY, this.token.getParameter(HistoryConstants.PAGE_NUMBER_KEY));
+			}
+		}
 		switch (index){
 			case 0:
 				token.setParameter(HistoryConstants.TAB_KEY, HistoryConstants.PROFILE_BIO_TAB);
@@ -155,12 +163,17 @@ public class PublicUserProfilePanel  extends BasePageComposite {
 				token.setParameter(HistoryConstants.TAB_KEY, HistoryConstants.PROFILE_POSTS_TAB);	
 				break;	
 		}
-		//History.newItem(token.toString(), false);
-		History.newItem(token.toString());
+		if(currentTabIndex == index){
+			History.newItem(token.toString(), false);
+		}
+		else{
+			History.newItem(token.toString());
+		}
 	}
 	
 	@Override
 	protected void onShow(HistoryToken token) {
+		this.token = token;
 		if(lastToken == null || !lastToken.isParameterEq(HistoryConstants.PERSON_ID, token.getParameter(HistoryConstants.PERSON_ID))){
 			clear();
 			String personId = token.getParameter(HistoryConstants.PERSON_ID);
@@ -190,7 +203,7 @@ public class PublicUserProfilePanel  extends BasePageComposite {
 			}
 			else if(HistoryConstants.PROFILE_CONVERSATIONS_TAB.equals(tab)){
 				displayLatestConversationsTab();
-				buildLatestConversationsTab();
+				buildLatestConversationsTab(token);
 			}
 			else if(HistoryConstants.PROFILE_POSTS_TAB.equals(tab)){
 				displayLatestPostsTab();
@@ -219,7 +232,7 @@ public class PublicUserProfilePanel  extends BasePageComposite {
 				Widget w = userProfilePresenter.getWidget();
 				w.addStyleName("tt-center");
 				profileElement.add(w);
-				initializeTabs(lastToken);
+				initializeTabs(token);
 				
 				pageHeaderPanel.init(person.getLogin(), "a profile of my history on ttdc");
 				pageHeaderPanel.getSearchBoxPresenter().init(person);
@@ -256,7 +269,7 @@ public class PublicUserProfilePanel  extends BasePageComposite {
 			injector.getService().execute(cmd, buildMovieListCallback(worstMoviesPanel,person.getLogin()+ " hasn't rated any movies."));
 	}
 
-	public void buildLatestConversationsTab() {
+	public void buildLatestConversationsTab(HistoryToken token) {
 		SearchPostsCommand cmd = new SearchPostsCommand();
 		//cmd.setConversationsOnly(true);
 		cmd.setPostSearchType(PostSearchType.CONVERSATIONS);
@@ -264,7 +277,8 @@ public class PublicUserProfilePanel  extends BasePageComposite {
 		cmd.setSortDirection(SortDirection.DESC);
 		cmd.setPersonId(person.getPersonId());
 		cmd.setPageSize(10);
-		if(PresenterHelpers.isWidgetEmpty(latestConversationsPanel))
+		cmd.setPageNumber(token.getParameterAsInt(HistoryConstants.PAGE_NUMBER_KEY, 1));
+		//if(PresenterHelpers.isWidgetEmpty(latestConversationsPanel))
 			injector.getService().execute(cmd, buildPostListCallback(cmd,latestConversationsPanel, 
 					latestConversationsFooterPanel,person.getLogin()+ " hasn't started any conversations."));
 	}
@@ -277,7 +291,8 @@ public class PublicUserProfilePanel  extends BasePageComposite {
 		cmd.setPageSize(20);	
 		cmd.setSortOrder(SearchSortBy.BY_DATE);
 		cmd.setSortDirection(SortDirection.DESC);
-		if(PresenterHelpers.isWidgetEmpty(latestPostsPanel))
+		cmd.setPageNumber(token.getParameterAsInt(HistoryConstants.PAGE_NUMBER_KEY, 1));
+		//if(PresenterHelpers.isWidgetEmpty(latestPostsPanel))
 			injector.getService().execute(cmd, buildPostListCallback(cmd,latestPostsPanel, 
 					latestPostsFooterPanel,person.getLogin()+ " hasn't made any comments."));
 	}
@@ -291,7 +306,8 @@ public class PublicUserProfilePanel  extends BasePageComposite {
 		cmd.setPageSize(20);
 		cmd.setSortOrder(SearchSortBy.BY_DATE);
 		cmd.setSortDirection(SortDirection.DESC);
-		if(PresenterHelpers.isWidgetEmpty(latestReviewsPanel))
+		cmd.setPageNumber(token.getParameterAsInt(HistoryConstants.PAGE_NUMBER_KEY, 1));
+		//if(PresenterHelpers.isWidgetEmpty(latestReviewsPanel))
 			injector.getService().execute(cmd, buildPostListCallback(cmd, latestReviewsPanel, 
 					latestReviewsFooterPanel,person.getLogin()+ " hasn't left any reviews."));
 	}
@@ -300,6 +316,7 @@ public class PublicUserProfilePanel  extends BasePageComposite {
 			final HasWidgets target,
 			final HasWidgets moreTarget, 
 			final String noResutsMessage) {
+		target.clear();
 		target.add(injector.getWaitPresenter().getWidget());
 		CommandResultCallback<SearchPostsCommandResult> replyListCallback = new MyCommandCallback(cmd,target,moreTarget,noResutsMessage);
 		return replyListCallback;
@@ -325,10 +342,15 @@ public class PublicUserProfilePanel  extends BasePageComposite {
 			if(!result.getResults().isEmpty()){
 				postCollection.setPostList(result.getResults().getList());
 				target.add(postCollection.getWidget());
-				MoreSearchPresenter moreSearchPresenter = injector.getMoreSearchPresenter();
-				moreSearchPresenter.init(new MyMoreObserver(postCollection), result.getResults(), cmd);
+//				MoreSearchPresenter moreSearchPresenter = injector.getMoreSearchPresenter();
+//				moreSearchPresenter.init(new MyMoreObserver(postCollection), result.getResults(), cmd);
+//				moreTarget.clear();
+//				moreTarget.add(moreSearchPresenter.getWidget());
+				
+				PaginationPresenter paginationPresenter = injector.getPaginationPresenter();
+				paginationPresenter.initialize(token, result.getResults());
 				moreTarget.clear();
-				moreTarget.add(moreSearchPresenter.getWidget());
+				moreTarget.add(paginationPresenter.getWidget());
 			}
 			else{
 				TextPresenter textPresenter = injector.getTextPresenter();
@@ -385,28 +407,34 @@ public class PublicUserProfilePanel  extends BasePageComposite {
 		latestReviewsPanel.clear();
 	}
 	
+	private void maybeSwitchTab(int myIndex) {
+		//if(currentTabIndex != myIndex){
+			currentTabIndex = myIndex;
+			tabPanelElement.selectTab(myIndex);
+		//}
+	}
+
 	public void displayBestMoviesTab() {
-		tabPanelElement.selectTab(1);
+		maybeSwitchTab(1);
 	}
 
 	public void displayBioTab() {
-		tabPanelElement.selectTab(0);
+		maybeSwitchTab(0);
 	}
 
 	public void displayLatestConversationsTab() {
-		tabPanelElement.selectTab(3);
-		
+		maybeSwitchTab(3);
 	}
 
 	public void displayLatestPostsTab() {
-		tabPanelElement.selectTab(5);
+		maybeSwitchTab(5);
 	}
 
 	public void displayLatestReviewsTab() {
-		tabPanelElement.selectTab(4);
+		maybeSwitchTab(4);
 	}
 
 	public void displayWorstMoviesTab() {
-		tabPanelElement.selectTab(2);
+		maybeSwitchTab(2);
 	}
 }

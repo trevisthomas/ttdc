@@ -105,6 +105,15 @@ public class InboxDao extends FilteredPostPaginatedDaoBase{
 		
 		return results;
 	}
+	
+	public long calculateInboxSize(){
+		long count = (Long)session().getNamedQuery("InboxDao.FlatCount")
+			.setParameter("filterMask", buildFilterMask(getFilterFlags()))
+			.setParameterList("threadIds", getFilterThreadIds())
+			.setParameter("startDate", getLastReadDate())
+			.uniqueResult();
+		return count;
+	}
 
 	public boolean isRead(Post post) {
 		//This method is brutal.  Speed it up
@@ -119,7 +128,8 @@ public class InboxDao extends FilteredPostPaginatedDaoBase{
 		InboxCache cache = new InboxCache();
 		cache.setPerson(person);
 		cache.setPost(null);
-		cache.setDate(new Date());
+		cache.setDate(new Date(System.currentTimeMillis()+2000));
+		
 		session().save(cache);
 		session().flush();
 	}

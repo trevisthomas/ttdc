@@ -331,6 +331,9 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 			createTagAssociation(creator,post.getParent(),tag);
 		}
 		
+		//Mark as read for Coderhead
+		maybeMarkSiteRead();
+		
 //		for (GTag gTag : cmd.getTags()){
 //			Tag tag;
 //			if(StringUtil.notEmpty(gTag.getTagId()))
@@ -343,6 +346,13 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 		
 		
 		return post;
+	}
+
+	private void maybeMarkSiteRead() {
+		InboxDao dao = new InboxDao(getPerson());
+		if(dao.calculateInboxSize() == 1){
+			dao.markSiteRead();
+		}
 	}
 
 	private boolean movieExists(PostCrudCommand cmd) {
