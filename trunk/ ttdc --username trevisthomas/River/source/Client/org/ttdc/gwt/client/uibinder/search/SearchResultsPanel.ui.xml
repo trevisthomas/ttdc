@@ -9,9 +9,7 @@
 		 	<g:Label styleName="tt-fill tt-text-large-bold tt-text-left tt-color-search-results-header" ui:field="postLabelElement"/>
 		 	<div class="tt-post-container-header tt-center">
 		 		<g:Label styleName="tt-float-left" ui:field="pageResultMessageElement"/>
-		 		<div class="tt-float-right">
-		 			<g:Hyperlink ui:field="prevElement"/> &nbsp;&nbsp; <g:Hyperlink ui:field="nextElement"/>
-		 		</div>
+		 		<g:Widget ui:field="paginationNanoElement"/>
 		 	</div>
 		 	<g:SimplePanel styleName="tt-fill" ui:field="postListElement"/>
 		 	<div class="tt-post-container-footer tt-center">

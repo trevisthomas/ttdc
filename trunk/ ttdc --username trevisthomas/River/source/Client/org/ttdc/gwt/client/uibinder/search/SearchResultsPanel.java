@@ -29,6 +29,8 @@ import org.ttdc.gwt.client.presenters.shared.PaginationPresenter;
 import org.ttdc.gwt.client.presenters.util.DateRangeLite;
 import org.ttdc.gwt.client.services.BatchCommandTool;
 import org.ttdc.gwt.client.uibinder.common.BasePageComposite;
+import org.ttdc.gwt.client.uibinder.shared.PaginationNanoPanel;
+import org.ttdc.gwt.client.uibinder.shared.PaginationPanel;
 import org.ttdc.gwt.client.uibinder.shared.StandardPageHeaderPanel;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
 import org.ttdc.gwt.shared.commands.SearchPostsCommand;
@@ -52,8 +54,6 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 	interface MyUiBinder extends UiBinder<Widget, SearchResultsPanel> {}
     private static final MyUiBinder binder = GWT.create(MyUiBinder.class);
     private final HyperlinkPresenter linkPresenter;
-    private final HyperlinkPresenter prevLinkPresenter;
-    private final HyperlinkPresenter nextLinkPresenter;
     private StandardPageHeaderPanel pageHeaderPanel;
     private Injector injector;
     
@@ -62,16 +62,15 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
     @UiField(provided = true) SimplePanel postListElement = new SimplePanel();
     //@UiField(provided = true) SimplePanel paginationElement = new SimplePanel();
     @UiField(provided = true) Widget paginationElement;
+    @UiField(provided = true) Widget paginationNanoElement;
     @UiField Label searchSummaryDetailElement;
     @UiField Label pageResultMessageElement;
-    @UiField (provided = true) Hyperlink prevElement;
-    @UiField (provided = true) Hyperlink nextElement;
-    
     
     @UiField Label postLabelElement;
     
+    private final PaginationNanoPanel paginationNanoPanel;
     private final PostCollectionPresenter postCollection;
-	private final PaginationPresenter paginationPresenter;
+	private final PaginationPanel paginationPanel;
 	private HistoryToken lastToken;
     
     @Inject
@@ -79,17 +78,16 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
     	this.injector = injector;
     	pageHeaderPanel = injector.createStandardPageHeaderPanel(); 
     	pageHeaderElement = pageHeaderPanel.getWidget();
+    	paginationNanoPanel = injector.createPaginationNanoPanel();
+    	paginationNanoElement = paginationNanoPanel.getWidget();
+    	
     	
     	postCollection = injector.getPostCollectionPresenter();
-		paginationPresenter = injector.getPaginationPresenter();
+    	paginationPanel = injector.createPaginationPanel();
 		linkPresenter = injector.getHyperlinkPresenter();
-		prevLinkPresenter = injector.getHyperlinkPresenter();
-		nextLinkPresenter = injector.getHyperlinkPresenter();
 				
-		paginationElement = paginationPresenter.getWidget();
+		paginationElement = paginationPanel;
 		
-		prevElement = prevLinkPresenter.getHyperlink();
-		nextElement = nextLinkPresenter.getHyperlink();
 		pageFooterElement = injector.createStandardFooter().getWidget();
 		
     	initWidget(binder.createAndBindUi(this));
@@ -355,31 +353,8 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 	
 	private void showPagination(PaginatedList<GPost> results, final HistoryToken topicToken) {
 		if(results.calculateNumberOfPages() > 1){
-			paginationPresenter.initialize(topicToken, results);
-			//paginationElement.clear();
-			//paginationElement.add(paginationPresenter.getWidget());
-			
-			HistoryToken prevToken = paginationPresenter.getPrevToken();
-			HistoryToken nextToken = paginationPresenter.getNextToken();
-			
-			if(prevToken != null){
-				prevLinkPresenter.setToken(prevToken, "prev");
-			}
-			else{
-				prevElement.setVisible(false); 
-			}
-			
-			if(nextToken != null){
-				nextLinkPresenter.setToken(nextToken, "next");
-			}
-			else{
-				nextElement.setVisible(false);
-			}
-			
-		}
-		else{
-			prevElement.setVisible(false); 
-			nextElement.setVisible(false); 
+			paginationPanel.initialize(topicToken, results);
+			paginationNanoPanel.init(paginationPanel, results);
 		}
 	}
 
