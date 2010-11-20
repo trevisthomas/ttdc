@@ -124,6 +124,8 @@ import org.ttdc.gwt.client.uibinder.search.RefineSearchPanel;
 import org.ttdc.gwt.client.uibinder.search.SearchBoxPanel;
 import org.ttdc.gwt.client.uibinder.search.SearchPanel;
 import org.ttdc.gwt.client.uibinder.search.SearchResultsPanel;
+import org.ttdc.gwt.client.uibinder.shared.PaginationNanoPanel;
+import org.ttdc.gwt.client.uibinder.shared.PaginationPanel;
 import org.ttdc.gwt.client.uibinder.shared.StandardFooterPanel;
 import org.ttdc.gwt.client.uibinder.shared.StandardPageHeaderPanel;
 import org.ttdc.gwt.client.uibinder.shared.UserIdentityPanel;
@@ -440,5 +442,7 @@ public interface Injector extends Ginjector {
 	public IconOptionsPanel createIconOptionPanel();
 	public PostDetailPanel createPostDetailPanel();
 	public ForumPanel createForumPanel();
+	public PaginationPanel createPaginationPanel();
+	public PaginationNanoPanel createPaginationNanoPanel();
 }
 

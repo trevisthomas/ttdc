@@ -9,6 +9,7 @@ import org.ttdc.gwt.shared.util.PaginatedList;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.inject.Inject;
 
+@Deprecated
 public class PaginationPresenter extends BasePresenter<PaginationPresenter.View>{
 	private String pageNumberKey = PAGE_NUMBER_KEY;
 	private HistoryToken prevToken;

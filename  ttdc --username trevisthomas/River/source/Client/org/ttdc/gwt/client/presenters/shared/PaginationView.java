@@ -7,6 +7,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
+@Deprecated
 public class PaginationView implements PaginationPresenter.View{
 	private final SimplePanel prevTarget = new SimplePanel();
 	private final SimplePanel nextTarget = new SimplePanel();
