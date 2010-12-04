@@ -22,6 +22,7 @@ body{ color: #222; background-color: #eee;}
 .tt-post-panel-content a:active {color: #F5F23B;}
 */
 
+.tt-forum-post-title a:link,
 .tt-reviewSummary a:link,
 .tt-forum-names a:link,
 .tt-child-post-header a:link,
@@ -33,6 +34,7 @@ body{ color: #222; background-color: #eee;}
 .tt-post-summary a:link,
 .tt-post-expanded-content a:link  {text-decoration: none; color: #113aa4;}
 
+.tt-forum-post-title a:visited,
 .tt-reviewSummary a:visited,
 .tt-forum-names a:visited,
 .tt-child-post-header a:visited,
@@ -44,6 +46,7 @@ body{ color: #222; background-color: #eee;}
 .tt-post-summary a:visited,
 .tt-post-expanded-content a:visited  {text-decoration: none; color: #113aa4;}
 
+.tt-forum-post-title a:hover,
 .tt-reviewSummary a:hover,
 .tt-forum-names a:hover,
 .tt-child-post-header a:hover,
@@ -55,6 +58,7 @@ body{ color: #222; background-color: #eee;}
 .tt-post-summary a:hover,
 .tt-post-expanded-content a:hover  {text-decoration: underline; color: blue;}
 
+.tt-forum-post-title a:active,
 .tt-reviewSummary a:active,
 .tt-forum-names a:active,
 .tt-child-post-header a:active,
@@ -128,12 +132,12 @@ body{ color: #222; background-color: #eee;}
 .tt-navigation a:active,		
 .tt-reviewSummaryList a:active {color: #F5F23B;}
 
-.tt-post-child-date a:link {text-decoration: none; color: grey;}
-.tt-post-child-date a:visited{text-decoration: none; color: grey;}
-.tt-post-child-date a:hover {text-decoration: underline; color: #222;}
-.tt-post-child-date a:active{color: black;}
+.tt-post-detail a:link {text-decoration: none; color: grey;}
+.tt-post-detail a:visited{text-decoration: none; color: grey;}
+.tt-post-detail a:hover {text-decoration: underline; color: #222;}
+.tt-post-detail a:active{color: black;}
 	
-
+.tt-forum-post{border-color: #f5f5f5;}
 
 
 .tt-color-month-week-header{ background: #eee; color: black; border-color: grey;}

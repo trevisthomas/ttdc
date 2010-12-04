@@ -34,6 +34,13 @@ public final class PaginatedResultConverters {
 		gResults.setList(FastPostBeanConverter.convertPosts(results.getList(), inboxDao));
 		return gResults;
 	}
+	
+	public final static PaginatedList<GPost> convertForumTopicsResults(PaginatedList<Post> results, Person person){
+		PaginatedList<GPost> gResults = copyMetaData(results);
+		InboxDao inboxDao = new InboxDao(person);
+		gResults.setList(FastPostBeanConverter.convertPostsSimple(results.getList(), inboxDao));
+		return gResults;
+	}
 
 	public static PaginatedList<GPost> convertSearchResultsHierarchy(PaginatedList<Post> results) {
 		PaginatedList<GPost> gResults = copyMetaData(results);

@@ -107,6 +107,8 @@ public class HyperlinkPresenter extends BasePresenter<HyperlinkPresenter.View> {
 		view.getHistoryToken().setParameter(HistoryConstants.VIEW, HistoryConstants.VIEW_TOPIC); 
 		view.getHistoryToken().setParameter(HistoryConstants.POST_ID_KEY,post.getPostId());
 		view.getDisplayName().setHTML(title);
+		
+		init();//This must be called before the link will render. - 12/4/2010 
 	}
 	
 	public void setUrl(String url){

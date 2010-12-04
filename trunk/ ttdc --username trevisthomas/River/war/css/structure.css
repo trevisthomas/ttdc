@@ -63,6 +63,8 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 .gwt-TabBar .gwt-TabBarItem-selected,
 .tt-text-large-bold{font-size:16px; font-weight: 700;}
 .tt-text-huge{font-size:22px; font-weight: 700;}
+
+.tt-forum-post-title,
 .tt-post-panel-head-title{font-size: 16px;}
 
 
@@ -96,11 +98,13 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 .tt-header-left{}
 .tt-header-right{}
 
-.tt-forum-topics,
+.tt-forum-main,
 .tt-topic-root,
 .tt-topic-topics,
 .tt-home-main{ width: 600px;}
 .tt-home-left{ width: 220px;}
+
+.tt-forum-topics{ margin: 2px 0px 5px 20px; }
 
 .tt-topic-root,
 .tt-topic-topics{}
@@ -108,7 +112,7 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 .tt-home-tabContainer{margin: 4px 0 10px 0; width: 800px;}
 
 .tt-topic-root,
-.tt-forum-topics,
+.tt-forum-main,
 .tt-topic-topics{text-align:center; margin: 0 auto;}
 
 .tt-avatar-large{margin: 4px;}
@@ -418,3 +422,4 @@ side effects in non mozilla browsers in the comment creator
 .tt-plain-post{border: 1px solid; margin: 4px; padding: 2px;}
 
 .tt-post-child{margin: 1px 1px 1px 10px; border-width: 1px; border-style:solid; width:540px;}
+.tt-forum-post{margin: 1px 1px 4px; border-width: 0 0 1px 0; border-style: solid; }

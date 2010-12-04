@@ -7,7 +7,7 @@
 	<g:HTMLPanel>
 		<div>
 			<g:Anchor ui:field="forumTitleElement"/>
-			<g:SimplePanel ui:field="forumSummaryElement"></g:SimplePanel>	
+			<g:SimplePanel styleName="tt-forum-topics" ui:field="forumSummaryElement"></g:SimplePanel>	
 		</div>
 	</g:HTMLPanel>
 </ui:UiBinder>

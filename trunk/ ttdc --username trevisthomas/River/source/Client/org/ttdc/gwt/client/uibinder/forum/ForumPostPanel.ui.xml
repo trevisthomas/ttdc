@@ -4,13 +4,18 @@
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'
 	xmlns:t='urn:import:org.ttdc.gwt.client.presenters.util'>
 	
-	<g:HTMLPanel>
+	<g:HTMLPanel styleName="tt-forum-post">
+		
 		<table class="tt-fill">
 			<tr>
 				<td>
-					<g:Hyperlink ui:field="titleElement" />
-					
-					<table class="tt-inline tt-float-right">
+					<g:Hyperlink styleName="tt-forum-post-title" ui:field="titleElement" />
+					<div class="tt-post-detail">
+						<g:Hyperlink ui:field="creatorElement" /> on <g:Hyperlink ui:field="dateCreatedElement" />
+					</div>
+				</td>
+				<td width="1px">
+					<table>
 						<tr>
 							<td>
 								<g:Label ui:field="replyCountElement"></g:Label>
@@ -22,12 +27,6 @@
 					</table>
 				</td>
 			</tr>
-			<tr>
-				<td>
-					<g:Hyperlink ui:field="creatorElement" /> on <g:Hyperlink ui:field="dateCreatedElement" />
-				</td>
-			</tr>
-			
 		</table>
 	</g:HTMLPanel>
 </ui:UiBinder>

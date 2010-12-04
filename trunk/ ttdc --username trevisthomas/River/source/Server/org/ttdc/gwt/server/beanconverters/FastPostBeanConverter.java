@@ -143,6 +143,17 @@ public class FastPostBeanConverter {
 		}
 		return list;
 	}
+	
+	public static ArrayList<GPost> convertPostsSimple(List<Post> persistentPostList, InboxDao inboxDao){
+		ArrayList<GPost> list = new ArrayList<GPost>();
+		for(Post p : persistentPostList){
+			GPost rpcPost = convertPostSimple(p, inboxDao);
+			list.add(rpcPost);
+		}
+		return list;
+	}
+	
+	
 	//Initially created for inflating movie review summaries
 	public static GPost convertPostSimple(Post p, InboxDao inboxDao) {
 		GPost gPost = new GPost();

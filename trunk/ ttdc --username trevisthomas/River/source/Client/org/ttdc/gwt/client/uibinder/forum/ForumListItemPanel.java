@@ -3,6 +3,9 @@ package org.ttdc.gwt.client.uibinder.forum;
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GForum;
 import org.ttdc.gwt.client.beans.GPost;
+import org.ttdc.gwt.client.messaging.EventBus;
+import org.ttdc.gwt.client.messaging.error.MessageEvent;
+import org.ttdc.gwt.client.messaging.error.MessageEventType;
 import org.ttdc.gwt.client.messaging.history.HistoryConstants;
 import org.ttdc.gwt.client.messaging.history.HistoryToken;
 import org.ttdc.gwt.client.presenters.post.Mode;
@@ -56,7 +59,6 @@ public class ForumListItemPanel extends Composite{
     public void init(GForum forum){
     	this.forum = forum;
     	//setup token
-    	//((ForumLink)forumTitleElement).init(forum);
     	forumTitleElement.setText(forum.getDisplayValue());
     	
     	token = new HistoryToken();
@@ -67,16 +69,15 @@ public class ForumListItemPanel extends Composite{
     
     @UiHandler("forumTitleElement")
     void onClickShowThreads(ClickEvent event){
-    	if(PresenterHelpers.isWidgetEmpty(forumSummaryElement)){
+    	boolean expand = PresenterHelpers.isWidgetEmpty(forumSummaryElement);
+    	MessageEvent colapseEvent = new MessageEvent(MessageEventType.COLAPSE_FORUM_TOPICS, "");
+    	EventBus.fireEvent(colapseEvent);
+    	if(expand){
     		expand();
     	}
-    	else{
-    		colapse();
-    	}
-    	
     }
 
-	private void colapse() {
+	public void colapse() {
 		forumSummaryElement.clear();
 	}
     
@@ -88,6 +89,7 @@ public class ForumListItemPanel extends Composite{
     }
     
     public void expand(){
+    	forumTitleElement.getElement().scrollIntoView();
     	History.newItem(token.toString(), false);	
 		createTopicList(token);
     }
@@ -98,11 +100,11 @@ public class ForumListItemPanel extends Composite{
     	ForumTopicListCommand cmd = new ForumTopicListCommand();
 		cmd.setAction(ForumActionType.LOAD_TOPIC_PAGE);
 		cmd.setForumId(forumId);
-		cmd.setCurrentPage(token.getParameterAsInt(HistoryConstants.PAGE_NUMBER_KEY, 1));
+		//cmd.setCurrentPage(token.getParameterAsInt(HistoryConstants.PAGE_NUMBER_KEY, 1));
+		cmd.setPageSize(-1);
 		
 		injector.getService().execute(cmd, buildCallback());
 	}
-
 
 	private CommandResultCallback<PaginatedListCommandResult<GPost>> buildCallback() {
 		CommandResultCallback<PaginatedListCommandResult<GPost>> callback = new CommandResultCallback<PaginatedListCommandResult<GPost>>(){
@@ -136,27 +138,10 @@ public class ForumListItemPanel extends Composite{
 			}
 			
 			forumSummaryElement.add(topics);
-			
-			
-//			postCollection.setPostList(results.getList(), Mode.FLAT);
-//			view.postPanel().add(postCollection.getWidget());
-//			if(forumId == null){
-//				setupMorePresenter(result);
-//			}
-//			else{
-//				setupPaginator(result);
-//			}
 		}
 	}
-
-	public void populate(){
-    	//forumSummaryElement
-    }
 
 	public GForum getForum() {
 		return forum;
 	}
-    
-	
-
 }

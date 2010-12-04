@@ -8,7 +8,17 @@ import org.ttdc.gwt.shared.commands.types.ForumActionType;
 public class ForumTopicListCommand extends Command<PaginatedListCommandResult<GPost>>{
 	private String forumId;
 	private ForumActionType action = ForumActionType.LOAD_TOPIC_PAGE;
+	private int currentPage = 1;
+	private int pageSize = -1;
 	
+	public int getPageSize() {
+		return pageSize;
+	}
+
+	public void setPageSize(int pageSize) {
+		this.pageSize = pageSize;
+	}
+
 	public ForumActionType getAction() {
 		return action;
 	}
@@ -25,8 +35,6 @@ public class ForumTopicListCommand extends Command<PaginatedListCommandResult<GP
 		this.forumId = forumId;
 	}
 	
-	private int currentPage = 1;
-
 	public int getCurrentPage() {
 		return currentPage;
 	}
