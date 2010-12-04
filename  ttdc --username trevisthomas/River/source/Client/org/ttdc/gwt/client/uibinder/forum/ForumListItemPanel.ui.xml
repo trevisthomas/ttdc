@@ -1,0 +1,13 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<!-- The above doctype is to allow for special html characters in this xml file -->
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	xmlns:t='urn:import:org.ttdc.gwt.client.presenters.util'>
+	
+	<g:HTMLPanel>
+		<div>
+			<g:Anchor ui:field="forumTitleElement"/>
+			<g:SimplePanel ui:field="forumSummaryElement"></g:SimplePanel>	
+		</div>
+	</g:HTMLPanel>
+</ui:UiBinder>

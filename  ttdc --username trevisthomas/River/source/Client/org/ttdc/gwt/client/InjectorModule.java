@@ -169,6 +169,7 @@ import org.ttdc.gwt.client.presenters.users.UserRowView;
 import org.ttdc.gwt.client.presenters.users.UserToolsPresenter;
 import org.ttdc.gwt.client.presenters.users.UserToolsView;
 import org.ttdc.gwt.client.services.RpcServiceAsync;
+import org.ttdc.gwt.client.uibinder.forum.ForumListPanel;
 import org.ttdc.gwt.client.uibinder.forum.ForumPanel;
 import org.ttdc.gwt.client.uibinder.home.HomePanel;
 import org.ttdc.gwt.client.uibinder.users.PublicUserProfilePanel;
@@ -188,6 +189,7 @@ public class InjectorModule extends AbstractGinModule {
 		bind(HomePanel.class).in(Singleton.class);
 		bind(ForumPanel.class).in(Singleton.class);
 		bind(PublicUserProfilePanel.class).in(Singleton.class);
+		bind(ForumListPanel.class).in(Singleton.class);
 		
 		
 		//bind .to .in

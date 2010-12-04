@@ -122,7 +122,8 @@ public class HistoryEventPresenterManager implements HistoryEventListener{
 			//injector.getHomePresenter().show(event.getSource());
 		}
 		else if(HistoryConstants.VIEW_FORUMS.equals(view)){
-			injector.createForumPanel().show(event.getSource());
+			//injector.createForumPanel().show(event.getSource());
+			injector.createForumListPanel().show(event.getSource());
 		}
 		else{
 			/*Just let it go neo*/

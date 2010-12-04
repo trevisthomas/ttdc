@@ -1,0 +1,33 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<!-- The above doctype is to allow for special html characters in this xml file -->
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	xmlns:t='urn:import:org.ttdc.gwt.client.presenters.util'>
+	
+	<g:HTMLPanel>
+		<table class="tt-fill">
+			<tr>
+				<td>
+					<g:Hyperlink ui:field="titleElement" />
+					
+					<table class="tt-inline tt-float-right">
+						<tr>
+							<td>
+								<g:Label ui:field="replyCountElement"></g:Label>
+							</td>
+							<td>
+								<g:Label ui:field="conversationCountElement"></g:Label>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<g:Hyperlink ui:field="creatorElement" /> on <g:Hyperlink ui:field="dateCreatedElement" />
+				</td>
+			</tr>
+			
+		</table>
+	</g:HTMLPanel>
+</ui:UiBinder>
