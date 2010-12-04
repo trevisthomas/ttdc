@@ -40,6 +40,7 @@ public class ForumTopicListCommandExecutor extends CommandExecutor<PaginatedList
 		ForumDao dao = new ForumDao();
 		dao.setForumId(cmd.getForumId());
 		dao.setCurrentPage(cmd.getCurrentPage());
+		dao.setPageSize(cmd.getPageSize());
 		PaginatedList<Post> results = dao.loadTopics();
 		PaginatedList<GPost> gResults = PaginatedResultConverters.convertSearchResults(results, getPerson());
 		return new PaginatedListCommandResult<GPost>(gResults);

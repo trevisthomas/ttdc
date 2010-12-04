@@ -6,10 +6,7 @@
 	
 	<g:HTMLPanel>
 		<g:Widget ui:field="pageHeaderElement"/>
-		<g:TabPanel styleName="tt-forum-topics" ui:field="topicTabPanelElement" />
-		
-		
-		
+		<g:TabPanel styleName="tt-forum-main" ui:field="topicTabPanelElement" />
 		<g:Widget ui:field="pageFooterElement" />		
 	</g:HTMLPanel>
 </ui:UiBinder>
