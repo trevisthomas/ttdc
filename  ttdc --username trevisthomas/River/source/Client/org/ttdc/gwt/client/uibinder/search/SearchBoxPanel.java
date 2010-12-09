@@ -121,6 +121,8 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
     	
     	suggestionOracle = injector.getTagSugestionOracle();
     	suggestSearchPhraseElement = suggestionOracle.createSuggestBoxForPostSearch();
+    	suggestSearchPhraseElement.setStyleName("tt-textbox-search");
+    	
     	
     	initWidget(binder.createAndBindUi(this));
     	searchPhraseElement.setStyleName("tt-textbox-search");
@@ -172,11 +174,6 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 				if(suggestion != null){
 					GPost post = suggestion.getPost();
 					if(!post.getPostId().trim().isEmpty()){
-//						PostCrudCommand cmd = new PostCrudCommand();
-//						cmd.setPostId(parent.getPostId());
-//						injector.getService().execute(cmd, callbackParentPostSelected());
-						//Window.alert("topic selected");
-						
 						HistoryToken token = new HistoryToken();
 						token.addParameter(HistoryConstants.VIEW, HistoryConstants.VIEW_TOPIC);
 						token.addParameter(HistoryConstants.POST_ID_KEY, post.getPostId());
@@ -184,10 +181,6 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 						EventBus.fireHistoryToken(token);
 					}
 					else{
-//						//view.setReviewable(false);
-//						init(Mode.CREATE, null); //To reset display for no parent
-//						configureForTopicCreation(parent);
-						//Window.alert("perorm search");
 						performSearch(post.getTitle());
 					}
 				}
@@ -197,18 +190,18 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 			}
 		});
     	
-    	suggestSearchPhraseElement.addKeyUpHandler(new KeyUpHandler() {
-			@Override
-			public void onKeyUp(KeyUpEvent event) {
-				if(event.getNativeKeyCode() == KeyCodes.KEY_ENTER){
-					ignoreAutoComplete = true;
-					//Window.alert(suggestSearchPhraseElement.getText());
-					
-					performSearch(suggestSearchPhraseElement.getText());
-				}
-				
-			}
-		});
+//    	suggestSearchPhraseElement.addKeyUpHandler(new KeyUpHandler() {
+//			@Override
+//			public void onKeyUp(KeyUpEvent event) {
+//				if(event.getNativeKeyCode() == KeyCodes.KEY_ENTER){
+//					ignoreAutoComplete = true;
+//					//Window.alert(suggestSearchPhraseElement.getText());
+//					
+//					performSearch(suggestSearchPhraseElement.getText());
+//				}
+//				
+//			}
+//		});
 	}
 
 	@Override
@@ -328,6 +321,7 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 		
 		setupPopups();
 		
+		suggestSearchPhraseElement.setText("");
 		suggestSearchPhraseElement.setVisible(suggest);
 		searchPhraseElement.setVisible(!suggest);
 		

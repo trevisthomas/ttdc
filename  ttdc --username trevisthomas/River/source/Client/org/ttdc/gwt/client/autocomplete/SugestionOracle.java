@@ -43,6 +43,7 @@ public class SugestionOracle extends SuggestOracle implements SuggestionListener
     	injector.getService().execute(command, new AutocompleteCallback(this, oracleRequest, oracleCallback));
 	}
 
+	@Override
 	public void requestSuggestions(SuggestOracle.Request oracleRequest, SuggestOracle.Callback oracleCallback) {
     	TagSuggestionCommand command = new TagSuggestionCommand(commandMode, oracleRequest);
     	command.setExcludeTagIdList(excludeTagIdList);
