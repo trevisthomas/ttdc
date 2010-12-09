@@ -54,10 +54,13 @@ public class TagSuggestionCommandExecutor extends CommandExecutor<TagSuggestionC
 			switch(command.getMode()){
 				case TOPIC_POSTS:
 					postBased(command, response);
-				break;
+					break;
+				case SEARCH_POSTS:
+					postBasedSearch(command, response);
+					break;
 				default:
 					tagBased(command, response);	
-				break;
+					break;
 			}
 
 		} catch (Exception e) {
@@ -67,6 +70,54 @@ public class TagSuggestionCommandExecutor extends CommandExecutor<TagSuggestionC
 		}
 
 		return new TagSuggestionCommandResult(response);
+	}
+
+	private void postBasedSearch(TagSuggestionCommand command, Response response) {
+		SuggestOracle.Request request;
+		request = command.getRequest();
+		beginSession();
+		
+		PostSearchDao dao = new PostSearchDao();
+		
+		dao.setSearchByTitle(true);
+		dao.setPostSearchType(PostSearchType.TOPICS);
+		dao.setCurrentPage(1);
+		dao.setPageSize(request.getLimit());
+		dao.setPhrase(request.getQuery());
+		dao.setSortBy(SearchSortBy.POPULARITY);
+		dao.setSortDirection(SortDirection.DESC);
+		dao.setFilterFlags(ExecutorHelpers.createFlagFilterListForPerson(getPerson()));
+		
+		PaginatedList<Post> results = dao.search();
+		List<SuggestionObject> suggestions = new ArrayList<SuggestionObject>();
+		
+		if(StringUtils.isNotEmpty(request.getQuery()))
+			suggestions.add(createSugestionForSearch(request.getQuery()));
+		
+		for(Post post : results.getList() ){
+			GPost root = new GPost();
+			root.setMetaMask(post.getRoot().getMetaMask());
+			root.setPublishYear(post.getRoot().getPublishYear());
+			GPost gp = new GPost();
+			gp.setRoot(root);
+			addFakeTitleTag(post.getTitle(), gp);
+			gp.setPostId(post.getPostId());
+			String highlightedValue = highlightRequestedValue(request.getQuery(), post.getTitle());
+
+			String movieYear = "";
+			if(root.isMovie()){
+				movieYear = " - "+root.getPublishYear();
+			}
+			
+			if(post.getMass() > 1)
+				suggestions.add(new SuggestionObject(gp, highlightedValue + movieYear+ " (" + post.getMass()+")"));
+			else
+				suggestions.add(new SuggestionObject(gp, highlightedValue + movieYear));
+		}
+		response.setSuggestions(suggestions);
+		
+		commit();
+		
 	}
 
 	private void postBased(TagSuggestionCommand command, Response response) {
@@ -195,6 +246,13 @@ public class TagSuggestionCommandExecutor extends CommandExecutor<TagSuggestionC
 		addFakeTitleTag(query, post);
 		post.setPostId(" ");
 		return new SuggestionObject(post, "<b>"+query+" (Create New)</b>");
+	}
+	
+	private SuggestionObject createSugestionForSearch(String query){
+		GPost post = new GPost();
+		addFakeTitleTag(query, post);
+		post.setPostId(" ");
+		return new SuggestionObject(post, "<b>"+query+"(Search)</b>");
 	}
 	
 	private SuggestionObject createDynamicSugestion(String query, Tag tag){

@@ -376,17 +376,23 @@ public final class PostSearchDao extends FilteredPostPaginatedDaoBase{
 	private org.apache.lucene.search.Query createLuceneQuery() {
 		try{
 			
-			log.debug("User query: "+getPhrase());
+			log.debug("User query: \""+getPhrase()+"\"");
 			List<PhraseQuery> phraseQueries = new ArrayList<PhraseQuery>();
 			
 			String phrase = getPhrase().toLowerCase().trim();
 			
 			if(!phrase.isEmpty()){
-				phraseQueries.add(buildPhraseQuery(phrase, "body", 8, 1));
-				phraseQueries.add(buildPhraseQuery(phrase, "title", 4, 4));
-				phraseQueries.add(buildPhraseQuery(phrase, "creator", 0, 8));
-				phraseQueries.add(buildPhraseQuery(phrase, "topic", 0, 1));
-				
+				if(searchByTitle){
+					phraseQueries.add(buildPhraseQuery(phrase, "title", 4, 4));
+				}
+				else{
+					phraseQueries.add(buildPhraseQuery(phrase, "body", 8, 1));
+					phraseQueries.add(buildPhraseQuery(phrase, "title", 4, 4));
+					phraseQueries.add(buildPhraseQuery(phrase, "creator", 0, 8));
+					phraseQueries.add(buildPhraseQuery(phrase, "topic", 0, 1));
+				}
+			}
+			if(phraseQueries.size() > 0){
 				StringBuilder sb = new StringBuilder();
 				sb.append("(");
 				for(PhraseQuery pq : phraseQueries){

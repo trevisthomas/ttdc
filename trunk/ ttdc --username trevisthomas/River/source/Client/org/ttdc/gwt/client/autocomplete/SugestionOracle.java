@@ -12,6 +12,7 @@ import org.ttdc.gwt.shared.commands.results.TagSuggestionCommandResult;
 import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.SuggestOracle;
 import com.google.inject.Inject;
@@ -71,6 +72,11 @@ public class SugestionOracle extends SuggestOracle implements SuggestionListener
     	return suggestBox;
 	}
     
+    public SuggestBox createSuggestBoxForPostSearch(){
+    	setCommandMode(TagSuggestionCommandMode.SEARCH_POSTS);
+    	suggestBox = new MySuggestBox(this, false);
+    	return suggestBox;
+    }
     
     public SuggestBox createSuggestBoxForSearch(List<String> currentTagIdList){
     	setCommandMode(TagSuggestionCommandMode.SEARCH);
@@ -120,6 +126,10 @@ public class SugestionOracle extends SuggestOracle implements SuggestionListener
 			super(suggestOracle);
 			setAutoSelectEnabled(true);
 		}
+		public MySuggestBox(SuggestOracle suggestOracle, boolean autoSelect){
+			super(suggestOracle);
+			setAutoSelectEnabled(autoSelect);
+		}
 	}
 	
 	
@@ -151,7 +161,7 @@ public class SugestionOracle extends SuggestOracle implements SuggestionListener
         				}
 		        		tagSuggestion.addSuggestionListener(tagSuggestionOracle);
 		        	}
-		        	oracleCallback.onSuggestionsReady(oracleRequest,result.getResponse());
+        			oracleCallback.onSuggestionsReady(oracleRequest,result.getResponse());
         		}
         		else{
         			//Suggestions came back null... server probably couldn't parse the request
