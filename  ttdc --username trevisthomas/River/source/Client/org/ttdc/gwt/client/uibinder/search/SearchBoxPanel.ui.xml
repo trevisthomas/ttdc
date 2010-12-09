@@ -17,6 +17,8 @@
 				 			</td>
 				 			<td>
 				 				<t:DefaultMessageTextBox ui:field="searchPhraseElement"/>	
+				 				<g:SuggestBox ui:field="suggestSearchPhraseElement"/>
+				 				
 				 			</td>
 				 			<td>
 				 				<g:FocusPanel ui:field="goElement"/>	

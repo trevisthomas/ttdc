@@ -9,6 +9,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.ttdc.gwt.client.Injector;
+import org.ttdc.gwt.client.autocomplete.SugestionOracle;
+import org.ttdc.gwt.client.autocomplete.SuggestionObject;
 import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.beans.GTag;
@@ -25,6 +27,7 @@ import org.ttdc.gwt.client.presenters.util.ClickableIconPanel;
 import org.ttdc.gwt.client.services.BatchCommandTool;
 import org.ttdc.gwt.client.services.RpcServiceAsync;
 import org.ttdc.gwt.client.uibinder.comment.CommentEditorPanel;
+import org.ttdc.gwt.client.uibinder.comment.CommentEditorPanel.Mode;
 import org.ttdc.gwt.client.uibinder.post.NewMoviePanel;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
 import org.ttdc.gwt.shared.commands.PersonCommand;
@@ -40,16 +43,27 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.TableElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.KeyboardListener;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
 import com.google.inject.Inject;
 
 
@@ -61,6 +75,7 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
     private Injector injector;
     
     @UiField(provided = true) FocusPanel refineSearchElement = new ClickableIconPanel("tt-graphic-button-normal","tt-graphic-button-down");
+    //@UiField(provided = true) DefaultMessageTextBox searchPhraseElement = new DefaultMessageTextBox("initializing...");
     @UiField(provided = true) DefaultMessageTextBox searchPhraseElement = new DefaultMessageTextBox("initializing...");
     @UiField(provided = true) FocusPanel goElement = new ClickableIconPanel("tt-graphic-button-normal","tt-graphic-button-down");
     @UiField(provided = true) FocusPanel clearCriteriaElement = new ClickableIconPanel("tt-graphic-button-normal","tt-graphic-button-down");
@@ -70,6 +85,12 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 	@UiField Anchor movieElement;    
 	@UiField Anchor markReadElement;
     @UiField TableElement parentElement; 
+    
+    //private DefaultMessageTextBox standardSearchBox = new DefaultMessageTextBox("initializing...");
+    
+    @UiField (provided=true) SuggestBox suggestSearchPhraseElement;
+    
+	private SugestionOracle suggestionOracle;
     
     private String rootId;
 	private String threadId;
@@ -86,6 +107,10 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 	
 	private SearchDetailListenerSmartCollection searchDetailListenerCollection;
     private final static String DEFAULT_SEARCH_MSG = "Enter phrase to perform search";
+    
+    boolean ignoreAutoComplete = false;
+    boolean suggest = true;
+    
     @Inject
     public SearchBoxPanel(Injector injector) { 
     	this.injector = injector;
@@ -93,6 +118,9 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
     	searchDetailListenerCollection = new SearchDetailListenerSmartCollection();
     	
     	refineSearchPanel = injector.createRefineSearchPanel();
+    	
+    	suggestionOracle = injector.getTagSugestionOracle();
+    	suggestSearchPhraseElement = suggestionOracle.createSuggestBoxForPostSearch();
     	
     	initWidget(binder.createAndBindUi(this));
     	searchPhraseElement.setStyleName("tt-textbox-search");
@@ -128,9 +156,62 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
     	if(ConnectionId.isAnonymous()){
     		markReadElement.setVisible(false);
     	}
+    	setupSuggestionHandler();
 	}
     
-    @Override
+    
+    
+    private void setupSuggestionHandler() {
+    	ignoreAutoComplete = false;
+    	suggestSearchPhraseElement.addSelectionHandler(new SelectionHandler<Suggestion>() {
+			@Override
+			public void onSelection(SelectionEvent<Suggestion> event) {
+				if(ignoreAutoComplete)
+					return;
+				SuggestionObject suggestion = suggestionOracle.getCurrentSuggestion();
+				if(suggestion != null){
+					GPost post = suggestion.getPost();
+					if(!post.getPostId().trim().isEmpty()){
+//						PostCrudCommand cmd = new PostCrudCommand();
+//						cmd.setPostId(parent.getPostId());
+//						injector.getService().execute(cmd, callbackParentPostSelected());
+						//Window.alert("topic selected");
+						
+						HistoryToken token = new HistoryToken();
+						token.addParameter(HistoryConstants.VIEW, HistoryConstants.VIEW_TOPIC);
+						token.addParameter(HistoryConstants.POST_ID_KEY, post.getPostId());
+						
+						EventBus.fireHistoryToken(token);
+					}
+					else{
+//						//view.setReviewable(false);
+//						init(Mode.CREATE, null); //To reset display for no parent
+//						configureForTopicCreation(parent);
+						//Window.alert("perorm search");
+						performSearch(post.getTitle());
+					}
+				}
+				else{
+					throw new RuntimeException("Suggestion came back null. Bad juju, this shouldnt happen.");
+				}
+			}
+		});
+    	
+    	suggestSearchPhraseElement.addKeyUpHandler(new KeyUpHandler() {
+			@Override
+			public void onKeyUp(KeyUpEvent event) {
+				if(event.getNativeKeyCode() == KeyCodes.KEY_ENTER){
+					ignoreAutoComplete = true;
+					//Window.alert(suggestSearchPhraseElement.getText());
+					
+					performSearch(suggestSearchPhraseElement.getText());
+				}
+				
+			}
+		});
+	}
+
+	@Override
     public Widget getWidget() {
     	return this;
     }
@@ -159,7 +240,7 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 
 	@Override
 	public void onEnterKeyPressed() {
-		performSearch();
+		performSearch(searchPhraseElement.getActiveText());
 	}
     
     
@@ -189,6 +270,11 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 	}
 	
 	public void init(HistoryToken token){
+		
+		
+		if(token.hasParameter(HistoryConstants.SEARCH_START_DATE)){
+			suggest = false;
+		}
 		refineSearchPanel.init(token);
 		searchDetailListenerCollection.setDateRange(refineSearchPanel.getDateRange());
 		
@@ -214,6 +300,7 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 		}
 		
 		if(postId != null){
+			suggest = false;
 			postCmd.setPostId(postId);
 			batcher.add(postCmd,buildPostCallback());
 		}
@@ -224,6 +311,7 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 		tagIdList.addAll(token.getParameterList(SEARCH_TAG_ID_KEY));
 		
 		if(tagIdList.size() > 0){
+			suggest = false;
 			SearchTagsCommand command = new SearchTagsCommand(tagIdList);
 			batcher.add(command,buildTagListCallback());
 		}
@@ -238,8 +326,10 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 		
 		injector.getService().execute(batcher.getActionList(), batcher);
 		
-		
 		setupPopups();
+		
+		suggestSearchPhraseElement.setVisible(suggest);
+		searchPhraseElement.setVisible(!suggest);
 		
 	}
 	private CommentEditorPanel commentEditorPanel;
@@ -444,8 +534,8 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 	}
 	
 	
-	private void performSearch(){
-		String phrase = searchPhraseElement.getActiveText();
+	private void performSearch(final String phrase){
+		
 		HistoryToken token = new HistoryToken();
 		
 		String creatorId = refineSearchPanel.getSelectedCreatorId();
@@ -483,7 +573,7 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 		
 	}
 
-	
+
 	public String getPostId() {
 		return postId;
 	}
