@@ -75,6 +75,9 @@ public class TagSuggestionCommandExecutor extends CommandExecutor<TagSuggestionC
 	private void postBasedSearch(TagSuggestionCommand command, Response response) {
 		SuggestOracle.Request request;
 		request = command.getRequest();
+		if(StringUtils.isEmpty(request.getQuery())){
+			return;
+		}
 		beginSession();
 		
 		PostSearchDao dao = new PostSearchDao();

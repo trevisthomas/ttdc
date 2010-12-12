@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.ttdc.gwt.client.Injector;
+import org.ttdc.gwt.client.autocomplete.MySuggestBox;
 import org.ttdc.gwt.client.autocomplete.SugestionOracle;
 import org.ttdc.gwt.client.autocomplete.SuggestionObject;
 import org.ttdc.gwt.client.beans.GPerson;
@@ -21,13 +22,11 @@ import org.ttdc.gwt.client.messaging.error.MessageEventListener;
 import org.ttdc.gwt.client.messaging.error.MessageEventType;
 import org.ttdc.gwt.client.messaging.history.HistoryConstants;
 import org.ttdc.gwt.client.messaging.history.HistoryToken;
-import org.ttdc.gwt.client.presenters.comments.NewCommentPresenter;
 import org.ttdc.gwt.client.presenters.search.DefaultMessageTextBox;
 import org.ttdc.gwt.client.presenters.util.ClickableIconPanel;
 import org.ttdc.gwt.client.services.BatchCommandTool;
 import org.ttdc.gwt.client.services.RpcServiceAsync;
 import org.ttdc.gwt.client.uibinder.comment.CommentEditorPanel;
-import org.ttdc.gwt.client.uibinder.comment.CommentEditorPanel.Mode;
 import org.ttdc.gwt.client.uibinder.post.NewMoviePanel;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
 import org.ttdc.gwt.shared.commands.PersonCommand;
@@ -44,8 +43,6 @@ import com.google.gwt.dom.client.TableElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyPressEvent;
-import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
@@ -53,17 +50,15 @@ import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.KeyboardListener;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SuggestBox;
-import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
 
@@ -89,6 +84,7 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
     //private DefaultMessageTextBox standardSearchBox = new DefaultMessageTextBox("initializing...");
     
     @UiField (provided=true) SuggestBox suggestSearchPhraseElement;
+    private MySuggestBox suggestSearchBox;
     
 	private SugestionOracle suggestionOracle;
     
@@ -120,20 +116,24 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
     	refineSearchPanel = injector.createRefineSearchPanel();
     	
     	suggestionOracle = injector.getTagSugestionOracle();
-    	suggestSearchPhraseElement = suggestionOracle.createSuggestBoxForPostSearch();
-    	suggestSearchPhraseElement.setStyleName("tt-textbox-search");
+    	suggestSearchBox = (MySuggestBox)suggestionOracle.createSuggestBoxForPostSearch();
+    	suggestSearchPhraseElement = suggestSearchBox;
+    	
+    	suggestSearchBox.setStyleName("tt-textbox-search");
+    	suggestSearchBox.setDefaultMessage(DEFAULT_SEARCH_MSG);
     	
     	
     	initWidget(binder.createAndBindUi(this));
     	searchPhraseElement.setStyleName("tt-textbox-search");
     	searchPhraseElement.setDefaultMessage(DEFAULT_SEARCH_MSG);
     	searchPhraseElement.addEnterKeyPressedListener(this);
+    	
+    	
 		
 		EventBus.getInstance().addListener(this);
 		refineSearchPanel.setSearchDetailListenerCollection(searchDetailListenerCollection);
 		
 		refineSearchPanel.setStyleName("tt-search-panel-adv");
-		
 		
 		controlsPopup.setStyleName("tt-search-popup");
 		
@@ -155,7 +155,7 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
     	movieElement.addStyleName("tt-cursor-pointer");
     	markReadElement.addStyleName("tt-cursor-pointer");
     	
-    	suggestSearchPhraseElement.setVisible(false);
+    	suggestSearchBox.setVisible(false);
 		
     	if(ConnectionId.isAnonymous()){
     		markReadElement.setVisible(false);
@@ -167,7 +167,7 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
     
     private void setupSuggestionHandler() {
     	ignoreAutoComplete = false;
-    	suggestSearchPhraseElement.addSelectionHandler(new SelectionHandler<Suggestion>() {
+    	suggestSearchBox.addSelectionHandler(new SelectionHandler<Suggestion>() {
 			@Override
 			public void onSelection(SelectionEvent<Suggestion> event) {
 				if(ignoreAutoComplete)
@@ -197,11 +197,9 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 			public void onKeyUp(KeyUpEvent event) {
 				if(event.getNativeKeyCode() == KeyCodes.KEY_ENTER){
 					ignoreAutoComplete = true;
-					//Window.alert(suggestSearchPhraseElement.getText());
 					suggestionOracle.killdashnine();
-					performSearch(suggestSearchPhraseElement.getText());
+					performSearch(suggestSearchBox.getActiveText());
 				}
-				
 			}
 		});
 	}
@@ -230,6 +228,7 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
     	tagTitles = null;
     	tagIdList = new ArrayList<String>();
     	searchPhraseElement.setDefaultMessage(DEFAULT_SEARCH_MSG);
+    	suggestSearchBox.setDefaultMessage(DEFAULT_SEARCH_MSG);
     	suggest = true;
     	init(new HistoryToken());		
 	}
@@ -322,8 +321,9 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 		
 		setupPopups();
 		
-		suggestSearchPhraseElement.setText(phrase);
-		suggestSearchPhraseElement.setVisible(suggest);
+		
+		suggestSearchBox.setActiveText(phrase);
+		suggestSearchBox.setVisible(suggest);
 		searchPhraseElement.setVisible(!suggest);
 		
 	}
