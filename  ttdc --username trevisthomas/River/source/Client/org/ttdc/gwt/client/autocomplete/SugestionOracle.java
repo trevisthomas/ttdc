@@ -3,21 +3,32 @@ package org.ttdc.gwt.client.autocomplete;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.ttdc.gwt.client.Injector;
+import org.ttdc.gwt.client.presenters.search.DefaultMessageTextBox;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
 import org.ttdc.gwt.shared.commands.TagSuggestionCommand;
 import org.ttdc.gwt.shared.commands.TagSuggestionCommandMode;
 import org.ttdc.gwt.shared.commands.results.TagSuggestionCommandResult;
+import org.ttdc.gwt.shared.util.StringUtil;
 
+import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.BlurHandler;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyDownEvent;
+import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.FocusListener;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.SuggestOracle;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
 public class SugestionOracle extends SuggestOracle implements SuggestionListener {
@@ -60,6 +71,9 @@ public class SugestionOracle extends SuggestOracle implements SuggestionListener
     }
     
 	public void killdashnine(){
+		if(suggestBox != null){
+			suggestBox.hideSuggestionList();
+		}
 		if(tagCommandTimer != null){
     		tagCommandTimer.cancel();
     	}
@@ -129,26 +143,6 @@ public class SugestionOracle extends SuggestOracle implements SuggestionListener
 //		else
 //			return currentTagSuggestion;
 		return currentTagSuggestion;
-	}
-	
-	private class MySuggestBox extends SuggestBox{
-		public MySuggestBox(SuggestOracle suggestOracle) {
-			this(suggestOracle, true);
-		}
-		public MySuggestBox(SuggestOracle suggestOracle, boolean autoSelect){
-			super(suggestOracle);
-			setAutoSelectEnabled(autoSelect);
-			
-			addKeyUpHandler(new KeyUpHandler() {
-				@Override
-				public void onKeyUp(KeyUpEvent event) {
-					if(event.getNativeKeyCode() == KeyCodes.KEY_ESCAPE){
-						hideSuggestionList();
-					}
-					
-				}
-			});
-		}
 	}
 	
 	
