@@ -91,8 +91,10 @@ public class TagSuggestionCommandExecutor extends CommandExecutor<TagSuggestionC
 		PaginatedList<Post> results = dao.search();
 		List<SuggestionObject> suggestions = new ArrayList<SuggestionObject>();
 		
-		if(StringUtils.isNotEmpty(request.getQuery()))
-			suggestions.add(createSugestionForSearch(request.getQuery()));
+//		if(results.getList().size() > 0){
+//			if(StringUtils.isNotEmpty(request.getQuery()))
+//				suggestions.add(createSugestionForSearch(request.getQuery()));
+//		}
 		
 		for(Post post : results.getList() ){
 			GPost root = new GPost();
@@ -252,7 +254,7 @@ public class TagSuggestionCommandExecutor extends CommandExecutor<TagSuggestionC
 		GPost post = new GPost();
 		addFakeTitleTag(query, post);
 		post.setPostId(" ");
-		return new SuggestionObject(post, "<b>"+query+"(Search)</b>");
+		return new SuggestionObject(post, "<b> Search for: "+query+"</b>");
 	}
 	
 	private SuggestionObject createDynamicSugestion(String query, Tag tag){
