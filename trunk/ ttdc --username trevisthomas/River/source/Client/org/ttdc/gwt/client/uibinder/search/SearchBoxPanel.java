@@ -155,6 +155,8 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
     	movieElement.addStyleName("tt-cursor-pointer");
     	markReadElement.addStyleName("tt-cursor-pointer");
     	
+    	suggestSearchPhraseElement.setVisible(false);
+		
     	if(ConnectionId.isAnonymous()){
     		markReadElement.setVisible(false);
     	}
@@ -190,18 +192,18 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 			}
 		});
     	
-//    	suggestSearchPhraseElement.addKeyUpHandler(new KeyUpHandler() {
-//			@Override
-//			public void onKeyUp(KeyUpEvent event) {
-//				if(event.getNativeKeyCode() == KeyCodes.KEY_ENTER){
-//					ignoreAutoComplete = true;
-//					//Window.alert(suggestSearchPhraseElement.getText());
-//					
-//					performSearch(suggestSearchPhraseElement.getText());
-//				}
-//				
-//			}
-//		});
+    	suggestSearchPhraseElement.addKeyUpHandler(new KeyUpHandler() {
+			@Override
+			public void onKeyUp(KeyUpEvent event) {
+				if(event.getNativeKeyCode() == KeyCodes.KEY_ENTER){
+					ignoreAutoComplete = true;
+					//Window.alert(suggestSearchPhraseElement.getText());
+					suggestionOracle.killdashnine();
+					performSearch(suggestSearchPhraseElement.getText());
+				}
+				
+			}
+		});
 	}
 
 	@Override
@@ -228,6 +230,7 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
     	tagTitles = null;
     	tagIdList = new ArrayList<String>();
     	searchPhraseElement.setDefaultMessage(DEFAULT_SEARCH_MSG);
+    	suggest = true;
     	init(new HistoryToken());		
 	}
 
@@ -263,9 +266,7 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 	}
 	
 	public void init(HistoryToken token){
-		
-		
-		if(token.hasParameter(HistoryConstants.SEARCH_START_DATE)){
+		if(token.hasParameter(HistoryConstants.SEARCH_START_DATE) || token.hasParameter(HistoryConstants.SEARCH_CREATOR_ID_KEY)){
 			suggest = false;
 		}
 		refineSearchPanel.init(token);
@@ -321,7 +322,7 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 		
 		setupPopups();
 		
-		suggestSearchPhraseElement.setText("");
+		suggestSearchPhraseElement.setText(phrase);
 		suggestSearchPhraseElement.setVisible(suggest);
 		searchPhraseElement.setVisible(!suggest);
 		
