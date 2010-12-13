@@ -6,8 +6,9 @@
 	<g:HTMLPanel>
 		<table>
 			<tr>
-				<td class="tt-text-right tt-text-normal">
+				<td class="tt-text-normal tt-fill tt-paginated-post-header">
 					sort by: <g:Anchor ui:field="sortByReplyDateElement">reply</g:Anchor> | <g:Anchor ui:field="sortByThreadDateElement">creation</g:Anchor>
+					<g:Widget ui:field="paginationNanoElement"/>
 				</td>	
 			</tr>
 			<tr>

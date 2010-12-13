@@ -132,6 +132,7 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 
 .tt-pageFooter hr{ height: 1px;}
 
+.tt-post-container,
 .tt-plain-post-close,
 .tt-color-calendar-nav,
 .tt-home-tabContainer,
@@ -146,7 +147,6 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 
 
 .tt-plain-post-close,
-.tt-post-container,
 .tt-post-fetch-more,
 .tt-movie-list-table,
 .tt-user-list-table,
