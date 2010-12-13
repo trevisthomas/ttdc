@@ -106,9 +106,10 @@ public class TopicCommandExecutor  extends CommandExecutor<TopicCommandResult>{
 		
 		PaginatedList<Post> results;
 		if(command.isSortByDate())
-			results = dao.loadByReplyDate();
-		else
 			results = dao.loadByCreateDate();
+		else
+			results = dao.loadByReplyDate();
+			
 			
 			//results = dao.loadThreadSummmary();
 		

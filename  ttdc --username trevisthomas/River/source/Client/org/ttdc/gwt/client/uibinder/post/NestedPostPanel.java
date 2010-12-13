@@ -6,14 +6,16 @@ import org.ttdc.gwt.client.messaging.history.HistoryConstants;
 import org.ttdc.gwt.client.messaging.history.HistoryToken;
 import org.ttdc.gwt.client.presenters.post.Mode;
 import org.ttdc.gwt.client.presenters.post.PostCollectionPresenter;
-import org.ttdc.gwt.client.presenters.shared.PaginationPresenter;
 import org.ttdc.gwt.client.presenters.topic.TopicHelpers;
 import org.ttdc.gwt.client.services.BatchCommandTool;
 import org.ttdc.gwt.client.services.RpcServiceAsync;
+import org.ttdc.gwt.client.uibinder.shared.PaginationNanoPanel;
+import org.ttdc.gwt.client.uibinder.shared.PaginationPanel;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
 import org.ttdc.gwt.shared.commands.TopicCommand;
 import org.ttdc.gwt.shared.commands.TopicCommandType;
 import org.ttdc.gwt.shared.commands.results.TopicCommandResult;
+import org.ttdc.gwt.shared.util.PaginatedList;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -37,13 +39,24 @@ public class NestedPostPanel extends Composite{
 	@UiField Anchor sortByThreadDateElement;
 	@UiField SimplePanel postContainerElement;
 	@UiField SimplePanel paginationElement;
+	@UiField(provided = true) Widget paginationNanoElement;
+	private final PaginationNanoPanel paginationNanoPanel;
+	
+	private PaginationPanel paginationPanel;
+	
 	
 	private HistoryToken lastToken = null;
 	private GPost rootPost;
 	
 	@Inject
 	public NestedPostPanel(Injector injector) {
+		//paginationElement.add(paginationPanel);
+		
 		this.injector = injector;
+		
+		paginationNanoPanel = injector.createPaginationNanoPanel();
+    	paginationNanoElement = paginationNanoPanel.getWidget();
+    	
 		initWidget(binder.createAndBindUi(this));
 		
 		sortByReplyDateElement.addStyleName("tt-cursor-pointer");
@@ -88,10 +101,10 @@ public class NestedPostPanel extends Composite{
 		starterCmd.setPostId(postId);
 		starterCmd.setPageNumber(pageNumber);
 		if(token.isParameterEq(HistoryConstants.SORT_KEY, HistoryConstants.SORT_BY_CREATE_DATE)){
-			starterCmd.setSortByDate(false);
+			starterCmd.setSortByDate(true);
 		}
 		else{
-			starterCmd.setSortByDate(true);
+			starterCmd.setSortByDate(false);
 		}
 		starterCmd.setType(TopicCommandType.NESTED_THREAD_SUMMARY);
 		CommandResultCallback<TopicCommandResult> starterListCallback = buildNestedListCallback(postId);
@@ -118,11 +131,19 @@ public class NestedPostPanel extends Composite{
 				
 				postContainerElement.add(postCollectionPresenter.getWidget());
 				
-				PaginationPresenter paginationPresenter = injector.getPaginationPresenter();
-//				HistoryToken token = TopicHelpers.buildNestedPageToken(postId);
-//				token.addParameter(HistoryConstants.SORT_KEY, lastToken.)
-				paginationPresenter.initialize(lastToken, result.getResults());
-				paginationElement.add(paginationPresenter.getWidget());
+				paginationPanel = injector.createPaginationPanel();
+				paginationPanel.initialize(lastToken, result.getResults());
+				paginationElement.add(paginationPanel.getWidget());
+				paginationNanoPanel.init(paginationPanel, result.getResults());
+				
+				
+//				showPagination(result.getResults(), lastToken);
+				
+//				PaginationPresenter paginationPresenter = injector.getPaginationPresenter();
+////				HistoryToken token = TopicHelpers.buildNestedPageToken(postId);
+////				token.addParameter(HistoryConstants.SORT_KEY, lastToken.)
+//				paginationPresenter.initialize(lastToken, result.getResults());
+//				paginationElement.add(paginationPresenter.getWidget());
 				
 				
 				if(result.getResults().getList().size() > 0){
@@ -140,6 +161,13 @@ public class NestedPostPanel extends Composite{
 			}
 		};
 		return replyListCallback;
+	}
+	
+	private void showPagination(PaginatedList<GPost> results, final HistoryToken topicToken) {
+		if(results.calculateNumberOfPages() > 1){
+			paginationPanel.initialize(topicToken, results);
+			paginationNanoPanel.init(paginationPanel, results);
+		}
 	}
 
 }

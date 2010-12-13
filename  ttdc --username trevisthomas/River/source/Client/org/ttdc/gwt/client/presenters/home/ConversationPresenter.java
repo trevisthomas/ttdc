@@ -81,4 +81,9 @@ public class ConversationPresenter extends BasePresenter<ConversationPresenter.V
 		postCollection.addPostsToPostList(posts, Mode.NESTED_SUMMARY);
 	}
 	
+	@Override
+	public void loadingMoreResults() {
+		// TODO Auto-generated method stub
+		
+	}
 }

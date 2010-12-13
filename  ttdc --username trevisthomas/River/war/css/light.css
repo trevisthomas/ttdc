@@ -10,18 +10,20 @@ body{ color: #222; background-color: #eee;}
 
 .tt-message-textbox-disabled{ color: #ddd;}
 
-/*	
-.tt-post-panel-head	a:link {text-decoration: none; color: #222;}
-.tt-post-panel-head a:visited {text-decoration: none; color: #222;}
-.tt-post-panel-head a:hover {text-decoration: underline; color: black;}
-.tt-post-panel-head a:active {color: #F5F23B;}
-
-.tt-post-panel-content a:link {text-decoration: none; color: #222;}
-.tt-post-panel-content a:visited {text-decoration: none; color: #222;}
-.tt-post-panel-content a:hover {text-decoration: underline; color: black;}
-.tt-post-panel-content a:active {color: #F5F23B;}
-*/
-
+.tt-paginated-post-header a,
+.tt-forum-post-title a,
+.tt-reviewSummary a,
+.tt-forum-names a,
+.tt-child-post-header a,
+.tt-post-panel-content a,
+.tt-post-panel-head	a,
+.tt-active-post-links-hover a,
+.tt-more-comments a,
+.tt-traffic-login a,
+.tt-post-summary a,
+.tt-post-expanded-content a{text-decoration: none; color: #113aa4;}
+	
+.tt-paginated-post-header a:link,
 .tt-forum-post-title a:link,
 .tt-reviewSummary a:link,
 .tt-forum-names a:link,
@@ -32,20 +34,22 @@ body{ color: #222; background-color: #eee;}
 .tt-more-comments a:link,
 .tt-traffic-login a:link,
 .tt-post-summary a:link,
-.tt-post-expanded-content a:link  {text-decoration: none; color: #113aa4;}
+.tt-post-expanded-content a:link {text-decoration: none; color: #113aa4;}
 
+.tt-paginated-post-header a:visited,
 .tt-forum-post-title a:visited,
 .tt-reviewSummary a:visited,
 .tt-forum-names a:visited,
 .tt-child-post-header a:visited,
-.tt-post-panel-content a:visited, 
+.tt-post-panel-content a:visited,
 .tt-post-panel-head	a:visited,
 .tt-active-post-links-hover a:visited,
 .tt-more-comments a:visited,
 .tt-traffic-login a:visited,
 .tt-post-summary a:visited,
-.tt-post-expanded-content a:visited  {text-decoration: none; color: #113aa4;}
+.tt-post-expanded-content a:visited {text-decoration: none; color: #113aa4;}
 
+.tt-paginated-post-header a:hover,
 .tt-forum-post-title a:hover,
 .tt-reviewSummary a:hover,
 .tt-forum-names a:hover,
@@ -58,6 +62,7 @@ body{ color: #222; background-color: #eee;}
 .tt-post-summary a:hover,
 .tt-post-expanded-content a:hover  {text-decoration: underline; color: blue;}
 
+.tt-paginated-post-header a:active,
 .tt-forum-post-title a:active,
 .tt-reviewSummary a:active,
 .tt-forum-names a:active,
@@ -70,10 +75,13 @@ body{ color: #222; background-color: #eee;}
 .tt-post-summary a:active,
 .tt-post-expanded-content a:active  {color: #F5F23B;}
 
+.tt-active-post-links a{text-decoration: none; color: #ECECEC;}
 .tt-active-post-links a:link{text-decoration: none; color: #ECECEC;}
 .tt-active-post-links a:visited{text-decoration: none; color: #ECECEC;}
 .tt-active-post-links a:hover{text-decoration: underline; color: #ECECEC;}
 .tt-active-post-links a:active{color: #ECECEC;}
+
+
 
 .tt-forum-names,
 .tt-plain-post-close,

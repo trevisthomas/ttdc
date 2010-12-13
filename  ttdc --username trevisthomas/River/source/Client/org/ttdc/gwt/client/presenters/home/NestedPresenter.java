@@ -24,6 +24,7 @@ public class NestedPresenter extends BasePresenter<NestedPresenter.View> impleme
 	}
 	
 	private PostCollectionPresenter postCollection;
+	private MoreLatestPresenter morePresenter;
 	//private static PaginatedListCommandResult<GPost> resultCache;
 	@Inject
 	public NestedPresenter(Injector injector){
@@ -70,8 +71,9 @@ public class NestedPresenter extends BasePresenter<NestedPresenter.View> impleme
 		setupMorePresenter(result);
 	}
 	
+	
 	private void setupMorePresenter(PaginatedListCommandResult<GPost> result) {
-		MoreLatestPresenter morePresenter = injector.getMoreLatestPresenter();
+		morePresenter = injector.getMoreLatestPresenter();
 		morePresenter.init(NestedPresenter.this, PostListType.LATEST_GROUPED, result.getResults());
 		view.postFooterPanel().clear();
 		view.postFooterPanel().add(morePresenter.getWidget());
@@ -80,5 +82,13 @@ public class NestedPresenter extends BasePresenter<NestedPresenter.View> impleme
 	@Override
 	public void onMorePosts(List<GPost> posts) {
 		postCollection.addPostsToPostList(posts, Mode.GROUPED);
+		view.postFooterPanel().clear();
+		view.postFooterPanel().add(morePresenter.getWidget());
+	}
+	
+	@Override
+	public void loadingMoreResults() {
+		view.postFooterPanel().clear();
+		view.postFooterPanel().add(injector.getWaitPresenter().getWidget());
 	}
 }

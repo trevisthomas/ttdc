@@ -85,4 +85,10 @@ public class ThreadPresenter extends BasePresenter<ThreadPresenter.View> impleme
 	public void onMorePosts(List<GPost> posts) {
 		postCollection.addPostsToPostList(posts, Mode.FLAT);
 	}
+	
+	@Override
+	public void loadingMoreResults() {
+		// TODO Auto-generated method stub
+		
+	}
 }

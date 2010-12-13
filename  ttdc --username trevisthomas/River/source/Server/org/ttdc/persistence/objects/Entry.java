@@ -323,7 +323,7 @@ import org.ttdc.gwt.shared.util.PostFlagBitmasks;
 			"SELECT post FROM Post post WHERE post.root.postId=:postId " +
 			"AND post.thread.postId = post.postId " +
 			"AND bitwise_and( post.metaMask, :filterMask ) = 0 "+
-			"ORDER BY post.threadReplyDate DESC"),		
+			"ORDER BY post.date DESC"),		
 			
 	@NamedQuery(name="ThreadDao.StartersCount", query="" +
 			"SELECT count(post.postId) FROM Post post WHERE post.root.postId=:postId " +

@@ -20,6 +20,7 @@ import com.google.inject.Inject;
 public class MoreLatestPresenter extends BasePresenter<MoreLatestPresenter.View>{
 	public interface MoreLatestObserver {
 		void onMorePosts(final List<GPost> posts);
+		void loadingMoreResults();
 	}
 	
 	public interface View extends BaseView{
@@ -50,6 +51,7 @@ public class MoreLatestPresenter extends BasePresenter<MoreLatestPresenter.View>
 				LatestPostsCommand cmd = new LatestPostsCommand();
 				cmd.setAction(MoreLatestPresenter.this.listType);
 				cmd.setPageNumber(pageNumber);
+				MoreLatestPresenter.this.observer.loadingMoreResults();
 				CommandResultCallback<PaginatedListCommandResult<GPost>> callback = buildCallback();
 				getService().execute(cmd, callback);
 			}

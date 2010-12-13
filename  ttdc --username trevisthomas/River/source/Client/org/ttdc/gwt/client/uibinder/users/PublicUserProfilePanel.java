@@ -18,6 +18,7 @@ import org.ttdc.gwt.client.presenters.users.MoreSearchPresenter;
 import org.ttdc.gwt.client.presenters.util.HtmlLabel;
 import org.ttdc.gwt.client.presenters.util.PresenterHelpers;
 import org.ttdc.gwt.client.uibinder.common.BasePageComposite;
+import org.ttdc.gwt.client.uibinder.shared.PaginationPanel;
 import org.ttdc.gwt.client.uibinder.shared.StandardPageHeaderPanel;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
 import org.ttdc.gwt.shared.commands.MovieListCommand;
@@ -349,10 +350,15 @@ public class PublicUserProfilePanel  extends BasePageComposite {
 //				moreTarget.clear();
 //				moreTarget.add(moreSearchPresenter.getWidget());
 				
-				PaginationPresenter paginationPresenter = injector.getPaginationPresenter();
-				paginationPresenter.initialize(token, result.getResults());
+//				PaginationPresenter paginationPresenter = injector.getPaginationPresenter();
+//				paginationPresenter.initialize(token, result.getResults());
+//				moreTarget.clear();
+//				moreTarget.add(paginationPresenter.getWidget());
+				
+				PaginationPanel paginationPanel = injector.createPaginationPanel();
+				paginationPanel.initialize(token, result.getResults());
 				moreTarget.clear();
-				moreTarget.add(paginationPresenter.getWidget());
+				moreTarget.add(paginationPanel);
 			}
 			else{
 				TextPresenter textPresenter = injector.getTextPresenter();

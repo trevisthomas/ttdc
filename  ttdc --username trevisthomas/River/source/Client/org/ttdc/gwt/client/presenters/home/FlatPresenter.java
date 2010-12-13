@@ -34,6 +34,7 @@ public class FlatPresenter extends BasePresenter<FlatPresenter.View> implements 
 	//private static PaginatedListCommandResult<GPost> resultCache = null;
 	private String forumId = null;
 	private HistoryToken token;
+	private MoreLatestPresenter morePresenter;
 	
 	@Inject
 	public FlatPresenter(Injector injector){
@@ -119,8 +120,9 @@ public class FlatPresenter extends BasePresenter<FlatPresenter.View> implements 
 		view.postFooterPanel().add(paginationPresenter.getWidget());
 	}
 
+	
 	private void setupMorePresenter(PaginatedListCommandResult<GPost> result) {
-		MoreLatestPresenter morePresenter = injector.getMoreLatestPresenter();
+		morePresenter = injector.getMoreLatestPresenter();
 		morePresenter.init(FlatPresenter.this, PostListType.LATEST_FLAT, result.getResults());
 		view.postFooterPanel().clear();
 		view.postFooterPanel().add(morePresenter.getWidget());
@@ -129,7 +131,14 @@ public class FlatPresenter extends BasePresenter<FlatPresenter.View> implements 
 	@Override
 	public void onMorePosts(List<GPost> posts) {
 		postCollection.addPostsToPostList(posts, Mode.FLAT);
+		view.postFooterPanel().clear();
+		view.postFooterPanel().add(morePresenter.getWidget());
 	}
 
+	@Override
+	public void loadingMoreResults() {
+		view.postFooterPanel().clear();
+		view.postFooterPanel().add(injector.getWaitPresenter().getWidget());
+	}
 
 }
