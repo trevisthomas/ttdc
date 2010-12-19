@@ -25,10 +25,10 @@ public class ClickableIconPanel extends FocusPanel{
 		addStyleName(icon);
 	}
 	
-	public ClickableIconPanel(String normalStyle, String downStyle){
+	public ClickableIconPanel(String defaultStyle, String normalStyle, String downStyle){
 		this.normalStyle = normalStyle;
 		this.downStyle = downStyle;
-		setStyleName("tt-graphic-button");
+		setStyleName(defaultStyle);
 		addStyleName(normalStyle);
 		
 		addMouseDownHandler(new MouseDownHandler() {
@@ -46,6 +46,9 @@ public class ClickableIconPanel extends FocusPanel{
 				addStyleName(ClickableIconPanel.this.normalStyle);
 			}
 		});
+	}
+	public ClickableIconPanel(String normalStyle, String downStyle){
+		this("tt-graphic-button", normalStyle, downStyle);
 	}
 	
 	

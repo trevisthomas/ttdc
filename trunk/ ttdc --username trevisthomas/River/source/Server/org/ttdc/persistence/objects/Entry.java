@@ -37,7 +37,7 @@ import org.ttdc.gwt.shared.util.PostFlagBitmasks;
 
 @NamedQueries({
 	@NamedQuery(name="entry.getAll", query="FROM Entry entry"),
-	@NamedQuery(name="entry.getByPostIds", query="FROM Entry entry WHERE entry.post.postId in (:postIds)"),
+	//@NamedQuery(name="entry.getByPostIds", query="FROM Entry entry WHERE entry.post.postId in (:postIds)"),
 	
 //	@NamedQuery(name="TagSearchDao.BrowseTagsCustomTypes", query="SELECT count(ass.tag.tagId) as count, ass.tag.tagId, ass.tag.type, ass.tag.value " +
 //			"FROM AssociationPostTag ass INNER JOIN ass.tag " +
@@ -364,9 +364,13 @@ import org.ttdc.gwt.shared.util.PostFlagBitmasks;
 			
 	// Latest Post		
 	@NamedQuery(name="LatestPostsDao.Nested", query="" +
-		"SELECT post FROM Post post WHERE post.threadReplyDate IS NOT NULL AND " +
+		"SELECT post FROM Post post " +
+		"INNER JOIN FETCH post.latestEntry " +
+		"INNER JOIN FETCH post.titleTag " +
+		"LEFT JOIN FETCH post.avgRatingTag " +
+		"WHERE post.threadReplyDate IS NOT NULL AND " +
 		"post.root.postId NOT IN (:threadIds)" +
-		"AND bitwise_and( post.metaMask, :filterMask ) = 0 "+
+		"AND bitwise_and( post.metaMask, :filterMask ) = 0 " +
 		"ORDER BY post.threadReplyDate DESC"),
 		
 	@NamedQuery(name="LatestPostsDao.NestedCount", query="" +
@@ -375,21 +379,39 @@ import org.ttdc.gwt.shared.util.PostFlagBitmasks;
 		"AND bitwise_and( post.metaMask, :filterMask ) = 0 "),	
 
 	@NamedQuery(name="LatestPostsDao.RepliesInThreads", query="" +
-		"SELECT post FROM Post post WHERE post.thread.postId IN(:postIds) " +
-		"AND postId <> post.thread.postId " +
+		"SELECT post FROM Post post " +
+		"INNER JOIN FETCH post.latestEntry " +
+		"INNER JOIN FETCH post.titleTag " +
+		"LEFT JOIN FETCH post.avgRatingTag " +
+		"WHERE post.thread.postId IN(:postIds) " +
+		"AND post.postId <> post.thread.postId " +
 		"AND bitwise_and( post.metaMask, :filterMask ) = 0 "+
 		"ORDER BY post.path"),	
 	
+//	@NamedQuery(name="LatestPostsDao.RepliesInThreadsByDate", query="" +
+//			"SELECT post FROM Post post WHERE post.thread.postId IN(:postIds) " +
+//			"AND postId <> post.thread.postId " +
+//			"AND bitwise_and( post.metaMask, :filterMask ) = 0 "+
+//			"ORDER BY post.date"),		
+
 	@NamedQuery(name="LatestPostsDao.RepliesInThreadsByDate", query="" +
-			"SELECT post FROM Post post WHERE post.thread.postId IN(:postIds) " +
-			"AND postId <> post.thread.postId " +
-			"AND bitwise_and( post.metaMask, :filterMask ) = 0 "+
+			"SELECT post FROM Post post " +
+			"INNER JOIN FETCH post.latestEntry " +
+			"INNER JOIN FETCH post.titleTag " +
+			"LEFT JOIN FETCH post.avgRatingTag " +
+			"WHERE post.thread.postId IN(:postIds) " +
+			"AND post.postId <> post.thread.postId " +
+			"AND bitwise_and( post.metaMask, :filterMask ) = 0 " +
 			"ORDER BY post.date"),		
 		
+			
 		
 
 	@NamedQuery(name="LatestPostsDao.Flat", query="" +
 		"SELECT post FROM Post post " +
+		"INNER JOIN FETCH post.latestEntry " +
+		"INNER JOIN FETCH post.titleTag " +
+		"LEFT JOIN FETCH post.avgRatingTag " +
 		"WHERE post.root.postId NOT IN (:threadIds) " +
 		"AND bitwise_and( post.metaMask, :filterMask ) = 0  " +
 		"AND post.parent is not null "+

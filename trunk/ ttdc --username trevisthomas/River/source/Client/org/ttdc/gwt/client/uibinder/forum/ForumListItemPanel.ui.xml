@@ -6,7 +6,7 @@
 	
 	<g:HTMLPanel>
 		<div>
-			<g:Anchor ui:field="forumTitleElement"/>
+			<span class="tt-forum-title"><g:Anchor ui:field="forumTitleElement"/></span>
 			<g:SimplePanel styleName="tt-forum-topics" ui:field="forumSummaryElement"></g:SimplePanel>	
 		</div>
 	</g:HTMLPanel>

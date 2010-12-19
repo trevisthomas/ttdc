@@ -1,7 +1,4 @@
 /* states and images */
-.ui-icon { width: 16px; height: 16px; background-image: url(ui-icons-grey_222222_256x240.png); }
-
-.tt-icon-tall{ width: 16px; height: 28px; background-image: url(tt-icons-grey.png); }
 
 .tt-nested-spacer{ width: 16px; height: 16px; background-image: url(tt-icons-grey-tree.png); background-repeat:repeat-y;}
 

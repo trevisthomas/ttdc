@@ -8,14 +8,23 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 
 
 .tt-graphic-button{position: relative; min-width: 16px; height: 28px; text-align: center;}
-.tt-graphic-button{cursor: pointer; font-size:15px; height: 28px; padding: 2px 4px; border-width: 0 1px; border-style: solid; line-height: 28px;}
-.tt-textbox-search{font-size:18px; font-weight: 400; height: 28px;}
+.tt-graphic-button-l{cursor: pointer; font-size:15px; height: 28px; padding: 2px 4px; border-width: 0 0 0 1px; border-style: solid; line-height: 28px;}
+.tt-graphic-button-r{cursor: pointer; font-size:15px; height: 28px; padding: 2px 4px; border-width: 0 1px 0 0; border-style: solid; line-height: 28px;}
+.tt-textbox-search{font-size:18px; font-weight: 400; height: 32px;}
 
 .tt-graphic-button,
 .tt-textbox-search{font-family: arial, sans-serif;}
 
+.tt-forum-main,
+.tt-topic-root,
+.tt-topic-topics,
+.tt-home-main{ width: 600px;}
+.tt-home-left{ width: 220px;}
+.tt-home-tabContainer{margin: 4px 0 10px 0; width: 800px;}
 
-.tt-alert{color: red;}
+.tt-post-child{margin: 1px 1px 1px 10px; border-width: 1px; border-style:solid; width:540px;}
+.tt-forum-post{margin: 1px 1px 4px; border-width: 0 0 1px 0; border-style: solid; }
+
 .tt-post{width: 550px; margin-bottom: 2px; border:1px solid; overflow: auto;}
 .tt-post-container-header{overflow: auto;}
 .tt-post-container-footer{}
@@ -80,7 +89,6 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 .tt-movie-editor,
 .tt-comment-editor{border: 1px solid; width:480px; padding: 2px 10px;}
 .tt-comment-toolbar{margin: 2px 0;}
-.tt-rich-text-iframe{width: 478px; margin: 4px 0;}
 .tt-comment-editor-buttons{float: right; margin: 3px;}
 
 .tt-post-panel-content{ width:100%; clear:both;}
@@ -98,18 +106,14 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 .tt-header-left{}
 .tt-header-right{}
 
-.tt-forum-main,
-.tt-topic-root,
-.tt-topic-topics,
-.tt-home-main{ width: 600px;}
-.tt-home-left{ width: 220px;}
+
 
 .tt-forum-topics{ margin: 2px 0px 5px 20px; }
 
 .tt-topic-root,
 .tt-topic-topics{}
 
-.tt-home-tabContainer{margin: 4px 0 10px 0; width: 800px;}
+
 
 .tt-topic-root,
 .tt-forum-main,
@@ -127,7 +131,7 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 
 .tt-pageHeader-subtitle{font-size:12px; font-weight: bold; font-style: italic; margin-top: -7px; padding-left: 10px;}
 .tt-pageHeader-title{ margin: auto; overflow: hidden;}
-.tt-pageFooter{text-align:center; margin: 30px auto;}
+.tt-pageFooter{text-align:center; margin: 30px 20px;}
 .tt-pageHeader{text-align:center; margin: 0px auto; padding: 0 10px;}
 
 .tt-pageFooter hr{ height: 1px;}
@@ -139,7 +143,7 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 .tt-center{text-align:center; margin: 0 auto;}
 .tt-text-center{text-align:center;}
 
-.tt-searchBoxPanel{ margin: 3px auto;}
+
 /* tt-float-container is a trick to allow the container to have floating things 
 	inside of it but for it not to colapse. It's an alternative to having a clear:both element
 	*/
@@ -159,7 +163,7 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 .tt-float-left{ float: left;}
 .tt-float-right{ float: right;}
 
-.tt-selected{background-color: #ddd;}
+
 
 /*The plan is to set these to have image backgrounds that change depending on the style folder*/
 .tt-clickable-icon-prev{background-color: orange; width: 18px; height: 18px;}
@@ -187,7 +191,7 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 
 .tt-cloud{text-align: justify; width: 500px; margin: 10px auto; overflow: auto;}
 
-.tt-selected{border: 1px solid orange; color: green; background-color:#b0c4de;}
+.tt-selected{border: 1px solid;}
 .tt-paddedbox{border: 1px solid black; padding:2px; margin:1px;}
 
 .tt-calendar-scale-button{padding:2px; margin:1px;}
@@ -220,7 +224,7 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 
 .tt-calendar-month-day-headerLabel{}
 .tt-calendar-month-day-header{text-align: right; height: 20px;}
-.tt-calendar-month-day-body{overflow: auto; width: 130px; height:130px;}
+.tt-calendar-month-day-body{overflow: auto; width: 125px; height:125px;}
 .tt-calendar-month-day{}
 
 .tt-calendar-year-day{}
@@ -259,6 +263,7 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 
 .tt-welcome-login{padding: 0 0.2em; white-space:nowrap;}
 
+.tt-comment-button,
 .gwt-Anchor{cursor: pointer;}
 .tt-cursor-move{cursor: move;}
 .tt-cursor-pointer{cursor: pointer; outline: none;}
@@ -266,7 +271,7 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 a{outline: none;}
 
 .tt-textbox-search{width: 600px; border: 0px;}
-.tt-searchBoxPanel{border: 1px solid;}
+.tt-searchBoxPanel{margin: 3px auto; border: 1px solid;}
 /*
 .tt-search-panel{height:30px; border: solid black 1px; background: gray;}
 */
@@ -281,14 +286,13 @@ a{outline: none;}
 
 .tt-special-border-bottom{border: white solid; border-width: 0 0 2px 0;}
 
-.spoiler{ color : #f6f6f6; background-color : #f6f6f6;}
-.reveal{ color : #000; background-color : #f6f6f6;}
 
 .tt-reply-count,
 .tt-conversation-count{ border: 1px solid; padding: 0px 3px}
 
 
 .tt-fancy-image-border{border: solid 1px; padding: 4px 2px 10px 2px; margin: 4px 2px;}
+.tt-image-border{border: 0;}
 
 
 .tt-rich-text-area{text-align: left; line-height: normal;}
@@ -324,7 +328,11 @@ side effects in non mozilla browsers in the comment creator
 
 .tt-traffic-person{width: 199px; height: 49px; border: 1px solid; margin: 2px 2px;}
 
-.tt-comment-button{min-width: 40px;}
+.tt-comment-button{
+	min-width: 40px;
+	border:1px solid;
+	padding:2px 10px;
+}
 .tt-navigation{margin: 2px;}
 
 .tt-active-post-box ul,
@@ -421,5 +429,4 @@ side effects in non mozilla browsers in the comment creator
 
 .tt-plain-post{border: 1px solid; margin: 4px; padding: 2px;}
 
-.tt-post-child{margin: 1px 1px 1px 10px; border-width: 1px; border-style:solid; width:540px;}
-.tt-forum-post{margin: 1px 1px 4px; border-width: 0 0 1px 0; border-style: solid; }
+
