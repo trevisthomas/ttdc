@@ -30,6 +30,7 @@ public class LatestPostsDao extends FilteredPostPaginatedDaoBase{
 	}
 	
 	public PaginatedList<Post> loadFlat(){
+		setPageSize(MAX_CONVERSATIONS * 2);
 		PaginatedList<Post> results = new PaginatedList<Post>();
 		results = executeLoadQuery("LatestPostsDao.Flat");
 		return results;

@@ -69,11 +69,11 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
     
     private Injector injector;
     
-    @UiField(provided = true) FocusPanel refineSearchElement = new ClickableIconPanel("tt-graphic-button-normal","tt-graphic-button-down");
+    @UiField(provided = true) FocusPanel refineSearchElement = new ClickableIconPanel("tt-graphic-button-r","tt-graphic-button-normal","tt-graphic-button-down");
     //@UiField(provided = true) DefaultMessageTextBox searchPhraseElement = new DefaultMessageTextBox("initializing...");
     @UiField(provided = true) DefaultMessageTextBox searchPhraseElement = new DefaultMessageTextBox("initializing...");
-    @UiField(provided = true) FocusPanel goElement = new ClickableIconPanel("tt-graphic-button-normal","tt-graphic-button-down");
-    @UiField(provided = true) FocusPanel clearCriteriaElement = new ClickableIconPanel("tt-graphic-button-normal","tt-graphic-button-down");
+    @UiField(provided = true) FocusPanel goElement = new ClickableIconPanel("tt-graphic-button-l","tt-graphic-button-normal","tt-graphic-button-down");
+    @UiField(provided = true) FocusPanel clearCriteriaElement = new ClickableIconPanel("tt-graphic-button-r","tt-graphic-button-normal","tt-graphic-button-down");
 //    @UiField(provided = true) FocusPanel commentElement = new ClickableIconPanel("tt-clickable-icon-comment");
 //    @UiField(provided = true) FocusPanel movieElement = new ClickableIconPanel("tt-clickable-icon-movie");
     @UiField Anchor commentElement;

@@ -3,17 +3,16 @@
 @import "common/icons/icons-grey.css";
 @import "common/icons/icons-common.css";
 @import "structure.css";
-@import "common/icons/toolbar-icons.css";
+@import "common/icons/toolbar-icons-dark.css";
 
-.ui-icon { width: 16px; height: 16px; background-image: url(common/icons/ui-icons-grey_222222_256x240.png); }
-.tt-icon-tall{ width: 16px; height: 28px; background-image: url(common/icons/tt-icons-grey.png); }
+.ui-icon { width: 16px; height: 16px; background-image: url(common/icons/ui-icons-grey_eeeeee_256x240.png); }
+.tt-icon-tall{ width: 16px; height: 28px; background-image: url(common/icons/tt-icons-grey_eeeeee.png); }
 
-body{ color: #222; background-color: #eee;}
-.tt-view-container{ background-color:white;}
+body{ color: #ccc; background-color: black;}
+.tt-view-container{ background-color:#222; border: 1px solid #333;}
 
-.tt-message-textbox-disabled{ color: #ddd;}
 
-.tt-post-fetch-more a,	
+.tt-post-fetch-more a,
 .tt-paginator-nano a,
 .tt-paginator a,
 .tt-post-body a,
@@ -28,9 +27,9 @@ body{ color: #222; background-color: #eee;}
 .tt-more-comments a,
 .tt-traffic-login a,
 .tt-post-summary a,
-.tt-post-expanded-content a{text-decoration: none; color: #113aa4;}
+.tt-post-expanded-content a{text-decoration: none; color: #ccc;}
 	
-.tt-post-fetch-more a:link,		
+.tt-post-fetch-more a:link,	
 .tt-paginator-nano a:link,
 .tt-paginator a:link,
 .tt-post-body a:link,
@@ -45,9 +44,9 @@ body{ color: #222; background-color: #eee;}
 .tt-more-comments a:link,
 .tt-traffic-login a:link,
 .tt-post-summary a:link,
-.tt-post-expanded-content a:link {text-decoration: none; color: #113aa4;}
+.tt-post-expanded-content a:link {text-decoration: none; color: #ccc;}
 
-.tt-post-fetch-more a:visited,	
+.tt-post-fetch-more a:visited,
 .tt-paginator-nano a:visited,
 .tt-paginator a:visited,
 .tt-post-body a:visited,
@@ -62,9 +61,9 @@ body{ color: #222; background-color: #eee;}
 .tt-more-comments a:visited,
 .tt-traffic-login a:visited,
 .tt-post-summary a:visited,
-.tt-post-expanded-content a:visited {text-decoration: none; color: #113aa4;}
+.tt-post-expanded-content a:visited {text-decoration: none; color: #ccc;}
 
-.tt-post-fetch-more a:hover,	
+.tt-post-fetch-more a:hover,
 .tt-paginator-nano a:hover,
 .tt-paginator a:hover,
 .tt-post-body a:hover,
@@ -79,9 +78,9 @@ body{ color: #222; background-color: #eee;}
 .tt-more-comments a:hover,
 .tt-traffic-login a:hover,
 .tt-post-summary a:hover,
-.tt-post-expanded-content a:hover  {text-decoration: underline; color: blue;}
+.tt-post-expanded-content a:hover  {text-decoration: underline; color: white;}
 
-.tt-post-fetch-more a:active,	
+.tt-post-fetch-more a:active,
 .tt-paginator-nano a:active,
 .tt-paginator a:active,
 .tt-paginated-post-header a:active,
@@ -95,7 +94,7 @@ body{ color: #222; background-color: #eee;}
 .tt-more-comments a:active,
 .tt-traffic-login a:active,
 .tt-post-summary a:active,
-.tt-post-expanded-content a:active  {color: #F5F23B;}
+.tt-post-expanded-content a:active  {color: #790e0e;}
 
 .tt-active-post-links a{text-decoration: none; color: #ECECEC;}
 .tt-active-post-links a:link{text-decoration: none; color: #ECECEC;}
@@ -126,7 +125,7 @@ body{ color: #222; background-color: #eee;}
 .popupContent a:link,
 .tt-welcome a:link,
 .tt-navigation a:link,	
-.tt-reviewSummaryList a:link {text-decoration: none; color: black;}
+.tt-reviewSummaryList a:link {text-decoration: none; color: #eee;}
 
 .tt-forum-title a:visited,
 .tt-post-panel-head-title a:visited,
@@ -139,7 +138,7 @@ body{ color: #222; background-color: #eee;}
 .popupContent a:visited,
 .tt-welcome a:visited,
 .tt-navigation a:visited,	
-.tt-reviewSummaryList a:visited{text-decoration: none; color: black;}
+.tt-reviewSummaryList a:visited{text-decoration: none; color: #eee;}
 
 .tt-forum-title a:hover,
 .tt-post-panel-head-title a:hover,
@@ -152,7 +151,7 @@ body{ color: #222; background-color: #eee;}
 .popupContent a:hover,
 .tt-welcome a:hover,
 .tt-navigation a:hover,	
-.tt-reviewSummaryList a:hover {text-decoration: underline; color: #222;}
+.tt-reviewSummaryList a:hover {text-decoration: underline; color: #fff;}
 
 .tt-forum-title a:active,
 .tt-post-panel-head-title a:active,
@@ -165,7 +164,7 @@ body{ color: #222; background-color: #eee;}
 .popupContent a:active,
 .tt-welcome a:active,
 .tt-navigation a:active,		
-.tt-reviewSummaryList a:active {color: #F5F23B;}
+.tt-reviewSummaryList a:active {color: #bf3333;}
 
 .tt-post-detail a {text-decoration: none; color: grey;}
 .tt-post-detail a:link {text-decoration: none; color: grey;}
@@ -173,41 +172,55 @@ body{ color: #222; background-color: #eee;}
 .tt-post-detail a:hover {text-decoration: underline; color: #222;}
 .tt-post-detail a:active{color: black;}
 	
-.tt-forum-post{border-color: #f5f5f5;}
+.tt-forum-post{border-color: black;}
 
 
-.tt-color-month-week-header{ background: #eee; color: black; border-color: grey;}
+.tt-color-month-day-body-hover a {text-decoration: none; color: #ccc;}
+.tt-color-month-day-body-hover a:link {text-decoration: none; color: #ccc;}
+.tt-color-month-day-body-hover a:visited{text-decoration: none; color: #ccc;}
+.tt-color-month-day-body-hover a:hover {text-decoration: underline; color: #ccc;}
+.tt-color-month-day-body-hover a:active{color: black;}
+
+.tt-color-month-day-body a {text-decoration: none; color: black;}
+.tt-color-month-day-body a:link {text-decoration: none; color: black;}
+.tt-color-month-day-body a:visited{text-decoration: none; color: black;}
+.tt-color-month-day-body a:hover {text-decoration: underline; color: #ccc;}
+.tt-color-month-day-body a:active{color: black;}
+
+
+.tt-color-month-week-header{ color: white; border-color: grey;}
 .tt-color-month-week-header-hover{ background: grey; color: white; border-color: #eee;}
 
 .tt-color-calendar-nav,
-.tt-color-calendar-small-month-day,
-.tt-color-calendar-small-month-day-hover{border-color: transparent; color: color: #222;}
+.tt-color-calendar-small-month-day{border-color: transparent; color: color: #222;}
+.tt-color-calendar-small-month-day-hover{border-color: #ccc; color: color: #222;}
 
 .tt-color-calendar-nav-hover{ background: #eee; color: black; border-color: grey;}
 
 .tt-color-calendar-day-hour,
 .tt-color-calendar-hour,
-.tt-color-month-day-body{ border-color: #eee;}
+.tt-color-month-day-body{ background-color: #333;}
 
+.tt-calendar-month-day-header{background-color: #444; }
 
-.tt-color-month-day-body-hover{ border-color: grey; background: #eee;}
+.tt-color-month-day-body-hover{ border-color: grey; background: #555;}
 .tt-color-month-day-header-hover{ background-color: grey; border-color: grey; color: white;}
 
 .tt-color-calendar-hour-label,	
-.tt-color-calendar-small-month-day-content-hover{ border-color: grey; background: #eee;}
+.tt-color-calendar-small-month-day-content-hover{ border-color: grey; background: #eee; color: black;}
 
 
-.tt-color-calendar-small-month-week-hover{color: white; background-color: grey;}
-.tt-color-calendar-week-date-hover{ border-color: white; background: #eee;}
+.tt-color-calendar-small-month-week-hover{color: white; background-color: grey; color: black;}
+.tt-color-calendar-week-date-hover{ border-color: #666; background: #444; color: black;}
 	
 .tt-color-calendar-hour-label{color: #888;}
 
 .tt-color-calendar-hour-hover,
 .tt-color-month-day-header,
-.tt-color-calendar-small-month-day-content,
-.tt-color-calendar-small-month-week{ border-color: #ccc; background-color: #fcfcfc;}
+.tt-color-calendar-small-month-week{ }
+.tt-color-calendar-small-month-day-content{border-color: #444;}
 
-.tt-color-calendar-week-date{ border-color: white; background: #fcfcfc;}
+.tt-color-calendar-week-date{ border-color: #444; background: #222;}
 
 .tt-calendar-is-today{}
 .tt-calendar-is-future{}
@@ -227,69 +240,77 @@ body{ color: #222; background-color: #eee;}
 .tt-post-panel-root
 .tt-post{ background-color: #fefefe; border-color:#eee; color: white;}
 */
-.tt-post{ background-color: transparent; border-color:#eee;}
+.tt-post{ background-color: #2C2C2C; border-color:#333 #000 #000 #333;}
 
 .tt-post-panel-number,
 .tt-post-summary-body,
-.tt-color-search-results-header,
-.tt-post-body{color: #444f67;}
+.tt-color-search-results-header{color: #965555;}
+.tt-post-body{color: #938181;}
 
-.tt-post-panel-head{ background-color: #f5f5f5; border-color:#f5f5f5;}
+.tt-post-panel-head{ background-color: transparent; border-color:transparent;}
 
-.tt-post-panel-content{color: black; background-color: #F5F5F5; border: 0px; border-bottom-width: 1px; border-style: solid; border-color: #ddd;}
+.tt-post-panel-content{color: black; background-color: transparent; border: 0px;  border-style: solid; border-color: #black;}
 
 
-.tt-search-popup{background-color: #fefefe; border-color: grey; color: black;}
+.tt-search-popup{background-color: #222222; border-color: #555; color: black;}
+
+.gwt-ListBox{background-color: black; color: #eee;}
+.gwt-Button{color: white;}
 
 .tt-more-options-button-hover{background-color: #e1de3b; color: #878207;}
 
 
-.tt-conversation-count{background-color: #F5F23B; color: #bfb800;}
+.tt-conversation-count{background-color: #bf3333; color: #790e0e;}
 
-.tt-color-calendar-small-month-day-selected-hover{background-color: #F5F23B; color: black;}
-.tt-color-calendar-small-month-day-selected{background-color: #fcfbd1; color: black;}
+.tt-color-calendar-small-month-day-selected-hover{background-color: #bf3333; color: white;}
+.tt-color-calendar-small-month-day-selected{background-color: #790e0e; color: #eee;}
 
 
 .tt-color-calendar-small-month-day-selected-hover,
 .tt-more-options-button-hover,
 .tt-post-expanded,
-.tt-conversation-count{border-bottom-color: #bfb800; border-left-color: #F5F23B; border-right-color: #bfb800; border-top-color: #F5F23B;}
+.tt-conversation-count{border-color: red #790e0e #790e0e red;}
+	
 
-.tt-color-calendar-small-month-day-selected{color: black; border-bottom-color: #bfb800; border-left-color: #F5F23B; border-right-color: #bfb800; border-top-color: #F5F23B;}
+.tt-color-calendar-small-month-day-selected{border-color: #790e0e;}
 
-.tt-reply-count{background-color: #cecece; border-color: white; color: #fefefe;}
+.tt-reply-count{background-color: #222; border-color: #000 #333 #333 #000; color: #555;}
 .tt-color-post-summary{background-color:transparent;}
 
 .tt-color-post-summary-hover{background-color:#eee; color: black}
 
-.tt-graphic-button,
-.tt-graphic-button-r,
-.tt-graphic-button-l{background-color: #cecece; border-color: #ccc;}
-
 .tt-traffic-person,
 .tt-fancy-image-border,
-.tt-searchBoxPanel{border-bottom-color: #999; border-left-color: #CCC; border-right-color: #999; border-top-color: #CCC;}
+.tt-searchBoxPanel{border-color: #555 #000 #000 #555;}
+
+.tt-textbox-search{background-color: #000; color: #ccc;}
+.tt-message-textbox-disabled{ color: #222;}
 
 /*
 .gwt-TabPanelBottom{border-bottom-color: #4f76d8; border-left-color: #4263b6; border-right-color: #4f76d8; border-top-color: #4263b6;}
 */
-.gwt-TabPanelBottom{border-bottom-color: transparent; border-left-color: transparent; border-right-color: transparent; border-top-color: #4263b6;}
+.gwt-TabPanelBottom{border-color: transparent; border-top-color: #790e0e;}
 
-.tt-traffic-person{background-color: #f5f5f5;}
+.tt-traffic-person{background-color: #222;}
 
 .tt-rich-text-area{background-color:#ddd; color:black;}
 	
-.gwt-TabBar .gwt-TabBarItem{background: #ececec;}
-.gwt-TabBar .gwt-TabBarItem-selected{background: #92c1f0;} 
+.gwt-TabBar .gwt-TabBarItem{background: #333;}
+.gwt-TabBar .gwt-TabBarItem-selected{background: #bf3333;}
+
 .gwt-TabBar .gwt-TabBarItem-disabled {color: #999999;}
 
-.tt-fancy-image-border{ background-color: #ddd;}
+.tt-fancy-image-border{ background-color: #222;}
 
-.gwt-TabBar .gwt-TabBarItem-selected{ background-image:url('common/images/gradients.png');background-position: 0 0px; background-repeat:repeat-x;}
 
-.tt-graphic-button-normal{ background-image:url('common/images/gradient.png');background-position: 0 0; background-repeat:repeat-x;}
-.tt-graphic-button-down{ background-color: grey;}
+.gwt-TabBar .gwt-TabBarItem-selected{ background-image:url('common/images/gradients-red.png');background-position: 0 0px; background-repeat:repeat-x;}
 
+.tt-graphic-button,
+.tt-graphic-button-r, 
+.tt-graphic-button-l{background-color: #222; border-color: #555;}
+
+.tt-graphic-button-normal{ background-image:url('common/images/gradient-dark.png');background-position: 0 0; background-repeat:repeat-x;}
+.tt-graphic-button-down{ background-color: 000;}
 
 .tt-pageFooter hr{ color: #eee; background-color: #f00; }
 
@@ -299,7 +320,7 @@ body{ color: #222; background-color: #eee;}
 .tt-reviewSummaryList-header{color: #777}
 
 .gwt-SuggestBoxPopup,
-.gwt-PopupPanel { border-color: grey; background: white; }
+.gwt-PopupPanel { border-color: black; background: #222; }
 
 
 .gwt-SuggestBoxPopup .item { color: #424242;}
@@ -308,17 +329,23 @@ body{ color: #222; background-color: #eee;}
 
 .tt-plain-post{border-color: grey; background: #f5f5f5;}
 
-.tt-post-child-noHover{border-color: #f5f5f5;}
-.tt-post-child-hover{border-color: #4b75e1;}
+.tt-post-child-noHover{border-color: #000 #333 #333 #000;}
 
-.tt-selected{border-color:#113aa4; background-color:#b0c4de;}
+.tt-comment-button,
+.tt-post-child-hover{border-color: #333 #000 #000 #333;}
+
+.tt-selected{border-color:#bf3333; background-color:#790e0e;}
 
 .tt-selected a{text-decoration: none; color: #eee;}
 .tt-selected a:link{text-decoration: none; color: #eee;}
 .tt-selected a:visited{text-decoration: none; color: #eee;}
 .tt-selected a:hover{text-decoration: underline; color: #fff;}
-.tt-selected a:active{color: #b0c4de;}
+.tt-selected a:active{color: #790e0e;}
 
-.spoiler{ color : #f6f6f6; background-color : #f6f6f6;}
-.reveal{ color : #000; background-color : #f6f6f6;}
+.tt-pageHeader-title{color: fefefe;}
+.tt-pageHeader-subtitle{color: #790e0e;}
+
+.spoiler{ color : #222; background-color : #222;}
+.reveal{ color : #790e0e; background-color : #222;}
+
 

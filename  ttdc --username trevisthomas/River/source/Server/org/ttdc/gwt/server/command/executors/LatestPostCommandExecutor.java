@@ -121,6 +121,7 @@ public class LatestPostCommandExecutor extends CommandExecutor<PaginatedListComm
 	
 	private PaginatedListCommandResult<GPost> loadGrouped(LatestPostsCommand cmd) {
 		LatestPostsDao dao = getLatestPostDaoWithPersonalFilter(cmd);
+		
 		PaginatedList<Post> results = dao.loadGrouped();
 		PaginatedList<GPost> gResults = PaginatedResultConverters.convertSearchResultsNested(results, getPerson());
 		return new PaginatedListCommandResult<GPost>(gResults);

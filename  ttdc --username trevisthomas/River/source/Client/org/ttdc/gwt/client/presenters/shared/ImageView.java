@@ -113,7 +113,7 @@ public class ImageView implements ImagePresenter.View{
 		if(image == null || main.toString().trim().equals(""))
 			return;
 		StringBuilder sb = new StringBuilder();
-		sb.append("<img ");
+		sb.append("<img class=\"tt-image-border\"");
 		if(height > 0){
 			sb.append("height=").append(height).append("\" ");
 		}

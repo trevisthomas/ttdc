@@ -60,7 +60,7 @@ public class ForumListItemPanel extends Composite{
     	this.forum = forum;
     	//setup token
     	forumTitleElement.setText(forum.getDisplayValue());
-    	
+    	    	
     	token = new HistoryToken();
 		token.addParameter(HistoryConstants.VIEW, HistoryConstants.VIEW_FORUMS);
 		token.addParameter(HistoryConstants.FORUM_ID_KEY, forum.getTagId());
