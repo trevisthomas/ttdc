@@ -1,18 +1,19 @@
 package org.ttdc.gwt.client.presenters.users;
 
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class UserRowView implements UserRowPresenter.View{
-	private final HorizontalPanel loginWidgetPanel = new HorizontalPanel();
+	
 	private final Label emailPanel = new Label(); 
 	private final Label hitCountPanel = new Label();
-	private final VerticalPanel memberSinceWidgetPanel = new VerticalPanel();
+	private final FlowPanel loginWidgetPanel = new FlowPanel();
+	private final FlowPanel memberSinceWidgetPanel = new FlowPanel();
 	private final SimplePanel memberSincePanel = new SimplePanel();
 	private final Label namePanel = new Label();
 	private final SimplePanel imagePanel = new SimplePanel();
@@ -22,12 +23,22 @@ public class UserRowView implements UserRowPresenter.View{
 	
 	private final SimplePanel loginPanel = new SimplePanel();
 	public UserRowView() {
+		
+		imagePanel.addStyleName("tt-float-left");
+		
+		
+		
+		VerticalPanel vp = new VerticalPanel();
+		vp.addStyleName("tt-float-left");
+		vp.add(loginPanel);
+		vp.add(memberSincePanel);
+		memberSincePanel.addStyleName("tt-text-small");
+		
 		loginWidgetPanel.add(imagePanel);
-		loginWidgetPanel.add(loginPanel);
+		loginWidgetPanel.add(vp);
 		
-		memberSinceWidgetPanel.add(memberSincePanel);
+		//memberSinceWidgetPanel.add(memberSincePanel);
 		memberSinceWidgetPanel.add(lastAccessedPanel);
-		
 	}
 	
 	@Override

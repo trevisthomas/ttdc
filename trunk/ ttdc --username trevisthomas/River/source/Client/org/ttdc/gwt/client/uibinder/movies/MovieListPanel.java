@@ -17,6 +17,7 @@ import org.ttdc.gwt.client.presenters.util.PresenterHelpers;
 import org.ttdc.gwt.client.services.BatchCommandTool;
 import org.ttdc.gwt.client.services.RpcServiceAsync;
 import org.ttdc.gwt.client.uibinder.common.BasePageComposite;
+import org.ttdc.gwt.client.uibinder.shared.PaginationPanel;
 import org.ttdc.gwt.client.uibinder.shared.StandardPageHeaderPanel;
 import org.ttdc.gwt.client.uibinder.shared.UiHelpers;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
@@ -374,10 +375,10 @@ public class MovieListPanel extends BasePageComposite{
 					addMovie(year, titlePresenter.getWidget(), urlLinkPresenter.getWidget(), ratingPresenter.getWidget());
 				}
 				
-				PaginationPresenter paginationPresenter = injector.getPaginationPresenter();
-				paginationPresenter.initialize(token, result.getResults());
+				PaginationPanel paginationPanel = injector.createPaginationPanel();
+				paginationPanel.initialize(token, result.getResults());
 				paginatorElement.clear();
-				paginatorElement.add(paginationPresenter.getWidget());
+				paginatorElement.add(paginationPanel);
 			}
 		};
 		return replyListCallback;

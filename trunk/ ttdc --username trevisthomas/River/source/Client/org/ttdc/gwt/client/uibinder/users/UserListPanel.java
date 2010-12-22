@@ -9,6 +9,7 @@ import org.ttdc.gwt.client.presenters.shared.PaginationPresenter;
 import org.ttdc.gwt.client.presenters.users.UserRowPresenter;
 import org.ttdc.gwt.client.presenters.util.PresenterHelpers;
 import org.ttdc.gwt.client.uibinder.common.BasePageComposite;
+import org.ttdc.gwt.client.uibinder.shared.PaginationPanel;
 import org.ttdc.gwt.client.uibinder.shared.StandardPageHeaderPanel;
 import org.ttdc.gwt.client.uibinder.shared.UiHelpers;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
@@ -108,6 +109,8 @@ public class UserListPanel extends BasePageComposite{
 	public void addRow(UserRowPresenter rowPresenter) {
 		row++;
 		
+		tableElement.getRowFormatter().setStyleName(row, "tt-userlistrow");
+		
 		tableElement.setWidget(row, 0, rowPresenter.getLoginWidget());
 		tableElement.setWidget(row, 1, rowPresenter.getNameWidget());
 		tableElement.setWidget(row, 2, rowPresenter.getHitsWidget());
@@ -118,6 +121,13 @@ public class UserListPanel extends BasePageComposite{
 	private void initHeader() {
 		row = 0;
 		tableElement.clear();
+		tableElement.getColumnFormatter().addStyleName(0, "tt-userlistcol-login");
+		tableElement.getColumnFormatter().addStyleName(1, "tt-userlistcol-name");
+		tableElement.getColumnFormatter().addStyleName(2, "tt-userlistcol-hits");
+		tableElement.getColumnFormatter().addStyleName(3, "tt-userlistcol-date");
+		tableElement.getColumnFormatter().addStyleName(4, "tt-userlistcol-email");
+		tableElement.getRowFormatter().addStyleName(0, "tt-userlistrow-header");
+		
 		tableElement.setWidget(0, 0, loginHeader);
 		tableElement.setWidget(0, 1, nameHeader);
 		tableElement.setWidget(0, 2, hitCountHeader);
@@ -172,10 +182,10 @@ public class UserListPanel extends BasePageComposite{
 					addRow(userRowPresenter);
 				}
 				
-				PaginationPresenter paginator = injector.getPaginationPresenter();
-				paginator.initialize(token, result.getResults());
+				PaginationPanel paginationPanel = injector.createPaginationPanel();
+				paginationPanel.initialize(token, result.getResults());
 				paginatorElement.clear();
-				paginatorElement.add(paginator.getWidget());
+				paginatorElement.add(paginationPanel);
 			}
 		};
 		return replyListCallback;

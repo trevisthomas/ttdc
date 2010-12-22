@@ -85,6 +85,7 @@ public class ForumListPanel extends BasePageComposite implements PostEventListen
 		else{
 			pageHeaderPanel.init("Forums", "choose a forum to view its topics");
 		}
+		pageHeaderPanel.getSearchBoxPresenter().init(token);
 	}
 
 	private void createForumList() {
