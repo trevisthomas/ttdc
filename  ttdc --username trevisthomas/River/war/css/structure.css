@@ -51,6 +51,7 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 
 .tt-post-detail{width: 100%;}
 	
+.tt-user-list-table,	
 .tt-forum-names,
 .tt-plain-post-header,
 .tt-traffic-login,
@@ -430,3 +431,11 @@ side effects in non mozilla browsers in the comment creator
 .tt-plain-post{border: 1px solid; margin: 4px; padding: 2px;}
 
 
+.tt-userlistcol-login{width: 20%;}
+.tt-userlistcol-name{width: 20%;}
+.tt-userlistcol-hits{width: 10%;}
+.tt-userlistcol-date{width: 20%; font-size: 50%;}
+.tt-userlistcol-email{}
+
+.tt-userlistrow{border: solid 0px; border-top-width: 1px; }
+.tt-userlistrow-header{}

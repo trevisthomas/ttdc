@@ -11,6 +11,8 @@
 body{ color: #ccc; background-color: black;}
 .tt-view-container{ background-color:#222; border: 1px solid #333;}
 
+textarea,
+input{ color: #eee; background-color: black;}
 
 .tt-post-fetch-more a,
 .tt-paginator-nano a,
@@ -347,5 +349,5 @@ body{ color: #ccc; background-color: black;}
 
 .spoiler{ color : #222; background-color : #222;}
 .reveal{ color : #790e0e; background-color : #222;}
-
+.tt-userlistrow{border-color: #555;}
 

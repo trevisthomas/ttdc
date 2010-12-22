@@ -23,6 +23,7 @@ public class MovieListCommandExecutor extends CommandExecutor<SearchPostsCommand
 			dao.setSortDirection(cmd.getSortDirection());
 			dao.setSortOrder(cmd.setSortBy());
 			dao.setInvertFilter(cmd.isSpeedRate());
+			dao.setPageSize(50);
 			PaginatedList<Post> results = dao.load();
 			PaginatedList<GPost> gResults = PaginatedResultConverters.convertSearchResults(results, getPerson());
 			return new SearchPostsCommandResult(gResults);
