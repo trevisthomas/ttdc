@@ -97,8 +97,13 @@ public class HistoryEventPresenterManager implements HistoryEventListener{
 			injector.getDemoPresenter().show(event.getSource());
 		}
 		else if(HistoryConstants.VIEW_USER_LIST.equals(view)){
+			if(!person.isAnonymous()){
 			//injector.getUserListPresenter().show(event.getSource());
-			injector.createUserListPanel().show(event.getSource());
+				injector.createUserListPanel().show(event.getSource());
+			}
+			else{
+				EventBus.fireReturnHomeEvent();
+			}
 		}
 		else if(HistoryConstants.VIEW_USER_PROFILE.equals(view)){
 			injector.createPublicUserProfilePanel().show(event.getSource());

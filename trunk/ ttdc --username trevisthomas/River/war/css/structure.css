@@ -68,8 +68,10 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 
 .tt-comment-editor-info{font-style: italic;}
 
+
 .tt-text-large{font-size:16px; font-weight: 500;}
 
+.tt-userlistrow-header,
 .gwt-TabBar .gwt-TabBarItem-selected,
 .tt-text-large-bold{font-size:16px; font-weight: 700;}
 .tt-text-huge{font-size:22px; font-weight: 700;}
