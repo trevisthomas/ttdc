@@ -53,22 +53,26 @@
 	-EntryBodyConvertEmbedLinks.java (56 sec) -- Added on 10/30/2010
 	
 	(Warning. On Nov 9, you discovered that the average ratings were missing, i think that they were missing in the prior build too. Aggrogator may not be working)
+	(Dito warning, Dec 24.. same problem with avg ratings ran again after cleanup step below)
 	
 			
-	V7_RENORMALIZATION_UpdateNewPostColumns.sql - took over 4 hours (359,000 rows in the log) (9/8/2010 over 6 hours) (10/25/2010 5:58min)
+	V7_RENORMALIZATION_UpdateNewPostColumns.sql - took over 4 hours (359,000 rows in the log) (9/8/2010 over 6 hours) (10/25/2010 5:58min) (12/24/2010 5:27)
 																					
 		
 	V7_MIGRATION_AddCountsToPosts.sql - (seconds) merge
 	V7_MIGRATION_AddThreadIdToPost.sql - 2min not mergable, works on a subset
 	V7_MIGRATION_AddMassToPostRoots.sql - probably not worth merging
-	V7_MIGRATION_AddMassToPostThreadStarters.sql 2min (June 10, 56sec) - not mergable (10/25/2010 - much slower now with the removal of LegacyHolders 40 min now!)
+	V7_MIGRATION_AddMassToPostThreadStarters.sql 2min (June 10, 56sec) - not mergable (10/25/2010 - much slower now with the removal of LegacyHolders 40 min now!) (Same on 12/24/2010... if you have to import again, change this query to exclude conversation starters created pre v6)
 	V7_MIGRATION_AddThreadReplyDateToPost.sql - not mergable
 	
 		
 	V7_RENORMALIZATION_CleanupForAfterTheOtherTwo.sql - removes old associations and tags.
 	
-	V7_VERIFICATION.sql -- run some of these scripts to test if things are looking ok.  
-	
+	V7_VERIFICATION.sql -- run some of these scripts to test if things are looking ok.
+	  
+	--Forums
+	run this query to remove reply tags.
+	v7_MIGRATION_REMOVE_NON_ROOT_TOPIC_ASSOCIATIONS.sql
 	
 	-- you might want to delete the already generated index files because they're probably garbage
 	Rebuild indexs (Time taken: 1:18:07.175) (9/9/2010 0:43:37.080 / 10/25/2010 47:51.801)
@@ -77,9 +81,7 @@
 	update style set default_style=1 where guid='A50C080A-8696-485C-B4F0-C1291962E0D8'
 	--Also remember to assign everyone to this new default CSS!!! and add light.css?
 	
-	--Forums
-	run this query to remove reply tags.
-	v7_MIGRATION_REMOVE_NON_ROOT_TOPIC_ASSOCIATIONS.sql
+	
 	
 //////Mysql 
 uniqueidentifier -> varbinary(36)   (or varchar64 seems to work?)
