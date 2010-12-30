@@ -67,9 +67,9 @@ public class Navigation extends Composite implements PersonEventListener{
 		forumLinkPresenter.setView("Forums", HistoryConstants.VIEW_FORUMS);		
 		homeLinkPresenter.setView("Home", HistoryConstants.VIEW_HOME);
 		searchLinkPresenter.setView("Search", HistoryConstants.VIEW_SEARCH);
-		movieLinkPresenter.setView("Movie", HistoryConstants.VIEW_MOVIE_LIST);
+		movieLinkPresenter.setView("Movies", HistoryConstants.VIEW_MOVIE_LIST);
 		usersLinkPresenter.setView("Users", HistoryConstants.VIEW_USER_LIST);
-		dashboardLinkPresenter.setView("Dashboard", HistoryConstants.VIEW_DASHBOARD);
+		dashboardLinkPresenter.setView("My Dashboard", HistoryConstants.VIEW_DASHBOARD);
 		calendarLinkPresenter.setView("Calendar", HistoryConstants.VIEW_CALENDAR);
 		adminLinkPresenter.setView("Admin", HistoryConstants.VIEW_ADMIN_TOOLS);
 		homeLinkPresenter.setView("Home", HistoryConstants.VIEW_HOME);
