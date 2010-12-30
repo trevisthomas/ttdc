@@ -2,6 +2,8 @@ package org.ttdc.gwt.client.uibinder;
 
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.messaging.EventBus;
+import org.ttdc.gwt.client.messaging.error.MessageEvent;
+import org.ttdc.gwt.client.messaging.error.MessageEventType;
 import org.ttdc.gwt.client.messaging.post.PostEvent;
 import org.ttdc.gwt.client.messaging.post.PostEventListener;
 import org.ttdc.gwt.client.messaging.post.PostEventType;
@@ -52,6 +54,9 @@ public class SiteUpdatePanel extends Composite implements PostEventListener{
 	
 	@UiHandler("siteRefresh")
 	void onClickRefresh(ClickEvent event){
-		Window.Location.reload();
+		postCount = 0;
+		siteRefresh.setVisible(false);
+		EventBus.fireEvent(new MessageEvent(MessageEventType.RELOAD_HOMEPAGE_TABS, ""));
+		
 	}
 }

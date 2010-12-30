@@ -103,7 +103,9 @@ public class MovieRatingPresenter extends BasePresenter<MovieRatingPresenter.Vie
 			}
 		}
 		else{
-			setRating(post.getAvgRatingTag().getValue());
+			if(post.getAvgRatingTag() != null){
+				setRating(post.getAvgRatingTag().getValue());
+			}
 		}
 	}
 	

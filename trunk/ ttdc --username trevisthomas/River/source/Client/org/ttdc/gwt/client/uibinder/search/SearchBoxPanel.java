@@ -235,7 +235,12 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 
 	@Override
 	public void onEnterKeyPressed() {
-		performSearch(searchPhraseElement.getActiveText());
+		String phrase;
+		phrase = searchPhraseElement.getActiveText();
+		if(StringUtil.empty(phrase)){
+			phrase = suggestSearchBox.getActiveText();
+		}
+		performSearch(phrase);
 	}
     
     

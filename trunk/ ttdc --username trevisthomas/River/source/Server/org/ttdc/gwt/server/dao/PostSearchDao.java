@@ -42,7 +42,7 @@ public final class PostSearchDao extends FilteredPostPaginatedDaoBase{
 	private String rootId;
 	private String threadId;
 	private StopWatch stopwatch = new StopWatch();
-	private SearchSortBy sortOrder = null; 
+	private SearchSortBy sortOrder = SearchSortBy.BY_DATE; 
 	private SortDirection sortDirection = SortDirection.DESC;
 	private PostSearchType postSearchType;
 	private boolean searchByTitle = false;
@@ -177,6 +177,8 @@ public final class PostSearchDao extends FilteredPostPaginatedDaoBase{
 				ftquery.setSort(new org.apache.lucene.search.Sort(sortField));
 			}
 		}
+		
+		//addDateFilter(ftquery); //Added Dec 29 2010 in an attempt to have results sorted by relevence then by date
 		
 		addTypeFilter(ftquery);
 		//addDateFilter(ftquery); // Probably shouldnt do this if it's already a part of the query (which it is when it's searching for blank)

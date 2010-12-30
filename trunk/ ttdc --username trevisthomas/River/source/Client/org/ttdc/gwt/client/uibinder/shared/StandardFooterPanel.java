@@ -26,7 +26,7 @@ public class StandardFooterPanel extends Composite{
 	}
     
 	public void init(){
-		copyrightElement.setText("TTDC v7 beta build");
+		copyrightElement.setText("TTDC v7");
 	}
 	
     @Override

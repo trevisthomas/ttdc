@@ -10,6 +10,9 @@ import org.ttdc.gwt.client.constants.TagConstants;
 import org.ttdc.gwt.client.constants.UserObjectConstants;
 import org.ttdc.gwt.client.messaging.ConnectionId;
 import org.ttdc.gwt.client.messaging.EventBus;
+import org.ttdc.gwt.client.messaging.error.MessageEvent;
+import org.ttdc.gwt.client.messaging.error.MessageEventListener;
+import org.ttdc.gwt.client.messaging.error.MessageEventType;
 import org.ttdc.gwt.client.messaging.history.HistoryConstants;
 import org.ttdc.gwt.client.messaging.history.HistoryToken;
 import org.ttdc.gwt.client.messaging.person.PersonEvent;
@@ -46,7 +49,7 @@ import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
-public class HomePanel extends BasePageComposite implements PersonEventListener, PostEventListener, TagEventListener {
+public class HomePanel extends BasePageComposite implements PersonEventListener, PostEventListener, TagEventListener, MessageEventListener {
 	interface MyUiBinder extends UiBinder<Widget, HomePanel> {}
 	private static final MyUiBinder binder = GWT.create(MyUiBinder.class);
 	
@@ -120,6 +123,7 @@ public class HomePanel extends BasePageComposite implements PersonEventListener,
 		EventBus.getInstance().addListener((PostEventListener)this);
 		EventBus.getInstance().addListener((PersonEventListener)this);
 		EventBus.getInstance().addListener((TagEventListener)this);
+		EventBus.getInstance().addListener((MessageEventListener)this);
 	}
 
 
@@ -233,13 +237,18 @@ public class HomePanel extends BasePageComposite implements PersonEventListener,
 	@Override
 	public void onPostEvent(PostEvent postEvent) {
 		if(postEvent.is(PostEventType.NEW_FORCE_REFRESH)){
-			if(latestPresenter != null)
-				latestPresenter.refresh();
-			if(earmarksPresenter != null)
-				earmarksPresenter.refresh();
-			if(flatPresenter != null)
-				flatPresenter.refresh();
+			refreshActivePresenters();
 		}
+	}
+
+
+	private void refreshActivePresenters() {
+		if(latestPresenter != null)
+			latestPresenter.refresh();
+		if(earmarksPresenter != null)
+			earmarksPresenter.refresh();
+		if(flatPresenter != null)
+			flatPresenter.refresh();
 	}
 
 	private void initializeTabs(HistoryToken token) {
@@ -340,6 +349,13 @@ public class HomePanel extends BasePageComposite implements PersonEventListener,
 		}
 		else{
 			earmarksPresenter.init();
+		}
+	}
+	
+	@Override
+	public void onMessageEvent(MessageEvent event) {
+		if(event.is(MessageEventType.RELOAD_HOMEPAGE_TABS)){
+			refreshActivePresenters();
 		}
 	}
 	
