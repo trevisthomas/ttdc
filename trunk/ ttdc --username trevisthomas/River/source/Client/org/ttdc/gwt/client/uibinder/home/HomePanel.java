@@ -44,6 +44,7 @@ import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -145,6 +146,23 @@ public class HomePanel extends BasePageComposite implements PersonEventListener,
 		flatPanel.clear();
 		nestedPanel.clear();
 		
+		int tabndx = postTabPanelElement.getTabBar().getSelectedTab();
+		
+		switch(tabndx){
+			case 0:
+				buildGroupedTab();
+				break;
+			case 1:
+				buildFlatTab();
+				break;
+			case 2:
+				buildEarmarksTab();
+				break;
+			default:
+				//Do nothing
+				break;
+		}
+		
 		initializeTabs(token);
 	}
 	
@@ -154,7 +172,6 @@ public class HomePanel extends BasePageComposite implements PersonEventListener,
 		if(event.is(PersonEventType.USER_EARMKARK_COUNT_CHANGED) 
 				&& event.getSource().getPersonId().equals(user.getPersonId())){
 			postTabPanelElement.getTabBar().setTabText(INDEX_EARMARKS, "Earmarked ("+user.getEarmarks()+")");
-//			earmarksPresenter.clearCache();
 		}
 		else if(event.is(PersonEventType.USER_CHANGED)){
 			//Check the tab.
@@ -171,18 +188,15 @@ public class HomePanel extends BasePageComposite implements PersonEventListener,
 	private void updateHistoryToReflectCenterTabSelection(int index) {
 		switch (index){
 			case INDEX_NESTED:
-				selected = TabType.NESTED;
 				persistTabPreference(UserObjectConstants.VALUE_HIERARCHY);
 				token.setParameter(HistoryConstants.TAB_KEY, HistoryConstants.HOME_GROUPED_TAB);
 				buildGroupedTab();
 				break;
 			case INDEX_EARMARKS:
-				selected = TabType.EARMARKS;
 				token.setParameter(HistoryConstants.TAB_KEY, HistoryConstants.HOME_EARMARKS_TAB);
 				buildEarmarksTab();
 				break;		
 			case INDEX_FLAT:
-				selected = TabType.FLAT;
 				persistTabPreference(UserObjectConstants.VALUE_FLAT);
 				token.setParameter(HistoryConstants.TAB_KEY, HistoryConstants.HOME_FLAT_TAB);	
 				buildFlatTab();
@@ -263,14 +277,13 @@ public class HomePanel extends BasePageComposite implements PersonEventListener,
 		buildAndDisplaySelectedTab(user, tab);
 	}
 
-	private static TabType selected;
 	private void buildAndDisplaySelectedTab(GPerson user, String tab) {
-		
-		if(TabType.EARMARKS.equals(selected)|| (HistoryConstants.HOME_EARMARKS_TAB.equals(tab) && !user.isAnonymous())){
+		TabType selected;
+		if(HistoryConstants.HOME_EARMARKS_TAB.equals(tab) && !user.isAnonymous()){
 			selected = TabType.EARMARKS;
 			buildEarmarksTab();
 		}
-		else if(TabType.FLAT.equals(selected) || HistoryConstants.HOME_FLAT_TAB.equals(tab)){
+		else if(HistoryConstants.HOME_FLAT_TAB.equals(tab)){
 			selected = TabType.FLAT;
 			buildFlatTab();
 		}
@@ -279,33 +292,6 @@ public class HomePanel extends BasePageComposite implements PersonEventListener,
 			buildGroupedTab();
 		}
 		
-		
-//		if(HistoryConstants.HOME_EARMARKS_TAB.equals(tab) && !user.isAnonymous()){
-//			selected = TabType.EARMARKS;
-//			buildEarmarksTab();
-//		}
-//		else if(HistoryConstants.HOME_FLAT_TAB.equals(tab)){
-//			selected = TabType.FLAT;
-//			buildFlatTab();
-//		}
-//		else { 
-//			selected = TabType.NESTED;
-//			buildGroupedTab();
-//		}
-//		
-//		switch(selected){
-//			case EARMARKS:
-//				buildEarmarksTab();
-//				break;
-//			case FLAT:
-//				buildFlatTab();
-//				break;
-//			case NESTED:
-//				buildGroupedTab();
-//				break;
-//		}
-//			
-//		
 		displayTab(selected);
 	}
 
