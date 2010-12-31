@@ -6,9 +6,13 @@
 	 	<g:Widget ui:field="pageHeaderElement"/>
 	 	<div class="tt-search-results">
 		 	<g:Label ui:field="searchSummaryDetailElement" styleName="tt-text-large-bold tt-text-center"/>
-		 	<g:Label styleName="tt-fill tt-text-large-bold tt-text-left tt-color-search-results-header" ui:field="postLabelElement"/>
+		 	
+		 	
+		 	<g:Label styleName="tt-text-center" ui:field="pageResultMessageElement"/>
 		 	<div class="tt-post-container-header tt-center">
-		 		<g:Label styleName="tt-float-left" ui:field="pageResultMessageElement"/>
+		 		<div class="tt-float-left">
+		 			sort by: <g:Hyperlink ui:field="sortByDateElement"/> | <g:Hyperlink ui:field="sortByRelevanceElement"/>
+		 		</div>
 		 		<g:Widget ui:field="paginationNanoElement"/>
 		 	</div>
 		 	<g:SimplePanel styleName="tt-fill" ui:field="postListElement"/>

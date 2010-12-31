@@ -172,6 +172,9 @@ public final class PostSearchDao extends FilteredPostPaginatedDaoBase{
 				case ALPHABETICAL:
 					sortField = new SortField("title_sort",reverse);
 					break;
+				case RELEVANCE:
+					//do nothing
+					break;
 			}
 			if(sortField != null){
 				ftquery.setSort(new org.apache.lucene.search.Sort(sortField));

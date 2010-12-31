@@ -38,12 +38,15 @@ import org.ttdc.gwt.shared.commands.SearchTagsCommand;
 import org.ttdc.gwt.shared.commands.results.SearchPostsCommandResult;
 import org.ttdc.gwt.shared.commands.results.SearchTagsCommandResult;
 import org.ttdc.gwt.shared.commands.types.PostSearchType;
+import org.ttdc.gwt.shared.commands.types.SearchSortBy;
+import org.ttdc.gwt.shared.commands.types.SortDirection;
 import org.ttdc.gwt.shared.util.PaginatedList;
 import org.ttdc.gwt.shared.util.StringUtil;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -65,13 +68,15 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
     @UiField(provided = true) Widget paginationNanoElement;
     @UiField Label searchSummaryDetailElement;
     @UiField Label pageResultMessageElement;
-    
-    @UiField Label postLabelElement;
+    @UiField(provided = true) Hyperlink sortByDateElement;
+    @UiField(provided = true) Hyperlink sortByRelevanceElement;
     
     private final PaginationNanoPanel paginationNanoPanel;
     private final PostCollectionPresenter postCollection;
 	private final PaginationPanel paginationPanel;
 	private HistoryToken lastToken;
+	private HyperlinkPresenter sortByDateLinkPresenter;
+	private HyperlinkPresenter sortByRelevanceLinkPresenter;
     
     @Inject
     public SearchResultsPanel(Injector injector) { 
@@ -81,6 +86,11 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
     	paginationNanoPanel = injector.createPaginationNanoPanel();
     	paginationNanoElement = paginationNanoPanel.getWidget();
     	
+    	sortByDateLinkPresenter = injector.getHyperlinkPresenter();
+    	
+    	sortByRelevanceLinkPresenter = injector.getHyperlinkPresenter();
+    	sortByDateElement = sortByDateLinkPresenter.getHyperlink();
+    	sortByRelevanceElement = sortByRelevanceLinkPresenter.getHyperlink();
     	
     	postCollection = injector.getPostCollectionPresenter();
     	paginationPanel = injector.createPaginationPanel();
@@ -93,11 +103,6 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
     	initWidget(binder.createAndBindUi(this));
     	
     	searchSummaryDetailElement.setText("Loading...");
-    	
-    	postLabelElement.setText("Conversations");
-    	
-    	postLabelElement.setVisible(false);
-    	
     	pageHeaderPanel.init("Search","By keyword, by tag, by date, by person");
 	}
     
@@ -113,6 +118,19 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 		lastToken = token;
 		//int pageNumber = Integer.parseInt(args.getParameter(PAGE_NUMBER_KEY,"1"));
 //		String phrase = token.getParameter(SEARCH_PHRASE_KEY);
+		
+		
+		HistoryToken tokenByDate = new HistoryToken();
+		tokenByDate.load(lastToken);
+		tokenByDate.addParameter(HistoryConstants.SORT_KEY, HistoryConstants.SORT_BYDATE);
+		tokenByDate.setParameter(HistoryConstants.PAGE_NUMBER_KEY, 1);
+		sortByDateLinkPresenter.setToken(tokenByDate, "date");
+		
+		HistoryToken tokenByRelevance = new HistoryToken();
+		tokenByRelevance.load(lastToken);
+		tokenByRelevance.removeParameter(HistoryConstants.SORT_KEY);
+		tokenByRelevance.setParameter(HistoryConstants.PAGE_NUMBER_KEY, 1);
+		sortByRelevanceLinkPresenter.setToken(tokenByRelevance, "relevance");
 		
 		//pageHeaderPanel.getSearchBoxPresenter().setPhrase(phrase); I think that init takes care of this.
 		pageHeaderPanel.getSearchBoxPresenter().addSearchDetailListener(this);
@@ -223,6 +241,8 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 		//searchSummaryDetailElement.setText("TODO fix me! 'performSearchForTopics' Searching for content matching "+phrase+"...");
 		
 //		searchSummaryDetailElement.setText(createSearchMessage(command));
+		
+		setupSearchCommandForSort(token, command);
 		
 		command.setPostSearchType(type); // NOT_REPLIES was broken, check PostSearchDao before using
 
@@ -338,7 +358,9 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 	
 	private void performSearchAllComments(HistoryToken token) {
 		SearchPostsCommand command = createSearchPostsCommand(token);
-		final String phrase = command.getPhrase(); 
+		final String phrase = command.getPhrase();
+		
+		setupSearchCommandForSort(token, command);
 		
 		command.setPostSearchType(PostSearchType.ALL);
 		
@@ -349,6 +371,18 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 		};
 		injector.getService().execute(command, callback);
 		
+	}
+
+
+	private void setupSearchCommandForSort(HistoryToken token,
+			SearchPostsCommand command) {
+		if(token.isParameterEq(HistoryConstants.SORT_KEY, HistoryConstants.SORT_BYDATE)){
+			command.setSortOrder(SearchSortBy.BY_DATE);
+		}
+		else{
+			command.setSortOrder(SearchSortBy.RELEVANCE);
+		}
+		command.setSortDirection(SortDirection.DESC);
 	}
 	
 	private void showPagination(PaginatedList<GPost> results, final HistoryToken topicToken) {
@@ -362,6 +396,10 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 		final HistoryToken token = new HistoryToken();
 		token.setParameter(HistoryConstants.VIEW, HistoryConstants.VIEW_SEARCH_RESULTS);
 		token.setParameter(SEARCH_MODE_KEY,lastToken.getParameter(SEARCH_MODE_KEY)); //For some reason this method used to take this as an arguement?! 6/21/2010
+		if(lastToken.getParameter(HistoryConstants.SORT_DIRECTION_KEY) != null)
+			token.setParameter(HistoryConstants.SORT_DIRECTION_KEY, lastToken.getParameter(HistoryConstants.SORT_DIRECTION_KEY));
+		if(lastToken.getParameter(HistoryConstants.SORT_KEY) != null)
+			token.setParameter(HistoryConstants.SORT_KEY, lastToken.getParameter(HistoryConstants.SORT_KEY));
 		if(StringUtil.notEmpty(phrase))
 			token.setParameter(SEARCH_PHRASE_KEY,phrase);
 		if(lastToken.hasParameter(SEARCH_START_DATE))
@@ -387,13 +425,5 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 		showPagination(results, topicToken);
 		
 		searchSummaryDetailElement.setVisible(false);
-		
-		if(result.getResults().getTotalResults() > 0){
-			postLabelElement.setVisible(true);
-			postLabelElement.setText(label);
-		}
-		else{
-			postLabelElement.setVisible(false);
-		}
 	}
 }

@@ -13,6 +13,8 @@ public interface HistoryConstants {
 	public static final String SEARCH_MODE_IN_ROOT = "inTopic";
 	public static final String SEARCH_MODE_IN_THREAD = "inThread";
 	public static final String SEARCH_MODE_TAG = "tag";
+	public static final String SORT_BYDATE = "date";
+	
 	public static final String SEARCH_CREATOR_ID_KEY = "creatorId";
 	
 	public static final String PAGE_NUMBER_KEY = "pageNumber";
