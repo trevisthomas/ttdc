@@ -3,70 +3,125 @@ package org.ttdc.gwt.server.dao;
 import static org.ttdc.persistence.Persistence.session;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.ttdc.gwt.client.beans.GEntry;
 import org.ttdc.gwt.client.beans.GImage;
 import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.beans.GTag;
+import org.ttdc.gwt.server.beanconverters.ConversionUtils;
+import org.ttdc.gwt.server.util.PostFormatter;
 import org.ttdc.gwt.shared.util.PaginatedList;
 import org.ttdc.gwt.shared.util.StringUtil;
 import org.ttdc.persistence.objects.FullPost;
 
+import com.google.gwt.dev.util.collect.HashMap;
+
 
 public class LatestPostsDaoFast extends FilteredPostPaginatedDaoBase{
 	private int MAX_CONVERSATIONS = 10;
-	private int MAX_FLAT = 2 * MAX_CONVERSATIONS;
+	private int MAX_FLAT = 4 * MAX_CONVERSATIONS;
+	private InboxDao inboxDao = null;
 	
 	
-	public PaginatedList<GPost> loadFlat(final InboxDao inboxDao){
+	public InboxDao getInboxDao() {
+		return inboxDao;
+	}
+
+
+	public void setInboxDao(InboxDao inboxDao) {
+		this.inboxDao = inboxDao;
+	}
+
+
+	public PaginatedList<GPost> loadFlat(){
 		setPageSize(MAX_FLAT);
 		PaginatedList<GPost> results = new PaginatedList<GPost>();
-		
-		results = executeLoadQuery("LatestPostsDaoFast.Flat");
-		
+		results = executeLoadQuery("LatestPostsDaoFast.Flat", false);
 		return results;
 	}
 	
+	public PaginatedList<GPost> loadGrouped(){
+		setPageSize(MAX_CONVERSATIONS);
+		PaginatedList<GPost> results = new PaginatedList<GPost>();
+		results = executeLoadQuery("LatestPostsDaoFast.Grouped", true);
+		return results;
+	}
 	
 	@SuppressWarnings("unchecked")
-	private PaginatedList<GPost> executeLoadQuery(String query) {
+	private PaginatedList<GPost> executeLoadQuery(String query, boolean grouped) {
 		PaginatedList<GPost> results;
+		List<String> ids;
+		long count;
+		long filterMask = buildFilterMask(getFilterFlags());
 		if(getPageSize() > 0){
-			List<GPost> list;
-			List<String> ids;
-			long count = (Long)session().getNamedQuery(query+"Count")
-				.setParameter("filterMask", buildFilterMask(getFilterFlags()))
+			count = (Long)session().getNamedQuery(query+"Count")
+				.setParameter("filterMask", filterMask)
 				.setParameterList("threadIds", getFilterThreadIds())
 				.uniqueResult();
 			
 			
 			ids = session().getNamedQuery(query)
-				.setParameter("filterMask", buildFilterMask(getFilterFlags()))
+				.setParameter("filterMask", filterMask)
 				.setParameterList("threadIds", getFilterThreadIds())
 				.setFirstResult(calculatePageStartIndex())
 				.setMaxResults(getPageSize()).list();
-			
-			list = fetchPostsForIdsFlat(ids);
-			
-			results = DaoUtils.createResults(this, list, count);
 		}
 		else{
-//			List<GPost> list;
-//			List<String> ids;
-//			ids = session().getNamedQuery(query)
-//				.setParameter("filterMask", buildFilterMask(getFilterFlags()))
-//				.setParameterList("threadIds", getFilterThreadIds())
-//				.list();
-//			results = DaoUtils.createResults(this, list, list.size());
+			ids = session().getNamedQuery(query)
+				.setParameter("filterMask", filterMask)
+				.setParameterList("threadIds", getFilterThreadIds())
+				.list();
 			
-			results = null;
+			count = ids.size();
 		}
+		
+		List<GPost> list;
+		if(grouped){
+			list = fetchPostsForIdsGrouped(ids, filterMask);
+		}
+		else{
+			list = fetchPostsForIdsFlat(ids);
+		}
+		
+		results = DaoUtils.createResults(this, list, count);
 		
 		return results;
 	}
 
+	@SuppressWarnings("unchecked")
+	private List<GPost> fetchPostsForIdsGrouped(List<String> ids, long filterMask) {
+		List<FullPost> fullPosts;
+		fullPosts = session().getNamedQuery("FullPost.groupedPosts")
+			.setParameterList("postIds", ids)
+			.setParameter("filterMask",filterMask)
+			.list();
+		
+		List<GPost> gPosts = digestFullPostsToGrouped(fullPosts);
+		Collections.sort(gPosts, new GPostByPostIdReferenceComparator(ids));
+		return gPosts;
+	}
+
+	private List<GPost> digestFullPostsToGrouped(List<FullPost> fullPosts) {
+		Map<String, GPost> threads = new HashMap<String, GPost>();
+		
+		for(FullPost fp : fullPosts){
+			GPost p = crackThatPost(fp);
+			
+			if(p.isThreadPost()){
+				threads.put(p.getPostId(),p);
+			}
+			else{
+				p.setSuggestSummary(true);
+				threads.get(p.getThread().getPostId()).getPosts().add(p);
+			}
+		}
+		List<GPost> list = new ArrayList<GPost>(threads.values());
+		return list;
+	}
 
 	@SuppressWarnings("unchecked")
 	private List<GPost> fetchPostsForIdsFlat(List<String> ids) {
@@ -77,7 +132,7 @@ public class LatestPostsDaoFast extends FilteredPostPaginatedDaoBase{
 		
 		
 		List<GPost> gPosts = digestFullPostsToFlat(fullPosts);
-		
+		Collections.sort(gPosts, new GPostByPostIdReferenceComparator(ids));
 		return gPosts;
 	}
 
@@ -89,7 +144,8 @@ public class LatestPostsDaoFast extends FilteredPostPaginatedDaoBase{
 		}
 		return list;
 	}
-
+	
+	
 
 	private GPost crackThatPost(FullPost fp) {
 		GPost gp = new GPost();
@@ -99,6 +155,8 @@ public class LatestPostsDaoFast extends FilteredPostPaginatedDaoBase{
 		gp.setDate(fp.getDate());
 		gp.setEditDate(fp.getEditDate());
 		gp.setRootPost(fp.getRootId() == null);
+		gp.setRoot(crackThatRootPost(fp));
+		gp.setThread(crackThatThreadPost(fp));
 		gp.setThreadPost(fp.getPostId().equals(fp.getThreadId()));
 		gp.setReplyCount(fp.getReplyCount());
 		gp.setMass(fp.getMass());
@@ -110,9 +168,25 @@ public class LatestPostsDaoFast extends FilteredPostPaginatedDaoBase{
 		gp.setParentPostCreatorId(fp.getParentPostCreatorId());
 		gp.setTitleTag(crackThatTitleTag(fp));
 		gp.setAvgRatingTag(crackThatRatingTag(fp));
-		
+		gp.setPath(fp.getPath());
+		if(inboxDao != null){
+			gp.setRead(inboxDao.isRead(fp.getDate()));
+		}
 		return gp;
 	}
+	
+	private GPost crackThatThreadPost(FullPost fp) {
+		GPost gp = new GPost();
+		gp.setPostId(fp.getThreadId());
+		return gp;
+	}
+	
+	private GPost crackThatRootPost(FullPost fp) {
+		GPost gp = new GPost();
+		gp.setPostId(fp.getRootId());
+		return gp;
+	}
+
 
 	private GTag crackThatRatingTag(FullPost fp) {
 		if(StringUtil.empty(fp.getTitleValue()))
@@ -126,7 +200,7 @@ public class LatestPostsDaoFast extends FilteredPostPaginatedDaoBase{
 	private GTag crackThatTitleTag(FullPost fp) {
 		GTag tag = new GTag();
 		if(StringUtil.notEmpty(fp.getRootPublishYear())){
-			tag.setValue(fp.getTitleValue() + "("+fp.getRootPublishYear()+")");
+			tag.setValue(fp.getTitleValue() + " ("+fp.getRootPublishYear()+")");
 		}
 		else{
 			tag.setValue(fp.getTitleValue());
@@ -141,15 +215,23 @@ public class LatestPostsDaoFast extends FilteredPostPaginatedDaoBase{
 		person.setLogin(fp.getCreatorLogin());
 		person.setPersonId(fp.getCreatorId());
 		person.setImage(image);
-		image.setName(fp.getCreatorImageName());
-		image.setThumbnailName(fp.getCreatorImageThumbnailName());
+		image.setHeight(50);
+		image.setWidth(50);
+		if(!StringUtil.empty(fp.getCreatorImageName())){
+			image.setName(fp.getCreatorImageName());
+			image.setThumbnailName(fp.getCreatorImageThumbnailName());
+		}
+		else{
+			image.setName(InitConstants.DEFAULT_AVATAR.getName());
+			image.setThumbnailName(FullPost.translateImageNameToThumbnailName(InitConstants.DEFAULT_AVATAR.getName()));
+		}
 		return person;
 	}
 	
 	private GEntry crackThatEntry(FullPost fp){
 		GEntry entry = new GEntry();
-		entry.setBody(fp.getEntryBody());
-		entry.setSummary(fp.getEntrySummary());
+		entry.setBody(PostFormatter.getInstance().format(fp.getEntryBody()));
+		entry.setSummary(ConversionUtils.preparePostSummaryForDisplay(fp.getEntrySummary()));
 		return entry;
 	}
 

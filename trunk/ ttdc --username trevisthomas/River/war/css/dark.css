@@ -14,6 +14,7 @@ body{ color: #ccc; background-color: black;}
 textarea,
 input{ color: #eee; background-color: black;}
 
+.tt-plain-post a,
 .tt-post-container-header a,
 .tt-post-fetch-more a,
 .tt-paginator-nano a,
@@ -32,6 +33,7 @@ input{ color: #eee; background-color: black;}
 .tt-post-summary a,
 .tt-post-expanded-content a{text-decoration: none; color: #ccc;}
 	
+.tt-plain-post a:link,	
 .tt-post-container-header a:link,
 .tt-post-fetch-more a:link,	
 .tt-paginator-nano a:link,
@@ -50,6 +52,7 @@ input{ color: #eee; background-color: black;}
 .tt-post-summary a:link,
 .tt-post-expanded-content a:link {text-decoration: none; color: #ccc;}
 
+.tt-plain-post a:visited,
 .tt-post-container-header a:visited,
 .tt-post-fetch-more a:visited,
 .tt-paginator-nano a:visited,
@@ -68,6 +71,7 @@ input{ color: #eee; background-color: black;}
 .tt-post-summary a:visited,
 .tt-post-expanded-content a:visited {text-decoration: none; color: #ccc;}
 
+.tt-plain-post a:hover,
 .tt-post-container-header a:hover,
 .tt-post-fetch-more a:hover,
 .tt-paginator-nano a:hover,
@@ -86,6 +90,7 @@ input{ color: #eee; background-color: black;}
 .tt-post-summary a:hover,
 .tt-post-expanded-content a:hover  {text-decoration: underline; color: white;}
 
+.tt-plain-post a:active,
 .tt-post-container-header a:active,
 .tt-post-fetch-more a:active,
 .tt-paginator-nano a:active,
@@ -330,10 +335,10 @@ input{ color: #eee; background-color: black;}
 
 
 .gwt-SuggestBoxPopup .item { color: #424242;}
-.gwt-SuggestBoxPopup .item-selected { background: #b7d6f6; }
-.gwt-SuggestBoxPopup .suggestPopupContent { background: white;}
+.gwt-SuggestBoxPopup .item-selected { background: #790e0e; color: black;}
+.gwt-SuggestBoxPopup .suggestPopupContent { background: black;}
 
-.tt-plain-post{border-color: grey; background: #f5f5f5;}
+.tt-plain-post{border-color: grey; background: #333;}
 
 .tt-post-child-noHover{border-color: #000 #333 #333 #000;}
 

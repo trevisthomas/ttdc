@@ -18,28 +18,38 @@ import org.ttdc.gwt.shared.util.StringUtil;
 
 @NamedQueries({
 	@NamedQuery(name="LatestPostsDaoFast.Flat", query="" +
-			"SELECT post.postId FROM Post post " +
-			"WHERE post.root.postId NOT IN (:threadIds) " +
-			"AND bitwise_and( post.metaMask, :filterMask ) = 0  " +
-			"AND post.parent is not null "+
-			"ORDER BY post.date DESC"),
-			
+		"SELECT post.postId FROM Post post " +
+		"WHERE post.root.postId NOT IN (:threadIds) " +
+		"AND bitwise_and( post.metaMask, :filterMask ) = 0  " +
+		"AND post.parent is not null "+
+		"ORDER BY post.date DESC"),
+		
 	@NamedQuery(name="LatestPostsDaoFast.FlatCount", query="" +
 		"SELECT count(post.postId) FROM Post post " +
 		"WHERE post.root.postId NOT IN (:threadIds) AND " +
 		"bitwise_and( post.metaMask, :filterMask ) = 0" ),	
+		
+	@NamedQuery(name="LatestPostsDaoFast.Grouped", query="" +
+		"SELECT post.postId FROM Post post " +
+		"WHERE post.threadReplyDate IS NOT NULL AND " +
+		"post.root.postId NOT IN (:threadIds)" +
+		"AND bitwise_and( post.metaMask, :filterMask ) = 0 " +
+		"ORDER BY post.threadReplyDate DESC"),
 			
+	@NamedQuery(name="LatestPostsDaoFast.GroupedCount", query="" +
+		"SELECT count(post.postId) FROM Post post WHERE post.threadReplyDate IS NOT NULL " +
+		"AND post.root.postId NOT IN (:threadIds)" +
+		"AND bitwise_and( post.metaMask, :filterMask ) = 0 "),				
 })
 
 @NamedNativeQueries({
-	//Trevis, once every thing is working try to use the day/month + thread guid as the daily unique id for cross db compatibilityness
 	@NamedNativeQuery(
 		name="FullPost.flatPosts", query=""+
 			"SELECT p.guid as postId, i.name imageName, i.height imageHeight, i.width imageWidth, e.body entryBody, e.summary entrySummary, " +
 			"p.date date, p.EDIT_DATE editDate, p.REPLY_COUNT replyCount, p.MASS mass, p.ROOT_GUID rootId, p.THREAD_GUID threadId, p.PARENT_GUID parentId, " +
 			"p.PERSON_GUID_CREATOR creatorId, c.login creatorLogin, ci.name creatorImageName, p.URL url, p.PUBLISH_YEAR publishYear, " +
 			"parentCreator.GUID parentPostCreatorId, parentCreator.LOGIN parentPostCreator, tt.VALUE titleValue, avgr.VALUE ratingValue, " +
-			"root.PUBLISH_YEAR rootPublishYear"+
+			"root.PUBLISH_YEAR rootPublishYear, p.path path"+
 			" FROM POST p "+
 			"INNER JOIN ENTRY e on e.GUID = p.LATEST_ENTRY_GUID "+
 			"INNER JOIN PERSON c on c.GUID = p.PERSON_GUID_CREATOR " +
@@ -52,8 +62,29 @@ import org.ttdc.gwt.shared.util.StringUtil;
 			"LEFT OUTER JOIN IMAGE i on i.GUID = p.IMAGE_GUID "+
 			"WHERE p.guid in (:postIds)",
 			resultSetMapping="fullPost"
-	)
-	
+	),
+	@NamedNativeQuery(
+		name="FullPost.groupedPosts", query=""+
+			"SELECT p.guid as postId, i.name imageName, i.height imageHeight, i.width imageWidth, e.body entryBody, e.summary entrySummary, " +
+			"p.date date, p.EDIT_DATE editDate, p.REPLY_COUNT replyCount, p.MASS mass, p.ROOT_GUID rootId, p.THREAD_GUID threadId, p.PARENT_GUID parentId, " +
+			"p.PERSON_GUID_CREATOR creatorId, c.login creatorLogin, ci.name creatorImageName, p.URL url, p.PUBLISH_YEAR publishYear, " +
+			"parentCreator.GUID parentPostCreatorId, parentCreator.LOGIN parentPostCreator, tt.VALUE titleValue, avgr.VALUE ratingValue, " +
+			"root.PUBLISH_YEAR rootPublishYear, p.path path"+
+			" FROM POST p "+
+			"INNER JOIN ENTRY e on e.GUID = p.LATEST_ENTRY_GUID "+
+			"INNER JOIN PERSON c on c.GUID = p.PERSON_GUID_CREATOR " +
+			"INNER JOIN TAG tt on p.TAG_GUID_TITLE = tt.GUID " +
+			"LEFT OUTER JOIN POST root on p.ROOT_GUID = root.GUID " +
+			"LEFT OUTER JOIN POST parent on p.PARENT_GUID = parent.GUID " +
+			"LEFT OUTER JOIN PERSON parentCreator on parent.PERSON_GUID_CREATOR = parentCreator.GUID "+
+			"LEFT OUTER JOIN IMAGE ci on c.IMAGE_GUID = ci.GUID "+
+			"LEFT OUTER JOIN TAG avgr on p.TAG_GUID_AVG_RATING = avgr.GUID "+
+			"LEFT OUTER JOIN IMAGE i on i.GUID = p.IMAGE_GUID "+
+			"WHERE p.THREAD_GUID in (:postIds) " +
+			"AND p.META_MASK & (:filterMask) = 0 " +
+			"ORDER BY p.date",
+			resultSetMapping="fullPost"
+	),
 	
 })
 
@@ -83,7 +114,9 @@ import org.ttdc.gwt.shared.util.StringUtil;
 	        @FieldResult(name="parentPostCreatorId", column="parentPostCreatorId"),
 	        @FieldResult(name="titleValue", column="titleValue"),
 	        @FieldResult(name="ratingValue", column="ratingValue"),
-	        @FieldResult(name="rootPublishYear", column="rootPublishYear")
+	        @FieldResult(name="rootPublishYear", column="rootPublishYear"),
+	        @FieldResult(name="path", column="path")
+	        
     }))
 })
 
@@ -117,6 +150,7 @@ public class FullPost {
 	private String titleValue;
 	private String ratingValue;
 	private String rootPublishYear;
+	private String path;
 	
 	@Transient
 	public String getCreatorImageThumbnailName(){
@@ -332,6 +366,14 @@ public class FullPost {
 
 	public void setRootPublishYear(String rootPublishYear) {
 		this.rootPublishYear = rootPublishYear;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
 	}
 	
 

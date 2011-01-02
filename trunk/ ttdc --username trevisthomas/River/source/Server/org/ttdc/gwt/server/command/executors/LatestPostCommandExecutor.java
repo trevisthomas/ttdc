@@ -6,7 +6,9 @@ import org.ttdc.gwt.server.command.CommandExecutor;
 import org.ttdc.gwt.server.command.executors.utils.ExecutorHelpers;
 import org.ttdc.gwt.server.command.executors.utils.PaginatedResultConverters;
 import org.ttdc.gwt.server.dao.EarmarkedPostDao;
+import org.ttdc.gwt.server.dao.InboxDao;
 import org.ttdc.gwt.server.dao.LatestPostsDao;
+import org.ttdc.gwt.server.dao.LatestPostsDaoFast;
 import org.ttdc.gwt.server.dao.TagDao;
 import org.ttdc.gwt.shared.commands.LatestPostsCommand;
 import org.ttdc.gwt.shared.commands.results.PaginatedListCommandResult;
@@ -31,7 +33,7 @@ public class LatestPostCommandExecutor extends CommandExecutor<PaginatedListComm
 				result = loadConversations(cmd);
 				break;
 			case LATEST_FLAT:
-				result = loadFlat(cmd);
+				result = loadFlatFuckHibernate(cmd);
 				break;
 			case LATEST_NESTED:
 				result = loadNested(cmd);
@@ -43,7 +45,7 @@ public class LatestPostCommandExecutor extends CommandExecutor<PaginatedListComm
 				result = loadEarmarks(cmd);
 				break;
 			case LATEST_GROUPED:
-				result = loadGrouped(cmd);	
+				result = loadGroupedFuckHibernate(cmd);	
 				break;
 			default:
 				throw new RuntimeException("LatestPostCommandExecutor doesnt understand that action type");
@@ -70,28 +72,19 @@ public class LatestPostCommandExecutor extends CommandExecutor<PaginatedListComm
 		LatestPostsDao dao = new LatestPostsDao();
 		dao.setCurrentPage(cmd.getPageNumber());
 		Person p = getPerson();
-//		if(!p.isNwsEnabled()){
-//			dao.addFlagFilter(PostFlag.NWS);
-//		}
-//		
-//		if(!p.isPrivateAccessAccount()){
-//			dao.addFlagFilter(PostFlag.PRIVATE);
-//		}
-		
 		dao.setFilterFlags(ExecutorHelpers.createFlagFilterListForPerson(p));
-
-		
-		
 		dao.addFilterThreadIds(p.getFrontPageFilteredThreadIds());
 		return dao;
 	}
 	
-	private LatestPostsDao getLatestPostDaoWithPersonalFilterFuckHibernate(LatestPostsCommand cmd) {
-		LatestPostsDao dao = new LatestPostsDao();
+	private LatestPostsDaoFast getLatestPostDaoWithPersonalFilterFuckHibernate(LatestPostsCommand cmd) {
+		LatestPostsDaoFast dao = new LatestPostsDaoFast();
 		dao.setCurrentPage(cmd.getPageNumber());
 		Person p = getPerson();
+		InboxDao inboxDao = new InboxDao(p);
 		dao.setFilterFlags(ExecutorHelpers.createFlagFilterListForPerson(p));
 		dao.addFilterThreadIds(p.getFrontPageFilteredThreadIds());
+		dao.setInboxDao(inboxDao);
 		return dao;
 	}
 
@@ -136,6 +129,18 @@ public class LatestPostCommandExecutor extends CommandExecutor<PaginatedListComm
 		return new PaginatedListCommandResult<GPost>(gResults);
 	}
 	
+	private PaginatedListCommandResult<GPost> loadGroupedFuckHibernate(LatestPostsCommand cmd) {
+//		LatestPostsDao dao = getLatestPostDaoWithPersonalFilter(cmd);
+//		
+//		PaginatedList<Post> results = dao.loadGrouped();
+//		PaginatedList<GPost> gResults = PaginatedResultConverters.convertSearchResultsNested(results, getPerson());
+//		return new PaginatedListCommandResult<GPost>(gResults);
+		
+		LatestPostsDaoFast dao = getLatestPostDaoWithPersonalFilterFuckHibernate(cmd);
+		PaginatedList<GPost> gResults = dao.loadGrouped();
+		return new PaginatedListCommandResult<GPost>(gResults);
+	}
+	
 	private PaginatedListCommandResult<GPost> loadFlat(LatestPostsCommand cmd) {
 		LatestPostsDao dao = getLatestPostDaoWithPersonalFilter(cmd);
 		PaginatedList<Post> results = dao.loadFlat();
@@ -144,9 +149,8 @@ public class LatestPostCommandExecutor extends CommandExecutor<PaginatedListComm
 	}
 	
 	private PaginatedListCommandResult<GPost> loadFlatFuckHibernate(LatestPostsCommand cmd) {
-		LatestPostsDao dao = getLatestPostDaoWithPersonalFilter(cmd);
-		PaginatedList<Post> results = dao.loadFlat();
-		PaginatedList<GPost> gResults = PaginatedResultConverters.convertSearchResults(results, getPerson());
+		LatestPostsDaoFast dao = getLatestPostDaoWithPersonalFilterFuckHibernate(cmd);
+		PaginatedList<GPost> gResults = dao.loadFlat();
 		return new PaginatedListCommandResult<GPost>(gResults);
 	}
 

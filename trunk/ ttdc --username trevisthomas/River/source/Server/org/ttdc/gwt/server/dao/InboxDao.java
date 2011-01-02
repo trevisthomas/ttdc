@@ -120,6 +120,10 @@ public class InboxDao extends FilteredPostPaginatedDaoBase{
 		return post.getDate().before(getLastReadDate());
 		//return false;
 	}
+	
+	public boolean isRead(Date date) {
+		return date.before(getLastReadDate());
+	}
 
 	public void markSiteRead() {
 		session().createQuery("DELETE FROM InboxCache i WHERE i.person.personId=:personId").setString("personId", person.getPersonId()).executeUpdate();

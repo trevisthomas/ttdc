@@ -5,26 +5,34 @@
 	xmlns:t='urn:import:org.ttdc.gwt.client.presenters.util'
 	xmlns:u='urn:import:org.ttdc.gwt.client.uibinder.post'>
 	<g:HTMLPanel>
-		<g:FocusPanel ui:field="hoverDivElement">
-		<g:HTMLPanel styleName="tt-post-child" ui:field="outerElement">
+		<table>
+			<tr>
+				<td width="40px">
+					<g:Widget styleName="tt-avatar-large" ui:field="avatarElement" />
+				</td>
+				<td>
+					<g:FocusPanel ui:field="hoverDivElement">
+					<g:HTMLPanel styleName="tt-post-child" ui:field="outerElement">
+						<div class="tt-child-post-header">
+							<u:PostDetailPanel ui:field="postDetailPanelElement" />
+						</div>
+						<div class="tt-child-post-content" >
+							<g:SimplePanel ui:field="inReplyPostElement"/>
+							<span class="tt-post-body tt-text-normal" ui:field="bodyElement" />
+						</div>
+						<div class="tt-fill tt-text-right tt-text-mini">
+							
+						</div>
+						<div class="tt-post-footer">
+							<g:SimplePanel ui:field="likesElement"></g:SimplePanel>
+							<g:Widget ui:field="tagsElement"></g:Widget>
+						</div>
+					</g:HTMLPanel>
+					</g:FocusPanel>
+				</td>
+			</tr>
+		</table>
 		
-			<div class="tt-child-post-header">
-				<u:PostDetailPanel ui:field="postDetailPanelElement" />
-			</div>
-			<div class="tt-child-post-content" >
-				<g:SimplePanel ui:field="inReplyPostElement"/>
-				<span class="tt-post-body tt-text-normal" ui:field="bodyElement" />
-			</div>
-			<div class="tt-fill tt-text-right tt-text-mini">
-				
-			</div>
-			<div class="tt-post-footer">
-				<g:SimplePanel ui:field="likesElement"></g:SimplePanel>
-				<g:Widget ui:field="tagsElement"></g:Widget>
-			</div>
-			
-		</g:HTMLPanel>
-		</g:FocusPanel>
 		<g:SimplePanel ui:field="commentElement" />
 	</g:HTMLPanel>
 </ui:UiBinder>

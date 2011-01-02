@@ -45,7 +45,7 @@ public class ChildPostPanel extends Composite implements PostEventListener, Post
     
     private HyperlinkPresenter creatorLinkPresenter;
     private HyperlinkPresenter replyTocreatorLinkPresenter;
-    private ImagePresenter imagePresenter;
+//    private ImagePresenter imagePresenter;
     private HyperlinkPresenter createDatePresenter;
     private TagListPanel tagListPanel;
     
@@ -55,22 +55,27 @@ public class ChildPostPanel extends Composite implements PostEventListener, Post
     @UiField SimplePanel likesElement;
     @UiField (provided = true) Widget tagsElement ;
     @UiField SimplePanel inReplyPostElement;
+    @UiField(provided = true) Widget avatarElement;
     
 	@UiField SpanElement bodyElement;
 	@UiField SimplePanel commentElement;
 	private Injector injector;
 	private GPost post;
+	private ImagePresenter creatorAvatorImagePresenter;
 	
 	@Inject
 	public ChildPostPanel(Injector injector) {
 		this.injector = injector;
-		imagePresenter = injector.getImagePresenter();
-    	
-    	imagePresenter = injector.getImagePresenter();
+//		imagePresenter = injector.getImagePresenter();
+//    	
+//    	imagePresenter = injector.getImagePresenter();
     	creatorLinkPresenter = injector.getHyperlinkPresenter();
     	createDatePresenter = injector.getHyperlinkPresenter();
     	tagListPanel = injector.createTagListPanel();
     	replyTocreatorLinkPresenter = injector.getHyperlinkPresenter();
+    	creatorAvatorImagePresenter = injector.getImagePresenter();
+    	
+    	avatarElement = creatorAvatorImagePresenter.getWidget();
     	
 //    	avatarElement = imagePresenter.getWidget();
     	tagsElement = tagListPanel;
@@ -130,12 +135,17 @@ public class ChildPostPanel extends Composite implements PostEventListener, Post
 		
 		bodyElement.setInnerHTML(post.getEntry());
 		
+		creatorAvatorImagePresenter.useThumbnail(true);
+		creatorAvatorImagePresenter.setImage(post.getCreator().getImage(), post.getCreator().getLogin(), 30, 30);
+		creatorAvatorImagePresenter.init();
+		
+		
 //		imagePresenter.setImage(post.getCreator().getImage(), post.getCreator().getLogin(), 20, 20);
 //		avatarElement.setWidth("20px");
 //		avatarElement.setHeight("20px");
 		
-		imagePresenter.useThumbnail(true);
-		imagePresenter.init();
+//		imagePresenter.useThumbnail(true);
+//		imagePresenter.init();
 		createDatePresenter.setDate(post.getDate(), DateFormatUtil.longDateFormatter);
 		creatorLinkPresenter.setPerson(post.getCreator());
 		creatorLinkPresenter.init();
