@@ -36,16 +36,9 @@ public class LatestPostsDaoFastTest {
 	@Test
 	public void flatPostsFastTest(){
 		Persistence.beginSession();
-//		Person person = PersonDao.loadPerson(Helpers.personIdMatt);
-//		InboxDao dao = new InboxDao(person);
-//		PaginatedList<GPost> results = dao.loadFlat();
 		
 		LatestPostsDaoFast dao = new LatestPostsDaoFast();
-		
-		InboxDao inboxDao = null;
-		
-		PaginatedList<GPost> results = dao.loadFlat(inboxDao);
-		
+		PaginatedList<GPost> results = dao.loadFlat();		
 		Persistence.commit();
 		
 		assertTrue(results.getList().size() > 0);
@@ -66,7 +59,39 @@ public class LatestPostsDaoFastTest {
 				assertTrue(post.getImage().getWidth() > 0);
 			}
 		}
+	}
+	
+	@Test
+	public void groupedPostsFastTest(){
+		Persistence.beginSession();
 		
+		LatestPostsDaoFast dao = new LatestPostsDaoFast();
+		PaginatedList<GPost> results = dao.loadGrouped();		
+		Persistence.commit();
 		
+		assertTrue(results.getList().size() > 0);
+//		log.info("Total inbox size: "+results.getTotalResults());
+		for(GPost post : results.getList()){
+			log.info(post.getTitle() + " (" + post.getPosts().size() + ") " +  post.getEntry());
+			
+			assertNotNull(post.getDate());
+			assertNotNull(post.getCreator());
+			assertNotNull(post.getCreator().getImage());
+			assertNotNull(post.getCreator().getImage().getThumbnailName());
+			
+			assertTrue(StringUtil.notEmpty(post.getTitle()));
+			
+			if(post.getImage() != null){
+				assertNotNull(post.getImage().getThumbnailName());
+				assertTrue(post.getImage().getHeight() > 0);
+				assertTrue(post.getImage().getWidth() > 0);
+			}
+			
+			GPost prev = post;
+			for(GPost gp : post.getPosts()){
+				assertTrue(prev.getDate().before(gp.getDate()));
+				prev = gp;
+			}
+		}
 	}
 }

@@ -22,7 +22,7 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 .tt-home-left{ width: 220px;}
 .tt-home-tabContainer{margin: 4px 0 10px 0; width: 800px;}
 
-.tt-post-child{margin: 1px 1px 1px 10px; border-width: 1px; border-style:solid; width:540px;}
+.tt-post-child{margin: 1px 1px 1px 0px; border-width: 1px; border-style:solid; width:510px;}
 .tt-forum-post{margin: 1px 1px 4px; border-width: 0 0 1px 0; border-style: solid; }
 
 .tt-post{width: 550px; margin-bottom: 2px; border:1px solid; overflow: auto;}
@@ -39,7 +39,7 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 
 .tt-plain-post-date{margin-top: -1px;}
 
-
+.tt-plain-post-header,
 .tt-post-detail,
 .tt-plain-post-creator,
 .tt-comment-editor-info,
@@ -53,7 +53,6 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 	
 .tt-user-list-table,	
 .tt-forum-names,
-.tt-plain-post-header,
 .tt-traffic-login,
 .tt-reviewSummary,
 .tt-options-button,

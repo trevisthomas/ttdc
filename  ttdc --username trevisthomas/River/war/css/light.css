@@ -13,6 +13,7 @@ body{ color: #222; background-color: #eee;}
 
 .tt-message-textbox-disabled{ color: #ddd;}
 
+.tt-plain-post a,
 .tt-post-container-header a,
 .tt-post-fetch-more a,	
 .tt-paginator-nano a,
@@ -31,6 +32,7 @@ body{ color: #222; background-color: #eee;}
 .tt-post-summary a,
 .tt-post-expanded-content a{text-decoration: none; color: #113aa4;}
 	
+.tt-plain-post a:link,	
 .tt-post-container-header a:link,
 .tt-post-fetch-more a:link,		
 .tt-paginator-nano a:link,
@@ -49,6 +51,7 @@ body{ color: #222; background-color: #eee;}
 .tt-post-summary a:link,
 .tt-post-expanded-content a:link {text-decoration: none; color: #113aa4;}
 
+.tt-plain-post a:visited,
 .tt-post-container-header a:visited,
 .tt-post-fetch-more a:visited,	
 .tt-paginator-nano a:visited,
@@ -67,6 +70,7 @@ body{ color: #222; background-color: #eee;}
 .tt-post-summary a:visited,
 .tt-post-expanded-content a:visited {text-decoration: none; color: #113aa4;}
 
+.tt-plain-post a:hover,
 .tt-post-container-header a:hover,
 .tt-post-fetch-more a:hover,	
 .tt-paginator-nano a:hover,
@@ -85,6 +89,7 @@ body{ color: #222; background-color: #eee;}
 .tt-post-summary a:hover,
 .tt-post-expanded-content a:hover  {text-decoration: underline; color: blue;}
 
+.tt-plain-post a:active,
 .tt-post-container-header a:active,
 .tt-post-fetch-more a:active,	
 .tt-paginator-nano a:active,
