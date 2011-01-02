@@ -12,6 +12,9 @@ public class AssociationPostTagCommand extends Command<AssociationPostTagResult>
 	private String associationId;
 	private Mode mode;
 	private GTag tag;
+	private String userName;
+	private String password;
+	
 	public void setAssociationId(String associationId) {
 		this.associationId = associationId;
 	}
@@ -70,6 +73,22 @@ public class AssociationPostTagCommand extends Command<AssociationPostTagResult>
 
 	public String getPostId() {
 		return postId;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	
 	

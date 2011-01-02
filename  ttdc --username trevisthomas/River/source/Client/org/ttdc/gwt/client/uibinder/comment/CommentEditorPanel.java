@@ -21,6 +21,7 @@ import org.ttdc.gwt.client.presenters.comments.EmbedContentPopupSource;
 import org.ttdc.gwt.client.presenters.comments.LinkDialog;
 import org.ttdc.gwt.client.presenters.comments.LinkDialogSource;
 import org.ttdc.gwt.client.presenters.movies.MovieRatingPresenter;
+import org.ttdc.gwt.client.presenters.users.LoginPresenter;
 import org.ttdc.gwt.client.presenters.util.ClickableIconPanel;
 import org.ttdc.gwt.client.presenters.util.MyListBox;
 import org.ttdc.gwt.client.presenters.util.PresenterHelpers;
@@ -42,6 +43,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
@@ -118,6 +120,7 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 	@UiField(provided = true) ClickableIconPanel previewButtonElement = createGraphicButton("Preview");
 	@UiField(provided = true) ClickableIconPanel cancelButtonElement = createGraphicButton("Cancel");
 	@UiField(provided = true) ClickableIconPanel editButtonElement = createGraphicButton("Update");
+	@UiField(provided = true) ClickableIconPanel loginButtonElement = createGraphicButton("Login");
 	
 	@UiField CheckBox deletedCheckBoxElement;
 	@UiField CheckBox reviewCheckBoxElement;
@@ -158,18 +161,35 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 		topicLabelElement.setVisible(false);
 		topicSuggestionHolderElement.setVisible(false);
 		
+		textAreaElement.setFocus(true);
 		
-		
-		if(oldInstance != null){
-			oldInstance.removeFromParent();
+		try{
+			if(oldInstance != null){
+				oldInstance.removeFromParent();
+			}
+		}
+		catch(IllegalStateException e){
+			throw new RuntimeException("Illegal state has been found! Caused by ComentEditorPanel!", e);
 		}
 		oldInstance = this;
+		
+	}
+	
+	@UiHandler("loginButtonElement")
+	public void onClickLogin(ClickEvent event){
+		LoginPresenter loginPresenter = injector.getLoginPresenter();
+		loginPresenter.loginInNow(loginTextElement.getText(), passwordTextElement.getText());
+	}
+	
+	public void setFocus() {
+		textAreaElement.setFocus(true);
 	}
 	
 	@Override
 	public void onPersonEvent(PersonEvent event) {
 		if(event.is(PersonEventType.USER_CHANGED)){
 			init(mode,post);
+			textAreaElement.setFocus(true);
 		}
 	}
 	
@@ -306,6 +326,7 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 			ratingElement.clear();
 			ratingElement.add(movieRatingPresenter.getWidget());
 			movieRatingPresenter.setRatablePost(post);
+			movieRatingPresenter.setAutohide(false);
 		}else{
 //			ratingElement.clear();
 //			ratingElement.setVisible(false);

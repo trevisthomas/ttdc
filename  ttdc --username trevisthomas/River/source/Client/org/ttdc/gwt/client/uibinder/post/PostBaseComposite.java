@@ -518,6 +518,7 @@ abstract public class PostBaseComposite extends Composite{
 		commentEditor.init(CommentEditorPanel.Mode.CREATE, post);
 		commentElement.clear();
 		commentElement.add(commentEditor);
+		commentEditor.setFocus();
 	}
 	
 	protected void showMovieEditor() {
@@ -525,6 +526,7 @@ abstract public class PostBaseComposite extends Composite{
 		NewMoviePanel newMoviePanel = injector.createNewMoviePanel();
 		newMoviePanel.init(post);
 		commentElement.add(newMoviePanel);
+		newMoviePanel.setFocus();
 	}
 
 	
@@ -551,6 +553,7 @@ abstract public class PostBaseComposite extends Composite{
 				commentEditor.init(CommentEditorPanel.Mode.EDIT, result.getPost());
 				commentElement.clear();
 				commentElement.add(commentEditor);
+				commentEditor.setFocus();
 			}
 			@Override
 			public void onFailure(Throwable caught) {

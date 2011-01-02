@@ -113,7 +113,6 @@ input{ color: #eee; background-color: black;}
 
 .tt-forum-names,
 .tt-plain-post-close,
-.tt-child-post-inReplyAnchor,
 .tt-post-fetch-more,
 .tt-active-post-links-hover{color:#113aa4;}
 
@@ -176,7 +175,7 @@ input{ color: #eee; background-color: black;}
 .tt-post-detail a {text-decoration: none; color: grey;}
 .tt-post-detail a:link {text-decoration: none; color: grey;}
 .tt-post-detail a:visited{text-decoration: none; color: grey;}
-.tt-post-detail a:hover {text-decoration: underline; color: #222;}
+.tt-post-detail a:hover {text-decoration: underline; color: #eee;}
 .tt-post-detail a:active{color: black;}
 	
 .tt-forum-post{border-color: black;}

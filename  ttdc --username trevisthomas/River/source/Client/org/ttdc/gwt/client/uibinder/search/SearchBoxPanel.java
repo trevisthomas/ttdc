@@ -397,6 +397,7 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 		}
 		else{
 			showPopup(commentEditorPanel);	
+			commentEditorPanel.setFocus();	
 		}
 	}
 	

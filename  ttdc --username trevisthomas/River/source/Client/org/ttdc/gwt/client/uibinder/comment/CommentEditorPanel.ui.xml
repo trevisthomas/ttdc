@@ -15,6 +15,7 @@
 					<td>
 						Password: <g:PasswordTextBox ui:field="passwordTextElement"/>
 					</td>
+					<td><t:ClickableIconPanel ui:field="loginButtonElement" /></td>
 				</tr>
 			</table>
 		</g:HTMLPanel>

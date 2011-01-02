@@ -174,4 +174,8 @@ public class NewMoviePanel extends Composite{
 	public void addCancelClickHandler(ClickHandler handler){
 		cancelButtonElement.addClickHandler(handler);
 	}
+
+	public void setFocus() {
+		titleElement.setFocus(true);
+	}
 }

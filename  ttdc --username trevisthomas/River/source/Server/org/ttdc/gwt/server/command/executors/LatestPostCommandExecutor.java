@@ -85,6 +85,15 @@ public class LatestPostCommandExecutor extends CommandExecutor<PaginatedListComm
 		dao.addFilterThreadIds(p.getFrontPageFilteredThreadIds());
 		return dao;
 	}
+	
+	private LatestPostsDao getLatestPostDaoWithPersonalFilterFuckHibernate(LatestPostsCommand cmd) {
+		LatestPostsDao dao = new LatestPostsDao();
+		dao.setCurrentPage(cmd.getPageNumber());
+		Person p = getPerson();
+		dao.setFilterFlags(ExecutorHelpers.createFlagFilterListForPerson(p));
+		dao.addFilterThreadIds(p.getFrontPageFilteredThreadIds());
+		return dao;
+	}
 
 	private PaginatedListCommandResult<GPost> loadEarmarks(LatestPostsCommand cmd) {
 		Person person = getPerson();
@@ -128,6 +137,13 @@ public class LatestPostCommandExecutor extends CommandExecutor<PaginatedListComm
 	}
 	
 	private PaginatedListCommandResult<GPost> loadFlat(LatestPostsCommand cmd) {
+		LatestPostsDao dao = getLatestPostDaoWithPersonalFilter(cmd);
+		PaginatedList<Post> results = dao.loadFlat();
+		PaginatedList<GPost> gResults = PaginatedResultConverters.convertSearchResults(results, getPerson());
+		return new PaginatedListCommandResult<GPost>(gResults);
+	}
+	
+	private PaginatedListCommandResult<GPost> loadFlatFuckHibernate(LatestPostsCommand cmd) {
 		LatestPostsDao dao = getLatestPostDaoWithPersonalFilter(cmd);
 		PaginatedList<Post> results = dao.loadFlat();
 		PaginatedList<GPost> gResults = PaginatedResultConverters.convertSearchResults(results, getPerson());
