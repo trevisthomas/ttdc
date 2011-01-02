@@ -7,7 +7,7 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 .tt-border-bottom-right{ border-width: 0 1px 1px 0; border-style: solid;}
 
 
-.tt-graphic-button{position: relative; min-width: 16px; height: 28px; text-align: center;}
+.tt-graphic-button{position: relative; min-width: 16px; height: 28px; text-align: center; line-height: 28px;}
 .tt-graphic-button-l{cursor: pointer; font-size:15px; height: 28px; padding: 2px 4px; border-width: 0 0 0 1px; border-style: solid; line-height: 28px;}
 .tt-graphic-button-r{cursor: pointer; font-size:15px; height: 28px; padding: 2px 4px; border-width: 0 1px 0 0; border-style: solid; line-height: 28px;}
 .tt-textbox-search{font-size:18px; font-weight: 400; height: 32px;}
@@ -90,7 +90,7 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 
 .tt-search-panel-adv,
 .tt-movie-editor,
-.tt-comment-editor{border: 1px solid; width:480px; padding: 2px 10px;}
+.tt-comment-editor{border: 1px solid; width:500; padding: 2px 10px;}
 .tt-comment-toolbar{margin: 2px 0;}
 .tt-comment-editor-buttons{float: right; margin: 3px;}
 
@@ -332,7 +332,6 @@ side effects in non mozilla browsers in the comment creator
 .tt-traffic-person{width: 199px; height: 49px; border: 1px solid; margin: 2px 2px;}
 
 .tt-comment-button{
-	min-width: 40px;
 	border:1px solid;
 	padding:2px 10px;
 }
@@ -441,3 +440,4 @@ side effects in non mozilla browsers in the comment creator
 
 .tt-userlistrow{border: solid 0px; border-top-width: 1px; }
 .tt-userlistrow-header{}
+.tt-rating-description{ margin: 0 5px; font-size: 10px; font-style: italic;}

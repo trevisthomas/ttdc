@@ -26,6 +26,7 @@ import org.ttdc.gwt.shared.commands.results.GenericListCommandResult;
 import org.ttdc.gwt.shared.commands.types.TagActionType;
 import org.ttdc.gwt.shared.util.StringUtil;
 
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 
@@ -124,9 +125,10 @@ public class MovieRatingPresenter extends BasePresenter<MovieRatingPresenter.Vie
 		cmd.setTag(tag);
 		cmd.setPostId(post.getPostId());
 		cmd.setMode(AssociationPostTagCommand.Mode.CREATE);
-		
+//		cmd.setUserName(userName);
+//		cmd.setPassword(userName);
 		cmd.setConnectionId(ConnectionId.getInstance().getConnectionId());
-		service.execute(cmd, new PostRatingCallback(post));
+		service.execute(cmd, new PostRatingCallback(post, this));
 		if(autohide)
 			getWidget().removeFromParent();	
 		else
@@ -156,8 +158,15 @@ public class MovieRatingPresenter extends BasePresenter<MovieRatingPresenter.Vie
 	//TODO: If this is looking good, you might want to pull this class out of the movie area and use it as a generic post refresh
 	public static class PostRatingCallback extends CommandResultCallback<AssociationPostTagResult>{
 		private GPost post;
+		private final MovieRatingPresenter movieRatingPresenter;
 		public PostRatingCallback(GPost post) {
 			this.post = post;
+			movieRatingPresenter = null;
+		}
+		
+		public PostRatingCallback(GPost post, MovieRatingPresenter movieRatingPresenter) {
+			this.post = post;
+			this.movieRatingPresenter = movieRatingPresenter;
 		}
 		
 		/*
@@ -183,7 +192,16 @@ public class MovieRatingPresenter extends BasePresenter<MovieRatingPresenter.Vie
 				MessageEvent event = new MessageEvent(MessageEventType.SYSTEM_ERROR,result.getAssociationId());
 				EventBus.fireEvent(event);
 			}
-			
+		}
+		@Override
+		public void onFailure(Throwable caught) {
+			if(movieRatingPresenter != null){
+				Window.alert("Rate attempt failed. You must be logged in.");
+				movieRatingPresenter.view.initVoteMode(movieRatingPresenter);
+			}
+			else{
+				Window.alert("Tag association failed. You must be logged in.");
+			}
 		}
 	}
 	

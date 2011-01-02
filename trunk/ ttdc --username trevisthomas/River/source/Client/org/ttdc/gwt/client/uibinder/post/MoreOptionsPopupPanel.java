@@ -17,6 +17,7 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
+@Deprecated
 public class MoreOptionsPopupPanel extends PopupPanel{
     interface MoreOptionsPopupPanelUiBinder extends UiBinder<Widget, MoreOptionsPopupPanel> {}
     private static final MoreOptionsPopupPanelUiBinder binder = GWT.create(MoreOptionsPopupPanelUiBinder.class);

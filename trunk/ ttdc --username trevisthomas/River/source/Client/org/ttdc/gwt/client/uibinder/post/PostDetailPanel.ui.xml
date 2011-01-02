@@ -12,7 +12,7 @@
 				<td><g:Label ui:field="postNwsElement" /></td>
 				<td><g:Label ui:field="postInfElement" /></td>
 				<td><g:Label ui:field="postDeletedElement" /></td>
-				<td width="100%">by <g:Hyperlink ui:field="creatorLinkElement" /> on <g:Widget styleName="tt-post-child-date" ui:field="createDateElement" /> <span ui:field="inResposeWrapperElement"> in <g:Anchor styleName="tt-child-post-inReplyAnchor" ui:field="inReplyToElement"/> to <g:Hyperlink ui:field="inReplyToCreatorElement" /></span></td>
+				<td width="100%">by <g:Hyperlink ui:field="creatorLinkElement" /> on <g:Widget styleName="tt-post-child-date" ui:field="createDateElement" /> <span ui:field="inResposeWrapperElement"> in <g:Anchor ui:field="inReplyToElement"/> to <g:Hyperlink ui:field="inReplyToCreatorElement" /></span></td>
 				<td><g:SimplePanel ui:field="actionLinks" /></td>
 			</tr>
 		</table>

@@ -17,36 +17,41 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class MovieRatingView implements MovieRatingPresenter.View{
 	//private final HorizontalPanel main = new HorizontalPanel();
+	private final static String defaultMessage = "Click on a star to choose a rating.";
 	private final FlowPanel starPanel = new FlowPanel();
 	
 	private final String CSS_STAR_RIGHT_PREFIX  = "tt-star-right-";
 	private final String CSS_STAR_LEFT_PREFIX  = "tt-star-left-";
+	private final Label descriptionLabel = new Label(defaultMessage);
 	private boolean interactiveMode = false;
 	private RatableContentProcessor rateMovie;
-	private final Grid grid = new Grid(1,1);
+	private final Grid grid = new Grid(2,1);
 	private List<HalfStarPanel> starList = new ArrayList<HalfStarPanel>();
 	
 	public MovieRatingView() {
 		starPanel.setStyleName("tt-rating-widget");
 		grid.setStyleName("tt-inline");
 		grid.setWidget(0, 0, starPanel);
+		descriptionLabel.setStyleName("tt-rating-description");
+		grid.setWidget(1, 0, descriptionLabel);
 	}
 	
 	@Override
 	public void setRating(String rating) {
 		starPanel.clear();
+		descriptionLabel.setVisible(false);
 		float r = Float.parseFloat(rating);
 		//HalfStarPanel hstar; 
-		createHalfStarPanel(r, 0.5f, CSS_STAR_LEFT_PREFIX);
-		createHalfStarPanel(r, 1.0f, CSS_STAR_RIGHT_PREFIX);
-		createHalfStarPanel(r, 1.5f, CSS_STAR_LEFT_PREFIX);
-		createHalfStarPanel(r, 2.0f, CSS_STAR_RIGHT_PREFIX);
-		createHalfStarPanel(r, 2.5f, CSS_STAR_LEFT_PREFIX);
-		createHalfStarPanel(r, 3.0f, CSS_STAR_RIGHT_PREFIX);
-		createHalfStarPanel(r, 3.5f, CSS_STAR_LEFT_PREFIX);
-		createHalfStarPanel(r, 4.0f, CSS_STAR_RIGHT_PREFIX);
-		createHalfStarPanel(r, 4.5f, CSS_STAR_LEFT_PREFIX);
-		createHalfStarPanel(r, 5.0f, CSS_STAR_RIGHT_PREFIX);
+		createHalfStarPanel(r, 0.5f, CSS_STAR_LEFT_PREFIX," 1/2 star (epic fail)");
+		createHalfStarPanel(r, 1.0f, CSS_STAR_RIGHT_PREFIX," 1 star (pretty awful)");
+		createHalfStarPanel(r, 1.5f, CSS_STAR_LEFT_PREFIX," 1 and 1/2 stars (not good)");
+		createHalfStarPanel(r, 2.0f, CSS_STAR_RIGHT_PREFIX," 2 stars (meh)");
+		createHalfStarPanel(r, 2.5f, CSS_STAR_LEFT_PREFIX," 2 and 1/2 stars (alright i guess)");
+		createHalfStarPanel(r, 3.0f, CSS_STAR_RIGHT_PREFIX," 3 stars (pretty good)");
+		createHalfStarPanel(r, 3.5f, CSS_STAR_LEFT_PREFIX," 3 and 1/2 stars (really good)");
+		createHalfStarPanel(r, 4.0f, CSS_STAR_RIGHT_PREFIX," 4 stars (excellent)");
+		createHalfStarPanel(r, 4.5f, CSS_STAR_LEFT_PREFIX," 4 and 1/2 stars (among the best ever)");
+		createHalfStarPanel(r, 5.0f, CSS_STAR_RIGHT_PREFIX," 5 stars (complete and utter perfection)");
 	}
 	
 	@Override
@@ -54,6 +59,7 @@ public class MovieRatingView implements MovieRatingPresenter.View{
 		interactiveMode = false;
 		setRating(rating);
 		this.rateMovie = null;
+		descriptionLabel.setVisible(false);
 	}
 
 	@Override
@@ -61,11 +67,13 @@ public class MovieRatingView implements MovieRatingPresenter.View{
 		interactiveMode = true;
 		setRating("0.0");
 		this.rateMovie = rateMovie;
+		descriptionLabel.setVisible(true);
+		descriptionLabel.setText(defaultMessage);
 	}
 	
-	private HalfStarPanel createHalfStarPanel(float ratingValue, float halfStarValue, String cssPrefix) {
+	private HalfStarPanel createHalfStarPanel(float ratingValue, float halfStarValue, String cssPrefix, String description) {
 		HalfStarPanel hstar;
-		hstar = new HalfStarPanel(halfStarValue, cssPrefix);
+		hstar = new HalfStarPanel(halfStarValue, cssPrefix, description);
 		starPanel.add(hstar);
 		if(ratingValue >= halfStarValue){
 			hstar.setFilled();
@@ -84,11 +92,14 @@ public class MovieRatingView implements MovieRatingPresenter.View{
 		private float value;
 		private boolean active = false;
 		private String cssPrefix;
+		private final String description;
 		
-		HalfStarPanel(float value, String cssPrefix){
+		HalfStarPanel(float value, String cssPrefix, String description){
 			this.value = value;
 			this.cssPrefix = cssPrefix;
 			setClear();
+			this.description = description;
+			
 			if(interactiveMode){
 				addClickHandler(new ClickHandler() {
 					@Override
@@ -101,11 +112,15 @@ public class MovieRatingView implements MovieRatingPresenter.View{
 					public void onMouseOver(MouseOverEvent event) {
 						setFilled();
 						for(HalfStarPanel hStarPanel : starList){
-							if(hStarPanel.value <= HalfStarPanel.this.value)
+							if(hStarPanel.value <= HalfStarPanel.this.value){
 								hStarPanel.setFilled();
-							else
+								descriptionLabel.setText(hStarPanel.getDescription());
+							}
+							else{
 								hStarPanel.setClear();
+							}
 						}
+						
 					}
 				});
 				addMouseOutHandler(new MouseOutHandler() {
@@ -115,9 +130,13 @@ public class MovieRatingView implements MovieRatingPresenter.View{
 						for(HalfStarPanel hStarPanel : starList){
 							hStarPanel.setClear();
 						}
+						descriptionLabel.setText(defaultMessage);
 					}
 				});
 			}
+		}
+		protected String getDescription() {
+			return description;
 		}
 		public void setClear() {
 			active = false;
@@ -128,13 +147,8 @@ public class MovieRatingView implements MovieRatingPresenter.View{
 			setStyleName(cssPrefix+"filled");
 		}
 		
-	
-		
-		
-		
 		@Override
 		public HandlerRegistration addClickHandler(ClickHandler handler) {
-			// TODO Auto-generated method stub
 			return super.addClickHandler(handler);
 		}
 	}

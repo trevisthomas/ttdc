@@ -81,6 +81,12 @@ public class LoginPresenter extends BasePresenter<LoginPresenter.View> {
 		});
 	}
 	
+	public void loginInNow(String username, String password){
+		RpcServiceAsync service = injector.getService();
+		CommandResultCallback<PersonCommandResult> callback = loginCallback();
+		service.authenticate(username, password, callback);
+	}
+	
 	private CommandResultCallback<PersonCommandResult> loginCallback() {
 		CommandResultCallback<PersonCommandResult> callback = new CommandResultCallback<PersonCommandResult>(){
 			public void onSuccess(PersonCommandResult result) {
