@@ -102,6 +102,10 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 				result = new PostCommandResult(gPost);
 			}
 			
+			if(!getPerson().isAnonymous()){
+				AccountDao.userHit(getPersonId());
+			}
+			
 			commit();
 			
 			if(broadcastType != null && gPost != null){

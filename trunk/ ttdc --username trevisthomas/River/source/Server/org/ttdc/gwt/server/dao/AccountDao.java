@@ -10,6 +10,11 @@ import java.util.Date;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
+import org.ttdc.gwt.client.beans.GPerson;
+import org.ttdc.gwt.client.messaging.person.PersonEvent;
+import org.ttdc.gwt.client.messaging.person.PersonEventType;
+import org.ttdc.gwt.server.activity.ServerEventBroadcaster;
+import org.ttdc.gwt.server.beanconverters.FastPostBeanConverter;
 import org.ttdc.gwt.shared.util.StringUtil;
 import org.ttdc.persistence.objects.Image;
 import org.ttdc.persistence.objects.Person;
@@ -41,6 +46,11 @@ public class AccountDao {
 		hits++;
 		person.setHits(hits);
 		person.setLastAccessDate(new Date());
+		
+		//This was newly added on Jan 2, 2011!!  (Copied from RpcServlet)
+		GPerson gPerson = FastPostBeanConverter.convertPerson(person);
+		PersonEvent event = new PersonEvent(PersonEventType.TRAFFIC,gPerson);
+		ServerEventBroadcaster.getInstance().broadcastEvent(event);
 	}
 	
 	/**

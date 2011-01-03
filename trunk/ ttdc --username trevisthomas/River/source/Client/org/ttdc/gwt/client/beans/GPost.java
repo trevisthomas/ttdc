@@ -108,7 +108,9 @@ public class GPost extends GBase{
 		return list;
 	}
 	public void setTagAssociations(List<GAssociationPostTag> tagAssociations) {
-		this.tagAssociations = tagAssociations;
+		if(tagAssociations != null){
+			this.tagAssociations = tagAssociations;
+		}
 	}
 	public GImage getImage() {
 		return image;

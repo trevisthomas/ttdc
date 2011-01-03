@@ -5,10 +5,12 @@ import org.ttdc.gwt.client.services.CommandResult;
 import org.ttdc.gwt.server.command.CommandExecutor;
 import org.ttdc.gwt.server.command.executors.utils.ExecutorHelpers;
 import org.ttdc.gwt.server.command.executors.utils.PaginatedResultConverters;
+import org.ttdc.gwt.server.dao.AccountDao;
 import org.ttdc.gwt.server.dao.EarmarkedPostDao;
 import org.ttdc.gwt.server.dao.InboxDao;
 import org.ttdc.gwt.server.dao.LatestPostsDao;
-import org.ttdc.gwt.server.dao.LatestPostsDaoFast;
+import org.ttdc.gwt.server.dao.FastLatestPostsDao;
+import org.ttdc.gwt.server.dao.PersonDao;
 import org.ttdc.gwt.server.dao.TagDao;
 import org.ttdc.gwt.shared.commands.LatestPostsCommand;
 import org.ttdc.gwt.shared.commands.results.PaginatedListCommandResult;
@@ -50,6 +52,9 @@ public class LatestPostCommandExecutor extends CommandExecutor<PaginatedListComm
 			default:
 				throw new RuntimeException("LatestPostCommandExecutor doesnt understand that action type");
 			}
+			if(!getPerson().isAnonymous()){
+				AccountDao.userHit(getPersonId());
+			}
 			Persistence.commit();
 		}
 		catch (RuntimeException e) {
@@ -77,8 +82,8 @@ public class LatestPostCommandExecutor extends CommandExecutor<PaginatedListComm
 		return dao;
 	}
 	
-	private LatestPostsDaoFast getLatestPostDaoWithPersonalFilterFuckHibernate(LatestPostsCommand cmd) {
-		LatestPostsDaoFast dao = new LatestPostsDaoFast();
+	private FastLatestPostsDao getLatestPostDaoWithPersonalFilterFuckHibernate(LatestPostsCommand cmd) {
+		FastLatestPostsDao dao = new FastLatestPostsDao();
 		dao.setCurrentPage(cmd.getPageNumber());
 		Person p = getPerson();
 		InboxDao inboxDao = new InboxDao(p);
@@ -136,7 +141,7 @@ public class LatestPostCommandExecutor extends CommandExecutor<PaginatedListComm
 //		PaginatedList<GPost> gResults = PaginatedResultConverters.convertSearchResultsNested(results, getPerson());
 //		return new PaginatedListCommandResult<GPost>(gResults);
 		
-		LatestPostsDaoFast dao = getLatestPostDaoWithPersonalFilterFuckHibernate(cmd);
+		FastLatestPostsDao dao = getLatestPostDaoWithPersonalFilterFuckHibernate(cmd);
 		PaginatedList<GPost> gResults = dao.loadGrouped();
 		return new PaginatedListCommandResult<GPost>(gResults);
 	}
@@ -149,7 +154,7 @@ public class LatestPostCommandExecutor extends CommandExecutor<PaginatedListComm
 	}
 	
 	private PaginatedListCommandResult<GPost> loadFlatFuckHibernate(LatestPostsCommand cmd) {
-		LatestPostsDaoFast dao = getLatestPostDaoWithPersonalFilterFuckHibernate(cmd);
+		FastLatestPostsDao dao = getLatestPostDaoWithPersonalFilterFuckHibernate(cmd);
 		PaginatedList<GPost> gResults = dao.loadFlat();
 		return new PaginatedListCommandResult<GPost>(gResults);
 	}

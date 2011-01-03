@@ -18,6 +18,7 @@ import org.ttdc.persistence.objects.DaySummaryEntity;
 import org.ttdc.persistence.objects.Entry;
 import org.ttdc.persistence.objects.Forum;
 import org.ttdc.persistence.objects.FullPost;
+import org.ttdc.persistence.objects.FullTag;
 import org.ttdc.persistence.objects.Image;
 import org.ttdc.persistence.objects.ImageFull;
 import org.ttdc.persistence.objects.Inbox;
@@ -61,7 +62,9 @@ public final class Persistence {
         	.addAnnotatedClass(ThreadSummaryEntity.class)
         	.addAnnotatedClass(DaySummaryEntity.class)
         	.addAnnotatedClass(Forum.class)
-        	.addAnnotatedClass(FullPost.class);
+        	.addAnnotatedClass(FullPost.class)
+            .addAnnotatedClass(FullTag.class);
+            
             
             //Warning: Hibernate choked when i had the function name mixed case.
             configuration.addSqlFunction("bitwise_or", new SQLFunctionTemplate(Hibernate.BIG_INTEGER, " ?1 | ?2 "));

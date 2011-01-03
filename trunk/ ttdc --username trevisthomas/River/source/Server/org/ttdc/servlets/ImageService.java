@@ -14,7 +14,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.sql.Blob;
 import java.sql.SQLException;
-import java.util.List;
 
 import javax.swing.ImageIcon;
 
@@ -69,6 +68,7 @@ public class ImageService {
 			}
 				
 			Query query = session.getNamedQuery("imageFull.getByName").setString("name", name);
+			query.setCacheable(true);
 			image = (ImageFull) query.uniqueResult();
 			Blob blob = null;
 			if(square){
@@ -115,10 +115,10 @@ public class ImageService {
 	public Image readImage(String name) throws ServiceException {
 		Image image = null;
 		try {
-			Session session = Persistence.beginSession();
 			name = name.replaceFirst(Image.SQUARE_THUMBNAIL_SUFFIX, "");
-			
+			Session session = Persistence.beginSession();
 			Query query = session.getNamedQuery("image.getByName").setString("name", name);
+			query.setCacheable(true);
 			image = (Image) query.uniqueResult();
 			Persistence.commit();
 		}catch (Throwable t) {

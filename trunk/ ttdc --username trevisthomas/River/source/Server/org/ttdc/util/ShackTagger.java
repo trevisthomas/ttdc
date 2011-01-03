@@ -32,6 +32,7 @@ public class ShackTagger {
 		Session session = Persistence.beginSession();
 		try{
 			Query query = session.getNamedQuery("shacktag.getAll");
+			query.setCacheable(true);
 			@SuppressWarnings("unchecked") List<Shacktag> l = query.list(); 
 			shacktags.addAll(l);
 		}
