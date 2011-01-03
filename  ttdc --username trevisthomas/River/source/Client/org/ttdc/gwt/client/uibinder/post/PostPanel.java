@@ -166,7 +166,7 @@ public class PostPanel extends Composite implements PostPresenterCommon, PostEve
 			postImagePresenter.setImageAsMoviePoster(post);
 			postImagePresenter.init();
 			postImageElement.setVisible(true);
-			GAssociationPostTag ratingAss = post.getParent().getRatingByPerson(post.getCreator().getPersonId());
+			GAssociationPostTag ratingAss = post.getRoot().getRatingByPerson(post.getCreator().getPersonId());
 			if(ratingAss != null){
 				averageMovieRatingPresenter.setRating(ratingAss);
 				ratingElement.setVisible(true);

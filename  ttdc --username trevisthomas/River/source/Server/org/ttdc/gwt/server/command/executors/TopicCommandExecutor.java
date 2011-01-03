@@ -4,7 +4,6 @@ import static org.ttdc.persistence.Persistence.beginSession;
 import static org.ttdc.persistence.Persistence.commit;
 import static org.ttdc.persistence.Persistence.rollback;
 
-import java.util.Collections;
 
 import org.apache.log4j.Logger;
 import org.ttdc.gwt.client.beans.GPost;
@@ -12,6 +11,8 @@ import org.ttdc.gwt.client.services.CommandResult;
 import org.ttdc.gwt.server.command.CommandExecutor;
 import org.ttdc.gwt.server.command.executors.utils.ExecutorHelpers;
 import org.ttdc.gwt.server.command.executors.utils.PaginatedResultConverters;
+import org.ttdc.gwt.server.dao.AccountDao;
+import org.ttdc.gwt.server.dao.FastTopicDao;
 import org.ttdc.gwt.server.dao.PostDao;
 import org.ttdc.gwt.server.dao.ThreadDao;
 import org.ttdc.gwt.server.dao.TopicDao;
@@ -19,6 +20,7 @@ import org.ttdc.gwt.shared.commands.TopicCommand;
 import org.ttdc.gwt.shared.commands.TopicCommandType;
 import org.ttdc.gwt.shared.commands.results.TopicCommandResult;
 import org.ttdc.gwt.shared.util.PaginatedList;
+import org.ttdc.persistence.objects.Person;
 import org.ttdc.persistence.objects.Post;
 
 public class TopicCommandExecutor  extends CommandExecutor<TopicCommandResult>{
@@ -57,8 +59,7 @@ public class TopicCommandExecutor  extends CommandExecutor<TopicCommandResult>{
 				gResults = PaginatedResultConverters.convertSearchResults(results, getPerson());
 			}
 			else if(TopicCommandType.NESTED_THREAD_SUMMARY.equals(type)){
-				results = buildNestedThreadResults(command,post);
-				gResults = PaginatedResultConverters.convertSearchResultsNested(results, getPerson());
+				gResults = buildGroupedTopicResults(command,post,getPerson());
 			}
 			else if(TopicCommandType.NESTED_THREAD_SUMMARY_FETCH_MORE.equals(type)){
 				results = buildNestedThreadMoreResults(command,post);
@@ -68,15 +69,7 @@ public class TopicCommandExecutor  extends CommandExecutor<TopicCommandResult>{
 				}
 				//Collections.reverse(gResults.getList());
 			}
-//			else if(TopicCommandType.REPLIES.equals(type)){
-//				dao.setConversationId(command.getConversationId());
-//				results = dao.loadReplies();
-//				gResults = PaginatedResultConverters.convertSearchResults(results);
-//			}
-//			else if(TopicCommandType.STARTERS.equals(type)){
-//				results = dao.loadStarters();
-//				gResults = PaginatedResultConverters.convertSearchResults(results);
-//			}
+
 			else if(TopicCommandType.CONVERSATION.equals(type)){
 				results = buildConversationResults(dao,post);
 				gResults = PaginatedResultConverters.convertSearchResults(results, getPerson());
@@ -86,6 +79,11 @@ public class TopicCommandExecutor  extends CommandExecutor<TopicCommandResult>{
 			}
 			
 			result.setResults(gResults);
+			
+			if(!getPerson().isAnonymous()){
+				AccountDao.userHit(getPersonId());
+			}
+			
 			commit();
 			return result;
 		}
@@ -96,6 +94,23 @@ public class TopicCommandExecutor  extends CommandExecutor<TopicCommandResult>{
 		}
 	}
 	
+	private PaginatedList<GPost> buildGroupedTopicResults(TopicCommand command,
+			Post post, Person person) {
+		FastTopicDao dao = new FastTopicDao();
+		dao.setCurrentPage(command.getPageNumber());
+		dao.setSourcePost(post);
+		
+		dao.setFilterFlags(ExecutorHelpers.createFlagFilterListForPerson(getPerson()));
+		
+		PaginatedList<GPost> results;
+		if(command.isSortByDate())
+			results = dao.loadByCreateDate();
+		else
+			results = dao.loadByReplyDate();
+		
+		return results;
+	}
+
 	private PaginatedList<Post> buildNestedThreadResults(TopicCommand command, Post post) {
 		ThreadDao dao = new ThreadDao();
 		dao.setCurrentPage(command.getPageNumber());

@@ -11,12 +11,10 @@ import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.shared.util.PaginatedList;
 import org.ttdc.gwt.shared.util.StringUtil;
 import org.ttdc.persistence.Persistence;
-import org.ttdc.persistence.objects.AssociationPostTag;
-import org.ttdc.persistence.objects.Person;
-import org.ttdc.persistence.objects.Post;
 
-public class LatestPostsDaoFastTest {
-	private final static Logger log = Logger.getLogger(LatestPostsDaoFastTest.class);
+
+public class FastLatestPostsDaoTest {
+	private final static Logger log = Logger.getLogger(FastLatestPostsDaoTest.class);
 	
 	private StopWatch stopwatch = new StopWatch();
 	
@@ -37,7 +35,7 @@ public class LatestPostsDaoFastTest {
 	public void flatPostsFastTest(){
 		Persistence.beginSession();
 		
-		LatestPostsDaoFast dao = new LatestPostsDaoFast();
+		FastLatestPostsDao dao = new FastLatestPostsDao();
 		PaginatedList<GPost> results = dao.loadFlat();		
 		Persistence.commit();
 		
@@ -50,6 +48,10 @@ public class LatestPostsDaoFastTest {
 			assertNotNull(post.getCreator());
 			assertNotNull(post.getCreator().getImage());
 			assertNotNull(post.getCreator().getImage().getThumbnailName());
+			
+			if(post.isReview()){
+				assertTrue(post.getRoot().getTagAssociations().size() > 1);
+			}
 			
 			assertTrue(StringUtil.notEmpty(post.getTitle()));
 			
@@ -65,7 +67,7 @@ public class LatestPostsDaoFastTest {
 	public void groupedPostsFastTest(){
 		Persistence.beginSession();
 		
-		LatestPostsDaoFast dao = new LatestPostsDaoFast();
+		FastLatestPostsDao dao = new FastLatestPostsDao();
 		PaginatedList<GPost> results = dao.loadGrouped();		
 		Persistence.commit();
 		

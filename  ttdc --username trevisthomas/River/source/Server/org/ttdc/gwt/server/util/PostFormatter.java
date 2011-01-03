@@ -14,20 +14,21 @@ import org.ttdc.util.ShackTagger;
 
 public class PostFormatter {
 	private static Logger log = Logger.getLogger(PostFormatter.class);
-	private static final List<Shacktag> shacktags = new ArrayList<Shacktag>();
-	static{
-		Session session = Persistence.beginSession();
-		try{
-			Query query = session.getNamedQuery("shacktag.getAll");
-			@SuppressWarnings("unchecked") List<Shacktag> l = query.list(); 
-			shacktags.addAll(l);
-		}
-		catch(Exception e){
-			log.error(e);
-			throw new ExceptionInInitializerError(e);
-		}
-	}
-	
+//	private static final List<Shacktag> shacktags = new ArrayList<Shacktag>();
+//	static{
+//		Session session = Persistence.beginSession();
+//		try{
+//			Query query = session.getNamedQuery("shacktag.getAll");
+//			query.setCacheable(true);
+//			@SuppressWarnings("unchecked") List<Shacktag> l = query.list(); 
+//			shacktags.addAll(l);
+//		}
+//		catch(Exception e){
+//			log.error(e);
+//			throw new ExceptionInInitializerError(e);
+//		}
+//	}
+//	
 	private static PostFormatter me  = null;
 	
 	
