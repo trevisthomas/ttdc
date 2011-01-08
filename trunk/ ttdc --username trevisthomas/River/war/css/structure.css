@@ -440,3 +440,5 @@ side effects in non mozilla browsers in the comment creator
 .tt-userlistrow{border: solid 0px; border-top-width: 1px; }
 .tt-userlistrow-header{}
 .tt-rating-description{ margin: 0 5px; font-size: 10px; font-style: italic;}
+
+.tt-movie-list-col-rating{ width: 250;}

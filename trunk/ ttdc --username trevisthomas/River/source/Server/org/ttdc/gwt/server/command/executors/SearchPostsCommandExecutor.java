@@ -13,6 +13,10 @@ import org.ttdc.gwt.server.command.CommandExecutor;
 import org.ttdc.gwt.server.command.executors.utils.ExecutorHelpers;
 import org.ttdc.gwt.server.command.executors.utils.PaginatedResultConverters;
 import org.ttdc.gwt.server.dao.DateRange;
+import org.ttdc.gwt.server.dao.FastGPostLoader;
+import org.ttdc.gwt.server.dao.FastPostSearchDao;
+import org.ttdc.gwt.server.dao.Helpers;
+import org.ttdc.gwt.server.dao.InboxDao;
 import org.ttdc.gwt.server.dao.InitConstants;
 import org.ttdc.gwt.server.dao.PersonDao;
 import org.ttdc.gwt.server.dao.PostDao;
@@ -34,7 +38,7 @@ public class SearchPostsCommandExecutor extends CommandExecutor<SearchPostsComma
 		try {
 			SearchPostsCommand command = (SearchPostsCommand)getCommand();
 			
-			PostSearchDao dao = new PostSearchDao();
+			FastPostSearchDao dao = new FastPostSearchDao();
 			
 			beginSession();
 			PostSearchType type = command.getPostSearchType();
@@ -77,7 +81,14 @@ public class SearchPostsCommandExecutor extends CommandExecutor<SearchPostsComma
 					
 				dao.setCurrentPage(command.getPageNumber());
 				dao.setFilterFlags(filterList);
-				PaginatedList<GPost> gResults = PaginatedResultConverters.convertSearchResults(dao.search(), getPerson());
+				//PaginatedList<GPost> gResults = PaginatedResultConverters.convertSearchResults(dao.search(), getPerson());
+//				FastGPostLoader loader = new FastGPostLoader();
+//				PaginatedList<GPost> gResults = loader.fetchPostsForPosts(dao.search());
+				
+				InboxDao inboxDao = new InboxDao(getPerson());
+				dao.setInboxDao(inboxDao);
+				
+				PaginatedList<GPost> gResults = dao.search();
 				
 				if(command.getTagIdList().size() > 0){
 					translateTagIdListToSearchPhrase(command, gResults);

@@ -10,10 +10,12 @@ import com.google.gwt.user.client.ui.Label;
 public class PostIconTool {
     private final Label postUnReadElement = IconsCommon.getIconUnread();
     private final Label postReadElement = IconsCommon.getIconRead();
-    private final Label postPrivateElement = IconsCommon.getIconLock();
+    private final Label postPrivateElement = IconsCommon.getIconPrivate();
     private final Label postNwsElement = IconsCommon.getIconNws();
     private final Label postInfElement = IconsCommon.getIconInf();
     private final Label postDeletedElement = IconsCommon.getIconDeleted();
+    private final Label postLockedElement = IconsCommon.getIconLock();
+    
     
     
     public PostIconTool() {
@@ -23,6 +25,7 @@ public class PostIconTool {
     	postNwsElement.setTitle("Not Work Safe!");
     	postInfElement.setTitle("Informative");
     	postDeletedElement.setTitle("Deleted");
+    	postLockedElement.setTitle("Locked");
 	}
     
     public void init(final GPost post){
@@ -33,6 +36,7 @@ public class PostIconTool {
         postNwsElement.setVisible(false);
         postInfElement.setVisible(false);
         postDeletedElement.setVisible(false);
+        postLockedElement.setVisible(false);
         
     	if(!user.isAnonymous()){
 			if(!post.isRead()){
@@ -56,6 +60,10 @@ public class PostIconTool {
     	}
     	if(post.isDeleted()){
     		postDeletedElement.setVisible(true);
+    	}
+    	
+    	if(post.isLocked()){
+    		postLockedElement.setVisible(true);
     	}
     }
     
@@ -86,5 +94,9 @@ public class PostIconTool {
 	
 	public  Label getIconRead(){
 		return postReadElement;
+	}
+	
+	public Label getIconLocked(){
+		return postLockedElement;
 	}
 }

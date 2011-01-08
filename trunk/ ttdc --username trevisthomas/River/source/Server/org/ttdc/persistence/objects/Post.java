@@ -1500,8 +1500,8 @@ public class Post implements Comparable<Post>, HasGuid {
 	}
 
 	
-	//@ManyToOne ( cascade = {CascadeType.ALL}, fetch=FetchType.LAZY)
-	@ManyToOne ( cascade = {CascadeType.ALL})
+	@ManyToOne ( cascade = {CascadeType.ALL}, fetch=FetchType.LAZY)
+	//@ManyToOne ( cascade = {CascadeType.ALL})
 	@JoinColumn(name="LATEST_ENTRY_GUID")
 	public Entry getLatestEntry() {
 		return LatestEntry;

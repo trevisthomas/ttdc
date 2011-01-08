@@ -591,12 +591,35 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 		cmd.setForumId(((MyListBox)forumListBoxElement).getSelectedValue());
 		cmd.setConnectionId(ConnectionId.getInstance().getConnectionId());
 		
-		cmd.setPrivate(privateCheckBoxElement.getValue());
-		cmd.setDeleted(deletedCheckBoxElement.getValue());
-		cmd.setNws(nwsCheckBoxElement.getValue());
-		cmd.setInf(infCheckBoxElement.getValue());
-		cmd.setReview(reviewCheckBoxElement.getValue());
-		cmd.setLocked(lockedCheckBoxElement.getValue());
+		if(PostActionType.UPDATE.equals(action)){
+			//Update
+			GPost post = new GPost();
+			if(nwsCheckBoxElement.getValue())
+				post.toggleNws();
+			if(infCheckBoxElement.getValue())
+				post.toggleInf();
+			if(privateCheckBoxElement.getValue())
+				post.togglePrivate();
+			if(lockedCheckBoxElement.getValue())
+				post.toggleLocked();
+			if(deletedCheckBoxElement.getValue())
+				post.toggleDeleted();
+			if(reviewCheckBoxElement.getValue())
+				post.toggleReview();
+			cmd.setMetaMask(post.getMetaMask());
+		}
+		else{
+			//Create
+			cmd.setPrivate(privateCheckBoxElement.getValue());
+			cmd.setDeleted(deletedCheckBoxElement.getValue());
+			cmd.setNws(nwsCheckBoxElement.getValue());
+			cmd.setInf(infCheckBoxElement.getValue());
+			cmd.setReview(reviewCheckBoxElement.getValue());
+			cmd.setLocked(lockedCheckBoxElement.getValue());
+		}
+		
+		
+		
 		
 		//Should only be used for non-auth users
 		cmd.setLogin(loginTextElement.getText());
@@ -652,6 +675,7 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 			}
 			@Override
 			public void onFailure(Throwable caught) {
+				setOperationInProgress(false);
 				super.onFailure(caught);
 			}
 		};

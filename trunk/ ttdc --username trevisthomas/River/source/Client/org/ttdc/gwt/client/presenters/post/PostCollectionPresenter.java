@@ -11,6 +11,7 @@ import org.ttdc.gwt.client.messaging.post.PostEvent;
 import org.ttdc.gwt.client.messaging.post.PostEventListener;
 import org.ttdc.gwt.client.presenters.shared.BasePresenter;
 import org.ttdc.gwt.client.presenters.shared.BaseView;
+import org.ttdc.gwt.client.presenters.topic.TopicHelpers;
 import org.ttdc.gwt.client.uibinder.post.ChildPostPanel;
 import org.ttdc.gwt.client.uibinder.post.NestedPostSpacerPanel;
 import org.ttdc.gwt.client.uibinder.post.PostPanel;
@@ -100,6 +101,10 @@ public final class PostCollectionPresenter extends BasePresenter<PostCollectionP
 			PostPresenterCommon postPresenter = createPostPresenter(mode, post);
 			getView().getPostWidgets().add((Widget)postPresenter);
 			postPresenters.add(postPresenter);
+			
+			if(!post.isRootPost())
+				TopicHelpers.testPost(postPresenter);
+			
 //			if(post.isMovie()){
 //				ReviewSummaryListPanel reviewSummaryListPanel = injector.createReviewSummaryListPanel();
 //				reviewSummaryListPanel.init(post);

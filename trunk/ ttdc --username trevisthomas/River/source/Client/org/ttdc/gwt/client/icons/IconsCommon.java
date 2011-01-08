@@ -35,4 +35,10 @@ public class IconsCommon {
 		return createIcon("tt-icon-common-deleted");
 	}
 	
+	public static Label getIconPrivate(){
+		Label icon = new Label();
+		icon.setStyleName("ui-icon ui-icon-star");
+		return icon;
+	}
+	
 }

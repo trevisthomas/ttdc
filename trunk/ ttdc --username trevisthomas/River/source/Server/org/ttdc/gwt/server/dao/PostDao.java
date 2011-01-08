@@ -4,7 +4,6 @@ import static org.ttdc.persistence.Persistence.session;
 
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.ttdc.gwt.server.util.PostFormatter;
@@ -61,9 +60,10 @@ final public class PostDao {
 		if(isMovie()){
 			return createMoviePost();
 		}
-		else if(parent == null){
+		
+		validation();
+		if(parent == null){
 			//Create this conversation in a new topic
-			validation();
 			Post newTopic =  createTraditionalPost(getDescription());
 			parent = newTopic;
 			
@@ -139,10 +139,10 @@ final public class PostDao {
 	}
 
 	private void validation() {
-		if(StringUtils.isEmpty(body)){
+		if(StringUtil.empty(body)){
 			throw new RuntimeException("A Post cannot be created without content.");
 		}
-		if(StringUtils.isEmpty(description) && parent == null){
+		if(StringUtil.empty(description) && parent == null){
 			throw new RuntimeException("A Topic cannot be created without a description.");
 		}
 	}

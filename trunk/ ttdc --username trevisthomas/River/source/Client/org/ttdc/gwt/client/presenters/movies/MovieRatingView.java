@@ -40,8 +40,12 @@ public class MovieRatingView implements MovieRatingPresenter.View{
 	public void setRating(String rating) {
 		starPanel.clear();
 		descriptionLabel.setVisible(false);
-		float r = Float.parseFloat(rating);
-		//HalfStarPanel hstar; 
+		float r = 0;
+		if(rating != null)
+			r = Float.parseFloat(rating);
+		else
+			return;
+		
 		createHalfStarPanel(r, 0.5f, CSS_STAR_LEFT_PREFIX," 1/2 star (epic fail)");
 		createHalfStarPanel(r, 1.0f, CSS_STAR_RIGHT_PREFIX," 1 star (pretty awful)");
 		createHalfStarPanel(r, 1.5f, CSS_STAR_LEFT_PREFIX," 1 and 1/2 stars (not good)");

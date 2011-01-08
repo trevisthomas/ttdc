@@ -101,7 +101,7 @@ public class MovieListPanel extends BasePageComposite{
 		tableElement.setWidget(0, 1, imdb);
 		tableElement.setWidget(0, 2, titleHeaderPanel);
 		tableElement.setWidget(0, 3, ratingHeaderPanel);
-		
+		tableElement.getColumnFormatter().addStyleName(3, "tt-movie-list-col-rating");
 	}
 	
 	@Override

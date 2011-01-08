@@ -2,6 +2,7 @@ package org.ttdc.gwt.server.dao;
 
 import static org.ttdc.persistence.Persistence.session;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.ttdc.gwt.client.beans.GPost;
@@ -83,15 +84,18 @@ public class FastTopicDao extends FilteredPostPaginatedDaoBase{
 			count = ids.size();
 		}
 		
-		FastGPostLoader loader = new FastGPostLoader(inboxDao);
+		List<GPost> list = new ArrayList<GPost>();
+		if(count > 0){
+			FastGPostLoader loader = new FastGPostLoader(inboxDao);
 		
-		List<GPost> list;
-		if(grouped){
-			list = loader.fetchPostsForIdsGrouped(ids, filterMask);
+			if(grouped){
+				list = loader.fetchPostsForIdsGrouped(ids, filterMask);
+			}
+			else{
+				list = loader.fetchPostsForIdsFlat(ids);
+			}
 		}
-		else{
-			list = loader.fetchPostsForIdsFlat(ids);
-		}
+		
 		
 		results = DaoUtils.createResults(this, list, count);
 		

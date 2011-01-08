@@ -15,6 +15,7 @@ import org.ttdc.gwt.client.services.CommandResult;
 import org.ttdc.gwt.server.beanconverters.FastPostBeanConverter;
 import org.ttdc.gwt.server.command.CommandExecutor;
 import org.ttdc.gwt.server.dao.CalendarDao;
+import org.ttdc.gwt.server.dao.FastGPostLoader;
 import org.ttdc.gwt.server.dao.InboxDao;
 import org.ttdc.gwt.shared.calender.Day;
 import org.ttdc.gwt.shared.calender.Month;
@@ -123,9 +124,12 @@ public class CalendarCommandExecutor  extends CommandExecutor<CalendarCommandRes
 				Day day = dao.buildDay();
 				
 				//Special!! Madness!!
-				InboxDao inboxDao = new InboxDao(getPerson());
-				FastPostBeanConverter.inflateDay(day,inboxDao);
+//				InboxDao inboxDao = new InboxDao(getPerson());
+//				FastPostBeanConverter.inflateDay(day,inboxDao);
 				//////////
+				InboxDao inboxDao = new InboxDao(getPerson());
+				FastGPostLoader loader = new FastGPostLoader(inboxDao);
+				loader.inflateDay(day);
 				
 				result.setDay(day);
 				loadDateRangeForDay(result,cmd.getYear(), cmd.getMonthOfYear(), cmd.getDayOfMonth());
