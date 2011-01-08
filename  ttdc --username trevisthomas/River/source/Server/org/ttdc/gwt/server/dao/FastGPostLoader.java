@@ -4,6 +4,7 @@ import static org.ttdc.persistence.Persistence.session;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,10 +17,14 @@ import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.beans.GTag;
 import org.ttdc.gwt.server.beanconverters.ConversionUtils;
 import org.ttdc.gwt.server.util.PostFormatter;
+import org.ttdc.gwt.shared.calender.CalendarPost;
+import org.ttdc.gwt.shared.calender.Day;
+import org.ttdc.gwt.shared.calender.Hour;
 import org.ttdc.gwt.shared.util.PostFlag;
 import org.ttdc.gwt.shared.util.StringUtil;
 import org.ttdc.persistence.objects.FullPost;
 import org.ttdc.persistence.objects.FullTag;
+import org.ttdc.persistence.objects.Post;
 
 
 /**
@@ -33,8 +38,12 @@ import org.ttdc.persistence.objects.FullTag;
  */
 public class FastGPostLoader {
 	private final InboxDao inboxDao;
+	private final Date cutoffTime;
 	public FastGPostLoader(final InboxDao inboxDao) {
 		this.inboxDao = inboxDao;
+		
+		cutoffTime = new Date();
+		cutoffTime.setTime(cutoffTime.getTime() - InitConstants.POST_EDIT_WINDOW_MS);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -62,8 +71,58 @@ public class FastGPostLoader {
 		Collections.sort(gPosts, new GPostByPostIdReferenceComparator(ids));
 		return gPosts;
 	}
+	
+	public List<GPost> fetchPostsForIdsMovieSummary(List<String> ids) {
+		//TODO perform custom handling
+		return fetchPostsForIdsFlat(ids);
+	}
+	
+	public void inflateDay(Day day){
+		List<String> postIds = new ArrayList<String>();
+		
+		if(day.getHours() == null)
+			return;
+		
+		for(Hour hour : day.getHours()){
+			for(CalendarPost cp : hour.getCalendarPosts()){
+				postIds.add(cp.getPostId());
+			}
+		}
+		
+		if(postIds.size() == 0)
+			return;
+		
+		
+		List<FullPost> fullPosts;
+		fullPosts = session().getNamedQuery("FullPost.flatPosts")
+			.setParameterList("postIds", postIds)
+			.list();
+		
+		
+		Map<String,GPost> gPosts = digestFullPostsToMap(fullPosts);
+		
+		for(Hour hour : day.getHours()){
+			for(CalendarPost cp : hour.getCalendarPosts()){
+				GPost gPost = gPosts.get(cp.getPostId());
+				hour.addPost(gPost);
+			}
+		}
+	}	
+	
 
+	public List<GPost> fetchPostsForPosts(List<Post> posts){
+		 List<String> ids = extractIds(posts);
+		 return fetchPostsForIdsFlat(ids);
+	}	
 
+	private static List<String> extractIds(List<Post> posts){
+		List<String> postIds = new ArrayList<String>();
+		for(Post pl : posts){
+			postIds.add(pl.getPostId());
+		}
+		return postIds;
+	}
+	
 	private List<GPost> digestFullPostsToGrouped(List<FullPost> fullPosts) {
 		Map<String, GPost> threads = new HashMap<String, GPost>();
 		
@@ -139,6 +198,19 @@ public class FastGPostLoader {
 	}
 
 
+	private Map<String, GPost> digestFullPostsToMap(List<FullPost> fullPosts) {
+		Map<String, GPost> map = new HashMap<String, GPost>();
+		Map<String, List<GAssociationPostTag>> assMap = buildAssociationPostTagMap(fullPosts);
+		for(FullPost fp : fullPosts){
+			GPost p = crackThatPost(fp);
+			p.setTagAssociations(assMap.get(p.getPostId()));
+			if(p.isReview()){
+				p.getRoot().setTagAssociations(assMap.get(p.getRoot().getPostId()));
+			}
+			map.put(p.getPostId(),p);
+		}
+		return map;
+	}
 	
 
 	private List<GPost> digestFullPostsToFlat(List<FullPost> fullPosts) {
@@ -163,7 +235,7 @@ public class FastGPostLoader {
 		gp.setLatestEntry(crackThatEntry(fp));
 		gp.setDate(fp.getDate());
 		gp.setEditDate(fp.getEditDate());
-		gp.setRootPost(fp.getRootId() == null);
+		gp.setRootPost(fp.getRootId() != fp.getPostId());
 		gp.setRoot(crackThatRootPost(fp));
 		gp.setThread(crackThatThreadPost(fp));
 		gp.setThreadPost(fp.getPostId().equals(fp.getThreadId()));
@@ -179,6 +251,11 @@ public class FastGPostLoader {
 		gp.setAvgRatingTag(crackThatRatingTag(fp));
 		gp.setPath(fp.getPath());
 		gp.setMetaMask(fp.getMetaMask());
+		
+		if(gp.getDate().after(cutoffTime)){
+			gp.setInEditWindow(true);
+		}
+		
 		if(gp.isReview()){
 			GImage image = new GImage();
 			image.setName(fp.getRootImageName());
@@ -267,4 +344,6 @@ public class FastGPostLoader {
 		image.setThumbnailName(fp.getImageThumbnailName());
 		return image;
 	}
+
+	
 }

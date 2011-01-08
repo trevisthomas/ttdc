@@ -327,6 +327,6 @@ body{ color: #222; background-color: #eee;}
 .tt-selected a:hover{text-decoration: underline; color: #fff;}
 .tt-selected a:active{color: #b0c4de;}
 
-.spoiler{ color : #f6f6f6; background-color : #f6f6f6;}
-.reveal{ color : #000; background-color : #f6f6f6;}
+.spoiler{ color : #efefef; background-color : #efefef;}
+.reveal{ color : #000; background-color : #efefef;}
 

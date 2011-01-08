@@ -143,7 +143,7 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 			BatchCommandTool batcher = new BatchCommandTool();
 
 			performSearchForCommentsOfType(batcher, token, PostSearchType.TOPICS);
-			performSearchForReplySummary(batcher, token);
+			//performSearchForReplySummary(batcher, token);
 			
 			injector.getService().execute(batcher.getActionList(), batcher);
 		}
@@ -151,7 +151,7 @@ public class SearchResultsPanel extends BasePageComposite implements SearchDetai
 			BatchCommandTool batcher = new BatchCommandTool();
 			
 			performSearchForCommentsOfType(batcher, token, PostSearchType.ALL);
-			performSearchForReplySummary(batcher, token);
+			//performSearchForReplySummary(batcher, token);
 			
 			injector.getService().execute(batcher.getActionList(), batcher);
 		}

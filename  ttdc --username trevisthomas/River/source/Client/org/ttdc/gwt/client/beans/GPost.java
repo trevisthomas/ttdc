@@ -384,7 +384,7 @@ public class GPost extends GBase{
 
 	public boolean isReviewedBy(String personId) {
 		for(GPost post : getPosts()){
-			if(post.isReview() && post.getCreator().getPersonId().equals(personId)){
+			if(post.isReview() && post.getCreator().getPersonId().equals(personId) && !post.isDeleted()){
 				return true;
 			}
 		}
@@ -436,8 +436,11 @@ public class GPost extends GBase{
 	}
 	
 	public void toggleLocked(){
-		metaMask = metaMask | PostFlagBitmasks.BITMASK_LOCKED;
+		//metaMask = metaMask | PostFlagBitmasks.BITMASK_LOCKED;
+		//I just noticed that this looked different that the others and changed in on 1/8/2011
+		metaMask = metaMask ^ PostFlagBitmasks.BITMASK_LOCKED;
 	}
+	
 
 	public int getReplyStartIndex() {
 		return replyStartIndex;

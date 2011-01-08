@@ -14,6 +14,7 @@ import javax.persistence.SqlResultSetMapping;
 import javax.persistence.SqlResultSetMappings;
 import javax.persistence.Transient;
 
+import org.ttdc.gwt.shared.util.PostFlagBitmasks;
 import org.ttdc.gwt.shared.util.StringUtil;
 
 @NamedQueries({
@@ -56,7 +57,103 @@ import org.ttdc.gwt.shared.util.StringUtil;
 	@NamedQuery(name="FastTopicDao.ConversationCount", query="" +
 			"SELECT count(post.postId) FROM Post post WHERE post.root.postId=:postId " +
 			"AND post.thread.postId = post.postId " +
-			"AND bitwise_and( post.metaMask, :filterMask ) = 0 "),			
+			"AND bitwise_and( post.metaMask, :filterMask ) = 0 "),		
+			
+	//Movies
+	@NamedQuery(name="FastMovieDao.peopleWithMovieRatings", query="SELECT distinct ass.creator.personId, count(ass.creator.personId) " +
+			"FROM Post p, AssociationPostTag ass INNER JOIN ass.tag "+
+			"WHERE ass.tag.type='RATING' " +
+			"AND bitwise_and( ass.post.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE +
+			"AND p.postId = ass.post.postId " +
+			"GROUP BY ass.creator.personId"),		
+			
+	@NamedQuery(name="FastMovieDao.moviesSortedByTitle", query="SELECT p.postId FROM Post p " +
+			"WHERE " +
+			"bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE +
+			" AND bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_DELETED+" ) = 0 "+
+			"ORDER BY p.titleTag.sortValue"),
+			
+	@NamedQuery(name="FastMovieDao.moviesSortedByTitleDesc", query="SELECT p.postId FROM Post p " +
+			"WHERE " +
+			"bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE +
+			" AND bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_DELETED+" ) = 0 "+
+			"ORDER BY p.titleTag.sortValue DESC"),
+			
+	@NamedQuery(name="FastMovieDao.moviesCount", query="SELECT count(p.postId) FROM Post p " +
+			"WHERE " +
+			"bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE +
+			" AND bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_DELETED+" ) = 0 "),		
+
+	@NamedQuery(name="FastMovieDao.moviesSortedByTitleForPerson", query="SELECT ass.post.postId " +
+			"FROM AssociationPostTag ass INNER JOIN ass.post "+
+			"WHERE ass.tag.type='RATING' AND ass.creator.personId = :guid " +
+			"AND bitwise_and( ass.post.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE + 
+			" AND bitwise_and( ass.post.metaMask, "+PostFlagBitmasks.BITMASK_DELETED+" ) = 0 "+
+			"ORDER BY ass.post.titleTag.sortValue"),
+			
+	@NamedQuery(name="FastMovieDao.moviesSortedByTitleForPersonDesc", query="SELECT ass.post.postId " +
+			"FROM AssociationPostTag ass INNER JOIN ass.post "+
+			"WHERE ass.tag.type='RATING' AND ass.creator.personId = :guid " +
+			"AND bitwise_and( ass.post.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE + 
+			" AND bitwise_and( ass.post.metaMask, "+PostFlagBitmasks.BITMASK_DELETED+" ) = 0 "+
+			"ORDER BY ass.post.titleTag.sortValue DESC"),				
+			
+	@NamedQuery(name="FastMovieDao.moviesSortedByAverageRating", query="SELECT p.postId FROM Post p " +
+			"WHERE " +
+			"bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE +
+			" AND bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_DELETED+" ) = 0 "+
+			"ORDER BY p.avgRatingTag.sortValue, p.titleTag.sortValue"),
+			
+	@NamedQuery(name="FastMovieDao.moviesSortedByAverageRatingDesc", query="SELECT p.postId FROM Post p " +
+			"WHERE " +
+			"bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE +
+			" AND bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_DELETED+" ) = 0 "+
+			"ORDER BY p.avgRatingTag.sortValue DESC, p.titleTag.sortValue"),		
+
+			
+	@NamedQuery(name="FastMovieDao.moviesSortedByRatingForPerson", query="SELECT ass.post.postId " +
+			"FROM AssociationPostTag ass INNER JOIN ass.post "+
+			"WHERE ass.tag.type='RATING' AND ass.creator.personId = :guid " +
+			"AND bitwise_and( ass.post.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE + 
+			"ORDER BY ass.tag.value, ass.post.titleTag.sortValue"),		
+			
+	@NamedQuery(name="FastMovieDao.moviesSortedByRatingForPersonDesc", query="SELECT ass.post.postId " +
+			"FROM AssociationPostTag ass INNER JOIN ass.post "+
+			"WHERE ass.tag.type='RATING' AND ass.creator.personId = :guid " +
+			"AND bitwise_and( ass.post.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE + 
+			"ORDER BY ass.tag.value DESC, ass.post.titleTag.sortValue"),		
+
+	@NamedQuery(name="FastMovieDao.moviesRatedByPersonCount", query="SELECT count(ass.guid) " +
+			"FROM AssociationPostTag ass INNER JOIN ass.post "+
+			"WHERE ass.tag.type='RATING' AND ass.creator.personId = :guid " +
+			"AND bitwise_and( ass.post.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE + 
+			" AND bitwise_and( ass.post.metaMask, "+PostFlagBitmasks.BITMASK_DELETED+" ) = 0 "),
+					
+	@NamedQuery(name="FastMovieDao.moviesSortedByYear", query="SELECT p.postId FROM Post p " +
+			"WHERE " +
+			"bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE +
+			" AND bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_DELETED+" ) = 0 "+
+			"ORDER BY p.publishYear, p.titleTag.sortValue"),
+			
+	@NamedQuery(name="FastMovieDao.moviesSortedByYearDesc", query="SELECT p.postId FROM Post p " +
+			"WHERE " +
+			"bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE +
+			" AND bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_DELETED+" ) = 0 "+
+			"ORDER BY p.publishYear DESC, p.titleTag.sortValue"),		
+			
+	@NamedQuery(name="FastMovieDao.moviesSortedByYearForPerson", query="SELECT ass.post.postId " +
+			"FROM AssociationPostTag ass INNER JOIN ass.post "+
+			"WHERE ass.tag.type='RATING' AND ass.creator.personId = :guid " +
+			"AND bitwise_and( ass.post.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE + 
+			" AND bitwise_and( ass.post.metaMask, "+PostFlagBitmasks.BITMASK_DELETED+" ) = 0 "+
+			"ORDER BY ass.post.publishYear, ass.post.titleTag.sortValue"),
+			
+	@NamedQuery(name="FastMovieDao.moviesSortedByYearForPersonDesc", query="SELECT ass.post.postId " +
+			"FROM AssociationPostTag ass INNER JOIN ass.post "+
+			"WHERE ass.tag.type='RATING' AND ass.creator.personId = :guid " +
+			"AND bitwise_and( ass.post.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE + 
+			" AND bitwise_and( ass.post.metaMask, "+PostFlagBitmasks.BITMASK_DELETED+" ) = 0 "+
+			"ORDER BY ass.post.publishYear DESC, ass.post.titleTag.sortValue"),			
 		
 		
 })

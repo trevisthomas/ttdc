@@ -52,9 +52,7 @@ public class LatestPostCommandExecutor extends CommandExecutor<PaginatedListComm
 			default:
 				throw new RuntimeException("LatestPostCommandExecutor doesnt understand that action type");
 			}
-			if(!getPerson().isAnonymous()){
-				AccountDao.userHit(getPersonId());
-			}
+			incrementUserHitCount();
 			Persistence.commit();
 		}
 		catch (RuntimeException e) {

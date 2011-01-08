@@ -102,10 +102,6 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 				result = new PostCommandResult(gPost);
 			}
 			
-			if(!getPerson().isAnonymous()){
-				AccountDao.userHit(getPersonId());
-			}
-			
 			commit();
 			
 			if(broadcastType != null && gPost != null){
@@ -211,6 +207,7 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 		else{
 			creator = PersonDao.loadPerson(getPerson().getPersonId());
 		}
+		incrementUserHitCount(creator);
 		return creator;
 	}
 

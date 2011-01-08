@@ -28,6 +28,7 @@ public class InitConstants {
 	
 	public static final int POST_EDIT_WINDOW_MS = 1000*30*60;
 	public final static int MAX_FILTERED_THREADS_IN_DASHBOARD = 10;
+	public static final String SITE_DOMAIN_NAME = "trevisthomas.com";
 	
 	public static Style DEFAULT_STYLE;
 	//Bad mojo here trevis.  You have a mutable public attribute. Consider a fix

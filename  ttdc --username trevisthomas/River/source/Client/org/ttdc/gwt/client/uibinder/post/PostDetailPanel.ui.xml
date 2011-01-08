@@ -9,6 +9,7 @@
 			<tr>
 				<td><g:Label ui:field="postUnReadElement" /><g:Label ui:field="postReadElement" /></td>
 				<td><g:Label ui:field="postPrivateElement" /></td>
+				<td><g:Label ui:field="postLockedElement" /></td>
 				<td><g:Label ui:field="postNwsElement" /></td>
 				<td><g:Label ui:field="postInfElement" /></td>
 				<td><g:Label ui:field="postDeletedElement" /></td>

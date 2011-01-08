@@ -3,6 +3,7 @@ package org.ttdc.gwt.server.command;
 import org.apache.log4j.Logger;
 import org.ttdc.gwt.client.services.Command;
 import org.ttdc.gwt.client.services.CommandResult;
+import org.ttdc.gwt.server.dao.AccountDao;
 import org.ttdc.gwt.server.dao.InitConstants;
 import org.ttdc.gwt.server.dao.PersonDao;
 import org.ttdc.persistence.Persistence;
@@ -38,4 +39,15 @@ abstract public class CommandExecutor<T extends CommandResult> {
 		return execute();
 	}
 	abstract protected CommandResult execute();
+	
+	protected void incrementUserHitCount(){
+		if(!getPerson().isAnonymous()){
+			AccountDao.userHit(getPersonId());
+		}
+	}
+	protected void incrementUserHitCount(Person lurker){
+		if(!lurker.isAnonymous()){
+			AccountDao.userHit(lurker.getPersonId());
+		}
+	}
 }

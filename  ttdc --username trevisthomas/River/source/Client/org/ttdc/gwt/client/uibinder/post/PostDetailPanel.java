@@ -60,6 +60,8 @@ public class PostDetailPanel extends PostBaseComposite implements PostEventListe
     @UiField(provided = true) Label postInfElement = postIconTool.getIconInf();
     @UiField(provided = true) Label postUnReadElement = postIconTool.getIconUnread();
     @UiField(provided = true) Label postReadElement = postIconTool.getIconRead();
+    @UiField(provided = true) Label postLockedElement = postIconTool.getIconLocked();
+    
     @UiField SimplePanel actionLinks;
     @UiField SpanElement inResposeWrapperElement;
     @Inject

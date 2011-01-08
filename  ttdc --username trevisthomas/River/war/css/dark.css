@@ -356,7 +356,7 @@ input{ color: #eee; background-color: black;}
 .tt-pageHeader-title{color: fefefe;}
 .tt-pageHeader-subtitle{color: #790e0e;}
 
-.spoiler{ color : #222; background-color : #222;}
-.reveal{ color : #790e0e; background-color : #222;}
+.spoiler{ color : #2a2a2a; background-color : #2a2a2a;}
+.reveal{ color : #790e0e; background-color : #2a2a2a;}
 .tt-userlistrow{border-color: #333;}
 

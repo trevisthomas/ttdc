@@ -14,6 +14,7 @@ import org.ttdc.persistence.objects.Post;
 
 import static org.ttdc.gwt.server.dao.DaoUtils.*;
 
+@Deprecated
 public class MovieDao extends PaginatedDaoBase{
 	private SortBy sortBy = SortBy.BY_RATING;
 	private SortDirection sortDirection = SortDirection.DESC;

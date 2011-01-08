@@ -135,7 +135,7 @@ public class FastPostBeanConverter {
 	private static ArrayList<GPost> convertReviewPosts(GPost parent, List<Post> persistentPostList, InboxDao inboxDao){
 		ArrayList<GPost> list = new ArrayList<GPost>();
 		for(Post p : persistentPostList){
-			if(p.isReview()){
+			if(p.isReview() && !p.isDeleted()){
 				GPost rpcPost = convertPostSimple(p, inboxDao);
 				rpcPost.setParent(parent);
 				list.add(rpcPost);

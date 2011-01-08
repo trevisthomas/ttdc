@@ -6,6 +6,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.ttdc.gwt.server.dao.InitConstants;
 import org.ttdc.persistence.Persistence;
 import org.ttdc.persistence.objects.Shacktag;
 
@@ -170,7 +171,15 @@ public class ShackTagger {
 			if (dispUrlStr.length() > 50)
 				dispUrlStr = dispUrlStr.substring(0, 50) + "...";
 			//Removed the space from in front of the link on Oct 28
-			String str = "<a target=\"_blank\" href=\"" + urlStr + "\">" + dispUrlStr + "</a>";
+			String str;
+			if(urlStr.indexOf(InitConstants.SITE_DOMAIN_NAME) >= 0){
+				int startNdx = urlStr.indexOf(InitConstants.SITE_DOMAIN_NAME) + InitConstants.SITE_DOMAIN_NAME.length();
+				urlStr = urlStr.substring(startNdx);
+				str = "<a href=\"" + urlStr + "\">" + dispUrlStr + "</a>";
+			}
+			else{
+				str = "<a target=\"_blank\" href=\"" + urlStr + "\">" + dispUrlStr + "</a>";
+			}
 			return str;
 		}
 		return "";

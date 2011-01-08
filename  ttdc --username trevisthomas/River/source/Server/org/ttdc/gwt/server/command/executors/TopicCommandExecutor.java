@@ -13,6 +13,7 @@ import org.ttdc.gwt.server.command.executors.utils.ExecutorHelpers;
 import org.ttdc.gwt.server.command.executors.utils.PaginatedResultConverters;
 import org.ttdc.gwt.server.dao.AccountDao;
 import org.ttdc.gwt.server.dao.FastTopicDao;
+import org.ttdc.gwt.server.dao.InboxDao;
 import org.ttdc.gwt.server.dao.PostDao;
 import org.ttdc.gwt.server.dao.ThreadDao;
 import org.ttdc.gwt.server.dao.TopicDao;
@@ -99,6 +100,8 @@ public class TopicCommandExecutor  extends CommandExecutor<TopicCommandResult>{
 		FastTopicDao dao = new FastTopicDao();
 		dao.setCurrentPage(command.getPageNumber());
 		dao.setSourcePost(post);
+		InboxDao inboxDao = new InboxDao(getPerson());
+		dao.setInboxDao(inboxDao);
 		
 		dao.setFilterFlags(ExecutorHelpers.createFlagFilterListForPerson(getPerson()));
 		

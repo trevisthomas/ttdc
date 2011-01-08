@@ -9,6 +9,7 @@ import org.ttdc.gwt.client.services.CommandResult;
 import org.ttdc.gwt.server.beanconverters.FastPostBeanConverter;
 import org.ttdc.gwt.server.command.CommandExecutor;
 import org.ttdc.gwt.server.command.executors.utils.PaginatedResultConverters;
+import org.ttdc.gwt.server.dao.FastMovieDao;
 import org.ttdc.gwt.server.dao.MovieDao;
 import org.ttdc.gwt.server.dao.PersonDao;
 import org.ttdc.gwt.shared.commands.PersonListCommand;
@@ -69,7 +70,7 @@ public class PersonListCommandExecutor extends CommandExecutor<PersonListCommand
 	private PersonListCommandResult loadMovieReviewers() {
 		PersonListCommandResult results;
 		List<GPerson> gPersonList = new ArrayList<GPerson>();
-		MovieDao movieDao = new MovieDao();
+		FastMovieDao movieDao = new FastMovieDao();
 		Map<String,Long> map = movieDao.loadMovieRaters();
 		
 		List<Person> people = PersonDao.loadPeople(map.keySet());

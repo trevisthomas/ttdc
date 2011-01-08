@@ -469,44 +469,51 @@ import org.ttdc.gwt.shared.util.PostFlagBitmasks;
 	@NamedQuery(name="MovieDao.peopleWithMovieRatings", query="SELECT distinct ass.creator.personId, count(ass.creator.personId) " +
 			"FROM Post p, AssociationPostTag ass INNER JOIN ass.tag "+
 			"WHERE ass.tag.type='RATING' " +
-			"AND bitwise_and( ass.post.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE + 
+			"AND bitwise_and( ass.post.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE +
 			"AND p.postId = ass.post.postId " +
 			"GROUP BY ass.creator.personId"),
 			
 	@NamedQuery(name="MovieDao.moviesSortedByTitle", query="SELECT p FROM Post p " +
 			"WHERE " +
 			"bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE +
+			" AND bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_DELETED+" ) = 0 "+
 			"ORDER BY p.titleTag.sortValue"),
 			
 	@NamedQuery(name="MovieDao.moviesSortedByTitleDesc", query="SELECT p FROM Post p " +
 			"WHERE " +
 			"bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE +
+			" AND bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_DELETED+" ) = 0 "+
 			"ORDER BY p.titleTag.sortValue DESC"),
 			
 	@NamedQuery(name="MovieDao.moviesCount", query="SELECT count(p.postId) FROM Post p " +
 			"WHERE " +
-			"bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE),		
+			"bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE +
+			" AND bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_DELETED+" ) = 0 "),		
 
 	@NamedQuery(name="MovieDao.moviesSortedByTitleForPerson", query="SELECT ass.post " +
 			"FROM AssociationPostTag ass INNER JOIN ass.post "+
 			"WHERE ass.tag.type='RATING' AND ass.creator.personId = :guid " +
 			"AND bitwise_and( ass.post.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE + 
+			" AND bitwise_and( ass.post.metaMask, "+PostFlagBitmasks.BITMASK_DELETED+" ) = 0 "+
 			"ORDER BY ass.post.titleTag.sortValue"),
 			
 	@NamedQuery(name="MovieDao.moviesSortedByTitleForPersonDesc", query="SELECT ass.post " +
 			"FROM AssociationPostTag ass INNER JOIN ass.post "+
 			"WHERE ass.tag.type='RATING' AND ass.creator.personId = :guid " +
 			"AND bitwise_and( ass.post.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE + 
+			" AND bitwise_and( ass.post.metaMask, "+PostFlagBitmasks.BITMASK_DELETED+" ) = 0 "+
 			"ORDER BY ass.post.titleTag.sortValue DESC"),				
 			
 	@NamedQuery(name="MovieDao.moviesSortedByAverageRating", query="SELECT p FROM Post p " +
 			"WHERE " +
 			"bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE +
+			" AND bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_DELETED+" ) = 0 "+
 			"ORDER BY p.avgRatingTag.sortValue, p.titleTag.sortValue"),
 			
 	@NamedQuery(name="MovieDao.moviesSortedByAverageRatingDesc", query="SELECT p FROM Post p " +
 			"WHERE " +
 			"bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE +
+			" AND bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_DELETED+" ) = 0 "+
 			"ORDER BY p.avgRatingTag.sortValue DESC, p.titleTag.sortValue"),		
 
 			
@@ -525,28 +532,33 @@ import org.ttdc.gwt.shared.util.PostFlagBitmasks;
 	@NamedQuery(name="MovieDao.moviesRatedByPersonCount", query="SELECT count(ass.guid) " +
 			"FROM AssociationPostTag ass INNER JOIN ass.post "+
 			"WHERE ass.tag.type='RATING' AND ass.creator.personId = :guid " +
-			"AND bitwise_and( ass.post.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE ),
+			"AND bitwise_and( ass.post.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE + 
+			" AND bitwise_and( ass.post.metaMask, "+PostFlagBitmasks.BITMASK_DELETED+" ) = 0 "),
 					
 	@NamedQuery(name="MovieDao.moviesSortedByYear", query="SELECT p FROM Post p " +
 			"WHERE " +
 			"bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE +
+			" AND bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_DELETED+" ) = 0 "+
 			"ORDER BY p.publishYear, p.titleTag.sortValue"),
 			
 	@NamedQuery(name="MovieDao.moviesSortedByYearDesc", query="SELECT p FROM Post p " +
 			"WHERE " +
 			"bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE +
+			" AND bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_DELETED+" ) = 0 "+
 			"ORDER BY p.publishYear DESC, p.titleTag.sortValue"),		
 			
 	@NamedQuery(name="MovieDao.moviesSortedByYearForPerson", query="SELECT ass.post " +
 			"FROM AssociationPostTag ass INNER JOIN ass.post "+
 			"WHERE ass.tag.type='RATING' AND ass.creator.personId = :guid " +
 			"AND bitwise_and( ass.post.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE + 
+			" AND bitwise_and( ass.post.metaMask, "+PostFlagBitmasks.BITMASK_DELETED+" ) = 0 "+
 			"ORDER BY ass.post.publishYear, ass.post.titleTag.sortValue"),
 			
 	@NamedQuery(name="MovieDao.moviesSortedByYearForPersonDesc", query="SELECT ass.post " +
 			"FROM AssociationPostTag ass INNER JOIN ass.post "+
 			"WHERE ass.tag.type='RATING' AND ass.creator.personId = :guid " +
 			"AND bitwise_and( ass.post.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE + 
+			" AND bitwise_and( ass.post.metaMask, "+PostFlagBitmasks.BITMASK_DELETED+" ) = 0 "+
 			"ORDER BY ass.post.publishYear DESC, ass.post.titleTag.sortValue"),
 			
 	@NamedQuery(name="PersonDao.loadPersonList", query="SELECT person FROM Person person WHERE person.personId IN (:personIds) ORDER BY person.login"),
