@@ -442,3 +442,5 @@ side effects in non mozilla browsers in the comment creator
 .tt-rating-description{ margin: 0 5px; font-size: 10px; font-style: italic;}
 
 .tt-movie-list-col-rating{ width: 250;}
+.tt-rating-voteMode{ width: 250px;}
+.tt-rating-displayMode{ display:inline;}

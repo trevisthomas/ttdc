@@ -229,6 +229,11 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 		configureReviewCheckbox(person, post);
 		configurePrivateCheckbox(person, post);
 		
+		if(post != null){
+			infCheckBoxElement.setValue(post.isINF());
+			nwsCheckBoxElement.setValue(post.isNWS());
+		}
+		
 		configure();
 		
 		textAreaElement.setFocus(true);

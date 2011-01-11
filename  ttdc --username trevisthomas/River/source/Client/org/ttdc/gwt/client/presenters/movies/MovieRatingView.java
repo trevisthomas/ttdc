@@ -30,10 +30,10 @@ public class MovieRatingView implements MovieRatingPresenter.View{
 	
 	public MovieRatingView() {
 		starPanel.setStyleName("tt-rating-widget");
-		grid.setStyleName("tt-inline");
-		grid.setWidget(0, 0, starPanel);
+		grid.setWidget(1, 0, starPanel);
 		descriptionLabel.setStyleName("tt-rating-description");
-		grid.setWidget(1, 0, descriptionLabel);
+		grid.setWidget(0, 0, descriptionLabel);
+		grid.setStyleName("tt-rating-displayMode");
 	}
 	
 	@Override
@@ -63,11 +63,13 @@ public class MovieRatingView implements MovieRatingPresenter.View{
 		interactiveMode = false;
 		setRating(rating);
 		this.rateMovie = null;
+		grid.setStyleName("tt-rating-displayMode");
 		descriptionLabel.setVisible(false);
 	}
 
 	@Override
 	public void initVoteMode(RatableContentProcessor rateMovie){
+		grid.setStyleName("tt-rating-voteMode");
 		interactiveMode = true;
 		setRating("0.0");
 		this.rateMovie = rateMovie;

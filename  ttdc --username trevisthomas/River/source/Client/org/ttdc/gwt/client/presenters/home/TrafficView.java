@@ -1,7 +1,7 @@
 package org.ttdc.gwt.client.presenters.home;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+
+import java.util.LinkedList;
 
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -10,8 +10,29 @@ import com.google.gwt.user.client.ui.Widget;
 public class TrafficView implements TrafficPresenter.View{
 	private final TabPanel tabPanel = new TabPanel();
 	private final VerticalPanel personPanel = new VerticalPanel();
-	private final Map<String, Widget> map = new TrafficMap<String, Widget>(MAX_ENTRIES);
+	private final LinkedList<Bundle> list = new LinkedList<Bundle>();
 	
+	class Bundle{
+		private String personId;
+		private Widget widget;
+		
+		Bundle(String personId, Widget widget){
+			this.personId = personId;
+			this.widget = widget;
+		}
+		public String getPersonId() {
+			return personId;
+		}
+		public void setPersonId(String personId) {
+			this.personId = personId;
+		}
+		public Widget getWidget() {
+			return widget;
+		}
+		public void setWidget(Widget widget) {
+			this.widget = widget;
+		}
+	}
 	
 	public TrafficView() {
 		tabPanel.add(personPanel, "Traffic");
@@ -19,31 +40,36 @@ public class TrafficView implements TrafficPresenter.View{
 	}
 	@Override
 	public Widget getWidget() {
-		
 		tabPanel.selectTab(0);
 		return tabPanel;
 	}
-
+	
 	@Override
 	public void addOrUpdatePerson(String personId, Widget w) {
-		if(map.containsKey(personId)){
-			Widget tmp = map.remove(personId);
-			personPanel.remove(tmp);
-		}	
-		else{
-			personPanel.remove(map.size()-1);
+		//Remove the old
+		for(Bundle b : list){
+			if(b.getPersonId().equals(personId)){
+				list.remove(b);
+				personPanel.remove(b.getWidget());
+				break;
+			}
 		}
-		
-		map.put(personId, w);
+		//Add to the head
 		personPanel.insert(w, 0);
+		list.addFirst(new Bundle(personId,w));
 		
+		//cull list
+		if(list.size() > MAX_ENTRIES){
+			Bundle doomed = list.removeLast();
+			personPanel.remove(doomed.getWidget());
+		}
 	}
 
 	@Override
 	public void addPerson(String personId, Widget w) {
-		if(map.size() < MAX_ENTRIES){
+		if(list.size() < MAX_ENTRIES){
+			list.add(new Bundle(personId,w));
 			personPanel.add(w);
-			map.put(personId,w);
 		}
 		else
 			return; //dont add any more
@@ -52,23 +78,6 @@ public class TrafficView implements TrafficPresenter.View{
 	@Override
 	public void clear(){
 		personPanel.clear();
-		map.clear();
-	}
-	/**
-	 * 
-	 * This custom LinkedHashMap caps the number of items that it will hold.
-	 *
-	 * @param <K>
-	 * @param <V>
-	 */
-	class TrafficMap<K, V> extends LinkedHashMap<K, V>{
-		private int maxEntries;
-		public TrafficMap(int maxEntries) {
-			this.maxEntries = maxEntries;
-		}
-		@Override
-		protected boolean removeEldestEntry(java.util.Map.Entry<K, V> eldest) {
-			return size() > maxEntries;
-		}
+		list.clear();
 	}
 }

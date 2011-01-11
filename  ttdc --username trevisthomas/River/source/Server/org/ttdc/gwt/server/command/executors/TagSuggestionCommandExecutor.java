@@ -16,6 +16,7 @@ import org.ttdc.gwt.server.command.executors.utils.ExecutorHelpers;
 import org.ttdc.gwt.server.dao.PersonDao;
 import org.ttdc.gwt.server.dao.PostSearchDao;
 import org.ttdc.gwt.server.dao.TagSearchDao;
+import org.ttdc.gwt.server.util.PostFormatter;
 import org.ttdc.gwt.shared.commands.TagSuggestionCommand;
 import org.ttdc.gwt.shared.commands.TagSuggestionCommandMode;
 import org.ttdc.gwt.shared.commands.results.TagSuggestionCommandResult;
@@ -105,9 +106,11 @@ public class TagSuggestionCommandExecutor extends CommandExecutor<TagSuggestionC
 			root.setPublishYear(post.getRoot().getPublishYear());
 			GPost gp = new GPost();
 			gp.setRoot(root);
-			addFakeTitleTag(post.getTitle(), gp);
+			
+			String title = PostFormatter.getInstance().format(post.getTitle());
+			addFakeTitleTag(title, gp);
 			gp.setPostId(post.getPostId());
-			String highlightedValue = highlightRequestedValue(request.getQuery(), post.getTitle());
+			String highlightedValue = highlightRequestedValue(request.getQuery(), title);
 
 			String movieYear = "";
 			if(root.isMovie()){

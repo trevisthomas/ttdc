@@ -33,7 +33,7 @@ class BroadcastEventJob implements Runnable{
 				
 				boolean validForUser = isPostValidContentForUser(queue);
 				
-				if(validForUser){
+				if(validForUser && !queue.containsEvent(event)){
 					queue.addEvent(event);
 				}
 			}

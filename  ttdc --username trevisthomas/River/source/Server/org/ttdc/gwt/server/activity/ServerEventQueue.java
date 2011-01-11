@@ -21,6 +21,10 @@ class ServerEventQueue{
 		this.personId = personId;
 	}
 	
+	boolean containsEvent(Event<?,?> e){
+		return queue.contains(e);
+	}
+	
 	public Date getLastAccessed() {
 		return lastAccessed;
 	}
