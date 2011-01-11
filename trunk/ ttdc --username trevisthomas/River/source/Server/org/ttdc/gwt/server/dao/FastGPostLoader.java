@@ -235,7 +235,7 @@ public class FastGPostLoader {
 		gp.setLatestEntry(crackThatEntry(fp));
 		gp.setDate(fp.getDate());
 		gp.setEditDate(fp.getEditDate());
-		gp.setRootPost(fp.getRootId() != fp.getPostId());
+		gp.setRootPost(fp.getRootId().equals( fp.getPostId()));
 		gp.setRoot(crackThatRootPost(fp));
 		gp.setThread(crackThatThreadPost(fp));
 		gp.setThreadPost(fp.getPostId().equals(fp.getThreadId()));
@@ -298,10 +298,10 @@ public class FastGPostLoader {
 	private GTag crackThatTitleTag(FullPost fp) {
 		GTag tag = new GTag();
 		if(StringUtil.notEmpty(fp.getRootPublishYear())){
-			tag.setValue(fp.getTitleValue() + " ("+fp.getRootPublishYear()+")");
+			tag.setValue(PostFormatter.getInstance().format(fp.getTitleValue()) + " ("+fp.getRootPublishYear()+")");
 		}
 		else{
-			tag.setValue(fp.getTitleValue());
+			tag.setValue(PostFormatter.getInstance().format(fp.getTitleValue()));
 		}
 		return tag;
 	}

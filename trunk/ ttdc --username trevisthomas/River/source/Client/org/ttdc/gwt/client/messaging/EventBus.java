@@ -167,6 +167,8 @@ public class EventBus {
 		for(PersonEventListener listener : personListeners){
 			listener.onPersonEvent(event);
 		}
+		int i = 0;
+		i++;
 	}
 	private void notifyListeners(MessageEvent event) {
 		for(MessageEventListener listener : errorListeners){

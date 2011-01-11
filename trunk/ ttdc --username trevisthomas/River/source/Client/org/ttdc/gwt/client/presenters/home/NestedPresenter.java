@@ -4,6 +4,9 @@ import java.util.List;
 
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GPost;
+import org.ttdc.gwt.client.messaging.EventBus;
+import org.ttdc.gwt.client.messaging.error.MessageEvent;
+import org.ttdc.gwt.client.messaging.error.MessageEventType;
 import org.ttdc.gwt.client.presenters.post.Mode;
 import org.ttdc.gwt.client.presenters.post.PostCollectionPresenter;
 import org.ttdc.gwt.client.presenters.shared.BasePresenter;
@@ -55,6 +58,7 @@ public class NestedPresenter extends BasePresenter<NestedPresenter.View> impleme
 		CommandResultCallback<PaginatedListCommandResult<GPost>> callback = new CommandResultCallback<PaginatedListCommandResult<GPost>>(){
 			public void onSuccess(PaginatedListCommandResult<GPost> result) {
 				//resultCache = result;
+				EventBus.fireEvent(new MessageEvent(MessageEventType.REFRESH_COMPLETE, ""));
 				addResults(result);
 				setupMorePresenter(result);
 			}

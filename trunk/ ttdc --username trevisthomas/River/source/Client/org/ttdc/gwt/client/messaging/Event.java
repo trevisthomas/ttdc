@@ -8,4 +8,9 @@ public abstract class Event<T,S> implements IsSerializable{
 	public boolean is(T type){
 		return getType().equals(type);
 	}
+	@Override
+	public boolean equals(Object obj) {
+		Event<T,S> e = (Event<T,S>)obj;
+		return getSource().equals(e.getSource()) && getType().equals(e.getType());
+	}
 }

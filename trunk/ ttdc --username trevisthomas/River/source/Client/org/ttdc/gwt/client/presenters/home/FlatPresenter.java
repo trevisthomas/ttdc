@@ -4,6 +4,9 @@ import java.util.List;
 
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GPost;
+import org.ttdc.gwt.client.messaging.EventBus;
+import org.ttdc.gwt.client.messaging.error.MessageEvent;
+import org.ttdc.gwt.client.messaging.error.MessageEventType;
 import org.ttdc.gwt.client.messaging.history.HistoryConstants;
 import org.ttdc.gwt.client.messaging.history.HistoryToken;
 import org.ttdc.gwt.client.presenters.post.Mode;
@@ -88,6 +91,7 @@ public class FlatPresenter extends BasePresenter<FlatPresenter.View> implements 
 //				else{
 //					resultCache = null;
 //				}
+				EventBus.fireEvent(new MessageEvent(MessageEventType.REFRESH_COMPLETE, ""));
 				showResult(result);
 			}
 		};

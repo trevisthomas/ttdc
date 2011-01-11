@@ -21,6 +21,7 @@ import org.ttdc.gwt.shared.commands.CommandResultCallback;
 import org.ttdc.gwt.shared.commands.TopicCommand;
 import org.ttdc.gwt.shared.commands.TopicCommandType;
 import org.ttdc.gwt.shared.commands.results.TopicCommandResult;
+import org.ttdc.gwt.shared.util.StringUtil;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.SpanElement;
@@ -150,17 +151,41 @@ public class PostPanel extends Composite implements PostPresenterCommon, PostEve
 		
 		replyCountElement.setText(""+post.getMass());
 		
-		replyCountElement.setTitle( post.getMass() + " replies in this conversation.");
+		String value = getFormattedConversationNumber(post);
+		
 		if(post.isRootPost()){
 			conversationCountElement.setVisible(true);
 			conversationCountElement.setText(""+post.getReplyCount());
 			conversationCountElement.setTitle(post.getReplyCount() + " conversations within this topic.");
+			replyCountElement.setTitle( post.getMass() + " total replies on this topic.");
+		}
+		else if(post.isThreadPost()){
+			conversationCountElement.setVisible(false);
+			if(post.getMass() == 0){
+				replyCountElement.setTitle( "No replies in the "+value+" conversation.");
+			}
+			else if(post.getMass() == 1){
+				replyCountElement.setTitle( "One reply in the "+value+" conversation.");
+			}
+			else{
+				replyCountElement.setTitle( post.getMass() + " replies in the "+value+" conversation.");
+			}
 		}
 		else{
 			conversationCountElement.setVisible(false);
+			if(post.getMass() == 0){
+				replyCountElement.setTitle( "No replies.");
+			}
+			else if(post.getMass() == 1){
+				replyCountElement.setTitle( "One reply.");
+			}
+			else{
+				replyCountElement.setTitle( post.getMass() + " replies.");
+			}
+			
 		}
 		
-		refreshPost(post);
+		refreshPost(post, value);
 		
 		if(post.isReview()){
 			postImagePresenter.setImageAsMoviePoster(post);
@@ -242,7 +267,7 @@ public class PostPanel extends Composite implements PostPresenterCommon, PostEve
 
 
 
-	private void refreshPost(GPost post) {
+	private void refreshPost(GPost post, String conversationNumber) {
 		bodyElement.setInnerHTML(post.getEntry());
 		PostPanelHelper.setupLikesElement(post, likesElement, injector);
 		creatorAvatorImagePresenter.setImage(post.getCreator().getImage(), post.getCreator().getLogin(), 40, 40);
@@ -250,28 +275,37 @@ public class PostPanel extends Composite implements PostPresenterCommon, PostEve
 		postLinkPresenter.setPost(post);
 		postLinkPresenter.init();
 		
-		if(post.isThreadPost()){
-			int conversationNumber = (1+Integer.parseInt(post.getPath()));
-			postNumberElement.setText("#"+conversationNumber); //Path is the post number for these conversation staters!
-			String suffix;
-			if(conversationNumber == 1){
-				suffix = "'st";
-			}
-			else if(conversationNumber == 2){
-				suffix = "'nd";
-			}
-			else if(conversationNumber == 3){
-				suffix = "'rd";				
-			}
-			else{
-				suffix="'th";
-			}
-			
-			postNumberElement.setTitle(conversationNumber+ suffix +" conversation in "+post.getTitle());
+		if(StringUtil.notEmpty(conversationNumber)){
+			postNumberElement.setTitle(conversationNumber +" conversation in "+post.getTitle());
 		}
 		else{
 			postNumberElement.setText("");
 		}
+	}
+
+
+
+	private String getFormattedConversationNumber(GPost post) {
+		if(!post.isThreadPost()){
+			return "";
+		}
+		int conversationNumber = (1+Integer.parseInt(post.getPath()));
+		postNumberElement.setText("#"+conversationNumber); //Path is the post number for these conversation staters!
+		String suffix;
+		if(conversationNumber == 1){
+			suffix = "'st";
+		}
+		else if(conversationNumber == 2){
+			suffix = "'nd";
+		}
+		else if(conversationNumber == 3){
+			suffix = "'rd";				
+		}
+		else{
+			suffix="'th";
+		}
+		String value = conversationNumber + suffix;
+		return value;
 	}
 
 	
@@ -374,7 +408,8 @@ public class PostPanel extends Composite implements PostPresenterCommon, PostEve
 	@Override
 	public void onPostEvent(PostEvent postEvent) {
 		if(postEvent.is(PostEventType.EDIT) && postEvent.getSource().getPostId().equals(getPost().getPostId())){
-			refreshPost(postEvent.getSource());
+			String value = getFormattedConversationNumber(postEvent.getSource());
+			refreshPost(postEvent.getSource(), value);
 		}
 	}
 	

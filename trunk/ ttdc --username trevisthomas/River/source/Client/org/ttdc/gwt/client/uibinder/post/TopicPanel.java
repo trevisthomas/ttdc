@@ -51,7 +51,7 @@ public class TopicPanel extends BasePageComposite implements PostEventListener{
 		initWidget(binder.createAndBindUi(this));
 		
 		EventBus.getInstance().addListener(this);
-		postTabPanelElement.add(threadsElement, "Comments");
+		postTabPanelElement.add(threadsElement, "Conversations");
 		postTabPanelElement.selectTab(0);
 	}
 	

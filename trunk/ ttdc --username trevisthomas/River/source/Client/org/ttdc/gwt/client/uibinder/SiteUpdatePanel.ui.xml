@@ -6,5 +6,6 @@
     xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 	 <g:HTMLPanel>
 	 	<g:Label styleName="tt-site-update tt-cursor-pointer tt-text-normal-bold" ui:field="siteRefresh" ></g:Label>
+	 	<g:Widget ui:field="waitMessage" ></g:Widget>
 	 </g:HTMLPanel>
 </ui:UiBinder>

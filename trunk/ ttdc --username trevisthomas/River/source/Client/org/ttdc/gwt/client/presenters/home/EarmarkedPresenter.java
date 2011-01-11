@@ -6,6 +6,8 @@ import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.beans.GTag;
 import org.ttdc.gwt.client.messaging.ConnectionId;
 import org.ttdc.gwt.client.messaging.EventBus;
+import org.ttdc.gwt.client.messaging.error.MessageEvent;
+import org.ttdc.gwt.client.messaging.error.MessageEventType;
 import org.ttdc.gwt.client.messaging.tag.TagEvent;
 import org.ttdc.gwt.client.messaging.tag.TagEventListener;
 import org.ttdc.gwt.client.messaging.tag.TagEventType;
@@ -62,6 +64,7 @@ public class EarmarkedPresenter extends BasePresenter<EarmarkedPresenter.View> i
 	private CommandResultCallback<PaginatedListCommandResult<GPost>> buildCallback() {
 		CommandResultCallback<PaginatedListCommandResult<GPost>> callback = new CommandResultCallback<PaginatedListCommandResult<GPost>>(){
 			public void onSuccess(PaginatedListCommandResult<GPost> result) {
+				EventBus.fireEvent(new MessageEvent(MessageEventType.REFRESH_COMPLETE, ""));
 				resultCache = result;
 				showResult(result);
 			}
