@@ -27,6 +27,7 @@ import org.ttdc.gwt.shared.util.PaginatedList;
 import org.ttdc.persistence.objects.Person;
 import org.ttdc.persistence.objects.Post;
 import org.ttdc.persistence.util.BridgeForPostType;
+import org.ttdc.persistence.util.DateScoreSorter;
 
 public class FastPostSearchDao extends FilteredPostPaginatedDaoBase{
 	private final static Logger log = Logger.getLogger(PostSearchDao.class);
@@ -128,7 +129,9 @@ public class FastPostSearchDao extends FilteredPostPaginatedDaoBase{
 					sortField = new SortField("title_sort",reverse);
 					break;
 				case RELEVANCE:
-					//do nothing
+					DateScoreSorter relevanceSorter = new DateScoreSorter();
+					sortField = new SortField("postId", relevanceSorter);
+					ftquery.setSort(new org.apache.lucene.search.Sort(sortField));
 					break;
 			}
 			if(sortField != null){
@@ -226,7 +229,7 @@ public class FastPostSearchDao extends FilteredPostPaginatedDaoBase{
 				else{
 					phraseQueries.add(buildPhraseQuery(phrase, "body", 8, 1));
 					phraseQueries.add(buildPhraseQuery(phrase, "title", 4, 4));
-					phraseQueries.add(buildPhraseQuery(phrase, "creator", 0, 8));
+//					phraseQueries.add(buildPhraseQuery(phrase, "creator", 0, 8));
 					phraseQueries.add(buildPhraseQuery(phrase, "topic", 0, 1));
 				}
 			}

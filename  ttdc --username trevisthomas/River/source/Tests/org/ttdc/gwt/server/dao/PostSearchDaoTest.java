@@ -49,6 +49,37 @@ public class PostSearchDaoTest {
 	}
 	
 	
+	@Test 
+	public void searchTestingRelevenceThenDate(){
+		
+		try{
+			beginSession();
+			PostSearchDao dao = new PostSearchDao();
+			//dao.setSortBy(null);
+			dao.setSortBy(SearchSortBy.RELEVANCE);
+			dao.setSortDirection(SortDirection.ASC);
+			String phrase = "morsels";
+			int currentPage = 3;
+			
+			dao.setCurrentPage(currentPage);
+			dao.setPhrase(phrase);
+			
+			PaginatedList<Post> results = dao.search();
+			
+			assertSearchResults(phrase, currentPage, results);
+			
+			for(Post p : results.getList()){
+				log.debug(p.getPostId() + " " + p.getDate());
+			}
+			
+			commit();
+		}
+		catch(Exception e){
+			rollback();
+			fail(e.getMessage());
+		}
+	
+	}
 	
 	
 	@Test 
@@ -66,6 +97,10 @@ public class PostSearchDaoTest {
 			PaginatedList<Post> results = dao.search();
 			
 			assertSearchResults(phrase, currentPage, results);
+			
+			for(Post p : results.getList()){
+				log.debug(p.getPostId() + " " + p.getDate());
+			}
 			
 			commit();
 		}

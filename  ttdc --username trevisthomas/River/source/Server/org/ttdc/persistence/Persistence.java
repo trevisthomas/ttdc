@@ -25,6 +25,7 @@ import org.ttdc.persistence.objects.Inbox;
 import org.ttdc.persistence.objects.InboxCache;
 import org.ttdc.persistence.objects.Person;
 import org.ttdc.persistence.objects.Post;
+import org.ttdc.persistence.objects.PostDate;
 import org.ttdc.persistence.objects.Privilege;
 import org.ttdc.persistence.objects.Shacktag;
 import org.ttdc.persistence.objects.SimplePostEntity;
@@ -63,7 +64,8 @@ public final class Persistence {
         	.addAnnotatedClass(DaySummaryEntity.class)
         	.addAnnotatedClass(Forum.class)
         	.addAnnotatedClass(FullPost.class)
-            .addAnnotatedClass(FullTag.class);
+            .addAnnotatedClass(FullTag.class)
+            .addAnnotatedClass(PostDate.class);
             
             
             //Warning: Hibernate choked when i had the function name mixed case.

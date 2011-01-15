@@ -4,6 +4,10 @@ import java.util.List;
 
 import org.apache.commons.lang.time.StopWatch;
 import org.apache.log4j.Logger;
+import org.apache.lucene.document.Field;
+import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.ScoreDocComparator;
+import org.apache.lucene.search.SortComparatorSource;
 import org.hibernate.search.FullTextSession;
 import org.ttdc.persistence.objects.AssociationPostTag;
 import org.ttdc.persistence.objects.Post;
@@ -18,6 +22,12 @@ public class FullTextIndexBuilder {
 	
 	
 	private void buildTagIndex(){
+		ScoreDoc s;
+		
+//	FieldConver
+//		ScoreDocComparator
+//		SortComparatorSource
+		
 		log.info("Building Full Text Index for 'Tag' table");
 		FullTextSession fullTextSession = Persistence.fullTextSession();
 		@SuppressWarnings("unchecked")

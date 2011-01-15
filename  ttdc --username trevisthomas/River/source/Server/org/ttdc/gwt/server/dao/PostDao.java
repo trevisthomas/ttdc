@@ -2,6 +2,7 @@ package org.ttdc.gwt.server.dao;
 
 import static org.ttdc.persistence.Persistence.session;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
@@ -19,6 +20,10 @@ import org.ttdc.persistence.objects.Tag;
 
 
 final public class PostDao {
+	public interface PostCreationListener{
+		void newPostCreated(Post post);
+	}
+	
 	private String body;
 	private Image image;
 	private Post parent;
@@ -31,6 +36,8 @@ final public class PostDao {
 	private String imageUrl;
 	private String description;
 	private String forumId;
+	
+	private final static List<PostCreationListener> postCreationListeners = new ArrayList<PostCreationListener>();
 	
 	public PostDao(){}
 
@@ -56,7 +63,19 @@ final public class PostDao {
 		return list;
 	}
 	
+	public static void registerPostCreationListener(PostCreationListener listener){
+		postCreationListeners.add(listener);
+	}
+	
 	public Post create(){
+		Post post = performPostCreate();
+		for(PostCreationListener listener : postCreationListeners){
+			listener.newPostCreated(post);
+		}
+		return post;
+	}
+
+	private Post performPostCreate() {
 		if(isMovie()){
 			return createMoviePost();
 		}
