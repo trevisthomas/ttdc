@@ -13,6 +13,7 @@ import org.apache.commons.lang.time.StopWatch;
 import org.apache.log4j.Logger;
 import org.apache.lucene.analysis.SimpleAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.document.Field;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.ParseException;
@@ -30,6 +31,7 @@ import org.ttdc.gwt.shared.commands.types.SearchSortBy;
 import org.ttdc.gwt.shared.util.PaginatedList;
 import org.ttdc.persistence.objects.Person;
 import org.ttdc.persistence.objects.Post;
+import org.ttdc.persistence.util.DateScoreSorter;
 import org.ttdc.persistence.util.BridgeForPostType;
 import org.ttdc.persistence.util.EnglishAnalyzer;
 
@@ -174,12 +176,23 @@ public final class PostSearchDao extends FilteredPostPaginatedDaoBase{
 					break;
 				case RELEVANCE:
 					//do nothing
+					DateScoreSorter blendSorter = new DateScoreSorter();
+					sortField = new SortField("postId", blendSorter, reverse);
+					ftquery.setSort(new org.apache.lucene.search.Sort(sortField));
 					break;
 			}
 			if(sortField != null){
 				ftquery.setSort(new org.apache.lucene.search.Sort(sortField));
 			}
+			
 		}
+		
+		//
+//		BlendSorter blendSorter = new BlendSorter(new BlendSorter.FieldConverter(), 1.0f);
+//		SortField sortField;
+//		sortField = new SortField("postId",blendSorter);
+//		ftquery.setSort(new org.apache.lucene.search.Sort(sortField));
+		//
 		
 		//addDateFilter(ftquery); //Added Dec 29 2010 in an attempt to have results sorted by relevence then by date
 		
@@ -393,14 +406,16 @@ public final class PostSearchDao extends FilteredPostPaginatedDaoBase{
 				else{
 					phraseQueries.add(buildPhraseQuery(phrase, "body", 8, 1));
 					phraseQueries.add(buildPhraseQuery(phrase, "title", 4, 4));
-					phraseQueries.add(buildPhraseQuery(phrase, "creator", 0, 8));
-					phraseQueries.add(buildPhraseQuery(phrase, "topic", 0, 1));
+//					phraseQueries.add(buildPhraseQuery(phrase, "creator", 0, 8));
+//					phraseQueries.add(buildPhraseQuery(phrase, "topic", 0, 1));
 				}
 			}
 			if(phraseQueries.size() > 0){
 				StringBuilder sb = new StringBuilder();
 				sb.append("(");
 				for(PhraseQuery pq : phraseQueries){
+					
+					//ESCAPE CHARACTERS TREVIS...
 					sb.append(pq.toString());
 				}
 				sb.append(")");

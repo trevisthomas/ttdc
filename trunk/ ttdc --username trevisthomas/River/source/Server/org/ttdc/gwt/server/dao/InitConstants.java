@@ -3,6 +3,7 @@ package org.ttdc.gwt.server.dao;
 import static org.ttdc.persistence.Persistence.session;
 
 import java.util.Date;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
@@ -10,10 +11,12 @@ import org.hibernate.Session;
 import org.ttdc.persistence.Persistence;
 import org.ttdc.persistence.objects.Image;
 import org.ttdc.persistence.objects.Person;
+import org.ttdc.persistence.objects.PostDate;
 import org.ttdc.persistence.objects.Style;
 import org.ttdc.persistence.objects.Tag;
 import org.ttdc.persistence.objects.UserObject;
 import org.ttdc.persistence.objects.UserObjectTemplate;
+import org.ttdc.persistence.util.DateScoreSorter;
 
 public class InitConstants {
 	private final static Logger log = Logger.getLogger(PostSearchDaoTest.class);
@@ -72,7 +75,12 @@ public class InitConstants {
 			//ANONYMOUS.objects = new ArrayList<UserObject>();
 			//ANONYMOUS.objects.add(uo);
 			ANONYMOUS.getObjects().add(uo);
+			
+			initializePostDateCacheForSearching(session);
+			
 			Persistence.commit();
+			
+			
 			
 		}
 		catch(Exception e){
@@ -80,6 +88,12 @@ public class InitConstants {
 			log.error(e);
 			throw new ExceptionInInitializerError("InitConstants failed to initialize an anonymous person. ");
 		}
+	}
+
+	private static void initializePostDateCacheForSearching(Session session) {
+		Query query2 = session.getNamedQuery("InitConstants.loadPostDateCache");
+		List<PostDate> postDateList = query2.list();
+		DateScoreSorter.init(postDateList);
 	}
 	
 	static{
