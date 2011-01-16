@@ -96,7 +96,7 @@ public class ReviewSummaryListPanel extends PostBaseComposite implements PostEve
 		imagePresenter.setImageAsMoviePoster(post);
 		imagePresenter.init();
 		
-		averageMovieRatingPresenter.setRating(post.getAvgRatingTag());
+		averageMovieRatingPresenter.setRating(post.getAvgRatingTag(), post.getRateCount(), false);
 		
 		postLinkPresenter.setPost(post);
 		postLinkPresenter.init();

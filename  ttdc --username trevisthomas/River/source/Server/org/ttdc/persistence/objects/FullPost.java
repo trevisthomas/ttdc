@@ -18,6 +18,11 @@ import org.ttdc.gwt.shared.util.PostFlagBitmasks;
 import org.ttdc.gwt.shared.util.StringUtil;
 
 @NamedQueries({
+	@NamedQuery(name="TagSuggestion.TopicTitle", query="" +
+			"SELECT p.postId FROM Post p INNER JOIN p.titleTag t where  " +
+			"(t.value LIKE (:phrase) OR t.value LIKE (:phrase2)) AND p.postId = p.root.postId ORDER BY p.mass DESC, p.date DESC "
+			),
+	
 	@NamedQuery(name="LatestPostsDaoFast.Flat", query="" +
 		"SELECT post.postId FROM Post post " +
 		"WHERE post.root.postId NOT IN (:threadIds) " +
@@ -161,7 +166,7 @@ import org.ttdc.gwt.shared.util.StringUtil;
 @NamedNativeQueries({
 	@NamedNativeQuery(
 		name="FullPost.flatPosts", query=""+
-			"SELECT p.guid as postId, i.name imageName, i.height imageHeight, i.width imageWidth, e.body entryBody, e.summary entrySummary, " +
+			"SELECT p.guid as postId, p.RATE_COUNT rateCount, i.name imageName, i.height imageHeight, i.width imageWidth, e.body entryBody, e.summary entrySummary, " +
 			"p.date date, p.EDIT_DATE editDate, p.REPLY_COUNT replyCount, p.MASS mass, p.ROOT_GUID rootId, p.THREAD_GUID threadId, p.PARENT_GUID parentId, " +
 			"p.PERSON_GUID_CREATOR creatorId, c.login creatorLogin, ci.name creatorImageName, p.URL url, p.PUBLISH_YEAR publishYear, " +
 			"parentCreator.GUID parentPostCreatorId, parentCreator.LOGIN parentPostCreator, tt.VALUE titleValue, avgr.VALUE ratingValue, " +
@@ -182,7 +187,7 @@ import org.ttdc.gwt.shared.util.StringUtil;
 	),
 	@NamedNativeQuery(
 		name="FullPost.groupedPosts", query=""+
-			"SELECT p.guid as postId, i.name imageName, i.height imageHeight, i.width imageWidth, e.body entryBody, e.summary entrySummary, " +
+			"SELECT p.guid as postId, p.RATE_COUNT rateCount, i.name imageName, i.height imageHeight, i.width imageWidth, e.body entryBody, e.summary entrySummary, " +
 			"p.date date, p.EDIT_DATE editDate, p.REPLY_COUNT replyCount, p.MASS mass, p.ROOT_GUID rootId, p.THREAD_GUID threadId, p.PARENT_GUID parentId, " +
 			"p.PERSON_GUID_CREATOR creatorId, c.login creatorLogin, ci.name creatorImageName, p.URL url, p.PUBLISH_YEAR publishYear, " +
 			"parentCreator.GUID parentPostCreatorId, parentCreator.LOGIN parentPostCreator, tt.VALUE titleValue, avgr.VALUE ratingValue, " +
@@ -238,6 +243,7 @@ import org.ttdc.gwt.shared.util.StringUtil;
 	        @FieldResult(name="rootImageName", column="rootImageName"),
 	        @FieldResult(name="rootImageHeight", column="rootImageHeight"),
 	        @FieldResult(name="rootImageWidth", column="rootImageWidth"),
+	        @FieldResult(name="rateCount", column="rateCount")
 	        
     }))
 })
@@ -275,6 +281,7 @@ public class FullPost {
 	private String rootImageName;
 	private Integer rootImageHeight;
 	private Integer rootImageWidth;
+	private int rateCount;
 	
 	@Transient
 	public String getCreatorImageThumbnailName(){
@@ -529,6 +536,14 @@ public class FullPost {
 
 	public void setRootImageWidth(Integer rootImageWidth) {
 		this.rootImageWidth = rootImageWidth;
+	}
+
+	public int getRateCount() {
+		return rateCount;
+	}
+
+	public void setRateCount(int rateCount) {
+		this.rateCount = rateCount;
 	}
 	
 }

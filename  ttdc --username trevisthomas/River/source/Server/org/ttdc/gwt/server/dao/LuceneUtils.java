@@ -23,7 +23,7 @@ public class LuceneUtils {
 	}
 	
 	public synchronized static String addDateRangeToLuceneQuery2(String original, DateRange dateRange){
-		String phrase;
+		String phrase = "";
 		if(StringUtils.isEmpty(original))
 			phrase = "";
 		else

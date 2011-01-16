@@ -39,6 +39,7 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 
 .tt-plain-post-date{margin-top: -1px;}
 
+.tt-rating-count,
 .tt-plain-post-header,
 .tt-post-detail,
 .tt-plain-post-creator,
@@ -48,6 +49,7 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 .tt-post-expanded-date,
 .tt-post-panel-head-date,
 .tt-text-small{font-size:10px;}
+
 
 .tt-post-detail{width: 100%;}
 	
@@ -440,6 +442,8 @@ side effects in non mozilla browsers in the comment creator
 .tt-userlistrow{border: solid 0px; border-top-width: 1px; }
 .tt-userlistrow-header{}
 .tt-rating-description{ margin: 0 5px; font-size: 10px; font-style: italic;}
+.tt-rating-count{line-height: 16px;}
+
 
 .tt-movie-list-col-rating{ width: 250;}
 .tt-rating-voteMode{ width: 250px;}

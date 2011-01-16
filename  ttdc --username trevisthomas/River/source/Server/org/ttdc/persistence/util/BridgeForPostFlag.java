@@ -6,8 +6,6 @@ import org.ttdc.gwt.shared.util.PostFlag;
 import org.ttdc.persistence.objects.Post;
 
 public class BridgeForPostFlag implements StringBridge{
-	private final static Logger log = Logger.getLogger(BridgeForPostFlag.class);
-	
 	public String objectToString(Object object) {
 		Post p = (Post) object;
 		
@@ -33,7 +31,6 @@ public class BridgeForPostFlag implements StringBridge{
 		if(p.isLinkContained())
 			sb.append(PostFlag.LINK.name()).append(" ");
 		
-		log.debug("PostFlagBridge: "+sb);
 		return sb.toString();
 		
 	}

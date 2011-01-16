@@ -3,6 +3,8 @@ package org.ttdc.gwt.client.presenters.movies;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.ttdc.gwt.shared.util.StringUtil;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.MouseOutEvent;
@@ -25,8 +27,9 @@ public class MovieRatingView implements MovieRatingPresenter.View{
 	private final Label descriptionLabel = new Label(defaultMessage);
 	private boolean interactiveMode = false;
 	private RatableContentProcessor rateMovie;
-	private final Grid grid = new Grid(2,1);
+	private final Grid grid = new Grid(2,2);
 	private List<HalfStarPanel> starList = new ArrayList<HalfStarPanel>();
+	private final Label ratingSummary = new Label();
 	
 	public MovieRatingView() {
 		starPanel.setStyleName("tt-rating-widget");
@@ -34,6 +37,9 @@ public class MovieRatingView implements MovieRatingPresenter.View{
 		descriptionLabel.setStyleName("tt-rating-description");
 		grid.setWidget(0, 0, descriptionLabel);
 		grid.setStyleName("tt-rating-displayMode");
+		grid.setWidget(0, 1, new Label(""));
+		grid.setWidget(1, 1, ratingSummary);
+		ratingSummary.setStyleName("tt-rating-count");
 	}
 	
 	@Override
@@ -76,6 +82,16 @@ public class MovieRatingView implements MovieRatingPresenter.View{
 		descriptionLabel.setVisible(true);
 		descriptionLabel.setText(defaultMessage);
 	}
+	
+	@Override
+	public void setRatingMessage(String msg) {
+		if(StringUtil.notEmpty(msg)){
+			ratingSummary.setText(msg);
+		}
+		else{
+			ratingSummary.setText("");
+		}
+	};
 	
 	private HalfStarPanel createHalfStarPanel(float ratingValue, float halfStarValue, String cssPrefix, String description) {
 		HalfStarPanel hstar;

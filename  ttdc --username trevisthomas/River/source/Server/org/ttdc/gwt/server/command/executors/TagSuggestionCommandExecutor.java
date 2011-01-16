@@ -50,14 +50,14 @@ public class TagSuggestionCommandExecutor extends CommandExecutor<TagSuggestionC
 	protected CommandResult execute() {
 		TagSuggestionCommand command = (TagSuggestionCommand) getCommand();
 		SuggestOracle.Response response = new SuggestOracle.Response();
-		
+		TagSuggestionCommandAssist assist = new TagSuggestionCommandAssist();
 		try {
 			switch(command.getMode()){
 				case TOPIC_POSTS:
-					postBased(command, response);
+					assist.postBased(command, response);
 					break;
 				case SEARCH_POSTS:
-					postBasedSearch(command, response);
+					assist.postBasedSearch(command, response);
 					break;
 				default:
 					tagBased(command, response);	
@@ -73,112 +73,6 @@ public class TagSuggestionCommandExecutor extends CommandExecutor<TagSuggestionC
 		return new TagSuggestionCommandResult(response);
 	}
 
-	private void postBasedSearch(TagSuggestionCommand command, Response response) {
-		SuggestOracle.Request request;
-		request = command.getRequest();
-		if(StringUtils.isEmpty(request.getQuery())){
-			return;
-		}
-		beginSession();
-		
-		PostSearchDao dao = new PostSearchDao();
-		
-		dao.setSearchByTitle(true);
-		dao.setPostSearchType(PostSearchType.TOPICS);
-		dao.setCurrentPage(1);
-		dao.setPageSize(request.getLimit());
-		dao.setPhrase(request.getQuery());
-		dao.setSortBy(SearchSortBy.POPULARITY);
-		dao.setSortDirection(SortDirection.DESC);
-		dao.setFilterFlags(ExecutorHelpers.createFlagFilterListForPerson(getPerson()));
-		
-		PaginatedList<Post> results = dao.search();
-		List<SuggestionObject> suggestions = new ArrayList<SuggestionObject>();
-		
-//		if(results.getList().size() > 0){
-//			if(StringUtils.isNotEmpty(request.getQuery()))
-//				suggestions.add(createSugestionForSearch(request.getQuery()));
-//		}
-		
-		for(Post post : results.getList() ){
-			GPost root = new GPost();
-			root.setMetaMask(post.getRoot().getMetaMask());
-			root.setPublishYear(post.getRoot().getPublishYear());
-			GPost gp = new GPost();
-			gp.setRoot(root);
-			
-			String title = PostFormatter.getInstance().format(post.getTitle());
-			addFakeTitleTag(title, gp);
-			gp.setPostId(post.getPostId());
-			String highlightedValue = highlightRequestedValue(request.getQuery(), title);
-
-			String movieYear = "";
-			if(root.isMovie()){
-				movieYear = " - "+root.getPublishYear();
-			}
-			
-			if(post.getMass() > 1)
-				suggestions.add(new SuggestionObject(gp, highlightedValue + movieYear+ " (" + post.getMass()+")"));
-			else
-				suggestions.add(new SuggestionObject(gp, highlightedValue + movieYear));
-		}
-		response.setSuggestions(suggestions);
-		
-		commit();
-		
-	}
-
-	private void postBased(TagSuggestionCommand command, Response response) {
-		SuggestOracle.Request request;
-		request = command.getRequest();
-		beginSession();
-		
-		PostSearchDao dao = new PostSearchDao();
-		Person person = PersonDao.loadPerson(getPerson().getPersonId());
-		
-		dao.setSearchByTitle(true);
-		dao.setPostSearchType(PostSearchType.TOPICS);
-		dao.setCurrentPage(1);
-		dao.setPageSize(request.getLimit());
-		dao.setPhrase(request.getQuery());
-		dao.setSortBy(SearchSortBy.POPULARITY);
-		dao.setSortDirection(SortDirection.DESC);
-		dao.setFilterFlags(ExecutorHelpers.createFlagFilterListForPerson(getPerson()));
-		
-		PaginatedList<Post> results = dao.search();
-		List<SuggestionObject> suggestions = new ArrayList<SuggestionObject>();
-		for(Post post : results.getList() ){
-			GPost root = new GPost();
-			root.setMetaMask(post.getRoot().getMetaMask());
-			root.setPublishYear(post.getRoot().getPublishYear());
-			GPost gp = new GPost();
-			gp.setRoot(root);
-			addFakeTitleTag(post.getTitle(), gp);
-			gp.setPostId(post.getPostId());
-			String highlightedValue = highlightRequestedValue(request.getQuery(), post.getTitle());
-
-			String movieYear = "";
-			if(root.isMovie()){
-				movieYear = " - "+root.getPublishYear();
-			}
-			
-			if(post.getMass() > 1)
-				suggestions.add(new SuggestionObject(gp, highlightedValue + movieYear+ " (" + post.getMass()+")"));
-			else
-				suggestions.add(new SuggestionObject(gp, highlightedValue + movieYear));
-		}
-		
-		if(StringUtils.isNotEmpty(request.getQuery()))
-			suggestions.add(createSugestionForNewPost(request.getQuery()));
-		response.setSuggestions(suggestions);
-		commit();
-	}
-
-	private void addFakeTitleTag(String title, GPost gp) {
-		GTag gt = new GTag();
-		gt.setValue(title);
-		gp.setTitleTag(gt);
-	}
 
 	private void tagBased(TagSuggestionCommand command,	SuggestOracle.Response response) {
 		SuggestOracle.Request request;
@@ -249,27 +143,13 @@ public class TagSuggestionCommandExecutor extends CommandExecutor<TagSuggestionC
 		return new SuggestionObject(gTag, "<b>"+query+" (Create New)</b>");
 	}
 	
-	private SuggestionObject createSugestionForNewPost(String query){
-		GPost post = new GPost();
-		addFakeTitleTag(query, post);
-		post.setPostId(" ");
-		return new SuggestionObject(post, "<b>"+query+" (Create New)</b>");
-	}
-	
-	private SuggestionObject createSugestionForSearch(String query){
-		GPost post = new GPost();
-		addFakeTitleTag(query, post);
-		post.setPostId(" ");
-		return new SuggestionObject(post, "<b> Search for: "+query+"</b>");
-	}
-	
 	private SuggestionObject createDynamicSugestion(String query, Tag tag){
 		if(StringUtils.isNotBlank(query)){
 			GTag gTag = convertTagToGTag(tag);
 			String requestedValue = query;
 			String actualValue = gTag.getValue();
 			
-			String highlightedValue = highlightRequestedValue(requestedValue, actualValue);
+			String highlightedValue = TagSuggestionCommandAssist.highlightRequestedValue(requestedValue, actualValue);
 			
 			return new SuggestionObject(gTag, highlightedValue);
 		}
@@ -279,21 +159,6 @@ public class TagSuggestionCommandExecutor extends CommandExecutor<TagSuggestionC
 		}
 	}
 
-	private String highlightRequestedValue(String requestedValue, String actualValue) {
-		if(StringUtils.isBlank(requestedValue))
-			return actualValue;
-		String lowerCaseValue = actualValue.toLowerCase();
-		String lowerCaseQuery = requestedValue.toLowerCase();
-		int startQueryMatch = lowerCaseValue.indexOf(lowerCaseQuery);
-		int endQueryMatch = requestedValue.length() + startQueryMatch;
-		if(startQueryMatch < 0){
-			return actualValue;
-		}
-		String highlightedValue = highlightQueryString(actualValue, startQueryMatch, endQueryMatch);
-		return highlightedValue;
-	}
-
-	
 	private GTag convertTagToGTag(Tag tag) {
 		GTag gTag = new GTag(); 
 		gTag.setTagId(tag.getTagId());
@@ -301,9 +166,4 @@ public class TagSuggestionCommandExecutor extends CommandExecutor<TagSuggestionC
 		gTag.setValue(tag.getValue());
 		return gTag;
 	}
-
-	private String highlightQueryString(String value, int startQueryMatch, int endQueryMatch) {
-		return  "<b>" + value.substring(0, startQueryMatch)+"</b>" + value.substring(startQueryMatch, endQueryMatch) +"<b>" + value.substring(endQueryMatch)+"</b>";
-	}
-
 }

@@ -26,6 +26,36 @@ public class TagSuggestionCommandExecutorTest{
 	private final static Logger log = Logger.getLogger(TagSuggestionCommandExecutorTest.class);
 	
 	
+	
+	@Test
+	public void testInTopicMode(){
+		SuggestOracle.Request request = new SuggestOracle.Request(); 
+		
+		request.setQuery("trevis");
+		
+		//MODE_POST_CREATE, MODE_SEARCH
+		TagSuggestionCommand cmd = new TagSuggestionCommand(TagSuggestionCommandMode.SEARCH_POSTS, request);
+		cmd.addTagIdExclude(tagCorporateGoodness);
+		
+		TagSuggestionCommandExecutor cmdexec = (TagSuggestionCommandExecutor)CommandExecutorFactory.createExecutor("50E7F601-71FD-40BD-9517-9699DDA611D6",cmd);
+		
+		TagSuggestionCommandResult result = (TagSuggestionCommandResult)cmdexec.executeCommand();
+		
+		List<SuggestionObject> posts  = (List<SuggestionObject>)result.getResponse().getSuggestions();
+		
+		assertTrue(posts.size() > 0);
+		
+		for(SuggestionObject suggestion : posts){
+			GTag t = suggestion.getTag();
+			assertTrue(StringUtils.isNotEmpty(t.getTagId()));
+			
+			assertEqualsOneOfExpected(cmdexec.getTagTypeFilterListForMode(TagSuggestionCommandMode.VIEW), t.getType());
+			assertContains(t.getValue(),request.getQuery());
+			log.info(t.getTagId()+" "+t.getValue());
+			assertFalse(" Tag : "+t.getValue()+" should have been excluded!", t.getTagId().equals(tagCorporateGoodness));
+		}
+	}
+	
 	/**
 	 * Show all topic tags, allow user to create a new tag if it doesn't exist.
 	 * Exclude the tags currently on the post.
