@@ -98,7 +98,7 @@ public class DateScoreSorter implements SortComparatorSource {
              * @param blendFactor       The factor to blend (0 means 0% fieldvalue and 100%
              *                          document-score, 1 means 100% fieldvalue and 0% document-score).
              */
-            float blendFactor = 0.6f;
+            float blendFactor = 0.9f;
 
             // lazily get values, and store them in our value-map
             private Float getValue(ScoreDoc scoreDoc, IndexReader indexReader, String field) throws IOException {

@@ -15,6 +15,7 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
+import org.apache.lucene.search.FuzzyQuery;
 import org.apache.lucene.search.PhraseQuery;
 import org.apache.lucene.search.SortField;
 import org.hibernate.search.FullTextQuery;
@@ -229,8 +230,7 @@ public class FastPostSearchDao extends FilteredPostPaginatedDaoBase{
 				else{
 					phraseQueries.add(buildPhraseQuery(phrase, "body", 8, 1));
 					phraseQueries.add(buildPhraseQuery(phrase, "title", 4, 4));
-//					phraseQueries.add(buildPhraseQuery(phrase, "creator", 0, 8));
-					phraseQueries.add(buildPhraseQuery(phrase, "topic", 0, 1));
+					//phraseQueries.add(buildPhraseQuery(phrase, "topic", 0, 1));
 				}
 			}
 			if(phraseQueries.size() > 0){
@@ -257,9 +257,12 @@ public class FastPostSearchDao extends FilteredPostPaginatedDaoBase{
 		
 	}
 
+//	private String trySomethingElse(String phrase2) {
+//		
+//	}
+
 	private PhraseQuery buildPhraseQuery(String phrase, String field, int slop, float boost) {
 		PhraseQuery query = new PhraseQuery();
-		
 		StringTokenizer st = new StringTokenizer(phrase.toLowerCase()," ");
 		if(st.countTokens() == 0)
 			return null;

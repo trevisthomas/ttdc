@@ -39,6 +39,7 @@ public class GPost extends GBase{
 	private int [] pathSegmentArray;
 	private int [] pathSegmentMax;
 	private boolean endOfBranch;
+	private int rateCount=0;
 	
 	private String parentPostId;
 	private String parentPostCreator;
@@ -504,6 +505,14 @@ public class GPost extends GBase{
 
 	public void setParentPostCreatorId(String parentPostCreatorId) {
 		this.parentPostCreatorId = parentPostCreatorId;
+	}
+
+	public int getRateCount() {
+		return rateCount;
+	}
+
+	public void setRateCount(int rateCount) {
+		this.rateCount = rateCount;
 	}
 	
 	

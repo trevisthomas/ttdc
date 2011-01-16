@@ -16,6 +16,7 @@ import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.beans.GTag;
 import org.ttdc.gwt.server.beanconverters.ConversionUtils;
+import org.ttdc.gwt.server.beanconverters.FastPostBeanConverter;
 import org.ttdc.gwt.server.util.PostFormatter;
 import org.ttdc.gwt.shared.calender.CalendarPost;
 import org.ttdc.gwt.shared.calender.Day;
@@ -24,7 +25,9 @@ import org.ttdc.gwt.shared.util.PostFlag;
 import org.ttdc.gwt.shared.util.StringUtil;
 import org.ttdc.persistence.objects.FullPost;
 import org.ttdc.persistence.objects.FullTag;
+import org.ttdc.persistence.objects.Image;
 import org.ttdc.persistence.objects.Post;
+
 
 
 /**
@@ -73,6 +76,8 @@ public class FastGPostLoader {
 	}
 	
 	public List<GPost> fetchPostsForIdsMovieSummary(List<String> ids) {
+		if(ids.size() == 0)
+			return new ArrayList<GPost>();
 		//TODO perform custom handling
 		return fetchPostsForIdsFlat(ids);
 	}
@@ -111,8 +116,11 @@ public class FastGPostLoader {
 	
 
 	public List<GPost> fetchPostsForPosts(List<Post> posts){
-		 List<String> ids = extractIds(posts);
-		 return fetchPostsForIdsFlat(ids);
+		if (posts.size() == 0) {
+			return new ArrayList<GPost>();
+		}
+		List<String> ids = extractIds(posts);
+		return fetchPostsForIdsFlat(ids);
 	}	
 
 	private static List<String> extractIds(List<Post> posts){
@@ -251,18 +259,34 @@ public class FastGPostLoader {
 		gp.setAvgRatingTag(crackThatRatingTag(fp));
 		gp.setPath(fp.getPath());
 		gp.setMetaMask(fp.getMetaMask());
+		gp.setRateCount(fp.getRateCount());
 		
 		if(gp.getDate().after(cutoffTime)){
 			gp.setInEditWindow(true);
 		}
 		
+		if(gp.isMovie()){
+			gp = FastPostBeanConverter.convertPost(PostDao.loadPost(gp.getPostId()), inboxDao);
+			return gp;
+		}
+		
 		if(gp.isReview()){
 			GImage image = new GImage();
-			image.setName(fp.getRootImageName());
-			image.setThumbnailName(FullPost.translateImageNameToThumbnailName(fp.getRootImageName()));
-			image.setWidth(fp.getRootImageWidth());
-			image.setHeight(fp.getRootImageHeight());
-			gp.setImage(image);
+			if(StringUtil.notEmpty(fp.getRootImageName())){
+				image.setName(fp.getRootImageName());
+				image.setThumbnailName(FullPost.translateImageNameToThumbnailName(fp.getRootImageName()));
+				image.setWidth(fp.getRootImageWidth());
+				image.setHeight(fp.getRootImageHeight());
+				gp.setImage(image);
+			}
+			else{
+				Image defaultPoster = InitConstants.DEFAULT_POSTER;
+				image.setName(defaultPoster.getName());
+				image.setThumbnailName(defaultPoster.getSquareThumbnailName());
+				image.setWidth(defaultPoster.getWidth());
+				image.setHeight(defaultPoster.getHeight());
+				gp.setImage(image);
+			}
 		}
 		else{
 			gp.setImage(crackThatImage(fp));

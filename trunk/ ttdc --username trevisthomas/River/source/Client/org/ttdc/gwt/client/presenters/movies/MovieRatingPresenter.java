@@ -40,6 +40,7 @@ public class MovieRatingPresenter extends BasePresenter<MovieRatingPresenter.Vie
 		void setRating(String rating);
 		void initVoteMode(RatableContentProcessor ratingProcessor);
 		void initShowMode(String rating);
+		void setRatingMessage(String msg);
 	}
 	
 	
@@ -63,6 +64,29 @@ public class MovieRatingPresenter extends BasePresenter<MovieRatingPresenter.Vie
 		view.setRating(rating);
 	}
 	
+	public void setRating(GTag ratingTag, int rateCount, boolean numberOnly){
+		setRating(ratingTag);
+		setRatingMessage(rateCount, numberOnly);
+	}
+
+	private void setRatingMessage(int rateCount, boolean numberOnly) {
+		if(numberOnly){
+			if(rateCount == 1){
+				view.setRatingMessage(" ("+rateCount+" rating)");
+			}
+			else if(rateCount > 1){
+				view.setRatingMessage(" ("+rateCount+" ratings)");
+			}
+		}
+		else{
+			if(rateCount == 1){
+				view.setRatingMessage(" (average of "+rateCount + " ttdc rating"+")");
+			}
+			else if(rateCount > 1){
+				view.setRatingMessage(" (average of "+rateCount + " ttdc ratings"+")");
+			}
+		}
+	}
 	public void setRating(GTag ratingTag){
 		if(ratingTag == null){
 			view.getWidget().setVisible(false);
@@ -106,6 +130,7 @@ public class MovieRatingPresenter extends BasePresenter<MovieRatingPresenter.Vie
 		else{
 			if(post.getAvgRatingTag() != null){
 				setRating(post.getAvgRatingTag().getValue());
+				setRatingMessage(post.getRateCount(), true);
 			}
 		}
 	}

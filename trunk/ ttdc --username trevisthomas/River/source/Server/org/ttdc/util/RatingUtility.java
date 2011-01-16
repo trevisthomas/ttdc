@@ -33,6 +33,7 @@ public class RatingUtility {
 		Tag t = tagDao.createOrLoad();
 		
 		post.setAvgRatingTag(t);
+		post.setRateCount(ratingAsses.size());
 		
 		session().flush();
 	}

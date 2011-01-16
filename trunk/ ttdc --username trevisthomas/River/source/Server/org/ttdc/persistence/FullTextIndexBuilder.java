@@ -22,13 +22,7 @@ public class FullTextIndexBuilder {
 	
 	
 	private void buildTagIndex(){
-		ScoreDoc s;
-		
-//	FieldConver
-//		ScoreDocComparator
-//		SortComparatorSource
-		
-		log.info("Building Full Text Index for 'Tag' table");
+ 		log.info("Building Full Text Index for 'Tag' table");
 		FullTextSession fullTextSession = Persistence.fullTextSession();
 		@SuppressWarnings("unchecked")
 		List<Tag> entries = fullTextSession.createQuery("SELECT t FROM Tag t order by t.date").list(); //.setMaxResults(10)
@@ -42,7 +36,8 @@ public class FullTextIndexBuilder {
 		log.info("Building Full Text Index for 'Post' table");
 		FullTextSession fullTextSession = Persistence.fullTextSession();
 		@SuppressWarnings("unchecked")
-		List<Post> posts = fullTextSession.createQuery("SELECT p FROM Post p ORDER BY p.date").list();
+//		List<Post> posts = fullTextSession.createQuery("SELECT p FROM Post p WHERE p.date > '12/1/2010' ORDER BY p.date ").list();
+		List<Post> posts = fullTextSession.createQuery("SELECT p FROM Post p ORDER BY p.date ").list();
 		for (Post p : posts) {
 		    fullTextSession.index(p);
 		}

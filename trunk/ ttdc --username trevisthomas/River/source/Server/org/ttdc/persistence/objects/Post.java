@@ -22,6 +22,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.search.annotations.Boost;
 import org.hibernate.search.annotations.ClassBridge;
 import org.hibernate.search.annotations.ClassBridges;
 import org.hibernate.search.annotations.DateBridge;
@@ -86,15 +87,17 @@ import org.ttdc.persistence.util.FilterFactoryForType;
 
 @ClassBridges({
 	@ClassBridge(name="body", impl=BridgeForBodyOnPost.class, index=Index.TOKENIZED),
-	@ClassBridge(name="tagIds", impl=BridgeForTagIdsOnPost.class, index=Index.TOKENIZED),
+	//@ClassBridge(name="tagIds", impl=BridgeForTagIdsOnPost.class, index=Index.TOKENIZED),
 	@ClassBridge(name="rootId", impl=BridgeForRootIdOnPost.class, index=Index.UN_TOKENIZED),
 	@ClassBridge(name="threadId", impl=BridgeForThreadIdOnPost.class, index=Index.UN_TOKENIZED),
 	@ClassBridge(name="type", impl=BridgeForPostType.class, index=Index.UN_TOKENIZED),
 	@ClassBridge(name="flag", impl=BridgeForPostFlag.class, index=Index.TOKENIZED),
 	@ClassBridge(name="title_sort", impl=BridgeForSortTitleOnPost.class, index=Index.UN_TOKENIZED),
+//	@ClassBridge(name="title", boost=@Boost(4.0f), impl=BridgeForTitleOnPost.class, index=Index.TOKENIZED),
 	@ClassBridge(name="title", impl=BridgeForTitleOnPost.class, index=Index.TOKENIZED),
 	@ClassBridge(name="tag", impl=BridgeForTagOnPost.class, index=Index.TOKENIZED),
 	@ClassBridge(name="creator", impl=BridgeForCreatorOnPost.class, index=Index.TOKENIZED),
+	
 })
 @FullTextFilterDefs({
 	@FullTextFilterDef( name="postWithTagFilter", impl=FilterFactoryForTokenizedTagIds.class ),
@@ -104,8 +107,6 @@ import org.ttdc.persistence.util.FilterFactoryForType;
 	@FullTextFilterDef( name="postDateRangeFilter", impl=FilterFactoryForPostDateRange.class ),
 	@FullTextFilterDef( name="postFlagFilter", impl=FilterFactoryForPostFlags.class ),
 	@FullTextFilterDef( name="postCreatorFilter", impl=FilterFactoryCreator.class )
-	
-	
 })
 
 
@@ -134,6 +135,8 @@ public class Post implements Comparable<Post>, HasGuid {
 	private Tag avgRatingTag;
 	private String url;
 	private Integer publishYear;
+	
+	private Integer rateCount = 0;
 	
 	private int replyPage = 1;
 	private int replyStartIndex = 1;//This is a shameless hack that i'm adding to keep track of the fact that
@@ -1583,6 +1586,15 @@ public class Post implements Comparable<Post>, HasGuid {
 
 	public void setCreator(Person creator) {
 		this.creator = creator;
+	}
+
+	@Column(name="RATE_COUNT")
+	public Integer getRateCount() {
+		return rateCount;
+	}
+
+	public void setRateCount(Integer rateCount) {
+		this.rateCount = rateCount;
 	}
 
 	

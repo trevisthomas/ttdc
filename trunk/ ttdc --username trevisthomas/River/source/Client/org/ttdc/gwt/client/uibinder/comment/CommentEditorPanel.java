@@ -218,6 +218,11 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 		if(Mode.EDIT.equals(mode)){
 			editButtonElement.setVisible(true);
 			postButtonElement.setVisible(false);
+			
+			if(post != null){
+				infCheckBoxElement.setValue(post.isINF());
+				nwsCheckBoxElement.setValue(post.isNWS());
+			}
 		}
 		else{
 			editButtonElement.setVisible(false);
@@ -228,11 +233,6 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 		configureDeleted(person, post);
 		configureReviewCheckbox(person, post);
 		configurePrivateCheckbox(person, post);
-		
-		if(post != null){
-			infCheckBoxElement.setValue(post.isINF());
-			nwsCheckBoxElement.setValue(post.isNWS());
-		}
 		
 		configure();
 		

@@ -25,7 +25,6 @@ import org.ttdc.gwt.server.util.PostFormatter;
 import org.ttdc.gwt.shared.calender.CalendarPost;
 import org.ttdc.gwt.shared.calender.Day;
 import org.ttdc.gwt.shared.calender.Hour;
-import org.ttdc.gwt.shared.util.StringUtil;
 import org.ttdc.persistence.objects.AssociationPostTag;
 import org.ttdc.persistence.objects.Entry;
 import org.ttdc.persistence.objects.Forum;
@@ -38,8 +37,6 @@ import org.ttdc.persistence.objects.Style;
 import org.ttdc.persistence.objects.Tag;
 import org.ttdc.persistence.objects.UserObject;
 import org.ttdc.persistence.objects.UserObjectTemplate;
-import org.ttdc.util.PathSegmentizer;
-
 
 public class FastPostBeanConverter {
 	
@@ -165,6 +162,7 @@ public class FastPostBeanConverter {
 		gPost.setReplyCount(p.getReplyCount());
 		gPost.setMetaMask(p.getMetaMask());//Added this so that i can detect that a movie was already reviewd in the comment editor!
 		gPost.setCreator(convertPerson(p.getCreator()));
+		gPost.setRateCount(p.getRateCount());
 		return gPost;
 	}
 	
@@ -209,6 +207,7 @@ public class FastPostBeanConverter {
 		gPost.setPath(p.getPath());
 		gPost.setMass(p.getMass());
 		gPost.setReplyCount(p.getReplyCount());
+		gPost.setRateCount(p.getRateCount());
 		
 		gPost.setReplyStartIndex(p.getReplyStartIndex());//Only used to let the client know that the child posts are a subset that doesnt start at the natural bottom
 		gPost.setReplyPage(p.getReplyPage());//Only used to let the client know that the child posts are a subset that doesnt start at the natural bottom
