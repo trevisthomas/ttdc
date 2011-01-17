@@ -46,6 +46,10 @@ public class CalendarCommandExecutor  extends CommandExecutor<CalendarCommandRes
 				dao.addFlagFilter(PostFlag.PRIVATE);
 			}
 			
+			if(!p.isAdministrator()){
+				dao.addFlagFilter(PostFlag.DELETED);
+			}
+			
 			dao.addFilterThreadIds(p.getFrontPageFilteredThreadIds());
 			
 			if (cmd.getScope().equals(CalendarCommand.Scope.YEAR)) {

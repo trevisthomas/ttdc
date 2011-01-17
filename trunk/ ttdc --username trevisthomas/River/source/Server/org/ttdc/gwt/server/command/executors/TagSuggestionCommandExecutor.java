@@ -24,6 +24,7 @@ import org.ttdc.gwt.shared.commands.types.PostSearchType;
 import org.ttdc.gwt.shared.commands.types.SortDirection;
 import org.ttdc.gwt.shared.commands.types.SearchSortBy;
 import org.ttdc.gwt.shared.util.PaginatedList;
+import org.ttdc.gwt.shared.util.PostFlag;
 import org.ttdc.persistence.objects.Person;
 import org.ttdc.persistence.objects.Post;
 import org.ttdc.persistence.objects.Tag;
@@ -51,7 +52,18 @@ public class TagSuggestionCommandExecutor extends CommandExecutor<TagSuggestionC
 		TagSuggestionCommand command = (TagSuggestionCommand) getCommand();
 		SuggestOracle.Response response = new SuggestOracle.Response();
 		TagSuggestionCommandAssist assist = new TagSuggestionCommandAssist();
+		
 		try {
+			beginSession();
+			
+			if(!getPerson().isPrivateAccessAccount()){
+				assist.addFlagFilter(PostFlag.PRIVATE);
+			}
+			
+			if(!getPerson().isAdministrator()){
+				assist.addFlagFilter(PostFlag.DELETED);
+			}
+			
 			switch(command.getMode()){
 				case TOPIC_POSTS:
 					assist.postBased(command, response);
@@ -63,6 +75,8 @@ public class TagSuggestionCommandExecutor extends CommandExecutor<TagSuggestionC
 					tagBased(command, response);	
 					break;
 			}
+			
+			commit();
 
 		} catch (Exception e) {
 			//throw new RuntimeException(e);

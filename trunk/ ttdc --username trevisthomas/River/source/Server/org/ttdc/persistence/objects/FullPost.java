@@ -20,7 +20,9 @@ import org.ttdc.gwt.shared.util.StringUtil;
 @NamedQueries({
 	@NamedQuery(name="TagSuggestion.TopicTitle", query="" +
 			"SELECT p.postId FROM Post p INNER JOIN p.titleTag t where  " +
-			"(t.value LIKE (:phrase) OR t.value LIKE (:phrase2)) AND p.postId = p.root.postId ORDER BY p.mass DESC, p.date DESC "
+			"(t.value LIKE (:phrase) OR t.value LIKE (:phrase2)) AND p.postId = p.root.postId " +
+			"AND bitwise_and( p.metaMask, :filterMask ) = 0  " +
+			"ORDER BY p.mass DESC, p.date DESC "
 			),
 	
 	@NamedQuery(name="LatestPostsDaoFast.Flat", query="" +
@@ -76,13 +78,13 @@ import org.ttdc.gwt.shared.util.StringUtil;
 			"WHERE " +
 			"bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE +
 			" AND bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_DELETED+" ) = 0 "+
-			"ORDER BY p.titleTag.sortValue"),
+			"ORDER BY p.titleTag.sortValue, p.titleTag.value"),
 			
 	@NamedQuery(name="FastMovieDao.moviesSortedByTitleDesc", query="SELECT p.postId FROM Post p " +
 			"WHERE " +
 			"bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE +
 			" AND bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_DELETED+" ) = 0 "+
-			"ORDER BY p.titleTag.sortValue DESC"),
+			"ORDER BY p.titleTag.sortValue DESC, p.titleTag.value DESC"),
 			
 	@NamedQuery(name="FastMovieDao.moviesCount", query="SELECT count(p.postId) FROM Post p " +
 			"WHERE " +
@@ -94,39 +96,39 @@ import org.ttdc.gwt.shared.util.StringUtil;
 			"WHERE ass.tag.type='RATING' AND ass.creator.personId = :guid " +
 			"AND bitwise_and( ass.post.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE + 
 			" AND bitwise_and( ass.post.metaMask, "+PostFlagBitmasks.BITMASK_DELETED+" ) = 0 "+
-			"ORDER BY ass.post.titleTag.sortValue"),
+			"ORDER BY ass.post.titleTag.sortValue, ass.post.titleTag.value"),
 			
 	@NamedQuery(name="FastMovieDao.moviesSortedByTitleForPersonDesc", query="SELECT ass.post.postId " +
 			"FROM AssociationPostTag ass INNER JOIN ass.post "+
 			"WHERE ass.tag.type='RATING' AND ass.creator.personId = :guid " +
 			"AND bitwise_and( ass.post.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE + 
 			" AND bitwise_and( ass.post.metaMask, "+PostFlagBitmasks.BITMASK_DELETED+" ) = 0 "+
-			"ORDER BY ass.post.titleTag.sortValue DESC"),				
+			"ORDER BY ass.post.titleTag.sortValue DESC, ass.post.titleTag.value DESC"),				
 			
 	@NamedQuery(name="FastMovieDao.moviesSortedByAverageRating", query="SELECT p.postId FROM Post p " +
 			"WHERE " +
 			"bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE +
 			" AND bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_DELETED+" ) = 0 "+
-			"ORDER BY p.avgRatingTag.sortValue, p.titleTag.sortValue"),
+			"ORDER BY p.avgRatingTag.sortValue, p.titleTag.sortValue, p.titleTag.value"),
 			
 	@NamedQuery(name="FastMovieDao.moviesSortedByAverageRatingDesc", query="SELECT p.postId FROM Post p " +
 			"WHERE " +
 			"bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE +
 			" AND bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_DELETED+" ) = 0 "+
-			"ORDER BY p.avgRatingTag.sortValue DESC, p.titleTag.sortValue"),		
+			"ORDER BY p.avgRatingTag.sortValue DESC, p.titleTag.sortValue, p.titleTag.value"),		
 
 			
 	@NamedQuery(name="FastMovieDao.moviesSortedByRatingForPerson", query="SELECT ass.post.postId " +
 			"FROM AssociationPostTag ass INNER JOIN ass.post "+
 			"WHERE ass.tag.type='RATING' AND ass.creator.personId = :guid " +
 			"AND bitwise_and( ass.post.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE + 
-			"ORDER BY ass.tag.value, ass.post.titleTag.sortValue"),		
+			"ORDER BY ass.tag.value, ass.post.titleTag.sortValue, ass.post.titleTag.value"),		
 			
 	@NamedQuery(name="FastMovieDao.moviesSortedByRatingForPersonDesc", query="SELECT ass.post.postId " +
 			"FROM AssociationPostTag ass INNER JOIN ass.post "+
 			"WHERE ass.tag.type='RATING' AND ass.creator.personId = :guid " +
 			"AND bitwise_and( ass.post.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE + 
-			"ORDER BY ass.tag.value DESC, ass.post.titleTag.sortValue"),		
+			"ORDER BY ass.tag.value DESC, ass.post.titleTag.sortValue, ass.post.titleTag.value"),		
 
 	@NamedQuery(name="FastMovieDao.moviesRatedByPersonCount", query="SELECT count(ass.guid) " +
 			"FROM AssociationPostTag ass INNER JOIN ass.post "+
@@ -138,27 +140,27 @@ import org.ttdc.gwt.shared.util.StringUtil;
 			"WHERE " +
 			"bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE +
 			" AND bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_DELETED+" ) = 0 "+
-			"ORDER BY p.publishYear, p.titleTag.sortValue"),
+			"ORDER BY p.publishYear, p.titleTag.sortValue, p.titleTag.value"),
 			
 	@NamedQuery(name="FastMovieDao.moviesSortedByYearDesc", query="SELECT p.postId FROM Post p " +
 			"WHERE " +
 			"bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE +
 			" AND bitwise_and( p.metaMask, "+PostFlagBitmasks.BITMASK_DELETED+" ) = 0 "+
-			"ORDER BY p.publishYear DESC, p.titleTag.sortValue"),		
+			"ORDER BY p.publishYear DESC, p.titleTag.sortValue, p.titleTag.value"),		
 			
 	@NamedQuery(name="FastMovieDao.moviesSortedByYearForPerson", query="SELECT ass.post.postId " +
 			"FROM AssociationPostTag ass INNER JOIN ass.post "+
 			"WHERE ass.tag.type='RATING' AND ass.creator.personId = :guid " +
 			"AND bitwise_and( ass.post.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE + 
 			" AND bitwise_and( ass.post.metaMask, "+PostFlagBitmasks.BITMASK_DELETED+" ) = 0 "+
-			"ORDER BY ass.post.publishYear, ass.post.titleTag.sortValue"),
+			"ORDER BY ass.post.publishYear, ass.post.titleTag.sortValue, ass.post.titleTag.value"),
 			
 	@NamedQuery(name="FastMovieDao.moviesSortedByYearForPersonDesc", query="SELECT ass.post.postId " +
 			"FROM AssociationPostTag ass INNER JOIN ass.post "+
 			"WHERE ass.tag.type='RATING' AND ass.creator.personId = :guid " +
 			"AND bitwise_and( ass.post.metaMask, "+PostFlagBitmasks.BITMASK_MOVIE+" ) = " +PostFlagBitmasks.BITMASK_MOVIE + 
 			" AND bitwise_and( ass.post.metaMask, "+PostFlagBitmasks.BITMASK_DELETED+" ) = 0 "+
-			"ORDER BY ass.post.publishYear DESC, ass.post.titleTag.sortValue"),			
+			"ORDER BY ass.post.publishYear DESC, ass.post.titleTag.sortValue, ass.post.titleTag.value"),			
 		
 		
 })

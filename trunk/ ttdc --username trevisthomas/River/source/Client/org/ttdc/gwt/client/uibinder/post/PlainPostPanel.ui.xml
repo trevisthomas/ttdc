@@ -4,10 +4,11 @@
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'
 	xmlns:t='urn:import:org.ttdc.gwt.client.presenters.util'>
 	<g:HTMLPanel styleName="tt-plain-post" ui:field="containerElement">
+		<g:SimplePanel ui:field="inReplyPostTarget" />
 		<div class="tt-plain-post-header">
 			<g:Label styleName="tt-inline" ui:field="headerLabelElement" />
 			<g:Hyperlink styleName="tt-plain-post-creator" ui:field="creatorElement" /> from 
-			<g:Hyperlink styleName="tt-plain-post-date" ui:field="dateElement"/>
+			<g:Hyperlink styleName="tt-plain-post-date" ui:field="dateElement"/> <span ui:field="inResposeWrapperElement"> in <g:Anchor ui:field="inReplyToElement"/> to <g:Hyperlink ui:field="inReplyToCreatorElement" /></span>
 		</div>
 		<span class="tt-post-body tt-text-normal" ui:field="bodyElement" />
 		<div class="tt-plain-post-close"><g:Anchor ui:field="closeElement">[close]</g:Anchor></div>

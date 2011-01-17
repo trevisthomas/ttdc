@@ -142,7 +142,7 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 	private GPost post = null;
 	private SuggestBox parentSuggestionBox;
 	private SugestionOracle parentSuggestionOracle;
-	private final TextBox titleEditTextBox = new TextBox();;
+	private final TextBox titleEditTextBox = new TextBox();
 	
 	boolean operationInProgress = false;
 	

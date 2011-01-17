@@ -253,6 +253,8 @@ input{ color: #eee; background-color: black;}
 */
 .tt-post{ background-color: #2C2C2C; border-color:#333 #000 #000 #333;}
 
+
+
 .tt-post-panel-number,
 .tt-post-summary-body,
 .tt-color-search-results-header{color: #965555;}
@@ -344,6 +346,7 @@ input{ color: #eee; background-color: black;}
 
 .tt-comment-button,
 .tt-post-child-hover{border-color: #333 #000 #000 #333;}
+.tt-post-child{background-color: #222;}
 
 .tt-selected{border-color:#bf3333; background-color:#790e0e;}
 
@@ -359,4 +362,9 @@ input{ color: #eee; background-color: black;}
 .spoiler{ color : #2a2a2a; background-color : #2a2a2a;}
 .reveal{ color : #790e0e; background-color : #2a2a2a;}
 .tt-userlistrow{border-color: #333;}
+
+.tt-post-unread{border-color: #8b2d2d; }
+.tt-post-unread{border-width: 1px 0; border-style: solid; margin: 2px 0;}
+.tt-post-unread-avatar{background: #6c2c2c;}
+
 

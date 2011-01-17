@@ -3,6 +3,7 @@ package org.ttdc.gwt.client.uibinder.post;
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GAssociationPostTag;
 import org.ttdc.gwt.client.beans.GPost;
+import org.ttdc.gwt.client.messaging.ConnectionId;
 import org.ttdc.gwt.client.messaging.EventBus;
 import org.ttdc.gwt.client.messaging.post.PostEvent;
 import org.ttdc.gwt.client.messaging.post.PostEventListener;
@@ -25,6 +26,8 @@ import org.ttdc.gwt.shared.util.StringUtil;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.SpanElement;
+import com.google.gwt.dom.client.TableCellElement;
+import com.google.gwt.dom.client.TableElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -79,6 +82,8 @@ public class PostPanel extends Composite implements PostPresenterCommon, PostEve
     @UiField HTMLPanel postMainElement;
     @UiField SimplePanel inReplyPostElement;
     private final PostIconTool postIconTool = new PostIconTool();
+    @UiField TableElement postTable;
+    @UiField TableCellElement avatarCell;
     
 
     @UiField (provided = true) PostDetailPanel postDetailPanelElement;    
@@ -281,6 +286,13 @@ public class PostPanel extends Composite implements PostPresenterCommon, PostEve
 		else{
 			postNumberElement.setText("");
 		}
+		
+		if(!ConnectionId.isAnonymous()){
+			if(!post.isRead()){
+				postTable.addClassName("tt-post-unread");
+				avatarCell.addClassName("tt-post-unread-avatar");
+			}
+    	}
 	}
 
 

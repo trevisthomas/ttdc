@@ -22,10 +22,10 @@ body{font-family: Arial, Arial, Helvetica, sans-serif;}
 .tt-home-left{ width: 220px;}
 .tt-home-tabContainer{margin: 4px 0 10px 0; width: 800px;}
 
-.tt-post-child{margin: 1px 1px 1px 0px; border-width: 1px; border-style:solid; width:510px;}
+.tt-post-child{margin: 1px 1px 1px 0px; border-width: 1px; border-style:solid; width:510px; min-height:34px;}
 .tt-forum-post{margin: 1px 1px 4px; border-width: 0 0 1px 0; border-style: solid; }
 
-.tt-post{width: 550px; margin-bottom: 2px; border:1px solid; overflow: auto;}
+.tt-post{width: 553px; margin-bottom: 0px; border:1px solid; overflow: auto;}
 .tt-post-container-header{overflow: auto;}
 .tt-post-container-footer{}
 
@@ -448,3 +448,4 @@ side effects in non mozilla browsers in the comment creator
 .tt-movie-list-col-rating{ width: 250;}
 .tt-rating-voteMode{ width: 250px;}
 .tt-rating-displayMode{ display:inline;}
+
