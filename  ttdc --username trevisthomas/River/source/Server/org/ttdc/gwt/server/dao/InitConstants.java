@@ -20,7 +20,7 @@ import org.ttdc.persistence.util.DateScoreSorter;
 
 public class InitConstants {
 	private final static Logger log = Logger.getLogger(PostSearchDaoTest.class);
-	public static final int MIN_TITLE_LENGTH = 3;
+	public static final int MIN_TITLE_LENGTH = 1;
 //	public final static String NWS_TAG_ID;
 //	public final static String PRIVATE_TAG_ID;
 //	public final static String REVIEW_ID;

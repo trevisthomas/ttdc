@@ -24,7 +24,7 @@ public class FilteredPostPaginatedDaoBase extends PaginatedDaoBase{
 		this.filterFlags = filterFlags;
 	}
 	
-	long buildFilterMask(Set<PostFlag> filterFlags){
+	protected long buildFilterMask(Set<PostFlag> filterFlags){
 		long filterMask = 0;
 		for(PostFlag flag : filterFlags){
 			filterMask = filterMask | flag.getBitmask();

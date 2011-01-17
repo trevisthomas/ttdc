@@ -166,7 +166,7 @@ public class PostDetailPanel extends PostBaseComposite implements PostEventListe
 		actionLinks.add(buildBoundOptionsIconPanel(post));
 	}
 
-	private boolean isInResponseToAvailable(GPost post) {
+	public static boolean isInResponseToAvailable(GPost post) {
 		return !(post.isRootPost() || post.isThreadPost());
 	}
 	

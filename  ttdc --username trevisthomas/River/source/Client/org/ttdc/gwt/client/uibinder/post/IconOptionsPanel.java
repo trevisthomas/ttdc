@@ -39,6 +39,7 @@ public class IconOptionsPanel extends Composite implements PersonEventListener{
     private Anchor earmarkElement = createAnchor("earmark");
     private Anchor unEarmarkElement = createAnchor("un-earmark");
     private Anchor tagElement = createAnchor("flag");
+    private Anchor reparentElement = createAnchor("reparent");
     
 	@UiField(provided = true) ClickableIconPanel replyElement = new ClickableIconPanel("ui-icon ui-icon-arrowrefresh-1-n");
 	@UiField(provided = true) ClickableIconPanel likeElement = new ClickableIconPanel("tt-icon-common tt-icon-thumbsup");
@@ -84,6 +85,7 @@ public class IconOptionsPanel extends Composite implements PersonEventListener{
     	unEarmarkElement.setVisible(false);
     	earmarkElement.setVisible(false);
     	tagElement.setVisible(false);
+    	reparentElement.setVisible(false);
     	if(user.hasPrivilege(PrivilegeConstants.VOTER) || user.isAdministrator()){
     		if(post.isRatable()){
     			if(post.getRatingByPerson(user.getPersonId()) == null)
@@ -124,9 +126,12 @@ public class IconOptionsPanel extends Composite implements PersonEventListener{
     		editElement.setVisible(true);
     	}
     	
-//    	if(user.isAdministrator()){
-//    		tagElement.setVisible(true);
-//    	}
+    	if(user.isAdministrator()){
+    		reparentElement.setVisible(true);
+    	}
+    	else{
+    		reparentElement.setVisible(false);
+    	}
     	
     }
     
@@ -172,6 +177,10 @@ public class IconOptionsPanel extends Composite implements PersonEventListener{
     
     public void addTagClickHandler(ClickHandler handler){
     	tagElement.addClickHandler(handler);
+    }
+    
+    public void addReparentClickHandler(ClickHandler handler){
+    	reparentElement.addClickHandler(handler);
     }
     
     
@@ -231,6 +240,8 @@ public class IconOptionsPanel extends Composite implements PersonEventListener{
     			main.addItem(tagElement);
     		if(editElement.isVisible())
     			main.addItem(editElement);
+    		if(reparentElement.isVisible())
+    			main.addItem(reparentElement);
     		
 		}
 		

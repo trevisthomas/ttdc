@@ -12,13 +12,18 @@ import org.ttdc.gwt.client.autocomplete.SuggestionObject;
 import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.beans.GTag;
 import org.ttdc.gwt.server.dao.FastGPostLoader;
+import org.ttdc.gwt.server.dao.FilteredPostPaginatedDaoBase;
 import org.ttdc.gwt.server.util.PostFormatter;
 import org.ttdc.gwt.shared.commands.TagSuggestionCommand;
 
 import com.google.gwt.user.client.ui.SuggestOracle;
 import com.google.gwt.user.client.ui.SuggestOracle.Response;
 
-public class TagSuggestionCommandAssist {
+/*
+ * I'm only inheriting from the FilteredPost base class to get access to the filter masks
+ *
+ */
+public class TagSuggestionCommandAssist extends FilteredPostPaginatedDaoBase{
 	
 	public void postBased(TagSuggestionCommand command, Response response) {
 		lookupSuggestionsForAutocomplete(command, response, true);
@@ -33,12 +38,14 @@ public class TagSuggestionCommandAssist {
 		if(StringUtils.isEmpty(request.getQuery())){
 			return;
 		}
-		beginSession();
+				
+		long filterMask = buildFilterMask(getFilterFlags());
 		
 		@SuppressWarnings("unchecked")
 		List<String> ids = session().getNamedQuery("TagSuggestion.TopicTitle")
 			.setParameter("phrase", request.getQuery()+"%")
 			.setParameter("phrase2", "% "+request.getQuery()+"%")
+			.setParameter("filterMask", filterMask)
 			.setMaxResults(request.getLimit()).list();
 		
 		FastGPostLoader loader = new FastGPostLoader(null);
@@ -66,7 +73,6 @@ public class TagSuggestionCommandAssist {
 		if(StringUtils.isNotEmpty(request.getQuery()) && create)
 			suggestions.add(createSugestionForNewPost(request.getQuery()));
 		
-		commit();
 	}
 	
 	

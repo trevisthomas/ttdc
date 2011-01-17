@@ -3,6 +3,7 @@ package org.ttdc.gwt.client.uibinder.post;
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.beans.GPost;
+import org.ttdc.gwt.client.messaging.ConnectionId;
 import org.ttdc.gwt.client.messaging.EventBus;
 import org.ttdc.gwt.client.messaging.post.PostEvent;
 import org.ttdc.gwt.client.messaging.post.PostEventListener;
@@ -15,6 +16,8 @@ import org.ttdc.gwt.client.presenters.util.DateFormatUtil;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.SpanElement;
+import com.google.gwt.dom.client.TableCellElement;
+import com.google.gwt.dom.client.TableElement;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
@@ -23,6 +26,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FocusPanel;
+import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -55,7 +59,10 @@ public class ChildPostPanel extends Composite implements PostEventListener, Post
     @UiField SimplePanel likesElement;
     @UiField (provided = true) Widget tagsElement ;
     @UiField SimplePanel inReplyPostElement;
-    @UiField(provided = true) Widget avatarElement;
+    @UiField (provided = true) Widget avatarElement;
+    @UiField TableElement postTable;
+    @UiField TableCellElement avatarCell;
+    
     
 	@UiField SpanElement bodyElement;
 	@UiField SimplePanel commentElement;
@@ -151,6 +158,13 @@ public class ChildPostPanel extends Composite implements PostEventListener, Post
 		creatorLinkPresenter.init();
 		
 		PostPanelHelper.setupLikesElement(post, likesElement, injector);
+		
+		if(!ConnectionId.isAnonymous()){
+			if(!post.isRead()){
+				postTable.addClassName("tt-post-unread");
+				avatarCell.addClassName("tt-post-unread-avatar");
+			}
+    	}
 		
 	}
 	

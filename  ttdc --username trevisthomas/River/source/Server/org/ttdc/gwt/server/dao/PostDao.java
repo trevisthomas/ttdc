@@ -274,6 +274,7 @@ final public class PostDao {
 			//fix paths.
 			String originalSourcePath = source.getPath();
 			source.setPath(generatePath(newParent)); 
+			
 			/*
 			 * TREVIS after an hour or two of pain you figured out that you had to do this
 			 * BEFORE doing the other stuff or else the generate path query was reading the wrong
@@ -282,6 +283,7 @@ final public class PostDao {
 			 */
 			Post oldParent = source.getParent();
 			Post oldRoot = source.getRoot();
+			
 			Post newRoot = newParent.getRoot();
 			Post oldThread = source.getThread();
 			

@@ -67,7 +67,8 @@ public final class StringTools {
 		for(int i = 0;i < ignoredWords.length;i++){
 			if(title.toLowerCase().startsWith(ignoredWords[i])){
 				int index = ignoredWords[i].length();
-				return title.substring(index) + ", " + title.substring(0,index).trim();
+				//return title.substring(index) + ", " + title.substring(0,index).trim();
+				return title.substring(index);
 			}
 		}
 		return title;

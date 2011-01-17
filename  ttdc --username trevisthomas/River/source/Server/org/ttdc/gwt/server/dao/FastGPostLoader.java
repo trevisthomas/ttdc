@@ -42,6 +42,7 @@ import org.ttdc.persistence.objects.Post;
 public class FastGPostLoader {
 	private final InboxDao inboxDao;
 	private final Date cutoffTime;
+	 
 	public FastGPostLoader(final InboxDao inboxDao) {
 		this.inboxDao = inboxDao;
 		
@@ -70,16 +71,26 @@ public class FastGPostLoader {
 			.list();
 		
 		
-		List<GPost> gPosts = digestFullPostsToFlat(fullPosts);
+		List<GPost> gPosts = digestFullPostsToFlat(fullPosts, true);
 		Collections.sort(gPosts, new GPostByPostIdReferenceComparator(ids));
 		return gPosts;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<GPost> fetchPostsForIdsMovieSummary(List<String> ids) {
 		if(ids.size() == 0)
 			return new ArrayList<GPost>();
 		//TODO perform custom handling
-		return fetchPostsForIdsFlat(ids);
+		//return fetchPostsForIdsFlat(ids);
+		
+		List<FullPost> fullPosts;
+		fullPosts = session().getNamedQuery("FullPost.flatPosts")
+			.setParameterList("postIds", ids)
+			.list();
+		
+		List<GPost> gPosts = digestFullPostsToFlat(fullPosts, false);
+		Collections.sort(gPosts, new GPostByPostIdReferenceComparator(ids));
+		return gPosts;
 	}
 	
 	public void inflateDay(Day day){
@@ -137,7 +148,7 @@ public class FastGPostLoader {
 		Map<String, List<GAssociationPostTag>> assMap = buildAssociationPostTagMap(fullPosts);
 		
 		for(FullPost fp : fullPosts){
-			GPost p = crackThatPost(fp);
+			GPost p = crackThatPost(fp, true);
 			
 			p.setTagAssociations(assMap.get(p.getPostId()));
 			if(p.isReview()){
@@ -210,7 +221,7 @@ public class FastGPostLoader {
 		Map<String, GPost> map = new HashMap<String, GPost>();
 		Map<String, List<GAssociationPostTag>> assMap = buildAssociationPostTagMap(fullPosts);
 		for(FullPost fp : fullPosts){
-			GPost p = crackThatPost(fp);
+			GPost p = crackThatPost(fp, true);
 			p.setTagAssociations(assMap.get(p.getPostId()));
 			if(p.isReview()){
 				p.getRoot().setTagAssociations(assMap.get(p.getRoot().getPostId()));
@@ -221,11 +232,11 @@ public class FastGPostLoader {
 	}
 	
 
-	private List<GPost> digestFullPostsToFlat(List<FullPost> fullPosts) {
+	private List<GPost> digestFullPostsToFlat(List<FullPost> fullPosts, boolean fullyInflateMovies) {
 		List<GPost> list = new ArrayList<GPost>();
 		Map<String, List<GAssociationPostTag>> assMap = buildAssociationPostTagMap(fullPosts);
 		for(FullPost fp : fullPosts){
-			GPost p = crackThatPost(fp);
+			GPost p = crackThatPost(fp, fullyInflateMovies);
 			p.setTagAssociations(assMap.get(p.getPostId()));
 			if(p.isReview()){
 				p.getRoot().setTagAssociations(assMap.get(p.getRoot().getPostId()));
@@ -237,7 +248,7 @@ public class FastGPostLoader {
 	
 	
 
-	private GPost crackThatPost(FullPost fp) {
+	private GPost crackThatPost(FullPost fp, boolean fullyInflateMovies) {
 		GPost gp = new GPost();
 		gp.setPostId(fp.getPostId());
 		gp.setLatestEntry(crackThatEntry(fp));
@@ -265,7 +276,7 @@ public class FastGPostLoader {
 			gp.setInEditWindow(true);
 		}
 		
-		if(gp.isMovie()){
+		if(gp.isMovie() && fullyInflateMovies){ //This hack falls back to the old school way of doing things when you need all detail about a movie
 			gp = FastPostBeanConverter.convertPost(PostDao.loadPost(gp.getPostId()), inboxDao);
 			return gp;
 		}

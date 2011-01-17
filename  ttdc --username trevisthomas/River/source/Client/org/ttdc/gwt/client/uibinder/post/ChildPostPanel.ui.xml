@@ -5,9 +5,9 @@
 	xmlns:t='urn:import:org.ttdc.gwt.client.presenters.util'
 	xmlns:u='urn:import:org.ttdc.gwt.client.uibinder.post'>
 	<g:HTMLPanel>
-		<table>
+		<table ui:field="postTable">
 			<tr>
-				<td width="40px">
+				<td width="40px" ui:field="avatarCell">
 					<g:Widget styleName="tt-avatar-large" ui:field="avatarElement" />
 				</td>
 				<td>

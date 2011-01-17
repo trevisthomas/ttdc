@@ -17,6 +17,7 @@ import org.ttdc.gwt.client.messaging.post.PostEventType;
 import org.ttdc.gwt.client.presenters.movies.MovieRatingPresenter;
 import org.ttdc.gwt.client.services.RpcServiceAsync;
 import org.ttdc.gwt.client.uibinder.comment.CommentEditorPanel;
+import org.ttdc.gwt.client.uibinder.comment.ReparentPanel;
 import org.ttdc.gwt.shared.commands.AssociationPostTagCommand;
 import org.ttdc.gwt.shared.commands.AssociationPostTagCommand.Mode;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
@@ -117,6 +118,14 @@ abstract public class PostBaseComposite extends Composite{
 				else{
 					showEditCommentEditor();
 				}
+			}
+		});
+		
+		optionsListPanel.addReparentClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				//There are probably conditions underwhich this should not show...
+				showReparentPanel();
 			}
 		});
 		
@@ -527,6 +536,13 @@ abstract public class PostBaseComposite extends Composite{
 		newMoviePanel.init(post);
 		commentElement.add(newMoviePanel);
 		newMoviePanel.setFocus();
+	}
+	
+	protected void showReparentPanel(){
+		commentElement.clear();
+		ReparentPanel reparentPanel = injector.createReparentPanel();
+		reparentPanel.init(post);
+		commentElement.add(reparentPanel);
 	}
 
 	
