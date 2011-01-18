@@ -22,6 +22,9 @@ import org.ttdc.gwt.client.messaging.error.MessageEventListener;
 import org.ttdc.gwt.client.messaging.error.MessageEventType;
 import org.ttdc.gwt.client.messaging.history.HistoryConstants;
 import org.ttdc.gwt.client.messaging.history.HistoryToken;
+import org.ttdc.gwt.client.messaging.person.PersonEvent;
+import org.ttdc.gwt.client.messaging.person.PersonEventListener;
+import org.ttdc.gwt.client.messaging.person.PersonEventType;
 import org.ttdc.gwt.client.presenters.search.DefaultMessageTextBox;
 import org.ttdc.gwt.client.presenters.util.ClickableIconPanel;
 import org.ttdc.gwt.client.services.BatchCommandTool;
@@ -63,7 +66,7 @@ import com.google.inject.Inject;
 
 
 
-public class SearchBoxPanel extends Composite implements MessageEventListener, DefaultMessageTextBox.EnterKeyPressedListener{
+public class SearchBoxPanel extends Composite implements MessageEventListener, DefaultMessageTextBox.EnterKeyPressedListener, PersonEventListener{
 	interface MyUiBinder extends UiBinder<Widget, SearchBoxPanel> {}
     private static final MyUiBinder binder = GWT.create(MyUiBinder.class);
     
@@ -129,8 +132,8 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
     	searchPhraseElement.addEnterKeyPressedListener(this);
     	
     	
-		
-		EventBus.getInstance().addListener(this);
+		EventBus.getInstance().addListener((PersonEventListener)this);
+		EventBus.getInstance().addListener((MessageEventListener)this);
 		refineSearchPanel.setSearchDetailListenerCollection(searchDetailListenerCollection);
 		
 		refineSearchPanel.setStyleName("tt-search-panel-adv");
@@ -252,6 +255,18 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 		}
 		else if(event.is(MessageEventType.SEARCH_CRITERIA_UPDATED)){
 			setDefaultMessage();
+		}
+	}
+	
+	@Override
+	public void onPersonEvent(PersonEvent event) {
+		if(event.is(PersonEventType.USER_CHANGED)){
+			if(ConnectionId.isAnonymous()){
+	    		markReadElement.setVisible(false);
+	    	}
+			else{
+				markReadElement.setVisible(true);
+			}
 		}
 	}
 	
@@ -408,13 +423,14 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 		RpcServiceAsync service = injector.getService();
 		service.execute(cmd, createStatusUpdateCallback());
 	}
-	//Duplicated in HomePanel
+
 	private CommandResultCallback<GenericCommandResult<GPerson>> createStatusUpdateCallback() {
 		return new CommandResultCallback<GenericCommandResult<GPerson>>(){
 			@Override
 			public void onSuccess(GenericCommandResult<GPerson> result) {
-				//EventBus.reload();//TODO: probably should come up with a way to just refresh the parts i care about!
+				ConnectionId.getInstance().setCurrentUser(result.getObject()); 
 				EventBus.fireEvent(new MessageEvent(MessageEventType.MARK_SITE_READ, "Nothing"));
+				
 			}
 		};
 	}

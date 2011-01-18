@@ -34,7 +34,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
-public class PostDetailPanel extends PostBaseComposite implements PostEventListener, PostPresenterCommon, MessageEventListener{
+public class PostDetailPanel extends PostBaseComposite implements PostEventListener, PostPresenterCommon{
 	interface MyUiBinder extends UiBinder<Widget, PostDetailPanel> {}
     private static final MyUiBinder binder = GWT.create(MyUiBinder.class);
     
@@ -58,8 +58,6 @@ public class PostDetailPanel extends PostBaseComposite implements PostEventListe
     @UiField(provided = true) Label postNwsElement = postIconTool.getIconNws();
     @UiField(provided = true) Label postDeletedElement = postIconTool.getIconDeleted();
     @UiField(provided = true) Label postInfElement = postIconTool.getIconInf();
-    @UiField(provided = true) Label postUnReadElement = postIconTool.getIconUnread();
-    @UiField(provided = true) Label postReadElement = postIconTool.getIconRead();
     @UiField(provided = true) Label postLockedElement = postIconTool.getIconLocked();
     
     @UiField SimplePanel actionLinks;
@@ -88,7 +86,6 @@ public class PostDetailPanel extends PostBaseComposite implements PostEventListe
 		super.init(post, commentElement, tagListPanel);
 		refreshPost(post);
 		EventBus.getInstance().addListener((PostEventListener)this);
-		EventBus.getInstance().addListener((MessageEventListener )this);
 		this.inReplyPostTarget = inReplyPostTarget;
 		//inReplyPostTarget.setVisible(false);
 		
@@ -97,13 +94,13 @@ public class PostDetailPanel extends PostBaseComposite implements PostEventListe
 		}
 	}
 	
-	@Override
-	public void onMessageEvent(MessageEvent event) {
-		if(event.is(MessageEventType.MARK_SITE_READ)){
-			postIconTool.showPostAsRead();
-		}
-		
-	}
+//	@Override
+//	public void onMessageEvent(MessageEvent event) {
+//		if(event.is(MessageEventType.MARK_SITE_READ)){
+//			postIconTool.showPostAsRead();
+//		}
+//		
+//	}
 	
 	@Override
 	public void onPostEvent(PostEvent postEvent) {

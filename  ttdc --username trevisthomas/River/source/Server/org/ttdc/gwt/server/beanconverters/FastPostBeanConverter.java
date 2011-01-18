@@ -263,9 +263,9 @@ public class FastPostBeanConverter {
 		else if(p.isMovie() || p.isReview())
 			gPost.setImage(convertImage(InitConstants.DEFAULT_POSTER));
 		
-		if(inboxDao != null){
-			gPost.setRead(inboxDao.isRead(p));
-		}
+//		if(inboxDao != null){
+//			gPost.setRead(inboxDao.isRead(p));
+//		}
 		
 //		gPost.setPathSegmentArray(p.getPathSegments());
 //		gPost.setPathSegmentMax(p.getPathSegmentMaximums());
@@ -368,6 +368,7 @@ public class FastPostBeanConverter {
 		gPerson.setStatus(p.getStatus());
 		gPerson.setAnonymous(p.isAnonymous());
 		gPerson.setEarmarks(p.getEarmarks());
+		gPerson.setSiteReadDate(p.getSiteReadDate());
 		return gPerson;
 	}
 	

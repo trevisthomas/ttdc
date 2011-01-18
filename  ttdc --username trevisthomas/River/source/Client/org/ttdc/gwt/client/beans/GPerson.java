@@ -27,7 +27,7 @@ public class GPerson extends GBase{
 	private String value; // This is kind of a hack, i just want to be able to stuff extra arbitrary info into a person. 
 						  //initial use is for the movie page to return how many reviews each person has done
 	private int earmarks;
-	
+	private Date siteReadDate;
 	private GStyle style;
 	
 	
@@ -165,6 +165,14 @@ public class GPerson extends GBase{
 		this.earmarks = earmarks;
 	}
 	
+	public Date getSiteReadDate() {
+		return siteReadDate;
+	}
+
+	public void setSiteReadDate(Date siteReadDate) {
+		this.siteReadDate = siteReadDate;
+	}
+
 	public String toString(){
 		return "Login: " + getLogin() + " Avatar: " + (getImage() == null ? "" : getImage().getName());
 	}

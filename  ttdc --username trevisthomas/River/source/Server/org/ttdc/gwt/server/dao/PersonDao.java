@@ -3,12 +3,14 @@ package org.ttdc.gwt.server.dao;
 import static org.ttdc.persistence.Persistence.session;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Query;
 import org.ttdc.gwt.shared.commands.types.SortBy;
 import org.ttdc.gwt.shared.commands.types.SortDirection;
 import org.ttdc.gwt.shared.util.PaginatedList;
+import org.ttdc.persistence.objects.InboxCache;
 import org.ttdc.persistence.objects.Person;
 import org.ttdc.persistence.objects.Privilege;
 
@@ -49,6 +51,14 @@ public class PersonDao extends PaginatedDaoBase{
 			.setParameterList("personIds", personIds)
 			.list();
 		return list;
+	}
+	
+	public static void markSiteRead(String personId){
+		Person p = loadPerson(personId);
+		if(!p.isAnonymous()){
+			p.setSiteReadDate(new Date(System.currentTimeMillis()+2000));
+			session().update(p);
+		}
 	}
 	
 	public static void lock(String personId){

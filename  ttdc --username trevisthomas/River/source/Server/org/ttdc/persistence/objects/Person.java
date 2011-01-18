@@ -60,8 +60,6 @@ import org.ttdc.gwt.server.util.PostFormatter;
 })
 
 
-	
-
 
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Person implements HasGuid{
@@ -85,6 +83,7 @@ public class Person implements HasGuid{
 	private Image image;
 	private List<Privilege> privileges = new ArrayList<Privilege>();
 	private int earmarks;
+	private Date siteReadDate;
 	
 	@Override
 	public boolean equals(Object obj) {
@@ -188,6 +187,15 @@ public class Person implements HasGuid{
 		this.bio = bio;
 	}
 	
+	@Column(name="SITE_READ_DATE")
+	public Date getSiteReadDate() {
+		return siteReadDate;
+	}
+
+	public void setSiteReadDate(Date siteReadDate) {
+		this.siteReadDate = siteReadDate;
+	}
+
 	@Transient
 	public String getFormattedBio(){
 		return  PostFormatter.getInstance().format(bio);
