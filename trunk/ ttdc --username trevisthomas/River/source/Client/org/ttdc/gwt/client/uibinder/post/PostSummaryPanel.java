@@ -59,8 +59,6 @@ public class PostSummaryPanel extends Composite implements PostPresenterCommon{
     
     PostIconTool postIconTool = new PostIconTool();
     
-    @UiField(provided = true) Label postUnReadElement = postIconTool.getIconUnread();
-    @UiField(provided = true) Label postReadElement = postIconTool.getIconRead();
     @UiField(provided = true) Label postPrivateElement = postIconTool.getIconPrivate();
     @UiField(provided = true) Label postNwsElement = postIconTool.getIconNws();
     @UiField(provided = true) Label postInfElement = postIconTool.getIconInf();

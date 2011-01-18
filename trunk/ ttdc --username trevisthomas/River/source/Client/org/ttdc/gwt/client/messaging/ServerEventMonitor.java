@@ -97,7 +97,11 @@ public class ServerEventMonitor extends Timer implements PersonEventListener{
 				.equals(ConnectionId.getInstance().getCurrentUser().getPersonId())){
 			ConnectionId.getInstance().setCurrentUser(event.getSource());			
 		}
-		
+		else if(event.is(PersonEventType.USER_MARK_SITE_READ) 
+				&& ConnectionId.getInstance().getCurrentUser().equals(event.getSource())){
+			ConnectionId.getInstance().setCurrentUser(event.getSource());
+			EventBus.fireEvent(new MessageEvent(MessageEventType.MARK_SITE_READ, "Nothing"));
+		}
 	}
 	
 }

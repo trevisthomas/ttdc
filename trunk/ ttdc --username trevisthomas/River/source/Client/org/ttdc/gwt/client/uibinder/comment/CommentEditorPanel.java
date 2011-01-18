@@ -675,6 +675,13 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 				if(parentSuggestionOracle != null)
 					parentSuggestionOracle.clear();
 				close();
+				
+				GPerson creator = result.getPost().getCreator();
+				if(creator.equals(ConnectionId.getInstance().getCurrentUser())){
+					//Anon users should be the only ones creating posts as a different user than the one in their con ide
+					ConnectionId.getInstance().getCurrentUser().setSiteReadDate(creator.getSiteReadDate());
+				}
+				
 				PostEvent event = new PostEvent(PostEventType.LOCAL_NEW, result.getPost());
 				EventBus.fireEvent(event);
 			}

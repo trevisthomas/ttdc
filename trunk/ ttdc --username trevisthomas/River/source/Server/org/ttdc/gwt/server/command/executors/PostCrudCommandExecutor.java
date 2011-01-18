@@ -3,17 +3,14 @@ package org.ttdc.gwt.server.command.executors;
 import static org.ttdc.persistence.Persistence.beginSession;
 import static org.ttdc.persistence.Persistence.commit;
 import static org.ttdc.persistence.Persistence.rollback;
-import static org.ttdc.persistence.Persistence.session;
 
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.ttdc.gwt.client.beans.GEntry;
+import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.beans.GPost;
-import org.ttdc.gwt.client.beans.GTag;
 import org.ttdc.gwt.client.messaging.person.PersonEvent;
 import org.ttdc.gwt.client.messaging.person.PersonEventType;
 import org.ttdc.gwt.client.messaging.post.PostEvent;
@@ -22,30 +19,24 @@ import org.ttdc.gwt.client.services.CommandResult;
 import org.ttdc.gwt.server.activity.ServerEventBroadcaster;
 import org.ttdc.gwt.server.beanconverters.FastPostBeanConverter;
 import org.ttdc.gwt.server.command.CommandExecutor;
+import org.ttdc.gwt.server.command.executors.utils.ExecutorHelpers;
 import org.ttdc.gwt.server.dao.AccountDao;
 import org.ttdc.gwt.server.dao.AssociationPostTagDao;
-import org.ttdc.gwt.server.dao.ImageDao;
-import org.ttdc.gwt.server.dao.ImageDataDao;
 import org.ttdc.gwt.server.dao.InboxDao;
 import org.ttdc.gwt.server.dao.InitConstants;
 import org.ttdc.gwt.server.dao.PersonDao;
 import org.ttdc.gwt.server.dao.PostDao;
 import org.ttdc.gwt.server.dao.TagDao;
-import org.ttdc.gwt.server.util.CalendarBuilder;
 import org.ttdc.gwt.server.util.PostFormatter;
 import org.ttdc.gwt.shared.commands.PostCrudCommand;
 import org.ttdc.gwt.shared.commands.results.PostCommandResult;
 import org.ttdc.gwt.shared.commands.types.PostActionType;
 import org.ttdc.gwt.shared.util.StringUtil;
 import org.ttdc.persistence.Persistence;
-import org.ttdc.persistence.objects.AssociationPostTag;
-import org.ttdc.persistence.objects.Image;
-import org.ttdc.persistence.objects.ImageFull;
 import org.ttdc.persistence.objects.Person;
 import org.ttdc.persistence.objects.Post;
 import org.ttdc.persistence.objects.Privilege;
 import org.ttdc.persistence.objects.Tag;
-import org.ttdc.util.ShackTagger;
 
 public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 	
@@ -92,6 +83,8 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 			if(post!= null){
 				InboxDao inboxDao = new InboxDao(getPerson());
 				gPost = FastPostBeanConverter.convertPost(post, inboxDao, !cmd.isUnformatted());
+				
+				
 				
 				//The following code to inflate the parent was added for dynamic front page refresh
 				if(post.getParent() != null){
@@ -350,9 +343,15 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 	}
 
 	private void maybeMarkSiteRead() {
+//		InboxDao dao = new InboxDao(getPerson());
+//		if(dao.calculateInboxSize() == 1){
+//			dao.markSiteRead();
+//		}
+		
 		InboxDao dao = new InboxDao(getPerson());
 		if(dao.calculateInboxSize() == 1){
-			dao.markSiteRead();
+			PersonDao.markSiteRead(getPerson().getPersonId());
+			ExecutorHelpers.broadcastMarkSiteRead(getPerson(), getCommand().getConnectionId());
 		}
 	}
 

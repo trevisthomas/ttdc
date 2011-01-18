@@ -2,9 +2,16 @@ package org.ttdc.gwt.client.uibinder.post;
 
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GAssociationPostTag;
+import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.messaging.ConnectionId;
 import org.ttdc.gwt.client.messaging.EventBus;
+import org.ttdc.gwt.client.messaging.error.MessageEvent;
+import org.ttdc.gwt.client.messaging.error.MessageEventListener;
+import org.ttdc.gwt.client.messaging.error.MessageEventType;
+import org.ttdc.gwt.client.messaging.person.PersonEvent;
+import org.ttdc.gwt.client.messaging.person.PersonEventListener;
+import org.ttdc.gwt.client.messaging.person.PersonEventType;
 import org.ttdc.gwt.client.messaging.post.PostEvent;
 import org.ttdc.gwt.client.messaging.post.PostEventListener;
 import org.ttdc.gwt.client.messaging.post.PostEventType;
@@ -48,7 +55,7 @@ import com.google.inject.Inject;
  * This class represents conversation starters and thread roots but not movie roots.  Those are custom
  *
  */
-public class PostPanel extends Composite implements PostPresenterCommon, PostEventListener{
+public class PostPanel extends Composite implements PostPresenterCommon, PostEventListener, MessageEventListener, PersonEventListener{
     interface MyUiBinder extends UiBinder<Widget, PostPanel> {}
     private static final MyUiBinder binder = GWT.create(MyUiBinder.class);
     
@@ -120,7 +127,9 @@ public class PostPanel extends Composite implements PostPresenterCommon, PostEve
     	//tagsElement
     	
     	initWidget(binder.createAndBindUi(this));
-    	EventBus.getInstance().addListener(this);
+    	EventBus.getInstance().addListener((PostEventListener)this);
+    	EventBus.getInstance().addListener((MessageEventListener)this);
+    	EventBus.getInstance().addListener((PersonEventListener)this);
     	
     	
     	replyCountElement.setStyleName("tt-reply-count");
@@ -287,15 +296,16 @@ public class PostPanel extends Composite implements PostPresenterCommon, PostEve
 			postNumberElement.setText("");
 		}
 		
-		if(!ConnectionId.isAnonymous()){
-			if(!post.isRead()){
-				postTable.addClassName("tt-post-unread");
-				avatarCell.addClassName("tt-post-unread-avatar");
-			}
-    	}
+		PostPanelHelper.highlightReadState(post,postTable,avatarCell);
+		
+//		if(!ConnectionId.isAnonymous()){
+//			GPerson user = ConnectionId.getInstance().getCurrentUser();
+//			if(post.isRead(user.getSiteReadDate())){
+//				postTable.addClassName("tt-post-unread");
+//				avatarCell.addClassName("tt-post-unread-avatar");
+//			}
+//    	}
 	}
-
-
 
 	private String getFormattedConversationNumber(GPost post) {
 		if(!post.isThreadPost()){
@@ -425,6 +435,21 @@ public class PostPanel extends Composite implements PostPresenterCommon, PostEve
 		}
 	}
 	
+	@Override
+	public void onMessageEvent(MessageEvent event) {
+		if(event.is(MessageEventType.MARK_SITE_READ)){
+			PostPanelHelper.highlightReadState(post,postTable,avatarCell);
+		}
+	}
+	
+	@Override
+	public void onPersonEvent(PersonEvent event) {
+		if(event.is(PersonEventType.USER_CHANGED)){
+			PostPanelHelper.highlightReadState(post,postTable,avatarCell);
+		}
+	}
+	
+
 	@Override
 	public String getPostId() {
 		return getPost().getPostId();

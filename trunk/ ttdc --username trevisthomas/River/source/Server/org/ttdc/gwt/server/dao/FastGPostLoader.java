@@ -302,9 +302,9 @@ public class FastGPostLoader {
 		else{
 			gp.setImage(crackThatImage(fp));
 		}
-		if(inboxDao != null){
-			gp.setRead(inboxDao.isRead(fp.getDate()));
-		}
+//		if(inboxDao != null){
+//			gp.setRead(inboxDao.isRead(fp.getDate()));
+//		}
 		return gp;
 	}
 	

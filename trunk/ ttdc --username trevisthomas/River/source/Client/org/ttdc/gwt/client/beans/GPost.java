@@ -33,7 +33,7 @@ public class GPost extends GBase{
 	private String url;
 	private Integer publishYear;
 	private boolean inEditWindow = false; 
-	private boolean read = false;
+	private Boolean read = null;
 	private int replyStartIndex = 1;
 	private int replyPage = 1;
 	private int [] pathSegmentArray;
@@ -392,15 +392,56 @@ public class GPost extends GBase{
 		return false;
 	}
 	
-	
+	public boolean isRead(Date lastReadDate){
+		if(lastReadDate == null){
+			return true;
+		}
+		else{
+			return date.before(lastReadDate);
+		}
+	}
 
 	public void setRead(boolean read) {
 		this.read = read;
 	}
 
-	public boolean isRead() {
-		return read;
-	}
+//	public boolean isRead() {
+//		return read;
+//	}
+	
+	
+	
+//	/*
+//	 * Read date now either uses the date that is passed in or
+//	 * the status set by the server.  The Server status flag overrides
+//	 * so that the server read date can be newer than the one in the client
+//	 * this is so that a user logged in on two browsers can see proper
+//	 * read status of posts without refreshing the client side person object.
+//	 * 
+//	 */
+//	public boolean isRead(Date lastReadDate){
+//		if(lastReadDate == null && read == null){
+//			return true;
+//		}
+//		else{
+//			if(read != null){
+//				return read;
+//			}
+//			else{
+//				return date.before(lastReadDate);
+//			}
+//		}
+//	}
+//
+//	public void setRead(boolean read) {
+//		if(read == false){
+//			this.read = read;
+//		}
+//		else{
+//			this.read = null; // If the server says that the post is unread leave this null so that the client can decide
+//		}
+//	}
+	
 	
 	//the meta methods below are for post edit/create
 
