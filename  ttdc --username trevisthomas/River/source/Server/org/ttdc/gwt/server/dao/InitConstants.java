@@ -8,6 +8,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.ttdc.gwt.client.constants.UserObjectConstants;
 import org.ttdc.persistence.Persistence;
 import org.ttdc.persistence.objects.Image;
 import org.ttdc.persistence.objects.Person;
@@ -76,6 +77,11 @@ public class InitConstants {
 			//ANONYMOUS.objects.add(uo);
 			ANONYMOUS.getObjects().add(uo);
 			
+			
+			String simpleUserObject = UserObjectConstants.TYPE_ENABLE_FLASH_ON_UPDATE;
+			
+			addSimpleUserObject(simpleUserObject);
+						
 			initializePostDateCacheForSearching(session);
 			
 			Persistence.commit();
@@ -88,6 +94,15 @@ public class InitConstants {
 			log.error(e);
 			throw new ExceptionInInitializerError("InitConstants failed to initialize an anonymous person. ");
 		}
+	}
+
+	private static void addSimpleUserObject(String simpleUserObject) {
+		UserObject obj = new UserObject();
+		obj.setValue(simpleUserObject);
+		obj.setName(simpleUserObject);
+		obj.setType(simpleUserObject);
+		obj.setOwner(ANONYMOUS);
+		ANONYMOUS.getObjects().add(obj);
 	}
 
 	private static void initializePostDateCacheForSearching(Session session) {

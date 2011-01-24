@@ -23,6 +23,7 @@ public class SettingsView implements SettingsPresenter.View{
 	private final MyListBox styleListBox = new MyListBox();
 	private final VerticalPanel filterListPanel = new VerticalPanel();
 	private final CheckBox nwsCleckBox = new CheckBox();
+	private final CheckBox flashUpdateCheckBox = new CheckBox();
 	private final VerticalPanel filtedThreads = new VerticalPanel();
 	
 	public SettingsView() {
@@ -35,6 +36,10 @@ public class SettingsView implements SettingsPresenter.View{
 		filtersFieldSet.add(filterListPanel);
 		filterListPanel.add(nwsCleckBox);
 		nwsCleckBox.setText("Enable NWS content");
+		
+		filterListPanel.add(flashUpdateCheckBox);
+		flashUpdateCheckBox.setText("Flashing title notification");
+		
 		
 		main.add(styleFieldSet);
 		main.add(filtersFieldSet);
@@ -75,6 +80,17 @@ public class SettingsView implements SettingsPresenter.View{
 	public HasClickHandlers nwsCheckBoxClick() {
 		return nwsCleckBox;
 	}
+	
+	@Override
+	public HasValue<Boolean> enableFlashNotificationValue() {
+		return flashUpdateCheckBox;
+	}
+
+	@Override
+	public HasClickHandlers flashNotificationCheckBoxClick() {
+		return flashUpdateCheckBox;
+	}
+	
 
 	@Override
 	public HasClickHandlers updateStyleClick() {

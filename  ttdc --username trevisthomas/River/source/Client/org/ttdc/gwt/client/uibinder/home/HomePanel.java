@@ -6,6 +6,7 @@ import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.beans.GTag;
 import org.ttdc.gwt.client.beans.GUserObject;
+import org.ttdc.gwt.client.constants.AppConstants;
 import org.ttdc.gwt.client.constants.TagConstants;
 import org.ttdc.gwt.client.constants.UserObjectConstants;
 import org.ttdc.gwt.client.messaging.ConnectionId;
@@ -137,6 +138,7 @@ public class HomePanel extends BasePageComposite implements PersonEventListener,
 
 	@Override
 	protected void onShow(HistoryToken token) {
+		//SiteUpdatePanel.setPageTitle(AppConstants.TITLE);
 		pageHeaderPanel.init("TTDC", "feeling the love since 1999");
 		pageHeaderPanel.getSearchBoxPresenter().init(token);
 		

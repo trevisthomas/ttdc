@@ -282,8 +282,8 @@ public class FastGPostLoader {
 		}
 		
 		if(gp.isReview()){
-			GImage image = new GImage();
 			if(StringUtil.notEmpty(fp.getRootImageName())){
+				GImage image = new GImage();
 				image.setName(fp.getRootImageName());
 				image.setThumbnailName(FullPost.translateImageNameToThumbnailName(fp.getRootImageName()));
 				image.setWidth(fp.getRootImageWidth());
@@ -291,11 +291,7 @@ public class FastGPostLoader {
 				gp.setImage(image);
 			}
 			else{
-				Image defaultPoster = InitConstants.DEFAULT_POSTER;
-				image.setName(defaultPoster.getName());
-				image.setThumbnailName(defaultPoster.getSquareThumbnailName());
-				image.setWidth(defaultPoster.getWidth());
-				image.setHeight(defaultPoster.getHeight());
+				GImage image = createDefaultPosterGImage();
 				gp.setImage(image);
 			}
 		}
@@ -306,6 +302,16 @@ public class FastGPostLoader {
 //			gp.setRead(inboxDao.isRead(fp.getDate()));
 //		}
 		return gp;
+	}
+
+	private GImage createDefaultPosterGImage() {
+		GImage image = new GImage();
+		Image defaultPoster = InitConstants.DEFAULT_POSTER;
+		image.setName(defaultPoster.getName());
+		image.setThumbnailName(defaultPoster.getSquareThumbnailName());
+		image.setWidth(defaultPoster.getWidth());
+		image.setHeight(defaultPoster.getHeight());
+		return image;
 	}
 	
 	private GPost crackThatThreadPost(FullPost fp) {
@@ -370,7 +376,7 @@ public class FastGPostLoader {
 
 	private GImage crackThatImage(FullPost fp) {
 		if(fp.getImageName() == null)
-			return null;
+			return createDefaultPosterGImage();
 		
 		GImage image = new GImage();
 		image.setName(fp.getImageName());

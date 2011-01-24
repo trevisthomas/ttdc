@@ -106,6 +106,19 @@ public class UserObjectDao {
 		}
 	}
 	
+	public static void removeUserObject(Person person, String type, String value){
+		List<UserObject> objects = person.getObjects();
+		
+		for(UserObject uo : objects){
+			if(uo.getType().equals(type) && uo.getValue().equals(value)){
+				session().delete(uo);
+				session().flush();
+				session().refresh(person);
+				break;
+			}
+		}
+	}
+	
 	
 	//This new version only does webpage links.  I'm skipping widget based templates until i decide if 
 	//the new site will have them

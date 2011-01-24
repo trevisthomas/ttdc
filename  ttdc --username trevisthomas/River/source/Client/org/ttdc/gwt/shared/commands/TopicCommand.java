@@ -12,12 +12,36 @@ public class TopicCommand extends Command<TopicCommandResult>  {
 	private int pageNumber = -1;
 	private TopicCommandType type;
 	private boolean sortByDate = true; //By date sorting is not used for all types.  First use of this is in THREAD_SUMMARY
+	private boolean sortByDateDesc = false;
+	
+	private SortOrder sortOrder = SortOrder.BY_DATE;
+	
+	public enum SortOrder{
+		BY_DATE,
+		BY_DATE_ASC,
+		BY_REPLY,
+	}
+	
+	private int pageSize = 10;
 	
 	public boolean isSortByDate() {
-		return sortByDate;
+		return sortOrder==SortOrder.BY_DATE;
 	}
-	public void setSortByDate(boolean sortByDate) {
-		this.sortByDate = sortByDate;
+	
+	public boolean isSortByReply() {
+		return sortOrder==SortOrder.BY_REPLY;
+	}
+	
+	public boolean isSortByDateAsc(){
+		return sortOrder==SortOrder.BY_DATE_ASC;
+	}
+	
+//	public void setSortByDate(boolean sortByDate) {
+//		this.sortByDate = sortByDate;
+//	}
+	
+	public void setSortOrder(SortOrder sortOrder){
+		this.sortOrder = sortOrder;
 	}
 	public String getRootId() {
 		return rootId;
@@ -49,4 +73,11 @@ public class TopicCommand extends Command<TopicCommandResult>  {
 	public void setConversationId(String conversationId) {
 		this.conversationId = conversationId;
 	}
+	public int getPageSize() {
+		return pageSize;
+	}
+	public void setPageSize(int perPage) {
+		this.pageSize = perPage;
+	}
+	
 }

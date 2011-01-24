@@ -52,6 +52,12 @@ public class ServerEventMonitor extends Timer implements PersonEventListener{
 				//Just ignore this and try again.
 			}
 			public void onSuccess(ServerEventCommandResult result) {
+				if(AppConstants.BUILD_NUMBER != result.getServerBuildNumber()){
+					//Server was updated. Reload!
+					Window.alert("Server version has updated.  You must refresh.");
+					EventBus.getInstance().reloadHome();
+				}
+				
 				if(result.getEvents().size() == 1 && (result.getEvents().get(0) instanceof MessageEvent)){
 					MessageEvent event = (MessageEvent)result.getEvents().get(0);
 					if(event.is(MessageEventType.RESET_SERVER_BROADCAST)){

@@ -45,6 +45,7 @@ public class TopicCommandExecutor  extends CommandExecutor<TopicCommandResult>{
 			dao.setRootId(post.getRoot().getPostId());
 			dao.setCurrentPage(command.getPageNumber());
 			dao.setFilterFlags(ExecutorHelpers.createFlagFilterListForPerson(getPerson()));
+			dao.setPageSize(command.getPageSize());
 			
 			if(TopicCommandType.FLAT.equals(type)){
 				results = dao.loadFlat();
@@ -100,6 +101,7 @@ public class TopicCommandExecutor  extends CommandExecutor<TopicCommandResult>{
 		FastTopicDao dao = new FastTopicDao();
 		dao.setCurrentPage(command.getPageNumber());
 		dao.setSourcePost(post);
+		dao.setPageSize(command.getPageSize());
 		InboxDao inboxDao = new InboxDao(getPerson());
 		dao.setInboxDao(inboxDao);
 		
@@ -108,6 +110,8 @@ public class TopicCommandExecutor  extends CommandExecutor<TopicCommandResult>{
 		PaginatedList<GPost> results;
 		if(command.isSortByDate())
 			results = dao.loadByCreateDate();
+		else if(command.isSortByDateAsc())
+			results = dao.loadByCreateDateAsc();
 		else
 			results = dao.loadByReplyDate();
 		

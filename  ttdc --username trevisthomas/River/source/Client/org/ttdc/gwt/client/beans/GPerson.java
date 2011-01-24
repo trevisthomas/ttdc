@@ -236,6 +236,10 @@ public class GPerson extends GBase{
 		return hasObject(UserObjectConstants.TYPE_ENABLE_NWS);
 	}
 	
+	public boolean isFlashOnUpdate() {
+		return hasObject(UserObjectConstants.TYPE_ENABLE_FLASH_ON_UPDATE);
+	}
+	
 	public GUserObject getObjectType(String type){
 		if(objects == null) return null;
 		for(GUserObject object : objects){
@@ -254,4 +258,6 @@ public class GPerson extends GBase{
 		}
 		return false;
 	}
+
+	
 }

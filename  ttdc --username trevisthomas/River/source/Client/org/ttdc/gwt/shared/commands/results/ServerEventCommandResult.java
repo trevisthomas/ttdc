@@ -12,6 +12,7 @@ import org.ttdc.gwt.client.services.CommandResult;
 public class ServerEventCommandResult implements CommandResult{
 	private String connectionId;
 	private GPerson person;
+	private int serverBuildNumber;
 
 	public ServerEventCommandResult(String connectionId){
 		this.connectionId = connectionId;
@@ -42,6 +43,14 @@ public class ServerEventCommandResult implements CommandResult{
 
 	public List<Event<?, ?>> getEvents() {
 		return events;
+	}
+
+	public int getServerBuildNumber() {
+		return serverBuildNumber;
+	}
+
+	public void setServerBuildNumber(int serverBuildNumber) {
+		this.serverBuildNumber = serverBuildNumber;
 	}
 
 	

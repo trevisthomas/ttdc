@@ -4,6 +4,7 @@ import static org.ttdc.persistence.Persistence.beginSession;
 import static org.ttdc.persistence.Persistence.commit;
 import static org.ttdc.persistence.Persistence.rollback;
 
+import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.beans.GUserObject;
 import org.ttdc.gwt.client.constants.UserObjectConstants;
 import org.ttdc.gwt.client.services.CommandResult;
@@ -14,6 +15,7 @@ import org.ttdc.gwt.server.dao.UserObjectDao;
 import org.ttdc.gwt.server.dao.UserObjectTemplateDao;
 import org.ttdc.gwt.shared.commands.UserObjectCrudCommand;
 import org.ttdc.gwt.shared.commands.results.GenericCommandResult;
+import org.ttdc.gwt.shared.util.StringUtil;
 import org.ttdc.persistence.objects.Person;
 import org.ttdc.persistence.objects.UserObject;
 import org.ttdc.persistence.objects.UserObjectTemplate;
@@ -61,9 +63,16 @@ public class UserObjectCrudCommandExecutor extends CommandExecutor<GenericComman
 			//Fire an event notifying interested users that things have changed with the underlying post
 		}
 		else{
-			throw new RuntimeException("Command is not properly formed.");
+			UserObjectDao.removeUserObject(getPerson(), cmd.getType(), cmd.getValue());
 		}
-		return new GenericCommandResult<GUserObject>(null,"User object deleted.");
+//		else{
+//			throw new RuntimeException("Command is not properly formed.");
+//		}
+		
+		GPerson gPerson = FastPostBeanConverter.convertPerson(getPerson());
+		GUserObject uo = new GUserObject();
+		uo.setOwner(gPerson);
+		return new GenericCommandResult<GUserObject>(uo,"User object deleted.");
 	}
 
 	private void validateNonAnonUser() {
@@ -103,6 +112,9 @@ public class UserObjectCrudCommandExecutor extends CommandExecutor<GenericComman
 		}
 		else if(UserObjectConstants.TYPE_FRONTPAGE_MODE.equals(cmd.getType())){
 			//If this works, rename this method to create/update
+			uo = UserObjectDao.updateUserSetting(person, cmd.getType(), cmd.getValue());
+		}
+		else if(StringUtil.notEmpty(cmd.getType()) && StringUtil.notEmpty(cmd.getValue()) ){
 			uo = UserObjectDao.updateUserSetting(person, cmd.getType(), cmd.getValue());
 		}
 		if(uo == null)

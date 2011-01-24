@@ -7,6 +7,7 @@ import java.util.Properties;
 public class ApplicationProperties {
 		
 	private static ApplicationProperties me = new ApplicationProperties();
+	private static Integer buildNumber;
 	
 	public static Properties getProperties(String filename) throws IOException{
 		java.util.Properties props = new java.util.Properties();
@@ -37,6 +38,11 @@ public class ApplicationProperties {
 		}
 	}
 	
+	public static int getBuildNumber(){
+		if(buildNumber == null)
+			buildNumber = getPropertyAsInt("BUILD_NUMBER");
+		return buildNumber;
+	}
 	
 	
 }

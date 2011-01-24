@@ -1,8 +1,10 @@
 package org.ttdc.gwt.client.uibinder.shared;
 
 import org.ttdc.gwt.client.Injector;
+import org.ttdc.gwt.client.constants.AppConstants;
 import org.ttdc.gwt.client.presenters.shared.PopupCalendarDatePresenter;
 import org.ttdc.gwt.client.uibinder.Navigation;
+import org.ttdc.gwt.client.uibinder.SiteUpdatePanel;
 import org.ttdc.gwt.client.uibinder.search.SearchBoxPanel;
 
 import com.google.gwt.core.client.GWT;
@@ -58,10 +60,20 @@ public class StandardPageHeaderPanel extends Composite{
     	
     	embededTargetContainer.getElement().setId("embededTargetContainer");
     	embededTargetContainer.setVisible(false);
-
+    	
+    	
+    	//I'm constructing an instance of the siteUpdatePanel just to get the title to cycle when new content arrives
+    	this.injector.createSiteUpdatePanel();
 	}
     
     public void init(final String title, final String subtitle) {
+    	if(title != null){
+    		SiteUpdatePanel.setPageTitle(title + " - " +AppConstants.TITLE);
+    	}
+    	else{
+    		SiteUpdatePanel.setPageTitle(AppConstants.TITLE);
+    	}
+    	
     	titleElement.getElement().setInnerHTML(title);
     	subTitleElement.setText(subtitle);
 	}

@@ -3,11 +3,23 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 	
-	<g:HTMLPanel>
+	<g:HTMLPanel ui:field="contentPanelElement">
+		
+		 
 		<table>
 			<tr>
+				<td>
+					<div class="tt-float-left">
+						Order: <g:SimplePanel styleName="tt-inline" ui:field="sortOrderElement"/>
+					</div>
+					<div class="tt-float-right">
+						Size: <g:SimplePanel  styleName="tt-inline" ui:field="pageSizeElement"/>
+					</div>
+				</td>
+			</tr>
+			<tr>
 				<td class="tt-text-normal tt-fill tt-paginated-post-header">
-					sort by: <g:Anchor ui:field="sortByReplyDateElement">reply</g:Anchor> | <g:Anchor ui:field="sortByThreadDateElement">creation</g:Anchor>
+					<g:Label styleName="tt-float-left" ui:field="pageSummaryLabel"/>
 					<g:Widget ui:field="paginationNanoElement"/>
 				</td>	
 			</tr>
@@ -22,6 +34,7 @@
 					<g:SimplePanel ui:field="paginationElement"/>
 				</td>
 			</tr>
+			
 		</table>		
 	</g:HTMLPanel>
 </ui:UiBinder>

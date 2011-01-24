@@ -20,6 +20,8 @@ public interface HistoryConstants {
 	public static final String PAGE_NUMBER_KEY = "pageNumber";
 	public static final String SECONDARY_PAGE_NUMBER_KEY = "secondaryPageNumber";
 	
+	public static final String PAGE_SIZE = "perPage";
+	
 	public static final  String CALENDAR_YEAR = "year";
 	public static final  String CALENDAR_MONTH_OF_YEAR = "monthOfYear";
 	public static final  String CALENDAR_WEEK_YEAR = "weekOfYear";
@@ -144,6 +146,7 @@ public interface HistoryConstants {
 	public static final String TOPIC_NESTED_TAB = "nested";
 
 	public static final String SORT_BY_CREATE_DATE = "byCreateDate";
+	public static final String SORT_BY_CREATE_DATE_ASC = "byCreateDateAsc";
 	public static final String SORT_BY_REPLY_DATE = "byReplyDate";
 	
 
