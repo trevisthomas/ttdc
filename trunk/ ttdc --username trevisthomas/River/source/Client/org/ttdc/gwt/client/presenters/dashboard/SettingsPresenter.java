@@ -4,6 +4,9 @@ import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.beans.GStyle;
+import org.ttdc.gwt.client.beans.GUserObject;
+import org.ttdc.gwt.client.constants.UserObjectConstants;
+import org.ttdc.gwt.client.messaging.ConnectionId;
 import org.ttdc.gwt.client.messaging.EventBus;
 import org.ttdc.gwt.client.presenters.shared.BasePresenter;
 import org.ttdc.gwt.client.presenters.shared.BaseView;
@@ -12,10 +15,12 @@ import org.ttdc.gwt.shared.commands.AccountCommand;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
 import org.ttdc.gwt.shared.commands.SearchPostsCommand;
 import org.ttdc.gwt.shared.commands.StyleListCommand;
+import org.ttdc.gwt.shared.commands.UserObjectCrudCommand;
 import org.ttdc.gwt.shared.commands.results.GenericCommandResult;
 import org.ttdc.gwt.shared.commands.results.GenericListCommandResult;
 import org.ttdc.gwt.shared.commands.results.SearchPostsCommandResult;
 import org.ttdc.gwt.shared.commands.types.AccountActionType;
+import org.ttdc.gwt.shared.commands.types.ActionType;
 import org.ttdc.gwt.shared.commands.types.PostSearchType;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -38,6 +43,8 @@ public class SettingsPresenter extends BasePresenter<SettingsPresenter.View>{
 		void clearAvailableStyles();
 		void clearFilteredThreadList();
 		void addFilteredThread(FilteredPost filteredPost);
+		HasClickHandlers flashNotificationCheckBoxClick();
+		HasValue<Boolean> enableFlashNotificationValue();
 	}
 	
 	private GPerson person;
@@ -51,6 +58,7 @@ public class SettingsPresenter extends BasePresenter<SettingsPresenter.View>{
 	public void refresh(GPerson person) {
 		this.person = person;
 		view.enableNwsValue().setValue(person.isNwsEnabled());
+		view.enableFlashNotificationValue().setValue(person.isFlashOnUpdate());
 		view.setSelectedStyleId(person.getStyle().getStyleId());
 	}
 	
@@ -59,6 +67,7 @@ public class SettingsPresenter extends BasePresenter<SettingsPresenter.View>{
 		
 		this.person = person;
 		view.enableNwsValue().setValue(person.isNwsEnabled());
+		view.enableFlashNotificationValue().setValue(person.isFlashOnUpdate());
 		
 		StyleListCommand styleListCmd = new StyleListCommand();
 		injector.getService().execute(styleListCmd, buildStyleListCallback());
@@ -78,6 +87,24 @@ public class SettingsPresenter extends BasePresenter<SettingsPresenter.View>{
 			}
 		});
 		
+		view.flashNotificationCheckBoxClick().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				UserObjectCrudCommand cmd = new UserObjectCrudCommand();
+				cmd.setType(UserObjectConstants.TYPE_ENABLE_FLASH_ON_UPDATE);
+				if(view.enableFlashNotificationValue().getValue()){
+					cmd.setAction(ActionType.CREATE);
+				}
+				else{
+					cmd.setAction(ActionType.DELETE);
+				}
+				cmd.setValue(UserObjectConstants.TYPE_ENABLE_FLASH_ON_UPDATE);
+				
+				injector.getService().execute(cmd, userObjectCallback());	
+			}
+		});
+		
 		view.updateStyleClick().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -89,6 +116,16 @@ public class SettingsPresenter extends BasePresenter<SettingsPresenter.View>{
 		});
 		
 		view.setSelectedStyleId(person.getStyle().getStyleId());
+	}
+	
+	
+	private CommandResultCallback<GenericCommandResult<GUserObject>> userObjectCallback() {
+		return new CommandResultCallback<GenericCommandResult<GUserObject>>(){
+				@Override
+				public void onSuccess(GenericCommandResult<GUserObject> result) {
+					ConnectionId.getInstance().setCurrentUser(result.getObject().getOwner());
+				}
+			};
 	}
 	
 	protected CommandResultCallback<GenericCommandResult<GPerson>> buildUserObjectUpdatedCallback() {

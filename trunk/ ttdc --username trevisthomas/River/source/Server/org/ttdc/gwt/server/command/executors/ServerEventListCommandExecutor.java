@@ -11,6 +11,7 @@ import org.ttdc.gwt.server.command.CommandExecutor;
 import org.ttdc.gwt.shared.commands.ServerEventListCommand;
 import org.ttdc.gwt.shared.commands.results.ServerEventCommandResult;
 import org.ttdc.persistence.Persistence;
+import org.ttdc.util.ApplicationProperties;
 
 public class ServerEventListCommandExecutor extends CommandExecutor<ServerEventCommandResult>{
 	@Override
@@ -25,6 +26,7 @@ public class ServerEventListCommandExecutor extends CommandExecutor<ServerEventC
 		GPerson person = FastPostBeanConverter.convertPerson(getPerson());
 		Persistence.commit();
 		ServerEventCommandResult result = new ServerEventCommandResult(events, person);
+		result.setServerBuildNumber(ApplicationProperties.getBuildNumber());
 		
 		return result;
 	}

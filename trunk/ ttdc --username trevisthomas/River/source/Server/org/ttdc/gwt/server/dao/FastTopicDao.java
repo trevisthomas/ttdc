@@ -22,6 +22,9 @@ public class FastTopicDao extends FilteredPostPaginatedDaoBase{
 	"WHERE post.parent.postId=:parentId AND bitwise_and( post.metaMask, :filterMask ) = 0 " +
 	"ORDER BY post.date DESC";
 
+	private final static String HQL_ThreadIdsByCreateDateAsc = "SELECT post.postId FROM Post post " +
+	"WHERE post.parent.postId=:parentId AND bitwise_and( post.metaMask, :filterMask ) = 0 " +
+	"ORDER BY post.date";
 	
 	public final static int THREAD_REPLY_MAX_RESULTS = 10; //TODO probably want to move this to being a user choice?
 	
@@ -36,6 +39,12 @@ public class FastTopicDao extends FilteredPostPaginatedDaoBase{
 		return results;
 	}
 	
+	public PaginatedList<GPost> loadByCreateDateAsc() {
+		findPageForPost(HQL_ThreadIdsByCreateDateAsc);
+		PaginatedList<GPost> results = new PaginatedList<GPost>();
+		results = executeLoadQuery("FastTopicDao.ConversationsByCreateDateAsc", "FastTopicDao.ConversationCount", true);
+		return results;
+	}
 	
 	public PaginatedList<GPost> loadByReplyDate() {
 		findPageForPost(HQL_ThreadIdsByDate);

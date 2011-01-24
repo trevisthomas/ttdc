@@ -2,6 +2,7 @@ package org.ttdc.gwt.client.uibinder.post;
 
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GPost;
+import org.ttdc.gwt.client.constants.AppConstants;
 import org.ttdc.gwt.client.messaging.EventBus;
 import org.ttdc.gwt.client.messaging.history.HistoryConstants;
 import org.ttdc.gwt.client.messaging.history.HistoryToken;
@@ -10,6 +11,7 @@ import org.ttdc.gwt.client.messaging.post.PostEventListener;
 import org.ttdc.gwt.client.messaging.post.PostEventType;
 import org.ttdc.gwt.client.services.BatchCommandTool;
 import org.ttdc.gwt.client.services.RpcServiceAsync;
+import org.ttdc.gwt.client.uibinder.SiteUpdatePanel;
 import org.ttdc.gwt.client.uibinder.common.BasePageComposite;
 import org.ttdc.gwt.client.uibinder.shared.StandardPageHeaderPanel;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
@@ -19,6 +21,7 @@ import org.ttdc.gwt.shared.commands.results.PostCommandResult;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -127,11 +130,14 @@ public class TopicPanel extends BasePageComposite implements PostEventListener{
 					postPanel.setPost(post);
 					rootPostElement.add(postPanel.getWidget());
 				}
-				//showSearchWithResults(post);
+//				SiteUpdatePanel.setPageTitle(post.getTitle() + " - " +AppConstants.TITLE);
+				
 				pageHeaderPanel.init(result.getPost().getTitle(), "this view shows conversations on a topic");
 				pageHeaderPanel.getSearchBoxPresenter().init(token);
 			}
 		};
+		
+		
 		return rootPostCallback;
 	}
 	

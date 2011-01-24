@@ -60,6 +60,12 @@ import org.ttdc.gwt.shared.util.StringUtil;
 			"AND post.thread.postId = post.postId " +
 			"AND bitwise_and( post.metaMask, :filterMask ) = 0 "+
 			"ORDER BY post.date DESC"),		
+	
+	@NamedQuery(name="FastTopicDao.ConversationsByCreateDateAsc", query="" +
+			"SELECT post.postId FROM Post post WHERE post.root.postId=:postId " +
+			"AND post.thread.postId = post.postId " +
+			"AND bitwise_and( post.metaMask, :filterMask ) = 0 "+
+			"ORDER BY post.date"),		
 			
 	@NamedQuery(name="FastTopicDao.ConversationCount", query="" +
 			"SELECT count(post.postId) FROM Post post WHERE post.root.postId=:postId " +

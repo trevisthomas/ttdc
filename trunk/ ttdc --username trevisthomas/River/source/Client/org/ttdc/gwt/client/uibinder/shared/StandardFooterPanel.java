@@ -1,6 +1,7 @@
 package org.ttdc.gwt.client.uibinder.shared;
 
 import org.ttdc.gwt.client.Injector;
+import org.ttdc.gwt.client.constants.AppConstants;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -16,6 +17,7 @@ public class StandardFooterPanel extends Composite{
     
     private Injector injector;
     @UiField Label copyrightElement;
+    @UiField Label buildNumberElement;
 	
 	@Inject
     public StandardFooterPanel(Injector injector) { 
@@ -26,7 +28,7 @@ public class StandardFooterPanel extends Composite{
 	}
     
 	public void init(){
-		copyrightElement.setText("TTDC v7");
+		buildNumberElement.setText("TrevisThomasDocCom v7 build:" + AppConstants.BUILD_NUMBER);
 	}
 	
     @Override

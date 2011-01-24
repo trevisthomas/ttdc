@@ -1,6 +1,8 @@
 package org.ttdc.gwt.client.uibinder;
 
 import org.ttdc.gwt.client.Injector;
+import org.ttdc.gwt.client.common.TitleCycleTool;
+import org.ttdc.gwt.client.constants.AppConstants;
 import org.ttdc.gwt.client.messaging.EventBus;
 import org.ttdc.gwt.client.messaging.error.MessageEvent;
 import org.ttdc.gwt.client.messaging.error.MessageEventListener;
@@ -28,7 +30,8 @@ public class SiteUpdatePanel extends Composite implements PostEventListener, Mes
 	@UiField Label siteRefresh; 
 	@UiField (provided=true) Widget waitMessage;
 	private int postCount = 0;
-	
+	private static TitleCycleTool titleCycler = null;
+	private static String originalTitle;
 	@Inject
 	public SiteUpdatePanel(Injector injector) {
 		this.injector = injector;
@@ -39,8 +42,16 @@ public class SiteUpdatePanel extends Composite implements PostEventListener, Mes
 		EventBus.getInstance().addListener((PostEventListener)this);
 		EventBus.getInstance().addListener((MessageEventListener)this);
 		
-		
+		killCycler();
 		waitMessage.setVisible(false);
+	}
+	
+	public static void setPageTitle(String title){
+		Window.setTitle(title);
+		originalTitle = title;
+		if(titleCycler != null){
+			titleCycler.setRealTitle(originalTitle);
+		}
 	}
 
 	@Override
@@ -56,6 +67,15 @@ public class SiteUpdatePanel extends Composite implements PostEventListener, Mes
 				msg = postCount+" "+" new comments! Click to refresh!";
 				
 			siteRefresh.setText(msg);
+			//Window.setTitle(msg);
+			killCycler();
+			titleCycler = new TitleCycleTool(originalTitle, msg);
+		}
+	}
+
+	private void killCycler() {
+		if(titleCycler != null){
+			titleCycler.cancel();
 		}
 	}
 	
@@ -72,7 +92,9 @@ public class SiteUpdatePanel extends Composite implements PostEventListener, Mes
 		postCount = 0;
 		waitMessage.setVisible(true);
 		siteRefresh.setVisible(false);
+		killCycler();
+		titleCycler = null;
+		Window.setTitle(originalTitle);
 		EventBus.fireEvent(new MessageEvent(MessageEventType.RELOAD_HOMEPAGE_TABS, ""));
-		
 	}
 }

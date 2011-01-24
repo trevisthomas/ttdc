@@ -6,6 +6,7 @@ import org.ttdc.gwt.client.presenters.shared.HyperlinkPresenter;
 import org.ttdc.gwt.shared.util.PaginatedList;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
@@ -20,6 +21,8 @@ public class PaginationNanoPanel  extends Composite{
     private Injector injector;
     @UiField (provided = true) Hyperlink prevElement;
     @UiField (provided = true) Hyperlink nextElement;
+    @UiField SpanElement nextDisabledElement;
+    @UiField SpanElement prevDisabledElement;
     @UiField HTMLPanel main;
     
     private final HyperlinkPresenter prevLinkPresenter;
@@ -36,9 +39,19 @@ public class PaginationNanoPanel  extends Composite{
 				
 		prevElement = prevLinkPresenter.getHyperlink();
 		nextElement = nextLinkPresenter.getHyperlink();
-    	
-    	initWidget(binder.createAndBindUi(this)); 
+		
+		initWidget(binder.createAndBindUi(this)); 
+		hideLinks();
     	main.setVisible(false);
+	}
+
+
+
+	private void hideLinks() {
+		nextDisabledElement.addClassName("tt-hidden");
+		prevDisabledElement.addClassName("tt-hidden");
+		prevElement.setVisible(false);
+		nextElement.setVisible(false);
 	}
     
 	
@@ -49,23 +62,30 @@ public class PaginationNanoPanel  extends Composite{
     }
     
     public <T> void init(PaginationPanel paginationPanel, final PaginatedList<T> paginator){
+    	hideLinks();
     	if(paginator.calculateNumberOfPages() > 1){
     		main.setVisible(true);
-			HistoryToken prevToken = paginationPanel.getPrevToken();
+    		HistoryToken prevToken = paginationPanel.getPrevToken();
 			HistoryToken nextToken = paginationPanel.getNextToken();
 			
 			if(prevToken != null){
 				prevLinkPresenter.setToken(prevToken, "prev");
+				prevElement.setVisible(true);
+				prevDisabledElement.addClassName("tt-hidden");
 			}
 			else{
 				prevElement.setVisible(false); 
+				prevDisabledElement.removeClassName("tt-hidden");
 			}
 			
 			if(nextToken != null){
 				nextLinkPresenter.setToken(nextToken, "next");
+				nextElement.setVisible(true);
+				nextDisabledElement.addClassName("tt-hidden");
 			}
 			else{
 				nextElement.setVisible(false);
+				nextDisabledElement.removeClassName("tt-hidden");
 			}
 			
 		}

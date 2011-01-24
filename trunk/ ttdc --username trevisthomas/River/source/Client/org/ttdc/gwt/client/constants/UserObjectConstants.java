@@ -11,6 +11,8 @@ public class UserObjectConstants {
 	public final static String TYPE_FRONTPAGE_MODE = "FRONT_PAGE_MODE"; //When this UO is present nws content is shown to this user
 	public final static String TYPE_NUM_COMMENTS_FRONTPAGE = "TYPE_NUM_COMMENTS_FRONTPAGE";
 	public final static String TYPE_NUM_COMMENTS_PERTHREAD = "TYPE_NUM_COMMENTS_THREAD_PAGE";
+	public final static String TYPE_ENABLE_FLASH_ON_UPDATE = "TYPE_ENABLE_FLASH_ON_UPDATE";
+	
 	
 	public final static String TYPE_AUTO_UPDATE_MODE = "AUTO_UPDATE_MODE";
 	

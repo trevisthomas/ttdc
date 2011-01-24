@@ -9,22 +9,22 @@ import org.ttdc.gwt.client.presenters.post.PostCollectionPresenter;
 import org.ttdc.gwt.client.presenters.topic.TopicHelpers;
 import org.ttdc.gwt.client.services.BatchCommandTool;
 import org.ttdc.gwt.client.services.RpcServiceAsync;
+import org.ttdc.gwt.client.uibinder.shared.PageSizeComponent;
+import org.ttdc.gwt.client.uibinder.shared.PageType;
 import org.ttdc.gwt.client.uibinder.shared.PaginationNanoPanel;
 import org.ttdc.gwt.client.uibinder.shared.PaginationPanel;
+import org.ttdc.gwt.client.uibinder.shared.SortOrderComponent;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
 import org.ttdc.gwt.shared.commands.TopicCommand;
 import org.ttdc.gwt.shared.commands.TopicCommandType;
 import org.ttdc.gwt.shared.commands.results.TopicCommandResult;
-import org.ttdc.gwt.shared.util.PaginatedList;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -35,12 +35,17 @@ public class NestedPostPanel extends Composite{
 	
 	private Injector injector;
 	
-	@UiField Anchor sortByReplyDateElement;
-	@UiField Anchor sortByThreadDateElement;
+	@UiField HTMLPanel contentPanelElement;
+	@UiField SimplePanel pageSizeElement;
+	@UiField SimplePanel sortOrderElement;
+	
 	@UiField SimplePanel postContainerElement;
 	@UiField SimplePanel paginationElement;
 	@UiField(provided = true) Widget paginationNanoElement;
+	@UiField Label pageSummaryLabel;
 	private final PaginationNanoPanel paginationNanoPanel;
+	private PageSizeComponent pageSizeComponent; 
+	private SortOrderComponent sortOrderComponent;
 	
 	private PaginationPanel paginationPanel;
 	
@@ -53,40 +58,17 @@ public class NestedPostPanel extends Composite{
 		//paginationElement.add(paginationPanel);
 		
 		this.injector = injector;
-		
+		sortOrderComponent = injector.createSortOrderComponent();
+		pageSizeComponent = injector.createPageSizeComponent();
 		paginationNanoPanel = injector.createPaginationNanoPanel();
     	paginationNanoElement = paginationNanoPanel.getWidget();
     	
-		initWidget(binder.createAndBindUi(this));
-		
-		sortByReplyDateElement.addStyleName("tt-cursor-pointer");
-		sortByThreadDateElement.addStyleName("tt-cursor-pointer");
-	}
-	
-	@UiHandler("sortByReplyDateElement")
-	public void onClickSortByReplyDate(ClickEvent event){
-		prepTokenForSort(lastToken, HistoryConstants.SORT_BY_REPLY_DATE);
-		init(lastToken);
-	}
-	
-	@UiHandler("sortByThreadDateElement")
-	public void onClickSortByCreateDate(ClickEvent event){
-		prepTokenForSort(lastToken, HistoryConstants.SORT_BY_CREATE_DATE);
-		init(lastToken);
-	}
+    	initWidget(binder.createAndBindUi(this));
 
-	/*
-	 * Preparing the token for sort is all about removing things that i dont want to stick around through a resort
-	 * like, the selected post that brought you to the thread, and the page number. 
-	 */
-	private void prepTokenForSort(HistoryToken token, String sortValue) {
-		token.setParameter(HistoryConstants.SORT_KEY, sortValue);
-		token.removeParameter(HistoryConstants.PAGE_NUMBER_KEY);
-		if(rootPost != null){
-			token.setParameter(HistoryConstants.POST_ID_KEY, rootPost.getPostId());
-		}
-		History.newItem(token.toString(), false);
+    	pageSizeElement.add(pageSizeComponent);
+    	sortOrderElement.add(sortOrderComponent);
 	}
+	
 	public void init(HistoryToken token){
 		BatchCommandTool batcher = new BatchCommandTool();
 		init(token, batcher);
@@ -96,16 +78,17 @@ public class NestedPostPanel extends Composite{
 	public void init(HistoryToken token, BatchCommandTool batcher){
 		final int pageNumber = token.getParameterAsInt(HistoryConstants.PAGE_NUMBER_KEY,-1);
 		final String postId = token.getParameter(HistoryConstants.POST_ID_KEY);
+		pageSizeComponent.init(token, PageType.TOPIC);
+		sortOrderComponent.init(token, PageType.TOPIC);
 		
 		TopicCommand starterCmd = new TopicCommand();
 		starterCmd.setPostId(postId);
 		starterCmd.setPageNumber(pageNumber);
-		if(token.isParameterEq(HistoryConstants.SORT_KEY, HistoryConstants.SORT_BY_CREATE_DATE)){
-			starterCmd.setSortByDate(true);
-		}
-		else{
-			starterCmd.setSortByDate(false);
-		}
+		
+		starterCmd.setPageSize(pageSizeComponent.getRecordsPerPage());
+		starterCmd.setSortOrder(sortOrderComponent.getSortOrder());
+		pageSummaryLabel.setText("");
+		
 		starterCmd.setType(TopicCommandType.NESTED_THREAD_SUMMARY);
 		CommandResultCallback<TopicCommandResult> starterListCallback = buildNestedListCallback(postId);
 		batcher.add(starterCmd, starterListCallback);
@@ -125,6 +108,7 @@ public class NestedPostPanel extends Composite{
 		CommandResultCallback<TopicCommandResult> replyListCallback = new CommandResultCallback<TopicCommandResult>(){
 			@Override
 			public void onSuccess(TopicCommandResult result) {
+				pageSummaryLabel.setText("page " + result.getResults().getCurrentPage() + " of " + result.getResults().calculateNumberOfPages());
 				postContainerElement.clear();
 				PostCollectionPresenter postCollectionPresenter = injector.getPostCollectionPresenter();
 				postCollectionPresenter.setPostList(result.getResults().getList(),Mode.GROUPED);
@@ -136,18 +120,9 @@ public class NestedPostPanel extends Composite{
 				paginationElement.add(paginationPanel.getWidget());
 				paginationNanoPanel.init(paginationPanel, result.getResults());
 				
-				
-//				showPagination(result.getResults(), lastToken);
-				
-//				PaginationPresenter paginationPresenter = injector.getPaginationPresenter();
-////				HistoryToken token = TopicHelpers.buildNestedPageToken(postId);
-////				token.addParameter(HistoryConstants.SORT_KEY, lastToken.)
-//				paginationPresenter.initialize(lastToken, result.getResults());
-//				paginationElement.add(paginationPresenter.getWidget());
-				
-				
 				if(result.getResults().getList().size() > 0){
 					rootPost = result.getResults().getList().get(0).getRoot();
+					sortOrderComponent.setRootPost(rootPost);
 				}
 				
 				if(TopicHelpers.getPostComponent() != null){
@@ -162,12 +137,4 @@ public class NestedPostPanel extends Composite{
 		};
 		return replyListCallback;
 	}
-	
-	private void showPagination(PaginatedList<GPost> results, final HistoryToken topicToken) {
-		if(results.calculateNumberOfPages() > 1){
-			paginationPanel.initialize(topicToken, results);
-			paginationNanoPanel.init(paginationPanel, results);
-		}
-	}
-
 }

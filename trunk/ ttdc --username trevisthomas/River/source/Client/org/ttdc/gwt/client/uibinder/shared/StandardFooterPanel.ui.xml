@@ -10,6 +10,7 @@
 	 		<tr>
 	 			<td class="tt-text-right">
 	 				<g:Label ui:field="copyrightElement" />
+	 				<g:Label ui:field="buildNumberElement" />
 	 			</td>
 	 		</tr>
 	 	</table>

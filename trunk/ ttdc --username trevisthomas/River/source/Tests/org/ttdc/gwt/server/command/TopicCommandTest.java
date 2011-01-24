@@ -14,6 +14,7 @@ import org.ttdc.gwt.client.services.CommandResult;
 import org.ttdc.gwt.server.command.executors.TopicCommandExecutor;
 import org.ttdc.gwt.server.dao.Helpers;
 import org.ttdc.gwt.shared.commands.TopicCommand;
+import org.ttdc.gwt.shared.commands.TopicCommand.SortOrder;
 import org.ttdc.gwt.shared.commands.TopicCommandType;
 import org.ttdc.gwt.shared.commands.results.TopicCommandResult;
 import org.ttdc.persistence.objects.AssociationPostTag;
@@ -163,7 +164,7 @@ private final static Logger log = Logger.getLogger(SearchPostsCommandTest.class)
 		cmd.setType(TopicCommandType.NESTED_THREAD_SUMMARY);
 		cmd.setPostId("EC706434-1B59-4CF1-9F80-515EE38C1696");//Some random reply in Version6 thread
 		
-		cmd.setSortByDate(true);
+		cmd.setSortOrder(SortOrder.BY_DATE);
 		
 		CommandExecutor cmdexec = CommandExecutorFactory.createExecutor("50E7F601-71FD-40BD-9517-9699DDA611D6",cmd);
 		TopicCommandResult result = (TopicCommandResult)cmdexec.executeCommand();
@@ -182,7 +183,8 @@ private final static Logger log = Logger.getLogger(SearchPostsCommandTest.class)
 		TopicCommand cmd = new TopicCommand();
 		cmd.setType(TopicCommandType.NESTED_THREAD_SUMMARY_FETCH_MORE);
 		cmd.setPostId("906C34D1-57CF-4D9D-BCA8-105184A6F2EE");//A starter with 15 replies
-		cmd.setSortByDate(true);
+		//cmd.setSortByDate(true);
+		cmd.setSortOrder(SortOrder.BY_DATE);
 		cmd.setPageNumber(2);
 		
 		CommandExecutor cmdexec = CommandExecutorFactory.createExecutor("50E7F601-71FD-40BD-9517-9699DDA611D6",cmd);

@@ -25,6 +25,18 @@ public class CookieTool {
 		return Cookies.getCookie(COOKIE_USER_GUID);
 	}
 	
+	public static void saveCookie(String name, String value){
+		Cookies.setCookie(name, value, expires);	
+	}
+	
+	public static String readCookie(String name){
+		return Cookies.getCookie(name);	
+	}
+	
+	public static void deleteCookie(String name){
+		Cookies.removeCookie(name);	
+	}
+	
 	public static void clear(){
 		Cookies.removeCookie(COOKIE_USER_GUID);
 		Cookies.removeCookie(COOKIE_USER_PWD);
