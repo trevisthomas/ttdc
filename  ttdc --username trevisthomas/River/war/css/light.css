@@ -13,6 +13,7 @@ body{ color: #222; background-color: #eee;}
 
 .tt-message-textbox-disabled{ color: #ddd;}
 
+.tt-post-footer a,
 .tt-plain-post a,
 .tt-post-container-header a,
 .tt-post-fetch-more a,	
@@ -32,6 +33,7 @@ body{ color: #222; background-color: #eee;}
 .tt-post-summary a,
 .tt-post-expanded-content a{text-decoration: none; color: #113aa4;}
 	
+.tt-post-footer a:link,
 .tt-plain-post a:link,	
 .tt-post-container-header a:link,
 .tt-post-fetch-more a:link,		
@@ -51,6 +53,7 @@ body{ color: #222; background-color: #eee;}
 .tt-post-summary a:link,
 .tt-post-expanded-content a:link {text-decoration: none; color: #113aa4;}
 
+.tt-post-footer a:visited,
 .tt-plain-post a:visited,
 .tt-post-container-header a:visited,
 .tt-post-fetch-more a:visited,	
@@ -70,6 +73,7 @@ body{ color: #222; background-color: #eee;}
 .tt-post-summary a:visited,
 .tt-post-expanded-content a:visited {text-decoration: none; color: #113aa4;}
 
+.tt-post-footer a:hover,
 .tt-plain-post a:hover,
 .tt-post-container-header a:hover,
 .tt-post-fetch-more a:hover,	
@@ -89,6 +93,7 @@ body{ color: #222; background-color: #eee;}
 .tt-post-summary a:hover,
 .tt-post-expanded-content a:hover  {text-decoration: underline; color: blue;}
 
+.tt-post-footer a:active,
 .tt-plain-post a:active,
 .tt-post-container-header a:active,
 .tt-post-fetch-more a:active,	

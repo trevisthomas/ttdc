@@ -78,9 +78,8 @@ public class InitConstants {
 			ANONYMOUS.getObjects().add(uo);
 			
 			
-			String simpleUserObject = UserObjectConstants.TYPE_ENABLE_FLASH_ON_UPDATE;
-			
-			addSimpleUserObject(simpleUserObject);
+//			String simpleUserObject = UserObjectConstants.TYPE_ENABLE_FLASH_ON_UPDATE;
+//			addSimpleUserObject(simpleUserObject);
 						
 			initializePostDateCacheForSearching(session);
 			
