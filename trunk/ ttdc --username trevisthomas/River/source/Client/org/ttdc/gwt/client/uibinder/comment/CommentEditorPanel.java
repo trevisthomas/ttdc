@@ -254,7 +254,7 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 						parentInfoElement.setVisible(false);
 					}
 					else{
-						parentInfoElement.setText("Note: " + post.getMass()+ " comments in " + post.getReplyCount() + " conversations already exit on this topic.");
+						parentInfoElement.setText("Note: " + post.getMass()+ " comments in " + post.getReplyCount() + " conversations already exist on this topic.");
 					}
 					if(post.isRatable()){
 						initForRatableParent();

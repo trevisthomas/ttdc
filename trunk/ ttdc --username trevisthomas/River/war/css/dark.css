@@ -14,6 +14,7 @@ body{ color: #ccc; background-color: black;}
 textarea,
 input{ color: #eee; background-color: black;}
 
+.tt-post-footer a,
 .tt-plain-post a,
 .tt-post-container-header a,
 .tt-post-fetch-more a,
@@ -33,7 +34,8 @@ input{ color: #eee; background-color: black;}
 .tt-post-summary a,
 .tt-post-expanded-content a{text-decoration: none; color: #ccc;}
 	
-.tt-plain-post a:link,	
+.tt-post-footer a:hover,
+.tt-plain-post a:hover,	
 .tt-post-container-header a:link,
 .tt-post-fetch-more a:link,	
 .tt-paginator-nano a:link,
@@ -52,7 +54,8 @@ input{ color: #eee; background-color: black;}
 .tt-post-summary a:link,
 .tt-post-expanded-content a:link {text-decoration: none; color: #ccc;}
 
-.tt-plain-post a:visited,
+.tt-post-footer a:hover,
+.tt-plain-post a:hover,
 .tt-post-container-header a:visited,
 .tt-post-fetch-more a:visited,
 .tt-paginator-nano a:visited,
@@ -71,6 +74,7 @@ input{ color: #eee; background-color: black;}
 .tt-post-summary a:visited,
 .tt-post-expanded-content a:visited {text-decoration: none; color: #ccc;}
 
+.tt-post-footer a:hover,
 .tt-plain-post a:hover,
 .tt-post-container-header a:hover,
 .tt-post-fetch-more a:hover,
@@ -90,6 +94,7 @@ input{ color: #eee; background-color: black;}
 .tt-post-summary a:hover,
 .tt-post-expanded-content a:hover  {text-decoration: underline; color: white;}
 
+.tt-post-footer a:active,
 .tt-plain-post a:active,
 .tt-post-container-header a:active,
 .tt-post-fetch-more a:active,

@@ -47,7 +47,7 @@ public class SortOrderComponent extends Composite{
     
     private ListBox buildListBox() {
     	ListBox listBox =  new MyListBox(false);;
-    	listBox.addItem("Recient activity",HistoryConstants.SORT_BY_REPLY_DATE);
+    	listBox.addItem("Recent activity",HistoryConstants.SORT_BY_REPLY_DATE);
     	listBox.addItem("New to old",HistoryConstants.SORT_BY_CREATE_DATE);
     	listBox.addItem("Old to new",HistoryConstants.SORT_BY_CREATE_DATE_ASC);
     	

@@ -138,7 +138,7 @@ public class ReparentPanel extends Composite {
 			public void onSuccess(PostCommandResult result) {
 				parent = result.getPost();
 				
-				parentInfoElement.setText("Note: " + parent.getMass()+ " comments in " + parent.getReplyCount() + " conversations already exit on this topic.");
+				parentInfoElement.setText("Note: " + parent.getMass()+ " comments in " + parent.getReplyCount() + " conversations already exist on this topic.");
 				
 //				init(mode, parent);
 			}
