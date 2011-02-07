@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.ttdc.gwt.client.Injector;
-import org.ttdc.gwt.client.autocomplete.SugestionOracle;
+import org.ttdc.gwt.client.autocomplete.SuggestionOracle;
 import org.ttdc.gwt.client.autocomplete.SuggestionObject;
 import org.ttdc.gwt.client.beans.GForum;
 import org.ttdc.gwt.client.beans.GPerson;
@@ -35,6 +35,7 @@ import org.ttdc.gwt.shared.commands.types.PostActionType;
 import org.ttdc.gwt.shared.util.StringTools;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.TableCellElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
@@ -138,10 +139,12 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 	@UiField TextBox loginTextElement;
 	@UiField HTMLPanel loginElement;
 	@UiField SimplePanel previewElement;
+	@UiField TableCellElement ratingLabelCellElement;
+	@UiField TableCellElement commentLabelCellElement;
 	
 	private GPost post = null;
 	private SuggestBox parentSuggestionBox;
-	private SugestionOracle parentSuggestionOracle;
+	private SuggestionOracle parentSuggestionOracle;
 	private final TextBox titleEditTextBox = new TextBox();
 	
 	boolean operationInProgress = false;
@@ -188,7 +191,7 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 	@Override
 	public void onPersonEvent(PersonEvent event) {
 		if(event.is(PersonEventType.USER_CHANGED)){
-			init(mode,post);
+			init(mode,post, showSmall);
 			textAreaElement.setFocus(true);
 		}
 	}
@@ -200,7 +203,15 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 		return button;
 	}
 
-	public void init(Mode mode, GPost post) {
+	private boolean showSmall = false;
+	public void init(Mode mode, GPost post, boolean showSmall) {
+		this.showSmall = showSmall;
+		
+		if(showSmall){
+			ratingLabelCellElement.setClassName("tt-hidden");
+			commentLabelCellElement.setClassName("tt-hidden");
+		}
+		
 		ratingElement.setVisible(false);
 		ratingLabelElement.setVisible(false);
 		parentInfoElement.setVisible(false);
@@ -363,7 +374,7 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 					}
 					else{
 						//view.setReviewable(false);
-						init(Mode.CREATE, null); //To reset display for no parent
+						init(Mode.CREATE, null, showSmall); //To reset display for no parent
 						configureForTopicCreation(parent);
 					}
 				}
@@ -379,7 +390,7 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 			@Override
 			public void onSuccess(PostCommandResult result) {
 				GPost parent = result.getPost();
-				init(mode, parent);
+				init(mode, parent, showSmall);
 //				if(parent.isMovie()){
 //					view.setReviewable(true);
 //				}

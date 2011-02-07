@@ -10,12 +10,20 @@
 			<table>
 				<tr>
 					<td>
-						Login: <g:TextBox ui:field="loginTextElement"/>
+						<table>
+							<tr>
+								<td>Login:</td>
+								<td><g:TextBox ui:field="loginTextElement"/></td>
+							</tr>
+							<tr>
+								<td>Password:</td>
+								<td><g:PasswordTextBox ui:field="passwordTextElement"/></td>
+							</tr>
+						</table>
 					</td>
 					<td>
-						Password: <g:PasswordTextBox ui:field="passwordTextElement"/>
+						<t:ClickableIconPanel ui:field="loginButtonElement" />
 					</td>
-					<td><t:ClickableIconPanel ui:field="loginButtonElement" /></td>
 				</tr>
 			</table>
 		</g:HTMLPanel>
@@ -49,7 +57,7 @@
 		
 		<table class="tt-fill">
 			<tr>
-				<td class="tt-comment-editor-th"><g:Label ui:field="ratingLabelElement">Rating:</g:Label></td>
+				<td class="tt-comment-editor-th" ui:field="ratingLabelCellElement"><g:Label ui:field="ratingLabelElement">Rating:</g:Label></td>
 				<td><g:SimplePanel ui:field="ratingElement" /></td>
 			</tr>
 			<tr>
@@ -87,7 +95,7 @@
 		
 		<table class="tt-fill">
 			<tr>
-				<td class="tt-comment-editor-th">
+				<td class="tt-comment-editor-th" ui:field="commentLabelCellElement">
 					Comment
 				</td>
 				<td>
@@ -95,9 +103,6 @@
 				</td>
 			</tr>
 			<tr>
-				<td>
-					&nbsp;
-				</td>
 				<td>
 					<g:SimplePanel styleName="tt-comment-preview" ui:field="previewElement" />		
 				</td>

@@ -518,13 +518,21 @@ abstract public class PostBaseComposite extends Composite{
 //		}
 //	}
 	
+	
+	/*
+	 * Override this to show the small comment editor
+	 */
+	protected boolean isShowSmallCommentEditor(){
+		return true;
+	}
+	
 	private void processTagPostRequest() {
 		tagListPanel.showEditor();
 	}
 	
 	protected void showCommentEditor(){
 		CommentEditorPanel commentEditor = injector.createCommentEditorPanel();
-		commentEditor.init(CommentEditorPanel.Mode.CREATE, post);
+		commentEditor.init(CommentEditorPanel.Mode.CREATE, post, isShowSmallCommentEditor());
 		commentElement.clear();
 		commentElement.add(commentEditor);
 		commentEditor.setFocus();
@@ -566,7 +574,7 @@ abstract public class PostBaseComposite extends Composite{
 			@Override
 			public void onSuccess(PostCommandResult result) {
 				CommentEditorPanel commentEditor = injector.createCommentEditorPanel();
-				commentEditor.init(CommentEditorPanel.Mode.EDIT, result.getPost());
+				commentEditor.init(CommentEditorPanel.Mode.EDIT, result.getPost(),isShowSmallCommentEditor());
 				commentElement.clear();
 				commentElement.add(commentEditor);
 				commentEditor.setFocus();

@@ -31,7 +31,7 @@ import com.google.gwt.user.client.ui.SuggestOracle;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
-public class SugestionOracle extends SuggestOracle implements SuggestionListener {
+public class SuggestionOracle extends SuggestOracle implements SuggestionListener {
 	private Injector injector;
 	private SuggestionObject currentTagSuggestion = null;
 	private TagSuggestionCommandMode commandMode;
@@ -43,7 +43,7 @@ public class SugestionOracle extends SuggestOracle implements SuggestionListener
 	
 
 	@Inject
-	public SugestionOracle(Injector injector){
+	public SuggestionOracle(Injector injector){
 		this.injector = injector;
 	}
 	
@@ -151,18 +151,22 @@ public class SugestionOracle extends SuggestOracle implements SuggestionListener
 	 * This is a call back which bridges the OracleSuggestion's async mechanism and the RPC async mechanism
 	 *
 	 */
-	private static class AutocompleteCallback extends CommandResultCallback<TagSuggestionCommandResult> {
+	private class AutocompleteCallback extends CommandResultCallback<TagSuggestionCommandResult> {
         private SuggestOracle.Request oracleRequest;
         private SuggestOracle.Callback oracleCallback;
-        private SugestionOracle tagSuggestionOracle;
+        private SuggestionOracle tagSuggestionOracle;
         
-        public AutocompleteCallback(SugestionOracle oracle, SuggestOracle.Request oracleRequest, SuggestOracle.Callback oracleCallback){
+        public AutocompleteCallback(SuggestionOracle oracle, SuggestOracle.Request oracleRequest, SuggestOracle.Callback oracleCallback){
         	this.oracleRequest = oracleRequest;
         	this.oracleCallback = oracleCallback;
         	this.tagSuggestionOracle = oracle;
         }
 
         public void onSuccess(TagSuggestionCommandResult result) {
+        	if(SuggestionOracle.this.activeAutocompleteCallback != this){
+        		//Discard
+        		//A newer request was activated
+        	}
         	SuggestOracle.Response resp = result.getResponse();
         		if(resp.getSuggestions() != null){
         			tagSuggestionOracle.currentTagSuggestion = null;
@@ -194,6 +198,7 @@ public class SugestionOracle extends SuggestOracle implements SuggestionListener
 	 * wont pummel the server with a lot of useless requests for suggestions.
 	 * 
 	 */
+	private AutocompleteCallback activeAutocompleteCallback = null;
     private class TagSuggestionCommandTimer extends Timer{
 		private TagSuggestionCommand command;
 		private AutocompleteCallback callback;
@@ -203,6 +208,7 @@ public class SugestionOracle extends SuggestOracle implements SuggestionListener
 		}
 		@Override
 		public void run() {
+			activeAutocompleteCallback=callback;
 			injector.getService().execute(command, callback);
 		}
 	}

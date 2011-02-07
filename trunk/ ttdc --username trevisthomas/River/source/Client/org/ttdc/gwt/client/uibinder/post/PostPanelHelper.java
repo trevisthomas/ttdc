@@ -34,16 +34,22 @@ public class PostPanelHelper {
 			GPerson user = ConnectionId.getInstance().getCurrentUser();
 			if(!post.isRead(user.getSiteReadDate())){
 				postTable.addClassName("tt-post-unread");
-				avatarCell.addClassName("tt-post-unread-avatar");
+				if(avatarCell != null){
+					avatarCell.addClassName("tt-post-unread-avatar");
+				}
 			}
 			else{
 				postTable.removeClassName("tt-post-unread");
-				avatarCell.removeClassName("tt-post-unread-avatar");
+				if(avatarCell != null){
+					avatarCell.removeClassName("tt-post-unread-avatar");
+				}
 			}
 		}
 		else{
 			postTable.removeClassName("tt-post-unread");
-			avatarCell.removeClassName("tt-post-unread-avatar");
+			if(avatarCell != null){
+				avatarCell.removeClassName("tt-post-unread-avatar");
+			}
 		}
 	}
 }

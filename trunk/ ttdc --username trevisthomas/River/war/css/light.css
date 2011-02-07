@@ -13,6 +13,7 @@ body{ color: #222; background-color: #eee;}
 
 .tt-message-textbox-disabled{ color: #ddd;}
 
+.tt-smallMonthPanel a,
 .tt-post-footer a,
 .tt-plain-post a,
 .tt-post-container-header a,
@@ -33,6 +34,7 @@ body{ color: #222; background-color: #eee;}
 .tt-post-summary a,
 .tt-post-expanded-content a{text-decoration: none; color: #113aa4;}
 	
+.tt-smallMonthPanel a:link,	
 .tt-post-footer a:link,
 .tt-plain-post a:link,	
 .tt-post-container-header a:link,
@@ -53,6 +55,7 @@ body{ color: #222; background-color: #eee;}
 .tt-post-summary a:link,
 .tt-post-expanded-content a:link {text-decoration: none; color: #113aa4;}
 
+.tt-smallMonthPanel a:visited,
 .tt-post-footer a:visited,
 .tt-plain-post a:visited,
 .tt-post-container-header a:visited,
@@ -73,6 +76,7 @@ body{ color: #222; background-color: #eee;}
 .tt-post-summary a:visited,
 .tt-post-expanded-content a:visited {text-decoration: none; color: #113aa4;}
 
+.tt-smallMonthPanel a:hover,
 .tt-post-footer a:hover,
 .tt-plain-post a:hover,
 .tt-post-container-header a:hover,
@@ -240,6 +244,9 @@ body{ color: #222; background-color: #eee;}
 .tt-post-panel-root
 .tt-post{ background-color: #fefefe; border-color:#eee; color: white;}
 */
+
+.tt-root-post,
+.tt-review-summary-post,
 .tt-post{ background-color: transparent; border-color:#eee;}
 
 .tt-post-panel-number,
@@ -279,6 +286,7 @@ body{ color: #222; background-color: #eee;}
 .tt-graphic-button-r,
 .tt-graphic-button-l{background-color: #cecece; border-color: #ccc;}
 
+.tt-traffic-avatar-border,
 .tt-traffic-person,
 .tt-fancy-image-border,
 .tt-searchBoxPanel{border-bottom-color: #999; border-left-color: #CCC; border-right-color: #999; border-top-color: #CCC;}
@@ -296,6 +304,7 @@ body{ color: #222; background-color: #eee;}
 .gwt-TabBar .gwt-TabBarItem-selected{background: #92c1f0;} 
 .gwt-TabBar .gwt-TabBarItem-disabled {color: #999999;}
 
+.tt-traffic-avatar-border,
 .tt-fancy-image-border{ background-color: #ddd;}
 
 .gwt-TabBar .gwt-TabBarItem-selected{ background-image:url('common/images/gradients.png');background-position: 0 0px; background-repeat:repeat-x;}
@@ -309,6 +318,9 @@ body{ color: #222; background-color: #eee;}
 .tt-more-options-button{border-color: #aaa; color:#aaa; background-color: eee;}
 
 .tt-reviewSummaryList{color: #222;}
+
+.tt-tagList-forum,
+.tt-post-body-header,
 .tt-reviewSummaryList-header{color: #777}
 
 .gwt-SuggestBoxPopup,

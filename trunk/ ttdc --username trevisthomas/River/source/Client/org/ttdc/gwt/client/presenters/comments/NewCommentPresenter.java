@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.autocomplete.SuggestionListener;
-import org.ttdc.gwt.client.autocomplete.SugestionOracle;
+import org.ttdc.gwt.client.autocomplete.SuggestionOracle;
 import org.ttdc.gwt.client.autocomplete.SuggestionObject;
 import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.beans.GPost;
@@ -89,10 +89,10 @@ public class NewCommentPresenter extends BasePresenter<NewCommentPresenter.View>
 	private GPost post = null;
 	//private String embedTargetPlaceholder = "EmbedTarget_PLACEHOLDER";
 	private SuggestBox parentSuggestionBox;
-	private SugestionOracle parentSuggestionOracle;
+	private SuggestionOracle parentSuggestionOracle;
 	
 	private SuggestBox tagSuggestionBox;
-	private SugestionOracle tagSuggestionOracle;
+	private SuggestionOracle tagSuggestionOracle;
 	private Mode mode = Mode.CREATE;
 	private GPerson currentUser;
 	

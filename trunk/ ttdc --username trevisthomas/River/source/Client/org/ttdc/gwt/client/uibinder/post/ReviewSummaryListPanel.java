@@ -12,20 +12,14 @@ import org.ttdc.gwt.client.messaging.post.PostEvent;
 import org.ttdc.gwt.client.messaging.post.PostEventListener;
 import org.ttdc.gwt.client.messaging.post.PostEventType;
 import org.ttdc.gwt.client.presenters.movies.MovieRatingPresenter;
-import org.ttdc.gwt.client.presenters.post.PostCollectionPresenter;
 import org.ttdc.gwt.client.presenters.post.PostPresenterCommon;
-import org.ttdc.gwt.client.presenters.shared.DatePresenter;
 import org.ttdc.gwt.client.presenters.shared.HyperlinkPresenter;
 import org.ttdc.gwt.client.presenters.shared.ImagePresenter;
-import org.ttdc.gwt.client.presenters.util.ClickableHoverSyncPanel;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Hyperlink;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -41,27 +35,16 @@ public class ReviewSummaryListPanel extends PostBaseComposite implements PostEve
     
 	private GPost post;
     private ImagePresenter imagePresenter;
-    //private HyperlinkPresenter creatorLinkPresenter;
     private HyperlinkPresenter postLinkPresenter;
-    private DatePresenter createDatePresenter;
-    private PostCollectionPresenter postCollectionPresenter;
     private MovieRatingPresenter averageMovieRatingPresenter;
     private TagListPanel tagListPanel;
     
-    
-    
-	@UiField(provided = true) Hyperlink titleElement;
-    @UiField Label replyCountElement;
-    @UiField  Label conversationCountElement;
+    @UiField(provided = true) Hyperlink titleElement;
     @UiField(provided = true) Widget posterElement;
-//    @UiField(provided = true) Hyperlink creatorLinkElement;
-//    @UiField(provided = true) Widget createDateElement;
     @UiField(provided = true) Widget averageRatingElement;
     @UiField VerticalPanel reviewsElement = new VerticalPanel();
     @UiField(provided = true) SimplePanel commentElement = new SimplePanel();
-    //@UiField(provided = true) ClickableHoverSyncPanel moreOptionsElement = MoreOptionsButtonFactory.createMoreOptionsButton();
     @UiField (provided = true) PostDetailPanel postDetailPanelElement;    
-    //@UiField SimplePanel inReplyPostElement;
     @UiField(provided = true) Widget tagsElement;
         
 	@Inject
@@ -80,8 +63,7 @@ public class ReviewSummaryListPanel extends PostBaseComposite implements PostEve
 		
 		initWidget(binder.createAndBindUi(this)); 
 		
-		conversationCountElement.setStyleName("tt-conversation-count");
-		
+		averageRatingElement.addStyleName("tt-center");
 		
 		
 		EventBus.getInstance().addListener(this);
@@ -119,9 +101,6 @@ public class ReviewSummaryListPanel extends PostBaseComposite implements PostEve
 			}
 		}
 		
-		conversationCountElement.setText(""+post.getReplyCount());
-		conversationCountElement.setTitle(post.getReplyCount() + " conversations on this topic.");
-		
 		tagListPanel.init(post, TagListPanel.Mode.EDITABLE);
 	
 	}
@@ -150,6 +129,7 @@ public class ReviewSummaryListPanel extends PostBaseComposite implements PostEve
 	
 	@Override
 	public Widget getWidget() {
-		return super.getWidget();
+		//return super.getWidget();
+		return this;
 	}
 }

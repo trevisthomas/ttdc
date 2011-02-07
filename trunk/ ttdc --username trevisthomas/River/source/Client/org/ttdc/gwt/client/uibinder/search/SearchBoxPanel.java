@@ -10,7 +10,7 @@ import java.util.List;
 
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.autocomplete.MySuggestBox;
-import org.ttdc.gwt.client.autocomplete.SugestionOracle;
+import org.ttdc.gwt.client.autocomplete.SuggestionOracle;
 import org.ttdc.gwt.client.autocomplete.SuggestionObject;
 import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.beans.GPost;
@@ -89,7 +89,7 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
     @UiField (provided=true) SuggestBox suggestSearchPhraseElement;
     private MySuggestBox suggestSearchBox;
     
-	private SugestionOracle suggestionOracle;
+	private SuggestionOracle suggestionOracle;
     
     private String rootId;
 	private String threadId;
@@ -359,7 +359,7 @@ public class SearchBoxPanel extends Composite implements MessageEventListener, D
 			}
 		});
 		
-		commentEditorPanel.init(CommentEditorPanel.Mode.CREATE, null);
+		commentEditorPanel.init(CommentEditorPanel.Mode.CREATE, null, false);
 		
 		newMoviePanel = injector.createNewMoviePanel();
 		newMoviePanel.addCancelClickHandler(new ClickHandler() {

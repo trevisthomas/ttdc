@@ -93,6 +93,8 @@ public class ChildPostPanel extends Composite implements PostEventListener, Post
 //    	avatarElement = imagePresenter.getWidget();
     	tagsElement = tagListPanel;
     	postDetailPanelElement = injector.createPostDetailPanel();
+//    	postDetailPanelElement.hide();
+    	
     	
     	initWidget(binder.createAndBindUi(this));
     	
@@ -106,6 +108,7 @@ public class ChildPostPanel extends Composite implements PostEventListener, Post
 			public void onMouseOver(MouseOverEvent event) {
 				outerElement.addStyleName("tt-post-child-hover");
 				outerElement.removeStyleName("tt-post-child-noHover");
+//				postDetailPanelElement.show();
 			}
 		});
     	
@@ -114,6 +117,7 @@ public class ChildPostPanel extends Composite implements PostEventListener, Post
 			public void onMouseOut(MouseOutEvent event) {
 				outerElement.addStyleName("tt-post-child-noHover");
 				outerElement.removeStyleName("tt-post-child-hover");
+//				postDetailPanelElement.hide();
 			}
 		});
     	
@@ -123,6 +127,7 @@ public class ChildPostPanel extends Composite implements PostEventListener, Post
 	public void init(GPost post){
 		this.post = post;
 		postDetailPanelElement.init(post, commentElement, tagListPanel, inReplyPostElement);
+		postDetailPanelElement.useStyleForPost();
 		refreshPost(post);
 		EventBus.getInstance().addListener((MessageEventListener)this);
 		EventBus.getInstance().addListener((PostEventListener)this);

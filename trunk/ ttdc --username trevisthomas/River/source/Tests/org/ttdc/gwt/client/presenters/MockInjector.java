@@ -5,7 +5,7 @@ import static org.mockito.Mockito.when;
 
 import org.ttdc.gwt.client.Injector;
 
-import org.ttdc.gwt.client.autocomplete.SugestionOracle;
+import org.ttdc.gwt.client.autocomplete.SuggestionOracle;
 import org.ttdc.gwt.client.components.widgets.PostPanelWidget;
 import org.ttdc.gwt.client.messaging.history.HistoryToken;
 import org.ttdc.gwt.client.presenters.admin.AdminToolsPresenter;
@@ -112,7 +112,11 @@ import org.ttdc.gwt.client.uibinder.forum.ForumListItemPanel;
 import org.ttdc.gwt.client.uibinder.forum.ForumListPanel;
 import org.ttdc.gwt.client.uibinder.forum.ForumPanel;
 import org.ttdc.gwt.client.uibinder.forum.ForumPostPanel;
+import org.ttdc.gwt.client.uibinder.home.CalendarPairPanel;
 import org.ttdc.gwt.client.uibinder.home.HomePanel;
+import org.ttdc.gwt.client.uibinder.home.SplitHomePanel;
+import org.ttdc.gwt.client.uibinder.home.TrafficPanel;
+import org.ttdc.gwt.client.uibinder.home.TrafficPersonAvatarOnlyPanel;
 import org.ttdc.gwt.client.uibinder.home.TrafficPersonPanel;
 import org.ttdc.gwt.client.uibinder.movies.MovieListPanel;
 import org.ttdc.gwt.client.uibinder.post.ChildPostPanel;
@@ -128,6 +132,7 @@ import org.ttdc.gwt.client.uibinder.post.PostPanel;
 import org.ttdc.gwt.client.uibinder.post.PostSummaryPanel;
 import org.ttdc.gwt.client.uibinder.post.ReviewSummaryListPanel;
 import org.ttdc.gwt.client.uibinder.post.ReviewSummaryPanel;
+import org.ttdc.gwt.client.uibinder.post.RootPostPanel;
 import org.ttdc.gwt.client.uibinder.post.SmallPostSummaryPanel;
 import org.ttdc.gwt.client.uibinder.post.TagListPanel;
 import org.ttdc.gwt.client.uibinder.post.NestedPostPanel;
@@ -224,7 +229,7 @@ public class MockInjector implements Injector{
 		return null;
 	}
 
-	public SugestionOracle getTagSugestionOracle() {
+	public SuggestionOracle getTagSugestionOracle() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -1676,6 +1681,36 @@ public class MockInjector implements Injector{
 
 	@Override
 	public SortOrderComponent createSortOrderComponent() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public SplitHomePanel createSplitHomePanel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public TrafficPanel createTrafficPanel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public TrafficPersonAvatarOnlyPanel createTrafficPersonAvatarOnlyPanel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CalendarPairPanel createCalendarPairPanel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public RootPostPanel createRootPostPanel() {
 		// TODO Auto-generated method stub
 		return null;
 	}

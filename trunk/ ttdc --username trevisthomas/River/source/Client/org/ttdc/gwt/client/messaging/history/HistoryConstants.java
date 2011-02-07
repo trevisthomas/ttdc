@@ -148,6 +148,8 @@ public interface HistoryConstants {
 	public static final String SORT_BY_CREATE_DATE = "byCreateDate";
 	public static final String SORT_BY_CREATE_DATE_ASC = "byCreateDateAsc";
 	public static final String SORT_BY_REPLY_DATE = "byReplyDate";
+
+	public static final Object VIEW_HOME3 = "home3";
 	
 
 }

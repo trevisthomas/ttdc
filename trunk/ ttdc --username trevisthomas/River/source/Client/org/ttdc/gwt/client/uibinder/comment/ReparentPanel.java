@@ -1,7 +1,7 @@
 package org.ttdc.gwt.client.uibinder.comment;
 
 import org.ttdc.gwt.client.Injector;
-import org.ttdc.gwt.client.autocomplete.SugestionOracle;
+import org.ttdc.gwt.client.autocomplete.SuggestionOracle;
 import org.ttdc.gwt.client.autocomplete.SuggestionObject;
 import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.messaging.EventBus;
@@ -41,7 +41,7 @@ public class ReparentPanel extends Composite {
 	@UiField Label parentInfoElement;
 	
 	private SuggestBox parentSuggestionBox;
-	private SugestionOracle parentSuggestionOracle;
+	private SuggestionOracle parentSuggestionOracle;
 	
 	private Injector injector;
 	private GPost post;

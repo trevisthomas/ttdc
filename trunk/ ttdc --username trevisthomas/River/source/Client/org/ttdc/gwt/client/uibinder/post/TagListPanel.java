@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.ttdc.gwt.client.Injector;
-import org.ttdc.gwt.client.autocomplete.SugestionOracle;
+import org.ttdc.gwt.client.autocomplete.SuggestionOracle;
 import org.ttdc.gwt.client.autocomplete.SuggestionObject;
 import org.ttdc.gwt.client.beans.GAssociationPostTag;
 import org.ttdc.gwt.client.beans.GPerson;
@@ -54,7 +54,7 @@ public class TagListPanel extends Composite implements PersonEventListener, Post
 	private Injector injector;
 	private List<RemovableTagPresenter> tagPresenterList = new ArrayList<RemovableTagPresenter>();
 	private Mode mode;
-	private SugestionOracle tagSuggestionOracle;
+	private SuggestionOracle tagSuggestionOracle;
 	private SuggestBox tagSuggestionBox;
 	private GPost post;
 	

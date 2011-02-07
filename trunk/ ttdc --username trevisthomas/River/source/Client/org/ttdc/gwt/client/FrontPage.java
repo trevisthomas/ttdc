@@ -2,7 +2,7 @@ package org.ttdc.gwt.client;
 
 import java.util.Arrays;
 
-import org.ttdc.gwt.client.autocomplete.SugestionOracle;
+import org.ttdc.gwt.client.autocomplete.SuggestionOracle;
 import org.ttdc.gwt.client.components.views.FrontPageView;
 import org.ttdc.gwt.client.components.widgets.UserProfileWidget;
 import org.ttdc.gwt.client.messaging.EventBus;
@@ -81,7 +81,7 @@ public class FrontPage implements EntryPoint, HistoryEventListener{
 		//Make this oracle GIN'jected
 		//TagSugestionOracle oracle = new TagSugestionOracle(injector);
 		HorizontalPanel hPanel = new HorizontalPanel();
-		SugestionOracle oracle = injector.getTagSugestionOracle();
+		SuggestionOracle oracle = injector.getTagSugestionOracle();
 		SuggestBox box = oracle.createSuggestBoxPostTitle();
 		hPanel.add(new Label("Title"));
 		hPanel.add(box);

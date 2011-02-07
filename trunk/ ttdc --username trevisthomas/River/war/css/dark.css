@@ -14,6 +14,7 @@ body{ color: #ccc; background-color: black;}
 textarea,
 input{ color: #eee; background-color: black;}
 
+.tt-smallMonthPanel a,
 .tt-post-footer a,
 .tt-plain-post a,
 .tt-post-container-header a,
@@ -34,8 +35,9 @@ input{ color: #eee; background-color: black;}
 .tt-post-summary a,
 .tt-post-expanded-content a{text-decoration: none; color: #ccc;}
 	
-.tt-post-footer a:hover,
-.tt-plain-post a:hover,	
+.tt-smallMonthPanel a:link,
+.tt-post-footer a:link,
+.tt-plain-post a:link,	
 .tt-post-container-header a:link,
 .tt-post-fetch-more a:link,	
 .tt-paginator-nano a:link,
@@ -54,6 +56,7 @@ input{ color: #eee; background-color: black;}
 .tt-post-summary a:link,
 .tt-post-expanded-content a:link {text-decoration: none; color: #ccc;}
 
+.tt-smallMonthPanel a:hover,
 .tt-post-footer a:hover,
 .tt-plain-post a:hover,
 .tt-post-container-header a:visited,
@@ -74,6 +77,7 @@ input{ color: #eee; background-color: black;}
 .tt-post-summary a:visited,
 .tt-post-expanded-content a:visited {text-decoration: none; color: #ccc;}
 
+.tt-smallMonthPanel a:hover,
 .tt-post-footer a:hover,
 .tt-plain-post a:hover,
 .tt-post-container-header a:hover,
@@ -94,6 +98,7 @@ input{ color: #eee; background-color: black;}
 .tt-post-summary a:hover,
 .tt-post-expanded-content a:hover  {text-decoration: underline; color: white;}
 
+.tt-smallMonthPanel a:active,
 .tt-post-footer a:active,
 .tt-plain-post a:active,
 .tt-post-container-header a:active,
@@ -256,7 +261,11 @@ input{ color: #eee; background-color: black;}
 .tt-post-panel-root
 .tt-post{ background-color: #fefefe; border-color:#eee; color: white;}
 */
+.tt-root-post,
+.tt-review-summary-post,
 .tt-post{ background-color: #2C2C2C; border-color:#333 #000 #000 #333;}
+
+
 
 
 
@@ -297,6 +306,7 @@ input{ color: #eee; background-color: black;}
 
 .tt-color-post-summary-hover{background-color:#eee; color: black}
 
+.tt-traffic-avatar-border,
 .tt-traffic-person,
 .tt-fancy-image-border,
 .tt-searchBoxPanel{border-color: #555 #000 #000 #555;}
@@ -335,6 +345,9 @@ input{ color: #eee; background-color: black;}
 .tt-more-options-button{border-color: #aaa; color:#aaa; background-color: eee;}
 
 .tt-reviewSummaryList{color: #222;}
+
+.tt-tagList-forum,
+.tt-post-body-header,
 .tt-reviewSummaryList-header{color: #777}
 
 .gwt-SuggestBoxPopup,
@@ -365,7 +378,7 @@ input{ color: #eee; background-color: black;}
 .tt-pageHeader-subtitle{color: #790e0e;}
 
 .spoiler{ color : #2a2a2a; background-color : #2a2a2a;}
-.reveal{ color : #790e0e; background-color : #2a2a2a;}
+.reveal{ color : #eee; background-color : #2a2a2a;}
 .tt-userlistrow{border-color: #333;}
 
 .tt-post-unread{border-color: #8b2d2d; }

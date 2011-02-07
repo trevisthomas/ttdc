@@ -27,6 +27,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Label;
@@ -41,7 +42,8 @@ public class PostDetailPanel extends PostBaseComposite implements PostEventListe
     @UiField (provided = true) Widget createDateElement;
     @UiField (provided = true) Hyperlink creatorLinkElement;
     @UiField (provided = true) Hyperlink inReplyToCreatorElement;
-    
+    @UiField HTMLPanel outerElement;
+    @UiField SpanElement postDetailElement;
     
     @UiField Anchor inReplyToElement;
     
@@ -187,6 +189,19 @@ public class PostDetailPanel extends PostBaseComposite implements PostEventListe
 	public void expandPost() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public void useStyleForPost() {
+		outerElement.removeStyleName("tt-post-tab");
+		
+	}
+
+	public void hide() {
+		postDetailElement.addClassName("tt-hidden");
+	}
+	
+	public void show(){
+		postDetailElement.removeClassName("tt-hidden");
 	}
 
 }
