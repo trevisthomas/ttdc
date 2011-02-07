@@ -3,7 +3,7 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 	<g:HTMLPanel styleName="tt-fill tt-color-tagList">
-			<g:HTMLPanel ui:field="tagListElement" styleName="tt-text-small">
+			<g:HTMLPanel ui:field="tagListElement" styleName="tt-tagList-forum">
 				<div class="tt-inline">Forum:</div>
 				<g:FlowPanel styleName="tt-inline" ui:field="tagsElement">
 				</g:FlowPanel>

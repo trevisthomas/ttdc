@@ -1,6 +1,6 @@
 package org.ttdc.gwt.client;
 
-import org.ttdc.gwt.client.autocomplete.SugestionOracle;
+import org.ttdc.gwt.client.autocomplete.SuggestionOracle;
 import org.ttdc.gwt.client.components.widgets.PostPanelWidget;
 import org.ttdc.gwt.client.presenters.admin.AdminToolsPresenter;
 import org.ttdc.gwt.client.presenters.admin.ImageManagementPresenter;
@@ -104,7 +104,11 @@ import org.ttdc.gwt.client.uibinder.forum.ForumListItemPanel;
 import org.ttdc.gwt.client.uibinder.forum.ForumListPanel;
 import org.ttdc.gwt.client.uibinder.forum.ForumPanel;
 import org.ttdc.gwt.client.uibinder.forum.ForumPostPanel;
+import org.ttdc.gwt.client.uibinder.home.CalendarPairPanel;
 import org.ttdc.gwt.client.uibinder.home.HomePanel;
+import org.ttdc.gwt.client.uibinder.home.SplitHomePanel;
+import org.ttdc.gwt.client.uibinder.home.TrafficPanel;
+import org.ttdc.gwt.client.uibinder.home.TrafficPersonAvatarOnlyPanel;
 import org.ttdc.gwt.client.uibinder.home.TrafficPersonPanel;
 import org.ttdc.gwt.client.uibinder.movies.MovieListPanel;
 import org.ttdc.gwt.client.uibinder.post.ChildPostPanel;
@@ -121,6 +125,7 @@ import org.ttdc.gwt.client.uibinder.post.PostPanel;
 import org.ttdc.gwt.client.uibinder.post.PostSummaryPanel;
 import org.ttdc.gwt.client.uibinder.post.ReviewSummaryListPanel;
 import org.ttdc.gwt.client.uibinder.post.ReviewSummaryPanel;
+import org.ttdc.gwt.client.uibinder.post.RootPostPanel;
 import org.ttdc.gwt.client.uibinder.post.SmallPostSummaryPanel;
 import org.ttdc.gwt.client.uibinder.post.TagListPanel;
 import org.ttdc.gwt.client.uibinder.post.TopicPanel;
@@ -141,6 +146,7 @@ import org.ttdc.gwt.client.uibinder.users.UserToolsPanel;
 
 import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;
+import com.google.gwt.user.client.ui.Widget;
 
 @GinModules(InjectorModule.class)
 public interface Injector extends Ginjector {  
@@ -166,7 +172,7 @@ public interface Injector extends Ginjector {
 	public HyperlinkPresenter getHyperlinkPresenter();
 	public HyperlinkPresenter.View getHyperlinkView();
 	
-	public SugestionOracle getTagSugestionOracle();
+	public SuggestionOracle getTagSugestionOracle();
 	
 	public TagRemovePresenter.View getTagRemoveView();
 	public TagRemovePresenter getTagRemovePresenter();
@@ -457,5 +463,13 @@ public interface Injector extends Ginjector {
 	public ReparentPanel createReparentPanel();
 	public PageSizeComponent createPageSizeComponent();
 	public SortOrderComponent createSortOrderComponent();
+	public SplitHomePanel createSplitHomePanel();
+	public TrafficPanel createTrafficPanel();
+
+	public TrafficPersonAvatarOnlyPanel createTrafficPersonAvatarOnlyPanel();
+
+	public CalendarPairPanel createCalendarPairPanel();
+
+	public RootPostPanel createRootPostPanel();
 }
 

@@ -2,7 +2,7 @@ package org.ttdc.gwt.client.presenters.tag;
 
 import java.util.List;
 
-import org.ttdc.gwt.client.autocomplete.SugestionOracle;
+import org.ttdc.gwt.client.autocomplete.SuggestionOracle;
 import org.ttdc.gwt.client.autocomplete.SuggestionObject;
 import org.ttdc.gwt.client.presenters.shared.BasePresenter;
 import org.ttdc.gwt.client.presenters.shared.BaseView;
@@ -40,7 +40,7 @@ public interface TagListPresenterView extends BaseView{
 	 */
 	SuggestionObject getTagSuggestion();
 	
-	void setTagSuggestionOracle(SugestionOracle oracle);
+	void setTagSuggestionOracle(SuggestionOracle oracle);
 	
 	/**
 	 * List of tag id's to exclude.  (for tagging posts)

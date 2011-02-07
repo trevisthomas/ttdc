@@ -119,12 +119,16 @@ public class HistoryEventPresenterManager implements HistoryEventListener{
 				injector.createUserDashboardPanel().show(token);
 			}
 		}
-		else if(HistoryConstants.VIEW_HOME.equals(view)){
+		else if(HistoryConstants.VIEW_HOME3.equals(view)){
 			//FlatPresenter.flushCache();
 			
 			injector.createHomePanel().show(event.getSource());
 			//injector.getHome2Presenter().show(event.getSource());
 			//injector.getHomePresenter().show(event.getSource());
+		}
+		else if(HistoryConstants.VIEW_HOME.equals(view)){
+			injector.createSplitHomePanel().show(event.getSource());
+			
 		}
 		else if(HistoryConstants.VIEW_FORUMS.equals(view)){
 			//injector.createForumPanel().show(event.getSource());

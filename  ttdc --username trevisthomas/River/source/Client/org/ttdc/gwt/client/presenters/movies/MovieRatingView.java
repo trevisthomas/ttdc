@@ -27,7 +27,7 @@ public class MovieRatingView implements MovieRatingPresenter.View{
 	private final Label descriptionLabel = new Label(defaultMessage);
 	private boolean interactiveMode = false;
 	private RatableContentProcessor rateMovie;
-	private final Grid grid = new Grid(2,2);
+	private final Grid grid = new Grid(3,2);
 	private List<HalfStarPanel> starList = new ArrayList<HalfStarPanel>();
 	private final Label ratingSummary = new Label();
 	
@@ -81,15 +81,25 @@ public class MovieRatingView implements MovieRatingPresenter.View{
 		this.rateMovie = rateMovie;
 		descriptionLabel.setVisible(true);
 		descriptionLabel.setText(defaultMessage);
+		if(grid.getRowCount() > 2){
+			grid.removeRow(2);
+		}
 	}
 	
 	@Override
-	public void setRatingMessage(String msg) {
+	public void setRatingMessage(String msg, boolean below) {
 		if(StringUtil.notEmpty(msg)){
 			ratingSummary.setText(msg);
 		}
 		else{
 			ratingSummary.setText("");
+		}
+		if(below){
+			grid.setWidget(1, 1, new Label(""));
+			grid.setWidget(2, 0, ratingSummary);
+		}
+		else{
+			grid.removeRow(2);
 		}
 	};
 	

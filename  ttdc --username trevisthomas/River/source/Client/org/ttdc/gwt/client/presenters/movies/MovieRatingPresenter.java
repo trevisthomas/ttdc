@@ -40,7 +40,7 @@ public class MovieRatingPresenter extends BasePresenter<MovieRatingPresenter.Vie
 		void setRating(String rating);
 		void initVoteMode(RatableContentProcessor ratingProcessor);
 		void initShowMode(String rating);
-		void setRatingMessage(String msg);
+		void setRatingMessage(String msg, boolean below);
 	}
 	
 	
@@ -72,18 +72,18 @@ public class MovieRatingPresenter extends BasePresenter<MovieRatingPresenter.Vie
 	private void setRatingMessage(int rateCount, boolean numberOnly) {
 		if(numberOnly){
 			if(rateCount == 1){
-				view.setRatingMessage(" ("+rateCount+" rating)");
+				view.setRatingMessage(" ("+rateCount+" rating)", false);
 			}
 			else if(rateCount > 1){
-				view.setRatingMessage(" ("+rateCount+" ratings)");
+				view.setRatingMessage(" ("+rateCount+" ratings)", false);
 			}
 		}
 		else{
 			if(rateCount == 1){
-				view.setRatingMessage(" (average of "+rateCount + " ttdc rating"+")");
+				view.setRatingMessage(" ("+rateCount + " rating)", true);
 			}
 			else if(rateCount > 1){
-				view.setRatingMessage(" (average of "+rateCount + " ttdc ratings"+")");
+				view.setRatingMessage(" ("+rateCount + " ratings"+")", true);
 			}
 		}
 	}
@@ -103,6 +103,7 @@ public class MovieRatingPresenter extends BasePresenter<MovieRatingPresenter.Vie
 		else{
 			setRating(ratingByPerson.getTag());
 		}
+		view.setRatingMessage("", false);
 		
 	}
 

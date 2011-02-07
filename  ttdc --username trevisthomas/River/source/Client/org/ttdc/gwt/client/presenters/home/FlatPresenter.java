@@ -9,6 +9,7 @@ import org.ttdc.gwt.client.messaging.error.MessageEvent;
 import org.ttdc.gwt.client.messaging.error.MessageEventType;
 import org.ttdc.gwt.client.messaging.history.HistoryConstants;
 import org.ttdc.gwt.client.messaging.history.HistoryToken;
+import org.ttdc.gwt.client.presenters.home.FlatPresenter.FlatContentType;
 import org.ttdc.gwt.client.presenters.post.Mode;
 import org.ttdc.gwt.client.presenters.post.PostCollectionPresenter;
 import org.ttdc.gwt.client.presenters.shared.BasePresenter;
@@ -38,6 +39,13 @@ public class FlatPresenter extends BasePresenter<FlatPresenter.View> implements 
 	private String forumId = null;
 	private HistoryToken token;
 	private MoreLatestPresenter morePresenter;
+	private FlatContentType contentType = FlatContentType.LATEST_POSTS;
+	
+	public enum FlatContentType{
+		LATEST_POSTS,
+		FORUM,
+		LATEST_TOPICS,
+	}
 	
 	@Inject
 	public FlatPresenter(Injector injector){
@@ -53,6 +61,12 @@ public class FlatPresenter extends BasePresenter<FlatPresenter.View> implements 
 		}
 	}
 	
+	public void init(FlatContentType contentType) {
+		this.contentType = contentType;
+		init();
+	}
+
+	
 	public void init(){
 		view.postPanel().clear();
 		view.postPanel().add(injector.getWaitPresenter().getWidget());
@@ -67,19 +81,45 @@ public class FlatPresenter extends BasePresenter<FlatPresenter.View> implements 
 	}
 	
 	public void refresh(){
-		if(forumId == null){
-			LatestPostsCommand cmd = new LatestPostsCommand();
-			cmd.setAction(PostListType.LATEST_FLAT);
-			CommandResultCallback<PaginatedListCommandResult<GPost>> callback = buildCallback();
-			getService().execute(cmd, callback);	
+		switch(contentType){
+		case FORUM:
+			loadForumTopicList();
+			break;
+		case LATEST_POSTS:
+			loadLatestPosts();
+			break;
+		case LATEST_TOPICS:
+			loadLatestTopics();
+			break;
 		}
-		else{
-			ForumTopicListCommand cmd = new ForumTopicListCommand();
-			cmd.setAction(ForumActionType.LOAD_TOPIC_PAGE);
-			cmd.setForumId(forumId);
-			cmd.setCurrentPage(token.getParameterAsInt(HistoryConstants.PAGE_NUMBER_KEY, 1));
-			getService().execute(cmd, buildCallback());
-		}
+		
+		
+	}
+
+	private PostListType postListType = null;
+	private void loadLatestTopics() {
+		postCollection.setListenForLocalNew(false);
+		LatestPostsCommand cmd = new LatestPostsCommand();
+		postListType = PostListType.LATEST_THREADS;
+		cmd.setAction(postListType);
+		CommandResultCallback<PaginatedListCommandResult<GPost>> callback = buildCallback();
+		getService().execute(cmd, callback);		
+	}
+
+	private void loadLatestPosts() {
+		LatestPostsCommand cmd = new LatestPostsCommand();
+		postListType = PostListType.LATEST_FLAT;
+		cmd.setAction(postListType);
+		CommandResultCallback<PaginatedListCommandResult<GPost>> callback = buildCallback();
+		getService().execute(cmd, callback);
+	}
+
+	private void loadForumTopicList() {
+		ForumTopicListCommand cmd = new ForumTopicListCommand();
+		cmd.setAction(ForumActionType.LOAD_TOPIC_PAGE);
+		cmd.setForumId(forumId);
+		cmd.setCurrentPage(token.getParameterAsInt(HistoryConstants.PAGE_NUMBER_KEY, 1));
+		getService().execute(cmd, buildCallback());
 	}
 
 	private CommandResultCallback<PaginatedListCommandResult<GPost>> buildCallback() {
@@ -127,7 +167,7 @@ public class FlatPresenter extends BasePresenter<FlatPresenter.View> implements 
 	
 	private void setupMorePresenter(PaginatedListCommandResult<GPost> result) {
 		morePresenter = injector.getMoreLatestPresenter();
-		morePresenter.init(FlatPresenter.this, PostListType.LATEST_FLAT, result.getResults());
+		morePresenter.init(FlatPresenter.this, postListType, result.getResults());
 		view.postFooterPanel().clear();
 		view.postFooterPanel().add(morePresenter.getWidget());
 	}
@@ -145,4 +185,5 @@ public class FlatPresenter extends BasePresenter<FlatPresenter.View> implements 
 		view.postFooterPanel().add(injector.getWaitPresenter().getWidget());
 	}
 
+	
 }

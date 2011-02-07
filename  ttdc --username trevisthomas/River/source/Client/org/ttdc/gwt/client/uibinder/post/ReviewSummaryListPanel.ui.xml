@@ -4,12 +4,11 @@
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'
 	xmlns:t='urn:import:org.ttdc.gwt.client.presenters.util'
 	xmlns:u='urn:import:org.ttdc.gwt.client.uibinder.post'>
-	<g:HTMLPanel styleName="tt-post-conversation" >
+	<g:HTMLPanel styleName="tt-post-spacer" >
 		<table class="tt-fill">
 			<tr>
-				<td width="40px">&nbsp;</td>
 				<td>
-					<div class="tt-post">
+					<div class="tt-review-summary-post">
 						<div class="tt-post-panel-head">
 							<table class="tt-fill">
 								<tr>
@@ -20,42 +19,12 @@
 											</span>
 										</div>
 									</td>
-									<td>
-										<table class="tt-inline tt-float-right">
-											<tr>
-												<td>
-													
-												</td>
-												<td>
-													<g:Label ui:field="replyCountElement"></g:Label>
-												</td>
-												<td>
-													<g:Label ui:field="conversationCountElement"></g:Label>
-												</td>
-											</tr>
-										</table>
-									</td>
 								</tr>
 								<tr>
 									<td colspan="2">
 									<div width="100%" class="tt-text-mini">
 										<u:PostDetailPanel ui:field="postDetailPanelElement" />
 									</div>
-									</td>
-								</tr>
-								<tr>
-									<td colspan="2">
-										<table class="tt-fill">
-											<tr>
-												<td>
-													<g:Widget ui:field="averageRatingElement" />
-												</td>
-												<td>
-													
-												</td>
-												<td class="tt-text-right tt-post-panel-head-date"></td>
-											</tr>
-										</table>
 									</td>
 								</tr>
 							</table>
@@ -67,6 +36,7 @@
 									<td>
 										<g:Widget ui:field="posterElement" />
 									</td>
+									
 									<td width="100%">
 										<div width="100%" class="tt-reviewSummaryList">
 											<p class="tt-reviewSummaryList-header">Reviews:</p>
@@ -74,9 +44,15 @@
 										</div>
 									</td>
 								</tr>
-								<td colspan="2">
-									<g:Widget ui:field="tagsElement"></g:Widget>
-								</td>
+								<tr>
+									<td class="tt-center"><g:Widget ui:field="averageRatingElement" /></td>
+									<td></td>
+								</tr>
+								<tr>
+									<td colspan="2">
+										<g:Widget ui:field="tagsElement"></g:Widget>
+									</td>
+								</tr>
 							</table>
 							
 						</div>

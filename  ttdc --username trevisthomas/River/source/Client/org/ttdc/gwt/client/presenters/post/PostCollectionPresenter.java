@@ -17,6 +17,7 @@ import org.ttdc.gwt.client.uibinder.post.NestedPostSpacerPanel;
 import org.ttdc.gwt.client.uibinder.post.PostPanel;
 import org.ttdc.gwt.client.uibinder.post.PostSummaryPanel;
 import org.ttdc.gwt.client.uibinder.post.ReviewSummaryListPanel;
+import org.ttdc.gwt.client.uibinder.post.RootPostPanel;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -156,6 +157,11 @@ public final class PostCollectionPresenter extends BasePresenter<PostCollectionP
 			ChildPostPanel childPostPanel = injector.createChildPostPanel();
 			childPostPanel.init(post);
 			postPresenter = childPostPanel;
+		}
+		else if(post.isRootPost()){
+			RootPostPanel rootPostPanel = injector.createRootPostPanel();
+			rootPostPanel.setPost(post,mode);
+			postPresenter = rootPostPanel;
 		}
 		else{
 			PostPanel postPanel = injector.createPostPanel();

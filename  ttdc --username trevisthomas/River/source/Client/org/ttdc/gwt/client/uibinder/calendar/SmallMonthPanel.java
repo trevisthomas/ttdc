@@ -25,6 +25,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FocusPanel;
@@ -80,20 +81,6 @@ public class SmallMonthPanel extends Composite implements DayClickHandler{
 		now = new Day(new Date());
 		initWidget(binder.createAndBindUi(this));
 		
-		prevMonthElement.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				init(prevYear,prevMonth,SmallMonthPanel.this.dayClickHandler);
-			}
-		});
-		
-		nextMonthElement.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				init(nextYear,nextMonth,SmallMonthPanel.this.dayClickHandler);
-			}
-		});
-		
 		clearButtonElement.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -115,6 +102,26 @@ public class SmallMonthPanel extends Composite implements DayClickHandler{
 		setupWeekNameHeader();
 	}
 	
+	public void initForDualAsLeft(int year, int monthOfYear, ClickHandler prevHandler){
+		prevMonthElement.addClickHandler(prevHandler);
+		//nextMonthElement.setVisible(false);
+		nextMonthElement.setStyleName("tt-hidden");
+		
+		if(dayClickHandler == null)
+			init(year, monthOfYear, this);
+		else
+			init(year, monthOfYear, dayClickHandler);
+	}
+	
+	public void initForDualAsRight(int year, int monthOfYear, ClickHandler nextHandler){
+		nextMonthElement.addClickHandler(nextHandler);
+		prevMonthElement.setStyleName("tt-hidden");
+		if(dayClickHandler == null)
+			init(year, monthOfYear, this);
+		else
+			init(year, monthOfYear, dayClickHandler);
+	}
+	
 	public void enableSelectableDayMode(boolean enable) {
 		if(enable){
 			clearButtonElement.setVisible(true);
@@ -132,19 +139,43 @@ public class SmallMonthPanel extends Composite implements DayClickHandler{
 		//view.enableSelectableDayMode(false);
 	}
 	
-	public void initInteractive(int year,int monthOfYear){
+	public void initInteractive(int year, int monthOfYear){
+		prevMonthElement.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				switchToPrev();
+			}
+
+			
+		});
+		
+		nextMonthElement.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				switchToNext();
+			}
+		});
+		
 		if(dayClickHandler == null)
 			init(year, monthOfYear, this);
 		else
 			init(year, monthOfYear, dayClickHandler);
 	}
 	
+	public void switchToPrev() {
+		init(prevYear,prevMonth,SmallMonthPanel.this.dayClickHandler);
+	}
+	
+	public void switchToNext() {
+		init(nextYear,nextMonth,SmallMonthPanel.this.dayClickHandler);
+	}
 	/*
 	 * This version of the constructor is because of an idea i had to make this thing more self 
 	 * sufficient when operating as a stand alone calendar.  Basically It gets it's own data since it 
 	 * needs to have the know how to have a prev next... 
 	 */
 	private void init(int year,int monthOfYear, DayClickHandler handler){
+		//daysGridElement.clear();
 		if(handler != null){
 			dayClickHandler = handler;
 		}
@@ -205,6 +236,7 @@ public class SmallMonthPanel extends Composite implements DayClickHandler{
 		for(Week week : weeks){
 			token = CalendarHelpers.buildWeekHistoryToken(month.getYearNumber(), week.getWeekOfYear());
 			getWeekElementFromGrid(weekOfMonth).addClickHandler(new WeekClickHandler(token));
+			
 			int dayOfWeek = 1;
 			for(Day day : week.getDays()){
 				if(day.isVisable()){
@@ -215,7 +247,12 @@ public class SmallMonthPanel extends Composite implements DayClickHandler{
 				}
 				dayOfWeek++;
 			}
-			
+			weekOfMonth++;
+		}
+		while(weekOfMonth < 7){
+			for(int i=0 ;i<8 ;i++){
+				daysGridElement.clearCell(weekOfMonth, i);
+			}
 			weekOfMonth++;
 		}
 	}
