@@ -306,6 +306,7 @@ input{ color: #eee; background-color: black;}
 
 .tt-color-post-summary-hover{background-color:#eee; color: black}
 
+.tt-fancy-image-border-small,
 .tt-traffic-avatar-border,
 .tt-traffic-person,
 .tt-fancy-image-border,
@@ -328,6 +329,7 @@ input{ color: #eee; background-color: black;}
 
 .gwt-TabBar .gwt-TabBarItem-disabled {color: #999999;}
 
+.tt-fancy-image-border-small,
 .tt-fancy-image-border{ background-color: #222;}
 
 

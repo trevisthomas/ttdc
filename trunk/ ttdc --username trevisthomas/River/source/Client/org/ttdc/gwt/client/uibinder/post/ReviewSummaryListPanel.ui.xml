@@ -27,26 +27,23 @@
 									</div>
 									</td>
 								</tr>
+								<tr colspan="2">
+									<td><g:Widget ui:field="averageRatingElement" /></td>
+								</tr>
 							</table>
 						</div>
-						
 						<div class="tt-post-panel-content" style="clear:both;">
 							<table>
 								<tr>
-									<td>
-										<g:Widget ui:field="posterElement" />
-									</td>
-									
 									<td width="100%">
 										<div width="100%" class="tt-reviewSummaryList">
 											<p class="tt-reviewSummaryList-header">Reviews:</p>
 											<g:VerticalPanel ui:field="reviewsElement" />
 										</div>
 									</td>
-								</tr>
-								<tr>
-									<td class="tt-center"><g:Widget ui:field="averageRatingElement" /></td>
-									<td></td>
+									<td>
+										<g:Widget ui:field="posterElement" />
+									</td>
 								</tr>
 								<tr>
 									<td colspan="2">

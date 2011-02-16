@@ -9,12 +9,17 @@
 		 	
 		 	
 		 	<g:Label styleName="tt-text-center" ui:field="pageResultMessageElement"/>
-		 	<div class="tt-post-container-header tt-center">
-		 		<div class="tt-float-left">
-		 			sort by: <g:Hyperlink ui:field="sortByDateElement"/> | <g:Hyperlink ui:field="sortByRelevanceElement"/>
-		 		</div>
-		 		<g:Widget ui:field="paginationNanoElement"/>
-		 	</div>
+		 	<table class="tt-post-container-header">
+		 		<tr>
+		 			<td>
+		 				sort by: <g:Hyperlink ui:field="sortByDateElement"/> | <g:Hyperlink ui:field="sortByRelevanceElement"/>
+		 			</td>
+		 			<td>
+		 				<g:Widget ui:field="paginationNanoElement"/>
+		 			</td>
+		 		</tr>
+		 	</table>
+		 	
 		 	<g:SimplePanel styleName="tt-fill" ui:field="postListElement"/>
 		 	<div class="tt-post-container-footer tt-center">
 		 		<g:Widget ui:field="paginationElement"/>

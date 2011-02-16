@@ -15,7 +15,6 @@
     <title>TTDC v7</title>
     
     <link type="text/css" rel="stylesheet" href="/css/shacktags.css"/>
-    <!-- <link type="text/css" rel="stylesheet" href="/css/basic.css"/>  -->
     <link type="text/css" rel="stylesheet" href="/css/standard.css"/>
     <link type="text/css" rel="stylesheet" href="/css/corettdc.css"/>
     <%
@@ -44,18 +43,16 @@
     		System.err.println("Failed badly during launch.jsp "+e);
     	}
     %>
+    
+    <% if ("true".equals(Cookies.getCookieValue(request,CookieTool.DYNAMIC_WIDTH))) { %>
+	    <link type="text/css" rel="stylesheet" href="/css/dynamic.css"/>
+	<% } else { %>
+	    <link type="text/css" rel="stylesheet" href="/css/fixed.css"/>
+	<% } %>
+	
     <link id="mainCss" href="<%=request.getContextPath()%>/css/<%=cssFileName%>" rel="stylesheet" type="text/css" />
     
     <script type="text/javascript" language="javascript" src="client/client.nocache.js"></script>
-    
-     <!-- GWTEXT2 -->
-      <!--
-      Trevis, consider just dumping this ext library.  You're not using it for anything important. 
-	<link rel="stylesheet" type="text/css" href="js/ext/resources/css/ext-all.css"/>
-	-->
-    <script type="text/javascript" src="js/ext/adapter/ext/ext-base.js"></script>
-    <script type="text/javascript" src="js/ext/ext-all.js"></script>
-    <!-- GWTEXT2 -->
     
    <script language='JavaScript'> 
    		function tggle_video(target,embedurl) { var s=document.getElementById(target); if ( s.innerHTML.length==0 ) s.innerHTML='<object width="560" height="340"><param name="movie" value="'+embedurl+'"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="'+embedurl+'" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="560" height="340"></embed></object>'; else s.innerHTML=""; }
@@ -94,8 +91,6 @@
 			element.parentNode.replaceChild(newelement);
 		}
 	</script>
-	
-	
 	
   </head>
 

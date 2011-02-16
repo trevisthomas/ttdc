@@ -72,10 +72,10 @@ public class MovieRatingPresenter extends BasePresenter<MovieRatingPresenter.Vie
 	private void setRatingMessage(int rateCount, boolean numberOnly) {
 		if(numberOnly){
 			if(rateCount == 1){
-				view.setRatingMessage(" ("+rateCount+" rating)", false);
+				view.setRatingMessage("("+rateCount+" rating)", false);
 			}
 			else if(rateCount > 1){
-				view.setRatingMessage(" ("+rateCount+" ratings)", false);
+				view.setRatingMessage("("+rateCount+" ratings)", false);
 			}
 		}
 		else{

@@ -134,6 +134,8 @@ public class PostPanel extends Composite implements PostPresenterCommon, PostEve
     	
     	replyCountElement.setStyleName("tt-reply-count");
     	conversationCountElement.setStyleName("tt-conversation-count");
+    	
+    	postTable.setClassName("tt-post-panel-table");
 
     }
 
