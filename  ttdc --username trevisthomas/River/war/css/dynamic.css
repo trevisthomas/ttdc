@@ -1,0 +1,14 @@
+body{text-align:center; margin: 0; padding: 0 20px;}
+.tt-view-container{min-width:1000px; text-align:center; margin: 0 auto; padding: 20px;}
+.tt-post{margin-bottom: 0px; border:1px solid; overflow: auto;}
+.tt-split-home-main{width: 100%; padding: 0 12 0 0;}
+.tt-post-container{width:100%}
+.tt-post-child-container{width:100%;}
+
+.tt-forum-main,
+.tt-topic-root,
+.tt-topic-topics,
+.tt-home-main{ width: 100%;}
+
+.tt-forum-names,
+.tt-search-results{width: 100%; text-align:center; margin: 0 auto;}

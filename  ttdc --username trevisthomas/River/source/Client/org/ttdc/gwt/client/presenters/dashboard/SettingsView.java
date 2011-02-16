@@ -12,18 +12,19 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.gwtext.client.widgets.form.FieldSet;
 
 public class SettingsView implements SettingsPresenter.View{
 	private final VerticalPanel main = new VerticalPanel();
-	private final FieldSet styleFieldSet = new FieldSet();
-	private final FieldSet filtersFieldSet = new FieldSet();
+	private final HorizontalPanel styleFieldSet = new HorizontalPanel();
 	private final HorizontalPanel stylePanel = new HorizontalPanel();
 	private final Button updateStyleButton = new Button("Update Theme");
 	private final MyListBox styleListBox = new MyListBox();
 	private final VerticalPanel filterListPanel = new VerticalPanel();
 	private final CheckBox nwsCleckBox = new CheckBox();
 	private final CheckBox flashUpdateCheckBox = new CheckBox();
+	private final CheckBox dynamicWidthCheckBox = new CheckBox();
+	private final VerticalPanel localSettingsPanel = new VerticalPanel();
+	
 	private final VerticalPanel filtedThreads = new VerticalPanel();
 	
 	public SettingsView() {
@@ -33,17 +34,20 @@ public class SettingsView implements SettingsPresenter.View{
 		
 		styleFieldSet.add(stylePanel);
 		
-		filtersFieldSet.add(filterListPanel);
+		
 		filterListPanel.add(nwsCleckBox);
 		nwsCleckBox.setText("Enable NWS content");
 		
 		filterListPanel.add(flashUpdateCheckBox);
 		flashUpdateCheckBox.setText("Flashing title notification");
 		
+		localSettingsPanel.add(dynamicWidthCheckBox);
+		dynamicWidthCheckBox.setText("Allow page to size dynamically");
 		
 		main.add(styleFieldSet);
-		main.add(filtersFieldSet);
+		main.add(filterListPanel);
 		main.add(filtedThreads);
+		main.add(localSettingsPanel);
 	}
 	
 	@Override
@@ -75,6 +79,11 @@ public class SettingsView implements SettingsPresenter.View{
 	public HasValue<Boolean> enableNwsValue() {
 		return nwsCleckBox;
 	}
+	
+	@Override
+	public HasValue<Boolean> enableDynamicWidthValue() {
+		return dynamicWidthCheckBox;
+	}
 
 	@Override
 	public HasClickHandlers nwsCheckBoxClick() {
@@ -105,5 +114,10 @@ public class SettingsView implements SettingsPresenter.View{
 	@Override
 	public void clearFilteredThreadList() {
 		filtedThreads.clear();
+	}
+	
+	@Override
+	public HasClickHandlers dynamicWidthCheckBoxClick(){
+		return dynamicWidthCheckBox;
 	}
 }

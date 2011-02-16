@@ -63,7 +63,7 @@ public class ReviewSummaryListPanel extends PostBaseComposite implements PostEve
 		
 		initWidget(binder.createAndBindUi(this)); 
 		
-		averageRatingElement.addStyleName("tt-center");
+//		averageRatingElement.addStyleName("tt-center");
 		
 		
 		EventBus.getInstance().addListener(this);
@@ -75,10 +75,10 @@ public class ReviewSummaryListPanel extends PostBaseComposite implements PostEve
 		postDetailPanelElement.init(post, commentElement, tagListPanel, null);
 		
 		this.post = post;
-		imagePresenter.setImageAsMoviePoster(post);
+		imagePresenter.setImageAsSmallMoviePoster(post);
 		imagePresenter.init();
 		
-		averageMovieRatingPresenter.setRating(post.getAvgRatingTag(), post.getRateCount(), false);
+		averageMovieRatingPresenter.setRating(post.getAvgRatingTag(), post.getRateCount(), true );
 		
 		postLinkPresenter.setPost(post);
 		postLinkPresenter.init();

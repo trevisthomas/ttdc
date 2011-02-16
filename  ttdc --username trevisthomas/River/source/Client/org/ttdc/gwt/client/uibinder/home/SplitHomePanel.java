@@ -66,7 +66,6 @@ public class SplitHomePanel extends BasePageComposite implements PersonEventList
 	private final SimplePanel nestedPanel = new SimplePanel();
 	private final SimplePanel earmarksPanel = new SimplePanel();
 	private final SimplePanel topicPanel = new SimplePanel(); 
-	private final TabPanel calendarTabPanel = new TabPanel();
 	private final TabPanel topicTabPanel = new TabPanel();
 	private HistoryToken token = new HistoryToken();
 		
@@ -77,8 +76,7 @@ public class SplitHomePanel extends BasePageComposite implements PersonEventList
 	private FlatPresenter topicPresenter = null;
 	private static TrafficPanel trafficPanel = null;
 	private TabType tabTypeNowShowing = null;
-	private CalendarPairPanel calendarPairPanel;
-	
+		
 	@Inject
 	public SplitHomePanel(Injector injector){
 		this.injector = injector;
@@ -86,8 +84,6 @@ public class SplitHomePanel extends BasePageComposite implements PersonEventList
 		pageHeaderPanel = injector.createStandardPageHeaderPanel(); 
     	pageHeaderElement = pageHeaderPanel.getWidget();
     	pageFooterElement = injector.createStandardFooter().getWidget();
-    	calendarPairPanel = injector.createCalendarPairPanel();
-    	
     	
     	if(trafficPanel == null){
     		trafficPanel = injector.createTrafficPanel();
@@ -96,18 +92,10 @@ public class SplitHomePanel extends BasePageComposite implements PersonEventList
     	initWidget(binder.createAndBindUi(this));
     	
     	sidebarElement.add(trafficPanel);
-    	sidebarElement.add(calendarTabPanel);
     	sidebarElement.add(topicTabPanel);
-    	
-    	
-    	calendarPairPanel.init();
-    	calendarTabPanel.add(calendarPairPanel, "Calendar");
-    	calendarTabPanel.selectTab(0);
     	
     	topicTabPanel.add(topicPanel, "Topics");
     	topicTabPanel.selectTab(0);
-    	
-    	
     	
     	postTabPanelElement.add(nestedPanel, "Grouped");
     	postTabPanelElement.add(flatPanel, "Flat");

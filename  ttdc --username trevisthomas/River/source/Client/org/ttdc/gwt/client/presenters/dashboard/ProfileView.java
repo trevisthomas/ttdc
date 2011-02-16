@@ -8,15 +8,13 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.gwtext.client.widgets.form.FieldSet;
 
 public class ProfileView implements ProfilePresenter.View{
 	private VerticalPanel main = new VerticalPanel();
 	private final Grid formatingTable = new Grid(1,2); 
 	//private final Grid infoTable = new Grid(3,2);
 	private final FlexTable infoTable = new FlexTable();
-	private final FieldSet fieldSet = new FieldSet();
-	
+
 	private final SimplePanel avatar = new SimplePanel();
 	
 	private final Label bioText = new Label();
@@ -26,10 +24,6 @@ public class ProfileView implements ProfilePresenter.View{
 	private final SimplePanel webLinks = new SimplePanel();
 	
 	public ProfileView() {
-		fieldSet.setTitle("Info");
-		
-		fieldSet.add(formatingTable);
-		
 		formatingTable.setWidget(0, 0, avatar);
 		formatingTable.setWidget(0, 1, infoTable);
 		
@@ -43,7 +37,7 @@ public class ProfileView implements ProfilePresenter.View{
 		infoTable.setWidget(1, 1, nameText);
 		infoTable.setWidget(2, 1, emailText);
 		
-		main.add(fieldSet);
+		main.add(formatingTable);
 	
 	}
 	

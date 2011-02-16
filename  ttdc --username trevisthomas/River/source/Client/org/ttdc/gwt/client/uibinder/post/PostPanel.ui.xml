@@ -7,7 +7,7 @@
 	xmlns:u='urn:import:org.ttdc.gwt.client.uibinder.post'>
 
 	<g:HTMLPanel ui:field="postMainElement">
-		<table class="tt-fill" ui:field="postTable">
+		<table ui:field="postTable">
 			<tr>
 				<td width="40px" ui:field="avatarCell">
 					<g:Widget styleName="tt-avatar-large" ui:field="avatarElement" />

@@ -23,12 +23,8 @@
   <!-- Other module inherits                                      -->
   <inherits name="com.google.gwt.inject.Inject"/>
   <inherits name="com.google.gwt.json.JSON" /> 
-  <inherits name="com.gwtext.GwtExt" />
-  
   <inherits name="com.google.gwt.uibinder.UiBinder"/> 
     
-  
-
   <!-- Specify the app entry point class.                         -->
   <!--<entry-point class='org.ttdc.gwt.client.MobileMain'/>-->
   <entry-point class='org.ttdc.gwt.client.FrontPage'/>

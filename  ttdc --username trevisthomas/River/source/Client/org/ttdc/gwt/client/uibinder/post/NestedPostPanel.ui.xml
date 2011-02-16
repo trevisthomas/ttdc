@@ -4,9 +4,7 @@
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 	
 	<g:HTMLPanel ui:field="contentPanelElement">
-		
-		 
-		<table>
+		<table class="tt-fill">
 			<tr>
 				<td>
 					<div class="tt-float-left">

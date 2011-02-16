@@ -286,6 +286,7 @@ body{ color: #222; background-color: #eee;}
 .tt-graphic-button-r,
 .tt-graphic-button-l{background-color: #cecece; border-color: #ccc;}
 
+.tt-fancy-image-border-small,
 .tt-traffic-avatar-border,
 .tt-traffic-person,
 .tt-fancy-image-border,
@@ -304,6 +305,7 @@ body{ color: #222; background-color: #eee;}
 .gwt-TabBar .gwt-TabBarItem-selected{background: #92c1f0;} 
 .gwt-TabBar .gwt-TabBarItem-disabled {color: #999999;}
 
+.tt-fancy-image-border-small,
 .tt-traffic-avatar-border,
 .tt-fancy-image-border{ background-color: #ddd;}
 

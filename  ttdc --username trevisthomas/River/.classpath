@@ -32,7 +32,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gin.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guice-2.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-servlet.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/gwtext.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-annotations.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-commons-annotations.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-search.jar"/>

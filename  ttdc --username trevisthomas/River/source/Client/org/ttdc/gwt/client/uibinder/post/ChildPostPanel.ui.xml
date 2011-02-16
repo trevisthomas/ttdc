@@ -5,7 +5,7 @@
 	xmlns:t='urn:import:org.ttdc.gwt.client.presenters.util'
 	xmlns:u='urn:import:org.ttdc.gwt.client.uibinder.post'>
 	<g:HTMLPanel>
-		<table ui:field="postTable">
+		<table class="tt-post-child-container" ui:field="postTable">
 			<tr>
 				<td width="40px" ui:field="avatarCell">
 					<g:Widget styleName="tt-avatar-large" ui:field="avatarElement" />

@@ -58,6 +58,13 @@ public class ImagePresenter extends BasePresenter<ImagePresenter.View>{
 		//Hmm, maybe clicking should take you to ttdc?
 	}
 	
+	public void setImageAsSmallMoviePoster(GPost post){
+		setImage(post.getImage(), post.getTitle(),50,-1);
+		setLinkUrl(post.getUrl());
+		view.setFancyBorder("tt-fancy-image-border-small"	);
+		//Hmm, maybe clicking should take you to ttdc?
+	}
+	
 	public void setImage(GImage image, int width, int height){
 		setImage(image,image.getName(),width,height);
 	}

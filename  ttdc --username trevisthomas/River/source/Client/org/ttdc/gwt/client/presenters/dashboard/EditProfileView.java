@@ -5,9 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.ttdc.gwt.client.beans.GUserObjectTemplate;
-import org.ttdc.gwt.client.presenters.util.MyDateField;
-
-//import com.google.gwt.dev.util.collect.HashMap;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -25,8 +22,7 @@ import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-
-
+import com.google.gwt.user.datepicker.client.DateBox;
 
 public class EditProfileView implements EditProfilePresenter.View{
 	private final Grid grid  = new Grid(6,2);
@@ -34,7 +30,9 @@ public class EditProfileView implements EditProfilePresenter.View{
 	private final TextArea bio = new TextArea();
 	private final TextBox email = new TextBox();
 	private final TextBox vEmail = new TextBox();
-	private final MyDateField birthday = new MyDateField();
+	private final DateBox birthday = new DateBox();
+	
+	
 	private final TextBox name = new TextBox();
 	private final VerticalPanel main = new VerticalPanel();
 	private final ListBox availableWebLinks = new ListBox();

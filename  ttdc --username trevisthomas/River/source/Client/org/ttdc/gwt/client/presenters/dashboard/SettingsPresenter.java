@@ -8,8 +8,10 @@ import org.ttdc.gwt.client.beans.GUserObject;
 import org.ttdc.gwt.client.constants.UserObjectConstants;
 import org.ttdc.gwt.client.messaging.ConnectionId;
 import org.ttdc.gwt.client.messaging.EventBus;
+import org.ttdc.gwt.client.messaging.history.HistoryConstants;
 import org.ttdc.gwt.client.presenters.shared.BasePresenter;
 import org.ttdc.gwt.client.presenters.shared.BaseView;
+import org.ttdc.gwt.client.presenters.util.CookieTool;
 import org.ttdc.gwt.client.uibinder.dashboard.FilteredPost;
 import org.ttdc.gwt.shared.commands.AccountCommand;
 import org.ttdc.gwt.shared.commands.CommandResultCallback;
@@ -45,6 +47,8 @@ public class SettingsPresenter extends BasePresenter<SettingsPresenter.View>{
 		void addFilteredThread(FilteredPost filteredPost);
 		HasClickHandlers flashNotificationCheckBoxClick();
 		HasValue<Boolean> enableFlashNotificationValue();
+		HasClickHandlers dynamicWidthCheckBoxClick();
+		HasValue<Boolean> enableDynamicWidthValue();
 	}
 	
 	private GPerson person;
@@ -116,6 +120,26 @@ public class SettingsPresenter extends BasePresenter<SettingsPresenter.View>{
 		});
 		
 		view.setSelectedStyleId(person.getStyle().getStyleId());
+		
+		if(CookieTool.readCookie(CookieTool.DYNAMIC_WIDTH).equals(CookieTool.TRUE)){
+			view.enableDynamicWidthValue().setValue(true);
+		}
+		else{
+			view.enableDynamicWidthValue().setValue(false);
+		}
+		
+		view.dynamicWidthCheckBoxClick().addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				if(view.enableDynamicWidthValue().getValue()){
+					CookieTool.saveCookie(CookieTool.DYNAMIC_WIDTH, CookieTool.TRUE);
+				}
+				else{
+					CookieTool.saveCookie(CookieTool.DYNAMIC_WIDTH, CookieTool.FALSE);
+				}
+				EventBus.reload();
+			}
+		});
 	}
 	
 	
