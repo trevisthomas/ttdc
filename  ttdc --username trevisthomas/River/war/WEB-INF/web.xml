@@ -11,6 +11,11 @@
   </servlet>
   
   <servlet>
+  	<servlet-name>RSS</servlet-name>
+  	<servlet-class>org.ttdc.servlets.RssServlet</servlet-class>
+  </servlet>
+  
+  <servlet>
   	<servlet-name>ImageUpload</servlet-name>
   	<servlet-class>org.ttdc.servlets.ImageUploadServlet</servlet-class>
   </servlet>
@@ -23,6 +28,11 @@
   <servlet-mapping>
   	<servlet-name>Images</servlet-name>
   	<url-pattern>/images/*</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>RSS</servlet-name>
+  	<url-pattern>/rss/*</url-pattern>
   </servlet-mapping>
   
   <servlet-mapping>
