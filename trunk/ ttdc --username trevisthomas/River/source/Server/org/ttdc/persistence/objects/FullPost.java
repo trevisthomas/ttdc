@@ -168,6 +168,17 @@ import org.ttdc.gwt.shared.util.StringUtil;
 			" AND bitwise_and( ass.post.metaMask, "+PostFlagBitmasks.BITMASK_DELETED+" ) = 0 "+
 			"ORDER BY ass.post.publishYear DESC, ass.post.titleTag.sortValue, ass.post.titleTag.value"),			
 		
+	//RSS
+	@NamedQuery(name="FastRssDao.TopicByCreateDate", query="" +
+			"SELECT post.postId FROM Post post " +
+			"WHERE post.root.postId = (:postId) " +
+			"AND bitwise_and( post.metaMask, :filterMask ) = 0  " +
+			"ORDER BY post.date DESC"),
+			
+	@NamedQuery(name="FastRssDao.TopicByCreateDateCount", query="" +
+			"SELECT count(post.postId) FROM Post post " +
+			"WHERE post.root.postId = (:postId) AND " +
+			"bitwise_and( post.metaMask, :filterMask ) = 0" ),			
 		
 })
 
