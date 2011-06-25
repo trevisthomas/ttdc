@@ -7,11 +7,11 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.datastore.Key;
 
 @PersistenceCapable
 public class Image {
-	
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
 	private Key key;
@@ -36,6 +36,8 @@ public class Image {
 	private String src;
 	@Persistent
 	private String title;
+	@Persistent
+	private Blob blob;
 
 	public Key getKey() {
 		return key;
@@ -103,4 +105,11 @@ public class Image {
 	public void setSrc(String src) {
 		this.src = src;
 	}
+	public Blob getBlob() {
+		return blob;
+	}
+	public void setBlob(Blob blob) {
+		this.blob = blob;
+	}
+	
 }

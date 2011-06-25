@@ -9,7 +9,6 @@
 <%@page import="com.google.appengine.api.datastore.Entity"%>
 <%@page import="java.util.List"%>
 <%@page import="com.google.appengine.api.datastore.Query"%>
-<%@page import="com.ttdc.ImageServlet"%>
 <%@page import="com.google.appengine.api.datastore.Key"%>
 <%@page import="com.google.appengine.api.datastore.KeyFactory"%>
 <%@page import="com.google.appengine.api.datastore.DatastoreServiceFactory"%>
@@ -59,6 +58,19 @@ if(updateImage == null)
     <div>dateTaken: <input name="dateTaken" type="text"></input></div>
     <div><input type="submit" value="Save" /></div>
   </form>
+  
+  
+  <form action="/uploadImage" method="post" enctype='multipart/form-data'>
+  	<div>File:<input type="file" name="uploadFormElement"></div>
+  	<div>Order: <input name="order" type="text" value="<%=ImageTool.getCount() + 1%>"></input></div>
+    <div>Title: <input name="title" type="text" value=""></input></div>
+    <div>Flickr URL: <input name="url" type="text"></input></div>
+    <div>Image SRC: <input name="src" type="text"></input></div>
+    <div>description: <input name="description" type="text"></input></div>
+    <div>dateTaken: <input name="dateTaken" type="text"></input></div>
+    <div><input type="submit" value="Upload" /></div>
+  </form>
+  
 <% 
 } else {
 %>
@@ -66,16 +78,28 @@ if(updateImage == null)
  	<div>Order: <input name="order" type="text" value="<%=updateImage.getOrder()%>"></input></div>
     <div>Title: <input name="title" type="text" value="<%=updateImage.getTitle()%>"></input></div>
     <div>Flickr URL: <input name="url" type="text" value="<%=updateImage.getUrl()%>"></input></div>
-    <div>Image SRC: <input name="src" type="text" value="<%=updateImage.getSrc()%>"></input></div>
-    <div>Width: <input name="width" type="text" value="<%=updateImage.getWidth()%>"></input></div>
-    <div>Height: <input name="height" type="text" value="<%=updateImage.getHeight()%>"></input></div>
     <div>description: <input name="description" type="text" value="<%=updateImage.getDescription()%>"></input></div>
     <div>dateTaken: <input name="dateTaken" type="text" value="<%=updateImage.getDateTaken()%>"></input></div>
     <div><input type="submit" value="Update" /></div>
     <div><a href="?">cancel</a></div>
     
-    <input type="hidden" name="uuid" value="<%= uuid %>">
+    <input type="hidden" name="id" value="<%= uuid %>">
   </form>
+  
+  
+  <form action="/saveImage" method="post">
+ 	<div>Order: <input name="order" type="text" value="<%=updateImage.getOrder()%>"></input></div>
+    <div>Title: <input name="title" type="text" value="<%=updateImage.getTitle()%>"></input></div>
+    <div>Flickr URL: <input name="url" type="text" value="<%=updateImage.getUrl()%>"></input></div>
+    <div>Source <input name="src" type="text" value=""></input></div>
+    <div>description: <input name="description" type="text" value="<%=updateImage.getDescription()%>"></input></div>
+    <div>dateTaken: <input name="dateTaken" type="text" value="<%=updateImage.getDateTaken()%>"></input></div>
+    <div><input type="submit" value="Replace" /></div>
+    <div><a href="?">cancel</a></div>
+    
+    <input type="hidden" name="id" value="<%= uuid %>">
+  </form>
+  
 <%
 }
 %>

@@ -11,18 +11,31 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	
 	<servlet>
         <servlet-name>ImageServlet</servlet-name>
-        <servlet-class>com.ttdc.ImageServlet</servlet-class>
+        <servlet-class>com.ttdc.ImageProcessorServlet</servlet-class>
     </servlet>
+    
+	<servlet>
+        <servlet-name>ImageUploadServlet</servlet-name>
+        <servlet-class>com.ttdc.ImageUploadServlet</servlet-class>
+    </servlet>
+	
+	
 	
 	<servlet-mapping>
 		<servlet-name>Trevisualize</servlet-name>
 		<url-pattern>/trevisualize</url-pattern>
 	</servlet-mapping>
 	
+	<servlet-mapping>
+		<servlet-name>ImageUploadServlet</servlet-name>
+		<url-pattern>/uploadImage</url-pattern>
+	</servlet-mapping>
+	
     <servlet-mapping>
         <servlet-name>ImageServlet</servlet-name>
         <url-pattern>/saveImage</url-pattern>
         <url-pattern>/deleteImage</url-pattern>
+        <url-pattern>/loadImage</url-pattern>
     </servlet-mapping>
     
 	<welcome-file-list>
