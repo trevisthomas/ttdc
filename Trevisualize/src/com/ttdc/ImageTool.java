@@ -30,7 +30,9 @@ import com.google.appengine.repackaged.com.google.common.base.StringUtil;
 
 public class ImageTool {
 	private static final Logger log = Logger.getLogger(ImageTool.class.getName());
-	public List<Image> fetchAll(){
+	private static long PAGE_SIZE = 5;
+	
+	public static List<Image> fetchAll(){
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		
 		Query q = pm.newQuery(Image.class);
@@ -41,6 +43,84 @@ public class ImageTool {
 		all.addAll(result);
 
 		return all;
+	}
+	
+	public List<Image> fetch(String pageParam){
+		
+//		int count = getCount();
+		
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		
+		Query q = pm.newQuery(Image.class);
+		
+//		q.setResult("count(this)");
+//		long count = (Long)q.execute();
+		long page = 1;
+		if(pageParam != null){
+			page = Long.parseLong(pageParam); 
+		}
+		
+		q.setOrdering("dateAdded desc");
+		long start = (page - 1) * PAGE_SIZE;
+		q.setRange(start , start + PAGE_SIZE);
+		List<Image> result = (List<Image>) q.execute();
+		
+		List<Image> all = new ArrayList<Image>();
+		all.addAll(result);
+		
+		pm.close();
+		return all;
+	}
+	
+	public boolean hasLess(String pageParam){
+		long page = 1;
+		if(pageParam != null){
+			page = Long.parseLong(pageParam);	
+		}
+		if(page > 1){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	
+	
+	
+	public boolean hasMore(String pageParam){
+		long page = 1;
+		if(pageParam != null){
+			page = Long.parseLong(pageParam);	
+		}
+		int count = getCount();
+		if(page * PAGE_SIZE < count){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	
+	
+	public long nextPage(String pageParam){
+		long page = 1;
+		if(pageParam != null){
+			page = Long.parseLong(pageParam);	
+		}
+		return ++page;
+	}
+	
+	public long prevPage(String pageParam){
+		long page = 1;
+		if(pageParam != null){
+			page = Long.parseLong(pageParam);	
+		}
+		if(page > 1){
+			return --page;
+		}
+		else{
+			return 1;
+		}
 	}
 	
 	
@@ -58,10 +138,11 @@ public class ImageTool {
 	}
 	
 	public static int getCount(){
-		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-		com.google.appengine.api.datastore.Query query = new com.google.appengine.api.datastore.Query(Image.class.getSimpleName(), null);
-	    int count = datastore.prepare(query).countEntities(FetchOptions.Builder.withChunkSize(5));
-	    return count;
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		Query q = pm.newQuery(Image.class);
+		q.setResult("count(this)");
+		int count = (Integer)q.execute();
+		return count;
 	}
 	
 //	public static void saveOrUpdate(User user, String id, String order, String title, String url, String src,

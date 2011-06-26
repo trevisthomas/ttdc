@@ -2,8 +2,8 @@ a{color:#348;text-decoration:none;outline:none;}
 a:hover{text-decoration:underline;}
 body{
  text-align: center;
- background-color: #eee;
- color: #444;
+ background-color: #444;
+ color: #eee;
  font-size: small;
  font-family: Verdana, Geneva, sans-serif;
  margin: 0;
@@ -14,7 +14,7 @@ body{
 	padding: 20px 0;
  font-size: 25px;
  text-align: left;
- background-color: #eee;
+ background-color: transparent;
 	color: #eee;
 	width: 1100px;
 	margin: 0 auto;
@@ -22,18 +22,18 @@ body{
 
 .outer a:link{color: #666;}
 .outer a:visited{color: #666;}
-.outer a:hover{color: black; text-decoration: underline; }
+.outer a:hover{color: white; text-decoration: underline; }
 .outer a:active{color: #666;}
 
-.header a:link{color: #444;}
-.header a:visited{color: #444;}
-.header a:hover{color: black; text-decoration: underline; }
-.header a:active{color: #444;}
+.header a:link{color: #eee;}
+.header a:visited{color: #eee;}
+.header a:hover{color: white; text-decoration: underline; }
+.header a:active{color: #eee;}
 
-.footer a:link{color: #444;}
-.footer a:visited{color: #444;}
-.footer a:hover{color: black; text-decoration: underline; }
-.footer a:active{color: #444;}
+.footer a:link{color: #eee;}
+.footer a:visited{color: #eee;}
+.footer a:hover{color: white; text-decoration: underline; }
+.footer a:active{color: #eee;}
 
 
 .footer{
@@ -52,12 +52,11 @@ body{
  padding: 0 0 150px 0;
 }
 .outer{
- margin: 0 auto;
- 
- width: 1100px;
-	background-color: white;
-	color: black;
-	border: 1px solid #444;
+ 	margin: 0 auto;
+ 	width: 1100px;
+	background-color: #000;
+	color: #fff;
+	border: 1px solid #555;
 }
 .nav{
 	padding: 0 0 5px;
@@ -87,7 +86,7 @@ TH, TD {
  
 IMG{
  padding: 0; margin: 0;
- border: 2px solid black;
+ border: 2px solid #666;
  display: block;
  margin: 0 auto;
 }

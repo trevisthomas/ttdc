@@ -1,0 +1,1 @@
+<div class="footer">&copy;2011 <a href="mainto:trevisthomas@gmail.com">Trevis Thomas</a> | <a href="http://www.flickr.com/photos/trevisualize/"><span style="color: blue;">flick</span><span style="color: red;">r</span></a></div>

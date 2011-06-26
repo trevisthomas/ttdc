@@ -30,53 +30,34 @@
   </head>
 
 <%
-String pageNumber = request.getParameter("page");
+String id = request.getParameter("id");
+if(id == null){
+	response.sendRedirect("/");
+}
 %>
   <body>
-    
-    
     <div class="header"><a href="/">trevisualize</a></div>
     <div class="outer">
-    
-	 <div class="photoset">
+     <div class="photoset">
 	  
 	 <%
-	 	ImageTool imageTool = new ImageTool();
-	 	//List<Image> images = imageTool.fetchAll();
-	 	List<Image> images = imageTool.fetch(pageNumber);
-	 	for (Image image : images) {
+	 	Image image = ImageTool.getImage(id);
 	 %>
 	 
 	  <div class="photo">
 	  	 <img width="<%= image.getWidth() %>px" height="<%= image.getHeight() %>px" src="/loadImage?id=<%= image.getKey().getName() %>" />
 	  	 
-	  	 <div class="title"><%= image.getTitle() %> | <a target="_blank" href="<%=image.getUrl()%>">info</a> | <a href="/photo.jsp?id=<%= image.getKey().getName() %>">link</a></div> 
-	  	 
+	  	 <div class="title"><%= image.getTitle() %> | <a target="_blank" href="<%=image.getUrl()%>">info</a></div>
 	  </div>
-	 
-	  <%
-	  	}
-	  %>
-	  
-	  </div>
-	 
+	   
+	 </div>
 	 <div class="nav">
-	 <% boolean hasMore = imageTool.hasMore(pageNumber);
-	 	boolean hasLess = imageTool.hasLess(pageNumber);
-	   %>
-	 <% if(hasLess) {%>
-	 <a href="/home.jsp?page=<%= imageTool.prevPage(pageNumber) %>">prev</a>
-	 <% } %>
-	 <% if(hasLess && hasMore) {%>
-	 &nbsp;|&nbsp;
-	 <% } %>
-	 <% if(hasMore) {%>
-	 <a href="/home.jsp?page=<%= imageTool.nextPage(pageNumber) %>">next</a>
-	 <% } %>
+	 <a href="/">home</a>
 	 </div>
 	 
-	 </div>
-	
+	 
+	 
+	</div>
 	<%@ include file="footer.jsp" %>
   </body>
 </html>
