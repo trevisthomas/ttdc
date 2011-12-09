@@ -31,6 +31,7 @@ public class ImageProcessorServlet extends HttpServlet {
 
         String title = req.getParameter("title");
         String url = req.getParameter("url");
+        String purchaseUrl = req.getParameter("purchaseUrl");
         String order = req.getParameter("order"); 
         String description = req.getParameter("description");
         String dateTaken = req.getParameter("dateTaken");
@@ -68,7 +69,7 @@ public class ImageProcessorServlet extends HttpServlet {
         	return;
         }
         else if("/saveImage".equals(req.getServletPath())){
-        	ImageTool.saveOrUpdate(user, uuid, order, title, url, src, description, dateTaken);
+        	ImageTool.saveOrUpdate(user, uuid, order, title, url, src, description, dateTaken, purchaseUrl);
         }
         else{
         	throw new RuntimeException("Nothing to do");

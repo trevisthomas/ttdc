@@ -7,6 +7,8 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import org.apache.tools.ant.util.StringUtils;
+
 import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.datastore.Key;
 
@@ -38,6 +40,8 @@ public class Image {
 	private String title;
 	@Persistent
 	private Blob blob;
+	@Persistent 
+	private String purchaseUrl;
 
 	public Key getKey() {
 		return key;
@@ -111,5 +115,13 @@ public class Image {
 	public void setBlob(Blob blob) {
 		this.blob = blob;
 	}
-	
+	public String getPurchaseUrl() {
+		return purchaseUrl;
+	}
+	public void setPurchaseUrl(String purchaseUrl) {
+		this.purchaseUrl = purchaseUrl;
+	}
+	public boolean isForSale(){
+		return this.purchaseUrl != null && this.purchaseUrl.trim().length() > 0;
+	}
 }

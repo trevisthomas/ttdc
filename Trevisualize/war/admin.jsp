@@ -51,6 +51,7 @@ if(updateImage == null)
  	<div>Order: <input name="order" type="text" value="<%=ImageTool.getCount() + 1%>"></input></div>
     <div>Title: <input name="title" type="text" value=""></input></div>
     <div>Flickr URL: <input name="url" type="text"></input></div>
+    <div>Purchase URL: <input name="purchaseUrl" type="text"></input></div>
     <div>Image SRC: <input name="src" type="text"></input></div>
     <div>Width: <input name="width" type="text"></input></div>
     <div>Height: <input name="height" type="text"></input></div>
@@ -65,6 +66,7 @@ if(updateImage == null)
   	<div>Order: <input name="order" type="text" value="<%=ImageTool.getCount() + 1%>"></input></div>
     <div>Title: <input name="title" type="text" value=""></input></div>
     <div>Flickr URL: <input name="url" type="text"></input></div>
+    <div>Purchase URL: <input name="purchaseUrl" type="text"></input></div>
     <div>Image SRC: <input name="src" type="text"></input></div>
     <div>description: <input name="description" type="text"></input></div>
     <div>dateTaken: <input name="dateTaken" type="text"></input></div>
@@ -78,6 +80,7 @@ if(updateImage == null)
  	<div>Order: <input name="order" type="text" value="<%=updateImage.getOrder()%>"></input></div>
     <div>Title: <input name="title" type="text" value="<%=updateImage.getTitle()%>"></input></div>
     <div>Flickr URL: <input name="url" type="text" value="<%=updateImage.getUrl()%>"></input></div>
+    <div>Purchase URL: <input name="purchaseUrl" type="text" value="<%=updateImage.getPurchaseUrl()%>"></input></div>
     <div>description: <input name="description" type="text" value="<%=updateImage.getDescription()%>"></input></div>
     <div>dateTaken: <input name="dateTaken" type="text" value="<%=updateImage.getDateTaken()%>"></input></div>
     <div><input type="submit" value="Update" /></div>

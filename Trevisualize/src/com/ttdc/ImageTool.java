@@ -60,7 +60,7 @@ public class ImageTool {
 			page = Long.parseLong(pageParam); 
 		}
 		
-		q.setOrdering("dateAdded desc");
+		q.setOrdering("order desc");
 		long start = (page - 1) * PAGE_SIZE;
 		q.setRange(start , start + PAGE_SIZE);
 		List<Image> result = (List<Image>) q.execute();
@@ -178,7 +178,7 @@ public class ImageTool {
 //	}
 	
 	public static Image saveOrUpdate(User user, String id, String order, String title, String url, String src, 
-			String description, String dateTaken) {
+			String description, String dateTaken, String purchaseUrl) {
     	
 		Image image;
 		if(src != null){
@@ -187,29 +187,30 @@ public class ImageTool {
 		else{
 			image = getImage(id);
 		}
-    	saveOrCreate(user, id, order, title, url, description, dateTaken, image);
+    	saveOrCreate(user, id, order, title, url, description, dateTaken, purchaseUrl, image);
     	return image;
 		
 	}
 	
 	public static Image saveOrUpdate(User user, String id, String order, String title, String url, Image image, 
-			String description, String dateTaken) {
+			String description, String dateTaken, String purchaseUrl) {
     	
 //    	Image image = createImage(in);
-    	saveOrCreate(user, id, order, title, url, description, dateTaken, image);
+    	saveOrCreate(user, id, order, title, url, description, dateTaken, purchaseUrl, image);
     	return image;
 	}
 
 
 	private static void saveOrCreate(User user, String id, String order,
-			String title, String url, String description, String dateTaken,
+			String title, String url, String description, String dateTaken, String purchaseUrl,
 			Image image) {
 		image.setCreator(user.getEmail());
 		image.setDateAdded(new Date());
 		image.setDateTaken(dateTaken);
 		image.setDescription(description);
+		image.setPurchaseUrl(purchaseUrl);
 		
-		if(StringUtil.isEmpty(id) ){
+		if(StringUtil.isEmptyOrWhitespace(id) ){
 			UUID uuid = UUID.randomUUID();
 			id = uuid.toString();
 		}

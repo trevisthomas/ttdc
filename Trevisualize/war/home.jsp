@@ -50,7 +50,7 @@ String pageNumber = request.getParameter("page");
 	  <div class="photo">
 	  	 <img width="<%= image.getWidth() %>px" height="<%= image.getHeight() %>px" src="/loadImage?id=<%= image.getKey().getName() %>" />
 	  	 
-	  	 <div class="title"><%= image.getTitle() %> | <a target="_blank" href="<%=image.getUrl()%>">info</a> | <a href="/photo.jsp?id=<%= image.getKey().getName() %>">link</a></div> 
+	  	 <div class="title"><%= image.getTitle() %> | <a target="_blank" href="<%=image.getUrl()%>">info</a> | <a href="/photo.jsp?id=<%= image.getKey().getName() %>">link</a> <% if(image.isForSale()) {%>| <a target="_blank" href="<%= image.getPurchaseUrl() %>">purchase</a><%} %></div> 
 	  	 
 	  </div>
 	 

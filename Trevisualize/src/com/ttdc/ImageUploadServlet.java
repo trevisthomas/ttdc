@@ -21,8 +21,6 @@ import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
-import com.google.appengine.repackaged.com.google.common.io.CharStreams;
-
 public class ImageUploadServlet extends HttpServlet {
 	private static final Logger log = Logger.getLogger(ImageUploadServlet.class.getName());
 	
@@ -100,7 +98,7 @@ public class ImageUploadServlet extends HttpServlet {
 			
 			
 			ImageTool.saveOrUpdate(user, params.get("id"),  params.get("order"), 
-					 params.get("title"),  params.get("url"), image,  params.get("description"),  params.get("dateTaken"));
+					 params.get("title"),  params.get("url"), image,  params.get("description"),  params.get("dateTaken"), params.get("purchaseUrl"));
 			
 			
 			log.info("ImageUploadServlet created " + params.get("title") +" sucessfully.");
