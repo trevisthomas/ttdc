@@ -1,6 +1,6 @@
 body{text-align:center; margin: 0 auto;}
 .tt-view-container{width:1000px; text-align:center; margin: 0 auto; padding:10px;}
-.tt-post{margin-bottom: 0px; border:1px solid; overflow: hidden;}
+.tt-post{margin-bottom: 0px; border:1px solid;}
 .tt-split-home-main{ width:555px; padding: 0 12 0 0;}
 
 .tt-post-container{width:100%}

@@ -24,6 +24,12 @@ public class FastRssDao  extends FilteredPostPaginatedDaoBase{
 			results = executeLoadQuery("FastRssDao.TopicByCreateDate", "FastRssDao.TopicByCreateDateCount");
 			return results;
 		}
+		
+		public PaginatedList<GPost> loadLatest() {
+			PaginatedList<GPost> results = new PaginatedList<GPost>();
+			results = executeLoadQuery("FastRssDao.Latest", "FastRssDao.LatestCount");
+			return results;
+		}
 	
 		@SuppressWarnings("unchecked")
 		protected PaginatedList<GPost> executeLoadQuery(String query, String countQuery) {
@@ -31,26 +37,48 @@ public class FastRssDao  extends FilteredPostPaginatedDaoBase{
 			List<String> ids;
 			long count;
 			long filterMask = buildFilterMask(getFilterFlags());
-			if(getPageSize() > 0){
-				count = (Long)session().getNamedQuery(countQuery)
-					.setParameter("postId", sourcePost.getRoot().getPostId())
-					.setParameter("filterMask", filterMask)
-					.uniqueResult();
-				
-				
-				ids = session().getNamedQuery(query)
-					.setParameter("filterMask", filterMask)
-					.setParameter("postId", sourcePost.getRoot().getPostId())
-					.setFirstResult(calculatePageStartIndex())
-					.setMaxResults(getPageSize()).list();
+			if(sourcePost != null){
+				if(getPageSize() > 0){
+					count = (Long)session().getNamedQuery(countQuery)
+						.setParameter("postId", sourcePost.getRoot().getPostId())
+						.setParameter("filterMask", filterMask)
+						.uniqueResult();
+					
+					
+					ids = session().getNamedQuery(query)
+						.setParameter("filterMask", filterMask)
+						.setParameter("postId", sourcePost.getRoot().getPostId())
+						.setFirstResult(calculatePageStartIndex())
+						.setMaxResults(getPageSize()).list();
+				}
+				else{
+					ids = session().getNamedQuery(query)
+						.setParameter("postId", sourcePost.getRoot().getPostId())
+						.setParameter("filterMask", filterMask)
+						.list();
+					
+					count = ids.size();
+				}
 			}
 			else{
-				ids = session().getNamedQuery(query)
-					.setParameter("filterMask", sourcePost.getRoot().getPostId())
-					.setParameter("postId", filterMask)
-					.list();
+				if(getPageSize() > 0){
+					count = (Long)session().getNamedQuery(countQuery)
+						.setParameter("filterMask", filterMask)
+						.uniqueResult();
+					
+					
+					ids = session().getNamedQuery(query)
+						.setParameter("filterMask", filterMask)
+						.setFirstResult(calculatePageStartIndex())
+						.setMaxResults(getPageSize()).list();
+				}
+				else{
+					ids = session().getNamedQuery(query)
+						.setParameter("filterMask", filterMask)
+						.list();
 				
 				count = ids.size();
+				}
 			}
 			
 			List<GPost> list = new ArrayList<GPost>();

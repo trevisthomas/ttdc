@@ -178,7 +178,18 @@ import org.ttdc.gwt.shared.util.StringUtil;
 	@NamedQuery(name="FastRssDao.TopicByCreateDateCount", query="" +
 			"SELECT count(post.postId) FROM Post post " +
 			"WHERE post.root.postId = (:postId) AND " +
-			"bitwise_and( post.metaMask, :filterMask ) = 0" ),			
+			"bitwise_and( post.metaMask, :filterMask ) = 0" ),
+			
+	@NamedQuery(name="FastRssDao.Latest", query="" +
+			"SELECT post.postId FROM Post post " + 
+			"WHERE bitwise_and( post.metaMask, :filterMask ) = 0  " +
+			"ORDER BY post.date DESC"),
+			
+	@NamedQuery(name="FastRssDao.LatestCount", query="" +
+			"SELECT count(post.postId) FROM Post post " +
+			"WHERE bitwise_and( post.metaMask, :filterMask ) = 0" ),
+		
+			
 		
 })
 
