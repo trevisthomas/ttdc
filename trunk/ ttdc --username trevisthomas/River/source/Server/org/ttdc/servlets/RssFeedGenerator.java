@@ -32,8 +32,6 @@ public class RssFeedGenerator {
 		else if(query.startsWith(TOPIC)){
 			String guid = query.substring(TOPIC.length());
 			rssfeed = buildTopic(outputStream, guid);
-			//rss=topic&postId=F253D8D1-81F4-42E7-BFB1-808469A12048
-			
 		}
 		
 		if(rssfeed == null){
@@ -79,8 +77,8 @@ public class RssFeedGenerator {
 	private static Feed buildLatest(OutputStream outputStream){
 		Persistence.beginSession();
 		
-		FastLatestPostsDao dao = new FastLatestPostsDao();
-		PaginatedList<GPost> posts = dao.loadFlat();
+		FastRssDao dao = new FastRssDao();
+		PaginatedList<GPost> posts = dao.loadLatest();
 		
 		//Trevis: See http://www.rssboard.org/rss-specification.  lastBuildDate makes more sense than pub date for ttdc.
 		Date lastBuildDate = posts.getList().get(0).getDate();
@@ -101,10 +99,9 @@ public class RssFeedGenerator {
 
 	private static FeedMessage translatePostToFeedMessage(GPost post) {
 		FeedMessage message = new FeedMessage();
-		message.setAuthor("webmaster@trevisthomas.com" + " (" +post.getCreator().getLogin() + ")");
-		message.setTitle(post.getTitle());
+		message.setAuthor(post.getCreator().getLogin());
+		message.setTitle(post.getTitle() + " - " + post.getCreator().getLogin());
 		message.setDescription(post.getEntry());
-		
 		
 		HistoryToken token = new HistoryToken();
 		token.setParameter(HistoryConstants.VIEW, HistoryConstants.VIEW_TOPIC); 
@@ -116,5 +113,4 @@ public class RssFeedGenerator {
 		message.setPubDate(post.getDate());
 		return message;
 	}
-
 }
