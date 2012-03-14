@@ -1,0 +1,11 @@
+.header-bgimage1{
+	background-image: url("");
+}
+.header-menu{
+	background-image:  url("../img/nav-bg2.png");	
+}
+.mylayout {
+    margin: 0 auto;
+    padding: 10px 40px 13px;
+    position: relative;
+}
