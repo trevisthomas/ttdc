@@ -24,6 +24,12 @@
 		
 		
 	<%
+	   if(request.getParameterMap().size() > 0){
+		   response.sendRedirect("http://photos.boyvsgirlphotography.com/?"+request.getQueryString());
+	   }
+	%>	
+		
+	<%
 	ZenfolioService zenfolio = new ZenfolioService();
 	PhotoSet photoSet = zenfolio.loadPhotoSet("939070543");
 	%>
@@ -66,7 +72,7 @@
 					min_height		        :   0,			// Min height allowed (in pixels)
 					vertical_center         :   1,			// Vertically center background
 					horizontal_center       :   1,			// Horizontally center background
-					fit_always				:	0,			// Image will never exceed browser width or height (Ignores min. dimensions)
+					fit_always				:	1,			// Image will never exceed browser width or height (Ignores min. dimensions)
 					fit_portrait         	:   1,			// Portrait images will not exceed browser height
 					fit_landscape			:   0,			// Landscape images will not exceed browser width
 															   
@@ -78,7 +84,7 @@
 														<%
 														for(Photo p : photoSet.getPhotos()){
 													 	%>
-														{image : '<%=p.getXxLarge()%>', title : ' <%=p.getCreator()%>', thumb : '<%=p.getThumbUrl()%>'},
+														{image : '<%=p.getXxLarge()%>', title : ' <%=p.getCreator()%>', thumb : '<%=p.getThumbUrl()%>', url : '<%=p.getPageUrl()%>'},
 														<%
 													  	}
 													  	%>
@@ -675,7 +681,9 @@
 
 		</div><div id="ctl04" class="prefetch">
 
-		</div><script type="text/javascript">
+		</div>
+		
+		<script type="text/javascript">
 			//<!--
 			zf_userId = 0;
 			zf_userName = '';
@@ -716,7 +724,7 @@
 			var _zf_ctl05 = new zfb_ScrapbookAddShared('ctl05', _zf_ctl05_Add);
 			var _zf_ctl06_Create = new zfl_Button('ctl06_Create', null);
 			var _zf_ctl06_Cancel = new zfl_Button('ctl06_Cancel', null);
-			var _zf_ctl06 = new zfb_ScrapbookCreate('ctl06', _zf_ctl06_Create);
+			//var _zf_ctl06 = new zfb_ScrapbookCreate('ctl06', _zf_ctl06_Create); //This breaks url linking from the images with supersized.
 			var _zf_ctl03 = new zfb_ScrapbookEdit('ctl03', _$(null), _$(null), 482142300, true, true, 'zf_csb_boyvsgirlphotography', _zf_ctl05, _zf_ctl06);
 			var _zf_ctl04 = new zf_Prefetch('ctl04', 18);
 			_zfl_init.decorations = 

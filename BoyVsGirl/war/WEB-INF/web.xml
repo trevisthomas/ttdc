@@ -8,6 +8,15 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<servlet-name>BoyVsGirl</servlet-name>
 		<servlet-class>com.bvg.BoyVsGirlServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>GooglePlus</servlet-name>
+		<servlet-class>com.bvg.GooglePlusServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>GooglePlus</servlet-name>
+		<url-pattern>/plus</url-pattern>
+	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>BoyVsGirl</servlet-name>
 		<url-pattern>/boyvsgirl</url-pattern>

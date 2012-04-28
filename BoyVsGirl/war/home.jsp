@@ -22,6 +22,11 @@
 
 		</script>
 		
+	<%
+	   if(request.getParameterMap().size() > 0){
+		   response.sendRedirect("http://photos.boyvsgirlphotography.com/?"+request.getQueryString());
+	   }
+	%>	
 		
 	<%
 	ZenfolioService zenfolio = new ZenfolioService();
@@ -117,6 +122,7 @@
 				width: 260px;
 			}
 			
+			
 			div#footer-block{
 				position: absolute;
 				bottom:0px;
@@ -139,6 +145,13 @@
 			
 			.footer A{
 				color: #ccc;
+			}
+			
+			div#social_networks{
+				position: absolute;
+				right:20px;
+				bottom:40px;
+				width: 170px;
 			}
 	</style>
 	
@@ -483,11 +496,7 @@
     <div id="logo-block" >
     	<span id="logo"><img src="/img/LargeLogo2.png"/></span>
     </div>
-    
-  
-   
-
-	
+    	
     
 		
  
@@ -505,7 +514,12 @@
 				
 				
 
-
+<div id="social_networks">
+			<a href="http://www.boyvsgirlphotography.com/plus" title="google plus page" target="_blank"><img src="http://www.boyvsgirlphotography.com/img/google-plus-48.png"></a>
+			<a href="http://twitter.com/boyvsgirlphoto" title="follow us on twitter" target="_blank" wrc_done="true"><img src="http://www.boyvsgirlphotography.com/img/twitter-48.png"></a>
+			<a href="http://www.facebook.com/boyvsgirlphotography" title="find us on Facebook" target="_blank"><img src="http://www.boyvsgirlphotography.com/img/facebook-48.png"></a>
+		</div>
+  
 				
 				
 	
@@ -517,7 +531,6 @@
     id="footer">
 
     <div class="footer-copyright footer-font2">
-        
     </div>
      
      <div id="footer-block">

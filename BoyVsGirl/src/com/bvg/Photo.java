@@ -11,7 +11,7 @@ public class Photo {
 	public String getOriginalUrl() {
 		return (String) rawPhoto.get("OriginalUrl");
 	}
-	
+
 	public String getXxLarge(){
 		return getOriginalUrl().replaceFirst(".jpg", "-6.jpg");  
 	}
