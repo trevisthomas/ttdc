@@ -337,58 +337,6 @@
                        
                         </li>                        
                     
-                      <li class="header-link">
-
-                            <span class="header-separator header-color6">|</span>
-
-                            <a class="header-color1" data-zf-index="3" href="http://photos.boyvsgirlphotography.com/pricing">Pricing</a>
-
-                        </li>       
-
-
-                        <li class="header-link">
-
-                            
-                            <span class="header-separator header-color6">|</span>
-                                                        
-                            <a class="header-color1" data-zf-index="4" href="#" data-zf-subitems="4">Galleries<span class="menu-item-dda">&#9660;</span></a>
-                        
-                            
-                                <div class="header-submenu menu-submenu">
-                                    <div class="menu-submenu-top-item header-bgcolor5 header-font8 header-bgimage3 header-border4">                               
-                                        <a class="header-color8" data-zf-index="4" href="#">Galleries<span class="menu-item-dda">&#9660;</span></a>          
-                                    </div>
-                                    <div class="menu-submenu-inner ">
-                                        <div class="menu-submenu-middle header-bgcolor5 header-font8 header-bgimage3 header-border4">
-                                            <ul>
-                                                
-                                                    <li>
-                                                        <a class="header-color8" data-zf-index="5" href="http://photos.boyvsgirlphotography.com/f125081688">Models</a>
-                                                    </li>
-                                                
-                                                    <li>
-                                                        <a class="header-color8" data-zf-index="6" href="http://photos.boyvsgirlphotography.com/f453466888">Photographers</a>
-                                                    </li>
-                                                
-                                                    <li>
-                                                        <a class="header-color8" data-zf-index="7" href="http://photos.boyvsgirlphotography.com/f223651715">Collaborators</a>
-                                                    </li>
-                                                
-                                                    <li>
-                                                        <a class="header-color8" data-zf-index="8" href="http://photos.boyvsgirlphotography.com/recent.html">Recently Added</a>
-                                                    </li>
-                                                
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            
-                       
-                        </li>                        
-                    
-                    
-
-
                         <li class="header-link">
 
                             
