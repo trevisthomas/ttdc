@@ -47,8 +47,37 @@
 		 -->
 		 <script type="text/javascript" src="js/supersized.3.2.6.js"></script>
 		<script type="text/javascript" src="theme/supersized.shutter.js"></script>
+		<script src="http://tab-slide-out.googlecode.com/files/jquery.tabSlideOut.v1.3.js"></script>
 		
 		<link rel="stylesheet" href="css/bvg.css" type="text/css" media="screen" />
+		
+		
+
+	    <script type="text/javascript">
+		    $(function(){
+		        $('.slide-out-div').tabSlideOut({
+		            tabHandle: '.about-us-slider',                     //class of the element that will become your tab
+		            pathToTabImage: '/img/About-Tab_alpha70.png', //path to the image for the tab //Optionally can be set using css
+		            imageHeight: '120px',                     //height of tab image           //Optionally can be set using css
+		            imageWidth: '40px',                       //width of tab image            //Optionally can be set using css
+		            tabLocation: 'right',                      //side of screen where tab lives, top, right, bottom, or left
+		            speed: 300,                               //speed of animation
+		            action: 'click',                          //options: 'click' or 'hover', action to trigger animation
+		            topPos: '110px',                          //position from the top/ use if tabLocation is left or right
+		            leftPos: '20px',                          //position from left/ use if tabLocation is bottom or top
+		            fixedPosition: false                      //options: true makes it stick(fixed position) on scroll
+		        });
+		
+		    });
+	
+		    $(window).load(function () {
+				//Automatically open the slide out tab
+				setTimeout(function(){
+					$('.about-us-slider').click();
+				},5000);
+			});
+		    
+	    </script>
 		
 		<script type="text/javascript">
 			
@@ -105,12 +134,22 @@
 		
 	</head>
 	
+	 <style type="text/css">
+          .slide-out-div {
+	          padding: 20px;
+	          width: 475px;
+	          background-image: url("img/alpha70.png");
+	          border: 0px solid #ccc;
+	          color: #ccc;
+	      }   
+	      
+	      .slide-out-div h1{
+	      	color: white;
+	      	font-size: larger;
+	      }   
+      </style>
+	
 	<style type="text/css">
-		ul#demo-block{ margin:0 15px 15px 15px; }
-			ul#demo-block li{ margin:0 0 10px 0; padding:10px; display:inline; float:left; clear:both; color:#aaa; background:url('img/bg-black.png'); font:11px Helvetica, Arial, sans-serif; }
-			ul#demo-block li a{ color:#eee; font-weight:bold; }
-			
-			
 			span#logo{
 				margin: 10px 40px 10px 40px;
 			}
@@ -153,6 +192,7 @@
 				bottom:40px;
 				width: 170px;
 			}
+			
 	</style>
 	
 	<body>
@@ -160,6 +200,8 @@
 		
 		
 		<!--End of styles-->
+		
+		 
 		
 	
 		<div id="page-frame">
@@ -331,11 +373,22 @@
                             
                             <span class="header-separator header-color6">|</span>
                                                         
-                            <a class="header-color1" data-zf-index="2" href="portfolio.jsp">Portfolio</a>
+                            <a class="header-color1" data-zf-index="2" href="http://photos.boyvsgirlphotography.com/trevis">Trevis' Showcase</a>
                         
                             
                        
                         </li>                        
+                        
+                        <li class="header-link">
+
+                            
+                            <span class="header-separator header-color6">|</span>
+                                                        
+                            <a class="header-color1" data-zf-index="2" href="http://photos.boyvsgirlphotography.com/chrissy">Chrissy's Showcase</a>
+                        
+                            
+                       
+                        </li>
                     
                         <li class="header-link">
 
@@ -460,6 +513,24 @@
 					</div>
 				</div>
 				
+				
+				<div class="slide-out-div">
+		            <a class="about-us-slider" href="http://link-for-non-js-users.html">Content</a>
+		             <div class="main">
+					    <h1>About Boy vs Girl Photography</h1>
+						<div>&nbsp;</div>
+						<div>Boy vs Girl Photography is a husband and wife team dedicated to the art of beauty and portrait photography. &nbsp;We are always looking for ideas and for people to network and collaborate with. &nbsp;We both have full time non-photography related careers but we spend most of our free time crafting our skills in the art of all things photography.</div>
+						<div>&nbsp;</div>
+						<div>If you like our style and are interested in hiring<em> Boy vs Girl</em> for a shoot feel free to contact us with what you&#39;d like to do and we can discuss our rates. &nbsp;</div>
+						<div>&nbsp;</div>
+						<div>If you are a <strong>model</strong>,<strong> hair stylist</strong> or <strong>makeup artist</strong> interested in collaborating with <em>Boy vs Girl</em> just send us a message and we&rsquo;ll get back with you.&nbsp;</div>
+						<div>&nbsp;</div>
+						<div>Trevis and Chrissy Thomas</div>
+						<div>Boy vs Girl Photography</div>
+						<div><a href="mailto:photographers@boyvsgirlphotography.com?subject=Contact%20BvG%20from%20About%20Us">photographers@boyvsgirlphotography.com</a></div>
+						<div>&nbsp;</div>
+					</div>
+				</div>
 				
 
 <div id="social_networks">

@@ -37,6 +37,12 @@ public class Photo {
 		return (String) rawPhoto.get("Copyright");
 	}
 	
+	public String getCaption(){
+		String caption = (String) rawPhoto.get("Caption");
+		System.err.println("Caption "+ rawPhoto.get("Title")+" " + caption);
+		return caption != null ? caption : "";
+	}
+	
 	public String getPageUrl(){
 		String url;
 		url = (String) rawPhoto.get("PageUrl");

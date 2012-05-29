@@ -85,7 +85,7 @@
 														<%
 														for(Photo p : photoSet.getPhotos()){
 													 	%>
-														{image : '<%=p.getXxLarge()%>', title : ' <%=p.getCreator()%>', thumb : '<%=p.getThumbUrl()%>', url : '<%=p.getPageUrl()%>'},
+														{image : '<%=p.getXxLarge()%>', title : ' <%=p.getCaption()%> ', thumb : '<%=p.getThumbUrl()%>', url : '<%=p.getPageUrl()%>'},
 														<%
 													  	}
 													  	%>
