@@ -69,12 +69,24 @@
 		        });
 		
 		    });
+		    
+		    
+		   
 	
 		    $(window).load(function () {
 				//Automatically open the slide out tab
-				setTimeout(function(){
+				var timer = setTimeout(function(){
 					$('.about-us-slider').click();
 				},5000);
+				
+				//Creating an x to close the about slider
+				 $('.slide-out-x').click(function() {
+					 $('.about-us-slider').click();
+			     });
+				
+				 $('.about-us-slider').click(function() {
+					 clearTimeout(timer);
+			     });
 			});
 		    
 	    </script>
@@ -192,6 +204,20 @@
 				bottom:40px;
 				width: 170px;
 			}
+			
+			.slide-out-x{
+				background-image:url('img/closebtn.png');
+				width: 20px;
+				height: 20px;
+				right: 0px;
+				margin-right: 10px;
+				position: absolute;
+				cursor: pointer;
+			}
+			.slide-out-div{
+				position: relative;
+			}
+			
 			
 	</style>
 	
@@ -516,8 +542,9 @@
 				
 				<div class="slide-out-div">
 		            <a class="about-us-slider" href="http://link-for-non-js-users.html">Content</a>
+		            <div class="slide-out-x"></div>
 		             <div class="main">
-					    <h1>About Boy vs Girl Photography</h1>
+			       		 <h1>About Boy vs Girl Photography</h1>
 						<div>&nbsp;</div>
 						<div>Boy vs Girl Photography is a husband and wife team dedicated to the art of beauty and portrait photography. &nbsp;We are always looking for ideas and for people to network and collaborate with. &nbsp;We both have full time non-photography related careers but we spend most of our free time crafting our skills in the art of all things photography.</div>
 						<div>&nbsp;</div>
