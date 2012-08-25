@@ -185,7 +185,12 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 	}
 	
 	public void setFocus() {
-		textAreaElement.setFocus(true);
+		if(parentSuggestionBox != null){
+			parentSuggestionBox.setFocus(true);
+		}
+		else{
+			textAreaElement.setFocus(true);
+		}
 	}
 	
 	@Override
@@ -247,7 +252,8 @@ public class CommentEditorPanel extends Composite implements PersonEventListener
 		
 		configure();
 		
-		textAreaElement.setFocus(true);
+		//textAreaElement.setFocus(true);
+		
 	}
 	
 	private void configure(){
