@@ -28,6 +28,10 @@ public class Photo {
 		return getOriginalUrl().replaceFirst(".jpg", "-6.jpg");  
 	}
 	
+	public String getMedium(){
+		return getOriginalUrl().replaceFirst(".jpg", "-3.jpg");  
+	}
+	
 	public String getThumbUrl(){
 		return getOriginalUrl().replaceFirst(".jpg", "-11.jpg");  
 	}
@@ -37,10 +41,23 @@ public class Photo {
 		return (String) rawPhoto.get("Copyright");
 	}
 	
+	/**
+	 * I'm creating this version of the image getter to allow the javascript to determine what size to use
+	 * @return
+	 */
+	public String getPhotoNoSuffix(){
+		return getOriginalUrl().replaceFirst(".jpg", "");  
+	}
+	
 	public String getCaption(){
 		String caption = (String) rawPhoto.get("Caption");
 		System.err.println("Caption "+ rawPhoto.get("Title")+" " + caption);
 		return caption != null ? caption : "";
+	}
+	
+	public String getTitle(){
+		String title = (String) rawPhoto.get("Title"); 
+		return title != null ? title : "";
 	}
 	
 	public String getPageUrl(){

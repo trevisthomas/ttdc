@@ -14,6 +14,7 @@ import com.thetransactioncompany.jsonrpc2.*;
 
 public class ZenfolioService {
 	private static int requestID = 0;
+	private static int PAGE_SIZE = 24;
 
 	public PhotoSet loadPhotoSet(String photoSetId) {
 		URL serverURL = null;
@@ -39,6 +40,52 @@ public class ZenfolioService {
 			response = mySession.send(request);
 			
 			return new PhotoSet(response.getResult(), null);
+			
+		} catch (JsonParseException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (JSONRPC2SessionException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
+	public PhotoSet loadPhotoSetPhotos(String photoSetId, int pageNumber) {
+		URL serverURL = null;
+
+		try {
+			serverURL = new URL("http://www.zenfolio.com/api/1.6/zfapi.asmx");
+	
+			JsonSimpleSession mySession = new JsonSimpleSession(serverURL);
+			mySession.setConnectionConfigurator(new MyConnectionConfiguratorDude());
+			
+			List<String> params = new ArrayList<String>();
+			
+			String method = "LoadPhotoSetPhotos";
+			params.add(photoSetId);
+			
+			if(pageNumber < 1){
+				params.add("1");
+			}
+			else{
+				params.add( ""+ (pageNumber-1) * PAGE_SIZE);
+			}
+			//params.add("" + pageNumber * PAGE_SIZE);
+			
+			params.add(""+PAGE_SIZE);
+	
+			JSONRPC2Request request = new JSONRPC2Request(method, params, requestID++);
+			
+			
+			JsonSimpleResponse response = null;
+
+			response = mySession.send(request);
+			
+			return new PhotoSet(response.getResultFromList(), photoSetId);
 			
 		} catch (JsonParseException e) {
 			e.printStackTrace();

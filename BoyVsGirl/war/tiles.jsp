@@ -13,40 +13,36 @@
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<title>Boy vs Girl Photography</title>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><meta http-equiv="imagetoolbar" content="no" /><meta name="description" content="Photography" /><meta name="robots" content="noindex" /><script type="text/javascript">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><meta http-equiv="imagetoolbar" content="no" /><meta name="description" content="Photography" /><meta name="robots" content="noindex" />
+		
+		<script type="text/javascript">
 			//<!--
 			if (self != top && self.name.indexOf('zenfolio') != 0) top.location.href = location.href;
 			//-->
 
-		</script><link rel="stylesheet" href="http://cdn.zenfolio.net/zf/css/en-US/ie9/windows/8HBP16ZBPBAF9/layout.css" type="text/css" /><link rel="stylesheet" href="http://cdn.zenfolio.net/zf/theme/en-US/ie9/windows/84T2DXMZXVBFZ/3B7T/8/custom.css" type="text/css" /><script src="http://cdn.zenfolio.net/zf/script/en-US/ie9/windows/8AUFHKU1JVBXP/layout.js" type="text/javascript">
+		 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		  <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+		  
+		  		  
+		  	
+		</script>
+		<link rel="stylesheet" href="css/style_masonry.css" />
+		<link rel="stylesheet" href="css/lightbox.css" />
+		
+		<link rel="stylesheet" href="http://cdn.zenfolio.net/zf/css/en-US/ie9/windows/8HBP16ZBPBAF9/layout.css" type="text/css" /><link rel="stylesheet" href="http://cdn.zenfolio.net/zf/theme/en-US/ie9/windows/84T2DXMZXVBFZ/3B7T/8/custom.css" type="text/css" />
+		<script src="http://cdn.zenfolio.net/zf/script/en-US/ie9/windows/8AUFHKU1JVBXP/layout.js" type="text/javascript">
 
 		</script>
 		
-	<%
-	   if(request.getParameterMap().size() > 0){
-		   response.sendRedirect("http://photos.boyvsgirlphotography.com/?"+request.getQueryString());
-	   }
-	%>	
 		
-	<%
-	ZenfolioService zenfolio = new ZenfolioService();
-	PhotoSet photoSet = zenfolio.loadPhotoSet("616294023");
-	%>
+	
 
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 		
-		<link rel="stylesheet" href="css/supersized.css" type="text/css" media="screen" />
-		<link rel="stylesheet" href="theme/supersized.shutter.css" type="text/css" media="screen" />
+				
 		
-		
-		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 		<script type="text/javascript" src="js/jquery.easing.min.js"></script>
-		<!-- 
-		<script type="text/javascript" src="js/supersized.3.2.6.js"></script>
-		<script type="text/javascript" src="theme/supersized.shutter.min.js"></script>
-		 -->
-		 <script type="text/javascript" src="js/supersized.3.2.6.js"></script>
-		<script type="text/javascript" src="theme/supersized.shutter.js"></script>
 		<script src="http://tab-slide-out.googlecode.com/files/jquery.tabSlideOut.v1.3.js"></script>
 		
 		<link rel="stylesheet" href="css/bvg.css" type="text/css" media="screen" />
@@ -91,58 +87,7 @@
 		    
 	    </script>
 		
-		<script type="text/javascript">
-			
-			jQuery(function($){
-				
-				$.supersized({
-				
-					// Functionality
-					slideshow               :   1,			// Slideshow on/off
-					autoplay				:	1,			// Slideshow starts playing automatically
-					start_slide             :   0,			// Start slide (0 is random)
-					stop_loop				:	0,			// Pauses slideshow on last slide
-					random					: 	1,			// Randomize slide order (Ignores start slide)
-					slide_interval          :   4000,		// Length between transitions
-					transition              :   6, 			// 0-None, 1-Fade, 2-Slide Top, 3-Slide Right, 4-Slide Bottom, 5-Slide Left, 6-Carousel Right, 7-Carousel Left
-					transition_speed		:	1000,		// Speed of transition
-					new_window				:	0,			// Image links open in new window/tab
-					pause_hover             :   0,			// Pause slideshow on hover
-					keyboard_nav            :   1,			// Keyboard navigation on/off
-					performance				:	1,			// 0-Normal, 1-Hybrid speed/quality, 2-Optimizes image quality, 3-Optimizes transition speed // (Only works for Firefox/IE, not Webkit)
-					image_protect			:	1,			// Disables image dragging and right click with Javascript
-															   
-					// Size & Position						   
-					min_width		        :   0,			// Min width allowed (in pixels)
-					min_height		        :   0,			// Min height allowed (in pixels)
-					vertical_center         :   1,			// Vertically center background
-					horizontal_center       :   1,			// Horizontally center background
-					fit_always				:	0,			// Image will never exceed browser width or height (Ignores min. dimensions)
-					fit_portrait         	:   1,			// Portrait images will not exceed browser height
-					fit_landscape			:   0,			// Landscape images will not exceed browser width
-															   
-					// Components							
-					slide_links				:	false,	// Individual links for each slide (Options: false, 'num', 'name', 'blank')
-					thumb_links				:	1,			// Individual thumb links for each slide
-					thumbnail_navigation    :   0,			// Thumbnail navigation
-					slides 					:  	[			// Slideshow Images
-														<%
-														for(Photo p : photoSet.getPhotos()){
-													 	%>
-														{image : '<%=p.getXxLarge()%>', title : '<%=p.getCreator()%>', thumb : '<%=p.getThumbUrl()%>'},
-														<%
-													  	}
-													  	%>
-												],
-												
-					// Theme Options			   
-					progress_bar			:	1,			// Timer for each slide							
-					mouse_scrub				:	0
-					
-				});
-		    });
-		    
-		</script>
+		
 		
 	</head>
 	
@@ -222,13 +167,8 @@
 	</style>
 	
 	<body>
-		<!--Demo styles (you can delete this block)-->
 		
-		
-		<!--End of styles-->
-		
-		 
-		
+		<section id="content">
 	
 		<div id="page-frame">
 			
@@ -399,7 +339,7 @@
                             
                             <span class="header-separator header-color6">|</span>
                                                         
-                            <a class="header-color1" data-zf-index="2" href="/trevis.jsp">Trevis' Showcase</a>
+                            <a class="header-color1" data-zf-index="2" href="http://photos.boyvsgirlphotography.com/trevis">Trevis' Showcase</a>
                         
                             
                        
@@ -410,7 +350,7 @@
                             
                             <span class="header-separator header-color6">|</span>
                                                         
-                            <a class="header-color1" data-zf-index="2" href="chrissy.jsp">Chrissy's Showcase</a>
+                            <a class="header-color1" data-zf-index="2" href="http://photos.boyvsgirlphotography.com/chrissy">Chrissy's Showcase</a>
                         
                             
                        
@@ -421,7 +361,7 @@
                             
                             <span class="header-separator header-color6">|</span>
                                                         
-                            <a class="header-color1" data-zf-index="9" href="http://photos.boyvsgirlphotography.com/shop">Shop</a>
+                            <a class="header-color1" data-zf-index="9" href="http://blog.boyvsgirlphotography.com/">Blog</a>
                         
                             
                        
@@ -526,6 +466,62 @@
     	
     
 		
+		
+		
+<div>
+<%	ZenfolioService zenfolio = new ZenfolioService();
+
+	String str = request.getParameter("pageNumber");
+	int pageNumber = 1;
+	if(str != null){
+		//pageNumber = Integer.valueOf((String)obj);
+		pageNumber = Integer.valueOf(str);
+	}
+	
+	PhotoSet photoSet = zenfolio.loadPhotoSetPhotos("31637159", pageNumber); //20547770
+	%>
+    
+      <h1>Trevis</h1>
+</div>
+
+<div id="container" class="clearfix">
+
+	<%
+	for(Photo p : photoSet.getPhotos()){
+ 	%>
+ 	<div class="box photo col3">
+ 		
+ 		<a href="<%=p.getXxLarge()%>" rel="lightbox" ><img src="<%=p.getMedium()%>" /></a>
+ 		
+ 	</div>
+	<%
+  	}
+  	%>
+</div> <!-- #container -->
+
+		
+		
+		
+		
+
+<nav id="page-nav">
+  <a href="masonry.jsp?pageNumber=<%=pageNumber+1%>"> <%=pageNumber+1%> </a>
+</nav>
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
  
 						</div>
 						
@@ -560,13 +556,9 @@
 				</div>
 				
 
-<div id="social_networks">
-			<a href="http://www.boyvsgirlphotography.com/plus" title="google plus page" target="_blank"><img src="http://www.boyvsgirlphotography.com/img/google-plus-48.png"></a>
-			<a href="http://twitter.com/boyvsgirlphoto" title="follow us on twitter" target="_blank" wrc_done="true"><img src="http://www.boyvsgirlphotography.com/img/twitter-48.png"></a>
-			<a href="http://www.facebook.com/boyvsgirlphotography" title="find us on Facebook" target="_blank"><img src="http://www.boyvsgirlphotography.com/img/facebook-48.png"></a>
-		</div>
-  
-				
+
+
+
 				
 	
 				
@@ -587,7 +579,9 @@
 
 
 			</div>
-		</div><div class="sbe lb lb-font1 lb-color1 none" id="ctl03">
+		</div>
+		<div class="sbe lb lb-font1 lb-color1 none" id="ctl03">
+			
 			<div class="sbe-bg">
 
 			</div><div class="sbe-i">
@@ -801,6 +795,54 @@
 			//-->
 
 		</script>
+		
+		
+		
+		<script src="js/jquery-1.7.2.min.js"></script>
+<script src="js/jquery.masonry.min.js"></script>
+<script src="js/jquery.infinitescroll.min.js"></script>
+<script src="js/lightbox.js"></script>
+
+
+
+<script>
+
+var $container = $('#container');
+
+$container.imagesLoaded( function(){
+  $container.masonry({
+    itemSelector : '.box', 
+    isAnimated: true
+  });
+});
+
+  
+    $container.infinitescroll({
+        navSelector  : '#page-nav',    // selector for the paged navigation 
+        nextSelector : '#page-nav a',  // selector for the NEXT link (to page 2)
+        itemSelector : '.box',     // selector for all items you'll retrieve
+        loading: {
+            finishedMsg: 'No more pages to load.',
+            img: 'http://i.imgur.com/6RMhx.gif'
+          }
+        },
+        // trigger Masonry as a callback
+        function( newElements ) {
+          // hide new items while they are loading
+          var $newElems = $( newElements ).css({ opacity: 0 });
+          // ensure that images load before adding to masonry layout
+          $newElems.imagesLoaded(function(){
+            // show elems now they're ready
+            $newElems.animate({ opacity: 1 });
+            $container.masonry( 'appended', $newElems, true ); 
+          });
+        }
+      );
+ 
+</script>
+    
+
+  </section> <!-- #content -->
 	</body>
 </html>
 

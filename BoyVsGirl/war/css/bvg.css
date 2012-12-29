@@ -4,8 +4,18 @@
 .header-menu{
 	background-image:  url("../img/nav-bg2.png");	
 }
+.footer-mod{
+	background-image:  url("../img/nav-bg_65.png");	
+}
 .mylayout {
     margin: 0 auto;
     padding: 10px 40px 13px;
     position: relative;
+}
+body{
+	background:url("/img/carbon_fibre.png");
+}
+
+#container{
+	margin: 10px auto 100px;
 }

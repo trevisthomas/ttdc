@@ -9,230 +9,24 @@
 	<!-- UA Code: ie9 -->
 	<!-- Platform Code: windows -->
 	<!-- Country Code: US -->
-	<!-- Server: st02-a -->
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<title>Boy vs Girl Photography</title>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><meta http-equiv="imagetoolbar" content="no" /><meta name="description" content="Photography" /><meta name="robots" content="noindex" /><script type="text/javascript">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" /><title>
+			Boy vs Girl Photography | About
+		</title><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><meta http-equiv="imagetoolbar" content="no" /><meta name="description" content="Who is Boy vs Girl Photography, Trevis Thomas, Chrissy Thomas" /><meta property="og:type" content="article" /><meta property="og:site_name" content="Boy vs Girl Photography" /><meta property="og:url" content="http://photos.boyvsgirlphotography.com/about" /><meta property="og:title" content="About" /><meta property="og:description" content="Who is Boy vs Girl Photography, Trevis Thomas, Chrissy Thomas" /><script type="text/javascript">
 			//<!--
 			if (self != top && self.name.indexOf('zenfolio') != 0) top.location.href = location.href;
 			//-->
 
-		</script><link rel="stylesheet" href="http://cdn.zenfolio.net/zf/css/en-US/ie9/windows/8HBP16ZBPBAF9/layout.css" type="text/css" /><link rel="stylesheet" href="http://cdn.zenfolio.net/zf/theme/en-US/ie9/windows/84T2DXMZXVBFZ/3B7T/8/custom.css" type="text/css" /><script src="http://cdn.zenfolio.net/zf/script/en-US/ie9/windows/8AUFHKU1JVBXP/layout.js" type="text/javascript">
+		</script><link rel="stylesheet" href="http://cdn.zenfolio.net/zf/css/en-US/ie9/windows/52C3MPK7FQ2PU/layout.css" type="text/css" /><link rel="Shortcut Icon" href="/img/s11/v32/u646298236-81.ico" /><link rel="stylesheet" href="http://cdn.zenfolio.net/zf/theme/en-US/ie9/windows/678838PAD7XXK/418V/M/custom/custom.css" type="text/css" /><script src="http://cdn.zenfolio.net/zf/script/en-US/ie9/windows/5HYFNCQA7YJ37/layout.js" type="text/javascript">
 
 		</script>
 		
-	<%
-	   if(request.getParameterMap().size() > 0){
-		   response.sendRedirect("http://photos.boyvsgirlphotography.com/?"+request.getQueryString());
-	   }
-	%>	
-		
-	<%
-	ZenfolioService zenfolio = new ZenfolioService();
-	PhotoSet photoSet = zenfolio.loadPhotoSet("616294023");
-	%>
-
-		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-		
-		<link rel="stylesheet" href="css/supersized.css" type="text/css" media="screen" />
-		<link rel="stylesheet" href="theme/supersized.shutter.css" type="text/css" media="screen" />
-		
-		
-		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
-		<script type="text/javascript" src="js/jquery.easing.min.js"></script>
-		<!-- 
-		<script type="text/javascript" src="js/supersized.3.2.6.js"></script>
-		<script type="text/javascript" src="theme/supersized.shutter.min.js"></script>
-		 -->
-		 <script type="text/javascript" src="js/supersized.3.2.6.js"></script>
-		<script type="text/javascript" src="theme/supersized.shutter.js"></script>
-		<script src="http://tab-slide-out.googlecode.com/files/jquery.tabSlideOut.v1.3.js"></script>
-		
-		<link rel="stylesheet" href="css/bvg.css" type="text/css" media="screen" />
-		
-		
-
-	    <script type="text/javascript">
-		    $(function(){
-		        $('.slide-out-div').tabSlideOut({
-		            tabHandle: '.about-us-slider',                     //class of the element that will become your tab
-		            pathToTabImage: '/img/About-Tab_alpha70.png', //path to the image for the tab //Optionally can be set using css
-		            imageHeight: '120px',                     //height of tab image           //Optionally can be set using css
-		            imageWidth: '40px',                       //width of tab image            //Optionally can be set using css
-		            tabLocation: 'right',                      //side of screen where tab lives, top, right, bottom, or left
-		            speed: 300,                               //speed of animation
-		            action: 'click',                          //options: 'click' or 'hover', action to trigger animation
-		            topPos: '110px',                          //position from the top/ use if tabLocation is left or right
-		            leftPos: '20px',                          //position from left/ use if tabLocation is bottom or top
-		            fixedPosition: false                      //options: true makes it stick(fixed position) on scroll
-		        });
-		
-		    });
-		    
-		    
-		   
-	
-		    $(window).load(function () {
-				//Automatically open the slide out tab
-				var timer = setTimeout(function(){
-					$('.about-us-slider').click();
-				},5000);
-				
-				//Creating an x to close the about slider
-				 $('.slide-out-x').click(function() {
-					 $('.about-us-slider').click();
-			     });
-				
-				 $('.about-us-slider').click(function() {
-					 clearTimeout(timer);
-			     });
-			});
-		    
-	    </script>
-		
-		<script type="text/javascript">
-			
-			jQuery(function($){
-				
-				$.supersized({
-				
-					// Functionality
-					slideshow               :   1,			// Slideshow on/off
-					autoplay				:	1,			// Slideshow starts playing automatically
-					start_slide             :   0,			// Start slide (0 is random)
-					stop_loop				:	0,			// Pauses slideshow on last slide
-					random					: 	1,			// Randomize slide order (Ignores start slide)
-					slide_interval          :   4000,		// Length between transitions
-					transition              :   6, 			// 0-None, 1-Fade, 2-Slide Top, 3-Slide Right, 4-Slide Bottom, 5-Slide Left, 6-Carousel Right, 7-Carousel Left
-					transition_speed		:	1000,		// Speed of transition
-					new_window				:	0,			// Image links open in new window/tab
-					pause_hover             :   0,			// Pause slideshow on hover
-					keyboard_nav            :   1,			// Keyboard navigation on/off
-					performance				:	1,			// 0-Normal, 1-Hybrid speed/quality, 2-Optimizes image quality, 3-Optimizes transition speed // (Only works for Firefox/IE, not Webkit)
-					image_protect			:	1,			// Disables image dragging and right click with Javascript
-															   
-					// Size & Position						   
-					min_width		        :   0,			// Min width allowed (in pixels)
-					min_height		        :   0,			// Min height allowed (in pixels)
-					vertical_center         :   1,			// Vertically center background
-					horizontal_center       :   1,			// Horizontally center background
-					fit_always				:	0,			// Image will never exceed browser width or height (Ignores min. dimensions)
-					fit_portrait         	:   1,			// Portrait images will not exceed browser height
-					fit_landscape			:   0,			// Landscape images will not exceed browser width
-															   
-					// Components							
-					slide_links				:	false,	// Individual links for each slide (Options: false, 'num', 'name', 'blank')
-					thumb_links				:	1,			// Individual thumb links for each slide
-					thumbnail_navigation    :   0,			// Thumbnail navigation
-					slides 					:  	[			// Slideshow Images
-														<%
-														for(Photo p : photoSet.getPhotos()){
-													 	%>
-														{image : '<%=p.getXxLarge()%>', title : '<%=p.getCreator()%>', thumb : '<%=p.getThumbUrl()%>'},
-														<%
-													  	}
-													  	%>
-												],
-												
-					// Theme Options			   
-					progress_bar			:	1,			// Timer for each slide							
-					mouse_scrub				:	0
-					
-				});
-		    });
-		    
-		</script>
-		
-	</head>
-	
-	 <style type="text/css">
-          .slide-out-div {
-	          padding: 20px;
-	          width: 475px;
-	          background-image: url("img/alpha70.png");
-	          border: 0px solid #ccc;
-	          color: #ccc;
-	      }   
-	      
-	      .slide-out-div h1{
-	      	color: white;
-	      	font-size: larger;
-	      }   
-      </style>
-	
-	<style type="text/css">
-			span#logo{
-				margin: 10px 40px 10px 40px;
-			}
-			div#logo-block{
-				background:url('img/logo-bg.png');
-				position: absolute;
-				left:0;
-				top:0;
-				width: 260px;
-			}
-			
-			
-			div#footer-block{
-				position: absolute;
-				bottom:0px;
-				height:40px;
-				left:0;
-				background:url('img/nav-bg3.png');
-				width:100%;
-				
-				
-			}
-			div#footer{
-				height:40px;
-				left:0;
-			}
-			.footer{
-				line-height: 40px;
-				color: #eee;
-			
-			}
-			
-			.footer A{
-				color: #ccc;
-			}
-			
-			div#social_networks{
-				position: absolute;
-				right:20px;
-				bottom:40px;
-				width: 170px;
-			}
-			
-			.slide-out-x{
-				background-image:url('img/closebtn.png');
-				width: 20px;
-				height: 20px;
-				right: 0px;
-				margin-right: 10px;
-				position: absolute;
-				cursor: pointer;
-			}
-			.slide-out-div{
-				position: relative;
-			}
-			
-			
-	</style>
-	
-	<body>
-		<!--Demo styles (you can delete this block)-->
-		
-		
-		<!--End of styles-->
-		
-		 
-		
-	
+		  <link rel="stylesheet" href="css/style_masonry.css" />
+  		<link rel="stylesheet" href="css/lightbox.css" />
+	</head><body>
 		<div id="page-frame">
 			
-
+<section id="content">
 <div class="zenbar zenbar-bgcolor1 zenbar-font1  none" id="zenbar">
     <div class="zenbar-inner zenbar-bgimage1">
         
@@ -273,12 +67,12 @@
             <span class="zenbar-cart">
                 
 
-                <a class="zenbar-cart-link zenbar-font2 zenbar-color3" href="http://photos.boyvsgirlphotography.com/cart.html">
+                <a class="zenbar-cart-link zenbar-font2 zenbar-color3" href="/cart.html">
                     <span class="text"></span><span class="icon"></span><span class="icon2"></span></a>
         
                 <span class="zenbar-sep zenbar-color4">|</span>
 
-                <a class="zenbar-color3" href="http://photos.boyvsgirlphotography.com/cart.html">
+                <a class="zenbar-color3" href="/cart.html">
                     Checkout &raquo;</a>
     
             </span>
@@ -299,7 +93,7 @@
                 <div class="total lb-color1 zenbar-font4">
                 </div>
                 <div class="bottom">
-                    <a id="zenbar_GoToCart" class="button btn" href="http://photos.boyvsgirlphotography.com/cart.html"><div class="standard button-color1 button-bgcolor1 button-border1" id="zenbar_GoToCart-state">
+                    <a id="zenbar_GoToCart" class="button btn" href="/cart.html"><div class="standard button-color1 button-bgcolor1 button-border1" id="zenbar_GoToCart-state">
 				<div class="left">
 
 				</div><div class="right">
@@ -324,7 +118,7 @@
 				</div><div class="pc-frame pc-bgcolor1 pc-border1 pc-font1 pc-color1">
 					<div class="pc-hdr pc-bgcolor2 pc-font3 pc-color2 pc-border2">
 
-					</div><a class="pc-hdr-close pc-font2" href="#" onclick="return false;" onmousedown="_zf_zenbar_Configurator._close_onclick(event);">Close<span></span></a><div class="pc-body">
+					</div><a class="pc-hdr-close pc-font2 pc-color1" href="#" onclick="return false;" onmousedown="_zf_zenbar_Configurator._close_onclick(event);">Close<span></span></a><div class="pc-body">
 
 					</div>
 				</div>
@@ -399,29 +193,7 @@
                             
                             <span class="header-separator header-color6">|</span>
                                                         
-                            <a class="header-color1" data-zf-index="2" href="/trevis.jsp">Trevis' Showcase</a>
-                        
-                            
-                       
-                        </li>                        
-                        
-                        <li class="header-link">
-
-                            
-                            <span class="header-separator header-color6">|</span>
-                                                        
-                            <a class="header-color1" data-zf-index="2" href="chrissy.jsp">Chrissy's Showcase</a>
-                        
-                            
-                       
-                        </li>
-                    
-                        <li class="header-link">
-
-                            
-                            <span class="header-separator header-color6">|</span>
-                                                        
-                            <a class="header-color1" data-zf-index="9" href="http://photos.boyvsgirlphotography.com/shop">Shop</a>
+                            <a class="header-color1" data-zf-index="2" href="/trevis">Trevis' Showcase</a>
                         
                             
                        
@@ -435,7 +207,7 @@
                             
                             <span class="header-separator header-color6">|</span>
                                                         
-                            <a class="header-color1" data-zf-index="10" href="http://photos.boyvsgirlphotography.com/about">About</a>
+                            <a class="header-color1" data-zf-index="3" href="/chrissy">Chrissy's Showcase</a>
                         
                             
                        
@@ -449,7 +221,35 @@
                             
                             <span class="header-separator header-color6">|</span>
                                                         
-                            <a class="header-color1" data-zf-index="11" href="http://photos.boyvsgirlphotography.com/contact.html">Contact</a>
+                            <a class="header-color1" data-zf-index="4" href="http://boyvsgirlphotography.blogspot.com/">Blog</a>
+                        
+                            
+                       
+                        </li>                        
+                    
+                    
+
+
+                        <li class="header-link">
+
+                            
+                            <span class="header-separator header-color6">|</span>
+                                                        
+                            <a class="header-color1" data-zf-index="5" href="/about">About</a>
+                        
+                            
+                       
+                        </li>                        
+                    
+                    
+
+
+                        <li class="header-link">
+
+                            
+                            <span class="header-separator header-color6">|</span>
+                                                        
+                            <a class="header-color1" data-zf-index="6" href="/contact.html">Contact</a>
                         
                             
                        
@@ -466,7 +266,11 @@
                 
                 <div class="header-photog" style="width:130px;">
                     
-                   
+                    <a class="header-photog-logo"
+                        href="http://www.boyvsgirlphotography.com"
+                        title="BoyVsGirlPhotography"
+                        style="width:130px;height:40px;margin:0px;background-image:url(http://cdn.zenfolio.net/img/s11/v36/u603512342-71.png);">
+                    </a>
                     
                     
                 </div>
@@ -502,88 +306,34 @@
 
 </div>
 
-
-
-
 <div class="layout-frame layout-bgcolor1 layout-bgimage1 layout-fixed visitor">
-					<div class="mylayout" id="ctl02">
+					<div class="layout  custom-default" id="ctl02">
+						
 
     
 
     <div id="ctl02_Center" class="column custom-default-column layout-bgimage3">
 							 
+<!--  here -->
 
-        <div class="richtext">
-            <p>	</p>
-        </div>
+
         
-	</div>
+        </div>
+
+    
+						</div>
     
     <div id="ctl02_ctl02" class="filler clear line0">
-    <div id="logo-block" >
-    	<span id="logo"><img src="/img/LargeLogo2.png"/></span>
-    </div>
-    	
+
+						</div>
     
-		
- 
-						</div>
-						
-						
-						 
-    <div id="ctl02_ctl03" class="copyright copyright-color1">
-							
-						</div>
 
 
 					</div>
 				</div>
-				
-				
-				<div class="slide-out-div">
-		            <a class="about-us-slider" href="http://link-for-non-js-users.html">Content</a>
-		            <div class="slide-out-x"></div>
-		             <div class="main">
-			       		 <h1>About Boy vs Girl Photography</h1>
-						<div>&nbsp;</div>
-						<div>Boy vs Girl Photography is a husband and wife team dedicated to the art of beauty and portrait photography. &nbsp;We are always looking for ideas and for people to network and collaborate with. &nbsp;We both have full time non-photography related careers but we spend most of our free time crafting our skills in the art of all things photography.</div>
-						<div>&nbsp;</div>
-						<div>If you like our style and are interested in hiring<em> Boy vs Girl</em> for a shoot feel free to contact us with what you&#39;d like to do and we can discuss our rates. &nbsp;</div>
-						<div>&nbsp;</div>
-						<div>If you are a <strong>model</strong>,<strong> hair stylist</strong> or <strong>makeup artist</strong> interested in collaborating with <em>Boy vs Girl</em> just send us a message and we&rsquo;ll get back with you.&nbsp;</div>
-						<div>&nbsp;</div>
-						<div>Trevis and Chrissy Thomas</div>
-						<div>Boy vs Girl Photography</div>
-						<div><a href="mailto:photographers@boyvsgirlphotography.com?subject=Contact%20BvG%20from%20About%20Us">photographers@boyvsgirlphotography.com</a></div>
-						<div>&nbsp;</div>
-					</div>
-				</div>
-				
-
-<div id="social_networks">
-			<a href="http://www.boyvsgirlphotography.com/plus" title="google plus page" target="_blank"><img src="http://www.boyvsgirlphotography.com/img/google-plus-48.png"></a>
-			<a href="http://twitter.com/boyvsgirlphoto" title="follow us on twitter" target="_blank" wrc_done="true"><img src="http://www.boyvsgirlphotography.com/img/twitter-48.png"></a>
-			<a href="http://www.facebook.com/boyvsgirlphotography" title="find us on Facebook" target="_blank"><img src="http://www.boyvsgirlphotography.com/img/facebook-48.png"></a>
-		</div>
-  
-				
-				
-	
-				
 
 
 
-<div class="footer footer-border1 footer-bgcolor1 footer-color1 footer-font1 footer-bgimage1 "
-    id="footer">
-
-    <div class="footer-copyright footer-font2">
-    </div>
-     
-     <div id="footer-block">
-    	<div id="footer"><a href="" target="_blank">&#169; 2012 Boy Vs Girl Photography</a> | Trevis &amp; Chrissy Thomas</div>		
-    </div>
-    
-</div>
 
 
 			</div>
@@ -721,20 +471,114 @@
 
 </div>
 
+
+
+
+
+
+<%	ZenfolioService zenfolio = new ZenfolioService();
+
+	String str = request.getParameter("pageNumber");
+	int pageNumber = 1;
+	if(str != null){
+		//pageNumber = Integer.valueOf((String)obj);
+		pageNumber = Integer.valueOf(str);
+	}
+	
+	PhotoSet photoSet = zenfolio.loadPhotoSetPhotos("31637159", pageNumber); //20547770
+	%>
+    
+      <h1>Trevis</h1>
+</div>
+
+<div id="container" class="clearfix">
+
+	<%
+	for(Photo p : photoSet.getPhotos()){
+ 	%>
+ 	<div class="box photo col3">
+ 		
+ 		<a href="<%=p.getXxLarge()%>" rel="lightbox" ><img src="<%=p.getMedium()%>" /></a>
+ 		
+ 	</div>
+	<%
+  	}
+  	%>
+  	
+  	
+
+</div> <!-- #container -->
+
+<nav id="page-nav">
+  <a href="masonry.jsp?pageNumber=<%=pageNumber+1%>"> <%=pageNumber+1%> </a>
+</nav>
+
+</section> <!-- #content -->
+
+<script src="js/jquery-1.7.2.min.js"></script>
+<script src="js/jquery.masonry.min.js"></script>
+<script src="js/jquery.infinitescroll.min.js"></script>
+<script src="js/lightbox.js"></script>
+<script>
+
+var $container = $('#container');
+
+$container.imagesLoaded( function(){
+  $container.masonry({
+    itemSelector : '.box', 
+    isAnimated: true,
+    isFitWidth: true
+  });
+});
+
+  
+    $container.infinitescroll({
+        navSelector  : '#page-nav',    // selector for the paged navigation 
+        nextSelector : '#page-nav a',  // selector for the NEXT link (to page 2)
+        itemSelector : '.box',     // selector for all items you'll retrieve
+        loading: {
+            finishedMsg: 'No more pages to load.',
+            img: 'http://i.imgur.com/6RMhx.gif'
+          }
+        },
+        // trigger Masonry as a callback
+        function( newElements ) {
+          // hide new items while they are loading
+          var $newElems = $( newElements ).css({ opacity: 0 });
+          // ensure that images load before adding to masonry layout
+          $newElems.imagesLoaded(function(){
+            // show elems now they're ready
+            $newElems.animate({ opacity: 1 });
+            $container.masonry( 'appended', $newElems, true ); 
+          });
+        }
+      );
+ 
+</script>
+    
+    <footer id="site-footer">
+      <div id="ctl02_ctl03" class="copyright copyright-color1">&#169; BoyVsGirlPhotography</div>
+    </footer>
+    
+  
+
+
 		</div><div id="ctl04" class="prefetch">
 
 		</div><script type="text/javascript">
 			//<!--
+			zf_locale = 'en-US';
 			zf_userId = 0;
 			zf_userName = '';
 			zf_userDomain = '';
+			zf_currentHost = 'photos.boyvsgirlphotography.com';
 			zf_defaultHost = 'www.zenfolio.com';
 			zf_secureHost = 'secure.zenfolio.com';
 			zf_defaultDomain = '.zenfolio.com';
 			zf_cdnHost = 'cdn.zenfolio.net';
 			zf_apiHost = 'api.zenfolio.com';
-			zf_imageHosts = ["img-a.zenfolio.com","img-b.zenfolio.com","img-c.zenfolio.com","img-d.zenfolio.com"];
-			zf_imageVS = [9,2,10,11,5,6,6,7,7,8,8,8,8,9,9,9,10,10,10,1,1,1,1,3,3,3,3,11,11,11,11,11,11,11,11,11,11,11,3,3,3,3];
+			zf_imageHosts = ["img-a.cdn.zenfolio.net","img-b.cdn.zenfolio.net","img-c.cdn.zenfolio.net","img-d.cdn.zenfolio.net"];
+			zf_imageVS = [9,2,10,11,2,1,1,3,3,4,4,4,4,9,9,9,10,10,10,1,1,1,1,3,3,3,3,11,11,11,11,11,11,11,11,11,11,11,3,3,3,3,3,3,3,3,1,1,1,1,2,2,2,2,1,1,1,1,2,2,2,2,4,4,4,4,4,4,4,4,2,2,2,2];
 			_zf_stdSetTimezoneOffset();
 			zf_clientIp = '24.107.204.117';
 			zf_NumberFormat.current = _$({"$meta":[["NumberFormat","currencyDecimalDigits","currencyDecimalSeparator","currencyGroupSeparator","currencyGroupSizes","currencySymbol","negativeSign","numberDecimalDigits","numberDecimalSeparator","numberGroupSeparator","numberGroupSizes","numberNegativePattern"]],"$root":{"$obj":[0,2,".",",",[3],"$","-",2,".",",",[3],1]}});
@@ -743,20 +587,21 @@
 			zf_ownerId = '482142300';
 			zf_ownerName = 'boyvsgirlphotography';
 			zf_ownerDomain = 'photos.boyvsgirlphotography.com';
-			_zf_stdRegisterDelayLoad('/zf/script/en-US/ie9/windows/7UQKRXSV1NX6P/configurator.js');
-			_zf_stdRegisterDelayLoad('/zf/script/en-US/ie9/windows/5KY99XVF7AA2N/jqueryui.js');
-			_zf_stdRegisterDelayLoad('/zf/script/en-US/ie9/windows/NM7SZ6BXE3XN/scrapbook.js');
-			zfl_SessionCookie.current = new zfl_SessionCookie('+X5ObArCJIE43Iqrn82io3zG...0');
+			_zf_stdRegisterDelayLoad('/zf/script/en-US/ie9/windows/34R8A2U26PHU6/configurator.js');
+			_zf_stdRegisterDelayLoad('/zf/script/en-US/ie9/windows/Y2SPG5P1MWXV/jqueryui.js');
+			_zf_stdRegisterDelayLoad('/zf/script/en-US/ie9/windows/41YK42JVKC637/scrapbook.js');
+			zfl_SessionCookie.current = new zfl_SessionCookie('HqU/8TRpvh7W2mqtKSYtwfwN');
 			zfl_PasswordManager.init([]);
 			_zfl_ctl02_init = { columns: {}, bins: {}, grids: {}, data: {}, pairs: {} };
-			_zf_cartDefaultListTimestamp = 'QH1En5/JRVVD1lTu8+OFf+Rg9aw=';
-			var _zf_ctl02_Center = new zfl_Column('ctl02_Center', null, [], false);
+			zfl_Layout.suppressClick()
+			_zf_cartDefaultListTimestamp = 'dD4QCIE2kBwLIhcAFHlLQ68wyis=';
 			var _zf_zenbar_GoToCart = new zfl_Button('zenbar_GoToCart', null);
-			var _zf_zenbar_Configurator = new zfp_Configurator('zenbar_Configurator',0,'6VREKMVKFU221',_$(null));
+			var _zf_zenbar_Configurator = new zfp_Configurator('zenbar_Configurator',0,'2GXJ11GQ2SA15',_$(null));
 			var _zf_zenbar = new zfl_ZenBar('zenbar', _$({"$meta":[["CartSummary","changeNumber","size","incomplete","productPrice"]],"$root":{"$obj":[0,0,0,false,0]}}), _zf_zenbar_Configurator, _$({"$meta":[["zfl_DecorationInfo","className","borderSize"]],"$root":{"$obj":[0,"prodcat",4]}}), false);
 			zfl_Mat.current = new zfl_Mat('mat-frame', 0, 0, 'ctl02');
-			var _zf_header_SearchInput = new zfl_SearchInput('header_SearchInput', null);
+			var _zf_header_SearchInput = new zfl_SearchInput('header_SearchInput', null, '/');
 			var _zf_header = new zfl_Header('header', true);
+			var _zf_ctl02_Center = new zfl_Column('ctl02_Center', null, [], false);
 			var _zf_ctl02_ctl03 = new zfl_Copyright('ctl02_ctl03');
 			var _zf_footer = new zfl_Footer('footer');
 			var _zf_ctl05_Add = new zfl_Button('ctl05_Add', null);
@@ -778,9 +623,9 @@
 					"$root":{
 						"DimLights":{"$obj":[0,"dimlights-decoration",2,"system",null,null]},
 						"Slideshow":{"$obj":[0,"slideshow-decoration",null,"system",null,null]},
-						"default":{"$obj":[0,"defdec",4,null,null,null]},
+						"default":{"$obj":[0,"defdec",1,null,null,null]},
 						"CommentBrowser":{"$obj":[0,"comdec",8,null,true,null]},
-						"CurrentPhoto":{"$obj":[0,"largeimage",5,null,null,8]},
+						"CurrentPhoto":{"$obj":[0,"largeimage",1,null,null,8]},
 						"PhotoNavList.1":{"$ref":0},
 						"PhotoVList.10":{"$obj":[0,"square",2,"system",true,null]},
 						"PhotoNavThumbnail.1":{"$ref":0},
@@ -791,10 +636,10 @@
 				};
 			_zfl_ctl02_init.analytics = new zfl_Analytics(false, '', null, null);
 			_zfl_ctl02_init.fixedWidth = false;
-			_zfl_ctl02_init.fillers = ['ctl02_ctl02'];
-			_zfl_ctl02_init.columns.Center = _zf_ctl02_Center;
 			_zfl_init.zenbar = _zf_zenbar;
 			_zfl_init.header = _zf_header;
+			_zfl_ctl02_init.columns.Center = _zf_ctl02_Center;
+			_zfl_ctl02_init.fillers = ['ctl02_ctl02'];
 			_zfl_init.footer = _zf_footer;
 			_zfl_init.scrapbook = _zf_ctl03;
 			var _zf_ctl02 = new zfl_Layout('ctl02', _zfl_init, _zfl_ctl02_init);
@@ -803,6 +648,3 @@
 		</script>
 	</body>
 </html>
-
-
-
