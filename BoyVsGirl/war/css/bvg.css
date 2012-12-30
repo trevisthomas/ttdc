@@ -7,6 +7,11 @@
 .footer-mod{
 	background-image:  url("../img/nav-bg_65.png");	
 }
+#logo-block{
+	position: absolute;
+	top: 10px;
+	left: 20px;
+}
 .mylayout {
     margin: 0 auto;
     padding: 10px 40px 13px;
@@ -18,4 +23,46 @@ body{
 
 #container{
 	margin: 10px auto 100px;
+	
+}
+
+.sexypanels {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	width: 180px; /* width of menu */
+	position: absolute;
+	left: 10px;
+	top: 250px;
+}
+
+.sexypanels li {
+	
+}
+
+.sexypanels li a {
+	background: #333 url(media/sexypanelright.gif) no-repeat right top;
+	/*color of menu by default*/
+	font: bold 13px "Lucida Grande", "Trebuchet MS", Verdana;
+	opacity: .3;
+	display: block;
+	color: white;
+	width: auto;
+	padding: 5px 0; /* Vertical (top/bottom) padding for each menu link */
+	text-indent: 8px;
+	text-decoration: none;
+	border-bottom: 1px solid black;
+	/*bottom border of menu link. Should be equal or darker to link's bgcolor*/
+}
+
+.sexypanels li a:visited,.sexypanels li a:active {
+	color: white;
+}
+
+.sexypanels li a:hover {
+	opacity: .7;
+	background-color: black; /*color of menu onMouseover*/
+	color: white;
+	border-bottom: 1px solid black;
+	/*bottom border of menu link during hover. Should be equal or darker to link's hover's bgcolor*/
 }

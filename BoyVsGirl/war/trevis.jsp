@@ -281,7 +281,7 @@
 	</script>
 
 	
-<div class="footer footer-border1 footer-bgcolor1 footer-color1 footer-font1 footer-bgimage1 footer-mod" id="footer" style="visibility: inherit;">
+<div class="footer footer-border1 footer-bgcolor1 footer-color1 footer-font1 footer-bgimage1  footer-mod" id="footer" style="visibility: inherit;">
 
     <div class="footer-copyright footer-font2">
     </div>
