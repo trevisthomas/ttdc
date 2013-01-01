@@ -7,7 +7,8 @@
 		<g:Widget ui:field="pageHeaderElement"/>
 		<div>
 			<g:SimplePanel styleName="tt-topic-root" ui:field="rootPostElement"/>
-			<g:TabPanel styleName="tt-topic-topics" ui:field="postTabPanelElement" />
+			<g:TabPanel styleName="tt-topic-topics tt-topic-topics-chromefail" ui:field="postTabPanelElement" />
+			<g:SimplePanel styleName="tt-topic-topics" ui:field="contentPanelForChromeBugFixElement"/>
 		</div>
 		<g:Widget ui:field="pageFooterElement" />		
 	</g:HTMLPanel>
