@@ -148,9 +148,6 @@
 		    });
 		    
 		</script>
-
-</head>
-
 <style type="text/css">
 .slide-out-div {
 	padding: 20px;
@@ -219,6 +216,10 @@ div#social_networks {
 	position: relative;
 }
 </style>
+		
+
+</head>
+
 
 
 

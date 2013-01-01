@@ -12,6 +12,18 @@ public class PhotoSet {
 		this.collectionId = collectionId;
 	}
 	
+	//Too crazy.  tripples call time.
+//	public List<Photo> getPhotos(){
+//		ZenfolioService service = new ZenfolioService();
+//		List<Photo> photos = new ArrayList<Photo>();
+//		List<Map<String, Object>> rawPhotos = (List<Map<String, Object>>)rawPhotoSet.get("Photos");
+//		
+//		for(Map<String, Object> rawPhoto : rawPhotos){
+//			photos.add(service.loadPhoto(((Integer)rawPhoto.get("Id")).toString()));
+//		}
+//		return photos;
+//	}
+	
 	public List<Photo> getPhotos(){
 		List<Photo> photos = new ArrayList<Photo>();
 		List<Map<String, Object>> rawPhotos = (List<Map<String, Object>>)rawPhotoSet.get("Photos");
@@ -23,3 +35,4 @@ public class PhotoSet {
 	}
 	
 }
+

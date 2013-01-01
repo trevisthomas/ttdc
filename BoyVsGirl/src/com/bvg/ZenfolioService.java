@@ -29,7 +29,7 @@ public class ZenfolioService {
 			
 			String method = "LoadPhotoSet";
 			params.add(photoSetId);
-			params.add("1");
+			params.add("2"); //http://secure.zenfolio.com/zf/help/api/ref/methods/loadphotoset //Dosent seem to work.
 			params.add("true");
 	
 			JSONRPC2Request request = new JSONRPC2Request(method, params, requestID++);
@@ -161,6 +161,42 @@ public class ZenfolioService {
 			connection.addRequestProperty("X-Zenfolio-User-Agent", "Boy vs Girl Photography v1");
 			connection.addRequestProperty("User-Agent", "Boy vs Girl Photography v1");
 		}
+	}
+
+	public Photo loadPhoto(String photoId) {
+		URL serverURL = null;
+
+		try {
+			serverURL = new URL("http://www.zenfolio.com/api/1.6/zfapi.asmx");
+	
+			JsonSimpleSession mySession = new JsonSimpleSession(serverURL);
+			mySession.setConnectionConfigurator(new MyConnectionConfiguratorDude());
+			
+			List<String> params = new ArrayList<String>();
+			
+			String method = "LoadPhoto";
+			params.add(photoId);
+			params.add("2"); 
+			
+	
+			JSONRPC2Request request = new JSONRPC2Request(method, params, requestID++);
+			JsonSimpleResponse response = null;
+			response = mySession.send(request);
+
+			return new Photo(response.getResult());
+			
+			
+		} catch (JsonParseException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (JSONRPC2SessionException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 	
 }

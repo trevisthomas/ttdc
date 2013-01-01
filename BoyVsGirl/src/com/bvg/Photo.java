@@ -35,7 +35,6 @@ public class Photo {
 	public String getThumbUrl(){
 		return getOriginalUrl().replaceFirst(".jpg", "-11.jpg");  
 	}
-	
 	public String getCreator(){
 		//Not sure what field to use here.
 		return (String) rawPhoto.get("Copyright");
@@ -49,15 +48,24 @@ public class Photo {
 		return getOriginalUrl().replaceFirst(".jpg", "");  
 	}
 	
+	public String getUniqueName(){
+//		return getPhotoNoSuffix().substring(getPhotoNoSuffix().lastIndexOf('/') + 1);
+		return ((Integer)rawPhoto.get("Id")).toString();
+	}
+	
 	public String getCaption(){
 		String caption = (String) rawPhoto.get("Caption");
-		System.err.println("Caption "+ rawPhoto.get("Title")+" " + caption);
 		return caption != null ? caption : "";
 	}
 	
 	public String getTitle(){
 		String title = (String) rawPhoto.get("Title"); 
 		return title != null ? title : "";
+	}
+	
+	public String getCopyright(){
+		String copyright = (String) rawPhoto.get("Copyright"); 
+		return copyright != null ? copyright : "";
 	}
 	
 	public String getPageUrl(){

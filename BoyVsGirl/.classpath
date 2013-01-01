@@ -6,6 +6,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/junit-4.8.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/argo-2.21.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jackson-all-1.9.3.jar"/>
-	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER/App Engine (2)"/>
+	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER/App Engine (3)"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

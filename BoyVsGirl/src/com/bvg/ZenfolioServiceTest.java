@@ -31,4 +31,16 @@ public class ZenfolioServiceTest {
 	}
 
 	
+	@Test
+	public void loadPhoto(){
+		ZenfolioService zenfolio = new ZenfolioService();
+		Photo p = zenfolio.loadPhoto("1210165012");
+		
+			System.err.println(p.getOriginalUrl());
+			System.err.println(p.getCreator());
+			System.err.println(p.getPageUrl());
+			System.err.println(p.getCaption());
+		
+	}
+	
 }

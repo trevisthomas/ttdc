@@ -18,13 +18,8 @@ PhotoSet photoSet = zenfolio.loadPhotoSet("616294023");
 
 	<head>
 
-		<title>Boy vs Girl Photography</title>
+		<title>Supersized - Full Screen Background Slideshow jQuery Plugin</title>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-		<meta name="description" content="Boy vs Girl Photography - Trevis and Chrissy Thomas"/>
-		<meta name="medium" content="image"/>
-		<link rel="image_src" href="/img/BvG_Signature_2013_final_fancy.png"/>
-		
-		
 		
 		<link rel="stylesheet" href="css/supersized.css" type="text/css" media="screen" />
 		<link rel="stylesheet" href="theme/supersized.shutter.css" type="text/css" media="screen" />
@@ -49,7 +44,7 @@ PhotoSet photoSet = zenfolio.loadPhotoSet("616294023");
 		            tabLocation: 'right',                      //side of screen where tab lives, top, right, bottom, or left
 		            speed: 300,                               //speed of animation
 		            action: 'click',                          //options: 'click' or 'hover', action to trigger animation
-		            topPos: '60px',                          //position from the top/ use if tabLocation is left or right
+		            topPos: '110px',                          //position from the top/ use if tabLocation is left or right
 		            leftPos: '20px',                          //position from left/ use if tabLocation is bottom or top
 		            fixedPosition: false                      //options: true makes it stick(fixed position) on scroll
 		        });
@@ -63,7 +58,7 @@ PhotoSet photoSet = zenfolio.loadPhotoSet("616294023");
 				//Automatically open the slide out tab
 				var timer = setTimeout(function(){
 					$('.about-us-slider').click();
-				},100);
+				},5000);
 				
 				//Creating an x to close the about slider
 				 $('.slide-out-x').click(function() {
@@ -128,6 +123,20 @@ PhotoSet photoSet = zenfolio.loadPhotoSet("616294023");
 		    });
 		    
 		</script>
+<style type="text/css">
+.slide-out-div {
+	padding: 20px;
+	width: 475px;
+	background-image: url("img/alpha70.png");
+	border: 0px solid #ccc;
+	color: #ccc;
+}
+
+.slide-out-div h1 {
+	color: white;
+	font-size: larger;
+}
+</style>
 
 <style type="text/css">
 span#logo {
@@ -169,14 +178,6 @@ div#social_networks {
 .slide-out-div {
 	position: relative;
 }
-
-#facebook-likebox{
-	position: absolute;
-	right: 0px;
-	top: 0px;
-}
-
-
 </style>
 		
 	</head>
@@ -188,27 +189,20 @@ div#social_networks {
 	</style>
 
 <body>
-<div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
+	<!--Demo styles (you can delete this block)-->
 
 	<div id="logo-block">
 		<span id="logo"><img src="/img/BvG_Signature_2013_final_fancy.png" /></span>
 	</div>	
 	
-	
 	<%@ include file="menu.jsp" %>
+
 
 			<div class="slide-out-div">
 				<a class="about-us-slider" href="http://link-for-non-js-users.html">Content</a>
 				<div class="slide-out-x"></div>
 				<div class="main">
-					<h1>Boy vs Girl Photography</h1>
+					<h1>About Boy vs Girl Photography</h1>
 					<div>&nbsp;</div>
 					<div>Boy vs Girl Photography is a husband and wife team dedicated to the art of beauty and portrait photography. &nbsp;We are always looking for ideas and for people to network and
 						collaborate with. &nbsp;We both have full time non-photography related careers but we spend most of our free time crafting our skills in the art of all things photography.</div>
@@ -236,10 +230,6 @@ div#social_networks {
 				<a href="http://www.boyvsgirlphotography.com/plus" title="google plus page" target="_blank"><img src="http://www.boyvsgirlphotography.com/img/google-plus-48.png"></a> <a
 					href="http://twitter.com/boyvsgirlphoto" title="follow us on twitter" target="_blank" wrc_done="true"><img src="http://www.boyvsgirlphotography.com/img/twitter-48.png"></a> <a
 					href="http://www.facebook.com/boyvsgirlphotography" title="find us on Facebook" target="_blank"><img src="http://www.boyvsgirlphotography.com/img/facebook-48.png"></a>
-			</div>
-			
-			<div id="facebook-likebox">
-				<div class="fb-like" data-href="http://www.boyvsgirlphotography.com" data-send="true" data-width="450" data-show-faces="false" data-colorscheme="dark"></div>
 			</div>
 
 
