@@ -35,10 +35,12 @@ public class TopicPanel extends BasePageComposite implements PostEventListener{
 	
 	@UiField(provided = true) Widget pageHeaderElement;
 	@UiField (provided = true) Widget pageFooterElement;
+	@UiField SimplePanel contentPanelForChromeBugFixElement;
 	@UiField SimplePanel rootPostElement;
 	@UiField TabPanel postTabPanelElement;
 	
 	private SimplePanel threadsElement = new SimplePanel();
+	private SimplePanel testElement = new SimplePanel();
 	
 	private NestedPostPanel nestedPanel;
 	private final StandardPageHeaderPanel pageHeaderPanel;
@@ -54,8 +56,12 @@ public class TopicPanel extends BasePageComposite implements PostEventListener{
 		initWidget(binder.createAndBindUi(this));
 		
 		EventBus.getInstance().addListener(this);
-		postTabPanelElement.add(threadsElement, "Conversations");
+		postTabPanelElement.add(testElement, "Conversations");
+		
 		postTabPanelElement.selectTab(0);
+		
+		contentPanelForChromeBugFixElement.clear();
+		contentPanelForChromeBugFixElement.add(threadsElement);
 	}
 	
 	

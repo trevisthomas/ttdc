@@ -336,9 +336,15 @@ a{outline: none;}
 
 .tt-TabPanel-fullpage{width:85%; margin: 0 auto;}
 .gwt-TabPanel { width:100%; }
+
+
+.gwt-TabPanelBottom{ border-style: solid; border-width: 1px; overflow: hidden; padding: 1px; margin: 0;}
+
+.tt-topic-topics-chromefail .gwt-TabPanelBottom{height:0;}
+/*
+Attempt at chrome fix 2013
 .gwt-TabPanelBottom { border-style: solid; border-width: 1px; overflow: hidden; padding: 1px; margin: 0;}
 
-/*
 TODO fix better
 This was an attempt to fix the fact that if none of hte post are very long that the table in the tab collapses but it caused some weird
 side effects in non mozilla browsers in the comment creator
