@@ -24,6 +24,10 @@ public class Photo {
 		return (String) rawPhoto.get("OriginalUrl");
 	}
 
+	public String getXLarge(){
+		return getOriginalUrl().replaceFirst(".jpg", "-5.jpg");  
+	}
+	
 	public String getXxLarge(){
 		return getOriginalUrl().replaceFirst(".jpg", "-6.jpg");  
 	}
@@ -35,6 +39,11 @@ public class Photo {
 	public String getThumbUrl(){
 		return getOriginalUrl().replaceFirst(".jpg", "-11.jpg");  
 	}
+	
+	public String getSmallerThumbUrl(){
+		return getOriginalUrl().replaceFirst(".jpg", "-10.jpg");  
+	}
+	
 	public String getCreator(){
 		//Not sure what field to use here.
 		return (String) rawPhoto.get("Copyright");
@@ -66,6 +75,14 @@ public class Photo {
 	public String getCopyright(){
 		String copyright = (String) rawPhoto.get("Copyright"); 
 		return copyright != null ? copyright : "";
+	}
+	
+	public String getUploadedOn(){
+		return Helpers.getDateAsRssString(rawPhoto, "UploadedOn"); 
+	}
+	
+	public String getTakenOn(){
+		return Helpers.getDateAsRssString(rawPhoto, "TakenOn");
 	}
 	
 	public String getPageUrl(){

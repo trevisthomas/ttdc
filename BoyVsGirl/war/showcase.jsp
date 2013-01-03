@@ -47,6 +47,17 @@ if(show==null){
 <% } %>
 
 
+<%
+	if(who != null && "chrissy".compareToIgnoreCase(who) == 0){
+%>
+	<LINK REL="alternate" TITLE="Chrissy's Showcase RSS" HREF="http://www.boyvsgirlphotography.com/rss_chrissy.jsp" TYPE="application/rss+xml" />
+<% } else {%>
+		<LINK REL="alternate" TITLE="Trevis' Showcase RSS" HREF="http://www.boyvsgirlphotography.com/rss_trevis.jsp" TYPE="application/rss+xml" />
+<% } %>
+	
+
+
+
 <link rel="stylesheet" href="css/style_masonry.css" />
 <link rel="stylesheet" href="css/lightbox.css" />
 <link rel="stylesheet" href="css/bvg.css" />
@@ -181,7 +192,7 @@ opacity: .1;
 			<div class="box photo col3">
 				<a class="fancybox" data-title-id="<%=p.getUniqueName()%>" rel="group" href="<%=p.getXxLarge()%>"><img src="<%=p.getMedium()%>" alt="" /></a>
 				<div id="<%=p.getUniqueName()%>" class="hidden">
-				    <%=p.getTitle()%> | <a href="<%=p.getPageUrl()%>">Buy!</a>
+				    <%=p.getTitle()%> | <a target="_blank" href="http://www.boyvsgirlphotography.com/showcase.jsp?who=<%=who%>&show=<%=p.getXxLarge()%>">Share</a> | <a href="<%=p.getPageUrl()%>">Buy!</a>
 				    <br/>
 				    <span class="fancybox-caption caption-<%=p.getUniqueName()%>">Loading...</span>
 				    <br/>
@@ -195,8 +206,9 @@ opacity: .1;
 				    //<div class="fb-like" data-href="http://www.google.com" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-colorscheme="dark"></div>
 				    //<div class="fb-like" data-href="http://localhost:8888/showcase.jsp?who=Trevis" data-send="false" data-width="450" data-show-faces="false" data-colorscheme="dark"></div>
 				    %>
+				    
 				</div>
-				<div class="fb-like" data-href="http://www.boyvsgirlphotography.com/showcase.jsp?who=<%=who%>&show=<%=p.getXxLarge()%>" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-colorscheme="dark"></div>
+				
 			</div>
 		<%
 	  	}

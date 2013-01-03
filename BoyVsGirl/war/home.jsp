@@ -22,7 +22,7 @@ PhotoSet photoSet = zenfolio.loadPhotoSet("616294023");
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 		<meta name="description" content="Boy vs Girl Photography - Trevis and Chrissy Thomas"/>
 		<meta name="medium" content="image"/>
-		<link rel="image_src" href="/img/BvG_Signature_2013_final_fancy.png"/>
+		<link rel="image_src" href="http://www.boyvsgirlphotography.com/img/BvG_Signature_2013_final_fancy_100_fb.png"/>
 		
 		
 		

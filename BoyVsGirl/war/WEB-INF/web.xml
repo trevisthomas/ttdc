@@ -21,6 +21,12 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<servlet-name>BoyVsGirl</servlet-name>
 		<url-pattern>/boyvsgirl</url-pattern>
 	</servlet-mapping>
+	<!-- 
+	<servlet-mapping>
+	    <servlet-name>jsp</servlet-name>
+	    <url-pattern>*.rss</url-pattern>
+	</servlet-mapping>
+	-->
 	<welcome-file-list>
 		<welcome-file>home.jsp</welcome-file>
 	</welcome-file-list>
