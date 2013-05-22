@@ -1,25 +1,35 @@
 package org.ttdc;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 
 public class ImagesServlet extends HttpServlet {
 	
 	private static final Map<String, FolderMonitor> monitorMap = new HashMap<String, FolderMonitor>();
 	
 	static{
-		monitorMap.put("trevis", new FolderMonitor("C:/PhotoStudioDemo/trevis"));
-		monitorMap.put("chrissy", new FolderMonitor("C:/PhotoStudioDemo/chrissy"));
+		Properties prop = new Properties();
+		InputStream in = Thread.currentThread().getContextClassLoader()
+                .getResourceAsStream("PhotoStudio.properties");
+		
+		try {
+			prop.load(in);
+			String path = prop.getProperty("path");
+			FolderMonitor.loadMonitorMapForPath(monitorMap, path);
+			in.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public static FolderMonitor getFolderMonitor(String key){
@@ -47,21 +57,6 @@ public class ImagesServlet extends HttpServlet {
 			System.err.println("Getting the latest image");
 
 		} else if ("/imagesSince".equals(req.getServletPath())) {
-			
-//			String lastImage = req.getParameter("last");
-//			String who = req.getParameter("who");
-//			
-//			System.err.println("Getting the images by: "+who+" since: "+lastImage);
-//			
-//			FolderMonitor fm = monitorMap.get(who);
-//			List<String> newImages = fm.getAllFilesSince(lastImage);
-//			
-//			if(newImages.size() > 0){
-//				req.setAttribute("listOfImages", newImages);
-//				javax.servlet.RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/listOfImages.jsp");
-//				rd.forward(req, resp);
-//			}
-//
 			
 			//JSON
 			String lastImage = req.getParameter("last");
