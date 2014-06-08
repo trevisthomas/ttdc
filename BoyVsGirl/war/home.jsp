@@ -20,24 +20,25 @@ PhotoSet photoSet = zenfolio.loadPhotoSet("616294023");
 
 		<title>Boy vs Girl Photography</title>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-		<meta name="description" content="Boy vs Girl Photography - Trevis and Chrissy Thomas"/>
+		<meta name="description" content="Boy vs Girl Photography - Trevis Thomas, Chrissy Thomas, Photography, Photographers, Modeling"/>
 		<meta name="medium" content="image"/>
 		<link rel="image_src" href="http://www.boyvsgirlphotography.com/img/BvG_Signature_2013_final_fancy_100_fb.png"/>
-		
+		<meta name="keywords" content="trevis thomas, chrissy thomas, photography, boy vs girl, boy vs girl photography, photos, photographers, photo portfolio, online photo portfolio, web photo portfolio, online photo gallery"/>
 		
 		
 		<link rel="stylesheet" href="css/supersized.css" type="text/css" media="screen" />
 		<link rel="stylesheet" href="theme/supersized.shutter.css" type="text/css" media="screen" />
 		<link rel="stylesheet" href="css/bvg.css" type="text/css" media="screen" />
 		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
-		
+		<link rel="alternate" title="Trevis' Showcase RSS" href="http://www.boyvsgirlphotography.com/rss_trevis.jsp" type="application/rss+xml" />
+		<link rel="alternate" title="Chrissy's Showcase RSS" href="http://www.boyvsgirlphotography.com/rss_chrissy.jsp" type="application/rss+xml" />
 		
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
 		<script type="text/javascript" src="js/jquery.easing.min.js"></script>
 		
 		<script type="text/javascript" src="js/supersized.3.2.6.min.js"></script>
 		<script type="text/javascript" src="theme/supersized.shutter.min.js"></script>
-		<script src="http://tab-slide-out.googlecode.com/files/jquery.tabSlideOut.v1.3.js"></script>
+		<script src="js/jquery.tabSlideOut.v1.3.js"></script>
 		
 		<script type="text/javascript">
 		    $(function(){
@@ -201,8 +202,9 @@ div#social_networks {
 		<span id="logo"><img src="/img/BvG_Signature_2013_final_fancy.png" /></span>
 	</div>	
 	
-	
+	<div class="menu-block">
 	<%@ include file="menu.jsp" %>
+	</div>
 
 			<div class="slide-out-div">
 				<a class="about-us-slider" href="http://link-for-non-js-users.html">Content</a>

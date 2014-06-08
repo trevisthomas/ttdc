@@ -10,6 +10,13 @@ public class Photo {
 	 * 
 	 * If you have trouble with it check out the way it builds the page url.  If the PageUrl isnt of the format expected (with the p) then it might not work right.
 	 */
+	
+	/*
+	 * http://help.zenfolio.com/customer/portal/articles/408312-display-images-sizes
+	 * 
+	 *  That article claims to show the sizes but it doesnt seem to match what i'm seeing.  Looks like my -3 is always 280 wide.
+	 * 
+	 */
 	public Photo(Map<String, Object> rawPhoto, String collectionId) {
 		this.rawPhoto = rawPhoto;
 		this.collectionId = collectionId;
@@ -34,6 +41,26 @@ public class Photo {
 	
 	public String getMedium(){
 		return getOriginalUrl().replaceFirst(".jpg", "-3.jpg");  
+	}
+	
+	public int getMediumWidth(){
+		return 280;
+	}
+	
+	public int getMediumHeight(){
+		double scaleHeight	= getMediumWidth() / getAspectRatio();
+		return (int) scaleHeight;
+	}
+	
+	public double getAspectRatio(){
+		double origW = (Integer)rawPhoto.get("Width") ;
+		double origH = (Integer)rawPhoto.get("Height") ;
+		
+		return origW / origH;
+	}
+	
+	public String getSquareThumbUrl(){
+		return getOriginalUrl().replaceFirst(".jpg", "-2.jpg");  
 	}
 	
 	public String getThumbUrl(){

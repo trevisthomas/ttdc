@@ -3,4 +3,11 @@
 	ZenfolioService zenfolio = new ZenfolioService();
 	
 	Photo photo = zenfolio.loadPhoto(id);
-%><%=photo.getCaption()%> 
+	String who = request.getParameter("who");
+%>
+<div id="fb-root"></div>
+<%=photo.getCaption()%> 
+<script>
+	$(document).attr('title', "<%=photo.getTitle()%> by <%=who%> | Boy vs Girl Photography"); 
+</script>
+

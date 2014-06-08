@@ -87,9 +87,24 @@ a:active {
 	margin: 0;
 	padding: 0;
 	width: 180px; /* width of menu */
+}
+
+.menu-block{
 	position: absolute;
 	left: 0px;
-	top: 180px;
+	top: 180px;	
+}
+
+.rss{
+	margin: 40px;
+}
+
+ a.rss{
+	color: #CC660B;
+}
+
+a.rss:hover{
+	color: #CC660B;
 }
 
 .sexypanels li {

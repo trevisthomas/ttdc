@@ -13,13 +13,15 @@
 		code = "31637159";
 	}
 	String show = request.getParameter("show");
+	String defaultTitle = "Boy vs Girl Photography | " + who;
+	String title = defaultTitle;
 
 %>
 <!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>Boy vs Girl Photography | <%=who%></title>
+
 
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
@@ -36,28 +38,38 @@
 <%
 if(show==null){
 %>
+	<title><%=defaultTitle%></title>
 	<meta name="description" content="Boy vs Girl Photography - <%=who%>'s Showcase" />
 	<link rel="image_src" href="<%=photoSet.getPhotos().get(0).getThumbUrl()%>" />
 <% } else { 
 	String photoId =  show.substring(show.lastIndexOf("/p") + 2, show.indexOf("-6.jpg"));
 	Photo p = zenfolio.loadPhoto(photoId);
-%>
+%>	
+	<title><%=p.getTitle()%> by <%=who%> | Boy vs Girl Photography</title>
 	<meta name="description" content="<%=p.getCaption()%>&nbsp;&copy; Boy vs Girl Photography" />
-	<link rel="image_src" href="<%=p.getThumbUrl()%>" />	
+	<link rel="image_src" href="<%=p.getSquareThumbUrl()%>" />
+	<link rel="image_src" href="<%=p.getSmallerThumbUrl()%>" />	
+	<link rel="image_src" href="<%=p.getThumbUrl()%>" />
 <% } %>
 
 
 <%
+	String rssFeedUrl;
+	String persons;
 	if(who != null && "chrissy".compareToIgnoreCase(who) == 0){
-%>
-	<LINK REL="alternate" TITLE="Chrissy's Showcase RSS" HREF="http://www.boyvsgirlphotography.com/rss_chrissy.jsp" TYPE="application/rss+xml" />
-<% } else {%>
-		<LINK REL="alternate" TITLE="Trevis' Showcase RSS" HREF="http://www.boyvsgirlphotography.com/rss_trevis.jsp" TYPE="application/rss+xml" />
+		rssFeedUrl = "http://www.boyvsgirlphotography.com/rss_chrissy.jsp";
+		persons = "Chrissy's";
+	%>
+<% } else {
+	rssFeedUrl = "http://www.boyvsgirlphotography.com/rss_trevis.jsp";
+	persons = "Trevis'";
+	%>
 <% } %>
+	<link rel="alternate" title="<%=persons%> Showcase RSS" href="<%=rssFeedUrl%>" type="application/rss+xml" />
 	
 
 
-
+<meta name="keywords" content="trevis thomas, chrissy thomas, photography, boy vs girl, boy vs girl photography, photos, photographers, photo portfolio, online photo portfolio, web photo portfolio, online photo gallery"/>
 <link rel="stylesheet" href="css/style_masonry.css" />
 <link rel="stylesheet" href="css/lightbox.css" />
 <link rel="stylesheet" href="css/bvg.css" />
@@ -136,20 +148,11 @@ if(show==null){
 .social{
 	padding:20px;
 }
-.fb-like:hover{
-opacity: 1;
-}
-
-.fb-like{
-opacity: .1;
-}
-
 
 ​</style>
 </head>
 
 <body style="overflow: auto;">
-<div id="fb-root"></div>
 <script>(function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) return;
@@ -179,9 +182,14 @@ opacity: .1;
 			<span id="logo"><img src="/img/BvG_Signature_2013_final_fancy.png" /></span>
 		</div>
 
-
-		<%@ include file="menu.jsp"%>
-
+		<div class="menu-block">
+			<%@ include file="menu.jsp"%>
+			<a class="rss" title="<%=persons%> showcase RSS!" href="<%=rssFeedUrl%>">
+                <img src="/img/icon-rss-16.png" alt="" style="border-width:0px;" >
+                RSS Feed
+            </a>
+		</div>
+		
 		
 		
 		<div id="container" class="clearfix">
@@ -190,13 +198,13 @@ opacity: .1;
 		for(Photo p : photoSet.getPhotos()){
 		%>
 			<div class="box photo col3">
-				<a class="fancybox" data-title-id="<%=p.getUniqueName()%>" rel="group" href="<%=p.getXxLarge()%>"><img src="<%=p.getMedium()%>" alt="" /></a>
+				<a class="fancybox" data-title-id="<%=p.getUniqueName()%>" rel="group" href="<%=p.getXxLarge()%>"><img width="<%=p.getMediumWidth()%>" height="<%=p.getMediumHeight()%>" src="<%=p.getMedium()%>" alt="" /></a>
 				<div id="<%=p.getUniqueName()%>" class="hidden">
-				    <%=p.getTitle()%> | <a target="_blank" href="http://www.boyvsgirlphotography.com/showcase.jsp?who=<%=who%>&show=<%=p.getXxLarge()%>">Share</a> | <a href="<%=p.getPageUrl()%>">Buy!</a>
+					<%=p.getTitle()%> | <a href="<%=p.getPageUrl()%>">Buy</a>
 				    <br/>
 				    <span class="fancybox-caption caption-<%=p.getUniqueName()%>">Loading...</span>
 				    <br/>
-				   
+				   <div class="fb-like" data-href="http://www.boyvsgirlphotography.com/showcase.jsp?who=<%=who%>&show=<%=p.getXxLarge()%>" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-colorscheme="dark"></div>
 				    <%
 				    //<div class="social">
 				    //<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://localhost:8888/showcase.jsp?who=Trevis">Tweet</a>
@@ -289,11 +297,6 @@ opacity: .1;
 		});
 	</script>
 	<script type="text/javascript">
-		function beforeLoadFunction(component, caption) {
-			var text = '<span class="fancybox-caption">'+caption+'</span>';
-			component.title += "working?";
-        }
-			
 		$(document).ready(function() {
 			$(".fancybox").fancybox({
 				beforeLoad: function (){
@@ -304,16 +307,25 @@ opacity: .1;
 		                if (el.length) {
 		                    this.title = el.html() + "<br/>";
 		                }
+		                $('.caption-' + id).find("script").each(function(i) {
+		                    eval($(this).text());
+		                });
 		            }
 				}
 				,
 				afterLoad: function(){
 					var id = $(this.element).data('title-id');
 		            if (id) {
-						$.get('/caption.jsp?id='+id, function(data) {
+						$.get('/caption.jsp?who=<%=who%>&id='+id, function(data) {
 							$('.caption-' + id).html(data);
+							try { FB.XFBML.parse(); } catch(e) { }	
 						});
 		            }
+				}
+				,
+				 afterClose : function() {
+					 $(document).attr('title', "<%=defaultTitle%>");
+			        return;
 				}
 		    });
 		});
