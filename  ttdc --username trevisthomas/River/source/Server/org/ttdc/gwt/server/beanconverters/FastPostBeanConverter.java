@@ -5,8 +5,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
-import org.mortbay.log.Log;
 import org.ttdc.gwt.client.beans.GAssociationPostTag;
 import org.ttdc.gwt.client.beans.GEntry;
 import org.ttdc.gwt.client.beans.GForum;
@@ -39,7 +39,7 @@ import org.ttdc.persistence.objects.UserObject;
 import org.ttdc.persistence.objects.UserObjectTemplate;
 
 public class FastPostBeanConverter {
-	
+	private final static Logger log = Logger.getLogger(FastPostBeanConverter.class);
 	
 	public static void inflateDay(Day day, InboxDao inboxDao){
 		
@@ -81,7 +81,7 @@ public class FastPostBeanConverter {
 				rpcPostList.add(rpcPost);
 			}
 			catch(NullPointerException e){
-				Log.info(e.getMessage());
+				log.info(e.getMessage());
 			}
 		}
 		
