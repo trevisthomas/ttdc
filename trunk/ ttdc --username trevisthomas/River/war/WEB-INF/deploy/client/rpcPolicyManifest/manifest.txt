@@ -1,2 +1,3 @@
 # Module client
 # RPC service class, partial path of RPC policy file
+org.ttdc.gwt.client.services.RpcService, 5D36E35777D3C08A68EEF2CEEA391038.gwt.rpc
