@@ -94,7 +94,7 @@ public abstract class RemoteServiceSessionServlet extends RemoteServiceServlet{
 		}
 	}
 	
-	protected GPerson broadcastPerson(Person person){
+	static public GPerson broadcastPerson(Person person){
 		GPerson gPerson = FastPostBeanConverter.convertPerson(person);
 		PersonEvent event = new PersonEvent(PersonEventType.TRAFFIC,gPerson);
 		ServerEventBroadcaster.getInstance().broadcastEvent(event);

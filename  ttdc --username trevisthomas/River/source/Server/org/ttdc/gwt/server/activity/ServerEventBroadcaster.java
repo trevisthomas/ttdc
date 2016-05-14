@@ -31,6 +31,14 @@ public class ServerEventBroadcaster {
 	private volatile int nextConnectionIndex = 0;
 	private static final String CONNECTION_ID_PREFIX = "CONN_ID_";
 	
+	
+	/* 
+	 * WARNING!! I JUST SPENT AN HOUR Struggling to determine why this class wouldnt initialize!  Turns out it was because i didnt have a 
+	 * application.properties file in my local folder! Remember, you deleted that file from github because it has authentication info
+	 * in it!
+	 * 
+	 */
+	
 	private ServerEventBroadcaster(){
 		scheduler = Executors.newScheduledThreadPool(1);
 		userQueues = new ConcurrentHashMap<String,ServerEventQueue>();

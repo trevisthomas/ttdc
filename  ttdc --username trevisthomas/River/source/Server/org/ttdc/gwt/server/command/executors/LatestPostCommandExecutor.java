@@ -63,6 +63,47 @@ public class LatestPostCommandExecutor extends CommandExecutor<PaginatedListComm
 	}
 
 	
+	/**
+	 * This execute method is being added so that my new restful webservices can perform this command.
+	 * @param cmd
+	 * @return
+	 */
+	public PaginatedListCommandResult<GPost> execute(LatestPostsCommand cmd){
+		PaginatedListCommandResult<GPost> result;
+		
+		try{
+			Persistence.beginSession();
+			switch (cmd.getAction()) {
+			case LATEST_CONVERSATIONS:
+				result = loadConversations(cmd);
+				break;
+			case LATEST_FLAT:
+				result = loadFlatFuckHibernate(cmd);
+				break;
+			case LATEST_NESTED:
+				result = loadNested(cmd);
+				break;
+			case LATEST_THREADS:
+				result = loadThreads(cmd);
+				break;
+			case LATEST_EARMARKS:
+				result = loadEarmarks(cmd);
+				break;
+			case LATEST_GROUPED:
+				result = loadGroupedFuckHibernate(cmd);	
+				break;
+			default:
+				throw new RuntimeException("LatestPostCommandExecutor doesnt understand that action type");
+			}
+			incrementUserHitCount();
+			Persistence.commit();
+		}
+		catch (RuntimeException e) {
+			Persistence.rollback();
+			throw e;
+		}
+		return result;
+	}
 
 	private PaginatedListCommandResult<GPost> loadThreads(LatestPostsCommand cmd) {
 		LatestPostsDao dao = getLatestPostDaoWithPersonalFilter(cmd);

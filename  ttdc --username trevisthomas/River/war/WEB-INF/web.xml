@@ -24,6 +24,12 @@
     <servlet-name>rpcServlet</servlet-name>
     <servlet-class>org.ttdc.gwt.server.RpcServlet</servlet-class>
   </servlet>
+
+  <servlet>
+    <servlet-name>Restful</servlet-name>
+    <servlet-class>org.ttdc.servlets.RestfulServlet</servlet-class>
+  </servlet>
+  
   
   <servlet-mapping>
   	<servlet-name>Images</servlet-name>
@@ -43,6 +49,11 @@
   <servlet-mapping>
     <servlet-name>rpcServlet</servlet-name>
     <url-pattern>/client/rpc</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>Restful</servlet-name>
+    <url-pattern>/restful/*</url-pattern>
   </servlet-mapping>
   
   <!-- Default page to serve -->

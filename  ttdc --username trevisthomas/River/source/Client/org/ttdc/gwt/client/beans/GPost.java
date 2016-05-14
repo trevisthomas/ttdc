@@ -93,7 +93,8 @@ public class GPost extends GBase{
 		this.entries = entries;
 	}
 	public String getEntry(){
-		if(latestEntry == null) throw new RuntimeException("Latest entry is null.");
+//		if(latestEntry == null) throw new RuntimeException("Latest entry is null.");
+		if(latestEntry == null) return "";
 		return latestEntry.getBody();
 	}
 	public List<GAssociationPostTag> getTagAssociations() {
@@ -231,6 +232,10 @@ public class GPost extends GBase{
 	}
 
 	public String getTitle() {
+		if(getTitleTag() == null){
+			return null;
+		}
+		
 		if(getRoot() != null)
 			return getTitleTag().getValue() + (getRoot().isMovie() ? " ("+getRoot().getPublishYear()+")" : "");
 		else
