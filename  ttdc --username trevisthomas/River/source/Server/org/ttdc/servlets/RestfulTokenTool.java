@@ -31,7 +31,7 @@ public class RestfulTokenTool {
    }
 
     /** Write the object to a Base64 string. */
-    private static String toEncodedString( Serializable o ) throws IOException {
+	private static String toEncodedString(Serializable o) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream( baos );
         oos.writeObject( o );

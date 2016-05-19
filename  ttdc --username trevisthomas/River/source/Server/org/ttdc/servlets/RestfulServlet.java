@@ -1,7 +1,6 @@
 package org.ttdc.servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -10,20 +9,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.ttdc.gwt.client.beans.GPerson;
-import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.services.Command;
 import org.ttdc.gwt.client.services.CommandResult;
 import org.ttdc.gwt.client.services.RemoteServiceException;
 import org.ttdc.gwt.server.RemoteServiceSessionServlet;
-import org.ttdc.gwt.server.RpcServlet;
-import org.ttdc.gwt.server.command.executors.LatestPostCommandExecutor;
+import org.ttdc.gwt.server.command.CommandExecutor;
+import org.ttdc.gwt.server.command.CommandExecutorFactory;
 import org.ttdc.gwt.server.dao.AccountDao;
 import org.ttdc.gwt.shared.commands.LatestPostsCommand;
-import org.ttdc.gwt.shared.commands.results.PaginatedListCommandResult;
 import org.ttdc.gwt.shared.commands.results.PersonCommandResult;
-import org.ttdc.gwt.shared.commands.types.PostListType;
 import org.ttdc.persistence.Persistence;
-import org.ttdc.persistence.PopulateCache;
 import org.ttdc.persistence.objects.Person;
 import org.ttdc.util.Cryptographer;
 
@@ -63,6 +58,9 @@ public class RestfulServlet extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		String path = request.getPathInfo();
 
+		String token = "";
+		initializeExecutorFactory(token);
+
 		try {
 
 			switch (path.toLowerCase()) {
@@ -83,6 +81,10 @@ public class RestfulServlet extends HttpServlet {
 
 	}
 
+	private void initializeExecutorFactory(String token) {
+
+	}
+
 	private void perfromInternalServerError(HttpServletResponse response) {
 		response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 	}
@@ -95,23 +97,24 @@ public class RestfulServlet extends HttpServlet {
 
 		String username = root.get("username").asText();
 		String password = root.get("password").asText();
-		
-		RestfulToken token = new RestfulToken("testname", "testpwd");
-		
-		String t = RestfulTokenTool.toTokenString(token);
-		
-		RestfulToken t2 = RestfulTokenTool.fromTokenString(t);
-		 
+
+//		RestfulToken token = new RestfulToken("testname", "testpwd");
+//
+//		String t = RestfulTokenTool.toTokenString(token);
+//
+//		RestfulToken t2 = RestfulTokenTool.fromTokenString(t);
+
 		// String username = root.get("username").toString().replace('\"',
 		// ' ').trim();
 		// String password = root.get("password").toString().replace('\"',
 		// ' ').trim();
 
-//		RpcServlet authenticationServlet = new RpcServlet();
+		// RpcServlet authenticationServlet = new RpcServlet();
 
 		try {
-			PersonCommandResult result = authenticate(
-					username, password);
+			PersonCommandResult result = authenticate(username, password);
+			RestfulToken token = new RestfulToken(result.getPerson().getPersonId());
+			result.setToken(RestfulTokenTool.toTokenString(token));
 			mapper.writeValue(response.getWriter(), result);
 		} catch (RuntimeException e) {
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -150,11 +153,29 @@ public class RestfulServlet extends HttpServlet {
 		LatestPostsCommand cmd = mapper.readValue(request.getInputStream(),
 				LatestPostsCommand.class);
 
-		LatestPostCommandExecutor commandExecutor = new LatestPostCommandExecutor();
-
-		PaginatedListCommandResult<GPost> result = commandExecutor.execute(cmd);
+		CommandResult result = execute(cmd);
 
 		mapper.writeValue(response.getWriter(), result);
+	}
+
+	public <T extends CommandResult> T execute(Command<T> command) throws IOException {
+		String personId = null;
+		if (command.getToken() != null) {
+			RestfulToken t2;
+			try {
+				t2 = RestfulTokenTool.fromTokenString(command.getToken());
+				personId = t2.getPersonId();
+			} catch (ClassNotFoundException e) {
+				log.error(
+						"Blew up trying to turn restful token into token object. Allowing user to proceed anonymously.",
+						e);
+			}
+		}
+
+		CommandExecutor cmdexec = CommandExecutorFactory.createExecutor(personId, command);
+		CommandResult result = cmdexec.executeCommand();
+		return (T) result;
+
 	}
 
 }

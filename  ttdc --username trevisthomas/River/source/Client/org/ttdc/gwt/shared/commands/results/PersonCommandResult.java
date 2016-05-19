@@ -5,6 +5,7 @@ import org.ttdc.gwt.client.services.CommandResult;
 
 public class PersonCommandResult implements CommandResult {
 	private GPerson person;
+	private String token; // Security token for JSON
 
 	public PersonCommandResult() {}
 	
@@ -14,5 +15,13 @@ public class PersonCommandResult implements CommandResult {
 	
 	public GPerson getPerson() {
 		return person;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 }
