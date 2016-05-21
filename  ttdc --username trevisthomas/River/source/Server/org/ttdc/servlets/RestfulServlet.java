@@ -17,6 +17,8 @@ import org.ttdc.gwt.server.command.CommandExecutor;
 import org.ttdc.gwt.server.command.CommandExecutorFactory;
 import org.ttdc.gwt.server.dao.AccountDao;
 import org.ttdc.gwt.shared.commands.LatestPostsCommand;
+import org.ttdc.gwt.shared.commands.PostCrudCommand;
+import org.ttdc.gwt.shared.commands.TopicCommand;
 import org.ttdc.gwt.shared.commands.results.PersonCommandResult;
 import org.ttdc.persistence.Persistence;
 import org.ttdc.persistence.objects.Person;
@@ -58,17 +60,24 @@ public class RestfulServlet extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		String path = request.getPathInfo();
 
-		String token = "";
-		initializeExecutorFactory(token);
+		// String token = "";
+		// initializeExecutorFactory(token);
 
 		try {
 
 			switch (path.toLowerCase()) {
 			case "/latestposts":
 				performLatestPosts(request, response);
+				// performGeneric(request, response, LatestPostsCommand.class);
 				break;
 			case "/login":
 				performLogin(request, response);
+				break;
+			case "/topic":
+				performTopic(request, response);
+				break;
+			case "/post":
+				performPost(request, response);
 				break;
 			default:
 				perfromInternalServerError(response);
@@ -81,14 +90,42 @@ public class RestfulServlet extends HttpServlet {
 
 	}
 
-	private void initializeExecutorFactory(String token) {
-
+	/*
+	 * 
+	 */
+	private void performPost(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		PostCrudCommand cmd = mapper.readValue(request.getInputStream(), PostCrudCommand.class);
+		CommandResult result = execute(cmd);
+		mapper.writeValue(response.getWriter(), result);
 	}
+
+	/*
+	 * 
+	 */
+	private void performTopic(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		TopicCommand cmd = mapper.readValue(request.getInputStream(), TopicCommand.class);
+		CommandResult result = execute(cmd);
+		mapper.writeValue(response.getWriter(), result);
+	}
+
+	// private <T extends Command> void performGeneric(HttpServletRequest request, HttpServletResponse response,
+	// Class<T> classType) throws Exception {
+	// Object cmd = mapper.readValue(request.getInputStream(), classType.getDeclaringClass());
+	// CommandResult result = execute((T) cmd);
+	// mapper.writeValue(response.getWriter(), result);
+	// }
+
+	// private void initializeExecutorFactory(String token) {
+	//
+	// }
 
 	private void perfromInternalServerError(HttpServletResponse response) {
 		response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 	}
 
+	/*
+	 * 
+	 */
 	private void performLogin(HttpServletRequest request,
 			HttpServletResponse response) throws JsonProcessingException,
 			IOException, RemoteServiceException, ClassNotFoundException {
@@ -97,19 +134,6 @@ public class RestfulServlet extends HttpServlet {
 
 		String username = root.get("username").asText();
 		String password = root.get("password").asText();
-
-//		RestfulToken token = new RestfulToken("testname", "testpwd");
-//
-//		String t = RestfulTokenTool.toTokenString(token);
-//
-//		RestfulToken t2 = RestfulTokenTool.fromTokenString(t);
-
-		// String username = root.get("username").toString().replace('\"',
-		// ' ').trim();
-		// String password = root.get("password").toString().replace('\"',
-		// ' ').trim();
-
-		// RpcServlet authenticationServlet = new RpcServlet();
 
 		try {
 			PersonCommandResult result = authenticate(username, password);
@@ -121,8 +145,43 @@ public class RestfulServlet extends HttpServlet {
 		}
 	}
 
+
+	/*
+	 * 
+	 */
+	private void performLatestPosts(HttpServletRequest request,
+			HttpServletResponse response) throws IOException {
+
+		LatestPostsCommand cmd = mapper.readValue(request.getInputStream(),
+				LatestPostsCommand.class);
+
+		CommandResult result = execute(cmd);
+
+		mapper.writeValue(response.getWriter(), result);
+	}
+
+	private <T extends CommandResult> T execute(Command<T> command) throws IOException {
+		String personId = null;
+		if (command.getToken() != null) {
+			RestfulToken t2;
+			try {
+				t2 = RestfulTokenTool.fromTokenString(command.getToken());
+				personId = t2.getPersonId();
+			} catch (ClassNotFoundException e) {
+				log.error(
+						"Blew up trying to turn restful token into token object. Allowing user to proceed anonymously.",
+						e);
+			}
+		}
+
+		CommandExecutor cmdexec = CommandExecutorFactory.createExecutor(personId, command);
+		CommandResult result = cmdexec.executeCommand();
+		return (T) result;
+
+	}
+
 	// Trevis: You copied these methods here because the real ones are burried
-	// in RpcServlet, and that guy tries to put the new ueser into session,
+	// in RpcServlet, and that guy tries to put the new user into session,
 	// which you didnt want for the webservice
 	private PersonCommandResult authenticate(String login, String password) {
 		Persistence.beginSession();
@@ -145,37 +204,6 @@ public class RestfulServlet extends HttpServlet {
 	private GPerson processNewlyAuthenticatedUser(Person person) {
 		AccountDao.userHit(person.getPersonId());
 		return RemoteServiceSessionServlet.broadcastPerson(person);
-	}
-
-	private void performLatestPosts(HttpServletRequest request,
-			HttpServletResponse response) throws IOException {
-
-		LatestPostsCommand cmd = mapper.readValue(request.getInputStream(),
-				LatestPostsCommand.class);
-
-		CommandResult result = execute(cmd);
-
-		mapper.writeValue(response.getWriter(), result);
-	}
-
-	public <T extends CommandResult> T execute(Command<T> command) throws IOException {
-		String personId = null;
-		if (command.getToken() != null) {
-			RestfulToken t2;
-			try {
-				t2 = RestfulTokenTool.fromTokenString(command.getToken());
-				personId = t2.getPersonId();
-			} catch (ClassNotFoundException e) {
-				log.error(
-						"Blew up trying to turn restful token into token object. Allowing user to proceed anonymously.",
-						e);
-			}
-		}
-
-		CommandExecutor cmdexec = CommandExecutorFactory.createExecutor(personId, command);
-		CommandResult result = cmdexec.executeCommand();
-		return (T) result;
-
 	}
 
 }
