@@ -7,8 +7,8 @@ Tech: gwt, hibernate, json
 
 //Samples for the new REST interface. Still beta, but it's in production.
 
-/** Login.  Used to get a token.
-http://ttdc.us/restful/login
+<p>Login.  Used to get a token.</p>
+URL:http://ttdc.us/restful/login
 
 Request:
 <pre>
@@ -19,10 +19,10 @@ Request:
 </pre>
 Response:
 
-Person object and a token
+<p>Person object and a token</p>
 
-/** Get a collection of the latest posts
-http://ttdc.us/restful/latestposts
+<p>Get a collection of the latest posts</p>
+URL: http://ttdc.us/restful/latestposts
 
 Request:
 <pre>
@@ -33,8 +33,7 @@ Request:
 </pre>
 Response:
 
-A jason object with with some details about the page size, page number requested and a 'list' argument which contains a 1 level deep hierarchy 
-of the latest posts visbile to all users of TTDC sorted by the conversation with the most recient reply
+<p>A jason object with with some details about the page size, page number requested and a 'list' argument which contains a 1 level deep hierarchy of the latest posts visbile to all users of TTDC sorted by the conversation with the most recient reply</p>
 
 Request:
 <pre>
@@ -46,7 +45,7 @@ Request:
 
 Response: 
 
-Same as above except the list contains no hierarchy.  Just the posts sorted in reverse creation order.
+<p>Same as above except the list contains no hierarchy.  Just the posts sorted in reverse creation order.</p>
 
 Request:
 <pre>
@@ -59,11 +58,11 @@ Request:
 
 Response: 
 
-Same as above except now all post visibile to a user with the given security token are in the result list. (Private and Muted filters are applied)
+<p>Same as above except now all post visibile to a user with the given security token are in the result list. (Private and Muted filters are applied)</p>
 
 
-/** Get a thread (topic)
-http://ttdc.us/restful/topic
+<p>Get a thread (topic)</p>
+URL: http://ttdc.us/restful/topic
 
 Request:
 <pre>
@@ -75,10 +74,10 @@ Request:
 }
 </pre>
 Response:
-Returns a results json object with a format similar to request the latest comments grouped.
+<p>Returns a results json object with a format similar to request the latest comments grouped.</p>
 
-/**  Post CRUD operations
-http://ttdc.us/restful/post
+<p>Post CRUD operations</p>
+URL: http://ttdc.us/restful/post
 
 /* Create a post with on the fly login
 Request:
@@ -105,5 +104,5 @@ Request:
 </pre>
 
 Response: 
-Response contains the newly created post object
+<p> Response contains the newly created post object</p>
 
