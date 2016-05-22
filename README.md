@@ -5,10 +5,10 @@ Where my friends and i hang out online.
 
 Tech: gwt, hibernate, json
 
-//Tips for the new REST interface. Still beta, but it's in production.
+//Samples for the new REST interface. Still beta, but it's in production.
 
-http://ttdc.us/restful/login
 /** Login.  Used to get a token.
+http://ttdc.us/restful/login
 
 Request:
 <pre>
