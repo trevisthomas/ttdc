@@ -9,10 +9,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.ttdc.gwt.client.beans.GEntry;
-import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.beans.GPost;
-import org.ttdc.gwt.client.messaging.person.PersonEvent;
-import org.ttdc.gwt.client.messaging.person.PersonEventType;
 import org.ttdc.gwt.client.messaging.post.PostEvent;
 import org.ttdc.gwt.client.messaging.post.PostEventType;
 import org.ttdc.gwt.client.services.CommandResult;
@@ -338,7 +335,7 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 //		}
 		
 		
-		
+
 		return post;
 	}
 

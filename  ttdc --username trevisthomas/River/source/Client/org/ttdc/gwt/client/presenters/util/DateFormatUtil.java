@@ -6,7 +6,7 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 
 public class DateFormatUtil {
 	
-	public static final DateTimeFormat longDateFormatter = DateTimeFormat.getFormat("MMMM d, yyyyy 'at' h:mm a");
+	public static final DateTimeFormat longDateFormatter = DateTimeFormat.getFormat("MMMM d, yyyy 'at' h:mm a");
 	public static final DateTimeFormat longDayFormatter = DateTimeFormat.getFormat("EEEE, MMM d, yyyy");
 	public static final DateTimeFormat mediumDayFormatter = DateTimeFormat.getFormat("MMM d, yyyy");
 	public static final DateTimeFormat timeFormatter = DateTimeFormat.getFormat("hh:mm:ss a");

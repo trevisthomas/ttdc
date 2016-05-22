@@ -60,15 +60,11 @@ public class RestfulServlet extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		String path = request.getPathInfo();
 
-		// String token = "";
-		// initializeExecutorFactory(token);
-
 		try {
 
 			switch (path.toLowerCase()) {
 			case "/latestposts":
 				performLatestPosts(request, response);
-				// performGeneric(request, response, LatestPostsCommand.class);
 				break;
 			case "/login":
 				performLogin(request, response);
@@ -107,17 +103,6 @@ public class RestfulServlet extends HttpServlet {
 		CommandResult result = execute(cmd);
 		mapper.writeValue(response.getWriter(), result);
 	}
-
-	// private <T extends Command> void performGeneric(HttpServletRequest request, HttpServletResponse response,
-	// Class<T> classType) throws Exception {
-	// Object cmd = mapper.readValue(request.getInputStream(), classType.getDeclaringClass());
-	// CommandResult result = execute((T) cmd);
-	// mapper.writeValue(response.getWriter(), result);
-	// }
-
-	// private void initializeExecutorFactory(String token) {
-	//
-	// }
 
 	private void perfromInternalServerError(HttpServletResponse response) {
 		response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

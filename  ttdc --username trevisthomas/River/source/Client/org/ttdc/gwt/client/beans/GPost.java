@@ -8,6 +8,8 @@ import org.ttdc.gwt.client.constants.TagConstants;
 import org.ttdc.gwt.shared.util.PostFlag;
 import org.ttdc.gwt.shared.util.PostFlagBitmasks;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class GPost extends GBase{
 	private String postId;
 	private GPost parent;
@@ -149,6 +151,7 @@ public class GPost extends GBase{
 		this.editDate = editDate;
 	}
 
+
 	public GPost getParent() {
 		return parent;
 	}
@@ -157,10 +160,12 @@ public class GPost extends GBase{
 		this.parent = parent;
 	}
 
+	@JsonIgnore
 	public GPost getRoot() {
 		return root;
 	}
 
+	@JsonIgnore
 	public void setRoot(GPost root) {
 		this.root = root;
 	}

@@ -48,10 +48,11 @@ public class ReviewSummaryPanel extends Composite {
 	
 	public void init(GPost post){
 		summaryElement.setInnerText(post.getLatestEntry().getSummary());
-		postLinkPresenter.setPost(post,"[read]");
+		postLinkPresenter.setPost(post, "[read]");
 		postLinkPresenter.init();
 		creatorLinkPresenter.setPerson(post.getCreator());
 		creatorLinkPresenter.init();
+
 		movieRatingPresenter.setRating(post.getParent().getRatingByPerson(post.getCreator().getPersonId()));
 	}
 	
