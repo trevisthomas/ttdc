@@ -1,4 +1,4 @@
-http://127.0.0.1:8888/restful/login
+http://ttdc.us/restful/login
 /** Login.  Used to get a token.
 Request:
 {
@@ -10,7 +10,7 @@ Response:
 Person object and a token
 
 /** Get a collection of the latest posts
-http://127.0.0.1:8888/restful/latestposts
+http://ttdc.us/restful/latestposts
 
 Request:
 {
@@ -46,7 +46,7 @@ Same as above except now all post visibile to a user with the given security tok
 
 
 /** Get a thread (topic)
-http://127.0.0.1:8888/restful/topic
+http://ttdc.us/restful/topic
 
 Request{
 	"postId": "7F1A7436-DDF6-4980-AC1A-F3AD0A5E4171",
@@ -59,7 +59,7 @@ Response:
 Returns a results json object with a format similar to request the latest comments grouped.
 
 /**  Post CRUD operations
-http://127.0.0.1:8888/restful/post
+http://ttdc.us/restful/post
 
 /* Create a post with on the fly login
 Request:
