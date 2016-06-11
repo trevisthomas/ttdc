@@ -18,6 +18,7 @@ import org.ttdc.gwt.server.command.CommandExecutorFactory;
 import org.ttdc.gwt.server.dao.AccountDao;
 import org.ttdc.gwt.shared.commands.LatestPostsCommand;
 import org.ttdc.gwt.shared.commands.PostCrudCommand;
+import org.ttdc.gwt.shared.commands.SearchPostsCommand;
 import org.ttdc.gwt.shared.commands.TopicCommand;
 import org.ttdc.gwt.shared.commands.results.PersonCommandResult;
 import org.ttdc.persistence.Persistence;
@@ -75,6 +76,9 @@ public class RestfulServlet extends HttpServlet {
 			case "/post":
 				performPost(request, response);
 				break;
+			case "/latestconversations":
+				performSearch(request, response);
+				break;
 			default:
 				perfromInternalServerError(response);
 			}
@@ -85,6 +89,7 @@ public class RestfulServlet extends HttpServlet {
 		}
 
 	}
+
 
 	/*
 	 * 
@@ -130,6 +135,18 @@ public class RestfulServlet extends HttpServlet {
 		}
 	}
 
+
+	/*
+	 * Trevis, you added this to get "CONVERSATIONS" this search command seemed to be the only place that you provided
+	 * it. It exposes a lot more than you have tested via json.
+	 */
+	private void performSearch(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		SearchPostsCommand cmd = mapper.readValue(request.getInputStream(), SearchPostsCommand.class);
+
+		CommandResult result = execute(cmd);
+
+		mapper.writeValue(response.getWriter(), result);
+	}
 
 	/*
 	 * 
