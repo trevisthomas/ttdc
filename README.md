@@ -76,6 +76,17 @@ Request:
 Response:
 <p>Returns a results json object with a format similar to request the latest comments grouped.</p>
 
+Request:
+<pre>
+{
+	"postId": "15807D62-5841-43FA-A004-292F6820283F",
+	"pageNumber": 1,
+	"type": "CONVERSATION"
+}
+</pre>
+Response:
+<p>Returns the list of replies to a conversation. </p>
+
 <p>Post CRUD operations</p>
 URL: http://ttdc.us/restful/post
 
@@ -106,3 +117,19 @@ Request:
 Response: 
 <p> Response contains the newly created post object</p>
 
+/* Search
+
+Request:
+URL: https://ttdc.us/restful/latestConversations
+
+<pre>
+{
+	"postSearchType": "CONVERSATIONS",
+	"pageNumber": 1,
+	"sortOrder": "BY_DATE",
+	"sortDirection": "DESC"
+}
+</pre>
+
+Response:
+<p>Results with a list of posts. Note: This command has a lot more functionalty that isnt documented yet.</p>
