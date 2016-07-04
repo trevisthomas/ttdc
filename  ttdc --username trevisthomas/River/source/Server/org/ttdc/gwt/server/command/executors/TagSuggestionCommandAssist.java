@@ -1,7 +1,5 @@
 package org.ttdc.gwt.server.command.executors;
 
-import static org.ttdc.persistence.Persistence.beginSession;
-import static org.ttdc.persistence.Persistence.commit;
 import static org.ttdc.persistence.Persistence.session;
 
 import java.util.ArrayList;
@@ -106,7 +104,10 @@ public class TagSuggestionCommandAssist extends FilteredPostPaginatedDaoBase{
 	}
 	
 	private static String highlightQueryString(String value, int startQueryMatch, int endQueryMatch) {
-		return  "<b>" + value.substring(0, startQueryMatch)+"</b>" + value.substring(startQueryMatch, endQueryMatch) +"<b>" + value.substring(endQueryMatch)+"</b>";
+		// return "<b>" + value.substring(0, startQueryMatch)+"</b>" + value.substring(startQueryMatch, endQueryMatch)
+		// +"<b>" + value.substring(endQueryMatch)+"</b>";
+		return value.substring(0, startQueryMatch) + "<b>" + value.substring(startQueryMatch, endQueryMatch) + "</b>"
+				+ value.substring(endQueryMatch);
 	}
 
 	

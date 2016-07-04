@@ -133,3 +133,14 @@ URL: https://ttdc.us/restful/latestConversations
 
 Response:
 <p>Results with a list of posts. Note: This command has a lot more functionalty that isnt documented yet.</p>
+
+Request: 
+URL: https://ttdc.us/restful/autocomplete
+<pre>
+{
+	"query": "ta",
+	"token": ""
+}
+</pre>
+Response:
+

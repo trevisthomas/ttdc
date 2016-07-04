@@ -1,6 +1,8 @@
 package org.ttdc.servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -8,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
+import org.ttdc.gwt.client.autocomplete.SuggestionObject;
 import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.services.Command;
 import org.ttdc.gwt.client.services.CommandResult;
@@ -19,8 +22,12 @@ import org.ttdc.gwt.server.dao.AccountDao;
 import org.ttdc.gwt.shared.commands.LatestPostsCommand;
 import org.ttdc.gwt.shared.commands.PostCrudCommand;
 import org.ttdc.gwt.shared.commands.SearchPostsCommand;
+import org.ttdc.gwt.shared.commands.TagSuggestionCommand;
+import org.ttdc.gwt.shared.commands.TagSuggestionCommandMode;
 import org.ttdc.gwt.shared.commands.TopicCommand;
 import org.ttdc.gwt.shared.commands.results.PersonCommandResult;
+import org.ttdc.gwt.shared.commands.results.TagSuggestionCommandResult;
+import org.ttdc.gwt.shared.util.StringUtil;
 import org.ttdc.persistence.Persistence;
 import org.ttdc.persistence.objects.Person;
 import org.ttdc.util.Cryptographer;
@@ -28,6 +35,8 @@ import org.ttdc.util.Cryptographer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gwt.user.client.ui.SuggestOracle;
+import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
 
 public class RestfulServlet extends HttpServlet {
 	private static final Logger log = Logger.getLogger(RestfulServlet.class);
@@ -79,6 +88,9 @@ public class RestfulServlet extends HttpServlet {
 			case "/latestconversations":
 				performSearch(request, response);
 				break;
+			case "/autocomplete":
+				performAutoComplete(request, response);
+				break;
 			default:
 				perfromInternalServerError(response);
 			}
@@ -90,6 +102,80 @@ public class RestfulServlet extends HttpServlet {
 
 	}
 
+
+	private void performAutoComplete(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		// TODO Auto-generated method stub
+
+		JsonNode root = mapper.readTree(request.getInputStream());
+
+		String query = root.get("query").asText();
+		String token = root.get("token").asText();
+
+		// PostCrudCommand cmd = mapper.readValue(request.getInputStream(), PostCrudCommand.class);
+
+		SuggestOracle.Request r = new SuggestOracle.Request();
+		r.setQuery(query);
+		r.setLimit(10);
+
+		TagSuggestionCommand cmd = new TagSuggestionCommand(TagSuggestionCommandMode.SEARCH_POSTS, r);
+		cmd.setToken(StringUtil.empty(token) ? null : token);
+
+		TagSuggestionCommandResult result = (TagSuggestionCommandResult) execute(cmd);
+
+		AutoCompleteResult myResult = new AutoCompleteResult();
+
+		for (Suggestion suggestion : result.getResponse().getSuggestions()) {
+			SuggestionObject so = (SuggestionObject) suggestion;
+			myResult.getList().add(new AutoCompleteItem(so));
+		}
+
+		mapper.writeValue(response.getWriter(), myResult);
+	}
+
+	// Throw away class to hack AutoComplete so that the request and response are small
+	static class AutoCompleteResult {
+		private List<AutoCompleteItem> list = new ArrayList<AutoCompleteItem>();
+
+		public List<AutoCompleteItem> getList() {
+			return list;
+		}
+
+		public void setList(List<AutoCompleteItem> list) {
+			this.list = list;
+		}
+
+	}
+
+	// Throw away class to hack AutoComplete so that the request and response are small
+	static class AutoCompleteItem /* implements Serializable */{
+		private String title;
+		private String postId;
+
+		AutoCompleteItem(SuggestionObject so) {
+			// Trevis. so.getDisplayString() has html to bold things
+			this.title = so.getDisplayString();
+			this.postId = so.getPost().getPostId();
+
+			// this.postId = so.getPost().getMass()
+		}
+
+		public String getTitle() {
+			return title;
+		}
+
+		public void setTitle(String title) {
+			this.title = title;
+		}
+
+		public String getPostId() {
+			return postId;
+		}
+
+		public void setPostId(String postId) {
+			this.postId = postId;
+		}
+
+	}
 
 	/*
 	 * 
