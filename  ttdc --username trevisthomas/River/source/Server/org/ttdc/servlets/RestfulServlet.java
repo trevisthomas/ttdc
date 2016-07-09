@@ -109,7 +109,8 @@ public class RestfulServlet extends HttpServlet {
 		JsonNode root = mapper.readTree(request.getInputStream());
 
 		String query = root.get("query").asText();
-		String token = root.get("token").asText();
+
+		String token = root.has("token") ? root.get("token").asText() : null;
 
 		// PostCrudCommand cmd = mapper.readValue(request.getInputStream(), PostCrudCommand.class);
 
@@ -126,7 +127,7 @@ public class RestfulServlet extends HttpServlet {
 
 		for (Suggestion suggestion : result.getResponse().getSuggestions()) {
 			SuggestionObject so = (SuggestionObject) suggestion;
-			myResult.getList().add(new AutoCompleteItem(so));
+			myResult.getItems().add(new AutoCompleteItem(so));
 		}
 
 		mapper.writeValue(response.getWriter(), myResult);
@@ -134,37 +135,40 @@ public class RestfulServlet extends HttpServlet {
 
 	// Throw away class to hack AutoComplete so that the request and response are small
 	static class AutoCompleteResult {
-		private List<AutoCompleteItem> list = new ArrayList<AutoCompleteItem>();
+		private List<AutoCompleteItem> items = new ArrayList<AutoCompleteItem>();
 
-		public List<AutoCompleteItem> getList() {
-			return list;
+		public List<AutoCompleteItem> getItems() {
+			return items;
 		}
 
-		public void setList(List<AutoCompleteItem> list) {
-			this.list = list;
+		public void setItems(List<AutoCompleteItem> items) {
+			this.items = items;
 		}
-
 	}
 
 	// Throw away class to hack AutoComplete so that the request and response are small
 	static class AutoCompleteItem /* implements Serializable */{
-		private String title;
+		private String displayTitle;
 		private String postId;
+		private int totalReplyCount;
+		private int conversationCount;
 
 		AutoCompleteItem(SuggestionObject so) {
 			// Trevis. so.getDisplayString() has html to bold things
-			this.title = so.getDisplayString();
+			this.displayTitle = so.getDisplayString();
 			this.postId = so.getPost().getPostId();
+			this.totalReplyCount = so.getPost().getMass();
+			this.conversationCount = so.getPost().getReplyCount();
 
 			// this.postId = so.getPost().getMass()
 		}
 
-		public String getTitle() {
-			return title;
+		public String getDisplayTitle() {
+			return displayTitle;
 		}
 
-		public void setTitle(String title) {
-			this.title = title;
+		public void setDisplayTitle(String displayTitle) {
+			this.displayTitle = displayTitle;
 		}
 
 		public String getPostId() {
@@ -173,6 +177,22 @@ public class RestfulServlet extends HttpServlet {
 
 		public void setPostId(String postId) {
 			this.postId = postId;
+		}
+
+		public int getTotalReplyCount() {
+			return totalReplyCount;
+		}
+
+		public void setTotalReplyCount(int totalReplyCount) {
+			this.totalReplyCount = totalReplyCount;
+		}
+
+		public int getConversationCount() {
+			return conversationCount;
+		}
+
+		public void setConversationCount(int conversationCount) {
+			this.conversationCount = conversationCount;
 		}
 
 	}
