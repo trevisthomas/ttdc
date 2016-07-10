@@ -19,6 +19,7 @@ import org.ttdc.gwt.server.RemoteServiceSessionServlet;
 import org.ttdc.gwt.server.command.CommandExecutor;
 import org.ttdc.gwt.server.command.CommandExecutorFactory;
 import org.ttdc.gwt.server.dao.AccountDao;
+import org.ttdc.gwt.shared.commands.ForumCommand;
 import org.ttdc.gwt.shared.commands.LatestPostsCommand;
 import org.ttdc.gwt.shared.commands.PostCrudCommand;
 import org.ttdc.gwt.shared.commands.SearchPostsCommand;
@@ -91,6 +92,9 @@ public class RestfulServlet extends HttpServlet {
 			case "/autocomplete":
 				performAutoComplete(request, response);
 				break;
+			case "/forum":
+				performForum(request, response);
+				break;
 			default:
 				perfromInternalServerError(response);
 			}
@@ -150,15 +154,16 @@ public class RestfulServlet extends HttpServlet {
 	static class AutoCompleteItem /* implements Serializable */{
 		private String displayTitle;
 		private String postId;
-		private int totalReplyCount;
-		private int conversationCount;
+
+		// private int totalReplyCount;
+		// private int conversationCount;
 
 		AutoCompleteItem(SuggestionObject so) {
 			// Trevis. so.getDisplayString() has html to bold things
 			this.displayTitle = so.getDisplayString();
 			this.postId = so.getPost().getPostId();
-			this.totalReplyCount = so.getPost().getMass();
-			this.conversationCount = so.getPost().getReplyCount();
+			// this.totalReplyCount = so.getPost().getMass();
+			// this.conversationCount = so.getPost().getReplyCount();
 
 			// this.postId = so.getPost().getMass()
 		}
@@ -179,21 +184,21 @@ public class RestfulServlet extends HttpServlet {
 			this.postId = postId;
 		}
 
-		public int getTotalReplyCount() {
-			return totalReplyCount;
-		}
-
-		public void setTotalReplyCount(int totalReplyCount) {
-			this.totalReplyCount = totalReplyCount;
-		}
-
-		public int getConversationCount() {
-			return conversationCount;
-		}
-
-		public void setConversationCount(int conversationCount) {
-			this.conversationCount = conversationCount;
-		}
+		// public int getTotalReplyCount() {
+		// return totalReplyCount;
+		// }
+		//
+		// public void setTotalReplyCount(int totalReplyCount) {
+		// this.totalReplyCount = totalReplyCount;
+		// }
+		//
+		// public int getConversationCount() {
+		// return conversationCount;
+		// }
+		//
+		// public void setConversationCount(int conversationCount) {
+		// this.conversationCount = conversationCount;
+		// }
 
 	}
 
@@ -211,6 +216,12 @@ public class RestfulServlet extends HttpServlet {
 	 */
 	private void performTopic(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		TopicCommand cmd = mapper.readValue(request.getInputStream(), TopicCommand.class);
+		CommandResult result = execute(cmd);
+		mapper.writeValue(response.getWriter(), result);
+	}
+
+	private void performForum(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		ForumCommand cmd = mapper.readValue(request.getInputStream(), ForumCommand.class);
 		CommandResult result = execute(cmd);
 		mapper.writeValue(response.getWriter(), result);
 	}

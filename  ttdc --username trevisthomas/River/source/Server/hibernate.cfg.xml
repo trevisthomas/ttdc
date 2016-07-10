@@ -14,7 +14,7 @@
 	<property name="hibernate.connection.password">password</property>
 	
 	<property name="hibernate.search.default.directory_provider" >org.hibernate.search.store.FSDirectoryProvider</property>
-    <property name="hibernate.search.default.indexBase">/LuceneDatabaseIndexes/TTDC_v7</property>
+    <property name="hibernate.search.default.indexBase">/LuceneDatabaseIndexes/TTDC_v7_Dev</property>
     <!--  <property name="hibernate.search.default.indexBase">/LuceneDatabaseIndexes/TTDC_v7_Oct25</property>  -->
     
     <property name="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</property>
