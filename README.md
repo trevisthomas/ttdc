@@ -101,7 +101,7 @@ Request:
 }
 </pre>
 Response: 
-Response contains the newly created post object
+<p>Response contains the newly created post object</p>
 
 /* Create a post with a token
 Request:
@@ -130,6 +130,18 @@ Request:
 	"token":"rO0ABXN..."
 }
 </pre>
+
+/* Read a single post
+Request
+<pre>
+{
+	"postId":"977E6A57-AE9E-461C-BFD6-2D4D337F6C69",
+	"action":"READ"
+}
+</pre>
+
+Response: 
+<p>Response contains the post object</p>
 
 /* Search
 
