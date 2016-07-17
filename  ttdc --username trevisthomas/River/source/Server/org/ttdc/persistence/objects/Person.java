@@ -245,6 +245,16 @@ public class Person implements HasGuid{
 			return hasPrivilege(Privilege.VOTER);
 	}
 	
+	// Added in 2016 for push notifications
+	@Transient
+	public String getUserPushId() {
+		UserObject uo = getObjectType(UserObject.TYPE_DEVICE_TOKEN_FOR_PUSH_NOTIFICATION);
+		if (uo != null) {
+			return uo.getValue();
+		} else {
+			return null;
+		}
+	}
 	
 	
 	/**

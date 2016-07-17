@@ -1,5 +1,9 @@
 package org.ttdc.servlets;
 
+import static org.ttdc.persistence.Persistence.beginSession;
+import static org.ttdc.persistence.Persistence.commit;
+import static org.ttdc.persistence.Persistence.rollback;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +23,8 @@ import org.ttdc.gwt.server.RemoteServiceSessionServlet;
 import org.ttdc.gwt.server.command.CommandExecutor;
 import org.ttdc.gwt.server.command.CommandExecutorFactory;
 import org.ttdc.gwt.server.dao.AccountDao;
+import org.ttdc.gwt.server.dao.PersonDao;
+import org.ttdc.gwt.server.dao.UserObjectDao;
 import org.ttdc.gwt.shared.commands.ForumCommand;
 import org.ttdc.gwt.shared.commands.LatestPostsCommand;
 import org.ttdc.gwt.shared.commands.PostCrudCommand;
@@ -31,6 +37,7 @@ import org.ttdc.gwt.shared.commands.results.TagSuggestionCommandResult;
 import org.ttdc.gwt.shared.util.StringUtil;
 import org.ttdc.persistence.Persistence;
 import org.ttdc.persistence.objects.Person;
+import org.ttdc.persistence.objects.UserObject;
 import org.ttdc.util.Cryptographer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -95,6 +102,9 @@ public class RestfulServlet extends HttpServlet {
 			case "/forum":
 				performForum(request, response);
 				break;
+			case "/register":
+				performPushRegistration(request, response);
+				break;
 			default:
 				perfromInternalServerError(response);
 			}
@@ -106,7 +116,43 @@ public class RestfulServlet extends HttpServlet {
 
 	}
 
+	private void performPushRegistration(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		JsonNode root = mapper.readTree(request.getInputStream());
 
+		String deviceId = root.get("deviceToken").asText();
+		String tokenString = root.has("token") ? root.get("token").asText() : null;
+		RestfulToken token;
+		
+		if(tokenString == null){
+			perfromInternalServerError(response);
+			return;
+		}
+		
+		try {
+			token = RestfulTokenTool.fromTokenString(tokenString);
+		} catch (ClassNotFoundException e) {
+			log.error(
+					"Blew up trying to turn restful token into token object. Allowing user to proceed anonymously.",
+					e);
+			perfromInternalServerError(response);
+			return;
+		}
+		
+		try {
+			beginSession();
+
+			Person person = PersonDao.loadPerson(token.getPersonId());
+			UserObjectDao.updateUserSetting(person, UserObject.TYPE_DEVICE_TOKEN_FOR_PUSH_NOTIFICATION, deviceId);
+			commit();
+			response.setStatus(HttpServletResponse.SC_ACCEPTED); // SC_ACCEPTED = 202
+		} catch (RuntimeException e) {
+			rollback();
+			perfromInternalServerError(response);
+			throw (e);
+		}
+	}
+	
+	
 	private void performAutoComplete(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		// TODO Auto-generated method stub
 

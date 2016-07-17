@@ -181,3 +181,14 @@ URL: https://ttdc.us/restful/forum
 Response:
 <p>List of forums</p>
 
+Request:
+URL: https://ttdc.us/restful/register
+<pre>
+{
+	"deviceToken":"iOS Device Token String",
+	"token": "rO0ABXNy..."
+}
+</pre>
+Response:
+<p>HTTP: 202</p>
+

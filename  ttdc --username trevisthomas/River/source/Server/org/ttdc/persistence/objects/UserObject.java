@@ -48,6 +48,8 @@ public class UserObject implements HasGuid {
 	public final static String TYPE_NUM_COMMENTS_FRONTPAGE = "TYPE_NUM_COMMENTS_FRONTPAGE";
 	public final static String TYPE_NUM_COMMENTS_PERTHREAD = "TYPE_NUM_COMMENTS_THREAD_PAGE";
 	
+	public final static String TYPE_DEVICE_TOKEN_FOR_PUSH_NOTIFICATION = "deviceTokenForPushNotification";
+
 	public final static String TYPE_AUTO_UPDATE_MODE = "AUTO_UPDATE_MODE";
 	
 	public final static String VALUE_HIERARCHY = "HIERARCHY";
