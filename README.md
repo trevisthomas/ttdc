@@ -181,3 +181,19 @@ URL: https://ttdc.us/restful/forum
 Response:
 <p>List of forums</p>
 
+Request:
+URL: https://ttdc.us/restful/search
+<pre>
+{ 
+	"postSearchType":"ALL",
+	"pageNumber": 1,
+	"sortOrder":"BY_DATE", 
+	"sortDirection" : "DESC", 
+	"phrase" : "city of heroes"
+}
+</pre>
+Response:
+<p>Results with a list of posts. Note: This command has a lot more functionalty that isnt documented yet.  (See: latestConversations)</p>
+
+
+
