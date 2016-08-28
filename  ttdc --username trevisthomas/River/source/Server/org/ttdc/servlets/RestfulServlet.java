@@ -105,6 +105,9 @@ public class RestfulServlet extends HttpServlet {
 			case "/register":
 				performPushRegistration(request, response);
 				break;
+			case "/search":
+				performSearch(request, response);
+				break;
 			default:
 				perfromInternalServerError(response);
 			}
@@ -115,6 +118,7 @@ public class RestfulServlet extends HttpServlet {
 		}
 
 	}
+
 
 	private void performPushRegistration(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		JsonNode root = mapper.readTree(request.getInputStream());
@@ -151,8 +155,7 @@ public class RestfulServlet extends HttpServlet {
 			throw (e);
 		}
 	}
-	
-	
+
 	private void performAutoComplete(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		// TODO Auto-generated method stub
 

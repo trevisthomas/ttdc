@@ -192,3 +192,5 @@ URL: https://ttdc.us/restful/register
 Response:
 <p>HTTP: 202</p>
 
+
+TREVIS: LET THIS FILE DIE.  Modify the Readme.md file. For some reason that file only seems to exist on github and not in this project.
