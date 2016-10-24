@@ -36,7 +36,6 @@ Response:
 <p>Person object and a token</p>
 
 
-
 <p>Get a collection of the latest posts</p>
 URL: http://ttdc.us/restful/latestposts
 

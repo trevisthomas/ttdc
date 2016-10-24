@@ -78,6 +78,7 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 			
 			PostCommandResult result = null;
 			if(post!= null){
+				//Why wont this check in?
 				InboxDao inboxDao = new InboxDao(getPerson());
 				gPost = FastPostBeanConverter.convertPost(post, inboxDao, !cmd.isUnformatted(),
 						cmd.isAddReviewsToMovies());

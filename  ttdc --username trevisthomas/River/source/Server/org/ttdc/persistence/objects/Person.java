@@ -256,7 +256,6 @@ public class Person implements HasGuid{
 		}
 	}
 	
-	
 	/**
 	 * This method assumes that a user wont have more than one object of the same type.
 	 * It's intended for the ones that work that way.

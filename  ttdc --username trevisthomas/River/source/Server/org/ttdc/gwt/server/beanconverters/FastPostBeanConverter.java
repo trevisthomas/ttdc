@@ -170,6 +170,7 @@ public class FastPostBeanConverter {
 		return convertPost(p, inboxDao, true, true);
 	}
 
+	
 	public static GPost convertPost(Post p, InboxDao inboxDao, boolean formatted, boolean addReviewsToMovies) {
 		GPost gPost = new GPost();
 		gPost.setDate(p.getDate());

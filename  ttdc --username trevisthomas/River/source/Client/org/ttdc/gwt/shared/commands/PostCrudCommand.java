@@ -38,7 +38,7 @@ public class PostCrudCommand extends Command<PostCommandResult>{
 	private String forumId;
 	private boolean unformatted = false; //For editing
 	private boolean addReviewsToMovies = true; // For JSON. Jackson cant handle these circular references.
-	
+		
 	private Long metaMask = null;
 	
 	
