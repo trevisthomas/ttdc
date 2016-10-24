@@ -37,6 +37,7 @@ public class PostCrudCommand extends Command<PostCommandResult>{
 	private String topicDescription;
 	private String forumId;
 	private boolean unformatted = false; //For editing
+	private boolean addReviewsToMovies = true; // For JSON. Jackson cant handle these circular references.
 	
 	private Long metaMask = null;
 	
@@ -229,6 +230,14 @@ public class PostCrudCommand extends Command<PostCommandResult>{
 	}
 	public void setUnformatted(boolean unformatted) {
 		this.unformatted = unformatted;
+	}
+
+	public boolean isAddReviewsToMovies() {
+		return addReviewsToMovies;
+	}
+
+	public void setAddReviewsToMovies(boolean addReviewsToMovies) {
+		this.addReviewsToMovies = addReviewsToMovies;
 	}
 	
 	

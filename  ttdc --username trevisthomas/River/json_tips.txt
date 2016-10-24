@@ -21,6 +21,22 @@ Response:
 
 <p>Person object and a token</p>
 
+
+<p>Validate.  Used to validate a token.</p>
+URL:http://ttdc.us/restful/validate
+
+Request:
+<pre>
+{
+	"token":"rO0ABXNy..."
+}
+</pre>
+Response:
+
+<p>Person object and a token</p>
+
+
+
 <p>Get a collection of the latest posts</p>
 URL: http://ttdc.us/restful/latestposts
 

@@ -167,9 +167,10 @@ public class FastPostBeanConverter {
 	}
 	
 	public static GPost convertPost(Post p, InboxDao inboxDao) {
-		return convertPost(p,inboxDao,true);
+		return convertPost(p, inboxDao, true, true);
 	}
-	public static GPost convertPost(Post p, InboxDao inboxDao, boolean formatted) {
+
+	public static GPost convertPost(Post p, InboxDao inboxDao, boolean formatted, boolean addReviewsToMovies) {
 		GPost gPost = new GPost();
 		gPost.setDate(p.getDate());
 		//gPost.setEntries(convertEntries(p.getEntries()));
@@ -221,7 +222,9 @@ public class FastPostBeanConverter {
 		
 		//If a post is a movie, get the reviews.  4/19/2010
 		if(p.isMovie()){
-			gPost.setPosts(convertReviewPosts(gPost,p.getPosts(), inboxDao));
+			if (addReviewsToMovies) { // 10/16/2016 added for jackson json library
+				gPost.setPosts(convertReviewPosts(gPost, p.getPosts(), inboxDao));
+			}
 			gPost.setRoot(gPost);
 		}
 		else{

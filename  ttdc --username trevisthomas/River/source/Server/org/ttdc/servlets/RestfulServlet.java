@@ -87,6 +87,9 @@ public class RestfulServlet extends HttpServlet {
 			case "/login":
 				performLogin(request, response);
 				break;
+			case "/validate":
+				performTokenValidation(request, response);
+				break;
 			case "/topic":
 				performTopic(request, response);
 				break;
@@ -256,6 +259,9 @@ public class RestfulServlet extends HttpServlet {
 	 */
 	private void performPost(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		PostCrudCommand cmd = mapper.readValue(request.getInputStream(), PostCrudCommand.class);
+		cmd.setAddReviewsToMovies(false); // These are added because the website uses them to show summaries of the
+											// movie review. Jackson cant handle them because they are circular
+											// references.
 		CommandResult result = execute(cmd);
 		mapper.writeValue(response.getWriter(), result);
 	}
@@ -299,6 +305,31 @@ public class RestfulServlet extends HttpServlet {
 		} catch (RuntimeException e) {
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 		}
+	}
+
+	private void performTokenValidation(HttpServletRequest request, HttpServletResponse response)
+			throws JsonProcessingException, IOException, RemoteServiceException, ClassNotFoundException {
+
+		JsonNode root = mapper.readTree(request.getInputStream());
+
+		String token = root.get("token").asText();
+		RestfulToken t2 = RestfulTokenTool.fromTokenString(token);
+		String personId = t2.getPersonId();
+
+		try {
+			Persistence.beginSession();
+			Person person = PersonDao.loadPerson(personId);
+			GPerson gPerson = processNewlyAuthenticatedUser(person);
+			PersonCommandResult result = new PersonCommandResult(gPerson);
+			result.setToken(token);
+
+			mapper.writeValue(response.getWriter(), result);
+		} catch (RuntimeException e) {
+			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+		} finally {
+			Persistence.commit();
+		}
+
 	}
 
 

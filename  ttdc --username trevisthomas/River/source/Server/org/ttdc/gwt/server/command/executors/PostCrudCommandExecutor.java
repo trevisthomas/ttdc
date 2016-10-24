@@ -79,9 +79,8 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 			PostCommandResult result = null;
 			if(post!= null){
 				InboxDao inboxDao = new InboxDao(getPerson());
-				gPost = FastPostBeanConverter.convertPost(post, inboxDao, !cmd.isUnformatted());
-				
-				
+				gPost = FastPostBeanConverter.convertPost(post, inboxDao, !cmd.isUnformatted(),
+						cmd.isAddReviewsToMovies());
 				
 				//The following code to inflate the parent was added for dynamic front page refresh
 				if(post.getParent() != null){
