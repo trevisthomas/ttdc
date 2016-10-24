@@ -101,7 +101,7 @@ Request:
 }
 </pre>
 Response: 
-Response contains the newly created post object
+<p>Response contains the newly created post object</p>
 
 /* Create a post with a token
 Request:
@@ -116,6 +116,32 @@ Request:
 
 Response: 
 <p> Response contains the newly created post object</p>
+
+
+/* Create a post on a new topic
+Request: 
+<pre>
+{	
+	"action":"CREATE",
+	"body":"Conversation from json with new topic!",
+	"forumId":"293C8189-44B9-41BD-BC75-F3DFD7CF670B",
+	"title":"First Thread From Json",
+	"topicDescription":"TTDC is going mobile. For that we need JSON.  I am the body of the first topic created this way.",
+	"token":"rO0ABXN..."
+}
+</pre>
+
+/* Read a single post
+Request
+<pre>
+{
+	"postId":"977E6A57-AE9E-461C-BFD6-2D4D337F6C69",
+	"action":"READ"
+}
+</pre>
+
+Response: 
+<p>Response contains the post object</p>
 
 /* Search
 
@@ -133,3 +159,41 @@ URL: https://ttdc.us/restful/latestConversations
 
 Response:
 <p>Results with a list of posts. Note: This command has a lot more functionalty that isnt documented yet.</p>
+
+Request: 
+URL: https://ttdc.us/restful/autocomplete
+<pre>
+{
+	"query": "ta",
+	"token": ""
+}
+</pre>
+Response:
+<p>List of conversations that contain the query string</p>
+
+Request:
+URL: https://ttdc.us/restful/forum
+<pre>
+{
+	"action":"LOAD_FORUMS"
+}
+</pre>
+Response:
+<p>List of forums</p>
+
+Request:
+URL: https://ttdc.us/restful/search
+<pre>
+{ 
+	"postSearchType":"ALL",
+	"pageNumber": 1,
+	"sortOrder":"BY_DATE", 
+	"sortDirection" : "DESC", 
+	"phrase" : "city of heroes"
+}
+</pre>
+Response:
+<p>Results with a list of posts. Note: This command has a lot more functionalty that isnt documented yet.  (See: latestConversations)</p>
+
+
+
