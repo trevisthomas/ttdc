@@ -21,6 +21,21 @@ Response:
 
 <p>Person object and a token</p>
 
+
+<p>Validate.  Used to validate a token.</p>
+URL:http://ttdc.us/restful/validate
+
+Request:
+<pre>
+{
+	"token":"rO0ABXNy..."
+}
+</pre>
+Response:
+
+<p>Person object and a token</p>
+
+
 <p>Get a collection of the latest posts</p>
 URL: http://ttdc.us/restful/latestposts
 
@@ -182,18 +197,13 @@ Response:
 <p>List of forums</p>
 
 Request:
-URL: https://ttdc.us/restful/search
+URL: https://ttdc.us/restful/register
 <pre>
-{ 
-	"postSearchType":"ALL",
-	"pageNumber": 1,
-	"sortOrder":"BY_DATE", 
-	"sortDirection" : "DESC", 
-	"phrase" : "city of heroes"
+{
+	"deviceToken":"iOS Device Token String",
+	"token": "rO0ABXNy..."
 }
 </pre>
 Response:
-<p>Results with a list of posts. Note: This command has a lot more functionalty that isnt documented yet.  (See: latestConversations)</p>
-
-
+<p>HTTP: 202</p>
 
