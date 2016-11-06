@@ -66,7 +66,7 @@ public class FastPostBeanConverter {
 		for(Hour hour : day.getHours()){
 			for(CalendarPost cp : hour.getCalendarPosts()){
 				Post post = PostDao.loadPost(cp.getPostId());
-				GPost gPost = convertPost(post, inboxDao);
+				GPost gPost = convertPost(post);
 				hour.addPost(gPost);
 			}
 		}
@@ -77,7 +77,7 @@ public class FastPostBeanConverter {
 		for(Post p : persistentPostList){
 			GPost rpcPost;
 			try{
-				rpcPost = convertPost(p, inboxDao);
+				rpcPost = convertPost(p);
 				rpcPostList.add(rpcPost);
 			}
 			catch(NullPointerException e){
@@ -129,12 +129,17 @@ public class FastPostBeanConverter {
 	}
 	
 	//Initially created for inflating movie review summaries
-	private static ArrayList<GPost> convertReviewPosts(GPost parent, List<Post> persistentPostList, InboxDao inboxDao){
+	private static ArrayList<GPost> convertReviewPosts(GPost parent, List<Post> persistentPostList) {
 		ArrayList<GPost> list = new ArrayList<GPost>();
 		for(Post p : persistentPostList){
 			if(p.isReview() && !p.isDeleted()){
-				GPost rpcPost = convertPostSimple(p, inboxDao);
-				rpcPost.setParent(parent);
+				GPost rpcPost = convertPostSimple(p);
+				GTag t = parent.getRatingByPerson(p.getCreator().getPersonId()).getTag();
+				rpcPost.setReviewRating(Double.valueOf(t.getValue()));
+				// rpcPost.setParent(parent);//This was the cause of the circular reference. It was required for the way
+				// that reviews were plucked from their parent in the uibinder. I changed that, which seems to be
+				// working with Json and in the TTDC website. See ReviewSummaryPanel for how it was changed to not need
+				// this
 				list.add(rpcPost);
 			}
 		}
@@ -144,7 +149,7 @@ public class FastPostBeanConverter {
 	public static ArrayList<GPost> convertPostsSimple(List<Post> persistentPostList, InboxDao inboxDao){
 		ArrayList<GPost> list = new ArrayList<GPost>();
 		for(Post p : persistentPostList){
-			GPost rpcPost = convertPostSimple(p, inboxDao);
+			GPost rpcPost = convertPostSimple(p);
 			list.add(rpcPost);
 		}
 		return list;
@@ -152,7 +157,7 @@ public class FastPostBeanConverter {
 	
 	
 	//Initially created for inflating movie review summaries
-	public static GPost convertPostSimple(Post p, InboxDao inboxDao) {
+	public static GPost convertPostSimple(Post p /* , InboxDao inboxDao */) {
 		GPost gPost = new GPost();
 		gPost.setDate(p.getDate());
 		gPost.setLatestEntry(convertEntry(p.getEntry()));
@@ -166,12 +171,12 @@ public class FastPostBeanConverter {
 		return gPost;
 	}
 	
-	public static GPost convertPost(Post p, InboxDao inboxDao) {
-		return convertPost(p, inboxDao, true, true);
+	public static GPost convertPost(Post p) {
+		return convertPost(p, true, true);
 	}
 
 	
-	public static GPost convertPost(Post p, InboxDao inboxDao, boolean formatted, boolean addReviewsToMovies) {
+	public static GPost convertPost(Post p, boolean formatted, boolean addReviewsToMovies) {
 		GPost gPost = new GPost();
 		gPost.setDate(p.getDate());
 		//gPost.setEntries(convertEntries(p.getEntries()));
@@ -223,28 +228,29 @@ public class FastPostBeanConverter {
 		
 		//If a post is a movie, get the reviews.  4/19/2010
 		if(p.isMovie()){
-			if (addReviewsToMovies) { // 10/16/2016 added for jackson json library
-				gPost.setPosts(convertReviewPosts(gPost, p.getPosts(), inboxDao));
-			}
+			// if (addReviewsToMovies) { // 10/16/2016 added for jackson json library
+			// 11/3 i changed how this works. Look inside of convertReviewPosts
+			gPost.setPosts(convertReviewPosts(gPost, p.getPosts()));
+			// }
 			gPost.setRoot(gPost);
 		}
 		else{
 			if(!p.isRootPost()){
-				gPost.setRoot(convertPost(p.getRoot(), inboxDao));
+				gPost.setRoot(convertPost(p.getRoot()));
 			}
 			else{
 				gPost.setRoot(gPost);
 			}
 			
 			if(!p.isThreadPost() && !p.isRootPost()){
-				gPost.setThread(convertPost(p.getThread(), inboxDao));
+				gPost.setThread(convertPost(p.getThread()));
 			}
 			
 			if(!p.isRootPost()){
 				gPost.setParentPostId(p.getParent().getPostId());
 				gPost.setParentPostCreator(p.getParent().getCreator().getLogin());
 				gPost.setParentPostCreatorId(p.getParent().getCreator().getPersonId());
-				gPost.setParent(convertPost(p.getParent(), inboxDao));
+				gPost.setParent(convertPost(p.getParent()));
 			}
 		}
 			
@@ -255,7 +261,7 @@ public class FastPostBeanConverter {
 		else if(p.isReview()){
 			image = p.getParent().getImage();
 			//I added this when i was adding the detail info to movie posts.
-			GPost gParent = convertPostSimple(p.getRoot(), inboxDao); 
+			GPost gParent = convertPostSimple(p.getRoot());
 			gParent.setTagAssociations(convertAssociationsPostTag(p.getParent().getTagAssociations()));
 			gPost.setParent(gParent);
 			
@@ -426,7 +432,7 @@ public class FastPostBeanConverter {
 	
 	public static GAssociationPostTag convertAssociationPostTagWithPost(AssociationPostTag ass, InboxDao inboxDao){
 		GAssociationPostTag gAss = convertAssociationPostTag(ass);
-		gAss.setPost(convertPost(ass.getPost(), inboxDao));
+		gAss.setPost(convertPost(ass.getPost()));
 		gAss.setTag(convertTag(ass.getTag()));
 		return gAss;
 	}

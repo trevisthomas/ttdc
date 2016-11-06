@@ -1,7 +1,8 @@
 package org.ttdc.gwt.server.command;
 
-import static org.junit.Assert.*;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.List;
 
@@ -147,7 +148,7 @@ public class AssociationPostTagCommandTest{
 		Persistence.beginSession();
 		Post post = PostDao.loadPost(postId);
 		
-		GPost gPost = FastPostBeanConverter.convertPost(post,null);
+		GPost gPost = FastPostBeanConverter.convertPost(post);
 		
 		//asses = result.getAssociationPostTag().getPost().getTagAssociations();
 		List<GAssociationPostTag> asses = gPost.getTagAssociations();
@@ -167,7 +168,7 @@ public class AssociationPostTagCommandTest{
 		Persistence.beginSession();
 		Post post = PostDao.loadPost(postId);
 		
-		GPost gPost = FastPostBeanConverter.convertPost(post, null);
+		GPost gPost = FastPostBeanConverter.convertPost(post);
 		
 		//asses = result.getAssociationPostTag().getPost().getTagAssociations();
 		List<GAssociationPostTag> asses = gPost.getTagAssociations();
@@ -187,7 +188,7 @@ public class AssociationPostTagCommandTest{
 		Persistence.beginSession();
 		Post post = PostDao.loadPost(postId);
 		
-		GPost gPost = FastPostBeanConverter.convertPost(post, null);
+		GPost gPost = FastPostBeanConverter.convertPost(post);
 		
 		//asses = result.getAssociationPostTag().getPost().getTagAssociations();
 		List<GAssociationPostTag> asses = gPost.getTagAssociations();
@@ -212,7 +213,7 @@ public class AssociationPostTagCommandTest{
 		Persistence.beginSession();
 		Post post = PostDao.loadPost(postId);
 		
-		GPost gPost = FastPostBeanConverter.convertPost(post, null);
+		GPost gPost = FastPostBeanConverter.convertPost(post);
 		
 		//asses = result.getAssociationPostTag().getPost().getTagAssociations();
 		List<GAssociationPostTag> asses = gPost.getTagAssociations();

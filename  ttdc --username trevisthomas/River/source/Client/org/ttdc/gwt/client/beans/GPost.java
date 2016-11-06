@@ -42,6 +42,7 @@ public class GPost extends GBase{
 	private int [] pathSegmentMax;
 	private boolean endOfBranch;
 	private int rateCount=0;
+	private Double reviewRating;
 	
 	private String parentPostId;
 	private String parentPostCreator;
@@ -564,6 +565,14 @@ public class GPost extends GBase{
 
 	public void setRateCount(int rateCount) {
 		this.rateCount = rateCount;
+	}
+
+	public Double getReviewRating() {
+		return reviewRating;
+	}
+
+	public void setReviewRating(Double reviewRating) {
+		this.reviewRating = reviewRating;
 	}
 	
 	

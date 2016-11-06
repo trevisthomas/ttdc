@@ -23,10 +23,12 @@ import org.ttdc.gwt.shared.calender.Day;
 import org.ttdc.gwt.shared.calender.Hour;
 import org.ttdc.gwt.shared.util.PostFlag;
 import org.ttdc.gwt.shared.util.StringUtil;
+import org.ttdc.persistence.objects.AssociationPostTag;
 import org.ttdc.persistence.objects.FullPost;
 import org.ttdc.persistence.objects.FullTag;
 import org.ttdc.persistence.objects.Image;
 import org.ttdc.persistence.objects.Post;
+import org.ttdc.persistence.objects.Tag;
 
 
 
@@ -277,7 +279,7 @@ public class FastGPostLoader {
 		}
 		
 		if(gp.isMovie() && fullyInflateMovies){ //This hack falls back to the old school way of doing things when you need all detail about a movie
-			gp = FastPostBeanConverter.convertPost(PostDao.loadPost(gp.getPostId()), inboxDao);
+			gp = FastPostBeanConverter.convertPost(PostDao.loadPost(gp.getPostId()));
 			return gp;
 		}
 		
@@ -289,6 +291,10 @@ public class FastGPostLoader {
 				image.setWidth(fp.getRootImageWidth());
 				image.setHeight(fp.getRootImageHeight());
 				gp.setImage(image);
+
+				// Why was this needed? It works with getting topics. Need to find out if it works on latest too :-(
+				gp.setReviewRating(getRatingForReviewThisWasAddedForMobile(fp));
+
 			}
 			else{
 				GImage image = createDefaultPosterGImage();
@@ -302,6 +308,19 @@ public class FastGPostLoader {
 //			gp.setRead(inboxDao.isRead(fp.getDate()));
 //		}
 		return gp;
+	}
+
+	private Double getRatingForReviewThisWasAddedForMobile(FullPost fp) {
+		try {
+			Post p = PostDao.loadPost(fp.getRootId());
+			AssociationPostTag ass = p.getRatingByPerson(fp.getCreatorId());
+			Tag t = ass.getTag();
+
+			return Double.valueOf(t.getValue());
+		} catch (Exception e) {
+			return null;
+		}
+
 	}
 
 	private GImage createDefaultPosterGImage() {

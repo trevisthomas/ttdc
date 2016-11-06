@@ -4,7 +4,6 @@
 	<classpathentry kind="src" path="source/Server"/>
 	<classpathentry kind="src" path="source/Tests"/>
 	<classpathentry kind="src" path="source/Tools"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/2wayfilter-1.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/activation.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/antlr-2.7.6.jar"/>
@@ -77,5 +76,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jackson-databind-2.7.4.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jackson-annotations-2.7.4.jar"/>
 	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

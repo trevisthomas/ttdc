@@ -15,16 +15,25 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.ttdc.gwt.client.autocomplete.SuggestionObject;
+import org.ttdc.gwt.client.beans.GAssociationPostTag;
 import org.ttdc.gwt.client.beans.GPerson;
+import org.ttdc.gwt.client.beans.GPost;
+import org.ttdc.gwt.client.beans.GTag;
+import org.ttdc.gwt.client.constants.TagConstants;
+import org.ttdc.gwt.client.messaging.ConnectionId;
 import org.ttdc.gwt.client.services.Command;
 import org.ttdc.gwt.client.services.CommandResult;
 import org.ttdc.gwt.client.services.RemoteServiceException;
 import org.ttdc.gwt.server.RemoteServiceSessionServlet;
+import org.ttdc.gwt.server.beanconverters.FastPostBeanConverter;
 import org.ttdc.gwt.server.command.CommandExecutor;
 import org.ttdc.gwt.server.command.CommandExecutorFactory;
 import org.ttdc.gwt.server.dao.AccountDao;
 import org.ttdc.gwt.server.dao.PersonDao;
+import org.ttdc.gwt.server.dao.PostDao;
 import org.ttdc.gwt.server.dao.UserObjectDao;
+import org.ttdc.gwt.shared.commands.AssociationPostTagCommand;
+import org.ttdc.gwt.shared.commands.AssociationPostTagCommand.Mode;
 import org.ttdc.gwt.shared.commands.ForumCommand;
 import org.ttdc.gwt.shared.commands.LatestPostsCommand;
 import org.ttdc.gwt.shared.commands.PostCrudCommand;
@@ -37,9 +46,9 @@ import org.ttdc.gwt.shared.commands.results.TagSuggestionCommandResult;
 import org.ttdc.gwt.shared.util.StringUtil;
 import org.ttdc.persistence.Persistence;
 import org.ttdc.persistence.objects.Person;
+import org.ttdc.persistence.objects.Post;
 import org.ttdc.persistence.objects.UserObject;
 import org.ttdc.util.Cryptographer;
-
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -111,6 +120,12 @@ public class RestfulServlet extends HttpServlet {
 				break;
 			case "/search":
 				performSearch(request, response);
+				break;
+			case "/like":
+				performLikePostRequest(request, response);
+				break;
+			case "/unlike":
+				performUnLikePostRequest(request, response);
 				break;
 			default:
 				perfromInternalServerError(response);
@@ -344,6 +359,89 @@ public class RestfulServlet extends HttpServlet {
 		CommandResult result = execute(cmd);
 
 		mapper.writeValue(response.getWriter(), result);
+	}
+
+	// protected void processUnLikePostRequest(String postId) throws IOException {
+	// GPerson user = ConnectionId.getInstance().getCurrentUser();
+	// Post post = PostDao.loadPost(postId);
+	//
+	// GPost gp = FastPostBeanConverter.convertPost(post);
+	//
+	// GAssociationPostTag association = gp.getLikedByPerson(user.getPersonId());
+	// removeAssociation(association);
+	// }
+
+	private void performUnLikePostRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		JsonNode root = mapper.readTree(request.getInputStream());
+		String postId = root.get("postId").asText();
+		String token = root.has("token") ? root.get("token").asText() : null;
+
+		RestfulToken t2 = RestfulTokenTool.fromTokenString(token);
+		String personId = t2.getPersonId();
+
+		try {
+			Persistence.beginSession();
+
+			Post post = PostDao.loadPost(postId);
+
+			GPost gp = FastPostBeanConverter.convertPost(post);
+
+			GAssociationPostTag association = gp.getLikedByPerson(personId);
+			removeAssociation(association, token);
+			Persistence.commit();
+		} catch (RuntimeException e) {
+			rollback();
+			throw e;
+		}
+
+		response.setStatus(HttpServletResponse.SC_ACCEPTED);
+	}
+
+
+	private void performLikePostRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		JsonNode root = mapper.readTree(request.getInputStream());
+		String postId = root.get("postId").asText();
+		String token = root.has("token") ? root.get("token").asText() : null;
+
+		RestfulToken t2 = RestfulTokenTool.fromTokenString(token);
+		String personId = t2.getPersonId();
+
+		createAssociation(postId, TagConstants.TYPE_LIKE, personId, token);
+
+	}
+
+	private void removeAssociation(GAssociationPostTag association, String token) throws IOException {
+		AssociationPostTagCommand cmd = new AssociationPostTagCommand();
+		cmd.setMode(AssociationPostTagCommand.Mode.REMOVE);
+		cmd.setAssociationId(association.getGuid());
+		cmd.setMode(Mode.REMOVE);
+		cmd.setToken(StringUtil.empty(token) ? null : token);
+		cmd.setConnectionId(ConnectionId.getInstance().getConnectionId());
+		// TODO: If this is looking good, you might want to pull this class out of the movie area and use it as a
+		// generic post refresh
+		// injector.getService().execute(cmd, new MovieRatingPresenter.PostRatingCallback(post));
+		execute(cmd);
+	}
+
+	private void createAssociation(String postId, String type, String value, String token) throws IOException {
+		AssociationPostTagCommand cmd = new AssociationPostTagCommand();
+
+		GTag tag = new GTag();
+		tag.setValue(value);
+		tag.setType(type);
+		cmd.setTag(tag);
+		cmd.setPostId(postId);
+		cmd.setMode(AssociationPostTagCommand.Mode.CREATE);
+		// TODO: If this is looking good, you might want to pull this class out of the movie area and use it as a
+		// generic post refresh
+		cmd.setConnectionId(ConnectionId.getInstance().getConnectionId());
+		// injector.getService().execute(cmd, new MovieRatingPresenter.PostRatingCallback(post));
+
+		cmd.setToken(StringUtil.empty(token) ? null : token);
+
+		execute(cmd);
 	}
 
 	/*
