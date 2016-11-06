@@ -207,3 +207,25 @@ URL: https://ttdc.us/restful/register
 Response:
 <p>HTTP: 202</p>
 
+
+Request:
+URL: https://ttdc.us/restful/like
+<pre>
+{
+	"postId": "8BEA35AA-5CFD-4401-858C-C0D35C5ABB72",
+	"token": "rO0ABXNy..."
+}
+</pre>
+Response:
+<p>HTTP: 200</p>
+
+Request:
+URL: https://ttdc.us/restful/unlike
+<pre>
+{
+	"postId": "8BEA35AA-5CFD-4401-858C-C0D35C5ABB72",
+	"token": "rO0ABXNy..."
+}
+</pre>
+Response:
+<p>HTTP: 202</p>
