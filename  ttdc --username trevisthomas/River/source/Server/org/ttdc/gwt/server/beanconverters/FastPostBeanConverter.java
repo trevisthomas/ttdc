@@ -134,8 +134,13 @@ public class FastPostBeanConverter {
 		for(Post p : persistentPostList){
 			if(p.isReview() && !p.isDeleted()){
 				GPost rpcPost = convertPostSimple(p);
-				GTag t = parent.getRatingByPerson(p.getCreator().getPersonId()).getTag();
-				rpcPost.setReviewRating(Double.valueOf(t.getValue()));
+				GAssociationPostTag tagAss = parent.getRatingByPerson(p
+						.getCreator().getPersonId());
+				if (tagAss != null) {
+					GTag t = tagAss.getTag();
+					rpcPost.setReviewRating(Double.valueOf(t.getValue()));
+				}
+
 				// rpcPost.setParent(parent);//This was the cause of the circular reference. It was required for the way
 				// that reviews were plucked from their parent in the uibinder. I changed that, which seems to be
 				// working with Json and in the TTDC website. See ReviewSummaryPanel for how it was changed to not need

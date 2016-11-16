@@ -56,7 +56,9 @@ public class ReviewSummaryPanel extends Composite {
 		// If the parent doesnt reference the kids the getRatingByPerson method fails. That circular reference was
 		// causing jackson isues so i removed it. 11/3
 		// movieRatingPresenter.setRating(post.getParent().getRatingByPerson(post.getCreator().getPersonId()));
-		movieRatingPresenter.setRating(post.getReviewRating() + "");
+		if (post.getReviewRating() != null) {
+			movieRatingPresenter.setRating(post.getReviewRating() + "");
+		}
 	}
 	
 	public void init(GAssociationPostTag ratingAss){

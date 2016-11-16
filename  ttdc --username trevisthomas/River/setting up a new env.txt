@@ -1,0 +1,6 @@
+Trevis, this has burned you more than once:
+https://stackoverflow.com/questions/7534967/is-there-any-way-to-access-gae-dev-app-server-in-the-local-network/38188131#38188131
+
+Below is your full, functional arg line:
+
+-remoteUI "${gwt_remote_ui_server_port}:${unique_id}" -startupUrl launch.jsp -logLevel INFO -codeServerPort 9997 -bindAddress 0.0.0.0 -port 8888 -superDevMode -war "C:\ProjectsGit\ttdc\ ttdc --username trevisthomas\River\war" org.ttdc.gwt.Client

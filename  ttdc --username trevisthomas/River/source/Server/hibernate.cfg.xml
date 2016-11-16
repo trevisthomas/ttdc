@@ -7,6 +7,7 @@
 	<!-- <property name="hibernate.connection.url">jdbc:sqlserver://localhost:1433;databaseName=TTDC_v7</property> -->
 	<!-- <property name="hibernate.connection.url">jdbc:sqlserver://buffy:1433;databaseName=TTDC_v7_Dev</property> -->
 	<property name="hibernate.connection.url">jdbc:sqlserver://127.0.0.1:1433;databaseName=TTDC_v7_Dev_7_31</property>
+	<!--  <property name="hibernate.connection.url">jdbc:sqlserver://willow:1433;databaseName=TTDC_v7_Test</property> -->
 	
 	
 	<!-- <property name="hibernate.connection.url">jdbc:sqlserver://localhost:1433;databaseName=TTDC_v7_Mar8</property> -->
