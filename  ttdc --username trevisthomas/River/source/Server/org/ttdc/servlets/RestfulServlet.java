@@ -7,6 +7,7 @@ import static org.ttdc.persistence.Persistence.rollback;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.GZIPOutputStream;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -86,6 +87,7 @@ public class RestfulServlet extends HttpServlet {
 
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
+		response.setHeader("Content-Encoding", "gzip");
 		String path = request.getPathInfo();
 
 		try {
@@ -202,7 +204,8 @@ public class RestfulServlet extends HttpServlet {
 			myResult.getItems().add(new AutoCompleteItem(so));
 		}
 
-		mapper.writeValue(response.getWriter(), myResult);
+		mapper.writeValue(new GZIPOutputStream(response.getOutputStream()),
+				result);
 	}
 
 	// Throw away class to hack AutoComplete so that the request and response are small
@@ -279,7 +282,8 @@ public class RestfulServlet extends HttpServlet {
 											// movie review. Jackson cant handle them because they are circular
 											// references.
 		CommandResult result = execute(cmd);
-		mapper.writeValue(response.getWriter(), result);
+		mapper.writeValue(new GZIPOutputStream(response.getOutputStream()),
+				result);
 	}
 
 	/*
@@ -288,13 +292,16 @@ public class RestfulServlet extends HttpServlet {
 	private void performTopic(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		TopicCommand cmd = mapper.readValue(request.getInputStream(), TopicCommand.class);
 		CommandResult result = execute(cmd);
-		mapper.writeValue(response.getWriter(), result);
+		// mapper.writeValue(response.getWriter(), result);
+		mapper.writeValue(new GZIPOutputStream(response.getOutputStream()),
+				result);
 	}
 
 	private void performForum(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		ForumCommand cmd = mapper.readValue(request.getInputStream(), ForumCommand.class);
 		CommandResult result = execute(cmd);
-		mapper.writeValue(response.getWriter(), result);
+		mapper.writeValue(new GZIPOutputStream(response.getOutputStream()),
+				result);
 	}
 
 	private void perfromInternalServerError(HttpServletResponse response) {
@@ -317,7 +324,8 @@ public class RestfulServlet extends HttpServlet {
 			PersonCommandResult result = authenticate(username, password);
 			RestfulToken token = new RestfulToken(result.getPerson().getPersonId());
 			result.setToken(RestfulTokenTool.toTokenString(token));
-			mapper.writeValue(response.getWriter(), result);
+			mapper.writeValue(new GZIPOutputStream(response.getOutputStream()),
+					result);
 		} catch (RuntimeException e) {
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 		}
@@ -339,7 +347,8 @@ public class RestfulServlet extends HttpServlet {
 			PersonCommandResult result = new PersonCommandResult(gPerson);
 			result.setToken(token);
 
-			mapper.writeValue(response.getWriter(), result);
+			mapper.writeValue(new GZIPOutputStream(response.getOutputStream()),
+					result);
 		} catch (RuntimeException e) {
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 		} finally {
@@ -358,7 +367,9 @@ public class RestfulServlet extends HttpServlet {
 
 		CommandResult result = execute(cmd);
 
-		mapper.writeValue(response.getWriter(), result);
+		// mapper.writeValue(response.getWriter(), result);
+		mapper.writeValue(new GZIPOutputStream(response.getOutputStream()),
+				result);
 	}
 
 	// protected void processUnLikePostRequest(String postId) throws IOException {
@@ -455,7 +466,8 @@ public class RestfulServlet extends HttpServlet {
 
 		CommandResult result = execute(cmd);
 
-		mapper.writeValue(response.getWriter(), result);
+		mapper.writeValue(new GZIPOutputStream(response.getOutputStream()),
+				result);
 	}
 
 	private <T extends CommandResult> T execute(Command<T> command) throws IOException {
