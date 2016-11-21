@@ -42,6 +42,7 @@ import org.ttdc.gwt.shared.commands.SearchPostsCommand;
 import org.ttdc.gwt.shared.commands.TagSuggestionCommand;
 import org.ttdc.gwt.shared.commands.TagSuggestionCommandMode;
 import org.ttdc.gwt.shared.commands.TopicCommand;
+import org.ttdc.gwt.shared.commands.results.AssociationPostTagResult;
 import org.ttdc.gwt.shared.commands.results.PersonCommandResult;
 import org.ttdc.gwt.shared.commands.results.TagSuggestionCommandResult;
 import org.ttdc.gwt.shared.util.StringUtil;
@@ -71,19 +72,17 @@ public class RestfulServlet extends HttpServlet {
 	}
 
 	@Override
-	public void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doBoth(request, response);
 	}
 
 	@Override
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException,
+			IOException {
 		doBoth(request, response);
 	}
 
-	private void doBoth(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	private void doBoth(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
@@ -126,9 +125,9 @@ public class RestfulServlet extends HttpServlet {
 			case "/like":
 				performLikePostRequest(request, response);
 				break;
-			case "/unlike":
-				performUnLikePostRequest(request, response);
-				break;
+			// case "/unlike":
+			// performUnLikePostRequest(request, response);
+			// break;
 			default:
 				perfromInternalServerError(response);
 			}
@@ -140,29 +139,27 @@ public class RestfulServlet extends HttpServlet {
 
 	}
 
-
 	private void performPushRegistration(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		JsonNode root = mapper.readTree(request.getInputStream());
 
 		String deviceId = root.get("deviceToken").asText();
 		String tokenString = root.has("token") ? root.get("token").asText() : null;
 		RestfulToken token;
-		
-		if(tokenString == null){
+
+		if (tokenString == null) {
 			perfromInternalServerError(response);
 			return;
 		}
-		
+
 		try {
 			token = RestfulTokenTool.fromTokenString(tokenString);
 		} catch (ClassNotFoundException e) {
-			log.error(
-					"Blew up trying to turn restful token into token object. Allowing user to proceed anonymously.",
+			log.error("Blew up trying to turn restful token into token object. Allowing user to proceed anonymously.",
 					e);
 			perfromInternalServerError(response);
 			return;
 		}
-		
+
 		try {
 			beginSession();
 
@@ -204,8 +201,7 @@ public class RestfulServlet extends HttpServlet {
 			myResult.getItems().add(new AutoCompleteItem(so));
 		}
 
-		mapper.writeValue(new GZIPOutputStream(response.getOutputStream()),
-				result);
+		mapper.writeValue(new GZIPOutputStream(response.getOutputStream()), myResult);
 	}
 
 	// Throw away class to hack AutoComplete so that the request and response are small
@@ -282,8 +278,7 @@ public class RestfulServlet extends HttpServlet {
 											// movie review. Jackson cant handle them because they are circular
 											// references.
 		CommandResult result = execute(cmd);
-		mapper.writeValue(new GZIPOutputStream(response.getOutputStream()),
-				result);
+		mapper.writeValue(new GZIPOutputStream(response.getOutputStream()), result);
 	}
 
 	/*
@@ -293,15 +288,13 @@ public class RestfulServlet extends HttpServlet {
 		TopicCommand cmd = mapper.readValue(request.getInputStream(), TopicCommand.class);
 		CommandResult result = execute(cmd);
 		// mapper.writeValue(response.getWriter(), result);
-		mapper.writeValue(new GZIPOutputStream(response.getOutputStream()),
-				result);
+		mapper.writeValue(new GZIPOutputStream(response.getOutputStream()), result);
 	}
 
 	private void performForum(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		ForumCommand cmd = mapper.readValue(request.getInputStream(), ForumCommand.class);
 		CommandResult result = execute(cmd);
-		mapper.writeValue(new GZIPOutputStream(response.getOutputStream()),
-				result);
+		mapper.writeValue(new GZIPOutputStream(response.getOutputStream()), result);
 	}
 
 	private void perfromInternalServerError(HttpServletResponse response) {
@@ -311,8 +304,7 @@ public class RestfulServlet extends HttpServlet {
 	/*
 	 * 
 	 */
-	private void performLogin(HttpServletRequest request,
-			HttpServletResponse response) throws JsonProcessingException,
+	private void performLogin(HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException,
 			IOException, RemoteServiceException, ClassNotFoundException {
 
 		JsonNode root = mapper.readTree(request.getInputStream());
@@ -324,8 +316,7 @@ public class RestfulServlet extends HttpServlet {
 			PersonCommandResult result = authenticate(username, password);
 			RestfulToken token = new RestfulToken(result.getPerson().getPersonId());
 			result.setToken(RestfulTokenTool.toTokenString(token));
-			mapper.writeValue(new GZIPOutputStream(response.getOutputStream()),
-					result);
+			mapper.writeValue(new GZIPOutputStream(response.getOutputStream()), result);
 		} catch (RuntimeException e) {
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 		}
@@ -347,8 +338,7 @@ public class RestfulServlet extends HttpServlet {
 			PersonCommandResult result = new PersonCommandResult(gPerson);
 			result.setToken(token);
 
-			mapper.writeValue(new GZIPOutputStream(response.getOutputStream()),
-					result);
+			mapper.writeValue(new GZIPOutputStream(response.getOutputStream()), result);
 		} catch (RuntimeException e) {
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 		} finally {
@@ -356,7 +346,6 @@ public class RestfulServlet extends HttpServlet {
 		}
 
 	}
-
 
 	/*
 	 * Trevis, you added this to get "CONVERSATIONS" this search command seemed to be the only place that you provided
@@ -368,8 +357,7 @@ public class RestfulServlet extends HttpServlet {
 		CommandResult result = execute(cmd);
 
 		// mapper.writeValue(response.getWriter(), result);
-		mapper.writeValue(new GZIPOutputStream(response.getOutputStream()),
-				result);
+		mapper.writeValue(new GZIPOutputStream(response.getOutputStream()), result);
 	}
 
 	// protected void processUnLikePostRequest(String postId) throws IOException {
@@ -382,7 +370,46 @@ public class RestfulServlet extends HttpServlet {
 	// removeAssociation(association);
 	// }
 
-	private void performUnLikePostRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	// private void performUnLikePostRequest(HttpServletRequest request, HttpServletResponse response) throws Exception
+	// {
+
+		// JsonNode root = mapper.readTree(request.getInputStream());
+		// String postId = root.get("postId").asText();
+		// String token = root.has("token") ? root.get("token").asText() : null;
+		//
+		// RestfulToken t2 = RestfulTokenTool.fromTokenString(token);
+		// String personId = t2.getPersonId();
+		//
+		// try {
+		// Persistence.beginSession();
+		//
+		// Post post = PostDao.loadPost(postId);
+		//
+		// GPost gp = FastPostBeanConverter.convertPost(post);
+		//
+		// GAssociationPostTag association = gp.getLikedByPerson(personId);
+		// removeAssociation(association, token);
+		// Persistence.commit();
+		// } catch (RuntimeException e) {
+		// rollback();
+		// throw e;
+		// }
+		//
+		// response.setStatus(HttpServletResponse.SC_ACCEPTED);
+	// }
+
+	private void performLikePostRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		// JsonNode root = mapper.readTree(request.getInputStream());
+		// String postId = root.get("postId").asText();
+		// String token = root.has("token") ? root.get("token").asText() : null;
+		//
+		// RestfulToken t2 = RestfulTokenTool.fromTokenString(token);
+		// String personId = t2.getPersonId();
+		//
+		// createAssociation(postId, TagConstants.TYPE_LIKE, personId, token);
+		//
+		// response.setStatus(HttpServletResponse.SC_ACCEPTED);
 
 		JsonNode root = mapper.readTree(request.getInputStream());
 		String postId = root.get("postId").asText();
@@ -399,31 +426,27 @@ public class RestfulServlet extends HttpServlet {
 			GPost gp = FastPostBeanConverter.convertPost(post);
 
 			GAssociationPostTag association = gp.getLikedByPerson(personId);
-			removeAssociation(association, token);
+
+			if (association == null) {
+				AssociationPostTagResult result = createAssociation(postId, TagConstants.TYPE_LIKE, personId, token);
+				mapper.writeValue(new GZIPOutputStream(response.getOutputStream()), result);
+			} else {
+				AssociationPostTagResult result = removeAssociation(association, token);
+				mapper.writeValue(new GZIPOutputStream(response.getOutputStream()), result);
+			}
+
 			Persistence.commit();
 		} catch (RuntimeException e) {
 			rollback();
 			throw e;
 		}
 
-		response.setStatus(HttpServletResponse.SC_ACCEPTED);
-	}
-
-
-	private void performLikePostRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
-
-		JsonNode root = mapper.readTree(request.getInputStream());
-		String postId = root.get("postId").asText();
-		String token = root.has("token") ? root.get("token").asText() : null;
-
-		RestfulToken t2 = RestfulTokenTool.fromTokenString(token);
-		String personId = t2.getPersonId();
-
-		createAssociation(postId, TagConstants.TYPE_LIKE, personId, token);
+		// response.setStatus(HttpServletResponse.SC_ACCEPTED);
 
 	}
 
-	private void removeAssociation(GAssociationPostTag association, String token) throws IOException {
+	private AssociationPostTagResult removeAssociation(GAssociationPostTag association, String token)
+			throws IOException {
 		AssociationPostTagCommand cmd = new AssociationPostTagCommand();
 		cmd.setMode(AssociationPostTagCommand.Mode.REMOVE);
 		cmd.setAssociationId(association.getGuid());
@@ -433,10 +456,11 @@ public class RestfulServlet extends HttpServlet {
 		// TODO: If this is looking good, you might want to pull this class out of the movie area and use it as a
 		// generic post refresh
 		// injector.getService().execute(cmd, new MovieRatingPresenter.PostRatingCallback(post));
-		execute(cmd);
+		return execute(cmd);
 	}
 
-	private void createAssociation(String postId, String type, String value, String token) throws IOException {
+	private AssociationPostTagResult createAssociation(String postId, String type, String value, String token)
+			throws IOException {
 		AssociationPostTagCommand cmd = new AssociationPostTagCommand();
 
 		GTag tag = new GTag();
@@ -452,22 +476,19 @@ public class RestfulServlet extends HttpServlet {
 
 		cmd.setToken(StringUtil.empty(token) ? null : token);
 
-		execute(cmd);
+		return execute(cmd);
 	}
 
 	/*
 	 * 
 	 */
-	private void performLatestPosts(HttpServletRequest request,
-			HttpServletResponse response) throws IOException {
+	private void performLatestPosts(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-		LatestPostsCommand cmd = mapper.readValue(request.getInputStream(),
-				LatestPostsCommand.class);
+		LatestPostsCommand cmd = mapper.readValue(request.getInputStream(), LatestPostsCommand.class);
 
 		CommandResult result = execute(cmd);
 
-		mapper.writeValue(new GZIPOutputStream(response.getOutputStream()),
-				result);
+		mapper.writeValue(new GZIPOutputStream(response.getOutputStream()), result);
 	}
 
 	private <T extends CommandResult> T execute(Command<T> command) throws IOException {
