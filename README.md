@@ -242,7 +242,7 @@ Response:
 
 
 Request:
-URL: https://ttdc.us/restful/connect
+URL: https://ttdc.us/restful/serverEventList
 <pre>
 {
 	"connectionId":"CONN ID GOES HERE",
@@ -254,6 +254,7 @@ Response:
 <p>Note, here are the event types that i plan to test, but there are a lot more:
 TRAFFIC - Person
 NEW, EDIT, DELETE - Post
+NEW_TAG, REMOVED_TAG - TagAssociation
 RESET_SERVER_BROADCAST - null?
 </p>
 
