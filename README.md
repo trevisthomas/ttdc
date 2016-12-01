@@ -229,3 +229,27 @@ URL: https://ttdc.us/restful/unlike
 </pre>
 Response:
 <p>HTTP: 202</p>
+
+Request:
+URL: https://ttdc.us/restful/connect
+<pre>
+{
+	"token": "rO0ABXNy..." (Tokens are optional here!)
+}
+</pre>
+Response:
+<p>A connection id</p>
+
+
+Request:
+URL: https://ttdc.us/restful/connect
+<pre>
+{
+	"connectionId":"CONN ID GOES HERE",
+	"token": "rO0ABXNy..." (Optional here too!)
+}
+</pre>
+Response:
+<p>An object with the person who made the request (or anonymous) and the list of events that have occured</p>
+
+
