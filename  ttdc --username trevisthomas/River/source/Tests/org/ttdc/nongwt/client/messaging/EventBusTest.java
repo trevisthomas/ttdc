@@ -110,10 +110,10 @@ public class EventBusTest {
 	}
 	@Test
 	public void testTagEvents(){
-		TagEvent tagEvent = new TagEvent(TagEventType.NEW, new GAssociationPostTag());
+		TagEvent tagEvent = new TagEvent(TagEventType.NEW_TAG, new GAssociationPostTag());
 		TagEventListener tagEventListener = new TagEventListener(){
 			public void onTagEvent(TagEvent event) {
-				assertEquals(TagEventType.NEW, event.getType());
+				assertEquals(TagEventType.NEW_TAG, event.getType());
 			}
 		};
 		

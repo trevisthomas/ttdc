@@ -305,11 +305,11 @@ public class AssociationPostTagCommandTest{
 	//Modify broadcaster so that the browser that caused an event doesnt get the notification. 
 	
 	private void verifyTagCreationMessageWasBroadcast(){
-		verifyTagCreationMessageWasBroadcast(TagEventType.NEW, secondServerEventConnectionId);	
+		verifyTagCreationMessageWasBroadcast(TagEventType.NEW_TAG, secondServerEventConnectionId);	
 		verifyNoEventWasBroadcast(serverEventConnId);
 	}
 	private void verifyTagRemoveMessageWasBroadcast(){
-		verifyTagCreationMessageWasBroadcast(TagEventType.REMOVED, secondServerEventConnectionId);
+		verifyTagCreationMessageWasBroadcast(TagEventType.REMOVED_TAG, secondServerEventConnectionId);
 		verifyNoEventWasBroadcast(serverEventConnId);
 	}
 	

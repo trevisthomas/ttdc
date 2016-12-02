@@ -89,7 +89,7 @@ public class EarmarkedPresenter extends BasePresenter<EarmarkedPresenter.View> i
 		if(event.isByPerson(ConnectionId.getInstance().getCurrentUser(), TagConstants.TYPE_EARMARK)){
 			//resultCache = null;
 			GPost post = event.getSource().getPost();
-			if(event.is(TagEventType.NEW)){
+			if(event.is(TagEventType.NEW_TAG)){
 				postCollection.insertPost(post);
 			}
 			else{

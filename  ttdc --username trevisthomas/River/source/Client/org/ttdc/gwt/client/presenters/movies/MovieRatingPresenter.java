@@ -205,13 +205,13 @@ public class MovieRatingPresenter extends BasePresenter<MovieRatingPresenter.Vie
 			if(result.isCreate()){
 				PostEvent event = new PostEvent(PostEventType.EDIT,result.getAssociationPostTag().getPost());
 				EventBus.fireEvent(event);
-				TagEvent tagEvent = new TagEvent(TagEventType.NEW, result.getAssociationPostTag());
+				TagEvent tagEvent = new TagEvent(TagEventType.NEW_TAG, result.getAssociationPostTag());
 				EventBus.fireEvent(tagEvent);
 			}
 			else if(result.isRemove()){
 				PostEvent event = new PostEvent(PostEventType.EDIT,result.getPost());
 				EventBus.fireEvent(event);
-				TagEvent tagEvent = new TagEvent(TagEventType.REMOVED, result.getAssociationPostTag());
+				TagEvent tagEvent = new TagEvent(TagEventType.REMOVED_TAG, result.getAssociationPostTag());
 				EventBus.fireEvent(tagEvent);
 			}
 			else{

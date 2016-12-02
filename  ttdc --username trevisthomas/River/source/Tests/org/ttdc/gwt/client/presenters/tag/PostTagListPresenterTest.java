@@ -337,7 +337,7 @@ public class PostTagListPresenterTest {
 		assertTrue("Precondition not satisfied.",presenter.getTagIdList().size() == 2);
 		
 		GAssociationPostTag gAss = PostBeanMother.createTopicTagAss("Test this tag");
-		TagEvent event = new TagEvent(TagEventType.NEW,gAss);
+		TagEvent event = new TagEvent(TagEventType.NEW_TAG,gAss);
 		EventBus bus = EventBus.getInstance();
 		bus.fireEvent(event);
 		
@@ -364,7 +364,7 @@ public class PostTagListPresenterTest {
 		
 		assertTrue("Precondition not satisfied.",presenter.getTagIdList().size() == 3);
 		
-		TagEvent event = new TagEvent(TagEventType.REMOVED,gAss);
+		TagEvent event = new TagEvent(TagEventType.REMOVED_TAG,gAss);
 		EventBus bus = EventBus.getInstance();
 		bus.fireEvent(event);
 		

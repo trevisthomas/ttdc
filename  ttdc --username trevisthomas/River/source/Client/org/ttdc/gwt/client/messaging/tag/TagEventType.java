@@ -1,6 +1,6 @@
 package org.ttdc.gwt.client.messaging.tag;
 
 public enum TagEventType{
-	NEW,
-	REMOVED
+	NEW_TAG,
+	REMOVED_TAG
 }

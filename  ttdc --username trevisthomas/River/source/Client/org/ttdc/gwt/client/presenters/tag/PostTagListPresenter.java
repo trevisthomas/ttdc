@@ -45,9 +45,9 @@ public class PostTagListPresenter extends BasePresenter<TagListPresenterView> im
 	public void onTagEvent(TagEvent event) {
 		if(postId == null) return;
 		if(!postId.equals(event.getSource().getPost().getPostId())) return;
-		if(TagEventType.NEW.equals(event.getType()))
+		if(TagEventType.NEW_TAG.equals(event.getType()))
 			addTagAssociationToList(event.getSource());
-		else if(TagEventType.REMOVED.equals(event.getType())){
+		else if(TagEventType.REMOVED_TAG.equals(event.getType())){
 			removeTagAssociationFromList(event.getSource());
 		}
 		else

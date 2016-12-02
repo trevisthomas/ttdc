@@ -89,7 +89,7 @@ public class AssociationPostTagCommandExecutor extends CommandExecutor<Associati
 		result.setAssociationId(ass.getGuid());
 		
 		broadcastPostEvent(post, PostEventType.EDIT);
-		broadcastTagAssociation(gAss, TagEventType.NEW);
+		broadcastTagAssociation(gAss, TagEventType.NEW_TAG);
 		
 		Persistence.commit();
 		
@@ -148,7 +148,7 @@ public class AssociationPostTagCommandExecutor extends CommandExecutor<Associati
 //		result.setAssociationPostTag(gAss);
 //		
 		//Should probably instead be broadcasting a post update...
-		broadcastTagAssociation(gAss, TagEventType.REMOVED);
+		broadcastTagAssociation(gAss, TagEventType.REMOVED_TAG);
 		
 		Persistence.commit();
 		

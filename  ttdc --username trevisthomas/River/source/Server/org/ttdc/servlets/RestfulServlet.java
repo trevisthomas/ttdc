@@ -21,7 +21,6 @@ import org.ttdc.gwt.client.beans.GPerson;
 import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.beans.GTag;
 import org.ttdc.gwt.client.constants.TagConstants;
-import org.ttdc.gwt.client.messaging.ConnectionId;
 import org.ttdc.gwt.client.services.Command;
 import org.ttdc.gwt.client.services.CommandResult;
 import org.ttdc.gwt.client.services.RemoteServiceException;
@@ -39,11 +38,14 @@ import org.ttdc.gwt.shared.commands.ForumCommand;
 import org.ttdc.gwt.shared.commands.LatestPostsCommand;
 import org.ttdc.gwt.shared.commands.PostCrudCommand;
 import org.ttdc.gwt.shared.commands.SearchPostsCommand;
+import org.ttdc.gwt.shared.commands.ServerEventListCommand;
+import org.ttdc.gwt.shared.commands.ServerEventOpenConnectionCommand;
 import org.ttdc.gwt.shared.commands.TagSuggestionCommand;
 import org.ttdc.gwt.shared.commands.TagSuggestionCommandMode;
 import org.ttdc.gwt.shared.commands.TopicCommand;
 import org.ttdc.gwt.shared.commands.results.AssociationPostTagResult;
 import org.ttdc.gwt.shared.commands.results.PersonCommandResult;
+import org.ttdc.gwt.shared.commands.results.ServerEventCommandResult;
 import org.ttdc.gwt.shared.commands.results.TagSuggestionCommandResult;
 import org.ttdc.gwt.shared.util.StringUtil;
 import org.ttdc.persistence.Persistence;
@@ -125,6 +127,14 @@ public class RestfulServlet extends HttpServlet {
 			case "/like":
 				performLikePostRequest(request, response);
 				break;
+			case "/connect":
+				performConnectToServer(request, response);
+				break;
+			case "/servereventlist":
+				performServerEventList(request, response);
+
+				break;
+
 			// case "/unlike":
 			// performUnLikePostRequest(request, response);
 			// break;
@@ -445,6 +455,29 @@ public class RestfulServlet extends HttpServlet {
 
 	}
 
+	private void performConnectToServer(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		ServerEventOpenConnectionCommand cmd = mapper.readValue(request.getInputStream(),
+				ServerEventOpenConnectionCommand.class);
+
+		CommandResult result = execute(cmd);
+
+
+		mapper.writeValue(new GZIPOutputStream(response.getOutputStream()), result);
+	}
+
+	private void performServerEventList(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		ServerEventListCommand cmd = mapper.readValue(request.getInputStream(), ServerEventListCommand.class);
+
+		ServerEventCommandResult result = execute(cmd);
+
+		// Reduce
+		// This class is returning like 15k worth of data for a like!!!!
+
+		mapper.writeValue(new GZIPOutputStream(response.getOutputStream()), result);
+	}
+
 	private AssociationPostTagResult removeAssociation(GAssociationPostTag association, String token)
 			throws IOException {
 		AssociationPostTagCommand cmd = new AssociationPostTagCommand();
@@ -452,7 +485,7 @@ public class RestfulServlet extends HttpServlet {
 		cmd.setAssociationId(association.getGuid());
 		cmd.setMode(Mode.REMOVE);
 		cmd.setToken(StringUtil.empty(token) ? null : token);
-		cmd.setConnectionId(ConnectionId.getInstance().getConnectionId());
+		// cmd.setConnectionId(ConnectionId.getInstance().getConnectionId());
 		// TODO: If this is looking good, you might want to pull this class out of the movie area and use it as a
 		// generic post refresh
 		// injector.getService().execute(cmd, new MovieRatingPresenter.PostRatingCallback(post));
@@ -471,7 +504,7 @@ public class RestfulServlet extends HttpServlet {
 		cmd.setMode(AssociationPostTagCommand.Mode.CREATE);
 		// TODO: If this is looking good, you might want to pull this class out of the movie area and use it as a
 		// generic post refresh
-		cmd.setConnectionId(ConnectionId.getInstance().getConnectionId());
+		// cmd.setConnectionId(ConnectionId.getInstance().getConnectionId());
 		// injector.getService().execute(cmd, new MovieRatingPresenter.PostRatingCallback(post));
 
 		cmd.setToken(StringUtil.empty(token) ? null : token);
@@ -493,7 +526,7 @@ public class RestfulServlet extends HttpServlet {
 
 	private <T extends CommandResult> T execute(Command<T> command) throws IOException {
 		String personId = null;
-		if (command.getToken() != null) {
+		if (command.getToken() != null && !command.getToken().isEmpty()) {
 			RestfulToken t2;
 			try {
 				t2 = RestfulTokenTool.fromTokenString(command.getToken());
