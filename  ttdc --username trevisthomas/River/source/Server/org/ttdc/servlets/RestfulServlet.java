@@ -44,14 +44,21 @@ import org.ttdc.gwt.shared.commands.TagSuggestionCommand;
 import org.ttdc.gwt.shared.commands.TagSuggestionCommandMode;
 import org.ttdc.gwt.shared.commands.TopicCommand;
 import org.ttdc.gwt.shared.commands.results.AssociationPostTagResult;
+import org.ttdc.gwt.shared.commands.results.PaginatedListCommandResult;
 import org.ttdc.gwt.shared.commands.results.PersonCommandResult;
+import org.ttdc.gwt.shared.commands.results.SearchPostsCommandResult;
 import org.ttdc.gwt.shared.commands.results.ServerEventCommandResult;
 import org.ttdc.gwt.shared.commands.results.TagSuggestionCommandResult;
+import org.ttdc.gwt.shared.commands.results.TopicCommandResult;
 import org.ttdc.gwt.shared.util.StringUtil;
 import org.ttdc.persistence.Persistence;
 import org.ttdc.persistence.objects.Person;
 import org.ttdc.persistence.objects.Post;
 import org.ttdc.persistence.objects.UserObject;
+import org.ttdc.servlets.wrappers.PaginatedListCommandResultWrapper;
+import org.ttdc.servlets.wrappers.SearchPostsCommandResultWrapper;
+import org.ttdc.servlets.wrappers.ServerEventCommandResultWrapper;
+import org.ttdc.servlets.wrappers.TopicCommandResultWrapper;
 import org.ttdc.util.Cryptographer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -97,6 +104,9 @@ public class RestfulServlet extends HttpServlet {
 			case "/latestposts":
 				performLatestPosts(request, response);
 				break;
+			case "/latestposts-mini":
+				performLatestPostsMinified(request, response);
+				break;
 			case "/login":
 				performLogin(request, response);
 				break;
@@ -105,6 +115,9 @@ public class RestfulServlet extends HttpServlet {
 				break;
 			case "/topic":
 				performTopic(request, response);
+				break;
+			case "/topic-mini":
+				performTopicMinified(request, response);
 				break;
 			case "/post":
 				performPost(request, response);
@@ -124,6 +137,9 @@ public class RestfulServlet extends HttpServlet {
 			case "/search":
 				performSearch(request, response);
 				break;
+			case "/search-mini":
+				performSearchMinified(request, response);
+				break;
 			case "/like":
 				performLikePostRequest(request, response);
 				break;
@@ -132,7 +148,9 @@ public class RestfulServlet extends HttpServlet {
 				break;
 			case "/servereventlist":
 				performServerEventList(request, response);
-
+				break;
+			case "/servereventlist-mini":
+				performServerEventListMinified(request, response);
 				break;
 
 			// case "/unlike":
@@ -301,6 +319,15 @@ public class RestfulServlet extends HttpServlet {
 		mapper.writeValue(new GZIPOutputStream(response.getOutputStream()), result);
 	}
 
+	private void performTopicMinified(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		TopicCommand cmd = mapper.readValue(request.getInputStream(), TopicCommand.class);
+		TopicCommandResult result = execute(cmd);
+
+		TopicCommandResultWrapper minifed = new TopicCommandResultWrapper(result);
+
+		mapper.writeValue(new GZIPOutputStream(response.getOutputStream()), minifed);
+	}
+
 	private void performForum(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		ForumCommand cmd = mapper.readValue(request.getInputStream(), ForumCommand.class);
 		CommandResult result = execute(cmd);
@@ -368,6 +395,23 @@ public class RestfulServlet extends HttpServlet {
 
 		// mapper.writeValue(response.getWriter(), result);
 		mapper.writeValue(new GZIPOutputStream(response.getOutputStream()), result);
+	}
+
+	/*
+	 * Trevis, you added this to get "CONVERSATIONS" this search command seemed to be the only place that you provided
+	 * it. It exposes a lot more than you have tested via json.
+	 */
+	private void performSearchMinified(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		SearchPostsCommand cmd = mapper.readValue(request.getInputStream(), SearchPostsCommand.class);
+
+		// CommandResult result = execute(cmd);
+
+		SearchPostsCommandResult result = execute(cmd);
+
+		SearchPostsCommandResultWrapper minified = new SearchPostsCommandResultWrapper(result);
+
+		// mapper.writeValue(response.getWriter(), result);
+		mapper.writeValue(new GZIPOutputStream(response.getOutputStream()), minified);
 	}
 
 	// protected void processUnLikePostRequest(String postId) throws IOException {
@@ -478,6 +522,22 @@ public class RestfulServlet extends HttpServlet {
 		mapper.writeValue(new GZIPOutputStream(response.getOutputStream()), result);
 	}
 
+	private void performServerEventListMinified(HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+
+		ServerEventListCommand cmd = mapper.readValue(request.getInputStream(), ServerEventListCommand.class);
+
+		ServerEventCommandResult result = execute(cmd);
+
+		ServerEventCommandResultWrapper minified = new ServerEventCommandResultWrapper(result);
+
+		// Reduce
+		// This class is returning like 15k worth of data for a like!!!! NOT ANY MORE
+		//
+
+		mapper.writeValue(new GZIPOutputStream(response.getOutputStream()), minified);
+	}
+
 	private AssociationPostTagResult removeAssociation(GAssociationPostTag association, String token)
 			throws IOException {
 		AssociationPostTagCommand cmd = new AssociationPostTagCommand();
@@ -519,9 +579,21 @@ public class RestfulServlet extends HttpServlet {
 
 		LatestPostsCommand cmd = mapper.readValue(request.getInputStream(), LatestPostsCommand.class);
 
-		CommandResult result = execute(cmd);
+		PaginatedListCommandResult<?> result = execute(cmd);
 
 		mapper.writeValue(new GZIPOutputStream(response.getOutputStream()), result);
+	}
+
+	private void performLatestPostsMinified(HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
+
+		LatestPostsCommand cmd = mapper.readValue(request.getInputStream(), LatestPostsCommand.class);
+
+		PaginatedListCommandResult<GPost> result = execute(cmd);
+
+		PaginatedListCommandResultWrapper<GPost> minified = new PaginatedListCommandResultWrapper<GPost>(result);
+
+		mapper.writeValue(new GZIPOutputStream(response.getOutputStream()), minified);
 	}
 
 	private <T extends CommandResult> T execute(Command<T> command) throws IOException {

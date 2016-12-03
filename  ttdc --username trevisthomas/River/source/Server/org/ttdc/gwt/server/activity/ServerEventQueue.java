@@ -38,9 +38,11 @@ class ServerEventQueue{
 	public boolean hasEvents(){
 		return queue.peek() != null;
 	}
-	public void addEvent(Event<?,?> event){
+	public void addOrReplace(Event<?,?> event){
+		queue.remove(event);
 		queue.add(event);
 	}
+
 	public List<Event<?,?>> popAllEvents(){
 		List<Event<?,?>> list = new ArrayList<Event<?,?>>();
 		while(!queue.isEmpty()){

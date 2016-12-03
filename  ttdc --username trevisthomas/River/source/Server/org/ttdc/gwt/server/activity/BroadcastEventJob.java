@@ -32,9 +32,12 @@ class BroadcastEventJob implements Runnable{
 				ServerEventQueue queue = broadcaster.getQueueForConnectionId(connectionId);
 				
 				boolean validForUser = isPostValidContentForUser(queue);
-				
-				if(validForUser && !queue.containsEvent(event)){
-					queue.addEvent(event);
+
+				// I modified the addEvent method to be a replace event method if it exists so that multiple actions on
+				// the same Post would be reflected in the broadcast. That's why i dont check if it contains the event
+				// anymore. 12/3/2016
+				if (validForUser /* && !queue.containsEvent(event) */) {
+					queue.addOrReplace(event);
 				}
 			}
 		}	

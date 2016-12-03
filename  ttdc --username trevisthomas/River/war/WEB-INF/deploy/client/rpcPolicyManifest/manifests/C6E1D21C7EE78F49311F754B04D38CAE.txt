@@ -1,0 +1,2 @@
+serviceClass: org.ttdc.gwt.client.services.RpcService
+path: C4A0BA9D5A0E314F1BCE5297F633DF5E.gwt.rpc
