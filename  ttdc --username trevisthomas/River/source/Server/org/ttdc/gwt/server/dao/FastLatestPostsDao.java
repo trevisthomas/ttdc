@@ -25,14 +25,18 @@ public class FastLatestPostsDao extends FilteredPostPaginatedDaoBase{
 
 
 	public PaginatedList<GPost> loadFlat(){
-		setPageSize(MAX_FLAT);
+		if (getPageSize() < 1) {
+			setPageSize(MAX_FLAT);
+		}
 		PaginatedList<GPost> results = new PaginatedList<GPost>();
 		results = executeLoadQuery("LatestPostsDaoFast.Flat", false);
 		return results;
 	}
 	
 	public PaginatedList<GPost> loadGrouped(){
-		setPageSize(MAX_CONVERSATIONS);
+		if (getPageSize() < 1) {
+			setPageSize(MAX_CONVERSATIONS);
+		}
 		PaginatedList<GPost> results = new PaginatedList<GPost>();
 		results = executeLoadQuery("LatestPostsDaoFast.Grouped", true);
 		return results;

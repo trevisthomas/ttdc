@@ -5,17 +5,14 @@ import org.ttdc.gwt.client.services.CommandResult;
 import org.ttdc.gwt.server.command.CommandExecutor;
 import org.ttdc.gwt.server.command.executors.utils.ExecutorHelpers;
 import org.ttdc.gwt.server.command.executors.utils.PaginatedResultConverters;
-import org.ttdc.gwt.server.dao.AccountDao;
 import org.ttdc.gwt.server.dao.EarmarkedPostDao;
+import org.ttdc.gwt.server.dao.FastLatestPostsDao;
 import org.ttdc.gwt.server.dao.InboxDao;
 import org.ttdc.gwt.server.dao.LatestPostsDao;
-import org.ttdc.gwt.server.dao.FastLatestPostsDao;
-import org.ttdc.gwt.server.dao.PersonDao;
 import org.ttdc.gwt.server.dao.TagDao;
 import org.ttdc.gwt.shared.commands.LatestPostsCommand;
 import org.ttdc.gwt.shared.commands.results.PaginatedListCommandResult;
 import org.ttdc.gwt.shared.util.PaginatedList;
-import org.ttdc.gwt.shared.util.PostFlag;
 import org.ttdc.persistence.Persistence;
 import org.ttdc.persistence.objects.Person;
 import org.ttdc.persistence.objects.Post;
@@ -115,6 +112,7 @@ public class LatestPostCommandExecutor extends CommandExecutor<PaginatedListComm
 	private LatestPostsDao getLatestPostDaoWithPersonalFilter(LatestPostsCommand cmd) {
 		LatestPostsDao dao = new LatestPostsDao();
 		dao.setCurrentPage(cmd.getPageNumber());
+		dao.setPageSize(cmd.getPageSize());
 		Person p = getPerson();
 		dao.setFilterFlags(ExecutorHelpers.createFlagFilterListForPerson(p));
 		dao.addFilterThreadIds(p.getFrontPageFilteredThreadIds());
@@ -124,6 +122,7 @@ public class LatestPostCommandExecutor extends CommandExecutor<PaginatedListComm
 	private FastLatestPostsDao getLatestPostDaoWithPersonalFilterFuckHibernate(LatestPostsCommand cmd) {
 		FastLatestPostsDao dao = new FastLatestPostsDao();
 		dao.setCurrentPage(cmd.getPageNumber());
+		dao.setPageSize(cmd.getPageSize());
 		Person p = getPerson();
 		InboxDao inboxDao = new InboxDao(p);
 		dao.setFilterFlags(ExecutorHelpers.createFlagFilterListForPerson(p));
@@ -139,6 +138,7 @@ public class LatestPostCommandExecutor extends CommandExecutor<PaginatedListComm
 		
 		EarmarkedPostDao dao = new EarmarkedPostDao();
 		dao.setCurrentPage(cmd.getPageNumber());
+		dao.setPageSize(cmd.getPageSize());
 		dao.setPersonId(person.getPersonId());
 		
 		TagDao tagDao = new TagDao();

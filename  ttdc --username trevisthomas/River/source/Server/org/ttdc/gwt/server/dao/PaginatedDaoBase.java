@@ -10,7 +10,9 @@ abstract class PaginatedDaoBase {
 	}
 
 	public void setPageSize(int pageSize) {
-		this.pageSize = pageSize;
+		if (pageSize > 0) {
+			this.pageSize = pageSize;
+		}
 	}
 
 	public int getCurrentPage() {

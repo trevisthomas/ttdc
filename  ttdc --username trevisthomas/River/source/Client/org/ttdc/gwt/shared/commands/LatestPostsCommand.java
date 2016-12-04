@@ -8,6 +8,7 @@ import org.ttdc.gwt.shared.commands.types.PostListType;
 public class LatestPostsCommand extends Command<PaginatedListCommandResult<GPost>>{
 	private PostListType action;
 	private int pageNumber = 1;
+	private int pageSize = -1;
 
 	public void setAction(PostListType action) {
 		this.action = action;
@@ -31,5 +32,12 @@ public class LatestPostsCommand extends Command<PaginatedListCommandResult<GPost
 	public void setPageNumber(int pageNumber) {
 		this.pageNumber = pageNumber;
 	}
-	
+
+	public int getPageSize() {
+		return pageSize;
+	}
+
+	public void setPageSize(int pageSize) {
+		this.pageSize = pageSize;
+	}
 }
