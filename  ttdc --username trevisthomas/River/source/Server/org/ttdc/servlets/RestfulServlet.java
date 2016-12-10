@@ -468,6 +468,7 @@ public class RestfulServlet extends HttpServlet {
 		JsonNode root = mapper.readTree(request.getInputStream());
 		String postId = root.get("postId").asText();
 		String token = root.has("token") ? root.get("token").asText() : null;
+		String connectionId = root.has("connectionId") ? root.get("connectionId").asText() : null;
 
 		RestfulToken t2 = RestfulTokenTool.fromTokenString(token);
 		String personId = t2.getPersonId();
@@ -482,10 +483,11 @@ public class RestfulServlet extends HttpServlet {
 			GAssociationPostTag association = gp.getLikedByPerson(personId);
 
 			if (association == null) {
-				AssociationPostTagResult result = createAssociation(postId, TagConstants.TYPE_LIKE, personId, token);
+				AssociationPostTagResult result = createAssociation(postId, TagConstants.TYPE_LIKE, personId, token,
+						connectionId);
 				mapper.writeValue(new GZIPOutputStream(response.getOutputStream()), result);
 			} else {
-				AssociationPostTagResult result = removeAssociation(association, token);
+				AssociationPostTagResult result = removeAssociation(association, token, connectionId);
 				mapper.writeValue(new GZIPOutputStream(response.getOutputStream()), result);
 			}
 
@@ -531,20 +533,18 @@ public class RestfulServlet extends HttpServlet {
 
 		ServerEventCommandResultWrapper minified = new ServerEventCommandResultWrapper(result);
 
-		// Reduce
-		// This class is returning like 15k worth of data for a like!!!! NOT ANY MORE
-		//
-
 		mapper.writeValue(new GZIPOutputStream(response.getOutputStream()), minified);
 	}
 
-	private AssociationPostTagResult removeAssociation(GAssociationPostTag association, String token)
+	private AssociationPostTagResult removeAssociation(GAssociationPostTag association, String token,
+			String connectionId)
 			throws IOException {
 		AssociationPostTagCommand cmd = new AssociationPostTagCommand();
 		cmd.setMode(AssociationPostTagCommand.Mode.REMOVE);
 		cmd.setAssociationId(association.getGuid());
 		cmd.setMode(Mode.REMOVE);
 		cmd.setToken(StringUtil.empty(token) ? null : token);
+		cmd.setConnectionId(connectionId);
 		// cmd.setConnectionId(ConnectionId.getInstance().getConnectionId());
 		// TODO: If this is looking good, you might want to pull this class out of the movie area and use it as a
 		// generic post refresh
@@ -552,7 +552,8 @@ public class RestfulServlet extends HttpServlet {
 		return execute(cmd);
 	}
 
-	private AssociationPostTagResult createAssociation(String postId, String type, String value, String token)
+	private AssociationPostTagResult createAssociation(String postId, String type, String value, String token,
+			String connectionId)
 			throws IOException {
 		AssociationPostTagCommand cmd = new AssociationPostTagCommand();
 
@@ -562,6 +563,7 @@ public class RestfulServlet extends HttpServlet {
 		cmd.setTag(tag);
 		cmd.setPostId(postId);
 		cmd.setMode(AssociationPostTagCommand.Mode.CREATE);
+		cmd.setConnectionId(connectionId);
 		// TODO: If this is looking good, you might want to pull this class out of the movie area and use it as a
 		// generic post refresh
 		// cmd.setConnectionId(ConnectionId.getInstance().getConnectionId());

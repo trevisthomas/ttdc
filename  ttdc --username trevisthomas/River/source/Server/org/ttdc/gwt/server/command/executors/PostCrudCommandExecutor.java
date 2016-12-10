@@ -92,11 +92,14 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 				result = new PostCommandResult(gPost);
 			}
 			
+			Person creator = determinePerson(cmd);
+
 			commit();
 			
 			if(broadcastType != null && gPost != null){
 				PostEvent event = new PostEvent(broadcastType,gPost);
-				ServerEventBroadcaster.getInstance().broadcastEvent(event,getCommand().getConnectionId());
+				ServerEventBroadcaster.getInstance().broadcastEvent(creator.getPersonId(), event,
+						getCommand().getConnectionId());
 			}
 			
 			return result;

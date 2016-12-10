@@ -437,7 +437,16 @@ public class FastPostBeanConverter {
 	
 	public static GAssociationPostTag convertAssociationPostTagWithPost(AssociationPostTag ass, InboxDao inboxDao){
 		GAssociationPostTag gAss = convertAssociationPostTag(ass);
-		gAss.setPost(convertPost(ass.getPost()));
+
+		GPost gPost = convertPost(ass.getPost());
+
+		// Below is a hack to stuff the thread into the response to help Mobile. FastPostBeanConverter doesn't do this,
+		// i assume because because of some old performance enhancement for the website. I didnt want to risk inpacting
+		// conversion for everything so i'm forcing it in here. 12/10/2016
+		if (gPost.getThread() == null) {
+			gPost.setThread(FastPostBeanConverter.convertPost(ass.getPost().getThread()));
+		}
+		gAss.setPost(gPost);
 		gAss.setTag(convertTag(ass.getTag()));
 		return gAss;
 	}

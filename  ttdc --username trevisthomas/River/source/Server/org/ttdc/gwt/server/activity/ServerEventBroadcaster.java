@@ -15,6 +15,8 @@ import org.apache.log4j.Logger;
 import org.ttdc.gwt.client.messaging.Event;
 import org.ttdc.gwt.client.messaging.error.MessageEvent;
 import org.ttdc.gwt.client.messaging.error.MessageEventType;
+import org.ttdc.gwt.client.messaging.post.PostEvent;
+import org.ttdc.gwt.server.activity.push.PushNotificationTool;
 import org.ttdc.util.ApplicationProperties;
 
 /**
@@ -30,6 +32,7 @@ public class ServerEventBroadcaster {
 	private final ConcurrentMap<String,ServerEventQueue> userQueues;
 	private volatile int nextConnectionIndex = 0;
 	private static final String CONNECTION_ID_PREFIX = "CONN_ID_";
+	private final PushNotificationTool pushTool = new PushNotificationTool();
 	
 	
 	/* 
@@ -77,6 +80,7 @@ public class ServerEventBroadcaster {
 	}
 	
 	public void broadcastEvent(Event<?,?> event){
+		// Trevis, for completion sake, should this one also send push notifications?
 		Callable<Object> callable = Executors.callable( new BroadcastEventJob(this, event));
 		try {
 			callable.call();
@@ -95,7 +99,27 @@ public class ServerEventBroadcaster {
 	 * @param event
 	 * @param sourceConnectionId
 	 */
-	public void broadcastEvent(Event<?,?> event, String sourceConnectionId){
+	public void broadcastEvent(Event<?, ?> event, String sourceConnectionId) {
+		Callable<Object> callable = Executors.callable(new BroadcastEventJob(this, event, sourceConnectionId));
+		try {
+			callable.call();
+		} catch (Exception e) {
+			log.error(e);
+		}
+	}
+
+	/**
+	 * Only broadcasts the message to everyone else, not to self. And send a push notification to mobile users!
+	 * 
+	 * @param the
+	 *            person who is causing the event
+	 * @param event
+	 * @param sourceConnectionId
+	 */
+	public void broadcastEvent(String personId, Event<?, ?> event, String sourceConnectionId) {
+		if (event instanceof PostEvent) {
+			pushTool.executePushEventCausedBy(personId, (PostEvent) event);
+		}
 		Callable<Object> callable = Executors.callable( new BroadcastEventJob(this, event, sourceConnectionId));
 		try {
 			callable.call();
@@ -104,6 +128,7 @@ public class ServerEventBroadcaster {
 		}
 	}
 	
+
 	Set<String> getActiveConnectionIdSet(){
 		return userQueues.keySet();
 	}

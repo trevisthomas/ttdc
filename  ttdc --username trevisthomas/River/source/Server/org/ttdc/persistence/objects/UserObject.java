@@ -31,7 +31,8 @@ import org.hibernate.annotations.Loader;
 @NamedQueries({
 	@NamedQuery(name="object.getAll", query="FROM UserObject"),
 	@NamedQuery(name="object.getByGuid", query="SELECT o FROM UserObject as o LEFT OUTER JOIN FETCH o.template LEFT OUTER JOIN FETCH o.template.image WHERE o.objectId=:objectId"),
-	@NamedQuery(name="object.getForOwner", query="SELECT o FROM UserObject as o LEFT OUTER JOIN FETCH o.template LEFT OUTER JOIN FETCH o.template.image WHERE o.owner.personId=:personId")
+		@NamedQuery(name = "object.getForOwner", query = "SELECT o FROM UserObject as o LEFT OUTER JOIN FETCH o.template LEFT OUTER JOIN FETCH o.template.image WHERE o.owner.personId=:personId"),
+		@NamedQuery(name = "object.getAllOfType", query = "SELECT o FROM UserObject as o LEFT OUTER JOIN FETCH o.template LEFT OUTER JOIN FETCH o.template.image WHERE o.type=:type")
 })
 //@SQLDelete( sql)
 

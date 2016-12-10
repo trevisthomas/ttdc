@@ -42,6 +42,7 @@ class BroadcastEventJob implements Runnable{
 			}
 		}	
 	}
+
 	private boolean isPostValidContentForUser(ServerEventQueue queue) {
 		boolean validForUser = true;
 		if(event instanceof PostEvent){

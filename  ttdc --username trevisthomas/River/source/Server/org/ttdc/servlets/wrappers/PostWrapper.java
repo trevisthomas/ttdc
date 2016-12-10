@@ -98,6 +98,10 @@ public class PostWrapper {
 		return delegate.getParentPostCreatorId();
 	}
 
+	public String getParentPostId() {
+		return delegate.getParentPostId();
+	}
+
 	public boolean isMovie() {
 		return delegate.isMovie();
 	}
