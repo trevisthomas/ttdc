@@ -485,9 +485,13 @@ public class RestfulServlet extends HttpServlet {
 			if (association == null) {
 				AssociationPostTagResult result = createAssociation(postId, TagConstants.TYPE_LIKE, personId, token,
 						connectionId);
+				result.setPost(result.getAssociationPostTag().getPost());
 				mapper.writeValue(new GZIPOutputStream(response.getOutputStream()), result);
 			} else {
 				AssociationPostTagResult result = removeAssociation(association, token, connectionId);
+				// Post p = PostDao.loadPost(result.getPost().getPostId());
+				// GPost gPost = FastPostBeanConverter.convertPost(p);
+				// result.setPost(gPost);
 				mapper.writeValue(new GZIPOutputStream(response.getOutputStream()), result);
 			}
 

@@ -1,5 +1,7 @@
 package org.ttdc.gwt.server.command.executors;
 
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.search.FullTextSession;
 import org.ttdc.gwt.client.beans.GAssociationPostTag;
@@ -81,14 +83,14 @@ public class AssociationPostTagCommandExecutor extends CommandExecutor<Associati
 			Persistence.session().save(creator);
 			broadcastPersonEvent(creator, PersonEventType.USER_EARMKARK_COUNT_CHANGED);
 		}
-		InboxDao inboxDao = new InboxDao(getPerson());
+		// InboxDao inboxDao = new InboxDao(getPerson());
 		//GAssociationPostTag gAss = GenericBeanConverter.convertAssociationPostTag(ass);
-		GAssociationPostTag gAss = FastPostBeanConverter.convertAssociationPostTagWithPost(ass, inboxDao);
+		GAssociationPostTag gAss = FastPostBeanConverter.convertAssociationPostTagWithPost(ass);
 		result = new AssociationPostTagResult(AssociationPostTagResult.Status.CREATE);
 		result.setAssociationPostTag(gAss);
 		result.setAssociationId(ass.getGuid());
 		
-		broadcastPostEvent(post, PostEventType.EDIT);
+		broadcastPostEvent(gAss.getPost(), PostEventType.EDIT);
 		broadcastTagAssociation(gAss, TagEventType.NEW_TAG);
 		
 		Persistence.commit();
@@ -118,10 +120,16 @@ public class AssociationPostTagCommandExecutor extends CommandExecutor<Associati
 		Post post = ass.getPost();
 		
 		boolean isRatingTagAss = ass.getTag().getType().equals(Tag.TYPE_RATING);
-		InboxDao inboxDao = new InboxDao(getPerson());
-		GAssociationPostTag gAss = FastPostBeanConverter.convertAssociationPostTagWithPost(ass,inboxDao);
+
+		GAssociationPostTag gAss = FastPostBeanConverter.convertAssociationPostTagWithPost(ass);
 		
 		AssociationPostTagDao.remove(command.getAssociationId());
+
+		// Manually removing the removed tag from the dead tag association so that the post within it accurate before
+		// broadcasting and returning.
+		List<GAssociationPostTag> asses = gAss.getPost().getTagAssociations();
+		asses.remove(gAss);
+
 		if(isRatingTagAss){
 			RatingUtility.updateAverageRating(post);
 		}
@@ -135,10 +143,10 @@ public class AssociationPostTagCommandExecutor extends CommandExecutor<Associati
 		result.setAssociationId(ass.getGuid());
 		result.setAssociationPostTag(gAss);
 		
-		GPost gPost = FastPostBeanConverter.convertPost(post);
-		result.setPost(gPost);
+		// GPost gPost = FastPostBeanConverter.convertPost(post);
+		result.setPost(gAss.getPost()); // Because i updated it manually after removing the association
 		
-		broadcastPostEvent(post, PostEventType.EDIT);
+		broadcastPostEvent(gAss.getPost(), PostEventType.EDIT);
 		
 //		AssociationPostTag ass = AssociationPostTagDao.remove(command.getAssociationId());
 //		
@@ -178,6 +186,13 @@ public class AssociationPostTagCommandExecutor extends CommandExecutor<Associati
 		broadcaster.broadcastEvent(postEvent, getCommand().getConnectionId());
 	}
 	
+	private void broadcastPostEvent(GPost gPost, PostEventType eventType) {
+		ServerEventBroadcaster broadcaster = ServerEventBroadcaster.getInstance();
+		InboxDao inboxDao = new InboxDao(getPerson());
+		PostEvent postEvent = new PostEvent(eventType, gPost);
+		broadcaster.broadcastEvent(postEvent, getCommand().getConnectionId());
+	}
+
 	private void broadcastPersonEvent(Person person, PersonEventType eventType){
 		ServerEventBroadcaster broadcaster = ServerEventBroadcaster.getInstance();
 		GPerson gPerson = FastPostBeanConverter.convertPerson(person);

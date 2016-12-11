@@ -2,8 +2,6 @@ package org.ttdc.gwt.client.beans;
 
 import java.util.Date;
 
-import org.ttdc.gwt.client.constants.TagConstants;
-
 public class GAssociationPostTag extends GBase{
 	private String guid;
 	private GTag tag;
@@ -58,6 +56,31 @@ public class GAssociationPostTag extends GBase{
 	}
 	public boolean isType(String type){
 		return type.equals(getTag().getType());
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((guid == null) ? 0 : guid.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		GAssociationPostTag other = (GAssociationPostTag) obj;
+		if (guid == null) {
+			if (other.guid != null)
+				return false;
+		} else if (!guid.equals(other.guid))
+			return false;
+		return true;
 	}
 	
 }
