@@ -6,6 +6,6 @@ package org.ttdc.gwt.client.constants;
 public interface AppConstants {
 	public int SERVER_MONITOR_POLL_RATE_IN_MS = 20000;
 	public String TITLE = "TTDC v7";
-	public int BUILD_NUMBER = 51; // The other one is in a file called
+	public int BUILD_NUMBER = 52; // The other one is in a file called
 									// application.properties
 }
