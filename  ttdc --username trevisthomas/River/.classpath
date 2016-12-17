@@ -50,7 +50,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/ognl-2.6.11.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/ostermillerutils_1_07_00.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/pop3.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/slf4j-api-1.5.8.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/slf4j-jdk14-1.5.6.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/smtp.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/struts2-codebehind-plugin-2.1.6.jar"/>
@@ -77,5 +76,7 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jackson-annotations-2.7.4.jar"/>
 	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/slf4j-api-1.5.8.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/apns-1.0.0.Beta6.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
