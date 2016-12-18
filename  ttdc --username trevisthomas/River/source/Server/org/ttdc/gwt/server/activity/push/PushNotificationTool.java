@@ -35,14 +35,13 @@ public class PushNotificationTool {
 
 	private final static Logger log = Logger.getLogger(PushNotificationTool.class);
 
-	private URL certUrl = null;
 	private Environment env = null;
 	private String password = null;
+	private String certPath;
 
 	public PushNotificationTool() {
 		try {
-			String certPath = ApplicationProperties.getAppProperties().getProperty("PUSH_CERT");
-			certUrl = getClass().getClassLoader().getResource(certPath);
+			certPath = ApplicationProperties.getAppProperties().getProperty("PUSH_CERT");
 
 			String pushEnv = ApplicationProperties.getAppProperties().getProperty("PUSH_ENVIRONMENT");
 			if ("prod".equals(pushEnv)) {
@@ -63,7 +62,7 @@ public class PushNotificationTool {
 	}
 
 	public boolean isNotInitialized() {
-		return certUrl == null || env == null || StringUtil.empty(password);
+		return certPath == null || env == null || StringUtil.empty(password);
 	}
 
 	private void pushIt(Set<String> deviceTokens, String title, String message) {
@@ -74,7 +73,8 @@ public class PushNotificationTool {
 		}
 
 		try {
-		ApnsServiceBuilder serviceBuilder = APNS.newService();
+			URL certUrl = getClass().getClassLoader().getResource(certPath);
+			ApnsServiceBuilder serviceBuilder = APNS.newService();
 			switch (env) {
 			case PROD: {
 				log.debug("Using Prod push API");
@@ -105,8 +105,13 @@ public class PushNotificationTool {
 			// String payload =
 			// "{\"aps\":{\"alert\":{\"title\":\"My Title 1\",\"body\":\"My message 1\",\"category\":\"Personal\"}}}";
 
-			log.debug("Push: " + payload);
+
 			for (String deviceToken : deviceTokens) {
+				if (StringUtil.empty(deviceToken)) {
+					continue;
+				}
+
+				log.debug("Push: " + payload + " to " + deviceToken);
 				try {
 					service.push(deviceToken, payload);
 				} catch (Throwable t) {
@@ -115,8 +120,8 @@ public class PushNotificationTool {
 			}
 
 		} catch (Throwable t) {
-			certUrl = null; // Disable?
-			log.error("Unrecoverable push notification error. Terminating push.", t);
+			// env = null; // Disable?
+			log.error("Unrecoverable push notification error.", t);
 		}
 	}
 
@@ -126,7 +131,7 @@ public class PushNotificationTool {
 		Set<String> deviceTokens = new HashSet<String>();
 		// Send push notifications to everyone who did not cause the push
 		for (UserObject uo : list) {
-			if (!uo.getOwner().getPersonId().equals(personId)) {
+			if (uo.getOwner().getPersonId().equals(personId)) {
 				continue;
 			}
 			if (PostEventType.NEW.equals(event.getType())) {
