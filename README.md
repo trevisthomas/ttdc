@@ -258,4 +258,15 @@ NEW_TAG, REMOVED_TAG - TagAssociation
 RESET_SERVER_BROADCAST - null?
 </p>
 
+Request:
+URL: https://ttdc.us/restful/person
+<pre>
+{
+	"personId":"Person ID goes here"
+	"type":"LOAD"
+	"token": "rO0ABXNy..."
+}
+</pre>
+Response:
+<p>A connection id</p>
 
