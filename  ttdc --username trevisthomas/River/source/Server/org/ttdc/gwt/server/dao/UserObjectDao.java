@@ -1,6 +1,7 @@
 package org.ttdc.gwt.server.dao;
 
-import static org.ttdc.persistence.Persistence.*;
+import static org.ttdc.persistence.Persistence.rollback;
+import static org.ttdc.persistence.Persistence.session;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -219,6 +220,40 @@ public class UserObjectDao {
 		catch(RuntimeException t){
 			rollback();
 			throw(t);
+		}
+	}
+
+	// This was created for deviceToken's for mobile push notifications. So that you could add multiple of the same type
+	public static UserObject addUserObject(Person person, String type, String value) {
+		try {
+			UserObject uo;
+			if (!person.hasObject(type)) {
+				uo = new UserObject();
+				uo.setType(type);
+				uo.setValue(value);
+				uo.setOwner(person);
+				session().save(uo);
+			} else {
+				uo = person.getObjectType(type);
+				if (!uo.getValue().equals(value)) {
+					// If it's not the same, create a new one of the same type.
+					uo = new UserObject();
+					uo.setType(type);
+					uo.setValue(value);
+					uo.setOwner(person);
+					session().save(uo);
+				} else {
+					// If a uo of type but has the same value, do nothing
+				}
+			}
+
+			session().flush();
+			session().refresh(person);
+
+			return uo;
+		} catch (RuntimeException t) {
+			rollback();
+			throw (t);
 		}
 	}
 

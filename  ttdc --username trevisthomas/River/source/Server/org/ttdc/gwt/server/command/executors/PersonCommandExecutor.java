@@ -5,15 +5,10 @@ import static org.ttdc.persistence.Persistence.commit;
 import static org.ttdc.persistence.Persistence.rollback;
 
 import org.ttdc.gwt.client.beans.GPerson;
-import org.ttdc.gwt.client.messaging.person.PersonEvent;
-import org.ttdc.gwt.client.messaging.person.PersonEventType;
-import org.ttdc.gwt.client.messaging.post.PostEvent;
 import org.ttdc.gwt.client.services.CommandResult;
-import org.ttdc.gwt.server.activity.ServerEventBroadcaster;
 import org.ttdc.gwt.server.beanconverters.FastPostBeanConverter;
 import org.ttdc.gwt.server.command.CommandExecutor;
 import org.ttdc.gwt.server.command.executors.utils.ExecutorHelpers;
-import org.ttdc.gwt.server.dao.InboxDao;
 import org.ttdc.gwt.server.dao.PersonDao;
 import org.ttdc.gwt.server.dao.PrivilegeDao;
 import org.ttdc.gwt.shared.commands.PersonCommand;
@@ -63,7 +58,7 @@ public class PersonCommandExecutor extends CommandExecutor<GenericCommandResult<
 			//GPerson gPerson = FastPostBeanConverter.convertPerson(person);
 			GPerson gPerson = FastPostBeanConverter.convertPersonWithBio(person);
 			
-			result = new GenericCommandResult<GPerson>(gPerson, gPerson.getLogin()+"'s status updated successfully.");
+			result = new GenericCommandResult<GPerson>(gPerson, gPerson.getLogin() + "'s access was successful.");
 			
 		}
 		catch(RuntimeException e){

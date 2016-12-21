@@ -36,6 +36,7 @@ import org.ttdc.gwt.shared.commands.AssociationPostTagCommand;
 import org.ttdc.gwt.shared.commands.AssociationPostTagCommand.Mode;
 import org.ttdc.gwt.shared.commands.ForumCommand;
 import org.ttdc.gwt.shared.commands.LatestPostsCommand;
+import org.ttdc.gwt.shared.commands.PersonCommand;
 import org.ttdc.gwt.shared.commands.PostCrudCommand;
 import org.ttdc.gwt.shared.commands.SearchPostsCommand;
 import org.ttdc.gwt.shared.commands.ServerEventListCommand;
@@ -121,6 +122,8 @@ public class RestfulServlet extends HttpServlet {
 				break;
 			case "/post":
 				performPost(request, response);
+			case "/person":
+				performPerson(request, response);
 				break;
 			case "/latestconversations":
 				performSearch(request, response);
@@ -192,7 +195,7 @@ public class RestfulServlet extends HttpServlet {
 			beginSession();
 
 			Person person = PersonDao.loadPerson(token.getPersonId());
-			UserObjectDao.updateUserSetting(person, UserObject.TYPE_DEVICE_TOKEN_FOR_PUSH_NOTIFICATION, deviceId);
+			UserObjectDao.addUserObject(person, UserObject.TYPE_DEVICE_TOKEN_FOR_PUSH_NOTIFICATION, deviceId);
 			commit();
 			response.setStatus(HttpServletResponse.SC_ACCEPTED); // SC_ACCEPTED = 202
 		} catch (RuntimeException e) {
@@ -305,6 +308,13 @@ public class RestfulServlet extends HttpServlet {
 		cmd.setAddReviewsToMovies(false); // These are added because the website uses them to show summaries of the
 											// movie review. Jackson cant handle them because they are circular
 											// references.
+		CommandResult result = execute(cmd);
+		mapper.writeValue(new GZIPOutputStream(response.getOutputStream()), result);
+	}
+
+	private void performPerson(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		PersonCommand cmd = mapper.readValue(request.getInputStream(), PersonCommand.class);
 		CommandResult result = execute(cmd);
 		mapper.writeValue(new GZIPOutputStream(response.getOutputStream()), result);
 	}

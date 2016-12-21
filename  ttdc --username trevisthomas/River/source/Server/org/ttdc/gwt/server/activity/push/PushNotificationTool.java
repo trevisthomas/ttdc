@@ -1,5 +1,7 @@
 package org.ttdc.gwt.server.activity.push;
 
+import static org.ttdc.persistence.Persistence.session;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -13,8 +15,10 @@ import org.hibernate.Session;
 import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.messaging.post.PostEvent;
 import org.ttdc.gwt.client.messaging.post.PostEventType;
+import org.ttdc.gwt.server.activity.BroadcastEventJob;
 import org.ttdc.gwt.shared.util.StringUtil;
 import org.ttdc.persistence.Persistence;
+import org.ttdc.persistence.objects.Person;
 import org.ttdc.persistence.objects.UserObject;
 import org.ttdc.util.ApplicationProperties;
 
@@ -108,6 +112,7 @@ public class PushNotificationTool {
 
 			for (String deviceToken : deviceTokens) {
 				if (StringUtil.empty(deviceToken)) {
+					removeBadDeviceToken(deviceToken);
 					continue;
 				}
 
@@ -116,6 +121,8 @@ public class PushNotificationTool {
 					service.push(deviceToken, payload);
 				} catch (Throwable t) {
 					log.error("Failed to push to deviceToken: " + deviceToken, t);
+					
+					removeBadDeviceToken(deviceToken);
 				}
 			}
 
@@ -134,6 +141,11 @@ public class PushNotificationTool {
 			if (uo.getOwner().getPersonId().equals(personId)) {
 				continue;
 			}
+
+			if (!BroadcastEventJob.applyFilterForPersonId(uo.getOwner().getPersonId(), event.getSource())) {
+				continue;
+			}
+
 			if (PostEventType.NEW.equals(event.getType())) {
 				deviceTokens.add(uo.getValue());
 			}
@@ -166,6 +178,37 @@ public class PushNotificationTool {
 			Persistence.rollback();
 			// throw new ServiceException(t);
 			return list;
+		}
+	}
+
+	private void removeBadDeviceToken(String deviceToken) {
+		List<UserObject> list = new ArrayList<UserObject>();
+		try {
+
+			Session session = Persistence.beginSession();
+			Query query = session.getNamedQuery("object.getAllOfType").setString("type",
+					UserObject.TYPE_DEVICE_TOKEN_FOR_PUSH_NOTIFICATION);
+			list.addAll(query.list());
+
+			for (UserObject uo : list) {
+				if (deviceToken.equals(uo.getValue())
+						&& UserObject.TYPE_DEVICE_TOKEN_FOR_PUSH_NOTIFICATION.equals(uo.getType())) {
+					Person owner = uo.getOwner();
+					session().delete(uo);
+					session().flush();
+					session().refresh(owner);
+					log.debug("Removing device token that failed to push to apple: " + deviceToken);
+					break;
+				}
+			}
+
+			Persistence.commit();
+
+		} catch (Throwable t) {
+			log.error(t);
+			Persistence.rollback();
+			// throw new ServiceException(t);
+
 		}
 	}
 }

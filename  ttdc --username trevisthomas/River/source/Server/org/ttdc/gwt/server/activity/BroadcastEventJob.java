@@ -11,7 +11,7 @@ import org.ttdc.gwt.shared.util.StringUtil;
 import org.ttdc.persistence.Persistence;
 import org.ttdc.persistence.objects.Person;
 
-class BroadcastEventJob implements Runnable{
+public class BroadcastEventJob implements Runnable {
 	private static final Logger log = Logger.getLogger(BroadcastEventJob.class);
 	private final Event<?,?> event;
 	private final ServerEventBroadcaster broadcaster;
@@ -73,7 +73,7 @@ class BroadcastEventJob implements Runnable{
 		return validForUser;
 	}
 	
-	private boolean applyFilterForPersonId(String personId, GPost gPost) {
+	public static boolean applyFilterForPersonId(String personId, GPost gPost) {
 		try{
 			boolean validForUser = true;
 			Persistence.beginSession();
