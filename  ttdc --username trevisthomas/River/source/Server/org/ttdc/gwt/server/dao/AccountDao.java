@@ -51,6 +51,10 @@ public class AccountDao {
 		GPerson gPerson = FastPostBeanConverter.convertPerson(person);
 		PersonEvent event = new PersonEvent(PersonEventType.TRAFFIC,gPerson);
 		ServerEventBroadcaster.getInstance().broadcastEvent(event);
+
+		// And this on Dec 22, 2016
+		ServerEventBroadcaster.getInstance().pushBadgeToZero(person.getPersonId());
+
 	}
 	
 	/**

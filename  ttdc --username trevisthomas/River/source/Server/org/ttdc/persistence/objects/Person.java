@@ -56,7 +56,8 @@ import org.ttdc.gwt.server.util.PostFormatter;
 	@NamedQuery(name="person.getAllActiveOrderByEmailDesc", query="SELECT p FROM Person as p WHERE p.status!='"+Person.STATUS_INACTIVE+"' ORDER BY email DESC"),
 	@NamedQuery(name="person.getAllActiveOrderByName", query="SELECT p FROM Person as p WHERE p.status!='"+Person.STATUS_INACTIVE+"' ORDER BY name"),
 	@NamedQuery(name="person.getAllActiveOrderByNameDesc", query="SELECT p FROM Person as p WHERE p.status!='"+Person.STATUS_INACTIVE+"' ORDER BY name DESC"),
-	
+
+	@NamedQuery(name = "object.postsSinceLastAccessDate", query = "select count(post.postId) FROM Post as post WHERE post.date > (SELECT p.lastAccessDate from  Person as p WHERE p.personId=:personId)")
 })
 
 
@@ -247,13 +248,13 @@ public class Person implements HasGuid{
 	
 	// Added in 2016 for push notifications
 	@Transient
-	public String getUserPushId() {
-		UserObject uo = getObjectType(UserObject.TYPE_DEVICE_TOKEN_FOR_PUSH_NOTIFICATION);
-		if (uo != null) {
-			return uo.getValue();
-		} else {
-			return null;
+	public List<String> getDeviceTokenIds() {
+		List<String> list = new ArrayList<String>();
+		for (UserObject uo : getObjects()) {
+			if (UserObject.TYPE_DEVICE_TOKEN_FOR_PUSH_NOTIFICATION.equals(uo.getType()))
+				list.add(uo.getValue());
 		}
+		return list;
 	}
 	
 	/**

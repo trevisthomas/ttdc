@@ -54,6 +54,11 @@ public class ServerEventBroadcaster {
 		return ServerEventBroadcasterHolder.INSTANCE;
 	}
 	
+	// This wonderful method will send a push notification to all of this users devices setting their badge count to 0
+	public void pushBadgeToZero(String personId) {
+		pushTool.pushBadgeToZero(personId);
+	}
+
 	public String setupConnection(String personId){
 		String connectionId = CONNECTION_ID_PREFIX + ++nextConnectionIndex;
 		createQueueForConnectionId(connectionId, personId);

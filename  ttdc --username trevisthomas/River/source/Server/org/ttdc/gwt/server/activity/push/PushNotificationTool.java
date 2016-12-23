@@ -7,6 +7,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -16,12 +17,14 @@ import org.ttdc.gwt.client.beans.GPost;
 import org.ttdc.gwt.client.messaging.post.PostEvent;
 import org.ttdc.gwt.client.messaging.post.PostEventType;
 import org.ttdc.gwt.server.activity.BroadcastEventJob;
+import org.ttdc.gwt.server.dao.PersonDao;
 import org.ttdc.gwt.shared.util.StringUtil;
 import org.ttdc.persistence.Persistence;
 import org.ttdc.persistence.objects.Person;
 import org.ttdc.persistence.objects.UserObject;
 import org.ttdc.util.ApplicationProperties;
 
+import com.google.gwt.dev.util.collect.HashMap;
 import com.notnoop.apns.APNS;
 import com.notnoop.apns.ApnsService;
 import com.notnoop.apns.ApnsServiceBuilder;
@@ -69,7 +72,7 @@ public class PushNotificationTool {
 		return certPath == null || env == null || StringUtil.empty(password);
 	}
 
-	private void pushIt(Set<String> deviceTokens, String title, String message) {
+	private void pushIt(Set<String> deviceTokens, String title, String message, int badge) {
 
 		if (isNotInitialized()) {
 			log.warn("Push notifications not sent because PushNotificationTool died.");
@@ -98,8 +101,13 @@ public class PushNotificationTool {
 			ApnsService service = serviceBuilder.build();
 
 			// Payload with custom fields
-			String payload = APNS.newPayload().alertBody(message).alertTitle(title).sound("default")
-					.customField("custom", "custom value").build();
+
+			String payload;
+			if (!StringUtil.empty(message)) {
+				payload = APNS.newPayload().alertBody(message).alertTitle(title).sound("default").badge(badge).build();
+			} else {
+				payload = APNS.newPayload().badge(0).build();
+			}
 
 			// //Payload with custom fields
 			// String payload = APNS.newPayload()
@@ -135,7 +143,9 @@ public class PushNotificationTool {
 	public void executePushEventCausedBy(String personId, PostEvent event) {
 		// Get all of the device tokens
 		List<UserObject> list = getDeviceTokenUserObjects();
-		Set<String> deviceTokens = new HashSet<String>();
+		// Set<String> deviceTokens = new HashSet<String>();
+
+		Map<String, Set<String>> deviceTokenMap = new HashMap<String, Set<String>>();
 		// Send push notifications to everyone who did not cause the push
 		for (UserObject uo : list) {
 			if (uo.getOwner().getPersonId().equals(personId)) {
@@ -146,19 +156,52 @@ public class PushNotificationTool {
 				continue;
 			}
 
+			Set<String> deviceTokens = deviceTokenMap.get(uo.getOwner().getPersonId());
+			if (deviceTokens == null) {
+				deviceTokens = new HashSet<String>();
+				deviceTokenMap.put(uo.getOwner().getPersonId(), deviceTokens);
+			}
+
 			if (PostEventType.NEW.equals(event.getType())) {
 				deviceTokens.add(uo.getValue());
 			}
 		}
-		if (!deviceTokens.isEmpty()) {
-			sendPushNotificationPostAdded(deviceTokens, event.getSource());
+
+		if (!deviceTokenMap.isEmpty()) {
+			for (Map.Entry<String, Set<String>> entry : deviceTokenMap.entrySet()) {
+				sendPushNotificationPostAdded(entry.getValue(), event.getSource(), entry.getKey());
+			}
 		}
 	}
 
-	private void sendPushNotificationPostAdded(Set<String> deviceTokens, GPost gPost) {
+	public void pushBadgeToZero(String personId) {
+		Person p = PersonDao.loadPerson(personId);
+		Set<String> deviceTokens = new HashSet<String>(p.getDeviceTokenIds());
+		if (deviceTokens.size() > 0) {
+			pushIt(deviceTokens, null, null, 0);
+		}
+	}
+
+
+	private int getBadgeCount(String personId) {
+		Long count = 0L;
+		try {
+			Session session = Persistence.beginSession();
+			Query query = session.getNamedQuery("object.postsSinceLastAccessDate").setString("personId", personId);
+			// @SuppressWarnings("unchecked")
+			count = (Long) query.uniqueResult();
+		} catch (RuntimeException e) {
+			log.error(e);
+		} finally {
+			Persistence.commit();
+		}
+		return count.intValue();
+	}
+
+	private void sendPushNotificationPostAdded(Set<String> deviceTokens, GPost gPost, String personId) {
 		StringBuilder builder = new StringBuilder();
 		builder.append(gPost.getCreator().getLogin()).append(":").append(gPost.getLatestEntry().getSummary());
-		pushIt(deviceTokens, gPost.getTitle(), builder.toString());
+		pushIt(deviceTokens, gPost.getTitle(), builder.toString(), getBadgeCount(personId));
 	}
 
 	@SuppressWarnings("unchecked")
