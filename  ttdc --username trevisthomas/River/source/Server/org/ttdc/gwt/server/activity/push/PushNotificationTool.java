@@ -5,6 +5,7 @@ import static org.ttdc.persistence.Persistence.session;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +25,6 @@ import org.ttdc.persistence.objects.Person;
 import org.ttdc.persistence.objects.UserObject;
 import org.ttdc.util.ApplicationProperties;
 
-import com.google.gwt.dev.util.collect.HashMap;
 import com.notnoop.apns.APNS;
 import com.notnoop.apns.ApnsService;
 import com.notnoop.apns.ApnsServiceBuilder;
