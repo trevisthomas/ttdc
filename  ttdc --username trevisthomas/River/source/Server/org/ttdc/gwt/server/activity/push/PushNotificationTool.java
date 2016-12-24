@@ -15,6 +15,8 @@ import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.ttdc.gwt.client.beans.GPost;
+import org.ttdc.gwt.client.messaging.person.PersonEvent;
+import org.ttdc.gwt.client.messaging.person.PersonEventType;
 import org.ttdc.gwt.client.messaging.post.PostEvent;
 import org.ttdc.gwt.client.messaging.post.PostEventType;
 import org.ttdc.gwt.server.activity.BroadcastEventJob;
@@ -25,6 +27,8 @@ import org.ttdc.persistence.objects.Person;
 import org.ttdc.persistence.objects.UserObject;
 import org.ttdc.util.ApplicationProperties;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.notnoop.apns.APNS;
 import com.notnoop.apns.ApnsService;
 import com.notnoop.apns.ApnsServiceBuilder;
@@ -41,6 +45,7 @@ public class PushNotificationTool {
 	}
 
 	private final static Logger log = Logger.getLogger(PushNotificationTool.class);
+	public final static ObjectMapper mapper = new ObjectMapper(); // can reuse, share globally
 
 	private Environment env = null;
 	private String password = null;
@@ -72,10 +77,30 @@ public class PushNotificationTool {
 		return certPath == null || env == null || StringUtil.empty(password);
 	}
 
-	private void pushIt(Set<String> deviceTokens, String title, String message, int badge) {
+	// private void pushIt(Set<String> deviceTokens, String title, String message, int badge) {
+	// String payload;
+	// if (!StringUtil.empty(message)) {
+	// payload = APNS.newPayload().alertBody(message).alertTitle(title).sound("default").badge(badge).build();
+	// } else {
+	// payload = APNS.newPayload().badge(0).build();
+	// }
+	// pushIt(deviceTokens, payload);
+	// }
+
+	private void pushIt(Set<String> deviceTokens, String payload) {
 
 		if (isNotInitialized()) {
 			log.warn("Push notifications not sent because PushNotificationTool died.");
+			return;
+		}
+
+		if (StringUtil.empty(payload)) {
+			log.warn("Failed to push empty payload.");
+			return;
+		}
+
+		if (deviceTokens.isEmpty()) {
+			log.warn("Failed to push. DeviceTokens list is empty.");
 			return;
 		}
 
@@ -102,12 +127,6 @@ public class PushNotificationTool {
 
 			// Payload with custom fields
 
-			String payload;
-			if (!StringUtil.empty(message)) {
-				payload = APNS.newPayload().alertBody(message).alertTitle(title).sound("default").badge(badge).build();
-			} else {
-				payload = APNS.newPayload().badge(0).build();
-			}
 
 			// //Payload with custom fields
 			// String payload = APNS.newPayload()
@@ -140,17 +159,17 @@ public class PushNotificationTool {
 		}
 	}
 
-	public void executePushEventCausedBy(String personId, PostEvent event) {
+	public void executePushEventCausedBy(String sourceDeviceToken, PostEvent event) {
 		// Get all of the device tokens
 		List<UserObject> list = getDeviceTokenUserObjects();
 		// Set<String> deviceTokens = new HashSet<String>();
 
 		Map<String, Set<String>> deviceTokenMap = new HashMap<String, Set<String>>();
-		// Send push notifications to everyone who did not cause the push
+		// Send push notifications to everyone except the DEVICE that caused it.
 		for (UserObject uo : list) {
-			if (uo.getOwner().getPersonId().equals(personId)) {
-				continue;
-			}
+			// if (uo.getOwner().getPersonId().equals(personId)) {
+			// continue;
+			// }
 
 			if (!BroadcastEventJob.applyFilterForPersonId(uo.getOwner().getPersonId(), event.getSource())) {
 				continue;
@@ -162,24 +181,121 @@ public class PushNotificationTool {
 				deviceTokenMap.put(uo.getOwner().getPersonId(), deviceTokens);
 			}
 
-			if (PostEventType.NEW.equals(event.getType())) {
-				deviceTokens.add(uo.getValue());
+			String deviceToken = uo.getValue();
+			if (deviceToken.equals(sourceDeviceToken)) {
+				continue;
 			}
+
+			deviceTokens.add(uo.getValue());
 		}
 
 		if (!deviceTokenMap.isEmpty()) {
 			for (Map.Entry<String, Set<String>> entry : deviceTokenMap.entrySet()) {
-				sendPushNotificationPostAdded(entry.getValue(), event.getSource(), entry.getKey());
+				if (PostEventType.NEW.equals(event.getType())) {
+					sendPushNotificationPostAdded(entry.getValue(), event.getSource(), entry.getKey());
+				} else if (PostEventType.EDIT.equals(event.getType()) || PostEventType.DELETE.equals(event.getType())) {
+					sendPushNotificationGenericServerEvent(entry.getValue(), event.getSource().getPostId(), event
+							.getType()
+							.name());
+				}
 			}
 		}
 	}
 
-	public void pushBadgeToZero(String personId) {
-		Person p = PersonDao.loadPerson(personId);
-		Set<String> deviceTokens = new HashSet<String>(p.getDeviceTokenIds());
-		if (deviceTokens.size() > 0) {
-			pushIt(deviceTokens, null, null, 0);
+	public void executePushEventCausedBy(String sourceDeviceToken, PersonEvent event) {
+
+		if (!PersonEventType.TRAFFIC.equals(event.getType())) {
+			log.debug("Non traffic person event ignored.");
+			return;
 		}
+
+		// Get all of the device tokens
+		List<UserObject> list = getDeviceTokenUserObjects();
+		// Set<String> deviceTokens = new HashSet<String>();
+
+		Map<String, Set<String>> deviceTokenMap = new HashMap<String, Set<String>>();
+		// Send push notifications to everyone except the DEVICE that caused it.
+		for (UserObject uo : list) {
+
+			Set<String> deviceTokens = deviceTokenMap.get(uo.getOwner().getPersonId());
+			if (deviceTokens == null) {
+				deviceTokens = new HashSet<String>();
+				deviceTokenMap.put(uo.getOwner().getPersonId(), deviceTokens);
+			}
+
+			String deviceToken = uo.getValue();
+			if (deviceToken.equals(sourceDeviceToken)) {
+				continue;
+			}
+
+			deviceTokens.add(uo.getValue());
+		}
+
+		if (!deviceTokenMap.isEmpty()) {
+			for (Map.Entry<String, Set<String>> entry : deviceTokenMap.entrySet()) {
+				// sendPushNotificationTraffic(entry.getValue(), event.getSource(), entry.getKey());
+				sendPushNotificationGenericServerEvent(entry.getValue(), event.getSource().getPersonId(), event
+						.getType().name());
+
+				// if (PostEventType.NEW.equals(event.getType())) {
+				// sendPushNotificationPostAdded(entry.getValue(), event.getSource(), entry.getKey());
+				// } else if (PostEventType.EDIT.equals(event.getType()) ||
+				// PostEventType.DELETE.equals(event.getType())) {
+				// sendPushNotificationPostChanged(entry.getValue(), event.getSource().getPostId(), event.getType()
+				// .name());
+				// }
+			}
+		}
+	}
+
+	// public void executePushEventCausedBy(String personId, PostEvent event) {
+	// // Get all of the device tokens
+	// List<UserObject> list = getDeviceTokenUserObjects();
+	// // Set<String> deviceTokens = new HashSet<String>();
+	//
+	// Map<String, Set<String>> deviceTokenMap = new HashMap<String, Set<String>>();
+	// // Send push notifications to everyone who did not cause the push
+	// for (UserObject uo : list) {
+	// if (uo.getOwner().getPersonId().equals(personId)) {
+	// continue;
+	// }
+	//
+	// if (!BroadcastEventJob.applyFilterForPersonId(uo.getOwner().getPersonId(), event.getSource())) {
+	// continue;
+	// }
+	//
+	// Set<String> deviceTokens = deviceTokenMap.get(uo.getOwner().getPersonId());
+	// if (deviceTokens == null) {
+	// deviceTokens = new HashSet<String>();
+	// deviceTokenMap.put(uo.getOwner().getPersonId(), deviceTokens);
+	// }
+	//
+	// if (PostEventType.NEW.equals(event.getType())) {
+	// deviceTokens.add(uo.getValue());
+	// }
+	// }
+	//
+	// if (!deviceTokenMap.isEmpty()) {
+	// for (Map.Entry<String, Set<String>> entry : deviceTokenMap.entrySet()) {
+	// sendPushNotificationPostAdded(entry.getValue(), event.getSource(), entry.getKey());
+	// }
+	// }
+	// }
+
+	public void pushBadgeToZero(String personId) {
+		try {
+			Persistence.beginSession();
+			Person p = PersonDao.loadPerson(personId);
+			Set<String> deviceTokens = new HashSet<String>(p.getDeviceTokenIds());
+			if (deviceTokens.size() > 0) {
+				String payload = APNS.newPayload().badge(0).build();
+				pushIt(deviceTokens, payload);
+
+			}
+		} finally {
+			Persistence.commit();
+		}
+
 	}
 
 
@@ -198,10 +314,47 @@ public class PushNotificationTool {
 		return count.intValue();
 	}
 
+	private void sendPushNotificationGenericServerEvent(Set<String> deviceTokens, String guid, String type) {
+		// PushServerEvent event = new PushServerEvent(type, gPost.getPostId());
+		String payload;
+		try {
+
+			Map<String, Map<String, Object>> map = new HashMap<String, Map<String, Object>>();
+			Map<String, Object> aps = new HashMap<String, Object>();
+			aps.put("content-available", 1);
+
+			Map<String, Object> event = new HashMap<String, Object>();
+			event.put("type", type);
+			event.put("guid", guid);
+
+			map.put("aps", aps);
+			map.put("event", event);
+
+			payload = mapper.writeValueAsString(map);
+
+			// String eventString = mapper.writeValueAsString(event);
+			// payload = APNS.newPayload().forNewsstand().customField("type", eventString)
+			// .customField("guid", gPost.getPostId()).build();
+			
+			pushIt(deviceTokens, payload);
+		} catch (JsonProcessingException e) {
+			log.error("Error when trying to PostChanged push notification", e);
+		}
+	}
+
 	private void sendPushNotificationPostAdded(Set<String> deviceTokens, GPost gPost, String personId) {
 		StringBuilder builder = new StringBuilder();
 		builder.append(gPost.getCreator().getLogin()).append(":").append(gPost.getLatestEntry().getSummary());
-		pushIt(deviceTokens, gPost.getTitle(), builder.toString(), getBadgeCount(personId));
+		String message = builder.toString();
+		String title = gPost.getTitle();
+		int badge = getBadgeCount(personId);
+
+		String payload = APNS.newPayload().alertBody(message).alertTitle(title).sound("default").forNewsstand()
+				.badge(badge)
+				.customField("postId", gPost.getPostId()).build();
+
+		pushIt(deviceTokens, payload);
+
 	}
 
 	@SuppressWarnings("unchecked")

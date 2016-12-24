@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 import org.ttdc.gwt.client.messaging.Event;
 import org.ttdc.gwt.client.messaging.error.MessageEvent;
 import org.ttdc.gwt.client.messaging.error.MessageEventType;
+import org.ttdc.gwt.client.messaging.person.PersonEvent;
 import org.ttdc.gwt.client.messaging.post.PostEvent;
 import org.ttdc.gwt.server.activity.push.PushNotificationTool;
 import org.ttdc.util.ApplicationProperties;
@@ -85,7 +86,7 @@ public class ServerEventBroadcaster {
 	}
 	
 	public void broadcastEvent(Event<?,?> event){
-		// Trevis, for completion sake, should this one also send push notifications?
+		processEventForPush(event, "");
 		Callable<Object> callable = Executors.callable( new BroadcastEventJob(this, event));
 		try {
 			callable.call();
@@ -105,6 +106,7 @@ public class ServerEventBroadcaster {
 	 * @param sourceConnectionId
 	 */
 	public void broadcastEvent(Event<?, ?> event, String sourceConnectionId) {
+		processEventForPush(event, sourceConnectionId);
 		Callable<Object> callable = Executors.callable(new BroadcastEventJob(this, event, sourceConnectionId));
 		try {
 			callable.call();
@@ -121,15 +123,22 @@ public class ServerEventBroadcaster {
 	 * @param event
 	 * @param sourceConnectionId
 	 */
+	// Trevis: Is this method deprecated? PersonId isnt even used.
 	public void broadcastEvent(String personId, Event<?, ?> event, String sourceConnectionId) {
-		if (event instanceof PostEvent) {
-			pushTool.executePushEventCausedBy(personId, (PostEvent) event);
-		}
+		processEventForPush(event, sourceConnectionId);
 		Callable<Object> callable = Executors.callable( new BroadcastEventJob(this, event, sourceConnectionId));
 		try {
 			callable.call();
 		} catch (Exception e) {
 			log.error(e);
+		}
+	}
+
+	private void processEventForPush(Event<?, ?> event, String sourceConnectionId) {
+		if (event instanceof PostEvent) {
+			pushTool.executePushEventCausedBy(sourceConnectionId, (PostEvent) event);
+		} else if (event instanceof PersonEvent) {
+			pushTool.executePushEventCausedBy(sourceConnectionId, (PersonEvent) event);
 		}
 	}
 	

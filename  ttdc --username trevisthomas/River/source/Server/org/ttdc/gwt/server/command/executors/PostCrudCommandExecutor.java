@@ -200,7 +200,8 @@ public class PostCrudCommandExecutor extends CommandExecutor<PostCommandResult>{
 		else{
 			creator = PersonDao.loadPerson(getPerson().getPersonId());
 		}
-		incrementUserHitCount(creator);
+		// Commented out in Dec 2016 so that loading data on a push notification wouldn't cause a hit.
+		// incrementUserHitCount(creator);
 		return creator;
 	}
 

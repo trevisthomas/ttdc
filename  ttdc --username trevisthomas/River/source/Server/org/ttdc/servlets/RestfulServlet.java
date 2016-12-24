@@ -25,6 +25,7 @@ import org.ttdc.gwt.client.services.Command;
 import org.ttdc.gwt.client.services.CommandResult;
 import org.ttdc.gwt.client.services.RemoteServiceException;
 import org.ttdc.gwt.server.RemoteServiceSessionServlet;
+import org.ttdc.gwt.server.activity.push.PushNotificationTool;
 import org.ttdc.gwt.server.beanconverters.FastPostBeanConverter;
 import org.ttdc.gwt.server.command.CommandExecutor;
 import org.ttdc.gwt.server.command.CommandExecutorFactory;
@@ -78,7 +79,8 @@ public class RestfulServlet extends HttpServlet {
 
 	@Override
 	public void init() throws ServletException {
-		mapper = new ObjectMapper(); // can reuse, share globally
+		// mapper = new ObjectMapper(); // can reuse, share globally
+		mapper = PushNotificationTool.mapper;
 	}
 
 	@Override
@@ -122,6 +124,7 @@ public class RestfulServlet extends HttpServlet {
 				break;
 			case "/post":
 				performPost(request, response);
+				break;
 			case "/person":
 				performPerson(request, response);
 				break;
