@@ -175,6 +175,17 @@ public class PushNotificationTool {
 				continue;
 			}
 
+			String postPersonId = event.getSource().getCreator().getPersonId();
+			String devicePersonId = uo.getOwner().getPersonId();
+
+			if (PostEventType.NEW.equals(event.getType()) && postPersonId.equals(devicePersonId)) {
+				continue; // I'm deliberately not sending this notification to the person who created the post. The idea
+				// is that their badge count should stay zero, and they shouldn't be notified at all. If
+				// they are not in the app, when the app launches they will check to see if there are newer
+				// posts and find it. If not, then the app was already running and they dont need a push to
+				// get it added.
+			}
+
 			Set<String> deviceTokens = deviceTokenMap.get(uo.getOwner().getPersonId());
 			if (deviceTokens == null) {
 				deviceTokens = new HashSet<String>();
@@ -349,8 +360,7 @@ public class PushNotificationTool {
 		String title = gPost.getTitle();
 		int badge = getBadgeCount(personId);
 
-		String payload = APNS.newPayload().alertBody(message).alertTitle(title).sound("default").forNewsstand()
-				.badge(badge)
+		String payload = APNS.newPayload().alertBody(message).alertTitle(title).sound("default").badge(badge)
 				.customField("postId", gPost.getPostId()).build();
 
 		pushIt(deviceTokens, payload);
