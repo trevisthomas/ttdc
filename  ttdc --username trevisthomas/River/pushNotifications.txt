@@ -1,0 +1,19 @@
+pushy never worked.  This one worked:
+
+notnoop
+//This was the example that you followed
+http://blog.kondratev.pro/2015/03/sending-ios-push-notifications-from-java.html
+
+//This is how you downloaded the libs without maven
+http://grepcode.com/snapshot/repo1.maven.org/maven2/com.notnoop.apns/apns/1.0.0.Beta6
+
+//here's the git rep
+https://github.com/notnoop/java-apns
+
+//All you did was add the no dependencies jar and your cert from the mac and it's working.
+
+On the device, you used the ray wenderlich tutorial
+
+https://www.raywenderlich.com/123862/push-notifications-tutorial
+
+Be aware, that the apns library works with the p12 files directly, no need for the pem.  So, it's pretty easy to get a new cert setup.

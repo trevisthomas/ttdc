@@ -390,11 +390,11 @@ public class RestfulServlet extends HttpServlet {
 
 			mapper.writeValue(new GZIPOutputStream(response.getOutputStream()), result);
 		} catch (RuntimeException e) {
+			log.debug("User failed to validate with token: " + token);
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 		} finally {
 			Persistence.commit();
 		}
-
 	}
 
 	/*

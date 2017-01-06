@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.ttdc.gwt.client.beans.GPost;
+import org.ttdc.gwt.client.messaging.Event;
 import org.ttdc.gwt.client.messaging.person.PersonEvent;
 import org.ttdc.gwt.client.messaging.person.PersonEventType;
 import org.ttdc.gwt.client.messaging.post.PostEvent;
@@ -159,7 +160,87 @@ public class PushNotificationTool {
 		}
 	}
 
+	CrunchifyInMemoryCache eventCache = new CrunchifyInMemoryCache<Event<?, ?>, Event<?, ?>>(25, 10, 30);
+
+	class CacheKey {
+		String id;
+		String type;
+
+		CacheKey(PersonEvent event) {
+			id = event.getSource().getPersonId();
+			type = event.getType().name();
+		}
+
+		CacheKey(PostEvent event) {
+			id = event.getSource().getPostId();
+			type = event.getType().name();
+		}
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + getOuterType().hashCode();
+			result = prime * result + ((id == null) ? 0 : id.hashCode());
+			result = prime * result + ((type == null) ? 0 : type.hashCode());
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			CacheKey other = (CacheKey) obj;
+			if (!getOuterType().equals(other.getOuterType()))
+				return false;
+			if (id == null) {
+				if (other.id != null)
+					return false;
+			} else if (!id.equals(other.id))
+				return false;
+			if (type == null) {
+				if (other.type != null)
+					return false;
+			} else if (!type.equals(other.type))
+				return false;
+			return true;
+		}
+
+		private PushNotificationTool getOuterType() {
+			return PushNotificationTool.this;
+		}
+
+	}
+
+	@SuppressWarnings("unchecked")
+	private boolean shouldIFireThisEvent(Event<?, ?> event) {
+		CacheKey key;
+		if (event instanceof PersonEvent) {
+			key = new CacheKey((PersonEvent) event);
+		} else if (event instanceof PostEvent) {
+			key = new CacheKey((PostEvent) event);
+		} else {
+			return true;
+		}
+
+		if (eventCache.get(key) == null) {
+			eventCache.put(key, event);
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+
 	public void executePushEventCausedBy(String sourceDeviceToken, PostEvent event) {
+		if (!shouldIFireThisEvent(event)) {
+			log.debug("Duplicate push event.");
+			return;
+		}
 		// Get all of the device tokens
 		List<UserObject> list = getDeviceTokenUserObjects();
 		// Set<String> deviceTokens = new HashSet<String>();
@@ -214,9 +295,13 @@ public class PushNotificationTool {
 	}
 
 	public void executePushEventCausedBy(String sourceDeviceToken, PersonEvent event) {
-
 		if (!PersonEventType.TRAFFIC.equals(event.getType())) {
 			log.debug("Non traffic person event ignored.");
+			return;
+		}
+
+		if (!shouldIFireThisEvent(event)) {
+			log.debug("Duplicate push event.");
 			return;
 		}
 
