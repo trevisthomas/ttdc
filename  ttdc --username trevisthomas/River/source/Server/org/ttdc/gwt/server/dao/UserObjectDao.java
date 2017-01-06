@@ -224,9 +224,11 @@ public class UserObjectDao {
 	}
 
 	// This was created for deviceToken's for mobile push notifications. So that you could add multiple of the same type
-	public static UserObject addUserObject(Person person, String type, String value) {
+	// Returns null if the tag already exists
+	public static UserObject addDeviceTokenIfMatchingOneDoesntExist(Person person, String value) {
+		String type = UserObject.TYPE_DEVICE_TOKEN_FOR_PUSH_NOTIFICATION;
 		try {
-			UserObject uo;
+			UserObject uo = null;
 			if (!person.hasObject(type)) {
 				uo = new UserObject();
 				uo.setType(type);
@@ -234,9 +236,9 @@ public class UserObjectDao {
 				uo.setOwner(person);
 				session().save(uo);
 			} else {
-				uo = person.getObjectType(type);
-				if (!uo.getValue().equals(value)) {
-					// If it's not the same, create a new one of the same type.
+				List<String> list = person.getDeviceTokenIds();
+				if (!list.contains(value)) {
+					// The new value is not in the list, so create one
 					uo = new UserObject();
 					uo.setType(type);
 					uo.setValue(value);

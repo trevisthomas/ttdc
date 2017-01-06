@@ -56,7 +56,6 @@ import org.ttdc.gwt.shared.util.StringUtil;
 import org.ttdc.persistence.Persistence;
 import org.ttdc.persistence.objects.Person;
 import org.ttdc.persistence.objects.Post;
-import org.ttdc.persistence.objects.UserObject;
 import org.ttdc.servlets.wrappers.PaginatedListCommandResultWrapper;
 import org.ttdc.servlets.wrappers.SearchPostsCommandResultWrapper;
 import org.ttdc.servlets.wrappers.ServerEventCommandResultWrapper;
@@ -198,7 +197,7 @@ public class RestfulServlet extends HttpServlet {
 			beginSession();
 
 			Person person = PersonDao.loadPerson(token.getPersonId());
-			UserObjectDao.addUserObject(person, UserObject.TYPE_DEVICE_TOKEN_FOR_PUSH_NOTIFICATION, deviceId);
+			UserObjectDao.addDeviceTokenIfMatchingOneDoesntExist(person, deviceId);
 			commit();
 			response.setStatus(HttpServletResponse.SC_ACCEPTED); // SC_ACCEPTED = 202
 		} catch (RuntimeException e) {
