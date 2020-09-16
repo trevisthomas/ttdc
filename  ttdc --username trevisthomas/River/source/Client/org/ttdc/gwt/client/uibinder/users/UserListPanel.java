@@ -2,10 +2,10 @@ package org.ttdc.gwt.client.uibinder.users;
 
 import org.ttdc.gwt.client.Injector;
 import org.ttdc.gwt.client.beans.GPerson;
+import org.ttdc.gwt.client.messaging.ConnectionId;
 import org.ttdc.gwt.client.messaging.EventBus;
 import org.ttdc.gwt.client.messaging.history.HistoryConstants;
 import org.ttdc.gwt.client.messaging.history.HistoryToken;
-import org.ttdc.gwt.client.presenters.shared.PaginationPresenter;
 import org.ttdc.gwt.client.presenters.users.UserRowPresenter;
 import org.ttdc.gwt.client.presenters.util.PresenterHelpers;
 import org.ttdc.gwt.client.uibinder.common.BasePageComposite;
@@ -26,7 +26,6 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FocusPanel;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -113,9 +112,11 @@ public class UserListPanel extends BasePageComposite{
 		
 		tableElement.setWidget(row, 0, rowPresenter.getLoginWidget());
 		tableElement.setWidget(row, 1, rowPresenter.getNameWidget());
-		tableElement.setWidget(row, 2, rowPresenter.getHitsWidget());
-		tableElement.setWidget(row, 3, rowPresenter.getMemberSinceWidget());
-		tableElement.setWidget(row, 4, rowPresenter.getEmailWidget());
+		if (isPrivateAccessUser()) {
+			tableElement.setWidget(row, 2, rowPresenter.getHitsWidget());
+			tableElement.setWidget(row, 3, rowPresenter.getMemberSinceWidget());
+			tableElement.setWidget(row, 4, rowPresenter.getEmailWidget());
+		}
 	}
 
 	private void initHeader() {
@@ -123,16 +124,25 @@ public class UserListPanel extends BasePageComposite{
 		tableElement.clear();
 		tableElement.getColumnFormatter().addStyleName(0, "tt-userlistcol-login");
 		tableElement.getColumnFormatter().addStyleName(1, "tt-userlistcol-name");
-		tableElement.getColumnFormatter().addStyleName(2, "tt-userlistcol-hits");
-		tableElement.getColumnFormatter().addStyleName(3, "tt-userlistcol-date");
-		tableElement.getColumnFormatter().addStyleName(4, "tt-userlistcol-email");
+		if (isPrivateAccessUser()) {
+			tableElement.getColumnFormatter().addStyleName(2, "tt-userlistcol-hits");
+			tableElement.getColumnFormatter().addStyleName(3, "tt-userlistcol-date");
+			tableElement.getColumnFormatter().addStyleName(4, "tt-userlistcol-email");
+		}
 		tableElement.getRowFormatter().addStyleName(0, "tt-userlistrow-header");
 		
+
 		tableElement.setWidget(0, 0, loginHeader);
 		tableElement.setWidget(0, 1, nameHeader);
-		tableElement.setWidget(0, 2, hitCountHeader);
-		tableElement.setWidget(0, 3, memberSinceHeader);
-		tableElement.setWidget(0, 4, emailHeader);
+		if (isPrivateAccessUser()) {
+			tableElement.setWidget(0, 2, hitCountHeader);
+			tableElement.setWidget(0, 3, memberSinceHeader);
+			tableElement.setWidget(0, 4, emailHeader);
+		}
+	}
+
+	private boolean isPrivateAccessUser() {
+		return ConnectionId.getInstance().getCurrentUser().isPrivateAccessAccount();
 	}
 	private void setupClickHandlers(final HistoryToken token) {
 		loginHeader.addClickHandler(new ClickHandler() {
