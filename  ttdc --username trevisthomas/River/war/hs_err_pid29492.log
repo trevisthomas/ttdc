@@ -1,0 +1,1621 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x0000000057c5df79, pid=29492, tid=37848
+#
+# JRE version: Java(TM) SE Runtime Environment (7.0_55-b13) (build 1.7.0_55-b13)
+# Java VM: Java HotSpot(TM) 64-Bit Server VM (24.55-b03 mixed mode windows-amd64 compressed oops)
+# Problematic frame:
+# V  [jvm.dll+0xddf79]
+#
+# Failed to write core dump. Minidumps are not enabled by default on client versions of Windows
+#
+# If you would like to submit a bug report, please visit:
+#   http://bugreport.sun.com/bugreport/crash.jsp
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x0000000007bc2000):  VMThread [stack: 0x0000000008c60000,0x0000000008d60000] [id=37848]
+
+siginfo: ExceptionCode=0xc0000005, reading address 0x000000000000000a
+
+Registers:
+RAX=0x0000000000000000, RBX=0x00000000de5bbd78, RCX=0x00000000de5bbd78, RDX=0x0000000000000000
+RSP=0x0000000008d5f590, RBP=0x0000000000000000, RSI=0x00000000582ca118, RDI=0x0000000008d5f820
+R8 =0x00000000de5bbd78, R9 =0x0000000000000000, R10=0x0000000000000000, R11=0x000000004700000a
+R12=0x000000000000010d, R13=0x0000000000000000, R14=0x0000000000000000, R15=0x6666666666666667
+RIP=0x0000000057c5df79, EFLAGS=0x0000000000010246
+
+Top of Stack: (sp=0x0000000008d5f590)
+0x0000000008d5f590:   0000000000000000 0000000000000190
+0x0000000008d5f5a0:   00005e3d3a34950f 0000000057c5d826
+0x0000000008d5f5b0:   0000000007ad5730 0000000057c5ce36
+0x0000000008d5f5c0:   0000000008d5f820 0000000057c5cdf9
+0x0000000008d5f5d0:   00005e3d3a3495ff 0000000057c5d826
+0x0000000008d5f5e0:   0000000000000000 0000000007bc2001
+0x0000000008d5f5f0:   00000000000001b8 0000000008d5f690
+0x0000000008d5f600:   0000000008d5f820 0000000057c5f83f
+0x0000000008d5f610:   000000000000000b 000000000000010d
+0x0000000008d5f620:   000000000000000b 0000000007bc2001
+0x0000000008d5f630:   000000000000010d 000000000000011b
+0x0000000008d5f640:   0000000007bc2001 000000000000011b
+0x0000000008d5f650:   0000000007ad5708 0000000057c60660
+0x0000000008d5f660:   0000000008d5f820 000000000000000b
+0x0000000008d5f670:   00000000000001b8 0000000057c5d0a8
+0x0000000008d5f680:   0000000000000000 0000000057c5d18f 
+
+Instructions: (pc=0x0000000057c5df79)
+0x0000000057c5df59:   e8 22 6f ff ff 48 8b cb 8b d0 e8 e8 69 ff ff 48
+0x0000000057c5df69:   8b cb 8b d0 e8 7e 93 f3 ff 48 8d 35 9f c1 66 00
+0x0000000057c5df79:   0f b6 48 0a 8b 05 79 c1 66 00 80 f9 4c 74 2b 80
+0x0000000057c5df89:   f9 5b 74 26 80 f9 4a 74 18 80 f9 44 74 13 48 8d 
+
+
+Register to memory mapping:
+
+RAX=0x0000000000000000 is an unknown value
+RBX=0x00000000de5bbd78 is an oop
+{constant pool} 
+ - klass: {other class}
+ - holder: 0x00000000dc1aa748
+ - cache: 0x00000000de5bcbf8
+ -   1 :  : 'org/ttdc/gwt/server/activity/push/PushNotificationTool' {0xdc1aa748}
+ -   2 :  : 'org/ttdc/gwt/server/activity/push/PushNotificationTool'
+ -   3 :  : 'java/lang/Object'
+ -   4 :  : 'java/lang/Object'
+ -   5 :  : 'log'
+ -   6 :  : 'Lorg/apache/log4j/Logger;'
+ -   7 :  : 'certUrl'
+ -   8 :  : 'Ljava/net/URL;'
+ -   9 :  : 'env'
+ -  10 :  : 'Lorg/ttdc/gwt/server/activity/push/PushNotificationTool$Environment;'
+ -  11 :  : 'password'
+ -  12 :  : 'Ljava/lang/String;'
+ -  13 :  : '$SWITCH_TABLE$org$ttdc$gwt$server$activity$push$PushNotificationTool$Environment'
+ -  14 :  : '[I'
+ -  15 :  : '<clinit>'
+ -  16 :  : '()V'
+ -  17 :  : 'Code'
+ -  18 :  : klass_index=19 name_and_type_index=21
+ -  19 :  : 'org/apache/log4j/Logger'
+ -  20 :  : 'org/apache/log4j/Logger'
+ -  21 :  : name_index=22 signature_index=23
+ -  22 :  : 'getLogger'
+ -  23 :  : '(Ljava/lang/Class;)Lorg/apache/log4j/Logger;'
+ -  24 :  : klass_index=1 name_and_type_index=25
+ -  25 :  : name_index=5 signature_index=6
+ -  26 :  : 'LineNumberTable'
+ -  27 :  : 'LocalVariableTable'
+ -  28 :  : '<init>'
+ -  29 :  : klass_index=3 name_and_type_index=30
+ -  30 :  : name_index=28 signature_index=16
+ -  31 :  : klass_index=1 name_and_type_index=32
+ -  32 :  : name_index=7 signature_index=8
+ -  33 :  : klass_index=1 name_and_type_index=34
+ -  34 :  : name_index=9 signature_index=10
+ -  35 :  : klass_index=1 name_and_type_index=36
+ -  36 :  : name_index=11 signature_index=12
+ -  37 :  : klass_index=38 name_and_type_index=40
+ -  38 :  : 'org/ttdc/util/ApplicationProperties'
+ -  39 :  : 'org/ttdc/util/ApplicationProperties'
+ -  40 :  : name_index=41 signature_index=42
+ -  41 :  : 'getAppProperties'
+ -  42 :  : '()Ljava/util/Properties;'
+ -  43 :  : "PUSH_CERT" {0xe0953780}
+ -  44 :  : 'PUSH_CERT'
+ -  45 :  : klass_index=46 name_and_type_index=48
+ -  46 :  : 'java/util/Properties'
+ -  47 :  : 'java/util/Properties'
+ -  48 :  : name_index=49 signature_index=50
+ -  49 :  : 'getProperty'
+ -  50 :  : '(Ljava/lang/String;)Ljava/lang/String;'
+ -  51 :  : klass_index=3 name_and_type_index=52
+ -  52 :  : name_index=53 signature_index=54
+ -  53 :  : 'getClass'
+ -  54 :  : '()Ljava/lang/Class;'
+ -  55 :  : klass_index=56 name_and_type_index=58
+ -  56 :  : 'java/lang/Class'
+ -  57 :  : 'java/lang/Class'
+ -  58 :  : name_index=59 signature_index=60
+ -  59 :  : 'getClassLoader'
+ -  60 :  : '()Ljava/lang/ClassLoader;'
+ -  61 :  : klass_index=62 name_and_type_index=64
+ -  62 :  : 'java/lang/ClassLoader'
+ -  63 :  : 'java/lang/ClassLoader'
+ -  64 :  : name_index=65 signature_index=66
+ -  65 :  : 'getResource'
+ -  66 :  : '(Ljava/lang/String;)Ljava/net/URL;'
+ -  67 :  : "PUSH_ENVIRONMENT" {0xe0953738}
+ -  68 :  : 'PUSH_ENVIRONMENT'
+ -  69 :  : "prod" {0xe0953708}
+ -  70 :  : 'prod'
+ -  71 :  : klass_index=72 name_and_type_index=74
+ -  72 :  : 'java/lang/String'
+ -  73 :  : 'java/lang/String'
+ -  74 :  : name_index=75 signature_index=76
+ -  75 :  : 'equals'
+ -  76 :  : '(Ljava/lang/Object;)Z'
+ -  77 :  : klass_index=78 name_and_type_index=80
+ -  78 :  : 'org/ttdc/gwt/server/activity/push/PushNotificationTool$Environment'
+ -  79 :  : 'org/ttdc/gwt/server/activity/push/PushNotificationTool$Environment'
+ -  80 :  : name_index=81 signature_index=10
+ -  81 :  : 'PROD'
+ -  82 :  : klass_index=78 name_and_type_index=83
+ -  83 :  : name_index=84 signature_index=10
+ -  84 :  : 'DEV'
+ -  85 :  : "PUSH_PASSWORD" {0xe09536c0}
+ -  86 :  : 'PUSH_PASSWORD'
+ -  87 :  : klass_index=19 name_and_type_index=88
+ -  88 :  : name_index=89 signature_index=90
+ -  89 :  : 'error'
+ -  90 :  : '(Ljava/lang/Object;)V'
+ -  91 :  : 'java/io/IOException'
+ -  92 :  : 'java/io/IOException'
+ -  93 :  : 'this'
+ -  94 :  : 'Lorg/ttdc/gwt/server/activity/push/PushNotificationTool;'
+ -  95 :  : 'certPath'
+ -  96 :  : 'pushEnv'
+ -  97 :  : 'e'
+ -  98 :  : 'Ljava/io/IOException;'
+ -  99 :  : 'StackMapTable'
+ - 100 :  : 'isNotInitialized'
+ - 101 :  : '()Z'
+ - 102 :  : klass_index=103 name_and_type_index=105
+ - 103 :  : 'org/ttdc/gwt/shared/util/StringUtil'
+ - 104 :  : 'org/ttdc/gwt/shared/util/StringUtil'
+ - 105 :  : name_index=106 signature_index=107
+ - 106 :  : 'empty'
+ - 107 :  : '(Ljava/lang/String;)Z'
+ - 108 :  : 'pushIt'
+ - 109 :  : '(Ljava/util/List;Ljava/lang/String;Ljava/lang/String;)V'
+ - 110 :  : 'Signature'
+ - 111 :  : '(Ljava/util/List<Ljava/lang/String;>;Ljava/lang/String;Ljava/lang/String;)V'
+ - 112 :  : klass_index=1 name_and_type_index=113
+ - 113 :  : name_index=100 signature_index=101
+ - 114 :  : klass_index=115 name_and_type_index=117
+ - 115 :  : 'com/notnoop/apns/APNS'
+ - 116 :  : 'com/notnoop/apns/APNS'
+ - 117 :  : name_index=118 signature_index=119
+ - 118 :  : 'newService'
+ - 119 :  : '()Lcom/notnoop/apns/ApnsServiceBuilder;'
+ - 120 :  : klass_index=1 name_and_type_index=121
+ - 121 :  : name_index=13 signature_index=122
+ - 122 :  : '()[I'
+ - 123 :  : klass_index=78 name_and_type_index=124
+ - 124 :  : name_index=125 signature_index=126
+ - 125 :  : 'ordinal'
+ - 126 :  : '()I'
+ - 127 :  : "Using Prod push API" {0xf77a4058}
+ - 128 :  : 'Using Prod push API'
+ - 129 :  : klass_index=19 name_and_type_index=130
+ - 130 :  : name_index=131 signature_index=90
+ - 131 :  : 'debug'
+ - 132 :  : klass_index=133 name_and_type_index=135
+ - 133 :  : 'java/net/URL'
+ - 134 :  : 'java/net/URL'
+ - 135 :  : name_index=136 signature_index=137
+ - 136 :  : 'openStream'
+ - 137 :  : '()Ljava/io/InputStream;'
+ - 138 :  : klass_index=139 name_and_type_index=141
+ - 139 :  : 'com/notnoop/apns/ApnsServiceBuilder'
+ - 140 :  : 'com/notnoop/apns/ApnsServiceBuilder'
+ - 141 :  : name_index=142 signature_index=143
+ - 142 :  : 'withCert'
+ - 143 :  : '(Ljava/io/InputStream;Ljava/lang/String;)Lcom/notnoop/apns/ApnsServiceBuilder;'
+ - 144 :  : klass_index=139 name_and_type_index=145
+ - 145 :  : name_index=146 signature_index=119
+ - 146 :  : 'withProductionDestination'
+ - 147 :  : "Using Dev push API" {0xf8016c30}
+ - 148 :  : 'Using Dev push API'
+ - 149 :  : klass_index=139 name_and_type_index=150
+ - 150 :  : name_index=151 signature_index=119
+ - 151 :  : 'withSandboxDestination'
+ - 152 :  : 'java/lang/RuntimeException'
+ - 153 :  : 'java/lang/RuntimeException'
+ - 154 :  : "Invalid environment" {0xf8016c80}
+ - 155 :  : 'Invalid environment'
+ - 156 :  : klass_index=152 name_and_type_index=157
+ - 157 :  : name_index=28 signature_index=158
+ - 158 :  : '(Ljava/lang/String;)V'
+ - 159 :  : klass_index=139 name_and_type_index=160
+ - 160 :  : name_index=161 signature_index=162
+ - 161 :  : 'build'
+ - 162 :  : '()Lcom/notnoop/apns/ApnsService;'
+ - 163 :  : klass_index=115 name_and_type_index=164
+ - 164 :  : name_index=165 signature_index=166
+ - 165 :  : 'newPayload'
+ - 166 :  : '()Lcom/notnoop/apns/PayloadBuilder;'
+ - 167 :  : klass_index=168 name_and_type_index=170
+ - 168 :  : 'com/notnoop/apns/PayloadBuilder'
+ - 169 :  : 'com/notnoop/apns/PayloadBuilder'
+ - 170 :  : name_index=171 signature_index=172
+ - 171 :  : 'alertBody'
+ - 172 :  : '(Ljava/lang/String;)Lcom/notnoop/apns/PayloadBuilder;'
+ - 173 :  : klass_index=168 name_and_type_index=174
+ - 174 :  : name_index=175 signature_index=172
+ - 175 :  : 'alertTitle'
+ - 176 :  : "default" {0xe02704f0}
+ - 177 :  : 'default'
+ - 178 :  : klass_index=168 name_and_type_index=179
+ - 179 :  : name_index=180 signature_index=172
+ - 180 :  : 'sound'
+ - 181 :  : "custom" {0xf8016cd0}
+ - 182 :  : 'custom'
+ - 183 :  : "custom value" {0xf8016d08}
+ - 184 :  : 'custom value'
+ - 185 :  : klass_index=168 name_and_type_index=186
+ - 186 :  : name_index=187 signature_index=188
+ - 187 :  : 'customField'
+ - 188 :  : '(Ljava/lang/String;Ljava/lang/Object;)Lcom/notnoop/apns/PayloadBuilder;'
+ - 189 :  : klass_index=168 name_and_type_index=190
+ - 190 :  : name_index=161 signature_index=191
+ - 191 :  : '()Ljava/lang/String;'
+ - 192 :  : 'java/lang/StringBuilder' {0xdae88d60}
+ - 193 :  : 'java/lang/StringBuilder'
+ - 194 :  : "Push: " {0xf8016d48}
+ - 195 :  : 'Push: '
+ - 196 :  : klass_index=192 name_and_type_index=157
+ - 197 :  : klass_index=192 name_and_type_index=198
+ - 198 :  : name_index=199 signature_index=200
+ - 199 :  : 'append'
+ - 200 :  : '(Ljava/lang/String;)Ljava/lang/StringBuilder;'
+ - 201 :  : klass_index=192 name_and_type_index=202
+ - 202 :  : name_index=203 signature_index=191
+ - 203 :  : 'toString'
+ - 204 :  : klass_index=205 name_and_type_index=207
+ - 205 :  : 'java/util/List'
+ - 206 :  : 'java/util/List'
+ - 207 :  : name_index=208 signature_index=209
+ - 208 :  : 'iterator'
+ - 209 :  : '()Ljava/util/Iterator;'
+ - 210 :  : klass_index=211 name_and_type_index=213
+ - 211 :  : 'java/util/Iterator'
+ - 212 :  : 'java/util/Iterator'
+ - 213 :  : name_index=214 signature_index=215
+ - 214 :  : 'next'
+ - 215 :  : '()Ljava/lang/Object;'
+ - 216 :  : klass_index=217 name_and_type_index=219
+ - 217 :  : 'com/notnoop/apns/ApnsService'
+ - 218 :  : 'com/notnoop/apns/ApnsService'
+ - 219 :  : name_index=220 signature_index=221
+ - 220 :  : 'push'
+ - 221 :  : '(Ljava/lang/String;Ljava/lang/String;)Lcom/notnoop/apns/ApnsNotification;'
+ - 222 :  : "Failed to push to deviceToken: " {0xf8016d80}
+ - 223 :  : 'Failed to push to deviceToken: '
+ - 224 :  : klass_index=19 name_and_type_index=225
+ - 225 :  : name_index=89 signature_index=226
+ - 226 :  : '(Ljava/lang/Object;Ljava/lang/Throwable;)V'
+ - 227 :  : klass_index=211 name_and_type_index=228
+ - 228 :  : name_index=229 signature_index=101
+ - 229 :  : 'hasNext'
+ - 230 :  : "Unrecoverable push notification error. Terminating push." {0xf7865f68}
+ - 231 :  : 'Unrecoverable push notification error. Terminating push.'
+ - 232 :  : 'java/lang/Throwable'
+ - 233 :  : 'java/lang/Throwable'
+ - 234 :  : 'deviceTokens'
+ - 235 :  : 'Ljava/util/List;'
+ - 236 :  : 'title'
+ - 237 :  : 'message'
+ - 238 :  : 'serviceBuilder'
+ - 239 :  : 'Lcom/notnoop/apns/ApnsServiceBuilder;'
+ - 240 :  : 'service'
+ - 241 :  : 'Lcom/notnoop/apns/ApnsService;'
+ - 242 :  : 'payload'
+ - 243 :  : 'deviceToken'
+ - 244 :  : 't'
+ - 245 :  : 'Ljava/lang/Throwable;'
+ - 246 :  : 'LocalVariableTypeTable'
+ - 247 :  : 'Ljava/util/List<Ljava/lang/String;>;'
+ - 248 :  : 'executePushEventCausedBy'
+ - 249 :  : '(Ljava/lang/String;Lorg/ttdc/gwt/client/messaging/post/PostEvent;)V'
+ - 250 :  : klass_index=1 name_and_type_index=251
+ - 251 :  : name_index=252 signature_index=253
+ - 252 :  : 'getDeviceTokenUserObjects'
+ - 253 :  : '()Ljava/util/List;'
+ - 254 :  : 'java/util/ArrayList'
+ - 255 :  : 'java/util/ArrayList'
+ - 256 :  : klass_index=254 name_and_type_index=30
+ - 257 :  : 'org/ttdc/persistence/objects/UserObject'
+ - 258 :  : 'org/ttdc/persistence/objects/UserObject'
+ - 259 :  : klass_index=257 name_and_type_index=260
+ - 260 :  : name_index=261 signature_index=262
+ - 261 :  : 'getOwner'
+ - 262 :  : '()Lorg/ttdc/persistence/objects/Person;'
+ - 263 :  : klass_index=264 name_and_type_index=266
+ - 264 :  : 'org/ttdc/persistence/objects/Person'
+ - 265 :  : 'org/ttdc/persistence/objects/Person'
+ - 266 :  : name_index=267 signature_index=191
+ - 267 :  : 'getPersonId'
+ - 268 :  : klass_index=269 name_and_type_index=271
+ - 269 :  : 'org/ttdc/gwt/client/messaging/post/PostEventType'
+ - 270 :  : 'org/ttdc/gwt/client/messaging/post/PostEventType'
+ - 271 :  : name_index=272 signature_index=273
+ - 272 :  : 'NEW'
+ - 273 :  : 'Lorg/ttdc/gwt/client/messaging/post/PostEventType;'
+ - 274 :  : klass_index=275 name_and_type_index=277
+ - 275 :  : 'org/ttdc/gwt/client/messaging/post/PostEvent'
+ - 276 :  : 'org/ttdc/gwt/client/messaging/post/PostEvent'
+ - 277 :  : name_index=278 signature_index=279
+ - 278 :  : 'getType'
+ - 279 :  : '()Lorg/ttdc/gwt/client/messaging/post/PostEventType;'
+ - 280 :  : klass_index=269 name_and_type_index=74
+ - 281 :  : klass_index=257 name_and_type_index=282
+ - 282 :  : name_index=283 signature_index=191
+ - 283 :  : 'getValue'
+ - 284 :  : klass_index=205 name_and_type_index=285
+ - 285 :  : name_index=286 signature_index=76
+ - 286 :  : 'add'
+ - 287 :  : klass_index=205 name_and_type_index=288
+ - 288 :  : name_index=289 signature_index=101
+ - 289 :  : 'isEmpty'
+ - 290 :  : klass_index=275 name_and_type_index=291
+ - 291 :  : name_index=292 signature_index=293
+ - 292 :  : 'getSource'
+ - 293 :  : '()Lorg/ttdc/gwt/client/beans/GPost;'
+ - 294 :  : klass_index=1 name_and_type_index=295
+ - 295 :  : name_index=296 signature_index=297
+ - 296 :  : 'sendPushNotificationPostAdded'
+ - 297 :  : '(Ljava/util/List;Lorg/ttdc/gwt/client/beans/GPost;)V'
+ - 298 :  : 'personId'
+ - 299 :  : 'event'
+ - 300 :  : 'Lorg/ttdc/gwt/client/messaging/post/PostEvent;'
+ - 301 :  : 'list'
+ - 302 :  : 'uo'
+ - 303 :  : 'Lorg/ttdc/persistence/objects/UserObject;'
+ - 304 :  : 'Ljava/util/List<Lorg/ttdc/persistence/objects/UserObject;>;'
+ - 305 :  : '(Ljava/util/List<Ljava/lang/String;>;Lorg/ttdc/gwt/client/beans/GPost;)V'
+ - 306 :  : klass_index=192 name_and_type_index=30
+ - 307 :  : klass_index=308 name_and_type_index=310
+ - 308 :  : 'org/ttdc/gwt/client/beans/GPost' {0xdc11ef58}
+ - 309 :  : 'org/ttdc/gwt/client/beans/GPost'
+ - 310 :  : name_index=311 signature_index=312
+ - 311 :  : 'getCreator'
+ - 312 :  : '()Lorg/ttdc/gwt/client/beans/GPerson;'
+ - 313 :  : klass_index=314 name_and_type_index=316
+ - 314 :  : 'org/ttdc/gwt/client/beans/GPerson' {0xdc116f00}
+ - 315 :  : 'org/ttdc/gwt/client/beans/GPerson'
+ - 316 :  : name_index=317 signature_index=191
+ - 317 :  : 'getLogin'
+ - 318 :  : ":" {0xe0289858}
+ - 319 :  : ':'
+ - 320 :  : klass_index=308 name_and_type_index=321
+ - 321 :  : name_index=322 signature_index=323
+ - 322 :  : 'getLatestEntry'
+ - 323 :  : '()Lorg/ttdc/gwt/client/beans/GEntry;'
+ - 324 :  : klass_index=325 name_and_type_index=327
+ - 325 :  : 'org/ttdc/gwt/client/beans/GEntry' {0xdc10f500}
+ - 326 :  : 'org/ttdc/gwt/client/beans/GEntry'
+ - 327 :  : name_index=328 signature_index=191
+ - 328 :  : 'getSummary'
+ - 329 :  : klass_index=308 name_and_type_index=330
+ - 330 :  : name_index=331 signature_index=191
+ - 331 :  : 'getTitle'
+ - 332 :  : klass_index=1 name_and_type_index=333
+ - 333 :  : name_index=108 signature_index=109
+ - 334 :  : 'gPost'
+ - 335 :  : 'Lorg/ttdc/gwt/client/beans/GPost;'
+ - 336 :  : 'builder'
+ - 337 :  : 'Ljava/lang/StringBuilder;'
+ - 338 :  : '()Ljava/util/List<Lorg/ttdc/persistence/objects/UserObject;>;'
+ - 339 :  : klass_index=340 name_and_type_index=342
+ - 340 :  : 'org/ttdc/persistence/Persistence'
+ - 341 :  : 'org/ttdc/persistence/Persistence'
+ - 342 :  : name_index=343 signature_index=344
+ - 343 :  : 'beginSession'
+ - 344 :  : '()Lorg/hibernate/Session;'
+ - 345 :  : "object.getAllOfType" {0xe24cf558}
+ - 346 :  : 'object.getAllOfType'
+ - 347 :  : klass_index=348 name_and_type_index=350
+ - 348 :  : 'org/hibernate/Session'
+ - 349 :  : 'org/hibernate/Session'
+ - 350 :  : name_index=351 signature_index=352
+ - 351 :  : 'getNamedQuery'
+ - 352 :  : '(Ljava/lang/String;)Lorg/hibernate/Query;'
+ - 353 :  : "type" {0xe24be398}
+ - 354 :  : 'type'
+ - 355 :  : "deviceTokenForPushNotification" {0xe24bdd98}
+ - 356 :  : 'deviceTokenForPushNotification'
+ - 357 :  : klass_index=358 name_and_type_index=360
+ - 358 :  : 'org/hibernate/Query'
+ - 359 :  : 'org/hibernate/Query'
+ - 360 :  : name_index=361 signature_index=362
+ - 361 :  : 'setString'
+ - 362 :  : '(Ljava/lang/String;Ljava/lang/String;)Lorg/hibernate/Query;'
+ - 363 :  : klass_index=358 name_and_type_index=364
+ - 364 :  : name_index=301 signature_index=253
+ - 365 :  : klass_index=205 name_and_type_index=366
+ - 366 :  : name_index=367 signature_index=368
+ - 367 :  : 'addAll'
+ - 368 :  : '(Ljava/util/Collection;)Z'
+ - 369 :  : klass_index=340 name_and_type_index=370
+ - 370 :  : name_index=371 signature_index=16
+ - 371 :  : 'commit'
+ - 372 :  : klass_index=340 name_and_type_index=373
+ - 373 :  : name_index=374 signature_index=16
+ - 374 :  : 'rollback'
+ - 375 :  : 'session'
+ - 376 :  : 'Lorg/hibernate/Session;'
+ - 377 :  : 'query'
+ - 378 :  : 'Lorg/hibernate/Query;'
+ - 379 :  : klass_index=1 name_and_type_index=380
+ - 380 :  : name_index=13 signature_index=14
+ - 381 :  : klass_index=78 name_and_type_index=382
+ - 382 :  : name_index=383 signature_index=384
+ - 383 :  : 'values'
+ - 384 :  : '()[Lorg/ttdc/gwt/server/activity/push/PushNotificationTool$Environment;'
+ - 385 :  : 'java/lang/NoSuchFieldError'
+ - 386 :  : 'java/lang/NoSuchFieldError'
+ - 387 :  : '[I'
+ - 388 :  : 'SourceFile'
+ - 389 :  : 'PushNotificationTool.java'
+ - 390 :  : 'InnerClasses'
+ - 391 :  : 'Environment'
+ - 392 :  : "Push notifications not sent because PushNotificationTool died." {0xf8016de8}
+ - 393 :  : 'Push notifications not sent because PushNotificationTool died.'
+ - 394 :  : 'warn'
+ - 395 :  : name_index=394 signature_index=90
+ - 396 :  : klass_index=19 name_and_type_index=395
+ - 397 :  : "Using Prod push API" {0xf77a4058}
+ - 398 :  : "Unrecoverable push notification error. Terminating push." {0xf7865f68}
+ - 399 :  : ":" {0xe0289858}
+ - 400 :  : "object.getAllOfType" {0xe24cf558}
+ - 401 :  : "type" {0xe24be398}
+ - 402 :  : "deviceTokenForPushNotification" {0xe24bdd98}
+
+RCX=0x00000000de5bbd78 is an oop
+{constant pool} 
+ - klass: {other class}
+ - holder: 0x00000000dc1aa748
+ - cache: 0x00000000de5bcbf8
+ -   1 :  : 'org/ttdc/gwt/server/activity/push/PushNotificationTool' {0xdc1aa748}
+ -   2 :  : 'org/ttdc/gwt/server/activity/push/PushNotificationTool'
+ -   3 :  : 'java/lang/Object'
+ -   4 :  : 'java/lang/Object'
+ -   5 :  : 'log'
+ -   6 :  : 'Lorg/apache/log4j/Logger;'
+ -   7 :  : 'certUrl'
+ -   8 :  : 'Ljava/net/URL;'
+ -   9 :  : 'env'
+ -  10 :  : 'Lorg/ttdc/gwt/server/activity/push/PushNotificationTool$Environment;'
+ -  11 :  : 'password'
+ -  12 :  : 'Ljava/lang/String;'
+ -  13 :  : '$SWITCH_TABLE$org$ttdc$gwt$server$activity$push$PushNotificationTool$Environment'
+ -  14 :  : '[I'
+ -  15 :  : '<clinit>'
+ -  16 :  : '()V'
+ -  17 :  : 'Code'
+ -  18 :  : klass_index=19 name_and_type_index=21
+ -  19 :  : 'org/apache/log4j/Logger'
+ -  20 :  : 'org/apache/log4j/Logger'
+ -  21 :  : name_index=22 signature_index=23
+ -  22 :  : 'getLogger'
+ -  23 :  : '(Ljava/lang/Class;)Lorg/apache/log4j/Logger;'
+ -  24 :  : klass_index=1 name_and_type_index=25
+ -  25 :  : name_index=5 signature_index=6
+ -  26 :  : 'LineNumberTable'
+ -  27 :  : 'LocalVariableTable'
+ -  28 :  : '<init>'
+ -  29 :  : klass_index=3 name_and_type_index=30
+ -  30 :  : name_index=28 signature_index=16
+ -  31 :  : klass_index=1 name_and_type_index=32
+ -  32 :  : name_index=7 signature_index=8
+ -  33 :  : klass_index=1 name_and_type_index=34
+ -  34 :  : name_index=9 signature_index=10
+ -  35 :  : klass_index=1 name_and_type_index=36
+ -  36 :  : name_index=11 signature_index=12
+ -  37 :  : klass_index=38 name_and_type_index=40
+ -  38 :  : 'org/ttdc/util/ApplicationProperties'
+ -  39 :  : 'org/ttdc/util/ApplicationProperties'
+ -  40 :  : name_index=41 signature_index=42
+ -  41 :  : 'getAppProperties'
+ -  42 :  : '()Ljava/util/Properties;'
+ -  43 :  : "PUSH_CERT" {0xe0953780}
+ -  44 :  : 'PUSH_CERT'
+ -  45 :  : klass_index=46 name_and_type_index=48
+ -  46 :  : 'java/util/Properties'
+ -  47 :  : 'java/util/Properties'
+ -  48 :  : name_index=49 signature_index=50
+ -  49 :  : 'getProperty'
+ -  50 :  : '(Ljava/lang/String;)Ljava/lang/String;'
+ -  51 :  : klass_index=3 name_and_type_index=52
+ -  52 :  : name_index=53 signature_index=54
+ -  53 :  : 'getClass'
+ -  54 :  : '()Ljava/lang/Class;'
+ -  55 :  : klass_index=56 name_and_type_index=58
+ -  56 :  : 'java/lang/Class'
+ -  57 :  : 'java/lang/Class'
+ -  58 :  : name_index=59 signature_index=60
+ -  59 :  : 'getClassLoader'
+ -  60 :  : '()Ljava/lang/ClassLoader;'
+ -  61 :  : klass_index=62 name_and_type_index=64
+ -  62 :  : 'java/lang/ClassLoader'
+ -  63 :  : 'java/lang/ClassLoader'
+ -  64 :  : name_index=65 signature_index=66
+ -  65 :  : 'getResource'
+ -  66 :  : '(Ljava/lang/String;)Ljava/net/URL;'
+ -  67 :  : "PUSH_ENVIRONMENT" {0xe0953738}
+ -  68 :  : 'PUSH_ENVIRONMENT'
+ -  69 :  : "prod" {0xe0953708}
+ -  70 :  : 'prod'
+ -  71 :  : klass_index=72 name_and_type_index=74
+ -  72 :  : 'java/lang/String'
+ -  73 :  : 'java/lang/String'
+ -  74 :  : name_index=75 signature_index=76
+ -  75 :  : 'equals'
+ -  76 :  : '(Ljava/lang/Object;)Z'
+ -  77 :  : klass_index=78 name_and_type_index=80
+ -  78 :  : 'org/ttdc/gwt/server/activity/push/PushNotificationTool$Environment'
+ -  79 :  : 'org/ttdc/gwt/server/activity/push/PushNotificationTool$Environment'
+ -  80 :  : name_index=81 signature_index=10
+ -  81 :  : 'PROD'
+ -  82 :  : klass_index=78 name_and_type_index=83
+ -  83 :  : name_index=84 signature_index=10
+ -  84 :  : 'DEV'
+ -  85 :  : "PUSH_PASSWORD" {0xe09536c0}
+ -  86 :  : 'PUSH_PASSWORD'
+ -  87 :  : klass_index=19 name_and_type_index=88
+ -  88 :  : name_index=89 signature_index=90
+ -  89 :  : 'error'
+ -  90 :  : '(Ljava/lang/Object;)V'
+ -  91 :  : 'java/io/IOException'
+ -  92 :  : 'java/io/IOException'
+ -  93 :  : 'this'
+ -  94 :  : 'Lorg/ttdc/gwt/server/activity/push/PushNotificationTool;'
+ -  95 :  : 'certPath'
+ -  96 :  : 'pushEnv'
+ -  97 :  : 'e'
+ -  98 :  : 'Ljava/io/IOException;'
+ -  99 :  : 'StackMapTable'
+ - 100 :  : 'isNotInitialized'
+ - 101 :  : '()Z'
+ - 102 :  : klass_index=103 name_and_type_index=105
+ - 103 :  : 'org/ttdc/gwt/shared/util/StringUtil'
+ - 104 :  : 'org/ttdc/gwt/shared/util/StringUtil'
+ - 105 :  : name_index=106 signature_index=107
+ - 106 :  : 'empty'
+ - 107 :  : '(Ljava/lang/String;)Z'
+ - 108 :  : 'pushIt'
+ - 109 :  : '(Ljava/util/List;Ljava/lang/String;Ljava/lang/String;)V'
+ - 110 :  : 'Signature'
+ - 111 :  : '(Ljava/util/List<Ljava/lang/String;>;Ljava/lang/String;Ljava/lang/String;)V'
+ - 112 :  : klass_index=1 name_and_type_index=113
+ - 113 :  : name_index=100 signature_index=101
+ - 114 :  : klass_index=115 name_and_type_index=117
+ - 115 :  : 'com/notnoop/apns/APNS'
+ - 116 :  : 'com/notnoop/apns/APNS'
+ - 117 :  : name_index=118 signature_index=119
+ - 118 :  : 'newService'
+ - 119 :  : '()Lcom/notnoop/apns/ApnsServiceBuilder;'
+ - 120 :  : klass_index=1 name_and_type_index=121
+ - 121 :  : name_index=13 signature_index=122
+ - 122 :  : '()[I'
+ - 123 :  : klass_index=78 name_and_type_index=124
+ - 124 :  : name_index=125 signature_index=126
+ - 125 :  : 'ordinal'
+ - 126 :  : '()I'
+ - 127 :  : "Using Prod push API" {0xf77a4058}
+ - 128 :  : 'Using Prod push API'
+ - 129 :  : klass_index=19 name_and_type_index=130
+ - 130 :  : name_index=131 signature_index=90
+ - 131 :  : 'debug'
+ - 132 :  : klass_index=133 name_and_type_index=135
+ - 133 :  : 'java/net/URL'
+ - 134 :  : 'java/net/URL'
+ - 135 :  : name_index=136 signature_index=137
+ - 136 :  : 'openStream'
+ - 137 :  : '()Ljava/io/InputStream;'
+ - 138 :  : klass_index=139 name_and_type_index=141
+ - 139 :  : 'com/notnoop/apns/ApnsServiceBuilder'
+ - 140 :  : 'com/notnoop/apns/ApnsServiceBuilder'
+ - 141 :  : name_index=142 signature_index=143
+ - 142 :  : 'withCert'
+ - 143 :  : '(Ljava/io/InputStream;Ljava/lang/String;)Lcom/notnoop/apns/ApnsServiceBuilder;'
+ - 144 :  : klass_index=139 name_and_type_index=145
+ - 145 :  : name_index=146 signature_index=119
+ - 146 :  : 'withProductionDestination'
+ - 147 :  : "Using Dev push API" {0xf8016c30}
+ - 148 :  : 'Using Dev push API'
+ - 149 :  : klass_index=139 name_and_type_index=150
+ - 150 :  : name_index=151 signature_index=119
+ - 151 :  : 'withSandboxDestination'
+ - 152 :  : 'java/lang/RuntimeException'
+ - 153 :  : 'java/lang/RuntimeException'
+ - 154 :  : "Invalid environment" {0xf8016c80}
+ - 155 :  : 'Invalid environment'
+ - 156 :  : klass_index=152 name_and_type_index=157
+ - 157 :  : name_index=28 signature_index=158
+ - 158 :  : '(Ljava/lang/String;)V'
+ - 159 :  : klass_index=139 name_and_type_index=160
+ - 160 :  : name_index=161 signature_index=162
+ - 161 :  : 'build'
+ - 162 :  : '()Lcom/notnoop/apns/ApnsService;'
+ - 163 :  : klass_index=115 name_and_type_index=164
+ - 164 :  : name_index=165 signature_index=166
+ - 165 :  : 'newPayload'
+ - 166 :  : '()Lcom/notnoop/apns/PayloadBuilder;'
+ - 167 :  : klass_index=168 name_and_type_index=170
+ - 168 :  : 'com/notnoop/apns/PayloadBuilder'
+ - 169 :  : 'com/notnoop/apns/PayloadBuilder'
+ - 170 :  : name_index=171 signature_index=172
+ - 171 :  : 'alertBody'
+ - 172 :  : '(Ljava/lang/String;)Lcom/notnoop/apns/PayloadBuilder;'
+ - 173 :  : klass_index=168 name_and_type_index=174
+ - 174 :  : name_index=175 signature_index=172
+ - 175 :  : 'alertTitle'
+ - 176 :  : "default" {0xe02704f0}
+ - 177 :  : 'default'
+ - 178 :  : klass_index=168 name_and_type_index=179
+ - 179 :  : name_index=180 signature_index=172
+ - 180 :  : 'sound'
+ - 181 :  : "custom" {0xf8016cd0}
+ - 182 :  : 'custom'
+ - 183 :  : "custom value" {0xf8016d08}
+ - 184 :  : 'custom value'
+ - 185 :  : klass_index=168 name_and_type_index=186
+ - 186 :  : name_index=187 signature_index=188
+ - 187 :  : 'customField'
+ - 188 :  : '(Ljava/lang/String;Ljava/lang/Object;)Lcom/notnoop/apns/PayloadBuilder;'
+ - 189 :  : klass_index=168 name_and_type_index=190
+ - 190 :  : name_index=161 signature_index=191
+ - 191 :  : '()Ljava/lang/String;'
+ - 192 :  : 'java/lang/StringBuilder' {0xdae88d60}
+ - 193 :  : 'java/lang/StringBuilder'
+ - 194 :  : "Push: " {0xf8016d48}
+ - 195 :  : 'Push: '
+ - 196 :  : klass_index=192 name_and_type_index=157
+ - 197 :  : klass_index=192 name_and_type_index=198
+ - 198 :  : name_index=199 signature_index=200
+ - 199 :  : 'append'
+ - 200 :  : '(Ljava/lang/String;)Ljava/lang/StringBuilder;'
+ - 201 :  : klass_index=192 name_and_type_index=202
+ - 202 :  : name_index=203 signature_index=191
+ - 203 :  : 'toString'
+ - 204 :  : klass_index=205 name_and_type_index=207
+ - 205 :  : 'java/util/List'
+ - 206 :  : 'java/util/List'
+ - 207 :  : name_index=208 signature_index=209
+ - 208 :  : 'iterator'
+ - 209 :  : '()Ljava/util/Iterator;'
+ - 210 :  : klass_index=211 name_and_type_index=213
+ - 211 :  : 'java/util/Iterator'
+ - 212 :  : 'java/util/Iterator'
+ - 213 :  : name_index=214 signature_index=215
+ - 214 :  : 'next'
+ - 215 :  : '()Ljava/lang/Object;'
+ - 216 :  : klass_index=217 name_and_type_index=219
+ - 217 :  : 'com/notnoop/apns/ApnsService'
+ - 218 :  : 'com/notnoop/apns/ApnsService'
+ - 219 :  : name_index=220 signature_index=221
+ - 220 :  : 'push'
+ - 221 :  : '(Ljava/lang/String;Ljava/lang/String;)Lcom/notnoop/apns/ApnsNotification;'
+ - 222 :  : "Failed to push to deviceToken: " {0xf8016d80}
+ - 223 :  : 'Failed to push to deviceToken: '
+ - 224 :  : klass_index=19 name_and_type_index=225
+ - 225 :  : name_index=89 signature_index=226
+ - 226 :  : '(Ljava/lang/Object;Ljava/lang/Throwable;)V'
+ - 227 :  : klass_index=211 name_and_type_index=228
+ - 228 :  : name_index=229 signature_index=101
+ - 229 :  : 'hasNext'
+ - 230 :  : "Unrecoverable push notification error. Terminating push." {0xf7865f68}
+ - 231 :  : 'Unrecoverable push notification error. Terminating push.'
+ - 232 :  : 'java/lang/Throwable'
+ - 233 :  : 'java/lang/Throwable'
+ - 234 :  : 'deviceTokens'
+ - 235 :  : 'Ljava/util/List;'
+ - 236 :  : 'title'
+ - 237 :  : 'message'
+ - 238 :  : 'serviceBuilder'
+ - 239 :  : 'Lcom/notnoop/apns/ApnsServiceBuilder;'
+ - 240 :  : 'service'
+ - 241 :  : 'Lcom/notnoop/apns/ApnsService;'
+ - 242 :  : 'payload'
+ - 243 :  : 'deviceToken'
+ - 244 :  : 't'
+ - 245 :  : 'Ljava/lang/Throwable;'
+ - 246 :  : 'LocalVariableTypeTable'
+ - 247 :  : 'Ljava/util/List<Ljava/lang/String;>;'
+ - 248 :  : 'executePushEventCausedBy'
+ - 249 :  : '(Ljava/lang/String;Lorg/ttdc/gwt/client/messaging/post/PostEvent;)V'
+ - 250 :  : klass_index=1 name_and_type_index=251
+ - 251 :  : name_index=252 signature_index=253
+ - 252 :  : 'getDeviceTokenUserObjects'
+ - 253 :  : '()Ljava/util/List;'
+ - 254 :  : 'java/util/ArrayList'
+ - 255 :  : 'java/util/ArrayList'
+ - 256 :  : klass_index=254 name_and_type_index=30
+ - 257 :  : 'org/ttdc/persistence/objects/UserObject'
+ - 258 :  : 'org/ttdc/persistence/objects/UserObject'
+ - 259 :  : klass_index=257 name_and_type_index=260
+ - 260 :  : name_index=261 signature_index=262
+ - 261 :  : 'getOwner'
+ - 262 :  : '()Lorg/ttdc/persistence/objects/Person;'
+ - 263 :  : klass_index=264 name_and_type_index=266
+ - 264 :  : 'org/ttdc/persistence/objects/Person'
+ - 265 :  : 'org/ttdc/persistence/objects/Person'
+ - 266 :  : name_index=267 signature_index=191
+ - 267 :  : 'getPersonId'
+ - 268 :  : klass_index=269 name_and_type_index=271
+ - 269 :  : 'org/ttdc/gwt/client/messaging/post/PostEventType'
+ - 270 :  : 'org/ttdc/gwt/client/messaging/post/PostEventType'
+ - 271 :  : name_index=272 signature_index=273
+ - 272 :  : 'NEW'
+ - 273 :  : 'Lorg/ttdc/gwt/client/messaging/post/PostEventType;'
+ - 274 :  : klass_index=275 name_and_type_index=277
+ - 275 :  : 'org/ttdc/gwt/client/messaging/post/PostEvent'
+ - 276 :  : 'org/ttdc/gwt/client/messaging/post/PostEvent'
+ - 277 :  : name_index=278 signature_index=279
+ - 278 :  : 'getType'
+ - 279 :  : '()Lorg/ttdc/gwt/client/messaging/post/PostEventType;'
+ - 280 :  : klass_index=269 name_and_type_index=74
+ - 281 :  : klass_index=257 name_and_type_index=282
+ - 282 :  : name_index=283 signature_index=191
+ - 283 :  : 'getValue'
+ - 284 :  : klass_index=205 name_and_type_index=285
+ - 285 :  : name_index=286 signature_index=76
+ - 286 :  : 'add'
+ - 287 :  : klass_index=205 name_and_type_index=288
+ - 288 :  : name_index=289 signature_index=101
+ - 289 :  : 'isEmpty'
+ - 290 :  : klass_index=275 name_and_type_index=291
+ - 291 :  : name_index=292 signature_index=293
+ - 292 :  : 'getSource'
+ - 293 :  : '()Lorg/ttdc/gwt/client/beans/GPost;'
+ - 294 :  : klass_index=1 name_and_type_index=295
+ - 295 :  : name_index=296 signature_index=297
+ - 296 :  : 'sendPushNotificationPostAdded'
+ - 297 :  : '(Ljava/util/List;Lorg/ttdc/gwt/client/beans/GPost;)V'
+ - 298 :  : 'personId'
+ - 299 :  : 'event'
+ - 300 :  : 'Lorg/ttdc/gwt/client/messaging/post/PostEvent;'
+ - 301 :  : 'list'
+ - 302 :  : 'uo'
+ - 303 :  : 'Lorg/ttdc/persistence/objects/UserObject;'
+ - 304 :  : 'Ljava/util/List<Lorg/ttdc/persistence/objects/UserObject;>;'
+ - 305 :  : '(Ljava/util/List<Ljava/lang/String;>;Lorg/ttdc/gwt/client/beans/GPost;)V'
+ - 306 :  : klass_index=192 name_and_type_index=30
+ - 307 :  : klass_index=308 name_and_type_index=310
+ - 308 :  : 'org/ttdc/gwt/client/beans/GPost' {0xdc11ef58}
+ - 309 :  : 'org/ttdc/gwt/client/beans/GPost'
+ - 310 :  : name_index=311 signature_index=312
+ - 311 :  : 'getCreator'
+ - 312 :  : '()Lorg/ttdc/gwt/client/beans/GPerson;'
+ - 313 :  : klass_index=314 name_and_type_index=316
+ - 314 :  : 'org/ttdc/gwt/client/beans/GPerson' {0xdc116f00}
+ - 315 :  : 'org/ttdc/gwt/client/beans/GPerson'
+ - 316 :  : name_index=317 signature_index=191
+ - 317 :  : 'getLogin'
+ - 318 :  : ":" {0xe0289858}
+ - 319 :  : ':'
+ - 320 :  : klass_index=308 name_and_type_index=321
+ - 321 :  : name_index=322 signature_index=323
+ - 322 :  : 'getLatestEntry'
+ - 323 :  : '()Lorg/ttdc/gwt/client/beans/GEntry;'
+ - 324 :  : klass_index=325 name_and_type_index=327
+ - 325 :  : 'org/ttdc/gwt/client/beans/GEntry' {0xdc10f500}
+ - 326 :  : 'org/ttdc/gwt/client/beans/GEntry'
+ - 327 :  : name_index=328 signature_index=191
+ - 328 :  : 'getSummary'
+ - 329 :  : klass_index=308 name_and_type_index=330
+ - 330 :  : name_index=331 signature_index=191
+ - 331 :  : 'getTitle'
+ - 332 :  : klass_index=1 name_and_type_index=333
+ - 333 :  : name_index=108 signature_index=109
+ - 334 :  : 'gPost'
+ - 335 :  : 'Lorg/ttdc/gwt/client/beans/GPost;'
+ - 336 :  : 'builder'
+ - 337 :  : 'Ljava/lang/StringBuilder;'
+ - 338 :  : '()Ljava/util/List<Lorg/ttdc/persistence/objects/UserObject;>;'
+ - 339 :  : klass_index=340 name_and_type_index=342
+ - 340 :  : 'org/ttdc/persistence/Persistence'
+ - 341 :  : 'org/ttdc/persistence/Persistence'
+ - 342 :  : name_index=343 signature_index=344
+ - 343 :  : 'beginSession'
+ - 344 :  : '()Lorg/hibernate/Session;'
+ - 345 :  : "object.getAllOfType" {0xe24cf558}
+ - 346 :  : 'object.getAllOfType'
+ - 347 :  : klass_index=348 name_and_type_index=350
+ - 348 :  : 'org/hibernate/Session'
+ - 349 :  : 'org/hibernate/Session'
+ - 350 :  : name_index=351 signature_index=352
+ - 351 :  : 'getNamedQuery'
+ - 352 :  : '(Ljava/lang/String;)Lorg/hibernate/Query;'
+ - 353 :  : "type" {0xe24be398}
+ - 354 :  : 'type'
+ - 355 :  : "deviceTokenForPushNotification" {0xe24bdd98}
+ - 356 :  : 'deviceTokenForPushNotification'
+ - 357 :  : klass_index=358 name_and_type_index=360
+ - 358 :  : 'org/hibernate/Query'
+ - 359 :  : 'org/hibernate/Query'
+ - 360 :  : name_index=361 signature_index=362
+ - 361 :  : 'setString'
+ - 362 :  : '(Ljava/lang/String;Ljava/lang/String;)Lorg/hibernate/Query;'
+ - 363 :  : klass_index=358 name_and_type_index=364
+ - 364 :  : name_index=301 signature_index=253
+ - 365 :  : klass_index=205 name_and_type_index=366
+ - 366 :  : name_index=367 signature_index=368
+ - 367 :  : 'addAll'
+ - 368 :  : '(Ljava/util/Collection;)Z'
+ - 369 :  : klass_index=340 name_and_type_index=370
+ - 370 :  : name_index=371 signature_index=16
+ - 371 :  : 'commit'
+ - 372 :  : klass_index=340 name_and_type_index=373
+ - 373 :  : name_index=374 signature_index=16
+ - 374 :  : 'rollback'
+ - 375 :  : 'session'
+ - 376 :  : 'Lorg/hibernate/Session;'
+ - 377 :  : 'query'
+ - 378 :  : 'Lorg/hibernate/Query;'
+ - 379 :  : klass_index=1 name_and_type_index=380
+ - 380 :  : name_index=13 signature_index=14
+ - 381 :  : klass_index=78 name_and_type_index=382
+ - 382 :  : name_index=383 signature_index=384
+ - 383 :  : 'values'
+ - 384 :  : '()[Lorg/ttdc/gwt/server/activity/push/PushNotificationTool$Environment;'
+ - 385 :  : 'java/lang/NoSuchFieldError'
+ - 386 :  : 'java/lang/NoSuchFieldError'
+ - 387 :  : '[I'
+ - 388 :  : 'SourceFile'
+ - 389 :  : 'PushNotificationTool.java'
+ - 390 :  : 'InnerClasses'
+ - 391 :  : 'Environment'
+ - 392 :  : "Push notifications not sent because PushNotificationTool died." {0xf8016de8}
+ - 393 :  : 'Push notifications not sent because PushNotificationTool died.'
+ - 394 :  : 'warn'
+ - 395 :  : name_index=394 signature_index=90
+ - 396 :  : klass_index=19 name_and_type_index=395
+ - 397 :  : "Using Prod push API" {0xf77a4058}
+ - 398 :  : "Unrecoverable push notification error. Terminating push." {0xf7865f68}
+ - 399 :  : ":" {0xe0289858}
+ - 400 :  : "object.getAllOfType" {0xe24cf558}
+ - 401 :  : "type" {0xe24be398}
+ - 402 :  : "deviceTokenForPushNotification" {0xe24bdd98}
+
+RDX=0x0000000000000000 is an unknown value
+RSP=0x0000000008d5f590 is an unknown value
+RBP=0x0000000000000000 is an unknown value
+RSI=0x00000000582ca118 is an unknown value
+RDI=0x0000000008d5f820 is an unknown value
+R8 =0x00000000de5bbd78 is an oop
+{constant pool} 
+ - klass: {other class}
+ - holder: 0x00000000dc1aa748
+ - cache: 0x00000000de5bcbf8
+ -   1 :  : 'org/ttdc/gwt/server/activity/push/PushNotificationTool' {0xdc1aa748}
+ -   2 :  : 'org/ttdc/gwt/server/activity/push/PushNotificationTool'
+ -   3 :  : 'java/lang/Object'
+ -   4 :  : 'java/lang/Object'
+ -   5 :  : 'log'
+ -   6 :  : 'Lorg/apache/log4j/Logger;'
+ -   7 :  : 'certUrl'
+ -   8 :  : 'Ljava/net/URL;'
+ -   9 :  : 'env'
+ -  10 :  : 'Lorg/ttdc/gwt/server/activity/push/PushNotificationTool$Environment;'
+ -  11 :  : 'password'
+ -  12 :  : 'Ljava/lang/String;'
+ -  13 :  : '$SWITCH_TABLE$org$ttdc$gwt$server$activity$push$PushNotificationTool$Environment'
+ -  14 :  : '[I'
+ -  15 :  : '<clinit>'
+ -  16 :  : '()V'
+ -  17 :  : 'Code'
+ -  18 :  : klass_index=19 name_and_type_index=21
+ -  19 :  : 'org/apache/log4j/Logger'
+ -  20 :  : 'org/apache/log4j/Logger'
+ -  21 :  : name_index=22 signature_index=23
+ -  22 :  : 'getLogger'
+ -  23 :  : '(Ljava/lang/Class;)Lorg/apache/log4j/Logger;'
+ -  24 :  : klass_index=1 name_and_type_index=25
+ -  25 :  : name_index=5 signature_index=6
+ -  26 :  : 'LineNumberTable'
+ -  27 :  : 'LocalVariableTable'
+ -  28 :  : '<init>'
+ -  29 :  : klass_index=3 name_and_type_index=30
+ -  30 :  : name_index=28 signature_index=16
+ -  31 :  : klass_index=1 name_and_type_index=32
+ -  32 :  : name_index=7 signature_index=8
+ -  33 :  : klass_index=1 name_and_type_index=34
+ -  34 :  : name_index=9 signature_index=10
+ -  35 :  : klass_index=1 name_and_type_index=36
+ -  36 :  : name_index=11 signature_index=12
+ -  37 :  : klass_index=38 name_and_type_index=40
+ -  38 :  : 'org/ttdc/util/ApplicationProperties'
+ -  39 :  : 'org/ttdc/util/ApplicationProperties'
+ -  40 :  : name_index=41 signature_index=42
+ -  41 :  : 'getAppProperties'
+ -  42 :  : '()Ljava/util/Properties;'
+ -  43 :  : "PUSH_CERT" {0xe0953780}
+ -  44 :  : 'PUSH_CERT'
+ -  45 :  : klass_index=46 name_and_type_index=48
+ -  46 :  : 'java/util/Properties'
+ -  47 :  : 'java/util/Properties'
+ -  48 :  : name_index=49 signature_index=50
+ -  49 :  : 'getProperty'
+ -  50 :  : '(Ljava/lang/String;)Ljava/lang/String;'
+ -  51 :  : klass_index=3 name_and_type_index=52
+ -  52 :  : name_index=53 signature_index=54
+ -  53 :  : 'getClass'
+ -  54 :  : '()Ljava/lang/Class;'
+ -  55 :  : klass_index=56 name_and_type_index=58
+ -  56 :  : 'java/lang/Class'
+ -  57 :  : 'java/lang/Class'
+ -  58 :  : name_index=59 signature_index=60
+ -  59 :  : 'getClassLoader'
+ -  60 :  : '()Ljava/lang/ClassLoader;'
+ -  61 :  : klass_index=62 name_and_type_index=64
+ -  62 :  : 'java/lang/ClassLoader'
+ -  63 :  : 'java/lang/ClassLoader'
+ -  64 :  : name_index=65 signature_index=66
+ -  65 :  : 'getResource'
+ -  66 :  : '(Ljava/lang/String;)Ljava/net/URL;'
+ -  67 :  : "PUSH_ENVIRONMENT" {0xe0953738}
+ -  68 :  : 'PUSH_ENVIRONMENT'
+ -  69 :  : "prod" {0xe0953708}
+ -  70 :  : 'prod'
+ -  71 :  : klass_index=72 name_and_type_index=74
+ -  72 :  : 'java/lang/String'
+ -  73 :  : 'java/lang/String'
+ -  74 :  : name_index=75 signature_index=76
+ -  75 :  : 'equals'
+ -  76 :  : '(Ljava/lang/Object;)Z'
+ -  77 :  : klass_index=78 name_and_type_index=80
+ -  78 :  : 'org/ttdc/gwt/server/activity/push/PushNotificationTool$Environment'
+ -  79 :  : 'org/ttdc/gwt/server/activity/push/PushNotificationTool$Environment'
+ -  80 :  : name_index=81 signature_index=10
+ -  81 :  : 'PROD'
+ -  82 :  : klass_index=78 name_and_type_index=83
+ -  83 :  : name_index=84 signature_index=10
+ -  84 :  : 'DEV'
+ -  85 :  : "PUSH_PASSWORD" {0xe09536c0}
+ -  86 :  : 'PUSH_PASSWORD'
+ -  87 :  : klass_index=19 name_and_type_index=88
+ -  88 :  : name_index=89 signature_index=90
+ -  89 :  : 'error'
+ -  90 :  : '(Ljava/lang/Object;)V'
+ -  91 :  : 'java/io/IOException'
+ -  92 :  : 'java/io/IOException'
+ -  93 :  : 'this'
+ -  94 :  : 'Lorg/ttdc/gwt/server/activity/push/PushNotificationTool;'
+ -  95 :  : 'certPath'
+ -  96 :  : 'pushEnv'
+ -  97 :  : 'e'
+ -  98 :  : 'Ljava/io/IOException;'
+ -  99 :  : 'StackMapTable'
+ - 100 :  : 'isNotInitialized'
+ - 101 :  : '()Z'
+ - 102 :  : klass_index=103 name_and_type_index=105
+ - 103 :  : 'org/ttdc/gwt/shared/util/StringUtil'
+ - 104 :  : 'org/ttdc/gwt/shared/util/StringUtil'
+ - 105 :  : name_index=106 signature_index=107
+ - 106 :  : 'empty'
+ - 107 :  : '(Ljava/lang/String;)Z'
+ - 108 :  : 'pushIt'
+ - 109 :  : '(Ljava/util/List;Ljava/lang/String;Ljava/lang/String;)V'
+ - 110 :  : 'Signature'
+ - 111 :  : '(Ljava/util/List<Ljava/lang/String;>;Ljava/lang/String;Ljava/lang/String;)V'
+ - 112 :  : klass_index=1 name_and_type_index=113
+ - 113 :  : name_index=100 signature_index=101
+ - 114 :  : klass_index=115 name_and_type_index=117
+ - 115 :  : 'com/notnoop/apns/APNS'
+ - 116 :  : 'com/notnoop/apns/APNS'
+ - 117 :  : name_index=118 signature_index=119
+ - 118 :  : 'newService'
+ - 119 :  : '()Lcom/notnoop/apns/ApnsServiceBuilder;'
+ - 120 :  : klass_index=1 name_and_type_index=121
+ - 121 :  : name_index=13 signature_index=122
+ - 122 :  : '()[I'
+ - 123 :  : klass_index=78 name_and_type_index=124
+ - 124 :  : name_index=125 signature_index=126
+ - 125 :  : 'ordinal'
+ - 126 :  : '()I'
+ - 127 :  : "Using Prod push API" {0xf77a4058}
+ - 128 :  : 'Using Prod push API'
+ - 129 :  : klass_index=19 name_and_type_index=130
+ - 130 :  : name_index=131 signature_index=90
+ - 131 :  : 'debug'
+ - 132 :  : klass_index=133 name_and_type_index=135
+ - 133 :  : 'java/net/URL'
+ - 134 :  : 'java/net/URL'
+ - 135 :  : name_index=136 signature_index=137
+ - 136 :  : 'openStream'
+ - 137 :  : '()Ljava/io/InputStream;'
+ - 138 :  : klass_index=139 name_and_type_index=141
+ - 139 :  : 'com/notnoop/apns/ApnsServiceBuilder'
+ - 140 :  : 'com/notnoop/apns/ApnsServiceBuilder'
+ - 141 :  : name_index=142 signature_index=143
+ - 142 :  : 'withCert'
+ - 143 :  : '(Ljava/io/InputStream;Ljava/lang/String;)Lcom/notnoop/apns/ApnsServiceBuilder;'
+ - 144 :  : klass_index=139 name_and_type_index=145
+ - 145 :  : name_index=146 signature_index=119
+ - 146 :  : 'withProductionDestination'
+ - 147 :  : "Using Dev push API" {0xf8016c30}
+ - 148 :  : 'Using Dev push API'
+ - 149 :  : klass_index=139 name_and_type_index=150
+ - 150 :  : name_index=151 signature_index=119
+ - 151 :  : 'withSandboxDestination'
+ - 152 :  : 'java/lang/RuntimeException'
+ - 153 :  : 'java/lang/RuntimeException'
+ - 154 :  : "Invalid environment" {0xf8016c80}
+ - 155 :  : 'Invalid environment'
+ - 156 :  : klass_index=152 name_and_type_index=157
+ - 157 :  : name_index=28 signature_index=158
+ - 158 :  : '(Ljava/lang/String;)V'
+ - 159 :  : klass_index=139 name_and_type_index=160
+ - 160 :  : name_index=161 signature_index=162
+ - 161 :  : 'build'
+ - 162 :  : '()Lcom/notnoop/apns/ApnsService;'
+ - 163 :  : klass_index=115 name_and_type_index=164
+ - 164 :  : name_index=165 signature_index=166
+ - 165 :  : 'newPayload'
+ - 166 :  : '()Lcom/notnoop/apns/PayloadBuilder;'
+ - 167 :  : klass_index=168 name_and_type_index=170
+ - 168 :  : 'com/notnoop/apns/PayloadBuilder'
+ - 169 :  : 'com/notnoop/apns/PayloadBuilder'
+ - 170 :  : name_index=171 signature_index=172
+ - 171 :  : 'alertBody'
+ - 172 :  : '(Ljava/lang/String;)Lcom/notnoop/apns/PayloadBuilder;'
+ - 173 :  : klass_index=168 name_and_type_index=174
+ - 174 :  : name_index=175 signature_index=172
+ - 175 :  : 'alertTitle'
+ - 176 :  : "default" {0xe02704f0}
+ - 177 :  : 'default'
+ - 178 :  : klass_index=168 name_and_type_index=179
+ - 179 :  : name_index=180 signature_index=172
+ - 180 :  : 'sound'
+ - 181 :  : "custom" {0xf8016cd0}
+ - 182 :  : 'custom'
+ - 183 :  : "custom value" {0xf8016d08}
+ - 184 :  : 'custom value'
+ - 185 :  : klass_index=168 name_and_type_index=186
+ - 186 :  : name_index=187 signature_index=188
+ - 187 :  : 'customField'
+ - 188 :  : '(Ljava/lang/String;Ljava/lang/Object;)Lcom/notnoop/apns/PayloadBuilder;'
+ - 189 :  : klass_index=168 name_and_type_index=190
+ - 190 :  : name_index=161 signature_index=191
+ - 191 :  : '()Ljava/lang/String;'
+ - 192 :  : 'java/lang/StringBuilder' {0xdae88d60}
+ - 193 :  : 'java/lang/StringBuilder'
+ - 194 :  : "Push: " {0xf8016d48}
+ - 195 :  : 'Push: '
+ - 196 :  : klass_index=192 name_and_type_index=157
+ - 197 :  : klass_index=192 name_and_type_index=198
+ - 198 :  : name_index=199 signature_index=200
+ - 199 :  : 'append'
+ - 200 :  : '(Ljava/lang/String;)Ljava/lang/StringBuilder;'
+ - 201 :  : klass_index=192 name_and_type_index=202
+ - 202 :  : name_index=203 signature_index=191
+ - 203 :  : 'toString'
+ - 204 :  : klass_index=205 name_and_type_index=207
+ - 205 :  : 'java/util/List'
+ - 206 :  : 'java/util/List'
+ - 207 :  : name_index=208 signature_index=209
+ - 208 :  : 'iterator'
+ - 209 :  : '()Ljava/util/Iterator;'
+ - 210 :  : klass_index=211 name_and_type_index=213
+ - 211 :  : 'java/util/Iterator'
+ - 212 :  : 'java/util/Iterator'
+ - 213 :  : name_index=214 signature_index=215
+ - 214 :  : 'next'
+ - 215 :  : '()Ljava/lang/Object;'
+ - 216 :  : klass_index=217 name_and_type_index=219
+ - 217 :  : 'com/notnoop/apns/ApnsService'
+ - 218 :  : 'com/notnoop/apns/ApnsService'
+ - 219 :  : name_index=220 signature_index=221
+ - 220 :  : 'push'
+ - 221 :  : '(Ljava/lang/String;Ljava/lang/String;)Lcom/notnoop/apns/ApnsNotification;'
+ - 222 :  : "Failed to push to deviceToken: " {0xf8016d80}
+ - 223 :  : 'Failed to push to deviceToken: '
+ - 224 :  : klass_index=19 name_and_type_index=225
+ - 225 :  : name_index=89 signature_index=226
+ - 226 :  : '(Ljava/lang/Object;Ljava/lang/Throwable;)V'
+ - 227 :  : klass_index=211 name_and_type_index=228
+ - 228 :  : name_index=229 signature_index=101
+ - 229 :  : 'hasNext'
+ - 230 :  : "Unrecoverable push notification error. Terminating push." {0xf7865f68}
+ - 231 :  : 'Unrecoverable push notification error. Terminating push.'
+ - 232 :  : 'java/lang/Throwable'
+ - 233 :  : 'java/lang/Throwable'
+ - 234 :  : 'deviceTokens'
+ - 235 :  : 'Ljava/util/List;'
+ - 236 :  : 'title'
+ - 237 :  : 'message'
+ - 238 :  : 'serviceBuilder'
+ - 239 :  : 'Lcom/notnoop/apns/ApnsServiceBuilder;'
+ - 240 :  : 'service'
+ - 241 :  : 'Lcom/notnoop/apns/ApnsService;'
+ - 242 :  : 'payload'
+ - 243 :  : 'deviceToken'
+ - 244 :  : 't'
+ - 245 :  : 'Ljava/lang/Throwable;'
+ - 246 :  : 'LocalVariableTypeTable'
+ - 247 :  : 'Ljava/util/List<Ljava/lang/String;>;'
+ - 248 :  : 'executePushEventCausedBy'
+ - 249 :  : '(Ljava/lang/String;Lorg/ttdc/gwt/client/messaging/post/PostEvent;)V'
+ - 250 :  : klass_index=1 name_and_type_index=251
+ - 251 :  : name_index=252 signature_index=253
+ - 252 :  : 'getDeviceTokenUserObjects'
+ - 253 :  : '()Ljava/util/List;'
+ - 254 :  : 'java/util/ArrayList'
+ - 255 :  : 'java/util/ArrayList'
+ - 256 :  : klass_index=254 name_and_type_index=30
+ - 257 :  : 'org/ttdc/persistence/objects/UserObject'
+ - 258 :  : 'org/ttdc/persistence/objects/UserObject'
+ - 259 :  : klass_index=257 name_and_type_index=260
+ - 260 :  : name_index=261 signature_index=262
+ - 261 :  : 'getOwner'
+ - 262 :  : '()Lorg/ttdc/persistence/objects/Person;'
+ - 263 :  : klass_index=264 name_and_type_index=266
+ - 264 :  : 'org/ttdc/persistence/objects/Person'
+ - 265 :  : 'org/ttdc/persistence/objects/Person'
+ - 266 :  : name_index=267 signature_index=191
+ - 267 :  : 'getPersonId'
+ - 268 :  : klass_index=269 name_and_type_index=271
+ - 269 :  : 'org/ttdc/gwt/client/messaging/post/PostEventType'
+ - 270 :  : 'org/ttdc/gwt/client/messaging/post/PostEventType'
+ - 271 :  : name_index=272 signature_index=273
+ - 272 :  : 'NEW'
+ - 273 :  : 'Lorg/ttdc/gwt/client/messaging/post/PostEventType;'
+ - 274 :  : klass_index=275 name_and_type_index=277
+ - 275 :  : 'org/ttdc/gwt/client/messaging/post/PostEvent'
+ - 276 :  : 'org/ttdc/gwt/client/messaging/post/PostEvent'
+ - 277 :  : name_index=278 signature_index=279
+ - 278 :  : 'getType'
+ - 279 :  : '()Lorg/ttdc/gwt/client/messaging/post/PostEventType;'
+ - 280 :  : klass_index=269 name_and_type_index=74
+ - 281 :  : klass_index=257 name_and_type_index=282
+ - 282 :  : name_index=283 signature_index=191
+ - 283 :  : 'getValue'
+ - 284 :  : klass_index=205 name_and_type_index=285
+ - 285 :  : name_index=286 signature_index=76
+ - 286 :  : 'add'
+ - 287 :  : klass_index=205 name_and_type_index=288
+ - 288 :  : name_index=289 signature_index=101
+ - 289 :  : 'isEmpty'
+ - 290 :  : klass_index=275 name_and_type_index=291
+ - 291 :  : name_index=292 signature_index=293
+ - 292 :  : 'getSource'
+ - 293 :  : '()Lorg/ttdc/gwt/client/beans/GPost;'
+ - 294 :  : klass_index=1 name_and_type_index=295
+ - 295 :  : name_index=296 signature_index=297
+ - 296 :  : 'sendPushNotificationPostAdded'
+ - 297 :  : '(Ljava/util/List;Lorg/ttdc/gwt/client/beans/GPost;)V'
+ - 298 :  : 'personId'
+ - 299 :  : 'event'
+ - 300 :  : 'Lorg/ttdc/gwt/client/messaging/post/PostEvent;'
+ - 301 :  : 'list'
+ - 302 :  : 'uo'
+ - 303 :  : 'Lorg/ttdc/persistence/objects/UserObject;'
+ - 304 :  : 'Ljava/util/List<Lorg/ttdc/persistence/objects/UserObject;>;'
+ - 305 :  : '(Ljava/util/List<Ljava/lang/String;>;Lorg/ttdc/gwt/client/beans/GPost;)V'
+ - 306 :  : klass_index=192 name_and_type_index=30
+ - 307 :  : klass_index=308 name_and_type_index=310
+ - 308 :  : 'org/ttdc/gwt/client/beans/GPost' {0xdc11ef58}
+ - 309 :  : 'org/ttdc/gwt/client/beans/GPost'
+ - 310 :  : name_index=311 signature_index=312
+ - 311 :  : 'getCreator'
+ - 312 :  : '()Lorg/ttdc/gwt/client/beans/GPerson;'
+ - 313 :  : klass_index=314 name_and_type_index=316
+ - 314 :  : 'org/ttdc/gwt/client/beans/GPerson' {0xdc116f00}
+ - 315 :  : 'org/ttdc/gwt/client/beans/GPerson'
+ - 316 :  : name_index=317 signature_index=191
+ - 317 :  : 'getLogin'
+ - 318 :  : ":" {0xe0289858}
+ - 319 :  : ':'
+ - 320 :  : klass_index=308 name_and_type_index=321
+ - 321 :  : name_index=322 signature_index=323
+ - 322 :  : 'getLatestEntry'
+ - 323 :  : '()Lorg/ttdc/gwt/client/beans/GEntry;'
+ - 324 :  : klass_index=325 name_and_type_index=327
+ - 325 :  : 'org/ttdc/gwt/client/beans/GEntry' {0xdc10f500}
+ - 326 :  : 'org/ttdc/gwt/client/beans/GEntry'
+ - 327 :  : name_index=328 signature_index=191
+ - 328 :  : 'getSummary'
+ - 329 :  : klass_index=308 name_and_type_index=330
+ - 330 :  : name_index=331 signature_index=191
+ - 331 :  : 'getTitle'
+ - 332 :  : klass_index=1 name_and_type_index=333
+ - 333 :  : name_index=108 signature_index=109
+ - 334 :  : 'gPost'
+ - 335 :  : 'Lorg/ttdc/gwt/client/beans/GPost;'
+ - 336 :  : 'builder'
+ - 337 :  : 'Ljava/lang/StringBuilder;'
+ - 338 :  : '()Ljava/util/List<Lorg/ttdc/persistence/objects/UserObject;>;'
+ - 339 :  : klass_index=340 name_and_type_index=342
+ - 340 :  : 'org/ttdc/persistence/Persistence'
+ - 341 :  : 'org/ttdc/persistence/Persistence'
+ - 342 :  : name_index=343 signature_index=344
+ - 343 :  : 'beginSession'
+ - 344 :  : '()Lorg/hibernate/Session;'
+ - 345 :  : "object.getAllOfType" {0xe24cf558}
+ - 346 :  : 'object.getAllOfType'
+ - 347 :  : klass_index=348 name_and_type_index=350
+ - 348 :  : 'org/hibernate/Session'
+ - 349 :  : 'org/hibernate/Session'
+ - 350 :  : name_index=351 signature_index=352
+ - 351 :  : 'getNamedQuery'
+ - 352 :  : '(Ljava/lang/String;)Lorg/hibernate/Query;'
+ - 353 :  : "type" {0xe24be398}
+ - 354 :  : 'type'
+ - 355 :  : "deviceTokenForPushNotification" {0xe24bdd98}
+ - 356 :  : 'deviceTokenForPushNotification'
+ - 357 :  : klass_index=358 name_and_type_index=360
+ - 358 :  : 'org/hibernate/Query'
+ - 359 :  : 'org/hibernate/Query'
+ - 360 :  : name_index=361 signature_index=362
+ - 361 :  : 'setString'
+ - 362 :  : '(Ljava/lang/String;Ljava/lang/String;)Lorg/hibernate/Query;'
+ - 363 :  : klass_index=358 name_and_type_index=364
+ - 364 :  : name_index=301 signature_index=253
+ - 365 :  : klass_index=205 name_and_type_index=366
+ - 366 :  : name_index=367 signature_index=368
+ - 367 :  : 'addAll'
+ - 368 :  : '(Ljava/util/Collection;)Z'
+ - 369 :  : klass_index=340 name_and_type_index=370
+ - 370 :  : name_index=371 signature_index=16
+ - 371 :  : 'commit'
+ - 372 :  : klass_index=340 name_and_type_index=373
+ - 373 :  : name_index=374 signature_index=16
+ - 374 :  : 'rollback'
+ - 375 :  : 'session'
+ - 376 :  : 'Lorg/hibernate/Session;'
+ - 377 :  : 'query'
+ - 378 :  : 'Lorg/hibernate/Query;'
+ - 379 :  : klass_index=1 name_and_type_index=380
+ - 380 :  : name_index=13 signature_index=14
+ - 381 :  : klass_index=78 name_and_type_index=382
+ - 382 :  : name_index=383 signature_index=384
+ - 383 :  : 'values'
+ - 384 :  : '()[Lorg/ttdc/gwt/server/activity/push/PushNotificationTool$Environment;'
+ - 385 :  : 'java/lang/NoSuchFieldError'
+ - 386 :  : 'java/lang/NoSuchFieldError'
+ - 387 :  : '[I'
+ - 388 :  : 'SourceFile'
+ - 389 :  : 'PushNotificationTool.java'
+ - 390 :  : 'InnerClasses'
+ - 391 :  : 'Environment'
+ - 392 :  : "Push notifications not sent because PushNotificationTool died." {0xf8016de8}
+ - 393 :  : 'Push notifications not sent because PushNotificationTool died.'
+ - 394 :  : 'warn'
+ - 395 :  : name_index=394 signature_index=90
+ - 396 :  : klass_index=19 name_and_type_index=395
+ - 397 :  : "Using Prod push API" {0xf77a4058}
+ - 398 :  : "Unrecoverable push notification error. Terminating push." {0xf7865f68}
+ - 399 :  : ":" {0xe0289858}
+ - 400 :  : "object.getAllOfType" {0xe24cf558}
+ - 401 :  : "type" {0xe24be398}
+ - 402 :  : "deviceTokenForPushNotification" {0xe24bdd98}
+
+R9 =0x0000000000000000 is an unknown value
+R10=0x0000000000000000 is an unknown value
+R11=0x000000004700000a is an unknown value
+R12=0x000000000000010d is an unknown value
+R13=0x0000000000000000 is an unknown value
+R14=0x0000000000000000 is an unknown value
+R15=0x6666666666666667 is an unknown value
+
+
+Stack: [0x0000000008c60000,0x0000000008d60000],  sp=0x0000000008d5f590,  free space=1021k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+V  [jvm.dll+0xddf79]
+
+[error occurred during error reporting (printing native stack), id 0xc0000005]
+
+VM_Operation (0x000000000926f130): GetOrSetLocal, mode: safepoint, requested by thread 0x0000000007bf9800
+
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+  0x000000000ac9e000 JavaThread "pool-3-thread-1" [_thread_blocked, id=37584, stack(0x00000000185d0000,0x00000000186d0000)]
+  0x000000000ac9d000 JavaThread "Java2D Disposer" daemon [_thread_blocked, id=37136, stack(0x00000000120d0000,0x00000000121d0000)]
+  0x000000000ac9a000 JavaThread "com.google.inject.internal.util.$Finalizer" daemon [_thread_blocked, id=31916, stack(0x0000000010d00000,0x0000000010e00000)]
+  0x000000000ac98800 JavaThread "Store sampleCache1 Expiry Thread" daemon [_thread_blocked, id=37208, stack(0x000000000e760000,0x000000000e860000)]
+  0x000000000ac9c800 JavaThread "Store sampleCache1 Spool Thread" daemon [_thread_blocked, id=10624, stack(0x000000000e660000,0x000000000e760000)]
+  0x000000000ac99800 JavaThread "pool-2-thread-1" [_thread_blocked, id=36524, stack(0x000000000e260000,0x000000000e360000)]
+  0x000000000ac9b800 JavaThread "qtp434291335-41" [_thread_blocked, id=8676, stack(0x000000000d190000,0x000000000d290000)]
+  0x000000000ac96800 JavaThread "qtp434291335-40" [_thread_blocked, id=36520, stack(0x000000000d090000,0x000000000d190000)]
+  0x000000000aedd800 JavaThread "qtp434291335-39" [_thread_blocked, id=28428, stack(0x000000000cf90000,0x000000000d090000)]
+  0x000000000aedd000 JavaThread "qtp434291335-38" [_thread_blocked, id=20588, stack(0x000000000ce90000,0x000000000cf90000)]
+  0x000000000aedc000 JavaThread "qtp434291335-37" [_thread_blocked, id=34268, stack(0x000000000cd90000,0x000000000ce90000)]
+  0x000000000aedb800 JavaThread "qtp434291335-36" [_thread_blocked, id=9668, stack(0x000000000cc90000,0x000000000cd90000)]
+  0x000000000aeda000 JavaThread "qtp434291335-35 Acceptor0 SelectChannelConnector@0.0.0.0:8888" [_thread_in_native, id=37936, stack(0x000000000cb90000,0x000000000cc90000)]
+  0x000000000aed9000 JavaThread "qtp434291335-34 Selector0" [_thread_in_native, id=36548, stack(0x000000000ca90000,0x000000000cb90000)]
+  0x000000000aed7800 JavaThread "HashSessionScavenger-1" daemon [_thread_blocked, id=38232, stack(0x000000000c990000,0x000000000ca90000)]
+  0x000000000aed8800 JavaThread "qtp1948467287-32" [_thread_blocked, id=34784, stack(0x000000000c890000,0x000000000c990000)]
+  0x000000000aeda800 JavaThread "qtp1948467287-31" [_thread_blocked, id=34556, stack(0x000000000c790000,0x000000000c890000)]
+  0x000000000aed7000 JavaThread "qtp1948467287-30" [_thread_blocked, id=31252, stack(0x000000000c690000,0x000000000c790000)]
+  0x000000000b12e000 JavaThread "qtp1948467287-29" [_thread_blocked, id=38100, stack(0x000000000c590000,0x000000000c690000)]
+  0x000000000b12d800 JavaThread "qtp1948467287-28" [_thread_blocked, id=26732, stack(0x000000000c490000,0x000000000c590000)]
+  0x000000000a7d0000 JavaThread "qtp1948467287-27" [_thread_blocked, id=37724, stack(0x000000000c390000,0x000000000c490000)]
+  0x000000000b098000 JavaThread "qtp1948467287-26 Acceptor0 SelectChannelConnector@0.0.0.0:9876" [_thread_in_native, id=22348, stack(0x000000000c290000,0x000000000c390000)]
+  0x000000000a623800 JavaThread "qtp1948467287-25 Selector0" [_thread_in_native, id=27536, stack(0x000000000c190000,0x000000000c290000)]
+  0x000000000ab31000 JavaThread "HashSessionScavenger-0" daemon [_thread_blocked, id=37400, stack(0x000000000c090000,0x000000000c190000)]
+  0x000000000a2a1800 JavaThread "GC Daemon" daemon [_thread_blocked, id=32380, stack(0x000000000bf90000,0x000000000c090000)]
+  0x000000000a22d000 JavaThread "pool-1-thread-1" [_thread_blocked, id=35428, stack(0x000000000bb60000,0x000000000bc60000)]
+  0x000000000a399000 JavaThread "Thread-2" daemon [_thread_blocked, id=33420, stack(0x000000000b960000,0x000000000ba60000)]
+  0x000000000a522000 JavaThread "Thread-1" [_thread_in_native, id=14228, stack(0x000000000b860000,0x000000000b960000)]
+  0x0000000007c20800 JavaThread "Service Thread" daemon [_thread_blocked, id=12300, stack(0x0000000009a90000,0x0000000009b90000)]
+  0x0000000007c1f000 JavaThread "C2 CompilerThread1" daemon [_thread_blocked, id=38416, stack(0x0000000009990000,0x0000000009a90000)]
+  0x0000000007c12000 JavaThread "C2 CompilerThread0" daemon [_thread_blocked, id=32208, stack(0x0000000009890000,0x0000000009990000)]
+  0x0000000007c01000 JavaThread "JDWP Command Reader" daemon [_thread_in_native, id=37192, stack(0x0000000009790000,0x0000000009890000)]
+  0x0000000007bfe000 JavaThread "JDWP Event Helper Thread" daemon [_thread_blocked, id=34260, stack(0x0000000009690000,0x0000000009790000)]
+  0x0000000007bf9800 JavaThread "JDWP Transport Listener: dt_socket" daemon [_thread_blocked, id=29120, stack(0x0000000009170000,0x0000000009270000)]
+  0x0000000002fee800 JavaThread "Attach Listener" daemon [_thread_blocked, id=38436, stack(0x0000000009060000,0x0000000009160000)]
+  0x0000000007be5800 JavaThread "Signal Dispatcher" daemon [_thread_blocked, id=30140, stack(0x0000000008f60000,0x0000000009060000)]
+  0x0000000002fdd800 JavaThread "Finalizer" daemon [_thread_blocked, id=32880, stack(0x0000000008e60000,0x0000000008f60000)]
+  0x0000000002fd2800 JavaThread "Reference Handler" daemon [_thread_blocked, id=29604, stack(0x0000000008d60000,0x0000000008e60000)]
+  0x0000000002ef4800 JavaThread "main" [_thread_blocked, id=38396, stack(0x0000000002df0000,0x0000000002ef0000)]
+
+Other Threads:
+=>0x0000000007bc2000 VMThread [stack: 0x0000000008c60000,0x0000000008d60000] [id=37848]
+  0x0000000007c57000 WatcherThread [stack: 0x0000000009f90000,0x000000000a090000] [id=34932]
+
+VM state:at safepoint (normal execution)
+
+VM Mutex/Monitor currently owned by a thread:  ([mutex/lock_event])
+[0x0000000002ef18d0] Threads_lock - owner thread: 0x0000000007bc2000
+
+Heap
+ PSYoungGen      total 116736K, used 45534K [0x00000000f5500000, 0x0000000100000000, 0x0000000100000000)
+  eden space 58368K, 75% used [0x00000000f5500000,0x00000000f8016e90,0x00000000f8e00000)
+  from space 58368K, 2% used [0x00000000f8e00000,0x00000000f8f60d20,0x00000000fc700000)
+  to   space 58368K, 0% used [0x00000000fc700000,0x00000000fc700000,0x0000000100000000)
+ ParOldGen       total 326656K, used 166518K [0x00000000e0000000, 0x00000000f3f00000, 0x00000000f5500000)
+  object space 326656K, 50% used [0x00000000e0000000,0x00000000ea29db30,0x00000000f3f00000)
+ PSPermGen       total 83968K, used 57077K [0x00000000dae00000, 0x00000000e0000000, 0x00000000e0000000)
+  object space 83968K, 67% used [0x00000000dae00000,0x00000000de5bd4d8,0x00000000e0000000)
+
+Card table byte_map: [0x00000000060b0000,0x00000000061e0000] byte_map_base: 0x00000000059d9000
+
+Polling page: 0x0000000002c80000
+
+Code Cache  [0x0000000002ff0000, 0x0000000003c60000, 0x0000000005ff0000)
+ total_blobs=4017 nmethods=3459 adapters=514 free_code_cache=36824Kb largest_free_block=37320704
+
+Compilation events (10 events):
+Event: 123.214 Thread 0x0000000007c12000 4040             java.nio.HeapCharBuffer::put (16 bytes)
+Event: 123.214 Thread 0x0000000007c1f000 4041             java.nio.HeapCharBuffer::ix (7 bytes)
+Event: 123.215 Thread 0x0000000007c1f000 nmethod 4041 0x000000000370d390 code [0x000000000370d4c0, 0x000000000370d518]
+Event: 123.215 Thread 0x0000000007c1f000 4042             sun.nio.cs.UnicodeDecoder::decode (24 bytes)
+Event: 123.215 Thread 0x0000000007c1f000 nmethod 4042 0x0000000003c21c90 code [0x0000000003c21dc0, 0x0000000003c21e38]
+Event: 123.215 Thread 0x0000000007c12000 nmethod 4040 0x000000000361d890 code [0x000000000361d9e0, 0x000000000361dad8]
+Event: 135.057 Thread 0x0000000007c12000 4043   !         org.eclipse.jetty.http.HttpParser::parseNext (4296 bytes)
+Event: 135.175 Thread 0x0000000007c12000 nmethod 4043 0x0000000003bf6ad0 code [0x0000000003bf7740, 0x0000000003bfd618]
+Event: 152.674 Thread 0x0000000007c1f000 4044             java.util.concurrent.ConcurrentHashMap$HashIterator::advance (96 bytes)
+Event: 152.676 Thread 0x0000000007c1f000 nmethod 4044 0x00000000032f68d0 code [0x00000000032f6a20, 0x00000000032f6b98]
+
+GC Heap History (10 events):
+Event: 73.112 GC heap before
+{Heap before GC invocations=53 (full 4):
+ PSYoungGen      total 116736K, used 24232K [0x00000000f5500000, 0x0000000100000000, 0x0000000100000000)
+  eden space 58368K, 0% used [0x00000000f5500000,0x00000000f5500000,0x00000000f8e00000)
+  from space 58368K, 41% used [0x00000000f8e00000,0x00000000fa5aa348,0x00000000fc700000)
+  to   space 58368K, 0% used [0x00000000fc700000,0x00000000fc700000,0x0000000100000000)
+ ParOldGen       total 317952K, used 297419K [0x00000000e0000000, 0x00000000f3680000, 0x00000000f5500000)
+  object space 317952K, 93% used [0x00000000e0000000,0x00000000f2272d40,0x00000000f3680000)
+ PSPermGen       total 79360K, used 54776K [0x00000000dae00000, 0x00000000dfb80000, 0x00000000e0000000)
+  object space 79360K, 69% used [0x00000000dae00000,0x00000000de37e038,0x00000000dfb80000)
+Event: 73.353 GC heap after
+Heap after GC invocations=53 (full 4):
+ PSYoungGen      total 116736K, used 0K [0x00000000f5500000, 0x0000000100000000, 0x0000000100000000)
+  eden space 58368K, 0% used [0x00000000f5500000,0x00000000f5500000,0x00000000f8e00000)
+  from space 58368K, 0% used [0x00000000f8e00000,0x00000000f8e00000,0x00000000fc700000)
+  to   space 58368K, 0% used [0x00000000fc700000,0x00000000fc700000,0x0000000100000000)
+ ParOldGen       total 326656K, used 155813K [0x00000000e0000000, 0x00000000f3f00000, 0x00000000f5500000)
+  object space 326656K, 47% used [0x00000000e0000000,0x00000000e98297c0,0x00000000f3f00000)
+ PSPermGen       total 83968K, used 54763K [0x00000000dae00000, 0x00000000e0000000, 0x00000000e0000000)
+  object space 83968K, 65% used [0x00000000dae00000,0x00000000de37ad90,0x00000000e0000000)
+}
+Event: 73.462 GC heap before
+{Heap before GC invocations=54 (full 4):
+ PSYoungGen      total 116736K, used 55438K [0x00000000f5500000, 0x0000000100000000, 0x0000000100000000)
+  eden space 58368K, 94% used [0x00000000f5500000,0x00000000f8b239a0,0x00000000f8e00000)
+  from space 58368K, 0% used [0x00000000f8e00000,0x00000000f8e00000,0x00000000fc700000)
+  to   space 58368K, 0% used [0x00000000fc700000,0x00000000fc700000,0x0000000100000000)
+ ParOldGen       total 326656K, used 155813K [0x00000000e0000000, 0x00000000f3f00000, 0x00000000f5500000)
+  object space 326656K, 47% used [0x00000000e0000000,0x00000000e98297c0,0x00000000f3f00000)
+ PSPermGen       total 83968K, used 54774K [0x00000000dae00000, 0x00000000e0000000, 0x00000000e0000000)
+  object space 83968K, 65% used [0x00000000dae00000,0x00000000de37db80,0x00000000e0000000)
+Event: 73.467 GC heap after
+Heap after GC invocations=54 (full 4):
+ PSYoungGen      total 116736K, used 10752K [0x00000000f5500000, 0x0000000100000000, 0x0000000100000000)
+  eden space 58368K, 0% used [0x00000000f5500000,0x00000000f5500000,0x00000000f8e00000)
+  from space 58368K, 18% used [0x00000000fc700000,0x00000000fd180370,0x0000000100000000)
+  to   space 58368K, 0% used [0x00000000f8e00000,0x00000000f8e00000,0x00000000fc700000)
+ ParOldGen       total 326656K, used 155813K [0x00000000e0000000, 0x00000000f3f00000, 0x00000000f5500000)
+  object space 326656K, 47% used [0x00000000e0000000,0x00000000e98297c0,0x00000000f3f00000)
+ PSPermGen       total 83968K, used 54774K [0x00000000dae00000, 0x00000000e0000000, 0x00000000e0000000)
+  object space 83968K, 65% used [0x00000000dae00000,0x00000000de37db80,0x00000000e0000000)
+}
+Event: 73.629 GC heap before
+{Heap before GC invocations=55 (full 4):
+ PSYoungGen      total 116736K, used 69120K [0x00000000f5500000, 0x0000000100000000, 0x0000000100000000)
+  eden space 58368K, 100% used [0x00000000f5500000,0x00000000f8e00000,0x00000000f8e00000)
+  from space 58368K, 18% used [0x00000000fc700000,0x00000000fd180370,0x0000000100000000)
+  to   space 58368K, 0% used [0x00000000f8e00000,0x00000000f8e00000,0x00000000fc700000)
+ ParOldGen       total 326656K, used 155813K [0x00000000e0000000, 0x00000000f3f00000, 0x00000000f5500000)
+  object space 326656K, 47% used [0x00000000e0000000,0x00000000e98297c0,0x00000000f3f00000)
+ PSPermGen       total 83968K, used 54881K [0x00000000dae00000, 0x00000000e0000000, 0x00000000e0000000)
+  object space 83968K, 65% used [0x00000000dae00000,0x00000000de3984e0,0x00000000e0000000)
+Event: 73.642 GC heap after
+Heap after GC invocations=55 (full 4):
+ PSYoungGen      total 116736K, used 36654K [0x00000000f5500000, 0x0000000100000000, 0x0000000100000000)
+  eden space 58368K, 0% used [0x00000000f5500000,0x00000000f5500000,0x00000000f8e00000)
+  from space 58368K, 62% used [0x00000000f8e00000,0x00000000fb1cb9e0,0x00000000fc700000)
+  to   space 58368K, 0% used [0x00000000fc700000,0x00000000fc700000,0x0000000100000000)
+ ParOldGen       total 326656K, used 155813K [0x00000000e0000000, 0x00000000f3f00000, 0x00000000f5500000)
+  object space 326656K, 47% used [0x00000000e0000000,0x00000000e98297c0,0x00000000f3f00000)
+ PSPermGen       total 83968K, used 54881K [0x00000000dae00000, 0x00000000e0000000, 0x00000000e0000000)
+  object space 83968K, 65% used [0x00000000dae00000,0x00000000de3984e0,0x00000000e0000000)
+}
+Event: 73.657 GC heap before
+{Heap before GC invocations=56 (full 4):
+ PSYoungGen      total 116736K, used 95022K [0x00000000f5500000, 0x0000000100000000, 0x0000000100000000)
+  eden space 58368K, 100% used [0x00000000f5500000,0x00000000f8e00000,0x00000000f8e00000)
+  from space 58368K, 62% used [0x00000000f8e00000,0x00000000fb1cb9e0,0x00000000fc700000)
+  to   space 58368K, 0% used [0x00000000fc700000,0x00000000fc700000,0x0000000100000000)
+ ParOldGen       total 326656K, used 155813K [0x00000000e0000000, 0x00000000f3f00000, 0x00000000f5500000)
+  object space 326656K, 47% used [0x00000000e0000000,0x00000000e98297c0,0x00000000f3f00000)
+ PSPermGen       total 83968K, used 54881K [0x00000000dae00000, 0x00000000e0000000, 0x00000000e0000000)
+  object space 83968K, 65% used [0x00000000dae00000,0x00000000de3984e0,0x00000000e0000000)
+Event: 73.688 GC heap after
+Heap after GC invocations=56 (full 4):
+ PSYoungGen      total 116736K, used 54358K [0x00000000f5500000, 0x0000000100000000, 0x0000000100000000)
+  eden space 58368K, 0% used [0x00000000f5500000,0x00000000f5500000,0x00000000f8e00000)
+  from space 58368K, 93% used [0x00000000fc700000,0x00000000ffc15a28,0x0000000100000000)
+  to   space 58368K, 0% used [0x00000000f8e00000,0x00000000f8e00000,0x00000000fc700000)
+ ParOldGen       total 326656K, used 166502K [0x00000000e0000000, 0x00000000f3f00000, 0x00000000f5500000)
+  object space 326656K, 50% used [0x00000000e0000000,0x00000000ea299b30,0x00000000f3f00000)
+ PSPermGen       total 83968K, used 54881K [0x00000000dae00000, 0x00000000e0000000, 0x00000000e0000000)
+  object space 83968K, 65% used [0x00000000dae00000,0x00000000de3984e0,0x00000000e0000000)
+}
+Event: 75.557 GC heap before
+{Heap before GC invocations=57 (full 4):
+ PSYoungGen      total 116736K, used 112726K [0x00000000f5500000, 0x0000000100000000, 0x0000000100000000)
+  eden space 58368K, 100% used [0x00000000f5500000,0x00000000f8e00000,0x00000000f8e00000)
+  from space 58368K, 93% used [0x00000000fc700000,0x00000000ffc15a28,0x0000000100000000)
+  to   space 58368K, 0% used [0x00000000f8e00000,0x00000000f8e00000,0x00000000fc700000)
+ ParOldGen       total 326656K, used 166502K [0x00000000e0000000, 0x00000000f3f00000, 0x00000000f5500000)
+  object space 326656K, 50% used [0x00000000e0000000,0x00000000ea299b30,0x00000000f3f00000)
+ PSPermGen       total 83968K, used 55387K [0x00000000dae00000, 0x00000000e0000000, 0x00000000e0000000)
+  object space 83968K, 65% used [0x00000000dae00000,0x00000000de416db8,0x00000000e0000000)
+Event: 75.567 GC heap after
+Heap after GC invocations=57 (full 4):
+ PSYoungGen      total 116736K, used 1411K [0x00000000f5500000, 0x0000000100000000, 0x0000000100000000)
+  eden space 58368K, 0% used [0x00000000f5500000,0x00000000f5500000,0x00000000f8e00000)
+  from space 58368K, 2% used [0x00000000f8e00000,0x00000000f8f60d20,0x00000000fc700000)
+  to   space 58368K, 0% used [0x00000000fc700000,0x00000000fc700000,0x0000000100000000)
+ ParOldGen       total 326656K, used 166518K [0x00000000e0000000, 0x00000000f3f00000, 0x00000000f5500000)
+  object space 326656K, 50% used [0x00000000e0000000,0x00000000ea29db30,0x00000000f3f00000)
+ PSPermGen       total 83968K, used 55387K [0x00000000dae00000, 0x00000000e0000000, 0x00000000e0000000)
+  object space 83968K, 65% used [0x00000000dae00000,0x00000000de416db8,0x00000000e0000000)
+}
+
+Deoptimization events (10 events):
+Event: 120.901 Thread 0x000000000aedb800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00000000032acb70 method=org.hibernate.engine.Cascade.cascade(Lorg/hibernate/persister/entity/EntityPersister;Ljava/lang/Object;Ljava/lang/Object;)V @ 13
+Event: 120.917 Thread 0x000000000aedb800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00000000030b2e6c method=org.ttdc.persistence.util.DateScoreSorter.calculateScore(Ljava/util/Date;)Ljava/lang/Float; @ 1
+Event: 120.980 Thread 0x000000000ac9e000 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x0000000003371ad8 method=org.apache.lucene.store.IndexInput.readVInt()I @ 1
+Event: 120.980 Thread 0x000000000ac9e000 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x0000000003371ad8 method=org.apache.lucene.store.IndexInput.readVInt()I @ 1
+Event: 120.980 Thread 0x000000000ac9e000 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x0000000003371ad8 method=org.apache.lucene.store.IndexInput.readVInt()I @ 1
+Event: 120.980 Thread 0x000000000ac9e000 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x0000000003371ad8 method=org.apache.lucene.store.IndexInput.readVInt()I @ 1
+Event: 120.986 Thread 0x000000000ac9e000 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00000000034ea6b4 method=java.util.ComparableTimSort.binarySort([Ljava/lang/Object;III)V @ 183
+Event: 135.057 Thread 0x000000000ac96800 Uncommon trap: reason=range_check action=none pc=0x00000000031112cc method=sun.reflect.generics.parser.SignatureParser.current()C @ 34
+Event: 155.059 Thread 0x000000000aedd800 Uncommon trap: reason=range_check action=none pc=0x00000000031112cc method=sun.reflect.generics.parser.SignatureParser.current()C @ 34
+Event: 175.061 Thread 0x000000000aedc000 Uncommon trap: reason=range_check action=none pc=0x00000000031112cc method=sun.reflect.generics.parser.SignatureParser.current()C @ 34
+
+Internal exceptions (10 events):
+Event: 95.064 Thread 0x000000000aedd800 Threw 0x00000000f6b73fa8 at C:\re\jdk7u55\869\hotspot\src\share\vm\prims\jvm.cpp:1244
+Event: 95.065 Thread 0x000000000aedd800 Threw 0x00000000f76bb9b0 at C:\re\jdk7u55\869\hotspot\src\share\vm\prims\jvm.cpp:1244
+Event: 95.065 Thread 0x000000000aedd800 Threw 0x00000000f76dbb70 at C:\re\jdk7u55\869\hotspot\src\share\vm\prims\jvm.cpp:1244
+Event: 106.472 Thread 0x000000000ac96800 Threw 0x00000000f78a0628 at C:\re\jdk7u55\869\hotspot\src\share\vm\prims\jvm.cpp:1244
+Event: 106.473 Thread 0x000000000ac96800 Threw 0x00000000f78c1340 at C:\re\jdk7u55\869\hotspot\src\share\vm\prims\jvm.cpp:1244
+Event: 115.059 Thread 0x000000000aedc000 Threw 0x00000000f6ba8940 at C:\re\jdk7u55\869\hotspot\src\share\vm\interpreter\interpreterRuntime.cpp:347
+Event: 120.826 Thread 0x000000000aedb800 Threw 0x00000000f6bf5220 at C:\re\jdk7u55\869\hotspot\src\share\vm\interpreter\interpreterRuntime.cpp:347
+Event: 135.057 Thread 0x000000000ac96800 Threw 0x00000000f79df5b8 at C:\re\jdk7u55\869\hotspot\src\share\vm\interpreter\interpreterRuntime.cpp:347
+Event: 155.059 Thread 0x000000000aedd800 Threw 0x00000000f7738118 at C:\re\jdk7u55\869\hotspot\src\share\vm\interpreter\interpreterRuntime.cpp:347
+Event: 175.061 Thread 0x000000000aedc000 Threw 0x00000000f7a05060 at C:\re\jdk7u55\869\hotspot\src\share\vm\interpreter\interpreterRuntime.cpp:347
+
+Events (10 events):
+Event: 182.202 Executing VM operation: GetOrSetLocal done
+Event: 182.202 Executing VM operation: GetOrSetLocal
+Event: 182.202 Executing VM operation: GetOrSetLocal done
+Event: 182.203 Executing VM operation: GetOrSetLocal
+Event: 182.203 Executing VM operation: GetOrSetLocal done
+Event: 182.203 Executing VM operation: GetOrSetLocal
+Event: 182.203 Executing VM operation: GetOrSetLocal done
+Event: 184.140 Executing VM operation: GetOrSetLocal
+Event: 184.140 Executing VM operation: GetOrSetLocal done
+Event: 184.196 Executing VM operation: GetOrSetLocal
+
+
+Dynamic libraries:
+0x00007ff7dea10000 - 0x00007ff7dea43000 	C:\Development\Java\jdk1.7.0_55\bin\javaw.exe
+0x00007fff15b90000 - 0x00007fff15d61000 	C:\WINDOWS\SYSTEM32\ntdll.dll
+0x00007fff158a0000 - 0x00007fff1594b000 	C:\WINDOWS\System32\KERNEL32.DLL
+0x00007fff128d0000 - 0x00007fff12aed000 	C:\WINDOWS\System32\KERNELBASE.dll
+0x00007fff13870000 - 0x00007fff13912000 	C:\WINDOWS\System32\ADVAPI32.dll
+0x00007fff15950000 - 0x00007fff159ee000 	C:\WINDOWS\System32\msvcrt.dll
+0x00007fff15580000 - 0x00007fff155d9000 	C:\WINDOWS\System32\sechost.dll
+0x00007fff155e0000 - 0x00007fff15701000 	C:\WINDOWS\System32\RPCRT4.dll
+0x00007fff13700000 - 0x00007fff13865000 	C:\WINDOWS\System32\USER32.dll
+0x00007fff12860000 - 0x00007fff1287e000 	C:\WINDOWS\System32\win32u.dll
+0x00007fff13420000 - 0x00007fff13454000 	C:\WINDOWS\System32\GDI32.dll
+0x00007fff12af0000 - 0x00007fff12c72000 	C:\WINDOWS\System32\gdi32full.dll
+0x00007fff035b0000 - 0x00007fff03829000 	C:\WINDOWS\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.14393.447_none_42191651c6827bb3\COMCTL32.dll
+0x00007fff13120000 - 0x00007fff133e7000 	C:\WINDOWS\System32\combase.dll
+0x00007fff12760000 - 0x00007fff12855000 	C:\WINDOWS\System32\ucrtbase.dll
+0x00007fff12c80000 - 0x00007fff12cea000 	C:\WINDOWS\System32\bcryptPrimitives.dll
+0x00007fff133f0000 - 0x00007fff1341e000 	C:\WINDOWS\System32\IMM32.DLL
+0x00000000590e0000 - 0x00000000591b2000 	C:\Development\Java\jdk1.7.0_55\jre\bin\msvcr100.dll
+0x0000000057b80000 - 0x0000000058349000 	C:\Development\Java\jdk1.7.0_55\jre\bin\server\jvm.dll
+0x00007fff13ff0000 - 0x00007fff13ff8000 	C:\WINDOWS\System32\PSAPI.DLL
+0x00007fff088b0000 - 0x00007fff088b9000 	C:\WINDOWS\SYSTEM32\WSOCK32.dll
+0x00007fff10500000 - 0x00007fff10523000 	C:\WINDOWS\SYSTEM32\WINMM.dll
+0x00007fff13620000 - 0x00007fff1368a000 	C:\WINDOWS\System32\WS2_32.dll
+0x0000000002c30000 - 0x0000000002c5b000 	C:\WINDOWS\SYSTEM32\WINMMBASE.dll
+0x00007fff12880000 - 0x00007fff128c2000 	C:\WINDOWS\System32\cfgmgr32.dll
+0x00000000590d0000 - 0x00000000590df000 	C:\Development\Java\jdk1.7.0_55\jre\bin\verify.dll
+0x00000000590a0000 - 0x00000000590c8000 	C:\Development\Java\jdk1.7.0_55\jre\bin\java.dll
+0x0000000058fc0000 - 0x0000000058ff5000 	C:\Development\Java\jdk1.7.0_55\jre\bin\jdwp.dll
+0x0000000058fb0000 - 0x0000000058fb8000 	C:\Development\Java\jdk1.7.0_55\jre\bin\npt.dll
+0x0000000059080000 - 0x0000000059095000 	C:\Development\Java\jdk1.7.0_55\jre\bin\zip.dll
+0x0000000058fa0000 - 0x0000000058fa9000 	C:\Development\Java\jdk1.7.0_55\jre\bin\dt_socket.dll
+0x00007ffef5b50000 - 0x00007ffef5b66000 	C:\WINDOWS\system32\napinsp.dll
+0x00007ffef5db0000 - 0x00007ffef5dca000 	C:\WINDOWS\system32\pnrpnsp.dll
+0x00007fff102c0000 - 0x00007fff102d8000 	C:\WINDOWS\system32\NLAapi.dll
+0x00007fff117f0000 - 0x00007fff1184c000 	C:\WINDOWS\System32\mswsock.dll
+0x00007fff115c0000 - 0x00007fff11660000 	C:\WINDOWS\SYSTEM32\DNSAPI.dll
+0x00007fff13690000 - 0x00007fff13698000 	C:\WINDOWS\System32\NSI.dll
+0x00007fff11580000 - 0x00007fff115b8000 	C:\WINDOWS\SYSTEM32\IPHLPAPI.DLL
+0x00007ffef5dd0000 - 0x00007ffef5dde000 	C:\WINDOWS\System32\winrnr.dll
+0x0000000059640000 - 0x0000000059666000 	C:\Program Files\Bonjour\mdnsNSP.dll
+0x00007fff0b360000 - 0x00007fff0b3ca000 	C:\WINDOWS\System32\fwpuclnt.dll
+0x00007fff11f30000 - 0x00007fff11f5b000 	C:\WINDOWS\SYSTEM32\bcrypt.dll
+0x00007fff0a2b0000 - 0x00007fff0a2ba000 	C:\Windows\System32\rasadhlp.dll
+0x0000000059060000 - 0x0000000059079000 	C:\Development\Java\jdk1.7.0_55\jre\bin\net.dll
+0x00007fff11ac0000 - 0x00007fff11ad7000 	C:\WINDOWS\SYSTEM32\CRYPTSP.dll
+0x00007fff11970000 - 0x00007fff119a3000 	C:\WINDOWS\system32\rsaenh.dll
+0x00007fff11670000 - 0x00007fff1168f000 	C:\WINDOWS\SYSTEM32\USERENV.dll
+0x00007fff12060000 - 0x00007fff12074000 	C:\WINDOWS\System32\profapi.dll
+0x00007fff11ae0000 - 0x00007fff11aeb000 	C:\WINDOWS\SYSTEM32\CRYPTBASE.dll
+0x00007fff0e0e0000 - 0x00007fff0e0f6000 	C:\WINDOWS\SYSTEM32\dhcpcsvc6.DLL
+0x00007fff0cf70000 - 0x00007fff0cf8a000 	C:\WINDOWS\SYSTEM32\dhcpcsvc.DLL
+0x0000000059040000 - 0x0000000059051000 	C:\Development\Java\jdk1.7.0_55\jre\bin\nio.dll
+0x0000000058e00000 - 0x0000000058f95000 	C:\Development\Java\jdk1.7.0_55\jre\bin\awt.dll
+0x00007fff15740000 - 0x00007fff157ff000 	C:\WINDOWS\System32\OLEAUT32.dll
+0x00007fff12da0000 - 0x00007fff12e3c000 	C:\WINDOWS\System32\msvcp_win.dll
+0x00007fff10450000 - 0x00007fff104ca000 	C:\WINDOWS\SYSTEM32\apphelp.dll
+0x0000000059010000 - 0x0000000059034000 	C:\Development\Java\jdk1.7.0_55\jre\bin\sunec.dll
+0x0000000059000000 - 0x000000005900b000 	C:\Development\Java\jdk1.7.0_55\jre\bin\sunmscapi.dll
+0x00007fff12e40000 - 0x00007fff13009000 	C:\WINDOWS\System32\CRYPT32.dll
+0x00007fff12040000 - 0x00007fff12050000 	C:\WINDOWS\System32\MSASN1.dll
+0x0000000058df0000 - 0x0000000058dfb000 	C:\Development\Java\jdk1.7.0_55\jre\bin\management.dll
+0x00007fff0fd50000 - 0x00007fff0fd76000 	C:\WINDOWS\system32\DWMAPI.DLL
+0x00007fff10780000 - 0x00007fff10815000 	C:\WINDOWS\system32\uxtheme.dll
+0x00007fff08460000 - 0x00007fff085f2000 	C:\WINDOWS\SYSTEM32\dbghelp.dll
+
+VM Arguments:
+jvm_args: -agentlib:jdwp=transport=dt_socket,suspend=y,address=localhost:62295 -Xmx512m -Dfile.encoding=Cp1252 
+java_command: com.google.gwt.dev.DevMode -remoteUI 52462:2281348625422491 -startupUrl launch.jsp -logLevel INFO -codeServerPort 9997 -bindAddress 0.0.0.0 -port 8888 -superDevMode -war C:\ProjectsGit\ttdc\ ttdc --username trevisthomas\River\war org.ttdc.gwt.Client
+Launcher Type: SUN_STANDARD
+
+Environment Variables:
+PATH=C:\Development\Java\jdk1.7.0_55\jre\bin;C:\ProgramData\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\ATI Technologies\ATI.ACE\Core-Static;C:\Program Files (x86)\QuickTime\QTSystem\;C:\Program Files (x86)\AMD\ATI.ACE\Core-Static;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\110\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\120\Tools\Binn\;C:\Program Files\Microsoft SQL Server\120\Tools\Binn\;C:\Program Files\Microsoft SQL Server\120\DTS\Binn\;C:\Program Files (x86)\Microsoft SQL Server\120\Tools\Binn\ManagementStudio\;C:\Program Files (x86)\Microsoft SQL Server\120\DTS\Binn\;C:\Users\trevis\AppData\Local\Microsoft\WindowsApps;C:\Program Files\7-Zip
+USERNAME=trevis
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 42 Stepping 7, GenuineIntel
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS: Windows 8.1 , 64 bit Build 9600 
+
+CPU:total 4 (4 cores per cpu, 1 threads per core) family 6 model 42 stepping 7, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, avx, aes, tsc, tscinvbit
+
+Memory: 4k page, physical 16757908k(5376312k free), swap 21476500k(3308400k free)
+
+vm_info: Java HotSpot(TM) 64-Bit Server VM (24.55-b03) for windows-amd64 JRE (1.7.0_55-b13), built on Mar 17 2014 19:45:30 by "java_re" with unknown MS VC++:1600
+
+time: Sat Dec 17 11:16:10 2016
+elapsed time: 184 seconds
+

@@ -311,6 +311,7 @@ public class AccountDao {
 		Cryptographer crypto = new Cryptographer(null);
 		Person p;
 		Query query = null;
+
 		if(!encrypted){
 			query = session().getNamedQuery("person.authenticate")
 				.setCacheable(true)
@@ -327,7 +328,7 @@ public class AccountDao {
 		p = (Person)query.uniqueResult();
 		
 		if(p == null){
-			throw new RuntimeException("Invalid login or password");
+			throw new RuntimeException("Invalid login or password.");
 		}
 		else if (p.getStatus().equals(Person.STATUS_INACTIVE)){
 			throw new RuntimeException("Your account has not been activated.  An email was sent to "+p.getEmail()
